@@ -14,6 +14,7 @@ def should_trigger_kill_switch(
     broker_positions: List[Dict[str, object]],
     internal_positions: List[Dict[str, object]],
     macro_risk: bool = False,
+    stop_integrity_ok: bool = True,
 ) -> Tuple[bool, List[str]]:
     """Block all trading when safety conditions are breached."""
     reasons: List[str] = []
@@ -24,7 +25,9 @@ def should_trigger_kill_switch(
     broker_symbols = sorted(str(position.get("symbol", "")) for position in broker_positions)
     internal_symbols = sorted(str(position.get("symbol", "")) for position in internal_positions)
     if broker_symbols != internal_symbols:
-        reasons.append("data_mismatch")
+        reasons.append("account_not_synced")
     if macro_risk:
         reasons.append("macro_risk_event_detected")
+    if not stop_integrity_ok:
+        reasons.append("missing_protective_stop")
     return len(reasons) > 0, reasons

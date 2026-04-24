@@ -1,16 +1,45 @@
 # IBKR Gerchik Bot
 
-Production-ready Python trading system for Interactive Brokers paper trading using deterministic Gerchik-style strategies: false breakout, rebound, and third touch.
+Deterministic paper-trading bot for Interactive Brokers TWS / IB Gateway using Gerchik-style level strategies. Python executes the trades. NewsAPI.ai is used only as a risk filter, not as a signal generator.
 
-## Core Rules
+## Install
 
-- Python executes all trades deterministically.
-- AI is only used during development and is not part of live trade decisions.
-- News is a filter and risk blocker, not a primary signal.
-- No trade is sent without validation, sizing, and a stop loss.
-- The system is built for Windows and external scheduling through Task Scheduler.
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
 
-## Project Structure
+## Configure `.env`
+
+Create `.env` from `.env.template` and fill in at least:
+
+```env
+IBKR_HOST=127.0.0.1
+IBKR_PORT=7497
+IBKR_CLIENT_ID=1
+PAPER_TRADING=true
+NEWS_API_KEY=
+SLACK_WEBHOOK=
+RISK_PER_TRADE=0.01
+MAX_DAILY_LOSS=0.02
+MAX_OPEN_POSITIONS=5
+```
+
+Important:
+- `PAPER_TRADING=true` is the default safety mode.
+- `DRY_RUN_MODE=true` prevents real order submission even against paper TWS.
+- `AUTO_GIT_PUSH=true` is optional and will commit/push workflow memory updates to `Test`.
+
+## TWS Connection
+
+1. Launch TWS or IB Gateway.
+2. In TWS open `Edit > Global Configuration > API > Settings`.
+3. Enable socket/API clients.
+4. Confirm the socket port matches your `.env`.
+5. Use paper trading first.
+
+## Project Layout
 
 ```text
 ibkr-gerchik-bot/
@@ -19,13 +48,17 @@ ibkr-gerchik-bot/
 │   ├── config.py
 │   ├── scheduler.py
 │   ├── brokers/ibkr.py
+│   ├── data/
 │   ├── strategy/
 │   ├── risk/
 │   ├── execution/order_manager.py
-│   ├── data/
 │   ├── alerts/slack.py
 │   └── jobs/
 ├── memory/
+│   ├── TRADE_LOG.md
+│   ├── RESEARCH_LOG.md
+│   ├── LEVELS_LOG.md
+│   └── WEEKLY_LOG.md
 ├── tests/
 ├── requirements.txt
 ├── .env.template
@@ -33,75 +66,69 @@ ibkr-gerchik-bot/
 └── README.md
 ```
 
-## Setup
+## Gerchik Strategies
 
-1. Create and activate a virtual environment.
-2. Install dependencies.
+### Rebound From Level
+- Price approaches a strong level and rejects it.
+- Confirmation candle must close back in the intended direction.
+- Target is the next strong level.
+- Minimum reward:risk is `3:1`.
+
+### Breakout
+- Price compresses under resistance or above support.
+- Breakout must confirm with a close through the level.
+- Overextended breakout candles are rejected.
+- ATR room and spread filters must pass.
+
+### One-Bar False Breakout
+- A single candle pierces the level with a wick.
+- It closes back inside the prior range.
+- Entry is taken only after confirmation.
+
+### Two-Bar False Breakout
+- First candle creates the illusion of a real breakout.
+- Second candle closes back through the level.
+- Entry happens only on that recovery/failure confirmation.
+
+### Complex False Breakout
+- Price spends 3+ candles beyond the level.
+- No clean impulse continuation appears.
+- Price returns back through the level and confirms.
+
+## Risk Controls
+
+- Paper trading is enforced by default.
+- No trade without stop-loss and target.
+- Risk per trade is capped by `RISK_PER_TRADE`.
+- Daily loss guardrail defaults to `2%`.
+- Max open positions defaults to `5`.
+- Weak levels, high spread, insufficient ATR room, duplicate positions, and high-risk news all block trades.
+
+## Running Jobs
 
 ```powershell
-pip install -r requirements.txt
+python -m src.main --job premarket --dry-run
+python -m src.main --job open --dry-run
+python -m src.main --job intraday --dry-run
+python -m src.main --job eod --dry-run
+python -m src.main --job weekly --dry-run
 ```
 
-3. Copy `.env.template` to `.env`.
-4. Fill in `IBKR_HOST`, `IBKR_PORT`, `IBKR_CLIENT_ID`, `NEWS_API_KEY`, and `SLACK_WEBHOOK`.
-5. Start TWS or IB Gateway with API access enabled.
-6. Keep paper trading enabled until the full workflow has been validated.
-
-## TWS Connection
-
-- TWS paper port is commonly `7497`.
-- IB Gateway paper port is commonly `4002`.
-- Enable API access in `Edit > Global Configuration > API > Settings`.
-- Use a unique `clientId` for this bot.
-- The broker adapter includes reconnect logic and connection health checks.
-
-## Workflow
-
-1. `premarket`
-   Detect levels, fetch earnings and headline context, and build the watchlist.
-2. `open`
-   Evaluate Gerchik setups, block risky symbols or macro conditions, validate hard risk rules, and place market plus stop orders.
-3. `intraday`
-   Monitor positions, exit on breaking news, and move stops to break-even after a 1R move.
-4. `eod`
-   Record the day summary and notify Slack.
-5. `weekly`
-   Aggregate weekly performance metrics.
-
-## Run Jobs
-
-Run from the `ibkr-gerchik-bot` folder:
-
-```powershell
-python -m src.main --job premarket
-python -m src.main --job open
-python -m src.main --job intraday
-python -m src.main --job eod
-python -m src.main --job weekly
-```
+Remove `--dry-run` only after validating TWS paper connectivity and the workflow logs.
 
 ## Windows Task Scheduler
 
-Create one task per job and point each task to the same Python executable.
-
+Use:
 - `Program/script`: full path to `python.exe`
-- `Add arguments`: `-m src.main --job open`
+- `Add arguments`: `-m src.main --job premarket --dry-run`
 - `Start in`: full path to `ibkr-gerchik-bot`
 
-Suggested schedule:
-
-- `premarket`: weekdays around 08:30 ET
-- `open`: weekdays around 09:35 ET
-- `intraday`: weekdays every 15-30 minutes from 10:30 ET to 15:30 ET
-- `eod`: weekdays around 16:00 ET
-- `weekly`: Friday after market close
-
-## Logging
-
-- Trades are appended to `memory/TRADE_LOG.md`
-- Research, scans, and intraday notes are appended to `memory/RESEARCH_LOG.md`
-- Weekly summaries are appended to `memory/WEEKLY_LOG.md`
-- Runtime logs and state are stored under `memory/runtime/`
+Suggested cadence:
+- `premarket`: weekday early morning
+- `open`: shortly after the open
+- `intraday`: repeated during market hours
+- `eod`: after the close
+- `weekly`: Friday after the close
 
 ## Tests
 
@@ -109,15 +136,4 @@ Suggested schedule:
 python -m unittest discover -s tests
 ```
 
-The tests cover:
-
-- strategy signals
-- validator rules
-- news filtering
-- position sizing
-
-## Notes
-
-- The code assumes U.S. equities routed through SMART.
-- Live broker and market data calls require a running TWS or IB Gateway session.
-- News endpoints are configurable and return empty results gracefully when `NEWS_API_KEY` is missing.
+The suite covers ATR, levels, level strength, breakout/false-breakout logic, stop calculation, reward:risk validation, position sizing, news blocking, and kill-switch behavior.

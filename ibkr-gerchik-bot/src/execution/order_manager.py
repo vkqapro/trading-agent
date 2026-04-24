@@ -7,8 +7,10 @@ from typing import Dict, List, Tuple
 from src.alerts.slack import SlackAlerter
 from src.brokers.ibkr import IBKRClient, OrderResult
 from src.config import LOGGER, SETTINGS, append_markdown_log
+from src.data.market_data import MarketDataService
 from src.data.news_filter import NewsRiskFilter
-from src.risk.position_size import calculate_position_size
+from src.risk.position_size import calculate_position_size, position_value_ok
+from src.strategy.signal_models import TradeSignal
 from src.strategy.validator import validate_trade
 
 
@@ -18,89 +20,111 @@ class OrderManager:
     def __init__(
         self,
         broker: IBKRClient,
+        market_data: MarketDataService,
         alerter: SlackAlerter,
         news_filter: NewsRiskFilter,
         dry_run: bool = False,
     ) -> None:
         self.broker = broker
+        self.market_data = market_data
         self.alerter = alerter
         self.news_filter = news_filter
         self.dry_run = dry_run
 
     def execute_trade(
         self,
-        signal: Dict[str, object],
+        signal: TradeSignal,
         account_equity: float,
+        cash_available: float,
         current_positions: List[Dict[str, object]],
         open_risk_amount: float,
-        spread_pct: float,
     ) -> Tuple[bool, Dict[str, object]]:
-        entry = float(signal["entry"])
-        stop_price = float(signal.get("stop", signal.get("stop_loss", 0.0)))
-        quantity = calculate_position_size(account_equity, SETTINGS.risk.risk_per_trade, entry, stop_price)
-        enriched_signal = dict(signal)
-        enriched_signal["risk_amount"] = abs(entry - stop_price) * quantity
+        quote = self.market_data.get_quote(signal.symbol)
+        spread_pct = self._spread_pct(quote)
+        quantity = calculate_position_size(account_equity, SETTINGS.risk.risk_per_trade, signal.entry, signal.stop)
+        order_size_valid = position_value_ok(quantity, signal.entry, SETTINGS.risk.max_position_value, cash_available)
+        enriched_signal = signal.to_dict()
         enriched_signal["quantity"] = quantity
+        enriched_signal["risk_amount"] = abs(signal.entry - signal.stop) * quantity
+        enriched_signal["next_major_level"] = signal.nearest_upper_level if signal.direction == "long" else signal.nearest_lower_level
 
-        symbol = str(signal["symbol"])
-        symbol_news_risk = self.news_filter.has_high_risk_news(symbol)
-        macro_risk = self.news_filter.is_macro_risk()
         is_valid, reasons = validate_trade(
             enriched_signal,
             account_equity=account_equity,
             current_positions=current_positions,
             open_risk_amount=open_risk_amount,
             spread_pct=spread_pct,
-            has_symbol_news_risk=symbol_news_risk,
-            has_macro_risk=macro_risk,
+            paper_trading=SETTINGS.paper_trading,
+            tws_connected=self.broker.is_connected,
+            account_synced=True,
+            market_open=self.market_data.market_is_open(),
+            first_unstable_minutes=self.market_data.unstable_open_window(),
+            allow_first_unstable_minutes=False,
+            has_symbol_news_risk=self.news_filter.has_high_risk_news(signal.symbol),
+            has_macro_risk=self.news_filter.is_macro_risk(),
+            atr_has_room=True,
+            order_size_valid=order_size_valid,
+            cash_available=cash_available,
         )
         if not is_valid or quantity <= 0:
             payload = {"status": "rejected", "reasons": reasons or ["position_size_zero"], "signal": enriched_signal}
             LOGGER.warning("Trade rejected: %s", payload)
             return False, payload
 
-        action = str(signal["signal"]).upper()
-        stop_action = "SELL" if action == "BUY" else "BUY"
-
         if self.dry_run:
-            trade_payload = {
-                "status": "simulated",
-                "symbol": symbol,
-                "strategy": signal["strategy"],
-                "direction": signal.get("direction", "long" if action == "BUY" else "short"),
-                "signal": action,
-                "entry": entry,
-                "stop_loss": stop_price,
-                "target": signal["target"],
-                "quantity": quantity,
-                "market_order_id": 0,
-                "stop_order_id": 0,
-                "dry_run": True,
-            }
-            append_markdown_log(SETTINGS.paths.trade_log, f"Simulated Trade {symbol}", trade_payload)
-            LOGGER.info("Dry-run trade simulated: %s", trade_payload)
+            trade_payload = self._build_payload(signal, quantity, 0, 0, status="simulated", dry_run=True)
+            append_markdown_log(SETTINGS.paths.trade_log, f"Simulated Trade {signal.symbol}", trade_payload)
             return True, trade_payload
 
-        try:
-            market_order: OrderResult = self.broker.place_market_order(symbol, action, quantity)
-            stop_order: OrderResult = self.broker.place_stop_order(symbol, stop_action, quantity, stop_price)
-        except Exception as exc:
-            self.alerter.send_error(f"Order placement failed for {symbol}: {exc}")
-            raise
-
-        trade_payload = {
-            "status": "executed",
-            "symbol": symbol,
-            "strategy": signal["strategy"],
-            "direction": signal.get("direction", "long" if action == "BUY" else "short"),
-            "signal": action,
-            "entry": entry,
-            "stop_loss": stop_price,
-            "target": signal["target"],
-            "quantity": quantity,
-            "market_order_id": market_order.order_id,
-            "stop_order_id": stop_order.order_id,
-        }
-        append_markdown_log(SETTINGS.paths.trade_log, f"Trade {symbol}", trade_payload)
+        entry_order = self.broker.place_market_order(signal.symbol, signal.signal, quantity)
+        stop_action = "SELL" if signal.signal == "BUY" else "BUY"
+        stop_order = self.broker.place_stop_order(signal.symbol, stop_action, quantity, signal.stop)
+        limit_order_id = 0
+        if signal.partial_targets:
+            first_target = signal.partial_targets[0]
+            tp_qty = max(int(quantity * float(first_target["qty_pct"])), 1)
+            limit_order = self.broker.place_limit_order(signal.symbol, stop_action, tp_qty, float(first_target["price"]))
+            limit_order_id = limit_order.order_id
+        trade_payload = self._build_payload(signal, quantity, entry_order.order_id, stop_order.order_id, limit_order_id=limit_order_id, status="executed")
+        append_markdown_log(SETTINGS.paths.trade_log, f"Trade {signal.symbol}", trade_payload)
         self.alerter.send_trade_executed(trade_payload)
         return True, trade_payload
+
+    @staticmethod
+    def _spread_pct(quote: Dict[str, float]) -> float:
+        bid = float(quote.get("bid", 0.0))
+        ask = float(quote.get("ask", 0.0))
+        mid = ((bid + ask) / 2) or float(quote.get("last", 0.0))
+        if mid <= 0:
+            return 1.0
+        return abs(ask - bid) / mid
+
+    @staticmethod
+    def _build_payload(
+        signal: TradeSignal,
+        quantity: int,
+        market_order_id: int,
+        stop_order_id: int,
+        *,
+        limit_order_id: int = 0,
+        status: str,
+        dry_run: bool = False,
+    ) -> Dict[str, object]:
+        return {
+            "status": status,
+            "dry_run": dry_run,
+            "symbol": signal.symbol,
+            "strategy": signal.strategy,
+            "level_type": signal.level_type,
+            "direction": signal.direction,
+            "signal": signal.signal,
+            "entry": signal.entry,
+            "stop_loss": signal.stop,
+            "target": signal.target,
+            "reward_risk": signal.reward_risk,
+            "partial_targets": signal.partial_targets,
+            "quantity": quantity,
+            "market_order_id": market_order_id,
+            "stop_order_id": stop_order_id,
+            "limit_order_id": limit_order_id,
+        }

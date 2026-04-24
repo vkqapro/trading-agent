@@ -21,10 +21,10 @@ def _ensure_event_loop() -> None:
 _ensure_event_loop()
 
 try:
-    from ib_insync import IB, MarketOrder, Stock, StopOrder, Ticker, Trade, util
+    from ib_insync import IB, LimitOrder, MarketOrder, Stock, StopOrder, Ticker, Trade, util
 except ImportError:  # pragma: no cover - exercised only when dependency is missing.
     IB = None  # type: ignore[assignment]
-    MarketOrder = StopOrder = Stock = Ticker = Trade = None  # type: ignore[assignment]
+    LimitOrder = MarketOrder = StopOrder = Stock = Ticker = Trade = None  # type: ignore[assignment]
     util = None  # type: ignore[assignment]
 
 
@@ -206,6 +206,23 @@ class IBKRClient:
             action=action.upper(),
             quantity=quantity,
             order_type="STP",
+            status=status,
+        )
+
+    def place_limit_order(self, symbol: str, action: str, quantity: int, limit_price: float) -> OrderResult:
+        self.ensure_connection()
+        contract = self.create_stock_contract(symbol)
+        order = LimitOrder(action=action.upper(), totalQuantity=quantity, lmtPrice=limit_price)
+        trade: Trade = self.ib.placeOrder(contract, order)
+        self.ib.sleep(1)
+        status = trade.orderStatus.status or "Submitted"
+        LOGGER.info("Limit order placed for %s %s x%s limit=%s status=%s", action, symbol, quantity, limit_price, status)
+        return OrderResult(
+            order_id=trade.order.orderId,
+            symbol=symbol,
+            action=action.upper(),
+            quantity=quantity,
+            order_type="LMT",
             status=status,
         )
 

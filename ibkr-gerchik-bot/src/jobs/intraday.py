@@ -6,8 +6,10 @@ from typing import Dict, List
 
 from src.alerts.slack import SlackAlerter
 from src.brokers.ibkr import IBKRClient
-from src.config import LOGGER, SETTINGS, append_markdown_log
+from src.config import SETTINGS, append_markdown_log
 from src.data.news_filter import NewsRiskFilter
+from src.risk.kill_switch import should_trigger_kill_switch
+from src.workflow_log import append_workflow_snapshot
 
 
 def run_intraday(
@@ -15,58 +17,60 @@ def run_intraday(
     alerter: SlackAlerter,
     news_filter: NewsRiskFilter,
     tracked_positions: List[Dict[str, object]],
+    account_equity: float,
+    daily_realized_pnl: float = 0.0,
 ) -> List[Dict[str, object]]:
-    """Monitor open trades, exit on breaking news, and tighten stops when possible."""
+    """Monitor open positions, verify stops, and react to invalidation."""
     actions: List[Dict[str, object]] = []
+    open_orders = broker.get_open_orders()
+    stop_symbols = {order.get("symbol") for order in open_orders if order.get("type") == "STP"}
+    kill_switch, reasons = should_trigger_kill_switch(
+        account_equity=account_equity,
+        daily_realized_pnl=daily_realized_pnl,
+        connection_healthy=broker.is_connected,
+        broker_positions=broker.get_positions(),
+        internal_positions=tracked_positions,
+        macro_risk=news_filter.is_macro_risk(),
+        stop_integrity_ok=all(position.get("symbol") in stop_symbols for position in tracked_positions),
+    )
+    if kill_switch:
+        for position in tracked_positions:
+            quantity = int(position.get("quantity", 0))
+            if quantity <= 0:
+                continue
+            action = "SELL" if position.get("direction") == "long" else "BUY"
+            broker.place_market_order(str(position["symbol"]), action, quantity)
+        payload = {"event": "kill_switch", "reasons": reasons}
+        actions.append(payload)
+        append_workflow_snapshot(SETTINGS.paths.research_log, "Intraday", {"actions": actions})
+        return actions
+
     for position in tracked_positions:
         symbol = str(position["symbol"])
         quote = broker.get_market_price(symbol)
-        last_price = float(quote.get("last", 0.0))
-        stop_loss = float(position.get("stop_loss", 0.0))
+        current_price = float(quote.get("last", 0.0))
         entry = float(position.get("entry", 0.0))
+        stop_loss = float(position.get("stop_loss", 0.0))
         quantity = int(position.get("quantity", 0))
         direction = str(position.get("direction", "long"))
-
+        pnl_pct = (((current_price - entry) / entry) * 100.0) if direction == "long" and entry else (((entry - current_price) / entry) * 100.0 if entry else 0.0)
+        if pnl_pct <= -7.0 and quantity > 0:
+            broker.place_market_order(symbol, "SELL" if direction == "long" else "BUY", quantity)
+            actions.append({"symbol": symbol, "event": "loss_cut", "pnl_pct": round(pnl_pct, 2)})
+            continue
         if news_filter.has_high_risk_news(symbol) and quantity > 0:
-            exit_action = "SELL" if direction == "long" else "BUY"
-            broker.place_market_order(symbol, exit_action, quantity)
-            payload = {"symbol": symbol, "event": "exit_on_news_risk", "last_price": last_price}
-            actions.append(payload)
-            alerter.send_error(f"Exited {symbol} due to high-risk news.")
-            LOGGER.warning("News exit triggered: %s", payload)
+            broker.place_market_order(symbol, "SELL" if direction == "long" else "BUY", quantity)
+            actions.append({"symbol": symbol, "event": "thesis_break_news"})
             continue
+        if pnl_pct >= 20.0 or pnl_pct >= 15.0:
+            trail_percent = 5.0 if pnl_pct >= 20.0 else 7.0
+            proposed_stop = current_price * (1 - max(trail_percent, 3.0) / 100.0) if direction == "long" else current_price * (1 + max(trail_percent, 3.0) / 100.0)
+            broker.replace_stop_order(symbol, "SELL" if direction == "long" else "BUY", quantity, proposed_stop, int(position.get("stop_order_id", 0)) or None)
+            position["stop_loss"] = round(proposed_stop, 2)
+            actions.append({"symbol": symbol, "event": "stop_adjusted", "new_stop": round(proposed_stop, 2)})
 
-        invalidated = (direction == "long" and last_price <= stop_loss) or (direction == "short" and last_price >= stop_loss)
-        if invalidated:
-            payload = {"symbol": symbol, "event": "stop_triggered", "last_price": last_price, "stop_loss": stop_loss}
-            actions.append(payload)
-            alerter.send_stop_triggered(symbol, stop_loss)
-            LOGGER.warning("Position invalidated: %s", payload)
-            continue
-
-        one_r_move = abs(entry - stop_loss)
-        if one_r_move <= 0:
-            continue
-
-        reached_break_even_trail = (
-            direction == "long" and last_price >= entry + one_r_move
-        ) or (
-            direction == "short" and last_price <= entry - one_r_move
-        )
-        if reached_break_even_trail and stop_loss != entry and quantity > 0:
-            stop_action = "SELL" if direction == "long" else "BUY"
-            replacement = broker.replace_stop_order(
-                symbol=symbol,
-                action=stop_action,
-                quantity=quantity,
-                stop_price=entry,
-                existing_order_id=int(position.get("stop_order_id", 0)) or None,
-            )
-            position["stop_loss"] = entry
-            position["stop_order_id"] = replacement.order_id
-            payload = {"symbol": symbol, "event": "stop_moved_to_break_even", "new_stop": entry}
-            actions.append(payload)
-            LOGGER.info("Stop adjusted: %s", payload)
-
-    append_markdown_log(SETTINGS.paths.research_log, "Intraday Monitor", {"events": actions or "none"})
+    append_markdown_log(SETTINGS.paths.trade_log, "Intraday Actions", {"actions": actions or "none"})
+    append_workflow_snapshot(SETTINGS.paths.research_log, "Intraday", {"actions": actions, "tracked_positions": tracked_positions})
+    if actions:
+        alerter.send_error(f"Intraday actions taken: {actions}")
     return actions
