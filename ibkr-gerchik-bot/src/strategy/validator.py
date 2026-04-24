@@ -7,10 +7,14 @@ from typing import Dict, List, Tuple
 from src.config import SETTINGS
 
 
-def _reward_risk_ratio(entry: float, stop_loss: float, target: float) -> float:
-    risk = abs(entry - stop_loss)
+def _reward_risk_ratio(entry: float, stop_price: float, target: float) -> float:
+    risk = abs(entry - stop_price)
     reward = abs(target - entry)
     return reward / risk if risk else 0.0
+
+
+def _stop_from_signal(signal: Dict[str, object]) -> float:
+    return float(signal.get("stop", signal.get("stop_loss", 0.0)))
 
 
 def validate_trade(
@@ -19,22 +23,27 @@ def validate_trade(
     current_positions: List[Dict[str, object]],
     open_risk_amount: float,
     spread_pct: float,
+    has_symbol_news_risk: bool = False,
+    has_macro_risk: bool = False,
 ) -> Tuple[bool, List[str]]:
     """Validate a trade candidate against hard portfolio rules."""
     reasons: List[str] = []
     symbol = str(signal.get("symbol", ""))
     entry = float(signal.get("entry", 0.0))
-    stop_loss = float(signal.get("stop_loss", 0.0))
+    stop_price = _stop_from_signal(signal)
     target = float(signal.get("target", 0.0))
-    risk_amount = float(signal.get("risk_amount", 0.0))
+    risk_amount = float(signal.get("risk_amount", abs(entry - stop_price) * float(signal.get("quantity", 0.0))))
+    trade_signal = str(signal.get("signal", "NONE")).upper()
 
+    if trade_signal not in {"BUY", "SELL"}:
+        reasons.append("missing_trade_signal")
     if len(current_positions) >= SETTINGS.risk.max_positions:
         reasons.append("max_positions_reached")
     if risk_amount > account_equity * SETTINGS.risk.risk_per_trade:
         reasons.append("risk_per_trade_exceeded")
-    if not stop_loss:
+    if not stop_price:
         reasons.append("missing_stop_loss")
-    if _reward_risk_ratio(entry, stop_loss, target) < SETTINGS.risk.min_reward_risk_ratio:
+    if _reward_risk_ratio(entry, stop_price, target) < SETTINGS.risk.min_reward_risk_ratio:
         reasons.append("reward_risk_too_low")
     if spread_pct > SETTINGS.risk.max_spread_pct:
         reasons.append("spread_too_wide")
@@ -42,5 +51,9 @@ def validate_trade(
         reasons.append("duplicate_position")
     if open_risk_amount + risk_amount > account_equity * SETTINGS.risk.max_open_risk_pct:
         reasons.append("open_risk_limit_exceeded")
+    if has_symbol_news_risk:
+        reasons.append("high_risk_news")
+    if has_macro_risk:
+        reasons.append("macro_risk")
 
     return len(reasons) == 0, reasons

@@ -12,7 +12,7 @@ from src.config import SETTINGS
 def detect_false_breakout(bars: pd.DataFrame, level: float, direction: str) -> Dict[str, object]:
     """Detect a level breach followed by immediate rejection."""
     if len(bars) < 2:
-        return {"signal": False, "reason": "not_enough_bars"}
+        return {"signal": "NONE", "reason": "not_enough_bars"}
 
     previous = bars.iloc[-2]
     current = bars.iloc[-1]
@@ -21,23 +21,24 @@ def detect_false_breakout(bars: pd.DataFrame, level: float, direction: str) -> D
     if direction == "short":
         broke = float(previous["high"]) > level + tolerance
         rejected = float(current["close"]) < level and float(current["high"]) >= level
-        stop_loss = max(float(previous["high"]), float(current["high"])) + tolerance
+        stop_price = max(float(previous["high"]), float(current["high"])) + tolerance
         entry = float(current["close"])
-        target = entry - (stop_loss - entry) * SETTINGS.risk.min_reward_risk_ratio
+        target = entry - (stop_price - entry) * SETTINGS.risk.min_reward_risk_ratio
+        signal = "SELL" if broke and rejected else "NONE"
     else:
         broke = float(previous["low"]) < level - tolerance
         rejected = float(current["close"]) > level and float(current["low"]) <= level
-        stop_loss = min(float(previous["low"]), float(current["low"])) - tolerance
+        stop_price = min(float(previous["low"]), float(current["low"])) - tolerance
         entry = float(current["close"])
-        target = entry + (entry - stop_loss) * SETTINGS.risk.min_reward_risk_ratio
+        target = entry + (entry - stop_price) * SETTINGS.risk.min_reward_risk_ratio
+        signal = "BUY" if broke and rejected else "NONE"
 
-    signal = broke and rejected
     return {
         "signal": signal,
         "strategy": "false_breakout",
         "direction": direction,
         "entry": round(entry, 2),
-        "stop_loss": round(stop_loss, 2),
+        "stop": round(stop_price, 2),
         "target": round(target, 2),
         "level": round(level, 2),
     }

@@ -2,11 +2,23 @@
 
 from __future__ import annotations
 
+import asyncio
 import time
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
 from src.config import LOGGER, SETTINGS
+
+
+def _ensure_event_loop() -> None:
+    """ib_insync/eventkit expects a current event loop on newer Python versions."""
+    try:
+        asyncio.get_event_loop_policy().get_event_loop()
+    except RuntimeError:
+        asyncio.set_event_loop(asyncio.new_event_loop())
+
+
+_ensure_event_loop()
 
 try:
     from ib_insync import IB, MarketOrder, Stock, StopOrder, Ticker, Trade, util
@@ -117,6 +129,17 @@ class IBKRClient:
             )
         return orders
 
+    def cancel_order(self, order_id: int) -> bool:
+        self.ensure_connection()
+        for trade in self.ib.openTrades():
+            if trade.order.orderId == order_id:
+                self.ib.cancelOrder(trade.order)
+                self.ib.sleep(1)
+                LOGGER.info("Cancelled order_id=%s", order_id)
+                return True
+        LOGGER.warning("Order id %s was not found among open trades.", order_id)
+        return False
+
     def get_market_price(self, symbol: str) -> Dict[str, float]:
         """Request a snapshot and return bid/ask/last/close safely."""
         self.ensure_connection()
@@ -185,3 +208,15 @@ class IBKRClient:
             order_type="STP",
             status=status,
         )
+
+    def replace_stop_order(
+        self,
+        symbol: str,
+        action: str,
+        quantity: int,
+        stop_price: float,
+        existing_order_id: int | None = None,
+    ) -> OrderResult:
+        if existing_order_id:
+            self.cancel_order(existing_order_id)
+        return self.place_stop_order(symbol=symbol, action=action, quantity=quantity, stop_price=stop_price)

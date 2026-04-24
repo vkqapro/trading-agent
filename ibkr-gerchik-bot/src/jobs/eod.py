@@ -21,6 +21,7 @@ def run_eod(
         "daily_pnl": round(daily_pnl, 2),
         "open_positions": len(open_positions),
         "blocked": risk_manager.get_state()["blocked"],
+        "reasons": risk_manager.get_state()["reasons"],
     }
     append_markdown_log(SETTINGS.paths.research_log, "End Of Day", summary)
     alerter.send_daily_summary(summary)

@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 import os
 from dataclasses import dataclass, field
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Tuple
 
@@ -20,6 +21,10 @@ MEMORY_DIR = BASE_DIR / "memory"
 LOG_DIR = MEMORY_DIR / "runtime"
 
 load_dotenv(BASE_DIR / ".env", override=False)
+
+
+def _csv_env(name: str, default: str) -> List[str]:
+    return [item.strip() for item in os.getenv(name, default).split(",") if item.strip()]
 
 
 @dataclass(frozen=True)
@@ -62,34 +67,72 @@ class TradingHours:
 
 
 @dataclass(frozen=True)
+class NewsConfig:
+    api_key: str = os.getenv("NEWS_API_KEY", "")
+    base_url: str = os.getenv("NEWS_API_BASE_URL", "https://eventregistry.org/api/v1/article/getArticles")
+    macro_url: str = os.getenv("NEWS_MACRO_URL", "https://eventregistry.org/api/v1/article/getArticles")
+    earnings_url: str = os.getenv("NEWS_EARNINGS_URL", "https://eventregistry.org/api/v1/article/getArticles")
+    request_timeout_seconds: int = int(os.getenv("NEWS_TIMEOUT_SECONDS", "10"))
+    high_risk_keywords: Tuple[str, ...] = (
+        "earnings",
+        "lawsuit",
+        "downgrade",
+        "investigation",
+        "fraud",
+        "offering",
+        "bankruptcy",
+        "guidance cut",
+    )
+    macro_risk_keywords: Tuple[str, ...] = (
+        "cpi",
+        "fomc",
+        "fed speech",
+        "federal reserve",
+        "powell",
+        "geopolitical",
+        "war",
+        "sanctions",
+    )
+    critical_macro_keywords: Tuple[str, ...] = (
+        "cpi",
+        "fomc",
+        "fed speech",
+        "federal reserve",
+        "powell",
+    )
+    macro_min_match_count: int = int(os.getenv("NEWS_MACRO_MIN_MATCH_COUNT", "2"))
+    default_macro_query: str = os.getenv(
+        "NEWS_MACRO_QUERY",
+        "CPI OR FOMC OR \"Fed speech\" OR \"Federal Reserve\" OR geopolitical OR sanctions",
+    )
+
+
+@dataclass(frozen=True)
 class PathsConfig:
     trade_log: Path = MEMORY_DIR / "TRADE_LOG.md"
     research_log: Path = MEMORY_DIR / "RESEARCH_LOG.md"
     weekly_log: Path = MEMORY_DIR / "WEEKLY_LOG.md"
     runtime_dir: Path = LOG_DIR
+    state_file: Path = LOG_DIR / "state.json"
 
 
 @dataclass(frozen=True)
 class Settings:
     app_name: str = "ibkr-gerchik-bot"
     paper_trading: bool = os.getenv("PAPER_TRADING", "true").lower() == "true"
+    dry_run_mode: bool = os.getenv("DRY_RUN_MODE", "true").lower() == "true"
     account_currency: str = "USD"
     symbols: List[str] = field(
-        default_factory=lambda: [
-            "AAPL",
-            "MSFT",
-            "NVDA",
-            "AMD",
-            "TSLA",
-            "META",
-            "AMZN",
-            "NFLX",
-        ]
+        default_factory=lambda: _csv_env(
+            "BOT_SYMBOLS",
+            "AAPL,MSFT,NVDA,AMD,TSLA,META,AMZN,NFLX",
+        )
     )
     broker: BrokerConfig = field(default_factory=BrokerConfig)
     risk: RiskConfig = field(default_factory=RiskConfig)
     strategy: StrategyConfig = field(default_factory=StrategyConfig)
     trading_hours: TradingHours = field(default_factory=TradingHours)
+    news: NewsConfig = field(default_factory=NewsConfig)
     paths: PathsConfig = field(default_factory=PathsConfig)
     slack_webhook: str = os.getenv("SLACK_WEBHOOK", "")
 
@@ -131,9 +174,9 @@ LOGGER = setup_logging()
 
 
 def append_markdown_log(path: Path, heading: str, fields: Dict[str, object]) -> None:
-    """Append a simple Markdown section to a log file."""
+    """Append a timestamped Markdown section to a log file."""
     ensure_directories()
     with path.open("a", encoding="utf-8") as handle:
-        handle.write(f"\n## {heading}\n")
+        handle.write(f"\n## {heading} ({datetime.now().isoformat(timespec='seconds')})\n")
         for key, value in fields.items():
             handle.write(f"- **{key}**: {value}\n")

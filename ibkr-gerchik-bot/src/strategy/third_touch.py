@@ -20,14 +20,14 @@ def _touch_indices(series: pd.Series, level: float, tolerance: float) -> List[in
 def detect_third_touch(bars: pd.DataFrame, level: float, direction: str) -> Dict[str, object]:
     """Detect the third qualified interaction with a level."""
     if len(bars) < 5:
-        return {"signal": False, "reason": "not_enough_bars"}
+        return {"signal": "NONE", "reason": "not_enough_bars"}
 
     tolerance = level * SETTINGS.strategy.level_tolerance_pct
     source = bars["low"] if direction == "long" else bars["high"]
     touches = _touch_indices(source, level, tolerance)
 
     if len(touches) < 3:
-        return {"signal": False, "reason": "fewer_than_three_touches"}
+        return {"signal": "NONE", "reason": "fewer_than_three_touches"}
 
     last_three = touches[-3:]
     spacing_ok = all(
@@ -39,20 +39,21 @@ def detect_third_touch(bars: pd.DataFrame, level: float, direction: str) -> Dict
     entry = float(current["close"])
     if direction == "long":
         confirmation = float(current["close"]) > level
-        stop_loss = level - tolerance
-        target = entry + (entry - stop_loss) * SETTINGS.risk.min_reward_risk_ratio
+        stop_price = level - tolerance
+        target = entry + (entry - stop_price) * SETTINGS.risk.min_reward_risk_ratio
+        signal = "BUY" if spacing_ok and confirmation and last_three[-1] == len(bars) - 1 else "NONE"
     else:
         confirmation = float(current["close"]) < level
-        stop_loss = level + tolerance
-        target = entry - (stop_loss - entry) * SETTINGS.risk.min_reward_risk_ratio
+        stop_price = level + tolerance
+        target = entry - (stop_price - entry) * SETTINGS.risk.min_reward_risk_ratio
+        signal = "SELL" if spacing_ok and confirmation and last_three[-1] == len(bars) - 1 else "NONE"
 
-    signal = spacing_ok and confirmation and last_three[-1] == len(bars) - 1
     return {
         "signal": signal,
         "strategy": "third_touch",
         "direction": direction,
         "entry": round(entry, 2),
-        "stop_loss": round(stop_loss, 2),
+        "stop": round(stop_price, 2),
         "target": round(target, 2),
         "level": round(level, 2),
         "touches": last_three,

@@ -18,12 +18,12 @@ class StrategyTests(unittest.TestCase):
             ]
         )
         signal = detect_false_breakout(bars, level=100.0, direction="short")
-        self.assertTrue(signal["signal"])
+        self.assertEqual(signal["signal"], "SELL")
 
     def test_rebound_long_signal(self) -> None:
         bars = pd.DataFrame([{"open": 99.8, "high": 101.0, "low": 99.7, "close": 100.6}])
         signal = detect_rebound(bars, level=100.0, direction="long")
-        self.assertTrue(signal["signal"])
+        self.assertEqual(signal["signal"], "BUY")
 
     def test_third_touch_long_signal(self) -> None:
         bars = pd.DataFrame(
@@ -38,7 +38,7 @@ class StrategyTests(unittest.TestCase):
             ]
         )
         signal = detect_third_touch(bars, level=100.0, direction="long")
-        self.assertTrue(signal["signal"])
+        self.assertEqual(signal["signal"], "BUY")
 
 
 if __name__ == "__main__":
