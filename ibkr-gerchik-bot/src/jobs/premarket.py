@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, List
+from typing import Dict, List, Sequence
 
 from src.config import SETTINGS, append_markdown_log
 from src.data.market_data import MarketDataService
@@ -20,6 +20,7 @@ def run_premarket(
     news_service: NewsService,
     news_filter: NewsRiskFilter,
     account_snapshot: Dict[str, object],
+    symbols: Sequence[str],
 ) -> Dict[str, object]:
     """Build the premarket research plan and level journal."""
     context = load_workflow_context(SETTINGS.paths.strategy_doc, SETTINGS.paths.research_log, SETTINGS.paths.trade_log)
@@ -27,10 +28,10 @@ def run_premarket(
     levels_log: Dict[str, object] = {}
     ideas: List[Dict[str, object]] = []
     macro_risk = news_filter.get_macro_risk_context()
-    earnings = news_service.fetch_earnings_calendar(SETTINGS.symbols)
+    earnings = news_service.fetch_earnings_calendar(symbols)
     earnings_by_symbol = {str(item.get("symbol", "")): item for item in earnings}
 
-    for symbol in SETTINGS.symbols:
+    for symbol in symbols:
         daily_bars = market_data.get_daily_bars(symbol)
         intraday_bars = market_data.get_intraday_bars(symbol, duration="2 D", bar_size="15 mins")
         if daily_bars.empty or intraday_bars.empty:
@@ -77,6 +78,7 @@ def run_premarket(
             "trade_log_context_loaded": bool(context["trade_log_tail"]),
             "research_log_context_loaded": bool(context["research_log_tail"]),
             "account_snapshot": account_snapshot,
+            "research_symbols": list(symbols),
             "macro_risk": macro_risk["blocked"],
             "actionable_ideas": ideas or "none",
             "trade_decision": "HOLD" if macro_risk["blocked"] else "READY_FOR_OPEN_VALIDATION",
@@ -90,6 +92,10 @@ def run_premarket(
     append_workflow_snapshot(
         SETTINGS.paths.research_log,
         "Premarket",
-        {"watchlist": watchlist, "macro_risk": macro_risk, "ideas": ideas},
+        {"watchlist": watchlist, "macro_risk": macro_risk, "ideas": ideas, "research_symbols": list(symbols)},
     )
-    return watchlist
+    return {
+        "watchlist": watchlist,
+        "macro_risk": macro_risk,
+        "ideas": ideas,
+    }

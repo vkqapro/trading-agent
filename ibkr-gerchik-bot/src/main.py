@@ -29,6 +29,28 @@ from src.risk.risk_manager import RiskManager
 from src.workflow_log import read_latest_workflow_snapshot
 
 
+def _build_research_symbols(positions: List[Dict[str, object]]) -> List[str]:
+    merged: List[str] = []
+    seen: set[str] = set()
+
+    for item in positions:
+        sec_type = str(item.get("sec_type", "")).strip().upper()
+        if sec_type and sec_type != "STK":
+            continue
+        symbol = str(item.get("symbol", "")).strip().upper()
+        if symbol and symbol not in seen:
+            seen.add(symbol)
+            merged.append(symbol)
+
+    for symbol in SETTINGS.symbols:
+        normalized = symbol.strip().upper()
+        if normalized and normalized not in seen:
+            seen.add(normalized)
+            merged.append(normalized)
+
+    return merged
+
+
 def _account_equity_from_summary(summary: List[Dict[str, object]]) -> float:
     for item in summary:
         if item.get("tag") == "NetLiquidation":
@@ -96,6 +118,7 @@ def run_job(job_name: str, dry_run_override: Optional[bool] = None) -> Dict[str,
         cash_available = _cash_from_summary(account_summary)
         positions = broker.get_positions()
         open_orders = broker.get_open_orders()
+        research_symbols = _build_research_symbols(positions)
         risk_manager = RiskManager(account_equity)
         repo_root = SETTINGS.paths.trade_log.parents[1]
         account_snapshot = {"account": account_summary, "positions": positions, "open_orders": open_orders}
@@ -114,9 +137,17 @@ def run_job(job_name: str, dry_run_override: Optional[bool] = None) -> Dict[str,
             return {"job": job_name, "blocked": True, "reasons": reasons, "dry_run": dry_run}
 
         if job_name == "premarket":
-            watchlist = run_premarket(market_data, news_service, news_filter, account_snapshot)
+            premarket_summary = run_premarket(
+                market_data,
+                news_service,
+                news_filter,
+                account_snapshot,
+                research_symbols,
+            )
+            watchlist = premarket_summary.get("watchlist", {})
             state["watchlist"] = watchlist
             _save_state(state_path, state)
+            alerter.send_premarket_summary(premarket_summary)
             maybe_commit_and_push(
                 repo_root,
                 [SETTINGS.paths.research_log, SETTINGS.paths.state_file],
@@ -126,7 +157,14 @@ def run_job(job_name: str, dry_run_override: Optional[bool] = None) -> Dict[str,
 
         if job_name == "open":
             if not state.get("watchlist"):
-                watchlist = run_premarket(market_data, news_service, news_filter, account_snapshot)
+                premarket_summary = run_premarket(
+                    market_data,
+                    news_service,
+                    news_filter,
+                    account_snapshot,
+                    research_symbols,
+                )
+                watchlist = premarket_summary.get("watchlist", {})
                 state["watchlist"] = watchlist
             else:
                 watchlist = state.get("watchlist", {})

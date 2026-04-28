@@ -48,6 +48,42 @@ class SlackAlerter:
     def send_error(self, message: str) -> bool:
         return self.send(f"Error: {message}")
 
+    def send_premarket_summary(self, summary: Dict[str, object]) -> bool:
+        macro_risk = summary.get("macro_risk", {})
+        blocked = bool(macro_risk.get("blocked")) if isinstance(macro_risk, dict) else False
+        ideas = summary.get("ideas")
+        research_symbols = summary.get("research_symbols")
+        lines = [
+            "Premarket summary",
+            f"Macro risk: {'ON' if blocked else 'OFF'}",
+        ]
+
+        if isinstance(research_symbols, list) and research_symbols:
+            universe_preview = ", ".join(str(symbol) for symbol in research_symbols[:8])
+            if len(research_symbols) > 8:
+                universe_preview = f"{universe_preview}, ..."
+            lines.append(f"Universe: {universe_preview}")
+
+        if isinstance(ideas, list) and ideas:
+            for idea in ideas[:3]:
+                symbol = idea.get("symbol", "?")
+                decision = idea.get("decision", "WATCH")
+                entry = idea.get("entry", "-")
+                stop = idea.get("stop", "-")
+                target = idea.get("target", "-")
+                lines.append(
+                    f"{symbol}: {decision} entry {entry} stop {stop} target {target}"
+                )
+        else:
+            lines.append("Ideas: none")
+
+        if blocked and isinstance(macro_risk, dict):
+            matched = macro_risk.get("matched_headlines")
+            if isinstance(matched, list) and matched:
+                lines.append(f"Risk: {matched[0]}")
+
+        return self.send("\n".join(lines))
+
     def send_daily_summary(self, summary: Dict[str, object]) -> bool:
         positions = summary.get("positions")
         open_position_count = len(positions) if isinstance(positions, list) else 0
