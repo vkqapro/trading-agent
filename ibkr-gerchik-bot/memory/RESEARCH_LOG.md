@@ -41556,3 +41556,50 @@ Premarket scans, intraday observations, and daily analysis are appended here.
   }
 }
 ```
+
+## Workflow Intraday (2026-04-28T12:28:27)
+- **stage**: Intraday
+- **actions**: [{'event': 'kill_switch', 'reasons': ['missing_protective_stop']}]
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [
+      {
+        "event": "kill_switch",
+        "reasons": [
+          "missing_protective_stop"
+        ]
+      }
+    ]
+  }
+}
+```
+
+## Workflow Intraday (2026-04-28T12:30:14)
+- **stage**: Intraday
+- **tracked_symbols**: []
+- **actions**: []
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [],
+    "tracked_positions": []
+  }
+}
+```
+
+## Workflow Intraday (2026-04-28T12:35:05)
+- **stage**: Intraday
+- **tracked_symbols**: []
+- **actions**: []
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [],
+    "tracked_positions": []
+  }
+}
+```

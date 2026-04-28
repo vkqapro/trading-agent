@@ -241,7 +241,14 @@ def run_job(job_name: str, dry_run_override: Optional[bool] = None) -> Dict[str,
 
         if job_name == "intraday":
             tracked_positions = state.get("tracked_positions", [])
-            actions = run_intraday(broker, alerter, news_filter, tracked_positions, account_equity=account_equity)
+            actions = run_intraday(
+                broker,
+                alerter,
+                news_filter,
+                tracked_positions,
+                account_equity=account_equity,
+                dry_run=dry_run,
+            )
             state["tracked_positions"] = tracked_positions
             _save_state(state_path, state)
             if actions:

@@ -48,6 +48,28 @@ class SlackAlerter:
     def send_error(self, message: str) -> bool:
         return self.send(f"Error: {message}")
 
+    def send_intraday_heartbeat(self, summary: Dict[str, object]) -> bool:
+        tracked_symbols = summary.get("tracked_symbols")
+        tracked_count = len(tracked_symbols) if isinstance(tracked_symbols, list) else 0
+        actions = summary.get("actions")
+        action_count = len(actions) if isinstance(actions, list) else 0
+        macro_risk = bool(summary.get("macro_risk", False))
+        action_label = "actions taken" if action_count else "no action"
+        lines = [
+            "Intraday heartbeat",
+            f"Tracked: {tracked_count}",
+            f"Macro risk: {'ON' if macro_risk else 'OFF'}",
+            f"Status: {action_label}",
+        ]
+        if isinstance(tracked_symbols, list) and tracked_symbols:
+            preview = ", ".join(str(symbol) for symbol in tracked_symbols[:8])
+            if len(tracked_symbols) > 8:
+                preview = f"{preview}, ..."
+            lines.append(f"Universe: {preview}")
+        if action_count and isinstance(actions, list):
+            lines.append(f"Latest: {actions[0]}")
+        return self.send("\n".join(lines))
+
     def send_premarket_summary(self, summary: Dict[str, object]) -> bool:
         macro_risk = summary.get("macro_risk", {})
         blocked = bool(macro_risk.get("blocked")) if isinstance(macro_risk, dict) else False

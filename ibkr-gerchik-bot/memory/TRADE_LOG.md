@@ -1562,3 +1562,9 @@ Executed trades, stop events, and end-of-day position snapshots are appended her
 ## Market Open (2026-04-28T10:49:51)
 - **executed**: none
 - **skipped**: [{'symbol': 'VOO', 'reason': 'no_signal'}, {'symbol': 'BBBY', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'symbol_news_risk'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}]
+
+## Intraday Actions (2026-04-28T12:30:14)
+- **actions**: none
+
+## Intraday Actions (2026-04-28T12:35:05)
+- **actions**: none
