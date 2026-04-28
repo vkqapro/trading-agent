@@ -2,10 +2,13 @@
 
 from __future__ import annotations
 
-from typing import Dict, Iterable, List, Optional
+import re
+from collections import OrderedDict
+from typing import Dict, Iterable, List, Optional, Sequence
 
 import requests
 
+from src.brokers.ibkr import IBKRClient
 from src.config import LOGGER, SETTINGS
 
 
@@ -56,11 +59,17 @@ SYMBOL_QUERY_MAP: Dict[str, Dict[str, object]] = {
 class NewsService:
     """Fetch symbol, macro, and earnings context from NewsAPI.ai / Event Registry."""
 
-    def __init__(self, session: Optional[requests.Session] = None) -> None:
+    def __init__(self, session: Optional[requests.Session] = None, broker: Optional[IBKRClient] = None) -> None:
         self.session = session or requests.Session()
         self.config = SETTINGS.news
+        self.broker = broker
 
     def fetch_news_by_symbol(self, symbol: str, limit: int = 10) -> List[Dict[str, object]]:
+        external_items = self._fetch_external_news_by_symbol(symbol, limit=limit)
+        ibkr_items = self.fetch_ibkr_news_by_symbol(symbol, limit=limit)
+        return self._merge_news_items(external_items, ibkr_items, limit=max(limit, self.config.ibkr_headline_limit))
+
+    def _fetch_external_news_by_symbol(self, symbol: str, limit: int = 10) -> List[Dict[str, object]]:
         symbol_key = symbol.upper()
         symbol_meta = SYMBOL_QUERY_MAP.get(symbol_key, {})
         keyword_terms = [str(item) for item in symbol_meta.get("keywords", [symbol_key, f"{symbol_key} stock"]) if item]
@@ -82,6 +91,11 @@ class NewsService:
         return self._parse_articles(payload)
 
     def fetch_macro_events(self, limit: int = 10) -> List[Dict[str, object]]:
+        external_items = self._fetch_external_macro_events(limit=limit)
+        ibkr_items = self.fetch_ibkr_macro_events(limit=limit)
+        return self._merge_news_items(external_items, ibkr_items, limit=max(limit, self.config.ibkr_headline_limit))
+
+    def _fetch_external_macro_events(self, limit: int = 10) -> List[Dict[str, object]]:
         params = self._article_params(
             keywords=["CPI", "FOMC", "Fed speech", "Federal Reserve", "geopolitical", "sanctions"],
             limit=limit,
@@ -90,6 +104,25 @@ class NewsService:
         )
         payload = self._request(self.config.macro_url, params)
         return self._parse_articles(payload)
+
+    def fetch_ibkr_news_providers(self) -> List[Dict[str, str]]:
+        if not self.config.ibkr_news_enabled or self.broker is None:
+            return []
+        return self.broker.get_news_providers()
+
+    def fetch_ibkr_news_by_symbol(self, symbol: str, limit: int = 10) -> List[Dict[str, object]]:
+        return self._fetch_ibkr_news(symbol, self.config.ibkr_symbol_providers, limit=limit)
+
+    def fetch_ibkr_macro_events(self, limit: int = 10) -> List[Dict[str, object]]:
+        macro_items: List[Dict[str, object]] = []
+        seen: set[str] = set()
+        for proxy_symbol in ("SPY", "QQQ"):
+            for item in self._fetch_ibkr_news(proxy_symbol, self.config.ibkr_macro_providers, limit=limit):
+                key = self._headline_key(item)
+                if key not in seen:
+                    seen.add(key)
+                    macro_items.append(item)
+        return macro_items
 
     def fetch_earnings_calendar(self, symbols: Iterable[str], days_ahead: int = 14) -> List[Dict[str, object]]:
         symbol_list = [symbol for symbol in symbols if symbol]
@@ -130,6 +163,33 @@ class NewsService:
         if extra:
             params.update(extra)
         return params
+
+    def _fetch_ibkr_news(self, symbol: str, provider_codes: Sequence[str], limit: int = 10) -> List[Dict[str, object]]:
+        if not self.config.ibkr_news_enabled or self.broker is None or not provider_codes:
+            return []
+
+        items = self.broker.get_historical_news(
+            symbol=symbol,
+            provider_codes=list(provider_codes),
+            total_results=min(limit, self.config.ibkr_headline_limit),
+            lookback_hours=self.config.ibkr_lookback_hours,
+        )
+        normalized: List[Dict[str, object]] = []
+        for item in items:
+            headline = str(item.get("headline", ""))
+            provider_code = str(item.get("provider_code", "")) or str(item.get("source", ""))
+            normalized.append(
+                {
+                    "headline": headline,
+                    "published_at": str(item.get("published_at", "")),
+                    "source": provider_code,
+                    "url": str(item.get("url", "")),
+                    "provider_code": provider_code,
+                    "source_type": "ibkr",
+                    "raw": item,
+                }
+            )
+        return normalized
 
     def _request(self, url: str, params: Dict[str, object]) -> object:
         if not self.config.api_key:
@@ -174,7 +234,32 @@ class NewsService:
                     "published_at": article.get("dateTime") or article.get("publishedAt") or "",
                     "source": source.get("title", "") if isinstance(source, dict) else str(source),
                     "url": article.get("url") or article.get("link") or "",
+                    "provider_code": "",
+                    "source_type": "external",
                     "raw": article,
                 }
             )
         return normalized
+
+    def _merge_news_items(
+        self,
+        external_items: List[Dict[str, object]],
+        ibkr_items: List[Dict[str, object]],
+        *,
+        limit: int,
+    ) -> List[Dict[str, object]]:
+        ordered = OrderedDict()
+        for item in ibkr_items + external_items:
+            key = self._headline_key(item)
+            if key and key not in ordered:
+                ordered[key] = item
+        merged = list(ordered.values())
+        return merged[:limit]
+
+    @staticmethod
+    def _headline_key(item: Dict[str, object]) -> str:
+        headline = str(item.get("headline", "")).strip().lower()
+        if not headline:
+            return ""
+        headline = re.sub(r"[^a-z0-9\s]+", " ", headline)
+        return re.sub(r"\s+", " ", headline).strip()

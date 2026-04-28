@@ -32,8 +32,19 @@ def run_open(
     if not context["research_log_tail"]:
         append_workflow_snapshot(SETTINGS.paths.research_log, "Open", {"blocked": True, "reason": "missing_research"})
         return executed
-    if news_filter.is_macro_risk():
-        append_workflow_snapshot(SETTINGS.paths.research_log, "Open", {"blocked": True, "reason": "macro_risk"})
+    macro_context = news_filter.get_macro_risk_context()
+    if macro_context["blocked"]:
+        append_workflow_snapshot(
+            SETTINGS.paths.research_log,
+            "Open",
+            {
+                "blocked": True,
+                "reason": "macro_risk",
+                "provider_hits": macro_context.get("provider_hits", []),
+                "source_types": macro_context.get("source_types", []),
+                "matched_headlines": macro_context.get("matched_headlines", []),
+            },
+        )
         return executed
 
     for symbol, plan in watchlist.items():

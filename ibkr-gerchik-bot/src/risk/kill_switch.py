@@ -7,6 +7,18 @@ from typing import Dict, List, Tuple
 from src.config import SETTINGS
 
 
+def _equity_symbols(positions: List[Dict[str, object]]) -> List[str]:
+    symbols: List[str] = []
+    for position in positions:
+        sec_type = str(position.get("sec_type", "STK")).upper()
+        if sec_type != "STK":
+            continue
+        symbol = str(position.get("symbol", ""))
+        if symbol:
+            symbols.append(symbol)
+    return sorted(symbols)
+
+
 def should_trigger_kill_switch(
     account_equity: float,
     daily_realized_pnl: float,
@@ -22,8 +34,8 @@ def should_trigger_kill_switch(
         reasons.append("daily_loss_limit_exceeded")
     if not connection_healthy:
         reasons.append("ibkr_disconnected")
-    broker_symbols = sorted(str(position.get("symbol", "")) for position in broker_positions)
-    internal_symbols = sorted(str(position.get("symbol", "")) for position in internal_positions)
+    broker_symbols = _equity_symbols(broker_positions)
+    internal_symbols = _equity_symbols(internal_positions)
     if broker_symbols != internal_symbols:
         reasons.append("account_not_synced")
     if macro_risk:

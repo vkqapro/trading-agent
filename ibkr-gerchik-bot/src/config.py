@@ -80,6 +80,15 @@ class NewsConfig:
     macro_url: str = os.getenv("NEWS_MACRO_URL", "https://eventregistry.org/api/v1/article/getArticles")
     earnings_url: str = os.getenv("NEWS_EARNINGS_URL", "https://eventregistry.org/api/v1/article/getArticles")
     request_timeout_seconds: int = int(os.getenv("NEWS_TIMEOUT_SECONDS", "10"))
+    ibkr_news_enabled: bool = os.getenv("IBKR_NEWS_ENABLED", "true").lower() == "true"
+    ibkr_symbol_providers: Tuple[str, ...] = tuple(
+        item for item in _csv_env("IBKR_NEWS_SYMBOL_PROVIDERS", "BRFUPDN,DJ-N") if item
+    )
+    ibkr_macro_providers: Tuple[str, ...] = tuple(
+        item for item in _csv_env("IBKR_NEWS_MACRO_PROVIDERS", "BRFG,DJ-RTG") if item
+    )
+    ibkr_headline_limit: int = int(os.getenv("IBKR_NEWS_HEADLINE_LIMIT", "10"))
+    ibkr_lookback_hours: int = int(os.getenv("IBKR_NEWS_LOOKBACK_HOURS", "24"))
     high_risk_keywords: Tuple[str, ...] = (
         "earnings",
         "lawsuit",

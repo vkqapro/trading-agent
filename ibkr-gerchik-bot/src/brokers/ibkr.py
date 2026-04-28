@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import time
 from dataclasses import dataclass
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from src.config import LOGGER, SETTINGS
@@ -184,6 +185,73 @@ class IBKRClient:
             formatDate=1,
         )
         return util.df(bars)
+
+    def get_news_providers(self) -> List[Dict[str, str]]:
+        self.ensure_connection()
+        providers = self.ib.reqNewsProviders()
+        return [
+            {
+                "code": getattr(provider, "code", ""),
+                "name": getattr(provider, "name", ""),
+            }
+            for provider in providers
+        ]
+
+    def get_historical_news(
+        self,
+        symbol: str,
+        provider_codes: List[str],
+        total_results: int = 10,
+        lookback_hours: int = 24,
+    ) -> List[Dict[str, str]]:
+        self.ensure_connection()
+        if not provider_codes:
+            return []
+
+        try:
+            contract = self.create_stock_contract(symbol)
+        except Exception:
+            LOGGER.exception("Unable to qualify stock contract for IBKR news symbol=%s", symbol)
+            return []
+
+        con_id = int(getattr(contract, "conId", 0) or 0)
+        if con_id <= 0:
+            LOGGER.warning("Missing conId for IBKR news symbol=%s", symbol)
+            return []
+
+        provider_string = "+".join(provider_codes)
+        end_time = datetime.utcnow()
+        start_time = end_time - timedelta(hours=lookback_hours)
+        try:
+            headlines = self.ib.reqHistoricalNews(
+                con_id,
+                provider_string,
+                start_time.strftime("%Y-%m-%d %H:%M:%S"),
+                end_time.strftime("%Y-%m-%d %H:%M:%S"),
+                total_results,
+            )
+        except Exception:
+            LOGGER.exception(
+                "IBKR historical news request failed for symbol=%s providers=%s",
+                symbol,
+                provider_string,
+            )
+            return []
+
+        normalized: List[Dict[str, str]] = []
+        for item in headlines or []:
+            normalized.append(
+                {
+                    "headline": str(getattr(item, "headline", "")),
+                    "published_at": str(getattr(item, "time", "")),
+                    "source": str(getattr(item, "providerCode", "")),
+                    "provider_code": str(getattr(item, "providerCode", "")),
+                    "article_id": str(getattr(item, "articleId", "")),
+                    "url": "",
+                }
+            )
+        return normalized
+
 
     def place_market_order(self, symbol: str, action: str, quantity: int) -> OrderResult:
         self.ensure_connection()

@@ -28,11 +28,21 @@ class NewsRiskFilter:
         news_items = self.news_service.fetch_news_by_symbol(symbol)
         headlines = [str(item.get("headline", "")) for item in news_items]
         matches = _matching_headlines(headlines, SETTINGS.news.high_risk_keywords)
+        provider_hits = sorted(
+            {
+                str(item.get("provider_code") or item.get("source") or "")
+                for item in news_items
+                if item.get("provider_code") or item.get("source")
+            }
+        )
+        source_types = sorted({str(item.get("source_type", "external")) for item in news_items})
         return {
             "symbol": symbol,
             "blocked": bool(matches),
             "headlines": headlines,
             "matched_headlines": matches,
+            "provider_hits": provider_hits,
+            "source_types": source_types,
         }
 
     def has_high_risk_news(self, symbol: str) -> bool:
@@ -43,11 +53,21 @@ class NewsRiskFilter:
         headlines = [str(item.get("headline", "")) for item in macro_items]
         matches = _matching_headlines(headlines, SETTINGS.news.macro_risk_keywords)
         critical_matches = _matching_headlines(headlines, SETTINGS.news.critical_macro_keywords)
+        provider_hits = sorted(
+            {
+                str(item.get("provider_code") or item.get("source") or "")
+                for item in macro_items
+                if item.get("provider_code") or item.get("source")
+            }
+        )
+        source_types = sorted({str(item.get("source_type", "external")) for item in macro_items})
         return {
             "blocked": bool(critical_matches) or len(matches) >= SETTINGS.news.macro_min_match_count,
             "headlines": headlines,
             "matched_headlines": matches,
             "critical_matches": critical_matches,
+            "provider_hits": provider_hits,
+            "source_types": source_types,
         }
 
     def is_macro_risk(self) -> bool:

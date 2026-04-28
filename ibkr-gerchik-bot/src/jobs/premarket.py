@@ -53,6 +53,8 @@ def run_premarket(
             "technical_atr": technical_atr,
             "news_blocked": symbol_news["blocked"],
             "matched_headlines": symbol_news["matched_headlines"],
+            "news_provider_hits": symbol_news.get("provider_hits", []),
+            "news_source_types": symbol_news.get("source_types", []),
             "earnings_event": earnings_by_symbol.get(symbol, {}),
             "levels": [level.to_dict() for level in strong_levels],
         }
@@ -80,6 +82,8 @@ def run_premarket(
             "account_snapshot": account_snapshot,
             "research_symbols": list(symbols),
             "macro_risk": macro_risk["blocked"],
+            "macro_news_sources": macro_risk.get("provider_hits", []),
+            "macro_news_source_types": macro_risk.get("source_types", []),
             "actionable_ideas": ideas or "none",
             "trade_decision": "HOLD" if macro_risk["blocked"] else "READY_FOR_OPEN_VALIDATION",
         },
@@ -92,7 +96,12 @@ def run_premarket(
     append_workflow_snapshot(
         SETTINGS.paths.research_log,
         "Premarket",
-        {"watchlist": watchlist, "macro_risk": macro_risk, "ideas": ideas, "research_symbols": list(symbols)},
+        {
+            "watchlist": watchlist,
+            "macro_risk": macro_risk,
+            "ideas": ideas,
+            "research_symbols": list(symbols),
+        },
     )
     return {
         "watchlist": watchlist,

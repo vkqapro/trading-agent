@@ -100,8 +100,6 @@ def run_job(job_name: str, dry_run_override: Optional[bool] = None) -> Dict[str,
     state_path = SETTINGS.paths.state_file
     state = _hydrate_from_logs(_load_state(state_path))
     alerter = SlackAlerter()
-    news_service = NewsService()
-    news_filter = NewsRiskFilter(news_service)
     dry_run = SETTINGS.dry_run_mode if dry_run_override is None else dry_run_override
 
     if job_name == "weekly":
@@ -111,6 +109,8 @@ def run_job(job_name: str, dry_run_override: Optional[bool] = None) -> Dict[str,
     broker = IBKRClient()
     try:
         broker.connect()
+        news_service = NewsService(broker=broker)
+        news_filter = NewsRiskFilter(news_service)
         market_data = MarketDataService(broker)
         order_manager = OrderManager(broker, market_data, alerter, news_filter, dry_run=dry_run)
         account_summary = broker.get_account_summary()
