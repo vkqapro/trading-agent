@@ -51,6 +51,49 @@ def _build_research_symbols(positions: List[Dict[str, object]]) -> List[str]:
     return merged
 
 
+def _sync_tracked_positions_with_broker(
+    tracked_positions: List[Dict[str, object]],
+    broker_positions: List[Dict[str, object]],
+) -> List[Dict[str, object]]:
+    existing_by_symbol: Dict[str, Dict[str, object]] = {}
+    for position in tracked_positions:
+        symbol = str(position.get("symbol", "")).strip().upper()
+        if symbol:
+            existing_by_symbol[symbol] = dict(position)
+
+    synced: List[Dict[str, object]] = []
+    seen: set[str] = set()
+    for broker_position in broker_positions:
+        sec_type = str(broker_position.get("sec_type", "")).strip().upper()
+        if sec_type != "STK":
+            continue
+
+        symbol = str(broker_position.get("symbol", "")).strip().upper()
+        if not symbol or symbol in seen:
+            continue
+        seen.add(symbol)
+
+        quantity = abs(int(float(broker_position.get("position", 0.0) or 0.0)))
+        avg_cost = float(broker_position.get("avg_cost", 0.0) or 0.0)
+        direction = "long" if float(broker_position.get("position", 0.0) or 0.0) >= 0 else "short"
+
+        base_position = existing_by_symbol.get(symbol, {})
+        merged_position = dict(base_position)
+        merged_position.update(
+            {
+                "symbol": symbol,
+                "quantity": quantity,
+                "entry": float(base_position.get("entry", avg_cost) or avg_cost),
+                "avg_cost": avg_cost,
+                "direction": str(base_position.get("direction", direction) or direction),
+                "sec_type": sec_type,
+            }
+        )
+        synced.append(merged_position)
+
+    return synced
+
+
 def _account_equity_from_summary(summary: List[Dict[str, object]]) -> float:
     for item in summary:
         if item.get("tag") == "NetLiquidation":
@@ -118,10 +161,15 @@ def run_job(job_name: str, dry_run_override: Optional[bool] = None) -> Dict[str,
         cash_available = _cash_from_summary(account_summary)
         positions = broker.get_positions()
         open_orders = broker.get_open_orders()
+        state["tracked_positions"] = _sync_tracked_positions_with_broker(
+            state.get("tracked_positions", []),
+            positions,
+        )
         research_symbols = _build_research_symbols(positions)
         risk_manager = RiskManager(account_equity)
         repo_root = SETTINGS.paths.trade_log.parents[1]
         account_snapshot = {"account": account_summary, "positions": positions, "open_orders": open_orders}
+        _save_state(state_path, state)
 
         internal_positions = state.get("tracked_positions", [])
         kill_switch, reasons = should_trigger_kill_switch(
