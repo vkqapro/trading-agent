@@ -195,7 +195,10 @@ def main() -> int:
         return 0
     except Exception as exc:  # pragma: no cover - top-level safety net.
         LOGGER.exception("Fatal error while running job '%s'.", args.job)
-        SlackAlerter().send_error(str(exc))
+        try:
+            SlackAlerter().send_error(str(exc))
+        except Exception:
+            LOGGER.exception("Slack error notification failed.")
         return 1
 
 

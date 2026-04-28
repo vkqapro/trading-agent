@@ -32,7 +32,7 @@ class SlackAlerter:
             response = requests.post(self.webhook_url, json={"text": message}, timeout=10)
             response.raise_for_status()
             return True
-        except requests.RequestException:
+        except Exception:
             LOGGER.exception("Failed to send Slack alert.")
             return False
 
@@ -49,7 +49,9 @@ class SlackAlerter:
         return self.send(f"Error: {message}")
 
     def send_daily_summary(self, summary: Dict[str, object]) -> bool:
+        positions = summary.get("positions")
+        open_position_count = len(positions) if isinstance(positions, list) else 0
         return self.send(
-            f"Daily summary: pnl={summary.get('daily_pnl')} open_positions={summary.get('open_positions')} "
+            f"Daily summary: pnl={summary.get('daily_pnl')} open_positions={open_position_count} "
             f"blocked={summary.get('blocked')} reasons={summary.get('reasons')}"
         )

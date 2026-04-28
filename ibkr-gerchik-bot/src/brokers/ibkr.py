@@ -97,7 +97,17 @@ class IBKRClient:
 
     def get_account_summary(self) -> List[Dict[str, Any]]:
         self.ensure_connection()
-        return [item.dict() for item in self.ib.accountSummary()]
+        summary: List[Dict[str, Any]] = []
+        for item in self.ib.accountSummary():
+            summary.append(
+                {
+                    "account": getattr(item, "account", ""),
+                    "tag": getattr(item, "tag", ""),
+                    "value": getattr(item, "value", ""),
+                    "currency": getattr(item, "currency", ""),
+                }
+            )
+        return summary
 
     def get_positions(self) -> List[Dict[str, Any]]:
         self.ensure_connection()
