@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Dict
 
 import requests
@@ -9,8 +10,10 @@ import requests
 from src.config import LOGGER, SETTINGS
 
 try:
+    from slack_sdk import WebClient
     from slack_sdk.webhook import WebhookClient
 except ImportError:  # pragma: no cover - optional dependency path.
+    WebClient = None  # type: ignore[assignment]
     WebhookClient = None  # type: ignore[assignment]
 
 
@@ -20,6 +23,7 @@ class SlackAlerter:
     def __init__(self, webhook_url: str | None = None) -> None:
         self.webhook_url = webhook_url or SETTINGS.slack_webhook
         self.client = WebhookClient(self.webhook_url) if self.webhook_url and WebhookClient else None
+        self.bot_client = WebClient(token=SETTINGS.slack_bot_token) if SETTINGS.slack_bot_token and WebClient else None
 
     def send(self, message: str) -> bool:
         if not self.webhook_url:
@@ -105,6 +109,24 @@ class SlackAlerter:
                 lines.append(f"Risk: {matched[0]}")
 
         return self.send("\n".join(lines))
+
+    def upload_file(self, file_path: Path, title: str, initial_comment: str = "") -> bool:
+        if self.bot_client is None or not SETTINGS.slack_channel:
+            LOGGER.info("Slack bot token/channel not configured. File upload skipped: %s", file_path)
+            return False
+        try:
+            with file_path.open("rb") as handle:
+                response = self.bot_client.files_upload_v2(
+                    channel=SETTINGS.slack_channel,
+                    file=handle,
+                    filename=file_path.name,
+                    title=title,
+                    initial_comment=initial_comment,
+                )
+            return bool(response.get("ok", False))
+        except Exception:
+            LOGGER.exception("Failed to upload Slack file: %s", file_path)
+            return False
 
     def send_daily_summary(self, summary: Dict[str, object]) -> bool:
         positions = summary.get("positions")

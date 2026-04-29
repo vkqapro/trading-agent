@@ -124,6 +124,7 @@ class PathsConfig:
     weekly_log: Path = MEMORY_DIR / "WEEKLY_LOG.md"
     weekly_review_log: Path = MEMORY_DIR / "WEEKLY_REVIEW.md"
     strategy_doc: Path = MEMORY_DIR / "TRADING_STRATEGY.md"
+    reports_dir: Path = MEMORY_DIR / "reports"
     runtime_dir: Path = LOG_DIR
     state_file: Path = LOG_DIR / "state.json"
 
@@ -144,6 +145,9 @@ class Settings:
     news: NewsConfig = field(default_factory=NewsConfig)
     paths: PathsConfig = field(default_factory=PathsConfig)
     slack_webhook: str = os.getenv("SLACK_WEBHOOK", "")
+    slack_bot_token: str = os.getenv("SLACK_BOT_TOKEN", "")
+    slack_channel: str = os.getenv("SLACK_CHANNEL", "")
+    premarket_levels_export_min_strength: float = float(os.getenv("PREMARKET_LEVELS_EXPORT_MIN_STRENGTH", "7.0"))
 
 
 SETTINGS = Settings()
@@ -152,6 +156,7 @@ SETTINGS = Settings()
 def ensure_directories() -> None:
     """Create runtime and memory directories expected by the application."""
     SETTINGS.paths.runtime_dir.mkdir(parents=True, exist_ok=True)
+    SETTINGS.paths.reports_dir.mkdir(parents=True, exist_ok=True)
     MEMORY_DIR.mkdir(parents=True, exist_ok=True)
 
 

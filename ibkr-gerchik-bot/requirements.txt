@@ -4,3 +4,4 @@ numpy
 requests
 python-dotenv
 slack_sdk
+openpyxl

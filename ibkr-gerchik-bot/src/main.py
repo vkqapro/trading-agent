@@ -196,6 +196,15 @@ def run_job(job_name: str, dry_run_override: Optional[bool] = None) -> Dict[str,
             state["watchlist"] = watchlist
             _save_state(state_path, state)
             alerter.send_premarket_summary(premarket_summary)
+            report_path = premarket_summary.get("report_path")
+            if isinstance(report_path, str) and report_path:
+                uploaded = alerter.upload_file(
+                    Path(report_path),
+                    title="Premarket Strong Levels",
+                    initial_comment="Daily premarket levels report (strength_score > 7).",
+                )
+                if not uploaded:
+                    alerter.send(f"Premarket levels report generated: {Path(report_path).name}")
             maybe_commit_and_push(
                 repo_root,
                 [SETTINGS.paths.research_log, SETTINGS.paths.state_file],

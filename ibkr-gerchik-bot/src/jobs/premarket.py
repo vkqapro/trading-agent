@@ -9,6 +9,7 @@ from src.data.market_data import MarketDataService
 from src.data.news import NewsService
 from src.data.news_filter import NewsRiskFilter
 from src.memory_context import load_workflow_context
+from src.reports.levels_export import export_premarket_levels_report
 from src.strategy.atr import calculate_daily_atr, calculate_technical_atr
 from src.strategy.level_strength import filter_strong_levels
 from src.strategy.levels import Level, detect_levels
@@ -103,8 +104,10 @@ def run_premarket(
             "research_symbols": list(symbols),
         },
     )
+    report_path = export_premarket_levels_report(watchlist)
     return {
         "watchlist": watchlist,
         "macro_risk": macro_risk,
         "ideas": ideas,
+        "report_path": str(report_path),
     }
