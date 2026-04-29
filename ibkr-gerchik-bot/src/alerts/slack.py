@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Dict
+from typing import Dict, List
 
 import requests
 
@@ -40,17 +40,43 @@ class SlackAlerter:
             LOGGER.exception("Failed to send Slack alert.")
             return False
 
+    def send_channel_message(self, message: str) -> bool:
+        if self.bot_client is not None and SETTINGS.slack_channel:
+            try:
+                response = self.bot_client.chat_postMessage(channel=SETTINGS.slack_channel, text=message)
+                return bool(response.get("ok", False))
+            except Exception:
+                LOGGER.exception("Failed to send Slack channel message.")
+                return False
+        return self.send(message)
+
+    def fetch_channel_messages(self, *, limit: int = 20, oldest: str | None = None) -> List[Dict[str, object]]:
+        if self.bot_client is None or not SETTINGS.slack_channel:
+            return []
+        try:
+            response = self.bot_client.conversations_history(
+                channel=SETTINGS.slack_channel,
+                limit=limit,
+                oldest=oldest,
+                inclusive=False,
+            )
+            messages = response.get("messages", [])
+            return messages if isinstance(messages, list) else []
+        except Exception:
+            LOGGER.exception("Failed to fetch Slack channel history.")
+            return []
+
     def send_trade_executed(self, trade: Dict[str, object]) -> bool:
-        return self.send(
+        return self.send_channel_message(
             f"Trade executed: {trade['symbol']} {trade['signal']} qty={trade['quantity']} "
             f"entry={trade['entry']} stop={trade['stop_loss']} target={trade['target']}"
         )
 
     def send_stop_triggered(self, symbol: str, stop_price: float) -> bool:
-        return self.send(f"Stop triggered: {symbol} at {stop_price}")
+        return self.send_channel_message(f"Stop triggered: {symbol} at {stop_price}")
 
     def send_error(self, message: str) -> bool:
-        return self.send(f"Error: {message}")
+        return self.send_channel_message(f"Error: {message}")
 
     def send_intraday_heartbeat(self, summary: Dict[str, object]) -> bool:
         tracked_symbols = summary.get("tracked_symbols")
@@ -72,7 +98,7 @@ class SlackAlerter:
             lines.append(f"Universe: {preview}")
         if action_count and isinstance(actions, list):
             lines.append(f"Latest: {actions[0]}")
-        return self.send("\n".join(lines))
+        return self.send_channel_message("\n".join(lines))
 
     def send_premarket_summary(self, summary: Dict[str, object]) -> bool:
         macro_risk = summary.get("macro_risk", {})
@@ -108,7 +134,7 @@ class SlackAlerter:
             if isinstance(matched, list) and matched:
                 lines.append(f"Risk: {matched[0]}")
 
-        return self.send("\n".join(lines))
+        return self.send_channel_message("\n".join(lines))
 
     def upload_file(self, file_path: Path, title: str, initial_comment: str = "") -> bool:
         if self.bot_client is None or not SETTINGS.slack_channel:
@@ -131,7 +157,7 @@ class SlackAlerter:
     def send_daily_summary(self, summary: Dict[str, object]) -> bool:
         positions = summary.get("positions")
         open_position_count = len(positions) if isinstance(positions, list) else 0
-        return self.send(
+        return self.send_channel_message(
             f"Daily summary: pnl={summary.get('daily_pnl')} open_positions={open_position_count} "
             f"blocked={summary.get('blocked')} reasons={summary.get('reasons')}"
         )

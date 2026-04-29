@@ -26,6 +26,7 @@ from src.jobs.premarket import run_premarket
 from src.jobs.weekly import run_weekly
 from src.risk.kill_switch import should_trigger_kill_switch
 from src.risk.risk_manager import RiskManager
+from src.slack_commands import SlackCommandProcessor
 from src.workflow_log import read_latest_workflow_snapshot
 
 
@@ -144,6 +145,11 @@ def run_job(job_name: str, dry_run_override: Optional[bool] = None) -> Dict[str,
     state = _hydrate_from_logs(_load_state(state_path))
     alerter = SlackAlerter()
     dry_run = SETTINGS.dry_run_mode if dry_run_override is None else dry_run_override
+
+    if job_name == "slack":
+        result = SlackCommandProcessor(alerter).process(state, run_job)
+        _save_state(state_path, state)
+        return {"job": job_name, **result}
 
     if job_name == "weekly":
         metrics = run_weekly(state.get("weekly_results", []))
@@ -284,7 +290,7 @@ def run_job(job_name: str, dry_run_override: Optional[bool] = None) -> Dict[str,
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="IBKR Gerchik bot job runner.")
-    parser.add_argument("--job", required=True, choices=["premarket", "open", "intraday", "eod", "weekly"])
+    parser.add_argument("--job", required=True, choices=["premarket", "open", "intraday", "eod", "weekly", "slack"])
     parser.add_argument("--dry-run", action="store_true", help="Simulate trades without placing broker orders.")
     return parser.parse_args()
 

@@ -147,6 +147,9 @@ class Settings:
     slack_webhook: str = os.getenv("SLACK_WEBHOOK", "")
     slack_bot_token: str = os.getenv("SLACK_BOT_TOKEN", "")
     slack_channel: str = os.getenv("SLACK_CHANNEL", "")
+    slack_commands_enabled: bool = os.getenv("SLACK_COMMANDS_ENABLED", "true").lower() == "true"
+    slack_command_prefix: str = os.getenv("SLACK_COMMAND_PREFIX", "ibkr").strip().lower()
+    slack_allowed_user_ids: List[str] = field(default_factory=lambda: _csv_env("SLACK_ALLOWED_USER_IDS", ""))
     premarket_levels_export_min_strength: float = float(os.getenv("PREMARKET_LEVELS_EXPORT_MIN_STRENGTH", "7.0"))
 
 
