@@ -62,6 +62,8 @@ class StrategyConfig:
     atr_travel_limit_pct: float = float(os.getenv("ATR_TRAVEL_LIMIT_PCT", "0.8"))
     minimum_technical_atr_pct: float = float(os.getenv("MIN_TECHNICAL_ATR_PCT", "0.01"))
     level_strength_threshold: float = float(os.getenv("LEVEL_STRENGTH_THRESHOLD", "4.0"))
+    level_merge_tolerance_pct: float = float(os.getenv("LEVEL_MERGE_TOLERANCE_PCT", "0.0015"))
+    level_merge_min_dollars: float = float(os.getenv("LEVEL_MERGE_MIN_DOLLARS", "0.05"))
 
 
 @dataclass(frozen=True)

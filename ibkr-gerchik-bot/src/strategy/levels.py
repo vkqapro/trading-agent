@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+from datetime import date, datetime
 from typing import Dict, List, Optional
 
 import pandas as pd
@@ -20,8 +21,11 @@ class Level:
     false_breakouts: int
     strength_score: float
     created_by: str
-    nearest_upper_level: Optional[float]
-    nearest_lower_level: Optional[float]
+    nearest_upper_level: Optional[float] = None
+    nearest_lower_level: Optional[float] = None
+    first_touch_date: Optional[str] = None
+    zone_low: Optional[float] = None
+    zone_high: Optional[float] = None
 
     def to_dict(self) -> Dict[str, object]:
         return asdict(self)
@@ -40,6 +44,49 @@ def _touches_near_price(bars: pd.DataFrame, price: float, tolerance_pct: float) 
     return touches
 
 
+def _touch_indices_near_prices(bars: pd.DataFrame, prices: List[float], tolerance_pct: float) -> List[int]:
+    indices: List[int] = []
+    for idx, (_, row) in enumerate(bars.iterrows()):
+        high = float(row["high"])
+        low = float(row["low"])
+        for price in prices:
+            tolerance = max(price * tolerance_pct, 0.05)
+            if abs(high - price) <= tolerance or abs(low - price) <= tolerance:
+                indices.append(idx)
+                break
+    return indices
+
+
+def _first_touch_date_near_price(bars: pd.DataFrame, price: float, tolerance_pct: float) -> Optional[str]:
+    tolerance = max(price * tolerance_pct, 0.05)
+    for _, row in bars.iterrows():
+        if abs(float(row["high"]) - price) <= tolerance or abs(float(row["low"]) - price) <= tolerance:
+            raw_date = row.get("date")
+            return _format_touch_date(raw_date)
+    return None
+
+
+def _format_touch_date(raw_date: object) -> Optional[str]:
+    if raw_date is None:
+        return None
+    if isinstance(raw_date, pd.Timestamp):
+        return raw_date.strftime("%m/%d/%y")
+    if isinstance(raw_date, datetime):
+        return raw_date.strftime("%m/%d/%y")
+    if isinstance(raw_date, date):
+        return raw_date.strftime("%m/%d/%y")
+    if isinstance(raw_date, str):
+        cleaned = raw_date.strip()
+        if not cleaned:
+            return None
+        try:
+            parsed = pd.to_datetime(cleaned)
+        except (ValueError, TypeError):
+            return cleaned
+        return parsed.strftime("%m/%d/%y")
+    return str(raw_date)
+
+
 def _false_breakout_count(bars: pd.DataFrame, price: float, tolerance_pct: float) -> int:
     tolerance = max(price * tolerance_pct, 0.05)
     count = 0
@@ -50,6 +97,20 @@ def _false_breakout_count(bars: pd.DataFrame, price: float, tolerance_pct: float
         if low < price - tolerance < close or high > price + tolerance > close:
             count += 1
     return count
+
+
+def _false_breakout_indices_for_prices(bars: pd.DataFrame, prices: List[float], tolerance_pct: float) -> List[int]:
+    indices: List[int] = []
+    for idx, (_, row) in enumerate(bars.iterrows()):
+        low = float(row["low"])
+        high = float(row["high"])
+        close = float(row["close"])
+        for price in prices:
+            tolerance = max(price * tolerance_pct, 0.05)
+            if low < price - tolerance < close or high > price + tolerance > close:
+                indices.append(idx)
+                break
+    return indices
 
 
 def _make_level(symbol: str, price: float, level_type: str, timeframe: str, bars: pd.DataFrame, created_by: str) -> Level:
@@ -66,6 +127,9 @@ def _make_level(symbol: str, price: float, level_type: str, timeframe: str, bars
         created_by=created_by,
         nearest_upper_level=None,
         nearest_lower_level=None,
+        first_touch_date=_first_touch_date_near_price(bars, price, SETTINGS.strategy.level_tolerance_pct),
+        zone_low=_round_price(price),
+        zone_high=_round_price(price),
     )
 
 
@@ -122,8 +186,9 @@ def detect_levels(symbol: str, daily_bars: pd.DataFrame, intraday_bars: pd.DataF
             levels.append(_make_level(symbol, min(prior_close, current_open), "gap", "daily", daily_bars, "gap_lower"))
 
     deduped = dedupe_levels(levels)
-    enrich_nearest_levels(deduped)
-    return deduped
+    merged = merge_nearby_levels(deduped, daily_bars)
+    enrich_nearest_levels(merged)
+    return merged
 
 
 def dedupe_levels(levels: List[Level]) -> List[Level]:
@@ -133,6 +198,102 @@ def dedupe_levels(levels: List[Level]) -> List[Level]:
         if key not in unique or unique[key].touches < level.touches:
             unique[key] = level
     return list(unique.values())
+
+
+def merge_nearby_levels(levels: List[Level], daily_bars: pd.DataFrame) -> List[Level]:
+    by_symbol: Dict[str, List[Level]] = {}
+    for level in levels:
+        by_symbol.setdefault(level.symbol, []).append(level)
+
+    merged: List[Level] = []
+    for symbol_levels in by_symbol.values():
+        ordered = sorted(symbol_levels, key=lambda item: item.price)
+        clusters: List[List[Level]] = []
+
+        for level in ordered:
+            if clusters and _can_merge_into_cluster(clusters[-1], level):
+                clusters[-1].append(level)
+            else:
+                clusters.append([level])
+
+        for cluster in clusters:
+            merged.append(_merge_cluster(cluster, daily_bars))
+
+    return merged
+
+
+def _can_merge_into_cluster(cluster: List[Level], candidate: Level) -> bool:
+    if not cluster:
+        return False
+    if cluster[0].symbol != candidate.symbol or cluster[0].timeframe != candidate.timeframe:
+        return False
+    if not _compatible_level_types(cluster[0].type, candidate.type):
+        return False
+
+    cluster_low = min(level.price for level in cluster)
+    cluster_high = max(level.price for level in cluster)
+    representative = max(cluster, key=lambda level: (level.touches, level.false_breakouts, -abs(level.price - candidate.price)))
+    tolerance = max(
+        representative.price * SETTINGS.strategy.level_merge_tolerance_pct,
+        SETTINGS.strategy.level_merge_min_dollars,
+    )
+    return candidate.price <= cluster_high + tolerance and candidate.price >= cluster_low - tolerance
+
+
+def _compatible_level_types(left: str, right: str) -> bool:
+    if left == right:
+        return True
+    if "gap" in {left, right}:
+        return False
+    return True
+
+
+def _level_type_priority(level: Level) -> int:
+    priorities = {
+        "historical": 4,
+        "limit_player": 3,
+        "mirror": 3,
+        "abnormal_candle": 2,
+        "consolidation": 1,
+        "gap": 0,
+    }
+    return priorities.get(level.type, 0)
+
+
+def _merge_cluster(cluster: List[Level], daily_bars: pd.DataFrame) -> Level:
+    representative = max(
+        cluster,
+        key=lambda level: (
+            level.touches,
+            level.false_breakouts,
+            _level_type_priority(level),
+            level.price,
+        ),
+    )
+    prices = [level.price for level in cluster]
+    touch_indices = _touch_indices_near_prices(daily_bars, prices, SETTINGS.strategy.level_tolerance_pct)
+    false_breakout_indices = _false_breakout_indices_for_prices(daily_bars, prices, SETTINGS.strategy.level_tolerance_pct)
+    first_touch_date = None
+    if touch_indices:
+        raw_date = daily_bars.iloc[touch_indices[0]].get("date")
+        first_touch_date = _format_touch_date(raw_date)
+
+    merged_level = Level(
+        symbol=representative.symbol,
+        price=representative.price,
+        type=representative.type,
+        timeframe=representative.timeframe,
+        touches=len(touch_indices),
+        false_breakouts=len(false_breakout_indices),
+        strength_score=representative.strength_score,
+        created_by=representative.created_by,
+        nearest_upper_level=None,
+        nearest_lower_level=None,
+        first_touch_date=first_touch_date,
+        zone_low=_round_price(min(prices)),
+        zone_high=_round_price(max(prices)),
+    )
+    return merged_level
 
 
 def enrich_nearest_levels(levels: List[Level]) -> None:
