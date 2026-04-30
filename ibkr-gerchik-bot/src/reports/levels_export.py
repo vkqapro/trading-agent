@@ -30,13 +30,15 @@ def export_premarket_levels_report(watchlist: Dict[str, object]) -> Path:
             rows.append(
                 {
                     "Ticker": symbol,
-                    "Date": str(level.get("first_touch_date", "") or ""),
+                    "SourceDate": str(level.get("source_date", "") or ""),
+                    "FirstTouchDate": str(level.get("first_touch_date", "") or ""),
                     "Level": float(level.get("price", 0.0) or 0.0),
                     "ZoneLow": float(level.get("zone_low", level.get("price", 0.0)) or 0.0),
                     "ZoneHigh": float(level.get("zone_high", level.get("price", 0.0)) or 0.0),
                     "Touches": int(level.get("touches", 0) or 0),
                     "StrengthScore": round(strength, 2),
                     "LevelType": str(level.get("type", "")),
+                    "Families": ", ".join(level.get("families", []) or []),
                 }
             )
 
@@ -44,7 +46,7 @@ def export_premarket_levels_report(watchlist: Dict[str, object]) -> Path:
         frame = pd.DataFrame(rows).sort_values(["Ticker", "Level", "StrengthScore", "Touches"], ascending=[True, False, False, False])
     else:
         frame = pd.DataFrame(
-            columns=["Ticker", "Date", "Level", "ZoneLow", "ZoneHigh", "Touches", "StrengthScore", "LevelType"]
+            columns=["Ticker", "SourceDate", "FirstTouchDate", "Level", "ZoneLow", "ZoneHigh", "Touches", "StrengthScore", "LevelType", "Families"]
         )
 
     output_path = SETTINGS.paths.reports_dir / f"premarket_levels_{datetime.now().strftime('%Y%m%d')}.xlsx"

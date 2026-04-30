@@ -105495,3 +105495,1766 @@ Premarket scans, intraday observations, and daily analysis are appended here.
   }
 }
 ```
+
+## Premarket Research (2026-04-30T14:46:27)
+- **strategy_loaded**: True
+- **trade_log_context_loaded**: True
+- **research_log_context_loaded**: True
+- **account_snapshot**: {'account': [{'account': 'DU5454348', 'tag': 'AccountType', 'value': 'INDIVIDUAL', 'currency': ''}, {'account': 'DU5454348', 'tag': 'Cushion', 'value': '1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemaining', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+1', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+2', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+3', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+4', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'LookAheadNextChange', 'value': '0', 'currency': ''}, {'account': 'DU5454348', 'tag': 'AccruedCash', 'value': '224.46', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'AvailableFunds', 'value': '101935.45', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'BuyingPower', 'value': '407716.48', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'EquityWithLoanValue', 'value': '101935.45', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'ExcessLiquidity', 'value': '101935.45', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullAvailableFunds', 'value': '101935.45', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullExcessLiquidity', 'value': '101935.45', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'GrossPositionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'InitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadAvailableFunds', 'value': '101935.45', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadExcessLiquidity', 'value': '101935.45', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'MaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'NetLiquidation', 'value': '102159.91', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'PreviousDayEquityWithLoanValue', 'value': '101929.12', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTEquity', 'value': '102159.91', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTMargin', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'SMA', 'value': '102159.91', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'TotalCashValue', 'value': '101935.45', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CashBalance', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.16572', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Currency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'CashBalance', 'value': '100761.92', 'currency': 'USD'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '100761.92', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '224.46', 'currency': 'USD'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '100986.38', 'currency': 'USD'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CashBalance', 'value': '101935.4534', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '101935.4534', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '224.46', 'currency': 'BASE'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '102159.9134', 'currency': 'BASE'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'BASE'}], 'positions': [], 'open_orders': []}
+- **research_symbols**: ['BBBY', 'SEI', 'SANM', 'AAPL', 'MSFT', 'TSLA', 'AMZN']
+- **macro_risk**: False
+- **macro_news_sources**: ['DJ-RTG']
+- **macro_news_source_types**: ['ibkr']
+- **actionable_ideas**: [{'symbol': 'BBBY', 'catalyst': 'level interaction', 'entry': 5.0, 'stop': 4.95, 'target': 6.27, 'decision': 'WATCH'}, {'symbol': 'SEI', 'catalyst': '{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance', 'entry': 74.73, 'stop': 74.44, 'target': 77.12, 'decision': 'HOLD'}, {'symbol': 'SANM', 'catalyst': '{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD', 'entry': 218.49, 'stop': 217.67, 'target': 230.56, 'decision': 'HOLD'}]
+- **trade_decision**: READY_FOR_OPEN_VALIDATION
+
+## Workflow Premarket (2026-04-30T14:46:27)
+- **stage**: Premarket
+- **watchlist_symbols**: ['BBBY', 'SEI', 'SANM', 'AAPL', 'MSFT', 'TSLA', 'AMZN']
+```json
+{
+  "stage": "Premarket",
+  "payload": {
+    "watchlist": {
+      "BBBY": {
+        "daily_atr": 0.4667,
+        "technical_atr": 1.27,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "BBBY",
+          "headline": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+          "raw": {
+            "headline": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+            "published_at": "2026-04-30T18:40:39Z",
+            "source": "CNBC",
+            "url": "https://www.cnbc.com/2026/04/30/sp-500-heads-for-its-best-month-since-2020-plus-apple-earnings-on-deck.html",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199286655",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "18:40:39",
+              "dateTime": "2026-04-30T18:40:39Z",
+              "dateTimePub": "2026-04-30T18:38:12Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.cnbc.com/2026/04/30/sp-500-heads-for-its-best-month-since-2020-plus-apple-earnings-on-deck.html",
+              "title": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+              "body": "Every weekday, the CNBC Investing Club with Jim Cramer releases the Homestretch -- an actionable afternoon update, just in time for the last hour of trading on Wall Street. Stocks surged on the last day of April . The S & P 500 hit an all-time, intraday high and went above 7,200 for the first time ever. The Nasdaq also rallied and traded just under Monday's record high. Both indexes were on track for their best months since 2020. Ahead of the close, the S & P 500 is up more than 10% in April, while the Nasdaq is up over 15% for the month. Lower oil prices and lower bond yields certainly helped stocks on Thursday. Brent crude pulled back from Iran wartime highs of $126 per barrel. The 10-year Treasury yield dipped on slower-than-expected U.S. economic growth. The big four hyperscalers -- Alphabet, Amazon, Microsoft, and Meta -- all boosted their already hefty full-year capital expenditure guides, alongside their earnings on Wednesday evening. It's a rarity that they all delivered their quarters on the same night, which gave us an immediate picture of how much more they're all prepared to spend to keep pace in the artificial intelligence race. Normally, we're left piecing it together over several days. With all four outlooks in hand, Alphabet, Amazon, Microsoft, and Meta are committing to spend a total of at least $695 billion this year. That's an over 14% increase from the previous estimate of $608 billion. Here is how that $695 billion number breaks down for this year. (The following order is also how Jim Cramer ranked the earnings.) Alphabet: $180 billion to $190 billion, up from the previous estimate of $175 billion to $185 billion Amazon: unchanged at $200 billion Microsoft: roughly $190 billion (Microsoft did not give a total in its previous guide, which was estimated from analysts estimates on FactSet) Meta Platforms: $125 billion to $145 billion, increased from its prior range of $115 billion to $135 billion One thing is clear. All four companies are not letting up on their spending because nobody wants to be left behind in AI. However, the market is viewing capex guides differently between companies with clouds -- Alphabet, Amazon, and Microsoft -- and the odd man out with no cloud, Meta. Both Alphabet and Meta boosted spending and their stocks went in opposite directions. Alphabet shares surged nearly 10%, tracking for another record-high close. Meta stock, on the other hand, got crushed, falling almost 8% on the session. Tech giant Apple reports earnings after the bell. It will be the first earnings call since CEO Tim Cook said he would step down , and that John Ternus would take his place in September. Expect questions from analysts about the succession, along with what Apple's AI and hardware strategy might look like under the new chief executive. Ternus does have a tough act to follow, but he has more than two decades of experience bringing Apple's most popular products to market. We're not concerned. It's unclear if Ternus will actually join the call like Cook did in the years before he took over in 2011. The status of device sales in China, reception to the new MacBook Neo , and services revenue growth will each be a focus. Finally, with memory costs soaring, we want to know if Apple has enough supply. Do they plan to hike device prices in order to circumvent a hit to margins? Stay tuned. That's not all for earnings. Memory names SanDisk and Western Digital also releases results Thursday evening. We'll see if their earnings can support their blistering rallies. Both stocks have surged on tightening supply and a sharp rebound in AI-driven demand for high-performance storage. Other names on the evening docket are Amgen, Stryker, and Agnico Eagle Mines. On Friday morning, we'll hear from Club name Linde, as well as Exxon Mobil , Chevron , and Aon . We expect Linde to receive a boost from the global helium shortage sparked by the Iran war and want to hear more about its new customers. (See here for a full list of the stocks in Jim Cramer's Charitable Trust.) As a subscriber to the CNBC Investing Club with Jim Cramer, you will receive a trade alert before Jim makes a trade. Jim waits 45 minutes after sending a trade alert before buying or selling a stock in his charitable trust's portfolio. If Jim has talked about a stock on CNBC TV, he waits 72 hours after issuing the trade alert before executing the trade. THE ABOVE INVESTING CLUB INFORMATION IS SUBJECT TO OUR TERMS AND CONDITIONS AND PRIVACY POLICY , TOGETHER WITH OUR DISCLAIMER . NO FIDUCIARY OBLIGATION OR DUTY EXISTS, OR IS CREATED, BY VIRTUE OF YOUR RECEIPT OF ANY INFORMATION PROVIDED IN CONNECTION WITH THE INVESTING CLUB. NO SPECIFIC OUTCOME OR PROFIT IS GUARANTEED.",
+              "source": {
+                "uri": "cnbc.com",
+                "dataType": "news",
+                "title": "CNBC"
+              },
+              "authors": [
+                {
+                  "uri": "morgan_chittum@cnbc.com",
+                  "name": "Morgan Chittum",
+                  "type": "author",
+                  "isAgency": false
+                },
+                {
+                  "uri": "natasha_abellard@cnbc.com",
+                  "name": "Natasha Abellard",
+                  "type": "author",
+                  "isAgency": false
+                },
+                {
+                  "uri": "alexa_lomonaco@cnbc.com",
+                  "name": "Alexa LoMonaco",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://image.cnbcfm.com/api/v1/image/108294028-17766986262026-04-20t151759z_1367253900_rc21tka7fuz5_rtrmadp_0_usa-stocks.jpeg?v=1776892785&w=1920&h=1080",
+              "eventUri": null,
+              "sentiment": 0.08235294117647052,
+              "wgt": 515270439,
+              "relevance": 3
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "BBBY",
+            "price": 7.7,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.93,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 6.27,
+            "first_touch_date": "04/28/26",
+            "zone_low": 7.64,
+            "zone_high": 7.76,
+            "center": 7.7,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.93,
+            "atr_value": 0.4667
+          },
+          {
+            "symbol": "BBBY",
+            "price": 6.27,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.93,
+            "created_by": "swing_high",
+            "nearest_upper_level": 7.7,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/20/26",
+            "zone_low": 6.21,
+            "zone_high": 6.33,
+            "center": 6.27,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 6.93,
+            "atr_value": 0.4667
+          }
+        ]
+      },
+      "SEI": {
+        "daily_atr": 7.338,
+        "technical_atr": 0.29,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "SEI",
+          "headline": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+          "raw": {
+            "headline": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+            "published_at": "2026-04-30T18:40:39Z",
+            "source": "CNBC",
+            "url": "https://www.cnbc.com/2026/04/30/sp-500-heads-for-its-best-month-since-2020-plus-apple-earnings-on-deck.html",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199286655",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "18:40:39",
+              "dateTime": "2026-04-30T18:40:39Z",
+              "dateTimePub": "2026-04-30T18:38:12Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.cnbc.com/2026/04/30/sp-500-heads-for-its-best-month-since-2020-plus-apple-earnings-on-deck.html",
+              "title": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+              "body": "Every weekday, the CNBC Investing Club with Jim Cramer releases the Homestretch -- an actionable afternoon update, just in time for the last hour of trading on Wall Street. Stocks surged on the last day of April . The S & P 500 hit an all-time, intraday high and went above 7,200 for the first time ever. The Nasdaq also rallied and traded just under Monday's record high. Both indexes were on track for their best months since 2020. Ahead of the close, the S & P 500 is up more than 10% in April, while the Nasdaq is up over 15% for the month. Lower oil prices and lower bond yields certainly helped stocks on Thursday. Brent crude pulled back from Iran wartime highs of $126 per barrel. The 10-year Treasury yield dipped on slower-than-expected U.S. economic growth. The big four hyperscalers -- Alphabet, Amazon, Microsoft, and Meta -- all boosted their already hefty full-year capital expenditure guides, alongside their earnings on Wednesday evening. It's a rarity that they all delivered their quarters on the same night, which gave us an immediate picture of how much more they're all prepared to spend to keep pace in the artificial intelligence race. Normally, we're left piecing it together over several days. With all four outlooks in hand, Alphabet, Amazon, Microsoft, and Meta are committing to spend a total of at least $695 billion this year. That's an over 14% increase from the previous estimate of $608 billion. Here is how that $695 billion number breaks down for this year. (The following order is also how Jim Cramer ranked the earnings.) Alphabet: $180 billion to $190 billion, up from the previous estimate of $175 billion to $185 billion Amazon: unchanged at $200 billion Microsoft: roughly $190 billion (Microsoft did not give a total in its previous guide, which was estimated from analysts estimates on FactSet) Meta Platforms: $125 billion to $145 billion, increased from its prior range of $115 billion to $135 billion One thing is clear. All four companies are not letting up on their spending because nobody wants to be left behind in AI. However, the market is viewing capex guides differently between companies with clouds -- Alphabet, Amazon, and Microsoft -- and the odd man out with no cloud, Meta. Both Alphabet and Meta boosted spending and their stocks went in opposite directions. Alphabet shares surged nearly 10%, tracking for another record-high close. Meta stock, on the other hand, got crushed, falling almost 8% on the session. Tech giant Apple reports earnings after the bell. It will be the first earnings call since CEO Tim Cook said he would step down , and that John Ternus would take his place in September. Expect questions from analysts about the succession, along with what Apple's AI and hardware strategy might look like under the new chief executive. Ternus does have a tough act to follow, but he has more than two decades of experience bringing Apple's most popular products to market. We're not concerned. It's unclear if Ternus will actually join the call like Cook did in the years before he took over in 2011. The status of device sales in China, reception to the new MacBook Neo , and services revenue growth will each be a focus. Finally, with memory costs soaring, we want to know if Apple has enough supply. Do they plan to hike device prices in order to circumvent a hit to margins? Stay tuned. That's not all for earnings. Memory names SanDisk and Western Digital also releases results Thursday evening. We'll see if their earnings can support their blistering rallies. Both stocks have surged on tightening supply and a sharp rebound in AI-driven demand for high-performance storage. Other names on the evening docket are Amgen, Stryker, and Agnico Eagle Mines. On Friday morning, we'll hear from Club name Linde, as well as Exxon Mobil , Chevron , and Aon . We expect Linde to receive a boost from the global helium shortage sparked by the Iran war and want to hear more about its new customers. (See here for a full list of the stocks in Jim Cramer's Charitable Trust.) As a subscriber to the CNBC Investing Club with Jim Cramer, you will receive a trade alert before Jim makes a trade. Jim waits 45 minutes after sending a trade alert before buying or selling a stock in his charitable trust's portfolio. If Jim has talked about a stock on CNBC TV, he waits 72 hours after issuing the trade alert before executing the trade. THE ABOVE INVESTING CLUB INFORMATION IS SUBJECT TO OUR TERMS AND CONDITIONS AND PRIVACY POLICY , TOGETHER WITH OUR DISCLAIMER . NO FIDUCIARY OBLIGATION OR DUTY EXISTS, OR IS CREATED, BY VIRTUE OF YOUR RECEIPT OF ANY INFORMATION PROVIDED IN CONNECTION WITH THE INVESTING CLUB. NO SPECIFIC OUTCOME OR PROFIT IS GUARANTEED.",
+              "source": {
+                "uri": "cnbc.com",
+                "dataType": "news",
+                "title": "CNBC"
+              },
+              "authors": [
+                {
+                  "uri": "morgan_chittum@cnbc.com",
+                  "name": "Morgan Chittum",
+                  "type": "author",
+                  "isAgency": false
+                },
+                {
+                  "uri": "natasha_abellard@cnbc.com",
+                  "name": "Natasha Abellard",
+                  "type": "author",
+                  "isAgency": false
+                },
+                {
+                  "uri": "alexa_lomonaco@cnbc.com",
+                  "name": "Alexa LoMonaco",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://image.cnbcfm.com/api/v1/image/108294028-17766986262026-04-20t151759z_1367253900_rc21tka7fuz5_rtrmadp_0_usa-stocks.jpeg?v=1776892785&w=1920&h=1080",
+              "eventUri": null,
+              "sentiment": 0.08235294117647052,
+              "wgt": 515270439,
+              "relevance": 3
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "SEI",
+            "price": 74.44,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 2,
+            "strength_score": 13.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 77.12,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/24/26",
+            "zone_low": 73.56,
+            "zone_high": 75.32,
+            "center": 74.44,
+            "families": [
+              "gap"
+            ],
+            "strength": 13.0,
+            "atr_value": 7.338
+          },
+          {
+            "symbol": "SEI",
+            "price": 81.24,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.97,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 77.12,
+            "first_touch_date": "04/28/26",
+            "zone_low": 79.89,
+            "zone_high": 82.12,
+            "center": 81.12,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.97,
+            "atr_value": 7.338
+          },
+          {
+            "symbol": "SEI",
+            "price": 77.12,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 81.12,
+            "nearest_lower_level": 74.44,
+            "first_touch_date": "04/28/26",
+            "zone_low": 76.24,
+            "zone_high": 78.0,
+            "center": 77.12,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.0,
+            "atr_value": 7.338
+          }
+        ]
+      },
+      "SANM": {
+        "daily_atr": 16.778,
+        "technical_atr": 0.82,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD",
+          "{A:800015:L:en}AMD Supplier Up 40% This Month Soars On Earnings Beat -- IBD"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "SANM",
+          "headline": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+          "raw": {
+            "headline": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+            "published_at": "2026-04-30T18:40:39Z",
+            "source": "CNBC",
+            "url": "https://www.cnbc.com/2026/04/30/sp-500-heads-for-its-best-month-since-2020-plus-apple-earnings-on-deck.html",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199286655",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "18:40:39",
+              "dateTime": "2026-04-30T18:40:39Z",
+              "dateTimePub": "2026-04-30T18:38:12Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.cnbc.com/2026/04/30/sp-500-heads-for-its-best-month-since-2020-plus-apple-earnings-on-deck.html",
+              "title": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+              "body": "Every weekday, the CNBC Investing Club with Jim Cramer releases the Homestretch -- an actionable afternoon update, just in time for the last hour of trading on Wall Street. Stocks surged on the last day of April . The S & P 500 hit an all-time, intraday high and went above 7,200 for the first time ever. The Nasdaq also rallied and traded just under Monday's record high. Both indexes were on track for their best months since 2020. Ahead of the close, the S & P 500 is up more than 10% in April, while the Nasdaq is up over 15% for the month. Lower oil prices and lower bond yields certainly helped stocks on Thursday. Brent crude pulled back from Iran wartime highs of $126 per barrel. The 10-year Treasury yield dipped on slower-than-expected U.S. economic growth. The big four hyperscalers -- Alphabet, Amazon, Microsoft, and Meta -- all boosted their already hefty full-year capital expenditure guides, alongside their earnings on Wednesday evening. It's a rarity that they all delivered their quarters on the same night, which gave us an immediate picture of how much more they're all prepared to spend to keep pace in the artificial intelligence race. Normally, we're left piecing it together over several days. With all four outlooks in hand, Alphabet, Amazon, Microsoft, and Meta are committing to spend a total of at least $695 billion this year. That's an over 14% increase from the previous estimate of $608 billion. Here is how that $695 billion number breaks down for this year. (The following order is also how Jim Cramer ranked the earnings.) Alphabet: $180 billion to $190 billion, up from the previous estimate of $175 billion to $185 billion Amazon: unchanged at $200 billion Microsoft: roughly $190 billion (Microsoft did not give a total in its previous guide, which was estimated from analysts estimates on FactSet) Meta Platforms: $125 billion to $145 billion, increased from its prior range of $115 billion to $135 billion One thing is clear. All four companies are not letting up on their spending because nobody wants to be left behind in AI. However, the market is viewing capex guides differently between companies with clouds -- Alphabet, Amazon, and Microsoft -- and the odd man out with no cloud, Meta. Both Alphabet and Meta boosted spending and their stocks went in opposite directions. Alphabet shares surged nearly 10%, tracking for another record-high close. Meta stock, on the other hand, got crushed, falling almost 8% on the session. Tech giant Apple reports earnings after the bell. It will be the first earnings call since CEO Tim Cook said he would step down , and that John Ternus would take his place in September. Expect questions from analysts about the succession, along with what Apple's AI and hardware strategy might look like under the new chief executive. Ternus does have a tough act to follow, but he has more than two decades of experience bringing Apple's most popular products to market. We're not concerned. It's unclear if Ternus will actually join the call like Cook did in the years before he took over in 2011. The status of device sales in China, reception to the new MacBook Neo , and services revenue growth will each be a focus. Finally, with memory costs soaring, we want to know if Apple has enough supply. Do they plan to hike device prices in order to circumvent a hit to margins? Stay tuned. That's not all for earnings. Memory names SanDisk and Western Digital also releases results Thursday evening. We'll see if their earnings can support their blistering rallies. Both stocks have surged on tightening supply and a sharp rebound in AI-driven demand for high-performance storage. Other names on the evening docket are Amgen, Stryker, and Agnico Eagle Mines. On Friday morning, we'll hear from Club name Linde, as well as Exxon Mobil , Chevron , and Aon . We expect Linde to receive a boost from the global helium shortage sparked by the Iran war and want to hear more about its new customers. (See here for a full list of the stocks in Jim Cramer's Charitable Trust.) As a subscriber to the CNBC Investing Club with Jim Cramer, you will receive a trade alert before Jim makes a trade. Jim waits 45 minutes after sending a trade alert before buying or selling a stock in his charitable trust's portfolio. If Jim has talked about a stock on CNBC TV, he waits 72 hours after issuing the trade alert before executing the trade. THE ABOVE INVESTING CLUB INFORMATION IS SUBJECT TO OUR TERMS AND CONDITIONS AND PRIVACY POLICY , TOGETHER WITH OUR DISCLAIMER . NO FIDUCIARY OBLIGATION OR DUTY EXISTS, OR IS CREATED, BY VIRTUE OF YOUR RECEIPT OF ANY INFORMATION PROVIDED IN CONNECTION WITH THE INVESTING CLUB. NO SPECIFIC OUTCOME OR PROFIT IS GUARANTEED.",
+              "source": {
+                "uri": "cnbc.com",
+                "dataType": "news",
+                "title": "CNBC"
+              },
+              "authors": [
+                {
+                  "uri": "morgan_chittum@cnbc.com",
+                  "name": "Morgan Chittum",
+                  "type": "author",
+                  "isAgency": false
+                },
+                {
+                  "uri": "natasha_abellard@cnbc.com",
+                  "name": "Natasha Abellard",
+                  "type": "author",
+                  "isAgency": false
+                },
+                {
+                  "uri": "alexa_lomonaco@cnbc.com",
+                  "name": "Alexa LoMonaco",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://image.cnbcfm.com/api/v1/image/108294028-17766986262026-04-20t151759z_1367253900_rc21tka7fuz5_rtrmadp_0_usa-stocks.jpeg?v=1776892785&w=1920&h=1080",
+              "eventUri": null,
+              "sentiment": 0.08235294117647052,
+              "wgt": 515270439,
+              "relevance": 3
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "SANM",
+            "price": 172.35,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 19,
+            "false_breakouts": 5,
+            "strength_score": 33.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 206.82,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/16/26",
+            "zone_low": 166.96,
+            "zone_high": 174.36,
+            "center": 171.99,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 33.83,
+            "atr_value": 16.778
+          },
+          {
+            "symbol": "SANM",
+            "price": 217.67,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 3,
+            "strength_score": 19.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 230.56,
+            "nearest_lower_level": 206.82,
+            "first_touch_date": "04/28/26",
+            "zone_low": 211.78,
+            "zone_high": 219.68,
+            "center": 215.64,
+            "families": [
+              "gap"
+            ],
+            "strength": 19.0,
+            "atr_value": 16.778
+          },
+          {
+            "symbol": "SANM",
+            "price": 208.67,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 12.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 215.64,
+            "nearest_lower_level": 171.99,
+            "first_touch_date": "04/28/26",
+            "zone_low": 202.97,
+            "zone_high": 210.68,
+            "center": 206.82,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.0,
+            "atr_value": 16.778
+          },
+          {
+            "symbol": "SANM",
+            "price": 230.56,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.93,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 215.64,
+            "first_touch_date": "04/28/26",
+            "zone_low": 228.55,
+            "zone_high": 232.57,
+            "center": 230.56,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.93,
+            "atr_value": 16.778
+          }
+        ]
+      },
+      "AAPL": {
+        "daily_atr": 4.26,
+        "technical_atr": 0.4,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Fed News and Big Tech Earnings Collide This Week. The Mag 7 Matter Most. -- Barrons.com"
+        ],
+        "news_provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "AAPL",
+          "headline": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+          "raw": {
+            "headline": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+            "published_at": "2026-04-30T18:40:39Z",
+            "source": "CNBC",
+            "url": "https://www.cnbc.com/2026/04/30/sp-500-heads-for-its-best-month-since-2020-plus-apple-earnings-on-deck.html",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199286655",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "18:40:39",
+              "dateTime": "2026-04-30T18:40:39Z",
+              "dateTimePub": "2026-04-30T18:38:12Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.cnbc.com/2026/04/30/sp-500-heads-for-its-best-month-since-2020-plus-apple-earnings-on-deck.html",
+              "title": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+              "body": "Every weekday, the CNBC Investing Club with Jim Cramer releases the Homestretch -- an actionable afternoon update, just in time for the last hour of trading on Wall Street. Stocks surged on the last day of April . The S & P 500 hit an all-time, intraday high and went above 7,200 for the first time ever. The Nasdaq also rallied and traded just under Monday's record high. Both indexes were on track for their best months since 2020. Ahead of the close, the S & P 500 is up more than 10% in April, while the Nasdaq is up over 15% for the month. Lower oil prices and lower bond yields certainly helped stocks on Thursday. Brent crude pulled back from Iran wartime highs of $126 per barrel. The 10-year Treasury yield dipped on slower-than-expected U.S. economic growth. The big four hyperscalers -- Alphabet, Amazon, Microsoft, and Meta -- all boosted their already hefty full-year capital expenditure guides, alongside their earnings on Wednesday evening. It's a rarity that they all delivered their quarters on the same night, which gave us an immediate picture of how much more they're all prepared to spend to keep pace in the artificial intelligence race. Normally, we're left piecing it together over several days. With all four outlooks in hand, Alphabet, Amazon, Microsoft, and Meta are committing to spend a total of at least $695 billion this year. That's an over 14% increase from the previous estimate of $608 billion. Here is how that $695 billion number breaks down for this year. (The following order is also how Jim Cramer ranked the earnings.) Alphabet: $180 billion to $190 billion, up from the previous estimate of $175 billion to $185 billion Amazon: unchanged at $200 billion Microsoft: roughly $190 billion (Microsoft did not give a total in its previous guide, which was estimated from analysts estimates on FactSet) Meta Platforms: $125 billion to $145 billion, increased from its prior range of $115 billion to $135 billion One thing is clear. All four companies are not letting up on their spending because nobody wants to be left behind in AI. However, the market is viewing capex guides differently between companies with clouds -- Alphabet, Amazon, and Microsoft -- and the odd man out with no cloud, Meta. Both Alphabet and Meta boosted spending and their stocks went in opposite directions. Alphabet shares surged nearly 10%, tracking for another record-high close. Meta stock, on the other hand, got crushed, falling almost 8% on the session. Tech giant Apple reports earnings after the bell. It will be the first earnings call since CEO Tim Cook said he would step down , and that John Ternus would take his place in September. Expect questions from analysts about the succession, along with what Apple's AI and hardware strategy might look like under the new chief executive. Ternus does have a tough act to follow, but he has more than two decades of experience bringing Apple's most popular products to market. We're not concerned. It's unclear if Ternus will actually join the call like Cook did in the years before he took over in 2011. The status of device sales in China, reception to the new MacBook Neo , and services revenue growth will each be a focus. Finally, with memory costs soaring, we want to know if Apple has enough supply. Do they plan to hike device prices in order to circumvent a hit to margins? Stay tuned. That's not all for earnings. Memory names SanDisk and Western Digital also releases results Thursday evening. We'll see if their earnings can support their blistering rallies. Both stocks have surged on tightening supply and a sharp rebound in AI-driven demand for high-performance storage. Other names on the evening docket are Amgen, Stryker, and Agnico Eagle Mines. On Friday morning, we'll hear from Club name Linde, as well as Exxon Mobil , Chevron , and Aon . We expect Linde to receive a boost from the global helium shortage sparked by the Iran war and want to hear more about its new customers. (See here for a full list of the stocks in Jim Cramer's Charitable Trust.) As a subscriber to the CNBC Investing Club with Jim Cramer, you will receive a trade alert before Jim makes a trade. Jim waits 45 minutes after sending a trade alert before buying or selling a stock in his charitable trust's portfolio. If Jim has talked about a stock on CNBC TV, he waits 72 hours after issuing the trade alert before executing the trade. THE ABOVE INVESTING CLUB INFORMATION IS SUBJECT TO OUR TERMS AND CONDITIONS AND PRIVACY POLICY , TOGETHER WITH OUR DISCLAIMER . NO FIDUCIARY OBLIGATION OR DUTY EXISTS, OR IS CREATED, BY VIRTUE OF YOUR RECEIPT OF ANY INFORMATION PROVIDED IN CONNECTION WITH THE INVESTING CLUB. NO SPECIFIC OUTCOME OR PROFIT IS GUARANTEED.",
+              "source": {
+                "uri": "cnbc.com",
+                "dataType": "news",
+                "title": "CNBC"
+              },
+              "authors": [
+                {
+                  "uri": "morgan_chittum@cnbc.com",
+                  "name": "Morgan Chittum",
+                  "type": "author",
+                  "isAgency": false
+                },
+                {
+                  "uri": "natasha_abellard@cnbc.com",
+                  "name": "Natasha Abellard",
+                  "type": "author",
+                  "isAgency": false
+                },
+                {
+                  "uri": "alexa_lomonaco@cnbc.com",
+                  "name": "Alexa LoMonaco",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://image.cnbcfm.com/api/v1/image/108294028-17766986262026-04-20t151759z_1367253900_rc21tka7fuz5_rtrmadp_0_usa-stocks.jpeg?v=1776892785&w=1920&h=1080",
+              "eventUri": null,
+              "sentiment": 0.08235294117647052,
+              "wgt": 515270439,
+              "relevance": 3
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "AAPL",
+            "price": 253.98,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 45,
+            "false_breakouts": 7,
+            "strength_score": 62.42,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 258.48,
+            "nearest_lower_level": 250.65,
+            "first_touch_date": "03/06/26",
+            "zone_low": 252.99,
+            "zone_high": 254.49,
+            "center": 253.73,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 62.42,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 262.19,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 48,
+            "false_breakouts": 5,
+            "strength_score": 61.66,
+            "created_by": "swing_high",
+            "nearest_upper_level": 270.88,
+            "nearest_lower_level": 260.15,
+            "first_touch_date": "02/12/26",
+            "zone_low": 261.65,
+            "zone_high": 262.99,
+            "center": 262.28,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 61.66,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 258.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 43,
+            "false_breakouts": 7,
+            "strength_score": 60.63,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 260.15,
+            "nearest_lower_level": 253.73,
+            "first_touch_date": "02/13/26",
+            "zone_low": 257.65,
+            "zone_high": 259.37,
+            "center": 258.48,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 60.63,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 260.18,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 36,
+            "false_breakouts": 10,
+            "strength_score": 60.63,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 262.28,
+            "nearest_lower_level": 258.48,
+            "first_touch_date": "02/12/26",
+            "zone_low": 259.62,
+            "zone_high": 260.69,
+            "center": 260.15,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 60.63,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 275.72,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 31,
+            "false_breakouts": 8,
+            "strength_score": 51.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 280.42,
+            "nearest_lower_level": 274.28,
+            "first_touch_date": "02/04/26",
+            "zone_low": 275.21,
+            "zone_high": 276.62,
+            "center": 275.83,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 51.83,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 270.71,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 26,
+            "false_breakouts": 5,
+            "strength_score": 40.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 273.2,
+            "nearest_lower_level": 262.28,
+            "first_touch_date": "02/12/26",
+            "zone_low": 270.2,
+            "zone_high": 271.57,
+            "center": 270.88,
+            "families": [
+              "gap"
+            ],
+            "strength": 40.0,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 273.2,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 16,
+            "false_breakouts": 6,
+            "strength_score": 32.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 274.28,
+            "nearest_lower_level": 270.88,
+            "first_touch_date": "02/04/26",
+            "zone_low": 272.69,
+            "zone_high": 273.71,
+            "center": 273.2,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 32.0,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 249.55,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 20,
+            "false_breakouts": 2,
+            "strength_score": 27.42,
+            "created_by": "swing_low",
+            "nearest_upper_level": 250.65,
+            "nearest_lower_level": 247.99,
+            "first_touch_date": "03/13/26",
+            "zone_low": 249.01,
+            "zone_high": 250.06,
+            "center": 249.54,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 27.42,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 274.28,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 2,
+            "strength_score": 20.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 275.83,
+            "nearest_lower_level": 273.2,
+            "first_touch_date": "02/04/26",
+            "zone_low": 273.77,
+            "zone_high": 274.79,
+            "center": 274.28,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 20.0,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 246.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 0,
+            "strength_score": 15.42,
+            "created_by": "swing_low",
+            "nearest_upper_level": 247.99,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/20/26",
+            "zone_low": 245.0,
+            "zone_high": 246.51,
+            "center": 245.73,
+            "families": [
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 15.42,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 250.65,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 0,
+            "strength_score": 15.42,
+            "created_by": "swing_low",
+            "nearest_upper_level": 253.73,
+            "nearest_lower_level": 249.54,
+            "first_touch_date": "03/13/26",
+            "zone_low": 250.14,
+            "zone_high": 251.16,
+            "center": 250.65,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 15.42,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 247.99,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 11.42,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 249.54,
+            "nearest_lower_level": 245.73,
+            "first_touch_date": "03/19/26",
+            "zone_low": 247.48,
+            "zone_high": 248.5,
+            "center": 247.99,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.42,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 280.18,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 5.17,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 275.83,
+            "first_touch_date": "02/06/26",
+            "zone_low": 279.67,
+            "zone_high": 281.42,
+            "center": 280.42,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 5.17,
+            "atr_value": 4.26
+          }
+        ]
+      },
+      "MSFT": {
+        "daily_atr": 10.0,
+        "technical_atr": 1.46,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Dow Jones Futures: Google, Amazon, Meta, Microsoft Are Big Earnings Movers After Oil Prices Spike, Fed's PowellStays -- IBD",
+          "{A:800015:L:en}Microsoft Stock Slips Despite Earnings Beat -- Barrons.com",
+          "{A:800015:L:en}Correction to Microsoft Earnings Market Talk"
+        ],
+        "news_provider_hits": [
+          "DJ-N",
+          "The Verge"
+        ],
+        "news_source_types": [
+          "external",
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "MSFT",
+          "headline": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+          "raw": {
+            "headline": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+            "published_at": "2026-04-30T18:40:39Z",
+            "source": "CNBC",
+            "url": "https://www.cnbc.com/2026/04/30/sp-500-heads-for-its-best-month-since-2020-plus-apple-earnings-on-deck.html",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199286655",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "18:40:39",
+              "dateTime": "2026-04-30T18:40:39Z",
+              "dateTimePub": "2026-04-30T18:38:12Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.cnbc.com/2026/04/30/sp-500-heads-for-its-best-month-since-2020-plus-apple-earnings-on-deck.html",
+              "title": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+              "body": "Every weekday, the CNBC Investing Club with Jim Cramer releases the Homestretch -- an actionable afternoon update, just in time for the last hour of trading on Wall Street. Stocks surged on the last day of April . The S & P 500 hit an all-time, intraday high and went above 7,200 for the first time ever. The Nasdaq also rallied and traded just under Monday's record high. Both indexes were on track for their best months since 2020. Ahead of the close, the S & P 500 is up more than 10% in April, while the Nasdaq is up over 15% for the month. Lower oil prices and lower bond yields certainly helped stocks on Thursday. Brent crude pulled back from Iran wartime highs of $126 per barrel. The 10-year Treasury yield dipped on slower-than-expected U.S. economic growth. The big four hyperscalers -- Alphabet, Amazon, Microsoft, and Meta -- all boosted their already hefty full-year capital expenditure guides, alongside their earnings on Wednesday evening. It's a rarity that they all delivered their quarters on the same night, which gave us an immediate picture of how much more they're all prepared to spend to keep pace in the artificial intelligence race. Normally, we're left piecing it together over several days. With all four outlooks in hand, Alphabet, Amazon, Microsoft, and Meta are committing to spend a total of at least $695 billion this year. That's an over 14% increase from the previous estimate of $608 billion. Here is how that $695 billion number breaks down for this year. (The following order is also how Jim Cramer ranked the earnings.) Alphabet: $180 billion to $190 billion, up from the previous estimate of $175 billion to $185 billion Amazon: unchanged at $200 billion Microsoft: roughly $190 billion (Microsoft did not give a total in its previous guide, which was estimated from analysts estimates on FactSet) Meta Platforms: $125 billion to $145 billion, increased from its prior range of $115 billion to $135 billion One thing is clear. All four companies are not letting up on their spending because nobody wants to be left behind in AI. However, the market is viewing capex guides differently between companies with clouds -- Alphabet, Amazon, and Microsoft -- and the odd man out with no cloud, Meta. Both Alphabet and Meta boosted spending and their stocks went in opposite directions. Alphabet shares surged nearly 10%, tracking for another record-high close. Meta stock, on the other hand, got crushed, falling almost 8% on the session. Tech giant Apple reports earnings after the bell. It will be the first earnings call since CEO Tim Cook said he would step down , and that John Ternus would take his place in September. Expect questions from analysts about the succession, along with what Apple's AI and hardware strategy might look like under the new chief executive. Ternus does have a tough act to follow, but he has more than two decades of experience bringing Apple's most popular products to market. We're not concerned. It's unclear if Ternus will actually join the call like Cook did in the years before he took over in 2011. The status of device sales in China, reception to the new MacBook Neo , and services revenue growth will each be a focus. Finally, with memory costs soaring, we want to know if Apple has enough supply. Do they plan to hike device prices in order to circumvent a hit to margins? Stay tuned. That's not all for earnings. Memory names SanDisk and Western Digital also releases results Thursday evening. We'll see if their earnings can support their blistering rallies. Both stocks have surged on tightening supply and a sharp rebound in AI-driven demand for high-performance storage. Other names on the evening docket are Amgen, Stryker, and Agnico Eagle Mines. On Friday morning, we'll hear from Club name Linde, as well as Exxon Mobil , Chevron , and Aon . We expect Linde to receive a boost from the global helium shortage sparked by the Iran war and want to hear more about its new customers. (See here for a full list of the stocks in Jim Cramer's Charitable Trust.) As a subscriber to the CNBC Investing Club with Jim Cramer, you will receive a trade alert before Jim makes a trade. Jim waits 45 minutes after sending a trade alert before buying or selling a stock in his charitable trust's portfolio. If Jim has talked about a stock on CNBC TV, he waits 72 hours after issuing the trade alert before executing the trade. THE ABOVE INVESTING CLUB INFORMATION IS SUBJECT TO OUR TERMS AND CONDITIONS AND PRIVACY POLICY , TOGETHER WITH OUR DISCLAIMER . NO FIDUCIARY OBLIGATION OR DUTY EXISTS, OR IS CREATED, BY VIRTUE OF YOUR RECEIPT OF ANY INFORMATION PROVIDED IN CONNECTION WITH THE INVESTING CLUB. NO SPECIFIC OUTCOME OR PROFIT IS GUARANTEED.",
+              "source": {
+                "uri": "cnbc.com",
+                "dataType": "news",
+                "title": "CNBC"
+              },
+              "authors": [
+                {
+                  "uri": "morgan_chittum@cnbc.com",
+                  "name": "Morgan Chittum",
+                  "type": "author",
+                  "isAgency": false
+                },
+                {
+                  "uri": "natasha_abellard@cnbc.com",
+                  "name": "Natasha Abellard",
+                  "type": "author",
+                  "isAgency": false
+                },
+                {
+                  "uri": "alexa_lomonaco@cnbc.com",
+                  "name": "Alexa LoMonaco",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://image.cnbcfm.com/api/v1/image/108294028-17766986262026-04-20t151759z_1367253900_rc21tka7fuz5_rtrmadp_0_usa-stocks.jpeg?v=1776892785&w=1920&h=1080",
+              "eventUri": null,
+              "sentiment": 0.08235294117647052,
+              "wgt": 515270439,
+              "relevance": 3
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "MSFT",
+            "price": 404.71,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 54,
+            "false_breakouts": 13,
+            "strength_score": 84.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 407.73,
+            "nearest_lower_level": 385.73,
+            "first_touch_date": "02/05/26",
+            "zone_low": 403.2,
+            "zone_high": 405.91,
+            "center": 404.51,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 84.0,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 423.68,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 39,
+            "false_breakouts": 17,
+            "strength_score": 76.97,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 419.86,
+            "first_touch_date": "02/10/26",
+            "zone_low": 422.48,
+            "zone_high": 426.02,
+            "center": 424.33,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 76.97,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 420.26,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 40,
+            "false_breakouts": 4,
+            "strength_score": 51.97,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 424.33,
+            "nearest_lower_level": 416.3,
+            "first_touch_date": "02/04/26",
+            "zone_low": 418.41,
+            "zone_high": 421.46,
+            "center": 419.86,
+            "families": [
+              "gap"
+            ],
+            "strength": 51.97,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 372.74,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 24,
+            "false_breakouts": 10,
+            "strength_score": 47.56,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 376.93,
+            "nearest_lower_level": 361.9,
+            "first_touch_date": "03/24/26",
+            "zone_low": 371.09,
+            "zone_high": 373.94,
+            "center": 372.52,
+            "families": [
+              "gap"
+            ],
+            "strength": 47.56,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 408.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 25,
+            "false_breakouts": 1,
+            "strength_score": 31.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 416.3,
+            "nearest_lower_level": 404.51,
+            "first_touch_date": "02/05/26",
+            "zone_low": 406.29,
+            "zone_high": 409.2,
+            "center": 407.73,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 31.0,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 385.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 18,
+            "false_breakouts": 4,
+            "strength_score": 29.59,
+            "created_by": "swing_high",
+            "nearest_upper_level": 404.51,
+            "nearest_lower_level": 381.07,
+            "first_touch_date": "02/23/26",
+            "zone_low": 383.78,
+            "zone_high": 388.41,
+            "center": 385.73,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 29.59,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 381.71,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 1,
+            "strength_score": 15.56,
+            "created_by": "swing_low",
+            "nearest_upper_level": 385.73,
+            "nearest_lower_level": 376.93,
+            "first_touch_date": "02/24/26",
+            "zone_low": 378.92,
+            "zone_high": 382.91,
+            "center": 381.07,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 15.56,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 416.3,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 1,
+            "strength_score": 14.9,
+            "created_by": "swing_low",
+            "nearest_upper_level": 419.86,
+            "nearest_lower_level": 407.73,
+            "first_touch_date": "02/04/26",
+            "zone_low": 415.1,
+            "zone_high": 417.5,
+            "center": 416.3,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 14.9,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 376.93,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.56,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 381.07,
+            "nearest_lower_level": 372.52,
+            "first_touch_date": "03/24/26",
+            "zone_low": 375.73,
+            "zone_high": 378.13,
+            "center": 376.93,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.56,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 361.9,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.29,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 372.52,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/27/26",
+            "zone_low": 360.7,
+            "zone_high": 363.1,
+            "center": 361.9,
+            "families": [
+              "gap"
+            ],
+            "strength": 6.29,
+            "atr_value": 10.0
+          }
+        ]
+      },
+      "TSLA": {
+        "daily_atr": 11.62,
+        "technical_atr": 30.88,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Tesla Rival BYD Reports Plunging Earnings. China EV Giant Is Betting On A Flash Recovery. -- IBD",
+          "Tesla TSLA Q3 2024 Earnings Call Transcript | The Motley Fool",
+          "Tesla is facing up to $14.5 billion in lawsuits  --  and it's only getting worse"
+        ],
+        "news_provider_hits": [
+          "DJ-N",
+          "Electrek",
+          "Investing.com",
+          "The Motley Fool"
+        ],
+        "news_source_types": [
+          "external",
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "TSLA",
+          "headline": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+          "raw": {
+            "headline": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+            "published_at": "2026-04-30T18:40:39Z",
+            "source": "CNBC",
+            "url": "https://www.cnbc.com/2026/04/30/sp-500-heads-for-its-best-month-since-2020-plus-apple-earnings-on-deck.html",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199286655",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "18:40:39",
+              "dateTime": "2026-04-30T18:40:39Z",
+              "dateTimePub": "2026-04-30T18:38:12Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.cnbc.com/2026/04/30/sp-500-heads-for-its-best-month-since-2020-plus-apple-earnings-on-deck.html",
+              "title": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+              "body": "Every weekday, the CNBC Investing Club with Jim Cramer releases the Homestretch -- an actionable afternoon update, just in time for the last hour of trading on Wall Street. Stocks surged on the last day of April . The S & P 500 hit an all-time, intraday high and went above 7,200 for the first time ever. The Nasdaq also rallied and traded just under Monday's record high. Both indexes were on track for their best months since 2020. Ahead of the close, the S & P 500 is up more than 10% in April, while the Nasdaq is up over 15% for the month. Lower oil prices and lower bond yields certainly helped stocks on Thursday. Brent crude pulled back from Iran wartime highs of $126 per barrel. The 10-year Treasury yield dipped on slower-than-expected U.S. economic growth. The big four hyperscalers -- Alphabet, Amazon, Microsoft, and Meta -- all boosted their already hefty full-year capital expenditure guides, alongside their earnings on Wednesday evening. It's a rarity that they all delivered their quarters on the same night, which gave us an immediate picture of how much more they're all prepared to spend to keep pace in the artificial intelligence race. Normally, we're left piecing it together over several days. With all four outlooks in hand, Alphabet, Amazon, Microsoft, and Meta are committing to spend a total of at least $695 billion this year. That's an over 14% increase from the previous estimate of $608 billion. Here is how that $695 billion number breaks down for this year. (The following order is also how Jim Cramer ranked the earnings.) Alphabet: $180 billion to $190 billion, up from the previous estimate of $175 billion to $185 billion Amazon: unchanged at $200 billion Microsoft: roughly $190 billion (Microsoft did not give a total in its previous guide, which was estimated from analysts estimates on FactSet) Meta Platforms: $125 billion to $145 billion, increased from its prior range of $115 billion to $135 billion One thing is clear. All four companies are not letting up on their spending because nobody wants to be left behind in AI. However, the market is viewing capex guides differently between companies with clouds -- Alphabet, Amazon, and Microsoft -- and the odd man out with no cloud, Meta. Both Alphabet and Meta boosted spending and their stocks went in opposite directions. Alphabet shares surged nearly 10%, tracking for another record-high close. Meta stock, on the other hand, got crushed, falling almost 8% on the session. Tech giant Apple reports earnings after the bell. It will be the first earnings call since CEO Tim Cook said he would step down , and that John Ternus would take his place in September. Expect questions from analysts about the succession, along with what Apple's AI and hardware strategy might look like under the new chief executive. Ternus does have a tough act to follow, but he has more than two decades of experience bringing Apple's most popular products to market. We're not concerned. It's unclear if Ternus will actually join the call like Cook did in the years before he took over in 2011. The status of device sales in China, reception to the new MacBook Neo , and services revenue growth will each be a focus. Finally, with memory costs soaring, we want to know if Apple has enough supply. Do they plan to hike device prices in order to circumvent a hit to margins? Stay tuned. That's not all for earnings. Memory names SanDisk and Western Digital also releases results Thursday evening. We'll see if their earnings can support their blistering rallies. Both stocks have surged on tightening supply and a sharp rebound in AI-driven demand for high-performance storage. Other names on the evening docket are Amgen, Stryker, and Agnico Eagle Mines. On Friday morning, we'll hear from Club name Linde, as well as Exxon Mobil , Chevron , and Aon . We expect Linde to receive a boost from the global helium shortage sparked by the Iran war and want to hear more about its new customers. (See here for a full list of the stocks in Jim Cramer's Charitable Trust.) As a subscriber to the CNBC Investing Club with Jim Cramer, you will receive a trade alert before Jim makes a trade. Jim waits 45 minutes after sending a trade alert before buying or selling a stock in his charitable trust's portfolio. If Jim has talked about a stock on CNBC TV, he waits 72 hours after issuing the trade alert before executing the trade. THE ABOVE INVESTING CLUB INFORMATION IS SUBJECT TO OUR TERMS AND CONDITIONS AND PRIVACY POLICY , TOGETHER WITH OUR DISCLAIMER . NO FIDUCIARY OBLIGATION OR DUTY EXISTS, OR IS CREATED, BY VIRTUE OF YOUR RECEIPT OF ANY INFORMATION PROVIDED IN CONNECTION WITH THE INVESTING CLUB. NO SPECIFIC OUTCOME OR PROFIT IS GUARANTEED.",
+              "source": {
+                "uri": "cnbc.com",
+                "dataType": "news",
+                "title": "CNBC"
+              },
+              "authors": [
+                {
+                  "uri": "morgan_chittum@cnbc.com",
+                  "name": "Morgan Chittum",
+                  "type": "author",
+                  "isAgency": false
+                },
+                {
+                  "uri": "natasha_abellard@cnbc.com",
+                  "name": "Natasha Abellard",
+                  "type": "author",
+                  "isAgency": false
+                },
+                {
+                  "uri": "alexa_lomonaco@cnbc.com",
+                  "name": "Alexa LoMonaco",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://image.cnbcfm.com/api/v1/image/108294028-17766986262026-04-20t151759z_1367253900_rc21tka7fuz5_rtrmadp_0_usa-stocks.jpeg?v=1776892785&w=1920&h=1080",
+              "eventUri": null,
+              "sentiment": 0.08235294117647052,
+              "wgt": 515270439,
+              "relevance": 3
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "TSLA",
+            "price": 416.38,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 28,
+            "false_breakouts": 12,
+            "strength_score": 54.81,
+            "created_by": "swing_high",
+            "nearest_upper_level": 420.34,
+            "nearest_lower_level": 412.08,
+            "first_touch_date": "02/04/26",
+            "zone_low": 414.99,
+            "zone_high": 418.83,
+            "center": 416.89,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 54.81,
+            "atr_value": 11.62
+          },
+          {
+            "symbol": "TSLA",
+            "price": 411.82,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 23,
+            "false_breakouts": 9,
+            "strength_score": 43.81,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 416.89,
+            "nearest_lower_level": 346.46,
+            "first_touch_date": "02/04/26",
+            "zone_low": 410.43,
+            "zone_high": 413.75,
+            "center": 412.08,
+            "families": [
+              "gap"
+            ],
+            "strength": 43.81,
+            "atr_value": 11.62
+          },
+          {
+            "symbol": "TSLA",
+            "price": 346.65,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 4,
+            "strength_score": 21.53,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 412.08,
+            "nearest_lower_level": 337.24,
+            "first_touch_date": "04/06/26",
+            "zone_low": 344.88,
+            "zone_high": 348.04,
+            "center": 346.46,
+            "families": [
+              "gap"
+            ],
+            "strength": 21.53,
+            "atr_value": 11.62
+          },
+          {
+            "symbol": "TSLA",
+            "price": 337.25,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 9.49,
+            "created_by": "swing_low",
+            "nearest_upper_level": 346.46,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/07/26",
+            "zone_low": 335.85,
+            "zone_high": 338.64,
+            "center": 337.24,
+            "families": [
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 9.49,
+            "atr_value": 11.62
+          },
+          {
+            "symbol": "TSLA",
+            "price": 420.34,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 0,
+            "strength_score": 9.47,
+            "created_by": "swing_high",
+            "nearest_upper_level": 436.35,
+            "nearest_lower_level": 416.89,
+            "first_touch_date": "02/04/26",
+            "zone_low": 418.95,
+            "zone_high": 421.73,
+            "center": 420.34,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 9.47,
+            "atr_value": 11.62
+          },
+          {
+            "symbol": "TSLA",
+            "price": 436.35,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 420.34,
+            "first_touch_date": "02/11/26",
+            "zone_low": 434.96,
+            "zone_high": 437.74,
+            "center": 436.35,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 4.2,
+            "atr_value": 11.62
+          }
+        ]
+      },
+      "AMZN": {
+        "daily_atr": 5.81,
+        "technical_atr": 0.27,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Dow Jones Futures: Google, Amazon, Meta, Microsoft Are Big Earnings Movers After Oil Prices Spike, Fed's PowellStays -- IBD",
+          "{A:800015:L:en}Amazon Earnings Beat Estimates. A Weak Spot May Still Be Weighing on the Stock. -- Barrons.com",
+          "{A:800015:L:en}Amazon Earnings Beat Estimates. The Stock Is Falling Anyway. -- Barrons.com"
+        ],
+        "news_provider_hits": [
+          "CNN",
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "external",
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "AMZN",
+          "headline": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+          "raw": {
+            "headline": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+            "published_at": "2026-04-30T18:40:39Z",
+            "source": "CNBC",
+            "url": "https://www.cnbc.com/2026/04/30/sp-500-heads-for-its-best-month-since-2020-plus-apple-earnings-on-deck.html",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199286655",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "18:40:39",
+              "dateTime": "2026-04-30T18:40:39Z",
+              "dateTimePub": "2026-04-30T18:38:12Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.cnbc.com/2026/04/30/sp-500-heads-for-its-best-month-since-2020-plus-apple-earnings-on-deck.html",
+              "title": "S&P 500 heads for its best month since 2020  --  plus, Apple earnings on deck",
+              "body": "Every weekday, the CNBC Investing Club with Jim Cramer releases the Homestretch -- an actionable afternoon update, just in time for the last hour of trading on Wall Street. Stocks surged on the last day of April . The S & P 500 hit an all-time, intraday high and went above 7,200 for the first time ever. The Nasdaq also rallied and traded just under Monday's record high. Both indexes were on track for their best months since 2020. Ahead of the close, the S & P 500 is up more than 10% in April, while the Nasdaq is up over 15% for the month. Lower oil prices and lower bond yields certainly helped stocks on Thursday. Brent crude pulled back from Iran wartime highs of $126 per barrel. The 10-year Treasury yield dipped on slower-than-expected U.S. economic growth. The big four hyperscalers -- Alphabet, Amazon, Microsoft, and Meta -- all boosted their already hefty full-year capital expenditure guides, alongside their earnings on Wednesday evening. It's a rarity that they all delivered their quarters on the same night, which gave us an immediate picture of how much more they're all prepared to spend to keep pace in the artificial intelligence race. Normally, we're left piecing it together over several days. With all four outlooks in hand, Alphabet, Amazon, Microsoft, and Meta are committing to spend a total of at least $695 billion this year. That's an over 14% increase from the previous estimate of $608 billion. Here is how that $695 billion number breaks down for this year. (The following order is also how Jim Cramer ranked the earnings.) Alphabet: $180 billion to $190 billion, up from the previous estimate of $175 billion to $185 billion Amazon: unchanged at $200 billion Microsoft: roughly $190 billion (Microsoft did not give a total in its previous guide, which was estimated from analysts estimates on FactSet) Meta Platforms: $125 billion to $145 billion, increased from its prior range of $115 billion to $135 billion One thing is clear. All four companies are not letting up on their spending because nobody wants to be left behind in AI. However, the market is viewing capex guides differently between companies with clouds -- Alphabet, Amazon, and Microsoft -- and the odd man out with no cloud, Meta. Both Alphabet and Meta boosted spending and their stocks went in opposite directions. Alphabet shares surged nearly 10%, tracking for another record-high close. Meta stock, on the other hand, got crushed, falling almost 8% on the session. Tech giant Apple reports earnings after the bell. It will be the first earnings call since CEO Tim Cook said he would step down , and that John Ternus would take his place in September. Expect questions from analysts about the succession, along with what Apple's AI and hardware strategy might look like under the new chief executive. Ternus does have a tough act to follow, but he has more than two decades of experience bringing Apple's most popular products to market. We're not concerned. It's unclear if Ternus will actually join the call like Cook did in the years before he took over in 2011. The status of device sales in China, reception to the new MacBook Neo , and services revenue growth will each be a focus. Finally, with memory costs soaring, we want to know if Apple has enough supply. Do they plan to hike device prices in order to circumvent a hit to margins? Stay tuned. That's not all for earnings. Memory names SanDisk and Western Digital also releases results Thursday evening. We'll see if their earnings can support their blistering rallies. Both stocks have surged on tightening supply and a sharp rebound in AI-driven demand for high-performance storage. Other names on the evening docket are Amgen, Stryker, and Agnico Eagle Mines. On Friday morning, we'll hear from Club name Linde, as well as Exxon Mobil , Chevron , and Aon . We expect Linde to receive a boost from the global helium shortage sparked by the Iran war and want to hear more about its new customers. (See here for a full list of the stocks in Jim Cramer's Charitable Trust.) As a subscriber to the CNBC Investing Club with Jim Cramer, you will receive a trade alert before Jim makes a trade. Jim waits 45 minutes after sending a trade alert before buying or selling a stock in his charitable trust's portfolio. If Jim has talked about a stock on CNBC TV, he waits 72 hours after issuing the trade alert before executing the trade. THE ABOVE INVESTING CLUB INFORMATION IS SUBJECT TO OUR TERMS AND CONDITIONS AND PRIVACY POLICY , TOGETHER WITH OUR DISCLAIMER . NO FIDUCIARY OBLIGATION OR DUTY EXISTS, OR IS CREATED, BY VIRTUE OF YOUR RECEIPT OF ANY INFORMATION PROVIDED IN CONNECTION WITH THE INVESTING CLUB. NO SPECIFIC OUTCOME OR PROFIT IS GUARANTEED.",
+              "source": {
+                "uri": "cnbc.com",
+                "dataType": "news",
+                "title": "CNBC"
+              },
+              "authors": [
+                {
+                  "uri": "morgan_chittum@cnbc.com",
+                  "name": "Morgan Chittum",
+                  "type": "author",
+                  "isAgency": false
+                },
+                {
+                  "uri": "natasha_abellard@cnbc.com",
+                  "name": "Natasha Abellard",
+                  "type": "author",
+                  "isAgency": false
+                },
+                {
+                  "uri": "alexa_lomonaco@cnbc.com",
+                  "name": "Alexa LoMonaco",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://image.cnbcfm.com/api/v1/image/108294028-17766986262026-04-20t151759z_1367253900_rc21tka7fuz5_rtrmadp_0_usa-stocks.jpeg?v=1776892785&w=1920&h=1080",
+              "eventUri": null,
+              "sentiment": 0.08235294117647052,
+              "wgt": 515270439,
+              "relevance": 3
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "AMZN",
+            "price": 209.07,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 26,
+            "false_breakouts": 7,
+            "strength_score": 43.42,
+            "created_by": "swing_low",
+            "nearest_upper_level": 216.17,
+            "nearest_lower_level": 199.67,
+            "first_touch_date": "02/06/26",
+            "zone_low": 208.37,
+            "zone_high": 209.77,
+            "center": 209.07,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 43.42,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 199.34,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 15,
+            "false_breakouts": 7,
+            "strength_score": 32.25,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 209.07,
+            "nearest_lower_level": null,
+            "first_touch_date": "02/06/26",
+            "zone_low": 198.44,
+            "zone_high": 201.01,
+            "center": 199.67,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 32.25,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 255.09,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 6,
+            "strength_score": 27.83,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 258.39,
+            "nearest_lower_level": 252.38,
+            "first_touch_date": "04/17/26",
+            "zone_low": 254.16,
+            "zone_high": 255.79,
+            "center": 255.01,
+            "families": [
+              "gap"
+            ],
+            "strength": 27.83,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 261.12,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 2,
+            "strength_score": 18.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 263.04,
+            "nearest_lower_level": 258.39,
+            "first_touch_date": "04/24/26",
+            "zone_low": 259.28,
+            "zone_high": 261.82,
+            "center": 260.55,
+            "families": [
+              "gap"
+            ],
+            "strength": 18.0,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 215.7,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 11,
+            "false_breakouts": 2,
+            "strength_score": 17.98,
+            "created_by": "swing_high",
+            "nearest_upper_level": 218.94,
+            "nearest_lower_level": 209.07,
+            "first_touch_date": "03/04/26",
+            "zone_low": 215.0,
+            "zone_high": 217.7,
+            "center": 216.17,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 17.98,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 252.54,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 0,
+            "strength_score": 12.83,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 255.01,
+            "nearest_lower_level": 244.9,
+            "first_touch_date": "04/14/26",
+            "zone_low": 251.48,
+            "zone_high": 253.24,
+            "center": 252.38,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.83,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 263.04,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 2,
+            "strength_score": 12.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 264.5,
+            "nearest_lower_level": 260.55,
+            "first_touch_date": "04/24/26",
+            "zone_low": 262.34,
+            "zone_high": 263.74,
+            "center": 263.04,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.0,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 264.5,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 1,
+            "strength_score": 10.75,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 263.04,
+            "first_touch_date": "04/24/26",
+            "zone_low": 263.8,
+            "zone_high": 265.2,
+            "center": 264.5,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 10.75,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 232.99,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 2,
+            "strength_score": 9.49,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 240.43,
+            "nearest_lower_level": 220.47,
+            "first_touch_date": "02/04/26",
+            "zone_low": 232.29,
+            "zone_high": 233.69,
+            "center": 232.99,
+            "families": [
+              "gap"
+            ],
+            "strength": 9.49,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 258.39,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 9.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 260.55,
+            "nearest_lower_level": 255.01,
+            "first_touch_date": "04/23/26",
+            "zone_low": 257.69,
+            "zone_high": 259.09,
+            "center": 258.39,
+            "families": [
+              "gap"
+            ],
+            "strength": 9.0,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 245.36,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 8.73,
+            "created_by": "swing_low",
+            "nearest_upper_level": 252.38,
+            "nearest_lower_level": 240.43,
+            "first_touch_date": "04/14/26",
+            "zone_low": 243.5,
+            "zone_high": 246.06,
+            "center": 244.9,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 8.73,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 240.43,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.56,
+            "created_by": "swing_high",
+            "nearest_upper_level": 244.9,
+            "nearest_lower_level": 232.99,
+            "first_touch_date": "04/10/26",
+            "zone_low": 239.73,
+            "zone_high": 241.13,
+            "center": 240.43,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 7.56,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 218.94,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.46,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 220.47,
+            "nearest_lower_level": 216.17,
+            "first_touch_date": "03/05/26",
+            "zone_low": 218.24,
+            "zone_high": 219.64,
+            "center": 218.94,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.46,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 220.47,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.46,
+            "created_by": "swing_high",
+            "nearest_upper_level": 232.99,
+            "nearest_lower_level": 218.94,
+            "first_touch_date": "02/05/26",
+            "zone_low": 219.77,
+            "zone_high": 221.17,
+            "center": 220.47,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 6.46,
+            "atr_value": 5.81
+          }
+        ]
+      }
+    },
+    "macro_risk": {
+      "blocked": false,
+      "headlines": [
+        "{A:800015:L:en}SPY ETF Closes Flat",
+        "{A:800015:L:en}SPY ETF Falls 0.5%",
+        "{A:800015:L:en}SPY ETF Climbs 0.2%, Outperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Rises 0.8%",
+        "{A:800015:L:en}SPY ETF Falls 0.4%",
+        "{A:800015:L:en}SPY ETF Gains 1.0%",
+        "{A:800015:L:en}SPY ETF Declines 0.7%, Underperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Declines 0.2%",
+        "{A:800015:L:en}SPY ETF Climbs 1.2%",
+        "{A:800015:L:en}SPY ETF Rises 0.2%, Underperforms Underlying Index"
+      ],
+      "matched_headlines": [],
+      "critical_matches": [],
+      "provider_hits": [
+        "DJ-RTG"
+      ],
+      "source_types": [
+        "ibkr"
+      ]
+    },
+    "ideas": [
+      {
+        "symbol": "BBBY",
+        "catalyst": "level interaction",
+        "entry": 5.0,
+        "stop": 4.95,
+        "target": 6.27,
+        "decision": "WATCH"
+      },
+      {
+        "symbol": "SEI",
+        "catalyst": "{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance",
+        "entry": 74.73,
+        "stop": 74.44,
+        "target": 77.12,
+        "decision": "HOLD"
+      },
+      {
+        "symbol": "SANM",
+        "catalyst": "{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD",
+        "entry": 218.49,
+        "stop": 217.67,
+        "target": 230.56,
+        "decision": "HOLD"
+      }
+    ],
+    "research_symbols": [
+      "BBBY",
+      "SEI",
+      "SANM",
+      "AAPL",
+      "MSFT",
+      "TSLA",
+      "AMZN"
+    ]
+  }
+}
+```
+
+## Workflow Intraday (2026-04-30T15:05:06)
+- **stage**: Intraday
+- **tracked_symbols**: []
+- **actions**: []
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [],
+    "tracked_positions": []
+  }
+}
+```

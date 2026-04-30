@@ -59,6 +59,24 @@ class LevelDetectionTests(unittest.TestCase):
         )
         self.assertEqual(_first_touch_date_near_price(daily, 256.07, 0.0025), "04/24/26")
 
+    def test_abnormal_candle_keeps_source_date(self) -> None:
+        daily = pd.DataFrame(
+            [
+                {"date": "2026-02-01", "open": 277.5, "high": 278.90, "low": 276.8, "close": 278.1},
+                {"date": "2026-02-02", "open": 278.1, "high": 278.92, "low": 277.1, "close": 277.9},
+                {"date": "2026-02-03", "open": 270.0, "high": 272.0, "low": 269.5, "close": 271.0},
+                {"date": "2026-02-04", "open": 272.29, "high": 278.95, "low": 272.28, "close": 276.49},
+                {"date": "2026-02-05", "open": 276.0, "high": 277.0, "low": 274.0, "close": 275.5},
+                {"date": "2026-02-06", "open": 275.5, "high": 276.2, "low": 274.8, "close": 275.2},
+                {"date": "2026-02-07", "open": 275.2, "high": 275.8, "low": 274.7, "close": 275.1},
+            ]
+        )
+        intraday = pd.DataFrame([{"date": "2026-02-07", "open": 275.0, "high": 275.5, "low": 274.9, "close": 275.2, "volume": 1}])
+        levels = detect_levels("AAPL", daily, intraday)
+        abnormal_levels = [level for level in levels if "abnormal_candle" in level.families]
+        self.assertTrue(abnormal_levels)
+        self.assertIn("02/04/26", {level.source_date for level in abnormal_levels})
+
     def test_merge_nearby_levels_creates_zone_with_weighted_center(self) -> None:
         daily = pd.DataFrame(
             [

@@ -31,6 +31,7 @@ class Level:
     nearest_upper_level: Optional[float] = None
     nearest_lower_level: Optional[float] = None
     first_touch_date: Optional[str] = None
+    source_date: Optional[str] = None
     zone_low: Optional[float] = None
     zone_high: Optional[float] = None
     center: Optional[float] = None
@@ -170,6 +171,17 @@ def _first_touch_date_from_indices(bars: pd.DataFrame, indices: Sequence[int]) -
     return _format_touch_date(raw_date)
 
 
+def _source_date_from_row(row: pd.Series) -> Optional[str]:
+    return _format_touch_date(row.get("date"))
+
+
+def _source_date_from_repeated_prices(bars: pd.DataFrame, column: str, price: float) -> Optional[str]:
+    matches = bars[bars[column].round(2) == round(price, 2)]
+    if matches.empty:
+        return None
+    return _format_touch_date(matches.iloc[0].get("date"))
+
+
 def _round_number_bonus(price: float) -> float:
     fractional = round(abs(price - int(price)), 2)
     if fractional in {0.0, 0.5}:
@@ -243,6 +255,7 @@ def _raw_level(
         strength_score=0.0,
         created_by=created_by,
         first_touch_date=_first_touch_date_from_indices(bars, touch_indices),
+        source_date=None,
         zone_low=zone_low,
         zone_high=zone_high,
         center=center,
@@ -285,36 +298,56 @@ def detect_levels(symbol: str, daily_bars: pd.DataFrame, intraday_bars: pd.DataF
         current_low = float(daily_bars.iloc[idx]["low"])
         next_low = float(daily_bars.iloc[idx + 1]["low"])
         if current_high >= prev_high and current_high >= next_high:
-            levels.append(_raw_level(symbol, current_high, "historical", "daily", daily_bars, zone_buffer, "swing_high"))
+            level = _raw_level(symbol, current_high, "historical", "daily", daily_bars, zone_buffer, "swing_high")
+            level.source_date = _source_date_from_row(daily_bars.iloc[idx])
+            levels.append(level)
         if current_low <= prev_low and current_low <= next_low:
-            levels.append(_raw_level(symbol, current_low, "historical", "daily", daily_bars, zone_buffer, "swing_low"))
+            level = _raw_level(symbol, current_low, "historical", "daily", daily_bars, zone_buffer, "swing_low")
+            level.source_date = _source_date_from_row(daily_bars.iloc[idx])
+            levels.append(level)
 
     rounded_lows = daily_bars["low"].round(2).value_counts()
     rounded_highs = daily_bars["high"].round(2).value_counts()
     for price, count in rounded_lows.items():
         if int(count) >= 3:
-            levels.append(_raw_level(symbol, float(price), "limit_player", "daily", daily_bars, zone_buffer, "repeated_lows"))
+            level = _raw_level(symbol, float(price), "limit_player", "daily", daily_bars, zone_buffer, "repeated_lows")
+            level.source_date = _source_date_from_repeated_prices(daily_bars, "low", float(price))
+            levels.append(level)
     for price, count in rounded_highs.items():
         if int(count) >= 3:
-            levels.append(_raw_level(symbol, float(price), "mirror", "daily", daily_bars, zone_buffer, "repeated_highs"))
+            level = _raw_level(symbol, float(price), "mirror", "daily", daily_bars, zone_buffer, "repeated_highs")
+            level.source_date = _source_date_from_repeated_prices(daily_bars, "high", float(price))
+            levels.append(level)
 
     if avg_range > 0:
         abnormal = daily_bars[(daily_bars["high"].astype(float) - daily_bars["low"].astype(float)) >= (SETTINGS.strategy.abnormal_range_multiplier * avg_range)]
         for _, row in abnormal.iterrows():
-            levels.append(_raw_level(symbol, float(row["high"]), "abnormal_candle", "daily", daily_bars, zone_buffer, "abnormal_high"))
-            levels.append(_raw_level(symbol, float(row["low"]), "abnormal_candle", "daily", daily_bars, zone_buffer, "abnormal_low"))
+            high_level = _raw_level(symbol, float(row["high"]), "abnormal_candle", "daily", daily_bars, zone_buffer, "abnormal_high")
+            low_level = _raw_level(symbol, float(row["low"]), "abnormal_candle", "daily", daily_bars, zone_buffer, "abnormal_low")
+            high_level.source_date = _source_date_from_row(row)
+            low_level.source_date = _source_date_from_row(row)
+            levels.append(high_level)
+            levels.append(low_level)
 
     if len(daily_bars) >= SETTINGS.strategy.consolidation_window:
         chunk = daily_bars.tail(SETTINGS.strategy.consolidation_window)
-        levels.append(_raw_level(symbol, float(chunk["high"].max()), "consolidation", "daily", daily_bars, zone_buffer, "consolidation_high"))
-        levels.append(_raw_level(symbol, float(chunk["low"].min()), "consolidation", "daily", daily_bars, zone_buffer, "consolidation_low"))
+        high_level = _raw_level(symbol, float(chunk["high"].max()), "consolidation", "daily", daily_bars, zone_buffer, "consolidation_high")
+        low_level = _raw_level(symbol, float(chunk["low"].min()), "consolidation", "daily", daily_bars, zone_buffer, "consolidation_low")
+        high_level.source_date = _source_date_from_row(chunk.iloc[-1])
+        low_level.source_date = _source_date_from_row(chunk.iloc[-1])
+        levels.append(high_level)
+        levels.append(low_level)
 
     for idx in range(1, len(daily_bars)):
         prior_close = float(daily_bars.iloc[idx - 1]["close"])
         current_open = float(daily_bars.iloc[idx]["open"])
         if prior_close > 0 and abs(current_open - prior_close) / prior_close >= 0.01:
-            levels.append(_raw_level(symbol, max(prior_close, current_open), "gap", "daily", daily_bars, zone_buffer, "gap_upper"))
-            levels.append(_raw_level(symbol, min(prior_close, current_open), "gap", "daily", daily_bars, zone_buffer, "gap_lower"))
+            upper = _raw_level(symbol, max(prior_close, current_open), "gap", "daily", daily_bars, zone_buffer, "gap_upper")
+            lower = _raw_level(symbol, min(prior_close, current_open), "gap", "daily", daily_bars, zone_buffer, "gap_lower")
+            upper.source_date = _source_date_from_row(daily_bars.iloc[idx])
+            lower.source_date = _source_date_from_row(daily_bars.iloc[idx])
+            levels.append(upper)
+            levels.append(lower)
 
     deduped = dedupe_levels(levels)
     merged = merge_nearby_levels(
@@ -444,6 +477,7 @@ def _merge_cluster(cluster: List[Level], daily_bars: pd.DataFrame, atr_value: fl
         strength_score=0.0,
         created_by=representative.created_by,
         first_touch_date=_first_touch_date_from_indices(daily_bars, touch_indices),
+        source_date=representative.source_date,
         zone_low=_round_price(zone_low),
         zone_high=_round_price(zone_high),
         center=_round_price(weighted_center),
