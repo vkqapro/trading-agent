@@ -41,7 +41,7 @@ def export_premarket_levels_report(watchlist: Dict[str, object]) -> Path:
             )
 
     if rows:
-        frame = pd.DataFrame(rows).sort_values(["Ticker", "StrengthScore", "Touches"], ascending=[True, False, False])
+        frame = pd.DataFrame(rows).sort_values(["Ticker", "Level", "StrengthScore", "Touches"], ascending=[True, False, False, False])
     else:
         frame = pd.DataFrame(
             columns=["Ticker", "Date", "Level", "ZoneLow", "ZoneHigh", "Touches", "StrengthScore", "LevelType"]
