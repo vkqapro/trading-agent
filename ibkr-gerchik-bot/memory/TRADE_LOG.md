@@ -2960,3 +2960,37 @@ Executed trades, stop events, and end-of-day position snapshots are appended her
   }
 }
 ```
+
+## Market Open (2026-04-30T09:36:08)
+- **executed**: none
+- **skipped**: [{'symbol': 'BBBY', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'symbol_news_risk'}, {'symbol': 'SANM', 'reason': 'symbol_news_risk'}, {'symbol': 'AAPL', 'reason': 'symbol_news_risk'}, {'symbol': 'MSFT', 'reason': 'symbol_news_risk'}, {'symbol': 'TSLA', 'reason': 'symbol_news_risk'}, {'symbol': 'AMZN', 'reason': 'symbol_news_risk'}]
+
+## Intraday Actions (2026-04-30T10:05:09)
+- **actions**: none
+
+## Intraday Actions (2026-04-30T10:35:11)
+- **actions**: none
+
+## Intraday Actions (2026-04-30T11:05:11)
+- **actions**: none
+
+## Intraday Actions (2026-04-30T11:35:11)
+- **actions**: none
+
+## Intraday Actions (2026-04-30T12:05:08)
+- **actions**: none
+
+## Intraday Actions (2026-04-30T12:35:06)
+- **actions**: none
+
+## Intraday Actions (2026-04-30T13:05:08)
+- **actions**: none
+
+## Intraday Actions (2026-04-30T13:35:06)
+- **actions**: none
+
+## Intraday Actions (2026-04-30T14:05:08)
+- **actions**: none
+
+## Intraday Actions (2026-04-30T14:35:05)
+- **actions**: none
