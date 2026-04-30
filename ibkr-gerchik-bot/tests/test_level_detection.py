@@ -75,3 +75,27 @@ class LevelDetectionTests(unittest.TestCase):
 
         self.assertEqual(len(merged), 1)
         self.assertEqual(merged[0].touches, 3)
+
+    def test_structural_levels_merge_even_if_gap_level_sits_between_them(self) -> None:
+        daily = pd.DataFrame(
+            [
+                {"date": "2026-03-27", "open": 255.0, "high": 256.07, "low": 254.0, "close": 255.5},
+                {"date": "2026-04-01", "open": 255.8, "high": 256.20, "low": 255.0, "close": 256.0},
+                {"date": "2026-04-29", "open": 255.9, "high": 256.17, "low": 255.2, "close": 256.1},
+            ]
+        )
+        levels = [
+            Level("AAPL", 256.07, "historical", "daily", 9, 3, 0.0, "swing_low", first_touch_date="03/27/26"),
+            Level("AAPL", 256.07, "gap", "daily", 9, 3, 0.0, "gap_lower", first_touch_date="03/27/26"),
+            Level("AAPL", 256.17, "historical", "daily", 7, 3, 0.0, "swing_high", first_touch_date="04/01/26"),
+        ]
+
+        merged = merge_nearby_levels(levels, daily)
+        structural = [level for level in merged if level.type != "gap"]
+        gaps = [level for level in merged if level.type == "gap"]
+
+        self.assertEqual(len(structural), 1)
+        self.assertEqual(len(gaps), 1)
+        self.assertEqual(structural[0].zone_low, 256.07)
+        self.assertEqual(structural[0].zone_high, 256.17)
+        self.assertEqual(structural[0].first_touch_date, "03/27/26")

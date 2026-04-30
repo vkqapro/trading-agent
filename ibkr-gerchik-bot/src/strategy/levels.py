@@ -201,12 +201,13 @@ def dedupe_levels(levels: List[Level]) -> List[Level]:
 
 
 def merge_nearby_levels(levels: List[Level], daily_bars: pd.DataFrame) -> List[Level]:
-    by_symbol: Dict[str, List[Level]] = {}
+    by_symbol_family: Dict[tuple[str, str, str], List[Level]] = {}
     for level in levels:
-        by_symbol.setdefault(level.symbol, []).append(level)
+        family = _level_family(level.type)
+        by_symbol_family.setdefault((level.symbol, level.timeframe, family), []).append(level)
 
     merged: List[Level] = []
-    for symbol_levels in by_symbol.values():
+    for symbol_levels in by_symbol_family.values():
         ordered = sorted(symbol_levels, key=lambda item: item.price)
         clusters: List[List[Level]] = []
 
@@ -241,11 +242,13 @@ def _can_merge_into_cluster(cluster: List[Level], candidate: Level) -> bool:
 
 
 def _compatible_level_types(left: str, right: str) -> bool:
-    if left == right:
-        return True
-    if "gap" in {left, right}:
-        return False
-    return True
+    return _level_family(left) == _level_family(right)
+
+
+def _level_family(level_type: str) -> str:
+    if level_type == "gap":
+        return "gap"
+    return "structural"
 
 
 def _level_type_priority(level: Level) -> int:
