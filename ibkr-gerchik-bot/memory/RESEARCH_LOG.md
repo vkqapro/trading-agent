@@ -107258,3 +107258,3354 @@ Premarket scans, intraday observations, and daily analysis are appended here.
   }
 }
 ```
+
+## Premarket Research (2026-04-30T15:24:26)
+- **strategy_loaded**: True
+- **trade_log_context_loaded**: True
+- **research_log_context_loaded**: True
+- **account_snapshot**: {'account': [{'account': 'DU5454348', 'tag': 'AccountType', 'value': 'INDIVIDUAL', 'currency': ''}, {'account': 'DU5454348', 'tag': 'Cushion', 'value': '1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemaining', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+1', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+2', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+3', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+4', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'LookAheadNextChange', 'value': '0', 'currency': ''}, {'account': 'DU5454348', 'tag': 'AccruedCash', 'value': '224.46', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'AvailableFunds', 'value': '101935.19', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'BuyingPower', 'value': '407716.48', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'EquityWithLoanValue', 'value': '101935.19', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'ExcessLiquidity', 'value': '101935.19', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullAvailableFunds', 'value': '101935.19', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullExcessLiquidity', 'value': '101935.19', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'GrossPositionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'InitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadAvailableFunds', 'value': '101935.19', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadExcessLiquidity', 'value': '101935.19', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'MaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'NetLiquidation', 'value': '102159.65', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'PreviousDayEquityWithLoanValue', 'value': '101929.12', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTEquity', 'value': '102159.65', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTMargin', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'SMA', 'value': '102159.65', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'TotalCashValue', 'value': '101935.19', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CashBalance', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.16572', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Currency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'CashBalance', 'value': '100761.92', 'currency': 'USD'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '100761.92', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '224.46', 'currency': 'USD'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '100986.38', 'currency': 'USD'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CashBalance', 'value': '101935.192', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '101935.192', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '224.46', 'currency': 'BASE'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '102159.652', 'currency': 'BASE'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'BASE'}], 'positions': [], 'open_orders': []}
+- **research_symbols**: ['BBBY', 'SEI', 'SANM', 'AAPL', 'MSFT', 'TSLA', 'AMZN']
+- **macro_risk**: False
+- **macro_news_sources**: ['DJ-RTG']
+- **macro_news_source_types**: ['ibkr']
+- **actionable_ideas**: [{'symbol': 'BBBY', 'catalyst': 'level interaction', 'entry': 4.94, 'stop': 4.8906, 'target': 6.27, 'decision': 'WATCH'}, {'symbol': 'SEI', 'catalyst': '{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance', 'entry': 75.02, 'stop': 74.44, 'target': 77.12, 'decision': 'HOLD'}, {'symbol': 'SANM', 'catalyst': '{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD', 'entry': 217.43, 'stop': 215.46, 'target': 230.56, 'decision': 'HOLD'}]
+- **trade_decision**: READY_FOR_OPEN_VALIDATION
+
+## Workflow Premarket (2026-04-30T15:24:26)
+- **stage**: Premarket
+- **watchlist_symbols**: ['BBBY', 'SEI', 'SANM', 'AAPL', 'MSFT', 'TSLA', 'AMZN']
+```json
+{
+  "stage": "Premarket",
+  "payload": {
+    "watchlist": {
+      "BBBY": {
+        "daily_atr": 0.4667,
+        "technical_atr": 1.33,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "BBBY",
+          "headline": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+          "raw": {
+            "headline": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+            "published_at": "2026-04-30T19:17:39Z",
+            "source": "The Motley Fool",
+            "url": "https://www.fool.com/earnings/call-transcripts/2026/04/30/cnh-cnh-q1-2026-earnings-call-transcript/",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199318152",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "19:17:39",
+              "dateTime": "2026-04-30T19:17:39Z",
+              "dateTimePub": "2026-04-30T18:05:46Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.fool.com/earnings/call-transcripts/2026/04/30/cnh-cnh-q1-2026-earnings-call-transcript/",
+              "title": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+              "body": "Transportation and freight cost inflation -- if sustained -- could \"be up around $70 million.\" CFO James A. Nickolas stated, \"we would take action at some point if this elevated cost environment persists on the revenue side. We don't think that's needed just yet, but we're monitoring it very, very closely.\"\n\nManagement reaffirmed all major 2026 guidance ranges, including net sales, EBIT margins, and adjusted EPS, despite ongoing industry headwinds, currency shifts, and tariff policy volatility. The order book for Q2 is fully committed with disciplined loading practices, and Q3 coverage is substantial, reflecting emphasis on real dealer orders and risk management by geography. Strategic expansion in Europe via new product launches and multi-brand dealer consolidation is progressing, highlighted by a sold-out high-horsepower European tractor line and next-gen combine slot sell-outs. A new partnership with Abilene Machine is set to expand the company's aftermarket parts offering across dealer networks, further supported by technology deployments at 70% of dealer sites. Management confirmed production remains below retail by about 4%, especially in combines and Brazil. This may create a natural revenue/profit tailwind as inventory rationalization continues into 2027 when macro policy clarity is expected to improve.\n\nGerrit Marx: Thank you, Jason, and welcome to everyone joining the meeting. We are calling from Sioux Falls, South Dakota, where we just hosted our Board meeting. Sioux Falls is one of our CNH tech hubs, which we acquired through Raven. In Sioux Falls, we have about 300 colleagues who jointly with other sites, not only code and validate our on and offboard software, but also design the architecture of the next evolution of our digital machine hardware. I'm very proud of the advancements that we will be launching over the next couple of years. First quarter results were as expected and guided.\n\nGiven that Q1 seasonally our lowest quarter, we are at historically low industry demand in North America, and farmers in Brazil have ongoing financial challenges. During the quarter, additional complications emerged, including changing tariff rules and an escalated conflict in the Middle East. I'm very proud of the way the CNH team responded to all the challenges we faced, those we knew about going in and those that emerged during the quarter. We are now passing through what we expect to be the lowest period of the current ag industry cycle, supported by some replacement demand.\n\nAs we have said before, we also expect Q1 2026 to be the lowest quarter of the year, during which we diligently continued the disciplined management of all levers in our control. Despite the challenging quarter, we have many things to proudly share here. We kept production levels low in order to manage and contain channel inventory. Ag dealer inventory levels remained unchanged since the beginning of the year by design. Normally, dealers build inventory in Q1 in preparation for Q2, but the flat levels are in line with our overall plan to have the dealers reduce their inventories by about $500 million this year.\n\nWe have been quite disciplined to produce and ship only presold orders or fast-moving stock orders. The net of price and product cost was positive in agriculture as we focus on our operational efficiencies and quality improvements. And we do expect that some of price and product cost to be positive in agriculture for the full year as well. We are making solid progress on our efforts to take cost out and improve our overall product quality, countering the negative impact from tariffs and global supply chain disruptions. We also continue with a raving support our dealer and service network optimization with several new consolidations completed and our tech assist tool rolled out at about 70% of our dealer locations.\n\nAs a reminder, our AI tech assist delivers near instant diagnostic support while our visual parts search enables rapid and accurate parts identification. These capabilities enhance decision quality and deepen the value we deliver to customers and dealers, and there is much more to come, powered by the rapidly evolving power of artificial intelligence from generative to agentic capabilities. We, along with other industry participants have had productive discussions with members of the U.S. administration on how we can support farmers and builders during these times. We are optimistic about how some developments such as the recently announced increase in renewable fuel standards will help farmers through increased crop prices and demand.\n\nThere's a new equilibrium of supply and demand of agriculture commodities emerging in all major regions, as upcoming elections, trade deals, including and excluding the U.S. and rerouting of food and nonfood supply chains are settled over the next couple of years. So while market conditions are very dynamic, we are focused on solutions today and in the future that support our farmers and builders and that will deliver returns to our shareholders. Turning to the results, which reflect the expected and guided market headwinds and our decision to keep production very low. Consolidated revenues were $3.8 billion, flat year-over-year, including about 4% positive currency impacts. Our Ag segment sales were up 1% with EMEA up 20%.\n\nNorth America down 3%, and South America, down 28%. With farm incomes depressed and macroeconomic uncertainty, we saw continued softness in equipment demand. Industrial adjusted EBIT was a loss of $45 million, driven primarily by tariffs and high SG&A and R&D expenses, only partially offset by positive pricing and cost savings actions. For the quarter, adjusted net income was $21 million, with adjusted EPS at $0.01. Free cash flow from Industrial Activities was a $569 million outflow in line with Q1 2025 and consistent with the working capital seasonality of the first quarter, where we usually build up some company inventory in preparation for Q2 sales.\n\nWe remain more committed than ever to strengthen the company and prioritizing long-term value creation. Our company strategy is centered around 5 key strategic pillars: expanding product leadership, advancing our iron and tech integration, driving commercial excellence, operational excellence and quality as a mindset. These pillars remain front and center to ensure we stay aligned with our long-term strategic objectives and our team remains focused and united in our shared purpose to serve and advance those who feed and build the world we all live in. From all the great steps forward we took in the last quarter, I would like to focus today on our operational excellence and specifically our manufacturing plant efficiencies.\n\nWe use a wide range of tools and latest technologies to unlock cost efficiencies at our manufacturing plants. Last year, we conducted about 1,400 projects, which led to $45 million in savings as we reported to you already last quarter. Individually, these projects may seem modest, but the results are profound when we add them all up. In addition, many of the projects include quality improvements to the product shipped out from our factories. An example of one of those projects was a fiber laser installed last year at our Fargo, North Dakota plant where we make our 4-wheel drive tractors. This machine is used to cut sheet steel and replace an old plasma punch machine.\n\nThe new process is 52% faster than before, while also reducing other consumables such as oil and lubricants, minimizing secondary operations and my favorite, improving quality. More efficient operations paired with better quality are a win for both CNH and our customers. With that, I will now turn the call over to Jim to take us through the details of our financials and guidance.\n\nJames A. Nickolas: Thank you, Gerrit. Agriculture Q1 net sales were about $2.6 billion up 1% year-over-year, including 4% positive currency translation. Sales volumes were lower in North and South America and favorable pricing came mainly from North America. Sales volumes and pricing were up in EMEA, mostly in Europe for both tractors and combines, fueled by moderately favorable industry demand and some market share gain. Gross margin was 19.1% from 20% a year ago. Agriculture adjusted EBIT margin was 1% from 5.4% in Q1 2025. The positive pricing and the cost saving contribution only partially offset negative original mix and tariff impacts.\n\nThe higher year-over-year R&D and SG&A expenses were consistent with our indications with both affected by lower variable compensation in 2025 and labor inflation in 2026. Construction net sales in the quarter were lower 3% year-over-year to $574 million, as higher sales in EMEA were more than offset by lower sales in North and South America. We were initially expecting sales to be a bit higher in North America but we held back sales while working out a supplier quality issue to protect the customer. That issue is now resolved and those sales will be made up in Q2. Q1 gross margin was 11.8% from 14.9% a year ago, largely due to tariff impacts.\n\nConstruction SG&A was unfavorable due to trade show marketing costs, lower variable compensation in 2025 and labor inflation in 2026. Q1 adjusted EBIT margin was negative 4.9%. In Financial Services, segment net income in the quarter was $74 million, down versus 2025, mainly due to higher risk costs in Brazil. Retail originations in the first quarter were $2.2 billion, and the managed portfolio ended the quarter at $28 billion. Sequential delinquency rates increased slightly to 3.5%, primarily driven by persistent economic difficulties in South America. Our capital allocation priorities remain the same, reinvesting in our business while maintaining a healthy balance sheet and then returning cash to shareholders.\n\nDuring the first 3 months of 2026, we repurchased $26 billion worth of CNH stock at average price of about $10.70 per share. Before we dive into our guidance, let's take a look at the expected tariff impact on our margins, as we had a meaningful change recently in the way they will be applied to our products. First, we need to acknowledge that we did enjoy a brief period of release with naive tariffs were replaced by Section 122 tariffs at 10%, that lasted for about 1.5 months. Just something to keep in mind when we eventually think about run rates in 2027.\n\nAt the beginning of April, there was a change in the way Section 232 tariffs on steel and aluminum are applied. At a very simple level, it means we went from paying 50% on the value of only the metal to now paying anywhere from 0% to 50% on the total value of the component or machine, depending on what it is. For whole machine imports, we are now paying 25% on the total value of the unit, which overall is higher than what we paid before. However, for some component imports, the tariffs can actually be lower. In our Agriculture business, the impact of this change is net neutral for calendar year 2026.\n\nSo we still forecast the tariff cost impact to be about 210 to 220 basis points of impact on ag margins or no change from our view last quarter. For construction, we're not expecting to get as much of that component benefit as in ag. And so now we expect about a 600 basis point impact on our construction margins compared to our original expectations of roughly 500 points. It's important to note that Section 301 investigations are ongoing for products coming from China, the EU, India and Mexico. We have not included any factors for that in this forecast, but we will provide an update if there are material changes.\n\nLet's first look together at our agriculture industry outlook for 2026. We have slightly improved our outlook for small tractors and combines in North America. In EMEA, we have lowered the tractor outlook, but we are more optimistic for combines. And in South America, we have lowered the outlook for combines. Market risk in South America is elevated due to tighter credit and delays in government-backed financing in Brazil. As a result, we are watching the situation there closely. In total, we still see the industry at about 80% of mid-cycle.\n\nWhen we balance all those changes, along with our unchanged assumptions for favorable currency translation of 2% and positive pricing of 1.5% to 2%, we are comfortable reaffirming our net sales guidance of flat, down 5%. As mentioned earlier, our tariff assumptions for agriculture are net unchanged. While we are seeing increased freight and transportation costs, we are optimistic that our ongoing cost reduction programs and updated geographic mix will be able to offset those impacts. As a result, we are reaffirming our EBIT margin guidance of 4.5% to 5.5%. In construction, we have fine-tuned our industry forecasts across the regions based on Q1 trends and market conditions. And overall, we are slightly lower than our previous expectations.\n\nHowever, we still forecast our own net sales to be about flat year-over-year, including about 1% of favorable currency translation and 2% of pricing. EBIT margin is forecasted to be between 1% and 2% as we focus on cost reductions to offset the increased impact of the tariffs discussed earlier. Putting all those elements together, then we reaffirm our forecast for 2026 industrial net sales to be flat to down 4% year-over-year and industrial EBIT margin to be between 2.5% and 3.5%. Industrial free cash flow is still forecasted to be between $150 million and $350 million. Adjusted EPS is reaffirmed at between $0.35 and $0.45, assuming an average share count of about $1.25 billion.\n\nTo help you with remodeling, I'll provide some additional considerations for our second quarter. Our order books are full for the second quarter, and we're expecting agriculture net sales to be about flat on a year-over-year basis. We're keeping a close eye on conditions in South America as conditions for farmers there remain very difficult. Construction net sales will be higher in the mid-teens, and that includes some of those sales originally expected in Q1. The construction increase is most pronounced in North America. Transportation costs and the tariff payments are another watch point. The team has done a great job working through these rapid changes and will continue to be vigilant.\n\nI'll note, too, that grain prices ticked up a little along with oil prices, they remain below what many consider breakeven levels for farmers, which continue to be -- which continue to challenge their economics. Although both agriculture and construction Q2 EBIT margins are forecasted to follow into the full year guidance ranges. Taken together with the lower Q1, this implies that we expect margins in the second half of the year to be sequentially better than the first half, as is typical. Furthermore, we also expect that both the ag and construction margins will be better on a year-over-year basis in the second half of the year.\n\nFinancial Services net income in Q2 will be lower year-over-year by $20 million to $25 million. With that, I will turn it back to Gerrit.\n\nGerrit Marx: Thank you, Jim. Let me finish up with some thoughts about the rest of the year. Against the backdrop of heightened global uncertainty, we remain focused on our purpose to serve and advance the world's farmers and builders. That means closely monitoring developments while continuing to deliver for our dealers and end customers through disciplined production planning and a clear path to lean channel inventories by year-end. We continue working on our iron and our tech developments and product launches and delivering on our long-term margin improvement efforts. We continue to work with our dealer partners on finding the right network configuration in each of the markets that we serve.\n\nIn another step to support our dealers and farmers, we have recently entered into a strategic relationship with [ Abilene ] Machine through a minority equity stake. The relationship will allow CNH to offer our dealer network a comprehensive aftermarket parts portfolio with upcoming access to the Abilene Machine portfolio of all makes parts. This further enables our aim to provide our dealers and customers good, better and the best options to service their equipment fleets regardless of age or brand affinity. In North America and Europe, the average age of ag equipment in the field has been trending older. This should build up a modest demand for new machines in the coming quarters.\n\nSignificant equipment demand increases usually only happen when there is a good increase in commodity prices that support farm incomes. As Jim mentioned, farmers in South America are a little more cautious and will probably continue to be so at least through the end of the year, and so we will be as well. Selling a machine is one thing, collecting its monthly installments is another, and we have been thoughtfully managing that jointly with our network partners during this difficult period. As we expect to evolve from the industry trough, we look forward to capitalizing on all the improvements that we have made during -- serving and advancing those who feed and build the world, always breaking new ground.\n\nThis concludes our prepared remarks, and we can now start the Q&A session.\n\nOperator: [Operator Instructions] We will take our first question from the line of Tim Thein with Raymond James.\n\nTimothy Thein: I just had -- my question on ag. The -- as we look at the production slots for the coming quarters, can you maybe give some context there in terms of, a, I'm curious if you've seen -- has there been any significant changes in terms of the actual build rates implied within -- maybe by region or if there's been any changes there? And then just any comments in terms of kind of regional order commentary. I mean you stressed the softness and the concern around South America. Maybe a little bit more context of what you're seeing within that order board maybe in your largest region in North America?\n\nGerrit Marx: Thank you, Tim. So as Jim alluded to, we are fully booked in Q2, and we have a pretty healthy coverage already for Q3, while being very disciplined in actually loading orders to production because, as I said, we focus on real dealer, let's say, customer orders and orders from dealers referring to machines that have a very high probability to liquidate in due course as we continue to manage our general inventory. Usually, when we see the market picking up again, which we do not yet see at this point. We would obviously load production more with what we call company orders, where we hold inventory on our side to quickly react to a changing market environment.\n\nSo when we talk about already a Q2 fully booked into Q3 in a good shape, this happens on the basis of a very disciplined order loading to the factories. As per the regional differences, we're pretty happy with the way how things go in Europe. The team makes great progress in building the foundation for gaining share as we do. And we are accelerating our dealer multi-brand consolidation across the region. And you will hear us talk about that almost, I think, probably every quarter from now on.\n\nBut definitely, for the full year 2026, and obviously, this dealer network consolidation is going to drive as well order momentum in the region as we not only break new ground, but they actually gain ground. Similarly, for the United States, where the market is going backwards as we projected and guided to, we see on the low levels, very good momentum with our dealers when it comes to interacting with our customers. So that is also in a good place.\n\nAnd the region where we have extra efforts and extra attention is, as you also picked up is Latin America, particularly Brazil, although Argentina is not that different in its current dynamics where the farmers are still in a wait-and-see situation in light of upcoming elections in Brazil. And still, the consequences of trade deals still need to show in actual trades of commodities and pricing of those commodities. So I think in Latin America, we apply extra discipline to the taking of orders, making sure that we preserve margins despite a significant price pressure in the market given that all the industry participants had expected a better evolution of market demand, which isn't the case.\n\nAnd so extra discipline is required for LatAm in the order take and that is also seen in our Q3 order take. But overall, we are in a good shape going through Q2 as we look at Q3.\n\nJames A. Nickolas: If I could add to that, in the Latin America, Brazil, in particular, given the tight conditions, we, along others have tightened underwriting standards, and I think that's also acting industry demand. So it's not a CNH concern. It's an industry-wide country-wide concern.\n\nGerrit Marx: Yes. And maybe last commentary on Asia Pacific, although small, but growing quite a bit. Our teams in India have hit new record highs in terms of production market share, and we really, really built momentum there with our newly launched compact factor lineup, and the to be launched, new utility-light small tractor lineup, not only for India, but for the export, which will mean a step change in small and compact machines that we will ship around the world from India, while we see stable and good progress in China and a rather flattish development in Australia and New Zealand, where the market is basically running on replacement demand only at this point in time.\n\nOperator: Our next question comes from the line of Angel Castillo with Morgan Stanley.\n\nUnknown Analyst: This is Esther on for Angel Castillo. Just on tariffs and the broader trade backdrop, can you just give us a little bit more color on how you're sizing the impact you're seeing today versus the original tariff impact guide? And how much of that do you think is being offset by pricing versus operational actions? So just like more color on like kind of how you see that dynamic through the year?\n\nJames A. Nickolas: Sure. Yes. Esther. It's Jim. The -- as we indicated, the ag business, really no net change versus prior guidance. So you think about full year 210 to 220 basis points of a drag versus if there weren't tariffs. So call it, full year cost of $120 million on the ag business. Now that's -- and that's in line with where we were last quarter. There were some puts and takes. [indiscernible] lower gave us some relief, offset by higher impact, higher cost from Section 232 changes. And so that's really a broad for the ag business.\n\nOn the construction business, it's a bit of a headwind moving from 500 basis points of a headwind to 600 basis points of headwind, again, as opposed to no tariffs. So that's really where it ends up. So we took our lumps, I would say, when they were first launched at Liberation Day. And then since then, the changes thus far have been relatively minor for us overall. The one area that we haven't quantified and are waiting to see where it lands are the Section 301 tariffs, which are sort of related to investigations. The U.S. government is conducting with various counterparties in the trade, EU, India, Brazil, et cetera.\n\nSo that one is unknown at this point, but I think that covers the landscape of tariffs.\n\nOperator: Our next question comes from the line of Kristen Owen with Oppenheimer & Co.\n\nKristen Owen: I wanted to talk through how you're thinking about back half scenarios, just given the consents of now we're looking at higher fertilizer prices, higher transportation cost, some of these acute challenges that you've called out in Brazil versus maybe a little bit stronger forward commodity curve, how that's influencing the range of scenarios that we could see in the back half of the year?\n\nJames A. Nickolas: Yes. Kristen, the -- again, the range of probable outcomes is pretty wide still in keeping with the last year or so of macroeconomic uncertainty. The fertilizer impact higher cost. So that's less of a concern for 2026 for most of the world. I mean it's a concern, but it's not -- it shouldn't impact us too much this year, second half aside from Brazil, Brazil is where it's going to have more of an impact given their multiple harvests and planting seasons. So there's a little bit of risk, I think, in Brazil from the higher fertilizer costs on top of the credit conditions we mentioned earlier. Transportation costs are growing in most places.\n\nWe are viewing this as something we can offset today. It's sort of the higher cost due to the Iran conflict persist throughout the year, which we're not forecasting, but if they were to persist throughout the year, the gross net increase in cost could be up around $70 million, that $70 million is gross. It assumes no countermeasures from us in terms of transportation surcharges or lower discounting, we would take action at some point if this elevated cost environment persists on the revenue side. We don't think that's needed just yet, but we're monitoring it very, very closely. So at the back half, we think we've got things balanced out given our levers.\n\nBut right now, the unknown is the higher elevated transportation cost, that's the primary factor, logistics from shipping and trucking from the higher diesel and fuel costs. So that's the one we're watching closely. And if it persists for a longer period of time, we'll need to make some counter measures to happen on the revenue side.\n\nOperator: Our next question comes from the line of Jamie Cook with Truist Securities.\n\nJamie Cook: I guess just 2 questions. I guess, encouraging to see we kept guidance the same and everything seems on track. Obviously, lots of positives and negatives out there. But Gerrit, if you could just comment on, one, understanding it's early on about how you're thinking about the setup for 2027, I guess, for ag in particular, where you would be most constructive or more worried, I guess, Brazil would probably be that area.\n\nAnd then from just a company-specific perspective, with a lot of the company-specific initiatives, streamlining of cost structure, supply chain, all those quality, all those things assuming a flat market in 2027, how do we think about earnings for CNH or potential positives that CNH could realize even in a flat market?\n\nGerrit Marx: Jamie, well, look, we're getting ready for whatever comes our way in 2027. We do see -- as I mentioned, momentum in Europe. We expect the U.S., the North American market to see the trough this year. And in South America, despite the very low levels where we are traveling and we are still probably in Brazil itself looking for the grounding in this trough. We will enter 2027 with a far greater level of certainty around certain factors. Elections in Brazil and South America will be behind us. We'll have the midterms behind us. We will have clarity around all the tariff items that Jim mentioned, most notably the 301.\n\nWe will see how the administration positions themselves in various different trade deals around the world. And we will see, and that is what I understood from my interactions in Washington is we will see a greater level of detail in the particular bilateral trade deals that are still ongoing and with a particular focus on commodity trade and commodity flows out from the U.S. This will give us a good footing there. I mean in the end, the aging machine park, every acre around the world has been planted and harvested this year, and the same is going to happen next year.\n\nAnd this puts the hours on all machines and everybody's machines that it takes in order to do the job. So despite markets going slow, the machines are aging at fairly the same pace. And as we enter into 2027 and looking at the average age of the machine parts, we do expect some support from replacement demand across the world, obviously, and then also with a greater level of certainty around those bilateral trade deals and maybe with some support of commodity price momentum for 2027. However, we do not back a market bounce in our own actions. What we do is we remain very disciplined on cost.\n\nWe are making good progress, great progress actually in taking cost out of our supply chain and procurement area. We have even slightly overdelivered our own internal expectations as it came to quality costs last year, and we will continue to do so over the course of this year. We are looking at structural costs. We do have identified pockets of AI deployment, which in first and foremost, will help us to drive productivity in our own operations, such as software coding. I mean we are here in Sioux Falls, and this is one of the sites where we do code our software.\n\nAnd I've seen great examples now of actually a pretty impressive acceleration from the AI advancements over the last 6 months, what can be done in this area. And all of these elements will help us to go faster with tech while reducing our cost base in relative terms and against the backdrop of global and heightened global certainty with those points that are causing right now the uncertainty among our farmers, particularly. So this is something that we stay focused on. And I feel pretty good about the progress we are making against all the commitments we put out there. And then we'll see when the market comes back.\n\nThis is overall still see and wait where we don't wait, actually, we act. So it's a see and act phase for us, improving things. And 2027 will be probably a better year than 2026.\n\nJames A. Nickolas: If I could just add one, we're also underproducing versus retail in 2026. So assuming we -- by about 4%. So assuming we produce at retail levels next year, that should be a natural tailwind revenues or profits.\n\nOperator: Our next question comes from the line of Kyle Menges with Citigroup.\n\nKyle Menges: I was hoping if you could talk about just any changes you're seeing in industry competition, specifically pricing across any of the major regions as well as just how you think your inventory position is versus the industry? And then just a quick tariff question. You mentioned could be a 0% to 50% tariff would just be helpful to hear examples of cases where it would be 0 versus 50% now?\n\nGerrit Marx: Thanks, Kyle. I will defer the tariff point to Jim. We do see a continued positive price cost development for us, which I don't know what the others are doing, but we do see that building on top of advancing technologies and product launches as well that we have throughout 2026 and the beginning of 2027. We have launched our new short rebase or standard rebased tractor in Europe, also on top of the range, long wheelbase tractor hitting first time ever segment CNH has never played in, which is a sector of 350 to 450 horsepower in the European style designed tractor that is sold around the world.\n\nAnd with these launches, and actually, we are sold out on those with the production slot we have allocated. We also sold out on our next-gen combines this year. We see great momentum in our product, great demand. And with that demand and obviously, further launches of our also offboard systems, connecting the onboard. We have a good base to advance our farmers and with that also have a good net price realization over the next couple of quarters as we also go into 2027. So for the full year, we expect a positive price cost here. On the inventory side, I alluded to a $500 million further reduction of our global channel inventory. This is -- dealer inventory.\n\nThis is something we will very closely monitor because if there are swings in markets that we see coming maybe more positive on the other way, more negative developments, we will adjust those in inventory targets and destocking activities accordingly. For now, we feel pretty good where we are. We get very good feedback from our dealers. We have cleared aged inventories. We have cleared stock that was hard to sell. And now we are approaching the levels that we want to see with our dealers also to lighten up the financial burden on floor planning, and their overall exposure to that. So that is on a good track. We delivered what we said we will.\n\nAnd I'm quite curious to see what happens in the next quarters, carefully reading commodity prices, carefully reading the demand in every region of the world. And I think, overall, in a good shape on our track in 2026, which is the trough year most notably, probably in like 20 or 30 years of ag. We have never been that low in terms of unit sales in our industry and we are holding up not only, but we are actually building further strength as we go into the future years. So that feels overall quite good. Jim, on tariffs.\n\nJames A. Nickolas: Yes. Kyle, it kind of depends on the HTS codes, the harmonized tariff schedules. There's a bunch of those. And I don't have the details to discuss this in particular, but we can take that probably offline at some point. .\n\nOperator: Our next question comes from the line of David Raso with Evercore ISI.\n\nDavid Raso: Two questions. One, can you give us an update on where you stand strategically with the construction business? And second, the production below retail of 4%. Can you give us a little color, be it geographic or large versus small tractors, combines just that combination that gets you to the down -- or sorry, below 4% retail globally?\n\nGerrit Marx: David, I'll take the first, and Jim takes the second question. As I mentioned during the last quarterly earnings call and the full year 2025 financials, we have restarted our discussions with several partners for our construction business. These discussions advance a pace. We don't rush anything. There are very good conversations that we have that will build a stronger CE lineup for the construction business, and that will also further enhance the construction machines that we expect to get shipped under the New Holland construction brand back to our ag dealers. So progress is made as we speak. We don't rush things.\n\nWe take the time it takes, and we will update you when we have made a conclusion not saying when that will be the case. But in -- I think over the course of the remainder of 2026 or first half of 2027, we should be clear on the path forward for our construction business, which is a very, very relevant piece as a product for our dealers, but not necessarily has to be in our ownership in order to deliver product and service to those through build and farm the world. So that is what I can tell you.\n\nSo time wise, we are pretty much a pace of what we said last time over the course of '26 and '27, we'll come back with the progress on that one. But I'm pretty confident that we are moving towards a solution here.\n\nJames A. Nickolas: Yes. And [indiscernible] question, the underproduction is a rough, but more underproduction happening in combines, less underproduction in tractors, although both are underproduced in 2026. And by geography, I would say balanced, but probably a little bit more under production occurring in Brazil this year for the -- there we talked earlier about the challenges there.\n\nOperator: Our next question comes from the line of Joel Jackson with BMO Capital Markets.\n\nUnknown Analyst: It's Evan on for Joel Jackson. I just wanted to circle back on the credit dynamic. You pointed out for Q2, Q3 considerations of higher risk reserves, just wonder to see if you can give any extra color on that. Is that all Brazil? Are you seeing delinquencies currently higher bad debt?\n\nJames A. Nickolas: Yes. It's slightly up in more mature markets, but nothing notable. The real increases are Brazil, primarily and secondarily, Argentina, but to a lesser degree. And in Brazil, May is a big payment month. And so every year in May, we see an uptick in delinquencies, that's typical seasonality. I would expect to see it again this year. And it remains elevated. It's something that bears watching. We're actively managing it. It is not getting worse, but it's not getting better at the same time, so it bears customer-by-customer discussions trying to make sure that they stay current. So I would expect an uptick in delinquencies in Q2 of this year, like we always see.\n\nAnd I'd say, again, it's mostly focused in Latin America is the issue.\n\nOperator: Our next question comes from the line of Tami Zakaria with JPMorgan.\n\nTami Zakaria: Question regarding South America, I see you tweaked lower your expectation for combines. But stepping back, should we view this year's decline in South America more like a temporary blip that reverses next year? Or are you seeing indications that this could be a weak market for a couple of more years before demand starts moving up again?\n\nGerrit Marx: Look Tami, the -- I mean Brazil, if you look back the last 40 years, Brazil, had always a very quick ramp to a peak year, and then it dropped quite sharply and it stayed there for a few years and then before it came back. I think the overall cycle dynamics in Brazil are very familiar to us. And the shape of the curve is this year no different than any other cycle before. What is a little different this time is that a few things come together, and like tariffs and the global trade and the new position of China when it comes to purchase global commodities and North and South American frictions.\n\nAnd I think that causes a little deeper and a little longer trough in this cycle than in prior cycles. And I think that is what we experienced right now in '26, which could drag into '27 as well. However, looking at the acreage in South America and knowing that we have 2.5 harvests in South America on many acres down there given the climate conditions that points at our machines aging 2.5x faster when it comes to ours on the machine than in other geographies that have only 1 harvest more or less 2.5x the ours. They planned and they plan differently. So maybe it's rather 2x the aging speed.\n\nBut that will point at a replacement plan across large ag equipment that becomes quite relevant as we enter into '27 and '28. So I think replacement will provide a floor. And while we go a little deep now and a little longer and in prior troughs, we would expect now that 2027 gives us some footing and with the new elected President in Brazil, whoever that will be certainty will in any case, add to more confidence when it comes to farming and purchase of machines. What that means the numbers we will need to see. But I think the floor will be reached over the course of this year as per our expectations.\n\nOperator: Our next question comes from the line of Daniela Costa with Goldman Sachs.\n\nDaniela Costa: I just wanted to follow up on Construction Equipment. You talked about the net pricing expectations for ag. And if you could elaborate sort of similar comments for construction equipment, do you think that can turn net positive at some point in the year? And then also on Construction Equipment, 2Q, given the volumes you guide for mid-teens, should we expected already to start breaking even in 2Q? .\n\nJames A. Nickolas: Daniela, it's Jim. So for the full year, we are not forecasting positive net pricing on the construction business because of the tariffs. Price loss balance to be net negative. Positive pricing, but then the product costs because of tariffs will grow at a higher rate. So net the product price and product cost net negative for the year. There'll be positive EBIT for the year, for the full year is still profitable, but the price cost is a negative equation for us this year. As it relates to Q2, construction business, yes, we do believe it will be above breakeven in Q2.\n\nAgain, they're going to -- they were penalized from the quality hole, the quality stock at the Wichita plant in Q1, and then that will be made up those sales will be realized in Q2. So a bit of a negative in Q1, bit of a positive in Q2, full year but of a wash.\n\nOperator: Our next question comes from the line of Ted Jackson with Northland.\n\nEdward Jackson: My question would be just kind of on sort of U.S. legislation and regulation. And I was just curious if you could give some kind of update and thoughts that you all have with regards to the farm bill, which is locked up inside of Congress and then also the efforts to push to EPA -- by the EPA to push for ethanol E15 full year. I mean if the farm bill gets locked up and those come out and we go through another year with it being funded down the road, does that change anything for you?\n\nAnd on the EPA side, on the EBIT team side, maybe just kind of some thoughts in terms of what you think it is in terms of the likelihood of that.\n\nGerrit Marx: Ted, look, the farm bill is -- has been long awaited and is still locked up and it is going to be helpful regardless. It is not going to suddenly boost in itself, it is not going to boost major equipment demands because our farmers, they need to see an operating profit on their bottom line, excluding subsidies and other money that is handed to them. Only if it's structurally positive, which is driven by commodity prices and input costs, only if that turns positive for them, this is the key enabler for equipment purchases because that means that the business is returning back to a healthy and sustainable operation allowing them to upgrade their fleets and advance new tech.\n\nSo farm bill is very, very helpful, and it's very needed. It is not going to be that one thing that is driving equipment demand from 1 day to another. When it comes to the regulation and legislations, I mean making E15 fuel, I mean, today, it was a temporary E10 -- and then -- sorry, temporary E15 now making it permanent. That has quite some positive impact on corn. I mean, we did some math here back of the envelope. And if everybody, which is not possible. But if everybody was shifting towards a consumption in the United States from E10 to E15, that amount of corn needed to produce that fuel.\n\nIf I just focus on corn, there are obviously other ways to produce that ethanol content. But that amount of corn is more or less equivalent probably to about the same acreage that is planted today with soybeans, earmarked for China. So I mean, there is a kind of a wash, however, not to be neglected that the marginality of soybeans for farmer is a significant higher than the marginality of corn. So while E15 will drive for corn, and we will see also other sources benefiting from that, and it will help stock levels to deplete a bit. It is overall a less profitable commodity than soybeans. So I think there is good momentum. It's helpful. It adds.\n\nIt is not a big ticket item that will turn things around, but it helps to build confidence. When it comes to EPA and emission standards, I mean, staying very, very focused on sustainability and low emissions, which we have already across the board with our machines. I think what EPA is targeting at is make it simpler and make it less disruptive if things happen in the field or reality strikes that suddenly, I don't know, you're running out of the additives and then the engine DD rates. So these things shouldn't happen, so it makes things simpler for our farmers in the field. I think that is also very beneficial the operation makes it simpler.\n\nIt does not take significant cost out of the machines though. If you imagine you were to roll back an emission standard for the United States, where we are running on, let's say, Tier 5, if you were to skip that or roll back. I mean the rest of the world will still move into higher level emission standards. And if I think if -- in North America, let's say, United States, if the emission standard would start to deviate from the rest of the world, I think that creates more complexity for us because we then need to build machines for a market with a specific, let's say, less sophisticated emission standard.\n\nAnd while the rest of the world is still on a higher level emission standard that might mean we can maybe reduce a few components from the machine because it's a less refined emission standard, but it does not lower the overall cost for us in producing because the rest of the world will not follow. So I think EPA's advancements are helpful to simplify and to make farmers life more focused on what they actually should do rather than be worried about their engines to be rail -- derate. But I think overall, as a cost reduction action, this has limitations when it comes to the machines themselves.\n\nOverall, all of it is helpful what it will take, needless to say and you all know that is better commodity prices and managed input costs so that a healthy operating margin emerges with the farmers, and they see the profitability or the overall farm health, which is not only the soil health, but also the economic health of the farm being sustainably advanced in the future, and it's very much driven by a few factors that are not yet clear, i.e., global trade commodity prices, and we'll see how the harvest will go this year.\n\nOperator: Our final question comes from the line of Judah Arnovitz with UBS.\n\nUnknown Analyst: Actually, 2 quick questions on price cost. In Ag, do you expect positive price cost each quarter for the rest of the year? And then just on the transportation costs, you mentioned if the conflict persists, what's your confidence in your ability to pass these costs on to customers in both ag and construction and then relative to the $70 million growth impact that you mentioned. What is that number year-to-date?\n\nJames A. Nickolas: Yes. Okay. So price cost for ag per quarter, yes, that just remained positive. So it's good news. On the construction side, we talked about that's not going to happen for the year given the tariff burden. And then I think your second question was the ability to pass on higher costs, logistics, et cetera. I think there will be a bit of a lag effect. And -- but you think that's certainly the ag business certainly has shown its ability to get pricing over time. I think that will continue. So I'd say, a high degree of confidence getting that pricing back. It may not be in the same quarter.\n\nAgain, there may be a bit of a lag, but a high degree of confidence in getting that back. On the construction business, less confident. It's a much more competitive fragmented market and not all players are impacted equally with these costs. So that's called medium level of confidence on the construction side. Year-to-date, I would say relatively small impact from elevated costs from the Iran conflict, et cetera, relatively small up till now. That's more in the windshield, not the review mirror. Again, we don't think it will be -- it will come to that.\n\nThat number I gave you $70 million is only if it persists sort of through the end of the year, and we don't think this is going to last at the end of the year.",
+              "source": {
+                "uri": "fool.com",
+                "dataType": "news",
+                "title": "The Motley Fool"
+              },
+              "authors": [
+                {
+                  "uri": "motley_fool_transcribing@fool.com",
+                  "name": "Motley Fool Transcribing",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://g.foolcdn.com/image/?url=https%3A%2F%2Fcdn.content.foolcdn.com%2Fimages%2F1umn9qeh%2Fproduction%2Fb4204f36ed605fc54d4ba32e2cb31d1dd892afd6-800x450.jpg%3Fw%3D800%26q%3D75%26fit%3Dmax%26auto%3Dformat&w=1200&op=resize",
+              "eventUri": null,
+              "sentiment": 0.2313725490196079,
+              "wgt": 515272659,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "BBBY",
+            "price": 7.7,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.93,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 6.27,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 7.64,
+            "zone_high": 7.76,
+            "center": 7.7,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.93,
+            "atr_value": 0.4667
+          },
+          {
+            "symbol": "BBBY",
+            "price": 6.27,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.93,
+            "created_by": "swing_high",
+            "nearest_upper_level": 7.7,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/20/26",
+            "source_date": "04/20/26",
+            "zone_low": 6.21,
+            "zone_high": 6.33,
+            "center": 6.27,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 6.93,
+            "atr_value": 0.4667
+          }
+        ]
+      },
+      "SEI": {
+        "daily_atr": 7.338,
+        "technical_atr": 0.58,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "SEI",
+          "headline": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+          "raw": {
+            "headline": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+            "published_at": "2026-04-30T19:17:39Z",
+            "source": "The Motley Fool",
+            "url": "https://www.fool.com/earnings/call-transcripts/2026/04/30/cnh-cnh-q1-2026-earnings-call-transcript/",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199318152",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "19:17:39",
+              "dateTime": "2026-04-30T19:17:39Z",
+              "dateTimePub": "2026-04-30T18:05:46Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.fool.com/earnings/call-transcripts/2026/04/30/cnh-cnh-q1-2026-earnings-call-transcript/",
+              "title": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+              "body": "Transportation and freight cost inflation -- if sustained -- could \"be up around $70 million.\" CFO James A. Nickolas stated, \"we would take action at some point if this elevated cost environment persists on the revenue side. We don't think that's needed just yet, but we're monitoring it very, very closely.\"\n\nManagement reaffirmed all major 2026 guidance ranges, including net sales, EBIT margins, and adjusted EPS, despite ongoing industry headwinds, currency shifts, and tariff policy volatility. The order book for Q2 is fully committed with disciplined loading practices, and Q3 coverage is substantial, reflecting emphasis on real dealer orders and risk management by geography. Strategic expansion in Europe via new product launches and multi-brand dealer consolidation is progressing, highlighted by a sold-out high-horsepower European tractor line and next-gen combine slot sell-outs. A new partnership with Abilene Machine is set to expand the company's aftermarket parts offering across dealer networks, further supported by technology deployments at 70% of dealer sites. Management confirmed production remains below retail by about 4%, especially in combines and Brazil. This may create a natural revenue/profit tailwind as inventory rationalization continues into 2027 when macro policy clarity is expected to improve.\n\nGerrit Marx: Thank you, Jason, and welcome to everyone joining the meeting. We are calling from Sioux Falls, South Dakota, where we just hosted our Board meeting. Sioux Falls is one of our CNH tech hubs, which we acquired through Raven. In Sioux Falls, we have about 300 colleagues who jointly with other sites, not only code and validate our on and offboard software, but also design the architecture of the next evolution of our digital machine hardware. I'm very proud of the advancements that we will be launching over the next couple of years. First quarter results were as expected and guided.\n\nGiven that Q1 seasonally our lowest quarter, we are at historically low industry demand in North America, and farmers in Brazil have ongoing financial challenges. During the quarter, additional complications emerged, including changing tariff rules and an escalated conflict in the Middle East. I'm very proud of the way the CNH team responded to all the challenges we faced, those we knew about going in and those that emerged during the quarter. We are now passing through what we expect to be the lowest period of the current ag industry cycle, supported by some replacement demand.\n\nAs we have said before, we also expect Q1 2026 to be the lowest quarter of the year, during which we diligently continued the disciplined management of all levers in our control. Despite the challenging quarter, we have many things to proudly share here. We kept production levels low in order to manage and contain channel inventory. Ag dealer inventory levels remained unchanged since the beginning of the year by design. Normally, dealers build inventory in Q1 in preparation for Q2, but the flat levels are in line with our overall plan to have the dealers reduce their inventories by about $500 million this year.\n\nWe have been quite disciplined to produce and ship only presold orders or fast-moving stock orders. The net of price and product cost was positive in agriculture as we focus on our operational efficiencies and quality improvements. And we do expect that some of price and product cost to be positive in agriculture for the full year as well. We are making solid progress on our efforts to take cost out and improve our overall product quality, countering the negative impact from tariffs and global supply chain disruptions. We also continue with a raving support our dealer and service network optimization with several new consolidations completed and our tech assist tool rolled out at about 70% of our dealer locations.\n\nAs a reminder, our AI tech assist delivers near instant diagnostic support while our visual parts search enables rapid and accurate parts identification. These capabilities enhance decision quality and deepen the value we deliver to customers and dealers, and there is much more to come, powered by the rapidly evolving power of artificial intelligence from generative to agentic capabilities. We, along with other industry participants have had productive discussions with members of the U.S. administration on how we can support farmers and builders during these times. We are optimistic about how some developments such as the recently announced increase in renewable fuel standards will help farmers through increased crop prices and demand.\n\nThere's a new equilibrium of supply and demand of agriculture commodities emerging in all major regions, as upcoming elections, trade deals, including and excluding the U.S. and rerouting of food and nonfood supply chains are settled over the next couple of years. So while market conditions are very dynamic, we are focused on solutions today and in the future that support our farmers and builders and that will deliver returns to our shareholders. Turning to the results, which reflect the expected and guided market headwinds and our decision to keep production very low. Consolidated revenues were $3.8 billion, flat year-over-year, including about 4% positive currency impacts. Our Ag segment sales were up 1% with EMEA up 20%.\n\nNorth America down 3%, and South America, down 28%. With farm incomes depressed and macroeconomic uncertainty, we saw continued softness in equipment demand. Industrial adjusted EBIT was a loss of $45 million, driven primarily by tariffs and high SG&A and R&D expenses, only partially offset by positive pricing and cost savings actions. For the quarter, adjusted net income was $21 million, with adjusted EPS at $0.01. Free cash flow from Industrial Activities was a $569 million outflow in line with Q1 2025 and consistent with the working capital seasonality of the first quarter, where we usually build up some company inventory in preparation for Q2 sales.\n\nWe remain more committed than ever to strengthen the company and prioritizing long-term value creation. Our company strategy is centered around 5 key strategic pillars: expanding product leadership, advancing our iron and tech integration, driving commercial excellence, operational excellence and quality as a mindset. These pillars remain front and center to ensure we stay aligned with our long-term strategic objectives and our team remains focused and united in our shared purpose to serve and advance those who feed and build the world we all live in. From all the great steps forward we took in the last quarter, I would like to focus today on our operational excellence and specifically our manufacturing plant efficiencies.\n\nWe use a wide range of tools and latest technologies to unlock cost efficiencies at our manufacturing plants. Last year, we conducted about 1,400 projects, which led to $45 million in savings as we reported to you already last quarter. Individually, these projects may seem modest, but the results are profound when we add them all up. In addition, many of the projects include quality improvements to the product shipped out from our factories. An example of one of those projects was a fiber laser installed last year at our Fargo, North Dakota plant where we make our 4-wheel drive tractors. This machine is used to cut sheet steel and replace an old plasma punch machine.\n\nThe new process is 52% faster than before, while also reducing other consumables such as oil and lubricants, minimizing secondary operations and my favorite, improving quality. More efficient operations paired with better quality are a win for both CNH and our customers. With that, I will now turn the call over to Jim to take us through the details of our financials and guidance.\n\nJames A. Nickolas: Thank you, Gerrit. Agriculture Q1 net sales were about $2.6 billion up 1% year-over-year, including 4% positive currency translation. Sales volumes were lower in North and South America and favorable pricing came mainly from North America. Sales volumes and pricing were up in EMEA, mostly in Europe for both tractors and combines, fueled by moderately favorable industry demand and some market share gain. Gross margin was 19.1% from 20% a year ago. Agriculture adjusted EBIT margin was 1% from 5.4% in Q1 2025. The positive pricing and the cost saving contribution only partially offset negative original mix and tariff impacts.\n\nThe higher year-over-year R&D and SG&A expenses were consistent with our indications with both affected by lower variable compensation in 2025 and labor inflation in 2026. Construction net sales in the quarter were lower 3% year-over-year to $574 million, as higher sales in EMEA were more than offset by lower sales in North and South America. We were initially expecting sales to be a bit higher in North America but we held back sales while working out a supplier quality issue to protect the customer. That issue is now resolved and those sales will be made up in Q2. Q1 gross margin was 11.8% from 14.9% a year ago, largely due to tariff impacts.\n\nConstruction SG&A was unfavorable due to trade show marketing costs, lower variable compensation in 2025 and labor inflation in 2026. Q1 adjusted EBIT margin was negative 4.9%. In Financial Services, segment net income in the quarter was $74 million, down versus 2025, mainly due to higher risk costs in Brazil. Retail originations in the first quarter were $2.2 billion, and the managed portfolio ended the quarter at $28 billion. Sequential delinquency rates increased slightly to 3.5%, primarily driven by persistent economic difficulties in South America. Our capital allocation priorities remain the same, reinvesting in our business while maintaining a healthy balance sheet and then returning cash to shareholders.\n\nDuring the first 3 months of 2026, we repurchased $26 billion worth of CNH stock at average price of about $10.70 per share. Before we dive into our guidance, let's take a look at the expected tariff impact on our margins, as we had a meaningful change recently in the way they will be applied to our products. First, we need to acknowledge that we did enjoy a brief period of release with naive tariffs were replaced by Section 122 tariffs at 10%, that lasted for about 1.5 months. Just something to keep in mind when we eventually think about run rates in 2027.\n\nAt the beginning of April, there was a change in the way Section 232 tariffs on steel and aluminum are applied. At a very simple level, it means we went from paying 50% on the value of only the metal to now paying anywhere from 0% to 50% on the total value of the component or machine, depending on what it is. For whole machine imports, we are now paying 25% on the total value of the unit, which overall is higher than what we paid before. However, for some component imports, the tariffs can actually be lower. In our Agriculture business, the impact of this change is net neutral for calendar year 2026.\n\nSo we still forecast the tariff cost impact to be about 210 to 220 basis points of impact on ag margins or no change from our view last quarter. For construction, we're not expecting to get as much of that component benefit as in ag. And so now we expect about a 600 basis point impact on our construction margins compared to our original expectations of roughly 500 points. It's important to note that Section 301 investigations are ongoing for products coming from China, the EU, India and Mexico. We have not included any factors for that in this forecast, but we will provide an update if there are material changes.\n\nLet's first look together at our agriculture industry outlook for 2026. We have slightly improved our outlook for small tractors and combines in North America. In EMEA, we have lowered the tractor outlook, but we are more optimistic for combines. And in South America, we have lowered the outlook for combines. Market risk in South America is elevated due to tighter credit and delays in government-backed financing in Brazil. As a result, we are watching the situation there closely. In total, we still see the industry at about 80% of mid-cycle.\n\nWhen we balance all those changes, along with our unchanged assumptions for favorable currency translation of 2% and positive pricing of 1.5% to 2%, we are comfortable reaffirming our net sales guidance of flat, down 5%. As mentioned earlier, our tariff assumptions for agriculture are net unchanged. While we are seeing increased freight and transportation costs, we are optimistic that our ongoing cost reduction programs and updated geographic mix will be able to offset those impacts. As a result, we are reaffirming our EBIT margin guidance of 4.5% to 5.5%. In construction, we have fine-tuned our industry forecasts across the regions based on Q1 trends and market conditions. And overall, we are slightly lower than our previous expectations.\n\nHowever, we still forecast our own net sales to be about flat year-over-year, including about 1% of favorable currency translation and 2% of pricing. EBIT margin is forecasted to be between 1% and 2% as we focus on cost reductions to offset the increased impact of the tariffs discussed earlier. Putting all those elements together, then we reaffirm our forecast for 2026 industrial net sales to be flat to down 4% year-over-year and industrial EBIT margin to be between 2.5% and 3.5%. Industrial free cash flow is still forecasted to be between $150 million and $350 million. Adjusted EPS is reaffirmed at between $0.35 and $0.45, assuming an average share count of about $1.25 billion.\n\nTo help you with remodeling, I'll provide some additional considerations for our second quarter. Our order books are full for the second quarter, and we're expecting agriculture net sales to be about flat on a year-over-year basis. We're keeping a close eye on conditions in South America as conditions for farmers there remain very difficult. Construction net sales will be higher in the mid-teens, and that includes some of those sales originally expected in Q1. The construction increase is most pronounced in North America. Transportation costs and the tariff payments are another watch point. The team has done a great job working through these rapid changes and will continue to be vigilant.\n\nI'll note, too, that grain prices ticked up a little along with oil prices, they remain below what many consider breakeven levels for farmers, which continue to be -- which continue to challenge their economics. Although both agriculture and construction Q2 EBIT margins are forecasted to follow into the full year guidance ranges. Taken together with the lower Q1, this implies that we expect margins in the second half of the year to be sequentially better than the first half, as is typical. Furthermore, we also expect that both the ag and construction margins will be better on a year-over-year basis in the second half of the year.\n\nFinancial Services net income in Q2 will be lower year-over-year by $20 million to $25 million. With that, I will turn it back to Gerrit.\n\nGerrit Marx: Thank you, Jim. Let me finish up with some thoughts about the rest of the year. Against the backdrop of heightened global uncertainty, we remain focused on our purpose to serve and advance the world's farmers and builders. That means closely monitoring developments while continuing to deliver for our dealers and end customers through disciplined production planning and a clear path to lean channel inventories by year-end. We continue working on our iron and our tech developments and product launches and delivering on our long-term margin improvement efforts. We continue to work with our dealer partners on finding the right network configuration in each of the markets that we serve.\n\nIn another step to support our dealers and farmers, we have recently entered into a strategic relationship with [ Abilene ] Machine through a minority equity stake. The relationship will allow CNH to offer our dealer network a comprehensive aftermarket parts portfolio with upcoming access to the Abilene Machine portfolio of all makes parts. This further enables our aim to provide our dealers and customers good, better and the best options to service their equipment fleets regardless of age or brand affinity. In North America and Europe, the average age of ag equipment in the field has been trending older. This should build up a modest demand for new machines in the coming quarters.\n\nSignificant equipment demand increases usually only happen when there is a good increase in commodity prices that support farm incomes. As Jim mentioned, farmers in South America are a little more cautious and will probably continue to be so at least through the end of the year, and so we will be as well. Selling a machine is one thing, collecting its monthly installments is another, and we have been thoughtfully managing that jointly with our network partners during this difficult period. As we expect to evolve from the industry trough, we look forward to capitalizing on all the improvements that we have made during -- serving and advancing those who feed and build the world, always breaking new ground.\n\nThis concludes our prepared remarks, and we can now start the Q&A session.\n\nOperator: [Operator Instructions] We will take our first question from the line of Tim Thein with Raymond James.\n\nTimothy Thein: I just had -- my question on ag. The -- as we look at the production slots for the coming quarters, can you maybe give some context there in terms of, a, I'm curious if you've seen -- has there been any significant changes in terms of the actual build rates implied within -- maybe by region or if there's been any changes there? And then just any comments in terms of kind of regional order commentary. I mean you stressed the softness and the concern around South America. Maybe a little bit more context of what you're seeing within that order board maybe in your largest region in North America?\n\nGerrit Marx: Thank you, Tim. So as Jim alluded to, we are fully booked in Q2, and we have a pretty healthy coverage already for Q3, while being very disciplined in actually loading orders to production because, as I said, we focus on real dealer, let's say, customer orders and orders from dealers referring to machines that have a very high probability to liquidate in due course as we continue to manage our general inventory. Usually, when we see the market picking up again, which we do not yet see at this point. We would obviously load production more with what we call company orders, where we hold inventory on our side to quickly react to a changing market environment.\n\nSo when we talk about already a Q2 fully booked into Q3 in a good shape, this happens on the basis of a very disciplined order loading to the factories. As per the regional differences, we're pretty happy with the way how things go in Europe. The team makes great progress in building the foundation for gaining share as we do. And we are accelerating our dealer multi-brand consolidation across the region. And you will hear us talk about that almost, I think, probably every quarter from now on.\n\nBut definitely, for the full year 2026, and obviously, this dealer network consolidation is going to drive as well order momentum in the region as we not only break new ground, but they actually gain ground. Similarly, for the United States, where the market is going backwards as we projected and guided to, we see on the low levels, very good momentum with our dealers when it comes to interacting with our customers. So that is also in a good place.\n\nAnd the region where we have extra efforts and extra attention is, as you also picked up is Latin America, particularly Brazil, although Argentina is not that different in its current dynamics where the farmers are still in a wait-and-see situation in light of upcoming elections in Brazil. And still, the consequences of trade deals still need to show in actual trades of commodities and pricing of those commodities. So I think in Latin America, we apply extra discipline to the taking of orders, making sure that we preserve margins despite a significant price pressure in the market given that all the industry participants had expected a better evolution of market demand, which isn't the case.\n\nAnd so extra discipline is required for LatAm in the order take and that is also seen in our Q3 order take. But overall, we are in a good shape going through Q2 as we look at Q3.\n\nJames A. Nickolas: If I could add to that, in the Latin America, Brazil, in particular, given the tight conditions, we, along others have tightened underwriting standards, and I think that's also acting industry demand. So it's not a CNH concern. It's an industry-wide country-wide concern.\n\nGerrit Marx: Yes. And maybe last commentary on Asia Pacific, although small, but growing quite a bit. Our teams in India have hit new record highs in terms of production market share, and we really, really built momentum there with our newly launched compact factor lineup, and the to be launched, new utility-light small tractor lineup, not only for India, but for the export, which will mean a step change in small and compact machines that we will ship around the world from India, while we see stable and good progress in China and a rather flattish development in Australia and New Zealand, where the market is basically running on replacement demand only at this point in time.\n\nOperator: Our next question comes from the line of Angel Castillo with Morgan Stanley.\n\nUnknown Analyst: This is Esther on for Angel Castillo. Just on tariffs and the broader trade backdrop, can you just give us a little bit more color on how you're sizing the impact you're seeing today versus the original tariff impact guide? And how much of that do you think is being offset by pricing versus operational actions? So just like more color on like kind of how you see that dynamic through the year?\n\nJames A. Nickolas: Sure. Yes. Esther. It's Jim. The -- as we indicated, the ag business, really no net change versus prior guidance. So you think about full year 210 to 220 basis points of a drag versus if there weren't tariffs. So call it, full year cost of $120 million on the ag business. Now that's -- and that's in line with where we were last quarter. There were some puts and takes. [indiscernible] lower gave us some relief, offset by higher impact, higher cost from Section 232 changes. And so that's really a broad for the ag business.\n\nOn the construction business, it's a bit of a headwind moving from 500 basis points of a headwind to 600 basis points of headwind, again, as opposed to no tariffs. So that's really where it ends up. So we took our lumps, I would say, when they were first launched at Liberation Day. And then since then, the changes thus far have been relatively minor for us overall. The one area that we haven't quantified and are waiting to see where it lands are the Section 301 tariffs, which are sort of related to investigations. The U.S. government is conducting with various counterparties in the trade, EU, India, Brazil, et cetera.\n\nSo that one is unknown at this point, but I think that covers the landscape of tariffs.\n\nOperator: Our next question comes from the line of Kristen Owen with Oppenheimer & Co.\n\nKristen Owen: I wanted to talk through how you're thinking about back half scenarios, just given the consents of now we're looking at higher fertilizer prices, higher transportation cost, some of these acute challenges that you've called out in Brazil versus maybe a little bit stronger forward commodity curve, how that's influencing the range of scenarios that we could see in the back half of the year?\n\nJames A. Nickolas: Yes. Kristen, the -- again, the range of probable outcomes is pretty wide still in keeping with the last year or so of macroeconomic uncertainty. The fertilizer impact higher cost. So that's less of a concern for 2026 for most of the world. I mean it's a concern, but it's not -- it shouldn't impact us too much this year, second half aside from Brazil, Brazil is where it's going to have more of an impact given their multiple harvests and planting seasons. So there's a little bit of risk, I think, in Brazil from the higher fertilizer costs on top of the credit conditions we mentioned earlier. Transportation costs are growing in most places.\n\nWe are viewing this as something we can offset today. It's sort of the higher cost due to the Iran conflict persist throughout the year, which we're not forecasting, but if they were to persist throughout the year, the gross net increase in cost could be up around $70 million, that $70 million is gross. It assumes no countermeasures from us in terms of transportation surcharges or lower discounting, we would take action at some point if this elevated cost environment persists on the revenue side. We don't think that's needed just yet, but we're monitoring it very, very closely. So at the back half, we think we've got things balanced out given our levers.\n\nBut right now, the unknown is the higher elevated transportation cost, that's the primary factor, logistics from shipping and trucking from the higher diesel and fuel costs. So that's the one we're watching closely. And if it persists for a longer period of time, we'll need to make some counter measures to happen on the revenue side.\n\nOperator: Our next question comes from the line of Jamie Cook with Truist Securities.\n\nJamie Cook: I guess just 2 questions. I guess, encouraging to see we kept guidance the same and everything seems on track. Obviously, lots of positives and negatives out there. But Gerrit, if you could just comment on, one, understanding it's early on about how you're thinking about the setup for 2027, I guess, for ag in particular, where you would be most constructive or more worried, I guess, Brazil would probably be that area.\n\nAnd then from just a company-specific perspective, with a lot of the company-specific initiatives, streamlining of cost structure, supply chain, all those quality, all those things assuming a flat market in 2027, how do we think about earnings for CNH or potential positives that CNH could realize even in a flat market?\n\nGerrit Marx: Jamie, well, look, we're getting ready for whatever comes our way in 2027. We do see -- as I mentioned, momentum in Europe. We expect the U.S., the North American market to see the trough this year. And in South America, despite the very low levels where we are traveling and we are still probably in Brazil itself looking for the grounding in this trough. We will enter 2027 with a far greater level of certainty around certain factors. Elections in Brazil and South America will be behind us. We'll have the midterms behind us. We will have clarity around all the tariff items that Jim mentioned, most notably the 301.\n\nWe will see how the administration positions themselves in various different trade deals around the world. And we will see, and that is what I understood from my interactions in Washington is we will see a greater level of detail in the particular bilateral trade deals that are still ongoing and with a particular focus on commodity trade and commodity flows out from the U.S. This will give us a good footing there. I mean in the end, the aging machine park, every acre around the world has been planted and harvested this year, and the same is going to happen next year.\n\nAnd this puts the hours on all machines and everybody's machines that it takes in order to do the job. So despite markets going slow, the machines are aging at fairly the same pace. And as we enter into 2027 and looking at the average age of the machine parts, we do expect some support from replacement demand across the world, obviously, and then also with a greater level of certainty around those bilateral trade deals and maybe with some support of commodity price momentum for 2027. However, we do not back a market bounce in our own actions. What we do is we remain very disciplined on cost.\n\nWe are making good progress, great progress actually in taking cost out of our supply chain and procurement area. We have even slightly overdelivered our own internal expectations as it came to quality costs last year, and we will continue to do so over the course of this year. We are looking at structural costs. We do have identified pockets of AI deployment, which in first and foremost, will help us to drive productivity in our own operations, such as software coding. I mean we are here in Sioux Falls, and this is one of the sites where we do code our software.\n\nAnd I've seen great examples now of actually a pretty impressive acceleration from the AI advancements over the last 6 months, what can be done in this area. And all of these elements will help us to go faster with tech while reducing our cost base in relative terms and against the backdrop of global and heightened global certainty with those points that are causing right now the uncertainty among our farmers, particularly. So this is something that we stay focused on. And I feel pretty good about the progress we are making against all the commitments we put out there. And then we'll see when the market comes back.\n\nThis is overall still see and wait where we don't wait, actually, we act. So it's a see and act phase for us, improving things. And 2027 will be probably a better year than 2026.\n\nJames A. Nickolas: If I could just add one, we're also underproducing versus retail in 2026. So assuming we -- by about 4%. So assuming we produce at retail levels next year, that should be a natural tailwind revenues or profits.\n\nOperator: Our next question comes from the line of Kyle Menges with Citigroup.\n\nKyle Menges: I was hoping if you could talk about just any changes you're seeing in industry competition, specifically pricing across any of the major regions as well as just how you think your inventory position is versus the industry? And then just a quick tariff question. You mentioned could be a 0% to 50% tariff would just be helpful to hear examples of cases where it would be 0 versus 50% now?\n\nGerrit Marx: Thanks, Kyle. I will defer the tariff point to Jim. We do see a continued positive price cost development for us, which I don't know what the others are doing, but we do see that building on top of advancing technologies and product launches as well that we have throughout 2026 and the beginning of 2027. We have launched our new short rebase or standard rebased tractor in Europe, also on top of the range, long wheelbase tractor hitting first time ever segment CNH has never played in, which is a sector of 350 to 450 horsepower in the European style designed tractor that is sold around the world.\n\nAnd with these launches, and actually, we are sold out on those with the production slot we have allocated. We also sold out on our next-gen combines this year. We see great momentum in our product, great demand. And with that demand and obviously, further launches of our also offboard systems, connecting the onboard. We have a good base to advance our farmers and with that also have a good net price realization over the next couple of quarters as we also go into 2027. So for the full year, we expect a positive price cost here. On the inventory side, I alluded to a $500 million further reduction of our global channel inventory. This is -- dealer inventory.\n\nThis is something we will very closely monitor because if there are swings in markets that we see coming maybe more positive on the other way, more negative developments, we will adjust those in inventory targets and destocking activities accordingly. For now, we feel pretty good where we are. We get very good feedback from our dealers. We have cleared aged inventories. We have cleared stock that was hard to sell. And now we are approaching the levels that we want to see with our dealers also to lighten up the financial burden on floor planning, and their overall exposure to that. So that is on a good track. We delivered what we said we will.\n\nAnd I'm quite curious to see what happens in the next quarters, carefully reading commodity prices, carefully reading the demand in every region of the world. And I think, overall, in a good shape on our track in 2026, which is the trough year most notably, probably in like 20 or 30 years of ag. We have never been that low in terms of unit sales in our industry and we are holding up not only, but we are actually building further strength as we go into the future years. So that feels overall quite good. Jim, on tariffs.\n\nJames A. Nickolas: Yes. Kyle, it kind of depends on the HTS codes, the harmonized tariff schedules. There's a bunch of those. And I don't have the details to discuss this in particular, but we can take that probably offline at some point. .\n\nOperator: Our next question comes from the line of David Raso with Evercore ISI.\n\nDavid Raso: Two questions. One, can you give us an update on where you stand strategically with the construction business? And second, the production below retail of 4%. Can you give us a little color, be it geographic or large versus small tractors, combines just that combination that gets you to the down -- or sorry, below 4% retail globally?\n\nGerrit Marx: David, I'll take the first, and Jim takes the second question. As I mentioned during the last quarterly earnings call and the full year 2025 financials, we have restarted our discussions with several partners for our construction business. These discussions advance a pace. We don't rush anything. There are very good conversations that we have that will build a stronger CE lineup for the construction business, and that will also further enhance the construction machines that we expect to get shipped under the New Holland construction brand back to our ag dealers. So progress is made as we speak. We don't rush things.\n\nWe take the time it takes, and we will update you when we have made a conclusion not saying when that will be the case. But in -- I think over the course of the remainder of 2026 or first half of 2027, we should be clear on the path forward for our construction business, which is a very, very relevant piece as a product for our dealers, but not necessarily has to be in our ownership in order to deliver product and service to those through build and farm the world. So that is what I can tell you.\n\nSo time wise, we are pretty much a pace of what we said last time over the course of '26 and '27, we'll come back with the progress on that one. But I'm pretty confident that we are moving towards a solution here.\n\nJames A. Nickolas: Yes. And [indiscernible] question, the underproduction is a rough, but more underproduction happening in combines, less underproduction in tractors, although both are underproduced in 2026. And by geography, I would say balanced, but probably a little bit more under production occurring in Brazil this year for the -- there we talked earlier about the challenges there.\n\nOperator: Our next question comes from the line of Joel Jackson with BMO Capital Markets.\n\nUnknown Analyst: It's Evan on for Joel Jackson. I just wanted to circle back on the credit dynamic. You pointed out for Q2, Q3 considerations of higher risk reserves, just wonder to see if you can give any extra color on that. Is that all Brazil? Are you seeing delinquencies currently higher bad debt?\n\nJames A. Nickolas: Yes. It's slightly up in more mature markets, but nothing notable. The real increases are Brazil, primarily and secondarily, Argentina, but to a lesser degree. And in Brazil, May is a big payment month. And so every year in May, we see an uptick in delinquencies, that's typical seasonality. I would expect to see it again this year. And it remains elevated. It's something that bears watching. We're actively managing it. It is not getting worse, but it's not getting better at the same time, so it bears customer-by-customer discussions trying to make sure that they stay current. So I would expect an uptick in delinquencies in Q2 of this year, like we always see.\n\nAnd I'd say, again, it's mostly focused in Latin America is the issue.\n\nOperator: Our next question comes from the line of Tami Zakaria with JPMorgan.\n\nTami Zakaria: Question regarding South America, I see you tweaked lower your expectation for combines. But stepping back, should we view this year's decline in South America more like a temporary blip that reverses next year? Or are you seeing indications that this could be a weak market for a couple of more years before demand starts moving up again?\n\nGerrit Marx: Look Tami, the -- I mean Brazil, if you look back the last 40 years, Brazil, had always a very quick ramp to a peak year, and then it dropped quite sharply and it stayed there for a few years and then before it came back. I think the overall cycle dynamics in Brazil are very familiar to us. And the shape of the curve is this year no different than any other cycle before. What is a little different this time is that a few things come together, and like tariffs and the global trade and the new position of China when it comes to purchase global commodities and North and South American frictions.\n\nAnd I think that causes a little deeper and a little longer trough in this cycle than in prior cycles. And I think that is what we experienced right now in '26, which could drag into '27 as well. However, looking at the acreage in South America and knowing that we have 2.5 harvests in South America on many acres down there given the climate conditions that points at our machines aging 2.5x faster when it comes to ours on the machine than in other geographies that have only 1 harvest more or less 2.5x the ours. They planned and they plan differently. So maybe it's rather 2x the aging speed.\n\nBut that will point at a replacement plan across large ag equipment that becomes quite relevant as we enter into '27 and '28. So I think replacement will provide a floor. And while we go a little deep now and a little longer and in prior troughs, we would expect now that 2027 gives us some footing and with the new elected President in Brazil, whoever that will be certainty will in any case, add to more confidence when it comes to farming and purchase of machines. What that means the numbers we will need to see. But I think the floor will be reached over the course of this year as per our expectations.\n\nOperator: Our next question comes from the line of Daniela Costa with Goldman Sachs.\n\nDaniela Costa: I just wanted to follow up on Construction Equipment. You talked about the net pricing expectations for ag. And if you could elaborate sort of similar comments for construction equipment, do you think that can turn net positive at some point in the year? And then also on Construction Equipment, 2Q, given the volumes you guide for mid-teens, should we expected already to start breaking even in 2Q? .\n\nJames A. Nickolas: Daniela, it's Jim. So for the full year, we are not forecasting positive net pricing on the construction business because of the tariffs. Price loss balance to be net negative. Positive pricing, but then the product costs because of tariffs will grow at a higher rate. So net the product price and product cost net negative for the year. There'll be positive EBIT for the year, for the full year is still profitable, but the price cost is a negative equation for us this year. As it relates to Q2, construction business, yes, we do believe it will be above breakeven in Q2.\n\nAgain, they're going to -- they were penalized from the quality hole, the quality stock at the Wichita plant in Q1, and then that will be made up those sales will be realized in Q2. So a bit of a negative in Q1, bit of a positive in Q2, full year but of a wash.\n\nOperator: Our next question comes from the line of Ted Jackson with Northland.\n\nEdward Jackson: My question would be just kind of on sort of U.S. legislation and regulation. And I was just curious if you could give some kind of update and thoughts that you all have with regards to the farm bill, which is locked up inside of Congress and then also the efforts to push to EPA -- by the EPA to push for ethanol E15 full year. I mean if the farm bill gets locked up and those come out and we go through another year with it being funded down the road, does that change anything for you?\n\nAnd on the EPA side, on the EBIT team side, maybe just kind of some thoughts in terms of what you think it is in terms of the likelihood of that.\n\nGerrit Marx: Ted, look, the farm bill is -- has been long awaited and is still locked up and it is going to be helpful regardless. It is not going to suddenly boost in itself, it is not going to boost major equipment demands because our farmers, they need to see an operating profit on their bottom line, excluding subsidies and other money that is handed to them. Only if it's structurally positive, which is driven by commodity prices and input costs, only if that turns positive for them, this is the key enabler for equipment purchases because that means that the business is returning back to a healthy and sustainable operation allowing them to upgrade their fleets and advance new tech.\n\nSo farm bill is very, very helpful, and it's very needed. It is not going to be that one thing that is driving equipment demand from 1 day to another. When it comes to the regulation and legislations, I mean making E15 fuel, I mean, today, it was a temporary E10 -- and then -- sorry, temporary E15 now making it permanent. That has quite some positive impact on corn. I mean, we did some math here back of the envelope. And if everybody, which is not possible. But if everybody was shifting towards a consumption in the United States from E10 to E15, that amount of corn needed to produce that fuel.\n\nIf I just focus on corn, there are obviously other ways to produce that ethanol content. But that amount of corn is more or less equivalent probably to about the same acreage that is planted today with soybeans, earmarked for China. So I mean, there is a kind of a wash, however, not to be neglected that the marginality of soybeans for farmer is a significant higher than the marginality of corn. So while E15 will drive for corn, and we will see also other sources benefiting from that, and it will help stock levels to deplete a bit. It is overall a less profitable commodity than soybeans. So I think there is good momentum. It's helpful. It adds.\n\nIt is not a big ticket item that will turn things around, but it helps to build confidence. When it comes to EPA and emission standards, I mean, staying very, very focused on sustainability and low emissions, which we have already across the board with our machines. I think what EPA is targeting at is make it simpler and make it less disruptive if things happen in the field or reality strikes that suddenly, I don't know, you're running out of the additives and then the engine DD rates. So these things shouldn't happen, so it makes things simpler for our farmers in the field. I think that is also very beneficial the operation makes it simpler.\n\nIt does not take significant cost out of the machines though. If you imagine you were to roll back an emission standard for the United States, where we are running on, let's say, Tier 5, if you were to skip that or roll back. I mean the rest of the world will still move into higher level emission standards. And if I think if -- in North America, let's say, United States, if the emission standard would start to deviate from the rest of the world, I think that creates more complexity for us because we then need to build machines for a market with a specific, let's say, less sophisticated emission standard.\n\nAnd while the rest of the world is still on a higher level emission standard that might mean we can maybe reduce a few components from the machine because it's a less refined emission standard, but it does not lower the overall cost for us in producing because the rest of the world will not follow. So I think EPA's advancements are helpful to simplify and to make farmers life more focused on what they actually should do rather than be worried about their engines to be rail -- derate. But I think overall, as a cost reduction action, this has limitations when it comes to the machines themselves.\n\nOverall, all of it is helpful what it will take, needless to say and you all know that is better commodity prices and managed input costs so that a healthy operating margin emerges with the farmers, and they see the profitability or the overall farm health, which is not only the soil health, but also the economic health of the farm being sustainably advanced in the future, and it's very much driven by a few factors that are not yet clear, i.e., global trade commodity prices, and we'll see how the harvest will go this year.\n\nOperator: Our final question comes from the line of Judah Arnovitz with UBS.\n\nUnknown Analyst: Actually, 2 quick questions on price cost. In Ag, do you expect positive price cost each quarter for the rest of the year? And then just on the transportation costs, you mentioned if the conflict persists, what's your confidence in your ability to pass these costs on to customers in both ag and construction and then relative to the $70 million growth impact that you mentioned. What is that number year-to-date?\n\nJames A. Nickolas: Yes. Okay. So price cost for ag per quarter, yes, that just remained positive. So it's good news. On the construction side, we talked about that's not going to happen for the year given the tariff burden. And then I think your second question was the ability to pass on higher costs, logistics, et cetera. I think there will be a bit of a lag effect. And -- but you think that's certainly the ag business certainly has shown its ability to get pricing over time. I think that will continue. So I'd say, a high degree of confidence getting that pricing back. It may not be in the same quarter.\n\nAgain, there may be a bit of a lag, but a high degree of confidence in getting that back. On the construction business, less confident. It's a much more competitive fragmented market and not all players are impacted equally with these costs. So that's called medium level of confidence on the construction side. Year-to-date, I would say relatively small impact from elevated costs from the Iran conflict, et cetera, relatively small up till now. That's more in the windshield, not the review mirror. Again, we don't think it will be -- it will come to that.\n\nThat number I gave you $70 million is only if it persists sort of through the end of the year, and we don't think this is going to last at the end of the year.",
+              "source": {
+                "uri": "fool.com",
+                "dataType": "news",
+                "title": "The Motley Fool"
+              },
+              "authors": [
+                {
+                  "uri": "motley_fool_transcribing@fool.com",
+                  "name": "Motley Fool Transcribing",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://g.foolcdn.com/image/?url=https%3A%2F%2Fcdn.content.foolcdn.com%2Fimages%2F1umn9qeh%2Fproduction%2Fb4204f36ed605fc54d4ba32e2cb31d1dd892afd6-800x450.jpg%3Fw%3D800%26q%3D75%26fit%3Dmax%26auto%3Dformat&w=1200&op=resize",
+              "eventUri": null,
+              "sentiment": 0.2313725490196079,
+              "wgt": 515272659,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "SEI",
+            "price": 74.44,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 2,
+            "strength_score": 13.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 77.12,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/24/26",
+            "source_date": "04/29/26",
+            "zone_low": 73.56,
+            "zone_high": 75.32,
+            "center": 74.44,
+            "families": [
+              "gap"
+            ],
+            "strength": 13.0,
+            "atr_value": 7.338
+          },
+          {
+            "symbol": "SEI",
+            "price": 81.24,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.97,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 77.12,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 79.89,
+            "zone_high": 82.12,
+            "center": 81.12,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.97,
+            "atr_value": 7.338
+          },
+          {
+            "symbol": "SEI",
+            "price": 77.12,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 81.12,
+            "nearest_lower_level": 74.44,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 76.24,
+            "zone_high": 78.0,
+            "center": 77.12,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.0,
+            "atr_value": 7.338
+          }
+        ]
+      },
+      "SANM": {
+        "daily_atr": 16.786,
+        "technical_atr": 1.97,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD",
+          "{A:800015:L:en}AMD Supplier Up 40% This Month Soars On Earnings Beat -- IBD"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "SANM",
+          "headline": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+          "raw": {
+            "headline": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+            "published_at": "2026-04-30T19:17:39Z",
+            "source": "The Motley Fool",
+            "url": "https://www.fool.com/earnings/call-transcripts/2026/04/30/cnh-cnh-q1-2026-earnings-call-transcript/",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199318152",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "19:17:39",
+              "dateTime": "2026-04-30T19:17:39Z",
+              "dateTimePub": "2026-04-30T18:05:46Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.fool.com/earnings/call-transcripts/2026/04/30/cnh-cnh-q1-2026-earnings-call-transcript/",
+              "title": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+              "body": "Transportation and freight cost inflation -- if sustained -- could \"be up around $70 million.\" CFO James A. Nickolas stated, \"we would take action at some point if this elevated cost environment persists on the revenue side. We don't think that's needed just yet, but we're monitoring it very, very closely.\"\n\nManagement reaffirmed all major 2026 guidance ranges, including net sales, EBIT margins, and adjusted EPS, despite ongoing industry headwinds, currency shifts, and tariff policy volatility. The order book for Q2 is fully committed with disciplined loading practices, and Q3 coverage is substantial, reflecting emphasis on real dealer orders and risk management by geography. Strategic expansion in Europe via new product launches and multi-brand dealer consolidation is progressing, highlighted by a sold-out high-horsepower European tractor line and next-gen combine slot sell-outs. A new partnership with Abilene Machine is set to expand the company's aftermarket parts offering across dealer networks, further supported by technology deployments at 70% of dealer sites. Management confirmed production remains below retail by about 4%, especially in combines and Brazil. This may create a natural revenue/profit tailwind as inventory rationalization continues into 2027 when macro policy clarity is expected to improve.\n\nGerrit Marx: Thank you, Jason, and welcome to everyone joining the meeting. We are calling from Sioux Falls, South Dakota, where we just hosted our Board meeting. Sioux Falls is one of our CNH tech hubs, which we acquired through Raven. In Sioux Falls, we have about 300 colleagues who jointly with other sites, not only code and validate our on and offboard software, but also design the architecture of the next evolution of our digital machine hardware. I'm very proud of the advancements that we will be launching over the next couple of years. First quarter results were as expected and guided.\n\nGiven that Q1 seasonally our lowest quarter, we are at historically low industry demand in North America, and farmers in Brazil have ongoing financial challenges. During the quarter, additional complications emerged, including changing tariff rules and an escalated conflict in the Middle East. I'm very proud of the way the CNH team responded to all the challenges we faced, those we knew about going in and those that emerged during the quarter. We are now passing through what we expect to be the lowest period of the current ag industry cycle, supported by some replacement demand.\n\nAs we have said before, we also expect Q1 2026 to be the lowest quarter of the year, during which we diligently continued the disciplined management of all levers in our control. Despite the challenging quarter, we have many things to proudly share here. We kept production levels low in order to manage and contain channel inventory. Ag dealer inventory levels remained unchanged since the beginning of the year by design. Normally, dealers build inventory in Q1 in preparation for Q2, but the flat levels are in line with our overall plan to have the dealers reduce their inventories by about $500 million this year.\n\nWe have been quite disciplined to produce and ship only presold orders or fast-moving stock orders. The net of price and product cost was positive in agriculture as we focus on our operational efficiencies and quality improvements. And we do expect that some of price and product cost to be positive in agriculture for the full year as well. We are making solid progress on our efforts to take cost out and improve our overall product quality, countering the negative impact from tariffs and global supply chain disruptions. We also continue with a raving support our dealer and service network optimization with several new consolidations completed and our tech assist tool rolled out at about 70% of our dealer locations.\n\nAs a reminder, our AI tech assist delivers near instant diagnostic support while our visual parts search enables rapid and accurate parts identification. These capabilities enhance decision quality and deepen the value we deliver to customers and dealers, and there is much more to come, powered by the rapidly evolving power of artificial intelligence from generative to agentic capabilities. We, along with other industry participants have had productive discussions with members of the U.S. administration on how we can support farmers and builders during these times. We are optimistic about how some developments such as the recently announced increase in renewable fuel standards will help farmers through increased crop prices and demand.\n\nThere's a new equilibrium of supply and demand of agriculture commodities emerging in all major regions, as upcoming elections, trade deals, including and excluding the U.S. and rerouting of food and nonfood supply chains are settled over the next couple of years. So while market conditions are very dynamic, we are focused on solutions today and in the future that support our farmers and builders and that will deliver returns to our shareholders. Turning to the results, which reflect the expected and guided market headwinds and our decision to keep production very low. Consolidated revenues were $3.8 billion, flat year-over-year, including about 4% positive currency impacts. Our Ag segment sales were up 1% with EMEA up 20%.\n\nNorth America down 3%, and South America, down 28%. With farm incomes depressed and macroeconomic uncertainty, we saw continued softness in equipment demand. Industrial adjusted EBIT was a loss of $45 million, driven primarily by tariffs and high SG&A and R&D expenses, only partially offset by positive pricing and cost savings actions. For the quarter, adjusted net income was $21 million, with adjusted EPS at $0.01. Free cash flow from Industrial Activities was a $569 million outflow in line with Q1 2025 and consistent with the working capital seasonality of the first quarter, where we usually build up some company inventory in preparation for Q2 sales.\n\nWe remain more committed than ever to strengthen the company and prioritizing long-term value creation. Our company strategy is centered around 5 key strategic pillars: expanding product leadership, advancing our iron and tech integration, driving commercial excellence, operational excellence and quality as a mindset. These pillars remain front and center to ensure we stay aligned with our long-term strategic objectives and our team remains focused and united in our shared purpose to serve and advance those who feed and build the world we all live in. From all the great steps forward we took in the last quarter, I would like to focus today on our operational excellence and specifically our manufacturing plant efficiencies.\n\nWe use a wide range of tools and latest technologies to unlock cost efficiencies at our manufacturing plants. Last year, we conducted about 1,400 projects, which led to $45 million in savings as we reported to you already last quarter. Individually, these projects may seem modest, but the results are profound when we add them all up. In addition, many of the projects include quality improvements to the product shipped out from our factories. An example of one of those projects was a fiber laser installed last year at our Fargo, North Dakota plant where we make our 4-wheel drive tractors. This machine is used to cut sheet steel and replace an old plasma punch machine.\n\nThe new process is 52% faster than before, while also reducing other consumables such as oil and lubricants, minimizing secondary operations and my favorite, improving quality. More efficient operations paired with better quality are a win for both CNH and our customers. With that, I will now turn the call over to Jim to take us through the details of our financials and guidance.\n\nJames A. Nickolas: Thank you, Gerrit. Agriculture Q1 net sales were about $2.6 billion up 1% year-over-year, including 4% positive currency translation. Sales volumes were lower in North and South America and favorable pricing came mainly from North America. Sales volumes and pricing were up in EMEA, mostly in Europe for both tractors and combines, fueled by moderately favorable industry demand and some market share gain. Gross margin was 19.1% from 20% a year ago. Agriculture adjusted EBIT margin was 1% from 5.4% in Q1 2025. The positive pricing and the cost saving contribution only partially offset negative original mix and tariff impacts.\n\nThe higher year-over-year R&D and SG&A expenses were consistent with our indications with both affected by lower variable compensation in 2025 and labor inflation in 2026. Construction net sales in the quarter were lower 3% year-over-year to $574 million, as higher sales in EMEA were more than offset by lower sales in North and South America. We were initially expecting sales to be a bit higher in North America but we held back sales while working out a supplier quality issue to protect the customer. That issue is now resolved and those sales will be made up in Q2. Q1 gross margin was 11.8% from 14.9% a year ago, largely due to tariff impacts.\n\nConstruction SG&A was unfavorable due to trade show marketing costs, lower variable compensation in 2025 and labor inflation in 2026. Q1 adjusted EBIT margin was negative 4.9%. In Financial Services, segment net income in the quarter was $74 million, down versus 2025, mainly due to higher risk costs in Brazil. Retail originations in the first quarter were $2.2 billion, and the managed portfolio ended the quarter at $28 billion. Sequential delinquency rates increased slightly to 3.5%, primarily driven by persistent economic difficulties in South America. Our capital allocation priorities remain the same, reinvesting in our business while maintaining a healthy balance sheet and then returning cash to shareholders.\n\nDuring the first 3 months of 2026, we repurchased $26 billion worth of CNH stock at average price of about $10.70 per share. Before we dive into our guidance, let's take a look at the expected tariff impact on our margins, as we had a meaningful change recently in the way they will be applied to our products. First, we need to acknowledge that we did enjoy a brief period of release with naive tariffs were replaced by Section 122 tariffs at 10%, that lasted for about 1.5 months. Just something to keep in mind when we eventually think about run rates in 2027.\n\nAt the beginning of April, there was a change in the way Section 232 tariffs on steel and aluminum are applied. At a very simple level, it means we went from paying 50% on the value of only the metal to now paying anywhere from 0% to 50% on the total value of the component or machine, depending on what it is. For whole machine imports, we are now paying 25% on the total value of the unit, which overall is higher than what we paid before. However, for some component imports, the tariffs can actually be lower. In our Agriculture business, the impact of this change is net neutral for calendar year 2026.\n\nSo we still forecast the tariff cost impact to be about 210 to 220 basis points of impact on ag margins or no change from our view last quarter. For construction, we're not expecting to get as much of that component benefit as in ag. And so now we expect about a 600 basis point impact on our construction margins compared to our original expectations of roughly 500 points. It's important to note that Section 301 investigations are ongoing for products coming from China, the EU, India and Mexico. We have not included any factors for that in this forecast, but we will provide an update if there are material changes.\n\nLet's first look together at our agriculture industry outlook for 2026. We have slightly improved our outlook for small tractors and combines in North America. In EMEA, we have lowered the tractor outlook, but we are more optimistic for combines. And in South America, we have lowered the outlook for combines. Market risk in South America is elevated due to tighter credit and delays in government-backed financing in Brazil. As a result, we are watching the situation there closely. In total, we still see the industry at about 80% of mid-cycle.\n\nWhen we balance all those changes, along with our unchanged assumptions for favorable currency translation of 2% and positive pricing of 1.5% to 2%, we are comfortable reaffirming our net sales guidance of flat, down 5%. As mentioned earlier, our tariff assumptions for agriculture are net unchanged. While we are seeing increased freight and transportation costs, we are optimistic that our ongoing cost reduction programs and updated geographic mix will be able to offset those impacts. As a result, we are reaffirming our EBIT margin guidance of 4.5% to 5.5%. In construction, we have fine-tuned our industry forecasts across the regions based on Q1 trends and market conditions. And overall, we are slightly lower than our previous expectations.\n\nHowever, we still forecast our own net sales to be about flat year-over-year, including about 1% of favorable currency translation and 2% of pricing. EBIT margin is forecasted to be between 1% and 2% as we focus on cost reductions to offset the increased impact of the tariffs discussed earlier. Putting all those elements together, then we reaffirm our forecast for 2026 industrial net sales to be flat to down 4% year-over-year and industrial EBIT margin to be between 2.5% and 3.5%. Industrial free cash flow is still forecasted to be between $150 million and $350 million. Adjusted EPS is reaffirmed at between $0.35 and $0.45, assuming an average share count of about $1.25 billion.\n\nTo help you with remodeling, I'll provide some additional considerations for our second quarter. Our order books are full for the second quarter, and we're expecting agriculture net sales to be about flat on a year-over-year basis. We're keeping a close eye on conditions in South America as conditions for farmers there remain very difficult. Construction net sales will be higher in the mid-teens, and that includes some of those sales originally expected in Q1. The construction increase is most pronounced in North America. Transportation costs and the tariff payments are another watch point. The team has done a great job working through these rapid changes and will continue to be vigilant.\n\nI'll note, too, that grain prices ticked up a little along with oil prices, they remain below what many consider breakeven levels for farmers, which continue to be -- which continue to challenge their economics. Although both agriculture and construction Q2 EBIT margins are forecasted to follow into the full year guidance ranges. Taken together with the lower Q1, this implies that we expect margins in the second half of the year to be sequentially better than the first half, as is typical. Furthermore, we also expect that both the ag and construction margins will be better on a year-over-year basis in the second half of the year.\n\nFinancial Services net income in Q2 will be lower year-over-year by $20 million to $25 million. With that, I will turn it back to Gerrit.\n\nGerrit Marx: Thank you, Jim. Let me finish up with some thoughts about the rest of the year. Against the backdrop of heightened global uncertainty, we remain focused on our purpose to serve and advance the world's farmers and builders. That means closely monitoring developments while continuing to deliver for our dealers and end customers through disciplined production planning and a clear path to lean channel inventories by year-end. We continue working on our iron and our tech developments and product launches and delivering on our long-term margin improvement efforts. We continue to work with our dealer partners on finding the right network configuration in each of the markets that we serve.\n\nIn another step to support our dealers and farmers, we have recently entered into a strategic relationship with [ Abilene ] Machine through a minority equity stake. The relationship will allow CNH to offer our dealer network a comprehensive aftermarket parts portfolio with upcoming access to the Abilene Machine portfolio of all makes parts. This further enables our aim to provide our dealers and customers good, better and the best options to service their equipment fleets regardless of age or brand affinity. In North America and Europe, the average age of ag equipment in the field has been trending older. This should build up a modest demand for new machines in the coming quarters.\n\nSignificant equipment demand increases usually only happen when there is a good increase in commodity prices that support farm incomes. As Jim mentioned, farmers in South America are a little more cautious and will probably continue to be so at least through the end of the year, and so we will be as well. Selling a machine is one thing, collecting its monthly installments is another, and we have been thoughtfully managing that jointly with our network partners during this difficult period. As we expect to evolve from the industry trough, we look forward to capitalizing on all the improvements that we have made during -- serving and advancing those who feed and build the world, always breaking new ground.\n\nThis concludes our prepared remarks, and we can now start the Q&A session.\n\nOperator: [Operator Instructions] We will take our first question from the line of Tim Thein with Raymond James.\n\nTimothy Thein: I just had -- my question on ag. The -- as we look at the production slots for the coming quarters, can you maybe give some context there in terms of, a, I'm curious if you've seen -- has there been any significant changes in terms of the actual build rates implied within -- maybe by region or if there's been any changes there? And then just any comments in terms of kind of regional order commentary. I mean you stressed the softness and the concern around South America. Maybe a little bit more context of what you're seeing within that order board maybe in your largest region in North America?\n\nGerrit Marx: Thank you, Tim. So as Jim alluded to, we are fully booked in Q2, and we have a pretty healthy coverage already for Q3, while being very disciplined in actually loading orders to production because, as I said, we focus on real dealer, let's say, customer orders and orders from dealers referring to machines that have a very high probability to liquidate in due course as we continue to manage our general inventory. Usually, when we see the market picking up again, which we do not yet see at this point. We would obviously load production more with what we call company orders, where we hold inventory on our side to quickly react to a changing market environment.\n\nSo when we talk about already a Q2 fully booked into Q3 in a good shape, this happens on the basis of a very disciplined order loading to the factories. As per the regional differences, we're pretty happy with the way how things go in Europe. The team makes great progress in building the foundation for gaining share as we do. And we are accelerating our dealer multi-brand consolidation across the region. And you will hear us talk about that almost, I think, probably every quarter from now on.\n\nBut definitely, for the full year 2026, and obviously, this dealer network consolidation is going to drive as well order momentum in the region as we not only break new ground, but they actually gain ground. Similarly, for the United States, where the market is going backwards as we projected and guided to, we see on the low levels, very good momentum with our dealers when it comes to interacting with our customers. So that is also in a good place.\n\nAnd the region where we have extra efforts and extra attention is, as you also picked up is Latin America, particularly Brazil, although Argentina is not that different in its current dynamics where the farmers are still in a wait-and-see situation in light of upcoming elections in Brazil. And still, the consequences of trade deals still need to show in actual trades of commodities and pricing of those commodities. So I think in Latin America, we apply extra discipline to the taking of orders, making sure that we preserve margins despite a significant price pressure in the market given that all the industry participants had expected a better evolution of market demand, which isn't the case.\n\nAnd so extra discipline is required for LatAm in the order take and that is also seen in our Q3 order take. But overall, we are in a good shape going through Q2 as we look at Q3.\n\nJames A. Nickolas: If I could add to that, in the Latin America, Brazil, in particular, given the tight conditions, we, along others have tightened underwriting standards, and I think that's also acting industry demand. So it's not a CNH concern. It's an industry-wide country-wide concern.\n\nGerrit Marx: Yes. And maybe last commentary on Asia Pacific, although small, but growing quite a bit. Our teams in India have hit new record highs in terms of production market share, and we really, really built momentum there with our newly launched compact factor lineup, and the to be launched, new utility-light small tractor lineup, not only for India, but for the export, which will mean a step change in small and compact machines that we will ship around the world from India, while we see stable and good progress in China and a rather flattish development in Australia and New Zealand, where the market is basically running on replacement demand only at this point in time.\n\nOperator: Our next question comes from the line of Angel Castillo with Morgan Stanley.\n\nUnknown Analyst: This is Esther on for Angel Castillo. Just on tariffs and the broader trade backdrop, can you just give us a little bit more color on how you're sizing the impact you're seeing today versus the original tariff impact guide? And how much of that do you think is being offset by pricing versus operational actions? So just like more color on like kind of how you see that dynamic through the year?\n\nJames A. Nickolas: Sure. Yes. Esther. It's Jim. The -- as we indicated, the ag business, really no net change versus prior guidance. So you think about full year 210 to 220 basis points of a drag versus if there weren't tariffs. So call it, full year cost of $120 million on the ag business. Now that's -- and that's in line with where we were last quarter. There were some puts and takes. [indiscernible] lower gave us some relief, offset by higher impact, higher cost from Section 232 changes. And so that's really a broad for the ag business.\n\nOn the construction business, it's a bit of a headwind moving from 500 basis points of a headwind to 600 basis points of headwind, again, as opposed to no tariffs. So that's really where it ends up. So we took our lumps, I would say, when they were first launched at Liberation Day. And then since then, the changes thus far have been relatively minor for us overall. The one area that we haven't quantified and are waiting to see where it lands are the Section 301 tariffs, which are sort of related to investigations. The U.S. government is conducting with various counterparties in the trade, EU, India, Brazil, et cetera.\n\nSo that one is unknown at this point, but I think that covers the landscape of tariffs.\n\nOperator: Our next question comes from the line of Kristen Owen with Oppenheimer & Co.\n\nKristen Owen: I wanted to talk through how you're thinking about back half scenarios, just given the consents of now we're looking at higher fertilizer prices, higher transportation cost, some of these acute challenges that you've called out in Brazil versus maybe a little bit stronger forward commodity curve, how that's influencing the range of scenarios that we could see in the back half of the year?\n\nJames A. Nickolas: Yes. Kristen, the -- again, the range of probable outcomes is pretty wide still in keeping with the last year or so of macroeconomic uncertainty. The fertilizer impact higher cost. So that's less of a concern for 2026 for most of the world. I mean it's a concern, but it's not -- it shouldn't impact us too much this year, second half aside from Brazil, Brazil is where it's going to have more of an impact given their multiple harvests and planting seasons. So there's a little bit of risk, I think, in Brazil from the higher fertilizer costs on top of the credit conditions we mentioned earlier. Transportation costs are growing in most places.\n\nWe are viewing this as something we can offset today. It's sort of the higher cost due to the Iran conflict persist throughout the year, which we're not forecasting, but if they were to persist throughout the year, the gross net increase in cost could be up around $70 million, that $70 million is gross. It assumes no countermeasures from us in terms of transportation surcharges or lower discounting, we would take action at some point if this elevated cost environment persists on the revenue side. We don't think that's needed just yet, but we're monitoring it very, very closely. So at the back half, we think we've got things balanced out given our levers.\n\nBut right now, the unknown is the higher elevated transportation cost, that's the primary factor, logistics from shipping and trucking from the higher diesel and fuel costs. So that's the one we're watching closely. And if it persists for a longer period of time, we'll need to make some counter measures to happen on the revenue side.\n\nOperator: Our next question comes from the line of Jamie Cook with Truist Securities.\n\nJamie Cook: I guess just 2 questions. I guess, encouraging to see we kept guidance the same and everything seems on track. Obviously, lots of positives and negatives out there. But Gerrit, if you could just comment on, one, understanding it's early on about how you're thinking about the setup for 2027, I guess, for ag in particular, where you would be most constructive or more worried, I guess, Brazil would probably be that area.\n\nAnd then from just a company-specific perspective, with a lot of the company-specific initiatives, streamlining of cost structure, supply chain, all those quality, all those things assuming a flat market in 2027, how do we think about earnings for CNH or potential positives that CNH could realize even in a flat market?\n\nGerrit Marx: Jamie, well, look, we're getting ready for whatever comes our way in 2027. We do see -- as I mentioned, momentum in Europe. We expect the U.S., the North American market to see the trough this year. And in South America, despite the very low levels where we are traveling and we are still probably in Brazil itself looking for the grounding in this trough. We will enter 2027 with a far greater level of certainty around certain factors. Elections in Brazil and South America will be behind us. We'll have the midterms behind us. We will have clarity around all the tariff items that Jim mentioned, most notably the 301.\n\nWe will see how the administration positions themselves in various different trade deals around the world. And we will see, and that is what I understood from my interactions in Washington is we will see a greater level of detail in the particular bilateral trade deals that are still ongoing and with a particular focus on commodity trade and commodity flows out from the U.S. This will give us a good footing there. I mean in the end, the aging machine park, every acre around the world has been planted and harvested this year, and the same is going to happen next year.\n\nAnd this puts the hours on all machines and everybody's machines that it takes in order to do the job. So despite markets going slow, the machines are aging at fairly the same pace. And as we enter into 2027 and looking at the average age of the machine parts, we do expect some support from replacement demand across the world, obviously, and then also with a greater level of certainty around those bilateral trade deals and maybe with some support of commodity price momentum for 2027. However, we do not back a market bounce in our own actions. What we do is we remain very disciplined on cost.\n\nWe are making good progress, great progress actually in taking cost out of our supply chain and procurement area. We have even slightly overdelivered our own internal expectations as it came to quality costs last year, and we will continue to do so over the course of this year. We are looking at structural costs. We do have identified pockets of AI deployment, which in first and foremost, will help us to drive productivity in our own operations, such as software coding. I mean we are here in Sioux Falls, and this is one of the sites where we do code our software.\n\nAnd I've seen great examples now of actually a pretty impressive acceleration from the AI advancements over the last 6 months, what can be done in this area. And all of these elements will help us to go faster with tech while reducing our cost base in relative terms and against the backdrop of global and heightened global certainty with those points that are causing right now the uncertainty among our farmers, particularly. So this is something that we stay focused on. And I feel pretty good about the progress we are making against all the commitments we put out there. And then we'll see when the market comes back.\n\nThis is overall still see and wait where we don't wait, actually, we act. So it's a see and act phase for us, improving things. And 2027 will be probably a better year than 2026.\n\nJames A. Nickolas: If I could just add one, we're also underproducing versus retail in 2026. So assuming we -- by about 4%. So assuming we produce at retail levels next year, that should be a natural tailwind revenues or profits.\n\nOperator: Our next question comes from the line of Kyle Menges with Citigroup.\n\nKyle Menges: I was hoping if you could talk about just any changes you're seeing in industry competition, specifically pricing across any of the major regions as well as just how you think your inventory position is versus the industry? And then just a quick tariff question. You mentioned could be a 0% to 50% tariff would just be helpful to hear examples of cases where it would be 0 versus 50% now?\n\nGerrit Marx: Thanks, Kyle. I will defer the tariff point to Jim. We do see a continued positive price cost development for us, which I don't know what the others are doing, but we do see that building on top of advancing technologies and product launches as well that we have throughout 2026 and the beginning of 2027. We have launched our new short rebase or standard rebased tractor in Europe, also on top of the range, long wheelbase tractor hitting first time ever segment CNH has never played in, which is a sector of 350 to 450 horsepower in the European style designed tractor that is sold around the world.\n\nAnd with these launches, and actually, we are sold out on those with the production slot we have allocated. We also sold out on our next-gen combines this year. We see great momentum in our product, great demand. And with that demand and obviously, further launches of our also offboard systems, connecting the onboard. We have a good base to advance our farmers and with that also have a good net price realization over the next couple of quarters as we also go into 2027. So for the full year, we expect a positive price cost here. On the inventory side, I alluded to a $500 million further reduction of our global channel inventory. This is -- dealer inventory.\n\nThis is something we will very closely monitor because if there are swings in markets that we see coming maybe more positive on the other way, more negative developments, we will adjust those in inventory targets and destocking activities accordingly. For now, we feel pretty good where we are. We get very good feedback from our dealers. We have cleared aged inventories. We have cleared stock that was hard to sell. And now we are approaching the levels that we want to see with our dealers also to lighten up the financial burden on floor planning, and their overall exposure to that. So that is on a good track. We delivered what we said we will.\n\nAnd I'm quite curious to see what happens in the next quarters, carefully reading commodity prices, carefully reading the demand in every region of the world. And I think, overall, in a good shape on our track in 2026, which is the trough year most notably, probably in like 20 or 30 years of ag. We have never been that low in terms of unit sales in our industry and we are holding up not only, but we are actually building further strength as we go into the future years. So that feels overall quite good. Jim, on tariffs.\n\nJames A. Nickolas: Yes. Kyle, it kind of depends on the HTS codes, the harmonized tariff schedules. There's a bunch of those. And I don't have the details to discuss this in particular, but we can take that probably offline at some point. .\n\nOperator: Our next question comes from the line of David Raso with Evercore ISI.\n\nDavid Raso: Two questions. One, can you give us an update on where you stand strategically with the construction business? And second, the production below retail of 4%. Can you give us a little color, be it geographic or large versus small tractors, combines just that combination that gets you to the down -- or sorry, below 4% retail globally?\n\nGerrit Marx: David, I'll take the first, and Jim takes the second question. As I mentioned during the last quarterly earnings call and the full year 2025 financials, we have restarted our discussions with several partners for our construction business. These discussions advance a pace. We don't rush anything. There are very good conversations that we have that will build a stronger CE lineup for the construction business, and that will also further enhance the construction machines that we expect to get shipped under the New Holland construction brand back to our ag dealers. So progress is made as we speak. We don't rush things.\n\nWe take the time it takes, and we will update you when we have made a conclusion not saying when that will be the case. But in -- I think over the course of the remainder of 2026 or first half of 2027, we should be clear on the path forward for our construction business, which is a very, very relevant piece as a product for our dealers, but not necessarily has to be in our ownership in order to deliver product and service to those through build and farm the world. So that is what I can tell you.\n\nSo time wise, we are pretty much a pace of what we said last time over the course of '26 and '27, we'll come back with the progress on that one. But I'm pretty confident that we are moving towards a solution here.\n\nJames A. Nickolas: Yes. And [indiscernible] question, the underproduction is a rough, but more underproduction happening in combines, less underproduction in tractors, although both are underproduced in 2026. And by geography, I would say balanced, but probably a little bit more under production occurring in Brazil this year for the -- there we talked earlier about the challenges there.\n\nOperator: Our next question comes from the line of Joel Jackson with BMO Capital Markets.\n\nUnknown Analyst: It's Evan on for Joel Jackson. I just wanted to circle back on the credit dynamic. You pointed out for Q2, Q3 considerations of higher risk reserves, just wonder to see if you can give any extra color on that. Is that all Brazil? Are you seeing delinquencies currently higher bad debt?\n\nJames A. Nickolas: Yes. It's slightly up in more mature markets, but nothing notable. The real increases are Brazil, primarily and secondarily, Argentina, but to a lesser degree. And in Brazil, May is a big payment month. And so every year in May, we see an uptick in delinquencies, that's typical seasonality. I would expect to see it again this year. And it remains elevated. It's something that bears watching. We're actively managing it. It is not getting worse, but it's not getting better at the same time, so it bears customer-by-customer discussions trying to make sure that they stay current. So I would expect an uptick in delinquencies in Q2 of this year, like we always see.\n\nAnd I'd say, again, it's mostly focused in Latin America is the issue.\n\nOperator: Our next question comes from the line of Tami Zakaria with JPMorgan.\n\nTami Zakaria: Question regarding South America, I see you tweaked lower your expectation for combines. But stepping back, should we view this year's decline in South America more like a temporary blip that reverses next year? Or are you seeing indications that this could be a weak market for a couple of more years before demand starts moving up again?\n\nGerrit Marx: Look Tami, the -- I mean Brazil, if you look back the last 40 years, Brazil, had always a very quick ramp to a peak year, and then it dropped quite sharply and it stayed there for a few years and then before it came back. I think the overall cycle dynamics in Brazil are very familiar to us. And the shape of the curve is this year no different than any other cycle before. What is a little different this time is that a few things come together, and like tariffs and the global trade and the new position of China when it comes to purchase global commodities and North and South American frictions.\n\nAnd I think that causes a little deeper and a little longer trough in this cycle than in prior cycles. And I think that is what we experienced right now in '26, which could drag into '27 as well. However, looking at the acreage in South America and knowing that we have 2.5 harvests in South America on many acres down there given the climate conditions that points at our machines aging 2.5x faster when it comes to ours on the machine than in other geographies that have only 1 harvest more or less 2.5x the ours. They planned and they plan differently. So maybe it's rather 2x the aging speed.\n\nBut that will point at a replacement plan across large ag equipment that becomes quite relevant as we enter into '27 and '28. So I think replacement will provide a floor. And while we go a little deep now and a little longer and in prior troughs, we would expect now that 2027 gives us some footing and with the new elected President in Brazil, whoever that will be certainty will in any case, add to more confidence when it comes to farming and purchase of machines. What that means the numbers we will need to see. But I think the floor will be reached over the course of this year as per our expectations.\n\nOperator: Our next question comes from the line of Daniela Costa with Goldman Sachs.\n\nDaniela Costa: I just wanted to follow up on Construction Equipment. You talked about the net pricing expectations for ag. And if you could elaborate sort of similar comments for construction equipment, do you think that can turn net positive at some point in the year? And then also on Construction Equipment, 2Q, given the volumes you guide for mid-teens, should we expected already to start breaking even in 2Q? .\n\nJames A. Nickolas: Daniela, it's Jim. So for the full year, we are not forecasting positive net pricing on the construction business because of the tariffs. Price loss balance to be net negative. Positive pricing, but then the product costs because of tariffs will grow at a higher rate. So net the product price and product cost net negative for the year. There'll be positive EBIT for the year, for the full year is still profitable, but the price cost is a negative equation for us this year. As it relates to Q2, construction business, yes, we do believe it will be above breakeven in Q2.\n\nAgain, they're going to -- they were penalized from the quality hole, the quality stock at the Wichita plant in Q1, and then that will be made up those sales will be realized in Q2. So a bit of a negative in Q1, bit of a positive in Q2, full year but of a wash.\n\nOperator: Our next question comes from the line of Ted Jackson with Northland.\n\nEdward Jackson: My question would be just kind of on sort of U.S. legislation and regulation. And I was just curious if you could give some kind of update and thoughts that you all have with regards to the farm bill, which is locked up inside of Congress and then also the efforts to push to EPA -- by the EPA to push for ethanol E15 full year. I mean if the farm bill gets locked up and those come out and we go through another year with it being funded down the road, does that change anything for you?\n\nAnd on the EPA side, on the EBIT team side, maybe just kind of some thoughts in terms of what you think it is in terms of the likelihood of that.\n\nGerrit Marx: Ted, look, the farm bill is -- has been long awaited and is still locked up and it is going to be helpful regardless. It is not going to suddenly boost in itself, it is not going to boost major equipment demands because our farmers, they need to see an operating profit on their bottom line, excluding subsidies and other money that is handed to them. Only if it's structurally positive, which is driven by commodity prices and input costs, only if that turns positive for them, this is the key enabler for equipment purchases because that means that the business is returning back to a healthy and sustainable operation allowing them to upgrade their fleets and advance new tech.\n\nSo farm bill is very, very helpful, and it's very needed. It is not going to be that one thing that is driving equipment demand from 1 day to another. When it comes to the regulation and legislations, I mean making E15 fuel, I mean, today, it was a temporary E10 -- and then -- sorry, temporary E15 now making it permanent. That has quite some positive impact on corn. I mean, we did some math here back of the envelope. And if everybody, which is not possible. But if everybody was shifting towards a consumption in the United States from E10 to E15, that amount of corn needed to produce that fuel.\n\nIf I just focus on corn, there are obviously other ways to produce that ethanol content. But that amount of corn is more or less equivalent probably to about the same acreage that is planted today with soybeans, earmarked for China. So I mean, there is a kind of a wash, however, not to be neglected that the marginality of soybeans for farmer is a significant higher than the marginality of corn. So while E15 will drive for corn, and we will see also other sources benefiting from that, and it will help stock levels to deplete a bit. It is overall a less profitable commodity than soybeans. So I think there is good momentum. It's helpful. It adds.\n\nIt is not a big ticket item that will turn things around, but it helps to build confidence. When it comes to EPA and emission standards, I mean, staying very, very focused on sustainability and low emissions, which we have already across the board with our machines. I think what EPA is targeting at is make it simpler and make it less disruptive if things happen in the field or reality strikes that suddenly, I don't know, you're running out of the additives and then the engine DD rates. So these things shouldn't happen, so it makes things simpler for our farmers in the field. I think that is also very beneficial the operation makes it simpler.\n\nIt does not take significant cost out of the machines though. If you imagine you were to roll back an emission standard for the United States, where we are running on, let's say, Tier 5, if you were to skip that or roll back. I mean the rest of the world will still move into higher level emission standards. And if I think if -- in North America, let's say, United States, if the emission standard would start to deviate from the rest of the world, I think that creates more complexity for us because we then need to build machines for a market with a specific, let's say, less sophisticated emission standard.\n\nAnd while the rest of the world is still on a higher level emission standard that might mean we can maybe reduce a few components from the machine because it's a less refined emission standard, but it does not lower the overall cost for us in producing because the rest of the world will not follow. So I think EPA's advancements are helpful to simplify and to make farmers life more focused on what they actually should do rather than be worried about their engines to be rail -- derate. But I think overall, as a cost reduction action, this has limitations when it comes to the machines themselves.\n\nOverall, all of it is helpful what it will take, needless to say and you all know that is better commodity prices and managed input costs so that a healthy operating margin emerges with the farmers, and they see the profitability or the overall farm health, which is not only the soil health, but also the economic health of the farm being sustainably advanced in the future, and it's very much driven by a few factors that are not yet clear, i.e., global trade commodity prices, and we'll see how the harvest will go this year.\n\nOperator: Our final question comes from the line of Judah Arnovitz with UBS.\n\nUnknown Analyst: Actually, 2 quick questions on price cost. In Ag, do you expect positive price cost each quarter for the rest of the year? And then just on the transportation costs, you mentioned if the conflict persists, what's your confidence in your ability to pass these costs on to customers in both ag and construction and then relative to the $70 million growth impact that you mentioned. What is that number year-to-date?\n\nJames A. Nickolas: Yes. Okay. So price cost for ag per quarter, yes, that just remained positive. So it's good news. On the construction side, we talked about that's not going to happen for the year given the tariff burden. And then I think your second question was the ability to pass on higher costs, logistics, et cetera. I think there will be a bit of a lag effect. And -- but you think that's certainly the ag business certainly has shown its ability to get pricing over time. I think that will continue. So I'd say, a high degree of confidence getting that pricing back. It may not be in the same quarter.\n\nAgain, there may be a bit of a lag, but a high degree of confidence in getting that back. On the construction business, less confident. It's a much more competitive fragmented market and not all players are impacted equally with these costs. So that's called medium level of confidence on the construction side. Year-to-date, I would say relatively small impact from elevated costs from the Iran conflict, et cetera, relatively small up till now. That's more in the windshield, not the review mirror. Again, we don't think it will be -- it will come to that.\n\nThat number I gave you $70 million is only if it persists sort of through the end of the year, and we don't think this is going to last at the end of the year.",
+              "source": {
+                "uri": "fool.com",
+                "dataType": "news",
+                "title": "The Motley Fool"
+              },
+              "authors": [
+                {
+                  "uri": "motley_fool_transcribing@fool.com",
+                  "name": "Motley Fool Transcribing",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://g.foolcdn.com/image/?url=https%3A%2F%2Fcdn.content.foolcdn.com%2Fimages%2F1umn9qeh%2Fproduction%2Fb4204f36ed605fc54d4ba32e2cb31d1dd892afd6-800x450.jpg%3Fw%3D800%26q%3D75%26fit%3Dmax%26auto%3Dformat&w=1200&op=resize",
+              "eventUri": null,
+              "sentiment": 0.2313725490196079,
+              "wgt": 515272659,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "SANM",
+            "price": 172.35,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 19,
+            "false_breakouts": 5,
+            "strength_score": 33.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 206.82,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/16/26",
+            "source_date": "04/16/26",
+            "zone_low": 166.96,
+            "zone_high": 174.36,
+            "center": 171.99,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 33.83,
+            "atr_value": 16.786
+          },
+          {
+            "symbol": "SANM",
+            "price": 215.46,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 4,
+            "strength_score": 21.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 230.56,
+            "nearest_lower_level": 206.82,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/29/26",
+            "zone_low": 211.78,
+            "zone_high": 219.68,
+            "center": 215.64,
+            "families": [
+              "gap"
+            ],
+            "strength": 21.0,
+            "atr_value": 16.786
+          },
+          {
+            "symbol": "SANM",
+            "price": 208.67,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 12.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 215.64,
+            "nearest_lower_level": 171.99,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/30/26",
+            "zone_low": 202.97,
+            "zone_high": 210.68,
+            "center": 206.82,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.0,
+            "atr_value": 16.786
+          },
+          {
+            "symbol": "SANM",
+            "price": 230.56,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.93,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 215.64,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 228.55,
+            "zone_high": 232.57,
+            "center": 230.56,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.93,
+            "atr_value": 16.786
+          }
+        ]
+      },
+      "AAPL": {
+        "daily_atr": 4.26,
+        "technical_atr": 0.23,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Fed News and Big Tech Earnings Collide This Week. The Mag 7 Matter Most. -- Barrons.com"
+        ],
+        "news_provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "AAPL",
+          "headline": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+          "raw": {
+            "headline": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+            "published_at": "2026-04-30T19:17:39Z",
+            "source": "The Motley Fool",
+            "url": "https://www.fool.com/earnings/call-transcripts/2026/04/30/cnh-cnh-q1-2026-earnings-call-transcript/",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199318152",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "19:17:39",
+              "dateTime": "2026-04-30T19:17:39Z",
+              "dateTimePub": "2026-04-30T18:05:46Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.fool.com/earnings/call-transcripts/2026/04/30/cnh-cnh-q1-2026-earnings-call-transcript/",
+              "title": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+              "body": "Transportation and freight cost inflation -- if sustained -- could \"be up around $70 million.\" CFO James A. Nickolas stated, \"we would take action at some point if this elevated cost environment persists on the revenue side. We don't think that's needed just yet, but we're monitoring it very, very closely.\"\n\nManagement reaffirmed all major 2026 guidance ranges, including net sales, EBIT margins, and adjusted EPS, despite ongoing industry headwinds, currency shifts, and tariff policy volatility. The order book for Q2 is fully committed with disciplined loading practices, and Q3 coverage is substantial, reflecting emphasis on real dealer orders and risk management by geography. Strategic expansion in Europe via new product launches and multi-brand dealer consolidation is progressing, highlighted by a sold-out high-horsepower European tractor line and next-gen combine slot sell-outs. A new partnership with Abilene Machine is set to expand the company's aftermarket parts offering across dealer networks, further supported by technology deployments at 70% of dealer sites. Management confirmed production remains below retail by about 4%, especially in combines and Brazil. This may create a natural revenue/profit tailwind as inventory rationalization continues into 2027 when macro policy clarity is expected to improve.\n\nGerrit Marx: Thank you, Jason, and welcome to everyone joining the meeting. We are calling from Sioux Falls, South Dakota, where we just hosted our Board meeting. Sioux Falls is one of our CNH tech hubs, which we acquired through Raven. In Sioux Falls, we have about 300 colleagues who jointly with other sites, not only code and validate our on and offboard software, but also design the architecture of the next evolution of our digital machine hardware. I'm very proud of the advancements that we will be launching over the next couple of years. First quarter results were as expected and guided.\n\nGiven that Q1 seasonally our lowest quarter, we are at historically low industry demand in North America, and farmers in Brazil have ongoing financial challenges. During the quarter, additional complications emerged, including changing tariff rules and an escalated conflict in the Middle East. I'm very proud of the way the CNH team responded to all the challenges we faced, those we knew about going in and those that emerged during the quarter. We are now passing through what we expect to be the lowest period of the current ag industry cycle, supported by some replacement demand.\n\nAs we have said before, we also expect Q1 2026 to be the lowest quarter of the year, during which we diligently continued the disciplined management of all levers in our control. Despite the challenging quarter, we have many things to proudly share here. We kept production levels low in order to manage and contain channel inventory. Ag dealer inventory levels remained unchanged since the beginning of the year by design. Normally, dealers build inventory in Q1 in preparation for Q2, but the flat levels are in line with our overall plan to have the dealers reduce their inventories by about $500 million this year.\n\nWe have been quite disciplined to produce and ship only presold orders or fast-moving stock orders. The net of price and product cost was positive in agriculture as we focus on our operational efficiencies and quality improvements. And we do expect that some of price and product cost to be positive in agriculture for the full year as well. We are making solid progress on our efforts to take cost out and improve our overall product quality, countering the negative impact from tariffs and global supply chain disruptions. We also continue with a raving support our dealer and service network optimization with several new consolidations completed and our tech assist tool rolled out at about 70% of our dealer locations.\n\nAs a reminder, our AI tech assist delivers near instant diagnostic support while our visual parts search enables rapid and accurate parts identification. These capabilities enhance decision quality and deepen the value we deliver to customers and dealers, and there is much more to come, powered by the rapidly evolving power of artificial intelligence from generative to agentic capabilities. We, along with other industry participants have had productive discussions with members of the U.S. administration on how we can support farmers and builders during these times. We are optimistic about how some developments such as the recently announced increase in renewable fuel standards will help farmers through increased crop prices and demand.\n\nThere's a new equilibrium of supply and demand of agriculture commodities emerging in all major regions, as upcoming elections, trade deals, including and excluding the U.S. and rerouting of food and nonfood supply chains are settled over the next couple of years. So while market conditions are very dynamic, we are focused on solutions today and in the future that support our farmers and builders and that will deliver returns to our shareholders. Turning to the results, which reflect the expected and guided market headwinds and our decision to keep production very low. Consolidated revenues were $3.8 billion, flat year-over-year, including about 4% positive currency impacts. Our Ag segment sales were up 1% with EMEA up 20%.\n\nNorth America down 3%, and South America, down 28%. With farm incomes depressed and macroeconomic uncertainty, we saw continued softness in equipment demand. Industrial adjusted EBIT was a loss of $45 million, driven primarily by tariffs and high SG&A and R&D expenses, only partially offset by positive pricing and cost savings actions. For the quarter, adjusted net income was $21 million, with adjusted EPS at $0.01. Free cash flow from Industrial Activities was a $569 million outflow in line with Q1 2025 and consistent with the working capital seasonality of the first quarter, where we usually build up some company inventory in preparation for Q2 sales.\n\nWe remain more committed than ever to strengthen the company and prioritizing long-term value creation. Our company strategy is centered around 5 key strategic pillars: expanding product leadership, advancing our iron and tech integration, driving commercial excellence, operational excellence and quality as a mindset. These pillars remain front and center to ensure we stay aligned with our long-term strategic objectives and our team remains focused and united in our shared purpose to serve and advance those who feed and build the world we all live in. From all the great steps forward we took in the last quarter, I would like to focus today on our operational excellence and specifically our manufacturing plant efficiencies.\n\nWe use a wide range of tools and latest technologies to unlock cost efficiencies at our manufacturing plants. Last year, we conducted about 1,400 projects, which led to $45 million in savings as we reported to you already last quarter. Individually, these projects may seem modest, but the results are profound when we add them all up. In addition, many of the projects include quality improvements to the product shipped out from our factories. An example of one of those projects was a fiber laser installed last year at our Fargo, North Dakota plant where we make our 4-wheel drive tractors. This machine is used to cut sheet steel and replace an old plasma punch machine.\n\nThe new process is 52% faster than before, while also reducing other consumables such as oil and lubricants, minimizing secondary operations and my favorite, improving quality. More efficient operations paired with better quality are a win for both CNH and our customers. With that, I will now turn the call over to Jim to take us through the details of our financials and guidance.\n\nJames A. Nickolas: Thank you, Gerrit. Agriculture Q1 net sales were about $2.6 billion up 1% year-over-year, including 4% positive currency translation. Sales volumes were lower in North and South America and favorable pricing came mainly from North America. Sales volumes and pricing were up in EMEA, mostly in Europe for both tractors and combines, fueled by moderately favorable industry demand and some market share gain. Gross margin was 19.1% from 20% a year ago. Agriculture adjusted EBIT margin was 1% from 5.4% in Q1 2025. The positive pricing and the cost saving contribution only partially offset negative original mix and tariff impacts.\n\nThe higher year-over-year R&D and SG&A expenses were consistent with our indications with both affected by lower variable compensation in 2025 and labor inflation in 2026. Construction net sales in the quarter were lower 3% year-over-year to $574 million, as higher sales in EMEA were more than offset by lower sales in North and South America. We were initially expecting sales to be a bit higher in North America but we held back sales while working out a supplier quality issue to protect the customer. That issue is now resolved and those sales will be made up in Q2. Q1 gross margin was 11.8% from 14.9% a year ago, largely due to tariff impacts.\n\nConstruction SG&A was unfavorable due to trade show marketing costs, lower variable compensation in 2025 and labor inflation in 2026. Q1 adjusted EBIT margin was negative 4.9%. In Financial Services, segment net income in the quarter was $74 million, down versus 2025, mainly due to higher risk costs in Brazil. Retail originations in the first quarter were $2.2 billion, and the managed portfolio ended the quarter at $28 billion. Sequential delinquency rates increased slightly to 3.5%, primarily driven by persistent economic difficulties in South America. Our capital allocation priorities remain the same, reinvesting in our business while maintaining a healthy balance sheet and then returning cash to shareholders.\n\nDuring the first 3 months of 2026, we repurchased $26 billion worth of CNH stock at average price of about $10.70 per share. Before we dive into our guidance, let's take a look at the expected tariff impact on our margins, as we had a meaningful change recently in the way they will be applied to our products. First, we need to acknowledge that we did enjoy a brief period of release with naive tariffs were replaced by Section 122 tariffs at 10%, that lasted for about 1.5 months. Just something to keep in mind when we eventually think about run rates in 2027.\n\nAt the beginning of April, there was a change in the way Section 232 tariffs on steel and aluminum are applied. At a very simple level, it means we went from paying 50% on the value of only the metal to now paying anywhere from 0% to 50% on the total value of the component or machine, depending on what it is. For whole machine imports, we are now paying 25% on the total value of the unit, which overall is higher than what we paid before. However, for some component imports, the tariffs can actually be lower. In our Agriculture business, the impact of this change is net neutral for calendar year 2026.\n\nSo we still forecast the tariff cost impact to be about 210 to 220 basis points of impact on ag margins or no change from our view last quarter. For construction, we're not expecting to get as much of that component benefit as in ag. And so now we expect about a 600 basis point impact on our construction margins compared to our original expectations of roughly 500 points. It's important to note that Section 301 investigations are ongoing for products coming from China, the EU, India and Mexico. We have not included any factors for that in this forecast, but we will provide an update if there are material changes.\n\nLet's first look together at our agriculture industry outlook for 2026. We have slightly improved our outlook for small tractors and combines in North America. In EMEA, we have lowered the tractor outlook, but we are more optimistic for combines. And in South America, we have lowered the outlook for combines. Market risk in South America is elevated due to tighter credit and delays in government-backed financing in Brazil. As a result, we are watching the situation there closely. In total, we still see the industry at about 80% of mid-cycle.\n\nWhen we balance all those changes, along with our unchanged assumptions for favorable currency translation of 2% and positive pricing of 1.5% to 2%, we are comfortable reaffirming our net sales guidance of flat, down 5%. As mentioned earlier, our tariff assumptions for agriculture are net unchanged. While we are seeing increased freight and transportation costs, we are optimistic that our ongoing cost reduction programs and updated geographic mix will be able to offset those impacts. As a result, we are reaffirming our EBIT margin guidance of 4.5% to 5.5%. In construction, we have fine-tuned our industry forecasts across the regions based on Q1 trends and market conditions. And overall, we are slightly lower than our previous expectations.\n\nHowever, we still forecast our own net sales to be about flat year-over-year, including about 1% of favorable currency translation and 2% of pricing. EBIT margin is forecasted to be between 1% and 2% as we focus on cost reductions to offset the increased impact of the tariffs discussed earlier. Putting all those elements together, then we reaffirm our forecast for 2026 industrial net sales to be flat to down 4% year-over-year and industrial EBIT margin to be between 2.5% and 3.5%. Industrial free cash flow is still forecasted to be between $150 million and $350 million. Adjusted EPS is reaffirmed at between $0.35 and $0.45, assuming an average share count of about $1.25 billion.\n\nTo help you with remodeling, I'll provide some additional considerations for our second quarter. Our order books are full for the second quarter, and we're expecting agriculture net sales to be about flat on a year-over-year basis. We're keeping a close eye on conditions in South America as conditions for farmers there remain very difficult. Construction net sales will be higher in the mid-teens, and that includes some of those sales originally expected in Q1. The construction increase is most pronounced in North America. Transportation costs and the tariff payments are another watch point. The team has done a great job working through these rapid changes and will continue to be vigilant.\n\nI'll note, too, that grain prices ticked up a little along with oil prices, they remain below what many consider breakeven levels for farmers, which continue to be -- which continue to challenge their economics. Although both agriculture and construction Q2 EBIT margins are forecasted to follow into the full year guidance ranges. Taken together with the lower Q1, this implies that we expect margins in the second half of the year to be sequentially better than the first half, as is typical. Furthermore, we also expect that both the ag and construction margins will be better on a year-over-year basis in the second half of the year.\n\nFinancial Services net income in Q2 will be lower year-over-year by $20 million to $25 million. With that, I will turn it back to Gerrit.\n\nGerrit Marx: Thank you, Jim. Let me finish up with some thoughts about the rest of the year. Against the backdrop of heightened global uncertainty, we remain focused on our purpose to serve and advance the world's farmers and builders. That means closely monitoring developments while continuing to deliver for our dealers and end customers through disciplined production planning and a clear path to lean channel inventories by year-end. We continue working on our iron and our tech developments and product launches and delivering on our long-term margin improvement efforts. We continue to work with our dealer partners on finding the right network configuration in each of the markets that we serve.\n\nIn another step to support our dealers and farmers, we have recently entered into a strategic relationship with [ Abilene ] Machine through a minority equity stake. The relationship will allow CNH to offer our dealer network a comprehensive aftermarket parts portfolio with upcoming access to the Abilene Machine portfolio of all makes parts. This further enables our aim to provide our dealers and customers good, better and the best options to service their equipment fleets regardless of age or brand affinity. In North America and Europe, the average age of ag equipment in the field has been trending older. This should build up a modest demand for new machines in the coming quarters.\n\nSignificant equipment demand increases usually only happen when there is a good increase in commodity prices that support farm incomes. As Jim mentioned, farmers in South America are a little more cautious and will probably continue to be so at least through the end of the year, and so we will be as well. Selling a machine is one thing, collecting its monthly installments is another, and we have been thoughtfully managing that jointly with our network partners during this difficult period. As we expect to evolve from the industry trough, we look forward to capitalizing on all the improvements that we have made during -- serving and advancing those who feed and build the world, always breaking new ground.\n\nThis concludes our prepared remarks, and we can now start the Q&A session.\n\nOperator: [Operator Instructions] We will take our first question from the line of Tim Thein with Raymond James.\n\nTimothy Thein: I just had -- my question on ag. The -- as we look at the production slots for the coming quarters, can you maybe give some context there in terms of, a, I'm curious if you've seen -- has there been any significant changes in terms of the actual build rates implied within -- maybe by region or if there's been any changes there? And then just any comments in terms of kind of regional order commentary. I mean you stressed the softness and the concern around South America. Maybe a little bit more context of what you're seeing within that order board maybe in your largest region in North America?\n\nGerrit Marx: Thank you, Tim. So as Jim alluded to, we are fully booked in Q2, and we have a pretty healthy coverage already for Q3, while being very disciplined in actually loading orders to production because, as I said, we focus on real dealer, let's say, customer orders and orders from dealers referring to machines that have a very high probability to liquidate in due course as we continue to manage our general inventory. Usually, when we see the market picking up again, which we do not yet see at this point. We would obviously load production more with what we call company orders, where we hold inventory on our side to quickly react to a changing market environment.\n\nSo when we talk about already a Q2 fully booked into Q3 in a good shape, this happens on the basis of a very disciplined order loading to the factories. As per the regional differences, we're pretty happy with the way how things go in Europe. The team makes great progress in building the foundation for gaining share as we do. And we are accelerating our dealer multi-brand consolidation across the region. And you will hear us talk about that almost, I think, probably every quarter from now on.\n\nBut definitely, for the full year 2026, and obviously, this dealer network consolidation is going to drive as well order momentum in the region as we not only break new ground, but they actually gain ground. Similarly, for the United States, where the market is going backwards as we projected and guided to, we see on the low levels, very good momentum with our dealers when it comes to interacting with our customers. So that is also in a good place.\n\nAnd the region where we have extra efforts and extra attention is, as you also picked up is Latin America, particularly Brazil, although Argentina is not that different in its current dynamics where the farmers are still in a wait-and-see situation in light of upcoming elections in Brazil. And still, the consequences of trade deals still need to show in actual trades of commodities and pricing of those commodities. So I think in Latin America, we apply extra discipline to the taking of orders, making sure that we preserve margins despite a significant price pressure in the market given that all the industry participants had expected a better evolution of market demand, which isn't the case.\n\nAnd so extra discipline is required for LatAm in the order take and that is also seen in our Q3 order take. But overall, we are in a good shape going through Q2 as we look at Q3.\n\nJames A. Nickolas: If I could add to that, in the Latin America, Brazil, in particular, given the tight conditions, we, along others have tightened underwriting standards, and I think that's also acting industry demand. So it's not a CNH concern. It's an industry-wide country-wide concern.\n\nGerrit Marx: Yes. And maybe last commentary on Asia Pacific, although small, but growing quite a bit. Our teams in India have hit new record highs in terms of production market share, and we really, really built momentum there with our newly launched compact factor lineup, and the to be launched, new utility-light small tractor lineup, not only for India, but for the export, which will mean a step change in small and compact machines that we will ship around the world from India, while we see stable and good progress in China and a rather flattish development in Australia and New Zealand, where the market is basically running on replacement demand only at this point in time.\n\nOperator: Our next question comes from the line of Angel Castillo with Morgan Stanley.\n\nUnknown Analyst: This is Esther on for Angel Castillo. Just on tariffs and the broader trade backdrop, can you just give us a little bit more color on how you're sizing the impact you're seeing today versus the original tariff impact guide? And how much of that do you think is being offset by pricing versus operational actions? So just like more color on like kind of how you see that dynamic through the year?\n\nJames A. Nickolas: Sure. Yes. Esther. It's Jim. The -- as we indicated, the ag business, really no net change versus prior guidance. So you think about full year 210 to 220 basis points of a drag versus if there weren't tariffs. So call it, full year cost of $120 million on the ag business. Now that's -- and that's in line with where we were last quarter. There were some puts and takes. [indiscernible] lower gave us some relief, offset by higher impact, higher cost from Section 232 changes. And so that's really a broad for the ag business.\n\nOn the construction business, it's a bit of a headwind moving from 500 basis points of a headwind to 600 basis points of headwind, again, as opposed to no tariffs. So that's really where it ends up. So we took our lumps, I would say, when they were first launched at Liberation Day. And then since then, the changes thus far have been relatively minor for us overall. The one area that we haven't quantified and are waiting to see where it lands are the Section 301 tariffs, which are sort of related to investigations. The U.S. government is conducting with various counterparties in the trade, EU, India, Brazil, et cetera.\n\nSo that one is unknown at this point, but I think that covers the landscape of tariffs.\n\nOperator: Our next question comes from the line of Kristen Owen with Oppenheimer & Co.\n\nKristen Owen: I wanted to talk through how you're thinking about back half scenarios, just given the consents of now we're looking at higher fertilizer prices, higher transportation cost, some of these acute challenges that you've called out in Brazil versus maybe a little bit stronger forward commodity curve, how that's influencing the range of scenarios that we could see in the back half of the year?\n\nJames A. Nickolas: Yes. Kristen, the -- again, the range of probable outcomes is pretty wide still in keeping with the last year or so of macroeconomic uncertainty. The fertilizer impact higher cost. So that's less of a concern for 2026 for most of the world. I mean it's a concern, but it's not -- it shouldn't impact us too much this year, second half aside from Brazil, Brazil is where it's going to have more of an impact given their multiple harvests and planting seasons. So there's a little bit of risk, I think, in Brazil from the higher fertilizer costs on top of the credit conditions we mentioned earlier. Transportation costs are growing in most places.\n\nWe are viewing this as something we can offset today. It's sort of the higher cost due to the Iran conflict persist throughout the year, which we're not forecasting, but if they were to persist throughout the year, the gross net increase in cost could be up around $70 million, that $70 million is gross. It assumes no countermeasures from us in terms of transportation surcharges or lower discounting, we would take action at some point if this elevated cost environment persists on the revenue side. We don't think that's needed just yet, but we're monitoring it very, very closely. So at the back half, we think we've got things balanced out given our levers.\n\nBut right now, the unknown is the higher elevated transportation cost, that's the primary factor, logistics from shipping and trucking from the higher diesel and fuel costs. So that's the one we're watching closely. And if it persists for a longer period of time, we'll need to make some counter measures to happen on the revenue side.\n\nOperator: Our next question comes from the line of Jamie Cook with Truist Securities.\n\nJamie Cook: I guess just 2 questions. I guess, encouraging to see we kept guidance the same and everything seems on track. Obviously, lots of positives and negatives out there. But Gerrit, if you could just comment on, one, understanding it's early on about how you're thinking about the setup for 2027, I guess, for ag in particular, where you would be most constructive or more worried, I guess, Brazil would probably be that area.\n\nAnd then from just a company-specific perspective, with a lot of the company-specific initiatives, streamlining of cost structure, supply chain, all those quality, all those things assuming a flat market in 2027, how do we think about earnings for CNH or potential positives that CNH could realize even in a flat market?\n\nGerrit Marx: Jamie, well, look, we're getting ready for whatever comes our way in 2027. We do see -- as I mentioned, momentum in Europe. We expect the U.S., the North American market to see the trough this year. And in South America, despite the very low levels where we are traveling and we are still probably in Brazil itself looking for the grounding in this trough. We will enter 2027 with a far greater level of certainty around certain factors. Elections in Brazil and South America will be behind us. We'll have the midterms behind us. We will have clarity around all the tariff items that Jim mentioned, most notably the 301.\n\nWe will see how the administration positions themselves in various different trade deals around the world. And we will see, and that is what I understood from my interactions in Washington is we will see a greater level of detail in the particular bilateral trade deals that are still ongoing and with a particular focus on commodity trade and commodity flows out from the U.S. This will give us a good footing there. I mean in the end, the aging machine park, every acre around the world has been planted and harvested this year, and the same is going to happen next year.\n\nAnd this puts the hours on all machines and everybody's machines that it takes in order to do the job. So despite markets going slow, the machines are aging at fairly the same pace. And as we enter into 2027 and looking at the average age of the machine parts, we do expect some support from replacement demand across the world, obviously, and then also with a greater level of certainty around those bilateral trade deals and maybe with some support of commodity price momentum for 2027. However, we do not back a market bounce in our own actions. What we do is we remain very disciplined on cost.\n\nWe are making good progress, great progress actually in taking cost out of our supply chain and procurement area. We have even slightly overdelivered our own internal expectations as it came to quality costs last year, and we will continue to do so over the course of this year. We are looking at structural costs. We do have identified pockets of AI deployment, which in first and foremost, will help us to drive productivity in our own operations, such as software coding. I mean we are here in Sioux Falls, and this is one of the sites where we do code our software.\n\nAnd I've seen great examples now of actually a pretty impressive acceleration from the AI advancements over the last 6 months, what can be done in this area. And all of these elements will help us to go faster with tech while reducing our cost base in relative terms and against the backdrop of global and heightened global certainty with those points that are causing right now the uncertainty among our farmers, particularly. So this is something that we stay focused on. And I feel pretty good about the progress we are making against all the commitments we put out there. And then we'll see when the market comes back.\n\nThis is overall still see and wait where we don't wait, actually, we act. So it's a see and act phase for us, improving things. And 2027 will be probably a better year than 2026.\n\nJames A. Nickolas: If I could just add one, we're also underproducing versus retail in 2026. So assuming we -- by about 4%. So assuming we produce at retail levels next year, that should be a natural tailwind revenues or profits.\n\nOperator: Our next question comes from the line of Kyle Menges with Citigroup.\n\nKyle Menges: I was hoping if you could talk about just any changes you're seeing in industry competition, specifically pricing across any of the major regions as well as just how you think your inventory position is versus the industry? And then just a quick tariff question. You mentioned could be a 0% to 50% tariff would just be helpful to hear examples of cases where it would be 0 versus 50% now?\n\nGerrit Marx: Thanks, Kyle. I will defer the tariff point to Jim. We do see a continued positive price cost development for us, which I don't know what the others are doing, but we do see that building on top of advancing technologies and product launches as well that we have throughout 2026 and the beginning of 2027. We have launched our new short rebase or standard rebased tractor in Europe, also on top of the range, long wheelbase tractor hitting first time ever segment CNH has never played in, which is a sector of 350 to 450 horsepower in the European style designed tractor that is sold around the world.\n\nAnd with these launches, and actually, we are sold out on those with the production slot we have allocated. We also sold out on our next-gen combines this year. We see great momentum in our product, great demand. And with that demand and obviously, further launches of our also offboard systems, connecting the onboard. We have a good base to advance our farmers and with that also have a good net price realization over the next couple of quarters as we also go into 2027. So for the full year, we expect a positive price cost here. On the inventory side, I alluded to a $500 million further reduction of our global channel inventory. This is -- dealer inventory.\n\nThis is something we will very closely monitor because if there are swings in markets that we see coming maybe more positive on the other way, more negative developments, we will adjust those in inventory targets and destocking activities accordingly. For now, we feel pretty good where we are. We get very good feedback from our dealers. We have cleared aged inventories. We have cleared stock that was hard to sell. And now we are approaching the levels that we want to see with our dealers also to lighten up the financial burden on floor planning, and their overall exposure to that. So that is on a good track. We delivered what we said we will.\n\nAnd I'm quite curious to see what happens in the next quarters, carefully reading commodity prices, carefully reading the demand in every region of the world. And I think, overall, in a good shape on our track in 2026, which is the trough year most notably, probably in like 20 or 30 years of ag. We have never been that low in terms of unit sales in our industry and we are holding up not only, but we are actually building further strength as we go into the future years. So that feels overall quite good. Jim, on tariffs.\n\nJames A. Nickolas: Yes. Kyle, it kind of depends on the HTS codes, the harmonized tariff schedules. There's a bunch of those. And I don't have the details to discuss this in particular, but we can take that probably offline at some point. .\n\nOperator: Our next question comes from the line of David Raso with Evercore ISI.\n\nDavid Raso: Two questions. One, can you give us an update on where you stand strategically with the construction business? And second, the production below retail of 4%. Can you give us a little color, be it geographic or large versus small tractors, combines just that combination that gets you to the down -- or sorry, below 4% retail globally?\n\nGerrit Marx: David, I'll take the first, and Jim takes the second question. As I mentioned during the last quarterly earnings call and the full year 2025 financials, we have restarted our discussions with several partners for our construction business. These discussions advance a pace. We don't rush anything. There are very good conversations that we have that will build a stronger CE lineup for the construction business, and that will also further enhance the construction machines that we expect to get shipped under the New Holland construction brand back to our ag dealers. So progress is made as we speak. We don't rush things.\n\nWe take the time it takes, and we will update you when we have made a conclusion not saying when that will be the case. But in -- I think over the course of the remainder of 2026 or first half of 2027, we should be clear on the path forward for our construction business, which is a very, very relevant piece as a product for our dealers, but not necessarily has to be in our ownership in order to deliver product and service to those through build and farm the world. So that is what I can tell you.\n\nSo time wise, we are pretty much a pace of what we said last time over the course of '26 and '27, we'll come back with the progress on that one. But I'm pretty confident that we are moving towards a solution here.\n\nJames A. Nickolas: Yes. And [indiscernible] question, the underproduction is a rough, but more underproduction happening in combines, less underproduction in tractors, although both are underproduced in 2026. And by geography, I would say balanced, but probably a little bit more under production occurring in Brazil this year for the -- there we talked earlier about the challenges there.\n\nOperator: Our next question comes from the line of Joel Jackson with BMO Capital Markets.\n\nUnknown Analyst: It's Evan on for Joel Jackson. I just wanted to circle back on the credit dynamic. You pointed out for Q2, Q3 considerations of higher risk reserves, just wonder to see if you can give any extra color on that. Is that all Brazil? Are you seeing delinquencies currently higher bad debt?\n\nJames A. Nickolas: Yes. It's slightly up in more mature markets, but nothing notable. The real increases are Brazil, primarily and secondarily, Argentina, but to a lesser degree. And in Brazil, May is a big payment month. And so every year in May, we see an uptick in delinquencies, that's typical seasonality. I would expect to see it again this year. And it remains elevated. It's something that bears watching. We're actively managing it. It is not getting worse, but it's not getting better at the same time, so it bears customer-by-customer discussions trying to make sure that they stay current. So I would expect an uptick in delinquencies in Q2 of this year, like we always see.\n\nAnd I'd say, again, it's mostly focused in Latin America is the issue.\n\nOperator: Our next question comes from the line of Tami Zakaria with JPMorgan.\n\nTami Zakaria: Question regarding South America, I see you tweaked lower your expectation for combines. But stepping back, should we view this year's decline in South America more like a temporary blip that reverses next year? Or are you seeing indications that this could be a weak market for a couple of more years before demand starts moving up again?\n\nGerrit Marx: Look Tami, the -- I mean Brazil, if you look back the last 40 years, Brazil, had always a very quick ramp to a peak year, and then it dropped quite sharply and it stayed there for a few years and then before it came back. I think the overall cycle dynamics in Brazil are very familiar to us. And the shape of the curve is this year no different than any other cycle before. What is a little different this time is that a few things come together, and like tariffs and the global trade and the new position of China when it comes to purchase global commodities and North and South American frictions.\n\nAnd I think that causes a little deeper and a little longer trough in this cycle than in prior cycles. And I think that is what we experienced right now in '26, which could drag into '27 as well. However, looking at the acreage in South America and knowing that we have 2.5 harvests in South America on many acres down there given the climate conditions that points at our machines aging 2.5x faster when it comes to ours on the machine than in other geographies that have only 1 harvest more or less 2.5x the ours. They planned and they plan differently. So maybe it's rather 2x the aging speed.\n\nBut that will point at a replacement plan across large ag equipment that becomes quite relevant as we enter into '27 and '28. So I think replacement will provide a floor. And while we go a little deep now and a little longer and in prior troughs, we would expect now that 2027 gives us some footing and with the new elected President in Brazil, whoever that will be certainty will in any case, add to more confidence when it comes to farming and purchase of machines. What that means the numbers we will need to see. But I think the floor will be reached over the course of this year as per our expectations.\n\nOperator: Our next question comes from the line of Daniela Costa with Goldman Sachs.\n\nDaniela Costa: I just wanted to follow up on Construction Equipment. You talked about the net pricing expectations for ag. And if you could elaborate sort of similar comments for construction equipment, do you think that can turn net positive at some point in the year? And then also on Construction Equipment, 2Q, given the volumes you guide for mid-teens, should we expected already to start breaking even in 2Q? .\n\nJames A. Nickolas: Daniela, it's Jim. So for the full year, we are not forecasting positive net pricing on the construction business because of the tariffs. Price loss balance to be net negative. Positive pricing, but then the product costs because of tariffs will grow at a higher rate. So net the product price and product cost net negative for the year. There'll be positive EBIT for the year, for the full year is still profitable, but the price cost is a negative equation for us this year. As it relates to Q2, construction business, yes, we do believe it will be above breakeven in Q2.\n\nAgain, they're going to -- they were penalized from the quality hole, the quality stock at the Wichita plant in Q1, and then that will be made up those sales will be realized in Q2. So a bit of a negative in Q1, bit of a positive in Q2, full year but of a wash.\n\nOperator: Our next question comes from the line of Ted Jackson with Northland.\n\nEdward Jackson: My question would be just kind of on sort of U.S. legislation and regulation. And I was just curious if you could give some kind of update and thoughts that you all have with regards to the farm bill, which is locked up inside of Congress and then also the efforts to push to EPA -- by the EPA to push for ethanol E15 full year. I mean if the farm bill gets locked up and those come out and we go through another year with it being funded down the road, does that change anything for you?\n\nAnd on the EPA side, on the EBIT team side, maybe just kind of some thoughts in terms of what you think it is in terms of the likelihood of that.\n\nGerrit Marx: Ted, look, the farm bill is -- has been long awaited and is still locked up and it is going to be helpful regardless. It is not going to suddenly boost in itself, it is not going to boost major equipment demands because our farmers, they need to see an operating profit on their bottom line, excluding subsidies and other money that is handed to them. Only if it's structurally positive, which is driven by commodity prices and input costs, only if that turns positive for them, this is the key enabler for equipment purchases because that means that the business is returning back to a healthy and sustainable operation allowing them to upgrade their fleets and advance new tech.\n\nSo farm bill is very, very helpful, and it's very needed. It is not going to be that one thing that is driving equipment demand from 1 day to another. When it comes to the regulation and legislations, I mean making E15 fuel, I mean, today, it was a temporary E10 -- and then -- sorry, temporary E15 now making it permanent. That has quite some positive impact on corn. I mean, we did some math here back of the envelope. And if everybody, which is not possible. But if everybody was shifting towards a consumption in the United States from E10 to E15, that amount of corn needed to produce that fuel.\n\nIf I just focus on corn, there are obviously other ways to produce that ethanol content. But that amount of corn is more or less equivalent probably to about the same acreage that is planted today with soybeans, earmarked for China. So I mean, there is a kind of a wash, however, not to be neglected that the marginality of soybeans for farmer is a significant higher than the marginality of corn. So while E15 will drive for corn, and we will see also other sources benefiting from that, and it will help stock levels to deplete a bit. It is overall a less profitable commodity than soybeans. So I think there is good momentum. It's helpful. It adds.\n\nIt is not a big ticket item that will turn things around, but it helps to build confidence. When it comes to EPA and emission standards, I mean, staying very, very focused on sustainability and low emissions, which we have already across the board with our machines. I think what EPA is targeting at is make it simpler and make it less disruptive if things happen in the field or reality strikes that suddenly, I don't know, you're running out of the additives and then the engine DD rates. So these things shouldn't happen, so it makes things simpler for our farmers in the field. I think that is also very beneficial the operation makes it simpler.\n\nIt does not take significant cost out of the machines though. If you imagine you were to roll back an emission standard for the United States, where we are running on, let's say, Tier 5, if you were to skip that or roll back. I mean the rest of the world will still move into higher level emission standards. And if I think if -- in North America, let's say, United States, if the emission standard would start to deviate from the rest of the world, I think that creates more complexity for us because we then need to build machines for a market with a specific, let's say, less sophisticated emission standard.\n\nAnd while the rest of the world is still on a higher level emission standard that might mean we can maybe reduce a few components from the machine because it's a less refined emission standard, but it does not lower the overall cost for us in producing because the rest of the world will not follow. So I think EPA's advancements are helpful to simplify and to make farmers life more focused on what they actually should do rather than be worried about their engines to be rail -- derate. But I think overall, as a cost reduction action, this has limitations when it comes to the machines themselves.\n\nOverall, all of it is helpful what it will take, needless to say and you all know that is better commodity prices and managed input costs so that a healthy operating margin emerges with the farmers, and they see the profitability or the overall farm health, which is not only the soil health, but also the economic health of the farm being sustainably advanced in the future, and it's very much driven by a few factors that are not yet clear, i.e., global trade commodity prices, and we'll see how the harvest will go this year.\n\nOperator: Our final question comes from the line of Judah Arnovitz with UBS.\n\nUnknown Analyst: Actually, 2 quick questions on price cost. In Ag, do you expect positive price cost each quarter for the rest of the year? And then just on the transportation costs, you mentioned if the conflict persists, what's your confidence in your ability to pass these costs on to customers in both ag and construction and then relative to the $70 million growth impact that you mentioned. What is that number year-to-date?\n\nJames A. Nickolas: Yes. Okay. So price cost for ag per quarter, yes, that just remained positive. So it's good news. On the construction side, we talked about that's not going to happen for the year given the tariff burden. And then I think your second question was the ability to pass on higher costs, logistics, et cetera. I think there will be a bit of a lag effect. And -- but you think that's certainly the ag business certainly has shown its ability to get pricing over time. I think that will continue. So I'd say, a high degree of confidence getting that pricing back. It may not be in the same quarter.\n\nAgain, there may be a bit of a lag, but a high degree of confidence in getting that back. On the construction business, less confident. It's a much more competitive fragmented market and not all players are impacted equally with these costs. So that's called medium level of confidence on the construction side. Year-to-date, I would say relatively small impact from elevated costs from the Iran conflict, et cetera, relatively small up till now. That's more in the windshield, not the review mirror. Again, we don't think it will be -- it will come to that.\n\nThat number I gave you $70 million is only if it persists sort of through the end of the year, and we don't think this is going to last at the end of the year.",
+              "source": {
+                "uri": "fool.com",
+                "dataType": "news",
+                "title": "The Motley Fool"
+              },
+              "authors": [
+                {
+                  "uri": "motley_fool_transcribing@fool.com",
+                  "name": "Motley Fool Transcribing",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://g.foolcdn.com/image/?url=https%3A%2F%2Fcdn.content.foolcdn.com%2Fimages%2F1umn9qeh%2Fproduction%2Fb4204f36ed605fc54d4ba32e2cb31d1dd892afd6-800x450.jpg%3Fw%3D800%26q%3D75%26fit%3Dmax%26auto%3Dformat&w=1200&op=resize",
+              "eventUri": null,
+              "sentiment": 0.2313725490196079,
+              "wgt": 515272659,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "AAPL",
+            "price": 253.98,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 45,
+            "false_breakouts": 7,
+            "strength_score": 62.42,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 258.48,
+            "nearest_lower_level": 250.65,
+            "first_touch_date": "03/06/26",
+            "source_date": "03/23/26",
+            "zone_low": 252.99,
+            "zone_high": 254.49,
+            "center": 253.73,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 62.42,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 262.19,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 48,
+            "false_breakouts": 5,
+            "strength_score": 61.66,
+            "created_by": "swing_high",
+            "nearest_upper_level": 270.88,
+            "nearest_lower_level": 260.15,
+            "first_touch_date": "02/12/26",
+            "source_date": "04/10/26",
+            "zone_low": 261.65,
+            "zone_high": 262.99,
+            "center": 262.28,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 61.66,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 258.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 43,
+            "false_breakouts": 7,
+            "strength_score": 60.63,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 260.15,
+            "nearest_lower_level": 253.73,
+            "first_touch_date": "02/13/26",
+            "source_date": "04/07/26",
+            "zone_low": 257.65,
+            "zone_high": 259.37,
+            "center": 258.48,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 60.63,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 260.18,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 36,
+            "false_breakouts": 10,
+            "strength_score": 60.63,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 262.28,
+            "nearest_lower_level": 258.48,
+            "first_touch_date": "02/12/26",
+            "source_date": "02/12/26",
+            "zone_low": 259.62,
+            "zone_high": 260.69,
+            "center": 260.15,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 60.63,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 275.72,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 31,
+            "false_breakouts": 8,
+            "strength_score": 51.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 280.42,
+            "nearest_lower_level": 274.28,
+            "first_touch_date": "02/04/26",
+            "source_date": "02/12/26",
+            "zone_low": 275.21,
+            "zone_high": 276.62,
+            "center": 275.83,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 51.83,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 270.71,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 26,
+            "false_breakouts": 5,
+            "strength_score": 40.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 273.2,
+            "nearest_lower_level": 262.28,
+            "first_touch_date": "02/12/26",
+            "source_date": "04/29/26",
+            "zone_low": 270.2,
+            "zone_high": 271.57,
+            "center": 270.88,
+            "families": [
+              "gap"
+            ],
+            "strength": 40.0,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 273.2,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 16,
+            "false_breakouts": 5,
+            "strength_score": 30.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 274.28,
+            "nearest_lower_level": 270.88,
+            "first_touch_date": "02/04/26",
+            "source_date": "04/28/26",
+            "zone_low": 272.69,
+            "zone_high": 273.71,
+            "center": 273.2,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 30.0,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 249.55,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 20,
+            "false_breakouts": 2,
+            "strength_score": 27.42,
+            "created_by": "swing_low",
+            "nearest_upper_level": 250.65,
+            "nearest_lower_level": 247.99,
+            "first_touch_date": "03/13/26",
+            "source_date": "03/24/26",
+            "zone_low": 249.01,
+            "zone_high": 250.06,
+            "center": 249.54,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 27.42,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 274.28,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 3,
+            "strength_score": 22.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 275.83,
+            "nearest_lower_level": 273.2,
+            "first_touch_date": "02/04/26",
+            "source_date": "04/20/26",
+            "zone_low": 273.77,
+            "zone_high": 274.79,
+            "center": 274.28,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 22.0,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 246.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 0,
+            "strength_score": 15.42,
+            "created_by": "swing_low",
+            "nearest_upper_level": 247.99,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/20/26",
+            "source_date": "03/20/26",
+            "zone_low": 245.0,
+            "zone_high": 246.51,
+            "center": 245.73,
+            "families": [
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 15.42,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 250.65,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 0,
+            "strength_score": 15.42,
+            "created_by": "swing_low",
+            "nearest_upper_level": 253.73,
+            "nearest_lower_level": 249.54,
+            "first_touch_date": "03/13/26",
+            "source_date": "04/02/26",
+            "zone_low": 250.14,
+            "zone_high": 251.16,
+            "center": 250.65,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 15.42,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 247.99,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 11.42,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 249.54,
+            "nearest_lower_level": 245.73,
+            "first_touch_date": "03/19/26",
+            "source_date": "03/23/26",
+            "zone_low": 247.48,
+            "zone_high": 248.5,
+            "center": 247.99,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.42,
+            "atr_value": 4.26
+          },
+          {
+            "symbol": "AAPL",
+            "price": 280.18,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 5.17,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 275.83,
+            "first_touch_date": "02/06/26",
+            "source_date": "02/11/26",
+            "zone_low": 279.67,
+            "zone_high": 281.42,
+            "center": 280.42,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 5.17,
+            "atr_value": 4.26
+          }
+        ]
+      },
+      "MSFT": {
+        "daily_atr": 10.0,
+        "technical_atr": 0.81,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Dow Jones Futures: Google, Amazon, Meta, Microsoft Are Big Earnings Movers After Oil Prices Spike, Fed's PowellStays -- IBD"
+        ],
+        "news_provider_hits": [
+          "DJ-N",
+          "The Verge"
+        ],
+        "news_source_types": [
+          "external",
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "MSFT",
+          "headline": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+          "raw": {
+            "headline": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+            "published_at": "2026-04-30T19:17:39Z",
+            "source": "The Motley Fool",
+            "url": "https://www.fool.com/earnings/call-transcripts/2026/04/30/cnh-cnh-q1-2026-earnings-call-transcript/",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199318152",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "19:17:39",
+              "dateTime": "2026-04-30T19:17:39Z",
+              "dateTimePub": "2026-04-30T18:05:46Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.fool.com/earnings/call-transcripts/2026/04/30/cnh-cnh-q1-2026-earnings-call-transcript/",
+              "title": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+              "body": "Transportation and freight cost inflation -- if sustained -- could \"be up around $70 million.\" CFO James A. Nickolas stated, \"we would take action at some point if this elevated cost environment persists on the revenue side. We don't think that's needed just yet, but we're monitoring it very, very closely.\"\n\nManagement reaffirmed all major 2026 guidance ranges, including net sales, EBIT margins, and adjusted EPS, despite ongoing industry headwinds, currency shifts, and tariff policy volatility. The order book for Q2 is fully committed with disciplined loading practices, and Q3 coverage is substantial, reflecting emphasis on real dealer orders and risk management by geography. Strategic expansion in Europe via new product launches and multi-brand dealer consolidation is progressing, highlighted by a sold-out high-horsepower European tractor line and next-gen combine slot sell-outs. A new partnership with Abilene Machine is set to expand the company's aftermarket parts offering across dealer networks, further supported by technology deployments at 70% of dealer sites. Management confirmed production remains below retail by about 4%, especially in combines and Brazil. This may create a natural revenue/profit tailwind as inventory rationalization continues into 2027 when macro policy clarity is expected to improve.\n\nGerrit Marx: Thank you, Jason, and welcome to everyone joining the meeting. We are calling from Sioux Falls, South Dakota, where we just hosted our Board meeting. Sioux Falls is one of our CNH tech hubs, which we acquired through Raven. In Sioux Falls, we have about 300 colleagues who jointly with other sites, not only code and validate our on and offboard software, but also design the architecture of the next evolution of our digital machine hardware. I'm very proud of the advancements that we will be launching over the next couple of years. First quarter results were as expected and guided.\n\nGiven that Q1 seasonally our lowest quarter, we are at historically low industry demand in North America, and farmers in Brazil have ongoing financial challenges. During the quarter, additional complications emerged, including changing tariff rules and an escalated conflict in the Middle East. I'm very proud of the way the CNH team responded to all the challenges we faced, those we knew about going in and those that emerged during the quarter. We are now passing through what we expect to be the lowest period of the current ag industry cycle, supported by some replacement demand.\n\nAs we have said before, we also expect Q1 2026 to be the lowest quarter of the year, during which we diligently continued the disciplined management of all levers in our control. Despite the challenging quarter, we have many things to proudly share here. We kept production levels low in order to manage and contain channel inventory. Ag dealer inventory levels remained unchanged since the beginning of the year by design. Normally, dealers build inventory in Q1 in preparation for Q2, but the flat levels are in line with our overall plan to have the dealers reduce their inventories by about $500 million this year.\n\nWe have been quite disciplined to produce and ship only presold orders or fast-moving stock orders. The net of price and product cost was positive in agriculture as we focus on our operational efficiencies and quality improvements. And we do expect that some of price and product cost to be positive in agriculture for the full year as well. We are making solid progress on our efforts to take cost out and improve our overall product quality, countering the negative impact from tariffs and global supply chain disruptions. We also continue with a raving support our dealer and service network optimization with several new consolidations completed and our tech assist tool rolled out at about 70% of our dealer locations.\n\nAs a reminder, our AI tech assist delivers near instant diagnostic support while our visual parts search enables rapid and accurate parts identification. These capabilities enhance decision quality and deepen the value we deliver to customers and dealers, and there is much more to come, powered by the rapidly evolving power of artificial intelligence from generative to agentic capabilities. We, along with other industry participants have had productive discussions with members of the U.S. administration on how we can support farmers and builders during these times. We are optimistic about how some developments such as the recently announced increase in renewable fuel standards will help farmers through increased crop prices and demand.\n\nThere's a new equilibrium of supply and demand of agriculture commodities emerging in all major regions, as upcoming elections, trade deals, including and excluding the U.S. and rerouting of food and nonfood supply chains are settled over the next couple of years. So while market conditions are very dynamic, we are focused on solutions today and in the future that support our farmers and builders and that will deliver returns to our shareholders. Turning to the results, which reflect the expected and guided market headwinds and our decision to keep production very low. Consolidated revenues were $3.8 billion, flat year-over-year, including about 4% positive currency impacts. Our Ag segment sales were up 1% with EMEA up 20%.\n\nNorth America down 3%, and South America, down 28%. With farm incomes depressed and macroeconomic uncertainty, we saw continued softness in equipment demand. Industrial adjusted EBIT was a loss of $45 million, driven primarily by tariffs and high SG&A and R&D expenses, only partially offset by positive pricing and cost savings actions. For the quarter, adjusted net income was $21 million, with adjusted EPS at $0.01. Free cash flow from Industrial Activities was a $569 million outflow in line with Q1 2025 and consistent with the working capital seasonality of the first quarter, where we usually build up some company inventory in preparation for Q2 sales.\n\nWe remain more committed than ever to strengthen the company and prioritizing long-term value creation. Our company strategy is centered around 5 key strategic pillars: expanding product leadership, advancing our iron and tech integration, driving commercial excellence, operational excellence and quality as a mindset. These pillars remain front and center to ensure we stay aligned with our long-term strategic objectives and our team remains focused and united in our shared purpose to serve and advance those who feed and build the world we all live in. From all the great steps forward we took in the last quarter, I would like to focus today on our operational excellence and specifically our manufacturing plant efficiencies.\n\nWe use a wide range of tools and latest technologies to unlock cost efficiencies at our manufacturing plants. Last year, we conducted about 1,400 projects, which led to $45 million in savings as we reported to you already last quarter. Individually, these projects may seem modest, but the results are profound when we add them all up. In addition, many of the projects include quality improvements to the product shipped out from our factories. An example of one of those projects was a fiber laser installed last year at our Fargo, North Dakota plant where we make our 4-wheel drive tractors. This machine is used to cut sheet steel and replace an old plasma punch machine.\n\nThe new process is 52% faster than before, while also reducing other consumables such as oil and lubricants, minimizing secondary operations and my favorite, improving quality. More efficient operations paired with better quality are a win for both CNH and our customers. With that, I will now turn the call over to Jim to take us through the details of our financials and guidance.\n\nJames A. Nickolas: Thank you, Gerrit. Agriculture Q1 net sales were about $2.6 billion up 1% year-over-year, including 4% positive currency translation. Sales volumes were lower in North and South America and favorable pricing came mainly from North America. Sales volumes and pricing were up in EMEA, mostly in Europe for both tractors and combines, fueled by moderately favorable industry demand and some market share gain. Gross margin was 19.1% from 20% a year ago. Agriculture adjusted EBIT margin was 1% from 5.4% in Q1 2025. The positive pricing and the cost saving contribution only partially offset negative original mix and tariff impacts.\n\nThe higher year-over-year R&D and SG&A expenses were consistent with our indications with both affected by lower variable compensation in 2025 and labor inflation in 2026. Construction net sales in the quarter were lower 3% year-over-year to $574 million, as higher sales in EMEA were more than offset by lower sales in North and South America. We were initially expecting sales to be a bit higher in North America but we held back sales while working out a supplier quality issue to protect the customer. That issue is now resolved and those sales will be made up in Q2. Q1 gross margin was 11.8% from 14.9% a year ago, largely due to tariff impacts.\n\nConstruction SG&A was unfavorable due to trade show marketing costs, lower variable compensation in 2025 and labor inflation in 2026. Q1 adjusted EBIT margin was negative 4.9%. In Financial Services, segment net income in the quarter was $74 million, down versus 2025, mainly due to higher risk costs in Brazil. Retail originations in the first quarter were $2.2 billion, and the managed portfolio ended the quarter at $28 billion. Sequential delinquency rates increased slightly to 3.5%, primarily driven by persistent economic difficulties in South America. Our capital allocation priorities remain the same, reinvesting in our business while maintaining a healthy balance sheet and then returning cash to shareholders.\n\nDuring the first 3 months of 2026, we repurchased $26 billion worth of CNH stock at average price of about $10.70 per share. Before we dive into our guidance, let's take a look at the expected tariff impact on our margins, as we had a meaningful change recently in the way they will be applied to our products. First, we need to acknowledge that we did enjoy a brief period of release with naive tariffs were replaced by Section 122 tariffs at 10%, that lasted for about 1.5 months. Just something to keep in mind when we eventually think about run rates in 2027.\n\nAt the beginning of April, there was a change in the way Section 232 tariffs on steel and aluminum are applied. At a very simple level, it means we went from paying 50% on the value of only the metal to now paying anywhere from 0% to 50% on the total value of the component or machine, depending on what it is. For whole machine imports, we are now paying 25% on the total value of the unit, which overall is higher than what we paid before. However, for some component imports, the tariffs can actually be lower. In our Agriculture business, the impact of this change is net neutral for calendar year 2026.\n\nSo we still forecast the tariff cost impact to be about 210 to 220 basis points of impact on ag margins or no change from our view last quarter. For construction, we're not expecting to get as much of that component benefit as in ag. And so now we expect about a 600 basis point impact on our construction margins compared to our original expectations of roughly 500 points. It's important to note that Section 301 investigations are ongoing for products coming from China, the EU, India and Mexico. We have not included any factors for that in this forecast, but we will provide an update if there are material changes.\n\nLet's first look together at our agriculture industry outlook for 2026. We have slightly improved our outlook for small tractors and combines in North America. In EMEA, we have lowered the tractor outlook, but we are more optimistic for combines. And in South America, we have lowered the outlook for combines. Market risk in South America is elevated due to tighter credit and delays in government-backed financing in Brazil. As a result, we are watching the situation there closely. In total, we still see the industry at about 80% of mid-cycle.\n\nWhen we balance all those changes, along with our unchanged assumptions for favorable currency translation of 2% and positive pricing of 1.5% to 2%, we are comfortable reaffirming our net sales guidance of flat, down 5%. As mentioned earlier, our tariff assumptions for agriculture are net unchanged. While we are seeing increased freight and transportation costs, we are optimistic that our ongoing cost reduction programs and updated geographic mix will be able to offset those impacts. As a result, we are reaffirming our EBIT margin guidance of 4.5% to 5.5%. In construction, we have fine-tuned our industry forecasts across the regions based on Q1 trends and market conditions. And overall, we are slightly lower than our previous expectations.\n\nHowever, we still forecast our own net sales to be about flat year-over-year, including about 1% of favorable currency translation and 2% of pricing. EBIT margin is forecasted to be between 1% and 2% as we focus on cost reductions to offset the increased impact of the tariffs discussed earlier. Putting all those elements together, then we reaffirm our forecast for 2026 industrial net sales to be flat to down 4% year-over-year and industrial EBIT margin to be between 2.5% and 3.5%. Industrial free cash flow is still forecasted to be between $150 million and $350 million. Adjusted EPS is reaffirmed at between $0.35 and $0.45, assuming an average share count of about $1.25 billion.\n\nTo help you with remodeling, I'll provide some additional considerations for our second quarter. Our order books are full for the second quarter, and we're expecting agriculture net sales to be about flat on a year-over-year basis. We're keeping a close eye on conditions in South America as conditions for farmers there remain very difficult. Construction net sales will be higher in the mid-teens, and that includes some of those sales originally expected in Q1. The construction increase is most pronounced in North America. Transportation costs and the tariff payments are another watch point. The team has done a great job working through these rapid changes and will continue to be vigilant.\n\nI'll note, too, that grain prices ticked up a little along with oil prices, they remain below what many consider breakeven levels for farmers, which continue to be -- which continue to challenge their economics. Although both agriculture and construction Q2 EBIT margins are forecasted to follow into the full year guidance ranges. Taken together with the lower Q1, this implies that we expect margins in the second half of the year to be sequentially better than the first half, as is typical. Furthermore, we also expect that both the ag and construction margins will be better on a year-over-year basis in the second half of the year.\n\nFinancial Services net income in Q2 will be lower year-over-year by $20 million to $25 million. With that, I will turn it back to Gerrit.\n\nGerrit Marx: Thank you, Jim. Let me finish up with some thoughts about the rest of the year. Against the backdrop of heightened global uncertainty, we remain focused on our purpose to serve and advance the world's farmers and builders. That means closely monitoring developments while continuing to deliver for our dealers and end customers through disciplined production planning and a clear path to lean channel inventories by year-end. We continue working on our iron and our tech developments and product launches and delivering on our long-term margin improvement efforts. We continue to work with our dealer partners on finding the right network configuration in each of the markets that we serve.\n\nIn another step to support our dealers and farmers, we have recently entered into a strategic relationship with [ Abilene ] Machine through a minority equity stake. The relationship will allow CNH to offer our dealer network a comprehensive aftermarket parts portfolio with upcoming access to the Abilene Machine portfolio of all makes parts. This further enables our aim to provide our dealers and customers good, better and the best options to service their equipment fleets regardless of age or brand affinity. In North America and Europe, the average age of ag equipment in the field has been trending older. This should build up a modest demand for new machines in the coming quarters.\n\nSignificant equipment demand increases usually only happen when there is a good increase in commodity prices that support farm incomes. As Jim mentioned, farmers in South America are a little more cautious and will probably continue to be so at least through the end of the year, and so we will be as well. Selling a machine is one thing, collecting its monthly installments is another, and we have been thoughtfully managing that jointly with our network partners during this difficult period. As we expect to evolve from the industry trough, we look forward to capitalizing on all the improvements that we have made during -- serving and advancing those who feed and build the world, always breaking new ground.\n\nThis concludes our prepared remarks, and we can now start the Q&A session.\n\nOperator: [Operator Instructions] We will take our first question from the line of Tim Thein with Raymond James.\n\nTimothy Thein: I just had -- my question on ag. The -- as we look at the production slots for the coming quarters, can you maybe give some context there in terms of, a, I'm curious if you've seen -- has there been any significant changes in terms of the actual build rates implied within -- maybe by region or if there's been any changes there? And then just any comments in terms of kind of regional order commentary. I mean you stressed the softness and the concern around South America. Maybe a little bit more context of what you're seeing within that order board maybe in your largest region in North America?\n\nGerrit Marx: Thank you, Tim. So as Jim alluded to, we are fully booked in Q2, and we have a pretty healthy coverage already for Q3, while being very disciplined in actually loading orders to production because, as I said, we focus on real dealer, let's say, customer orders and orders from dealers referring to machines that have a very high probability to liquidate in due course as we continue to manage our general inventory. Usually, when we see the market picking up again, which we do not yet see at this point. We would obviously load production more with what we call company orders, where we hold inventory on our side to quickly react to a changing market environment.\n\nSo when we talk about already a Q2 fully booked into Q3 in a good shape, this happens on the basis of a very disciplined order loading to the factories. As per the regional differences, we're pretty happy with the way how things go in Europe. The team makes great progress in building the foundation for gaining share as we do. And we are accelerating our dealer multi-brand consolidation across the region. And you will hear us talk about that almost, I think, probably every quarter from now on.\n\nBut definitely, for the full year 2026, and obviously, this dealer network consolidation is going to drive as well order momentum in the region as we not only break new ground, but they actually gain ground. Similarly, for the United States, where the market is going backwards as we projected and guided to, we see on the low levels, very good momentum with our dealers when it comes to interacting with our customers. So that is also in a good place.\n\nAnd the region where we have extra efforts and extra attention is, as you also picked up is Latin America, particularly Brazil, although Argentina is not that different in its current dynamics where the farmers are still in a wait-and-see situation in light of upcoming elections in Brazil. And still, the consequences of trade deals still need to show in actual trades of commodities and pricing of those commodities. So I think in Latin America, we apply extra discipline to the taking of orders, making sure that we preserve margins despite a significant price pressure in the market given that all the industry participants had expected a better evolution of market demand, which isn't the case.\n\nAnd so extra discipline is required for LatAm in the order take and that is also seen in our Q3 order take. But overall, we are in a good shape going through Q2 as we look at Q3.\n\nJames A. Nickolas: If I could add to that, in the Latin America, Brazil, in particular, given the tight conditions, we, along others have tightened underwriting standards, and I think that's also acting industry demand. So it's not a CNH concern. It's an industry-wide country-wide concern.\n\nGerrit Marx: Yes. And maybe last commentary on Asia Pacific, although small, but growing quite a bit. Our teams in India have hit new record highs in terms of production market share, and we really, really built momentum there with our newly launched compact factor lineup, and the to be launched, new utility-light small tractor lineup, not only for India, but for the export, which will mean a step change in small and compact machines that we will ship around the world from India, while we see stable and good progress in China and a rather flattish development in Australia and New Zealand, where the market is basically running on replacement demand only at this point in time.\n\nOperator: Our next question comes from the line of Angel Castillo with Morgan Stanley.\n\nUnknown Analyst: This is Esther on for Angel Castillo. Just on tariffs and the broader trade backdrop, can you just give us a little bit more color on how you're sizing the impact you're seeing today versus the original tariff impact guide? And how much of that do you think is being offset by pricing versus operational actions? So just like more color on like kind of how you see that dynamic through the year?\n\nJames A. Nickolas: Sure. Yes. Esther. It's Jim. The -- as we indicated, the ag business, really no net change versus prior guidance. So you think about full year 210 to 220 basis points of a drag versus if there weren't tariffs. So call it, full year cost of $120 million on the ag business. Now that's -- and that's in line with where we were last quarter. There were some puts and takes. [indiscernible] lower gave us some relief, offset by higher impact, higher cost from Section 232 changes. And so that's really a broad for the ag business.\n\nOn the construction business, it's a bit of a headwind moving from 500 basis points of a headwind to 600 basis points of headwind, again, as opposed to no tariffs. So that's really where it ends up. So we took our lumps, I would say, when they were first launched at Liberation Day. And then since then, the changes thus far have been relatively minor for us overall. The one area that we haven't quantified and are waiting to see where it lands are the Section 301 tariffs, which are sort of related to investigations. The U.S. government is conducting with various counterparties in the trade, EU, India, Brazil, et cetera.\n\nSo that one is unknown at this point, but I think that covers the landscape of tariffs.\n\nOperator: Our next question comes from the line of Kristen Owen with Oppenheimer & Co.\n\nKristen Owen: I wanted to talk through how you're thinking about back half scenarios, just given the consents of now we're looking at higher fertilizer prices, higher transportation cost, some of these acute challenges that you've called out in Brazil versus maybe a little bit stronger forward commodity curve, how that's influencing the range of scenarios that we could see in the back half of the year?\n\nJames A. Nickolas: Yes. Kristen, the -- again, the range of probable outcomes is pretty wide still in keeping with the last year or so of macroeconomic uncertainty. The fertilizer impact higher cost. So that's less of a concern for 2026 for most of the world. I mean it's a concern, but it's not -- it shouldn't impact us too much this year, second half aside from Brazil, Brazil is where it's going to have more of an impact given their multiple harvests and planting seasons. So there's a little bit of risk, I think, in Brazil from the higher fertilizer costs on top of the credit conditions we mentioned earlier. Transportation costs are growing in most places.\n\nWe are viewing this as something we can offset today. It's sort of the higher cost due to the Iran conflict persist throughout the year, which we're not forecasting, but if they were to persist throughout the year, the gross net increase in cost could be up around $70 million, that $70 million is gross. It assumes no countermeasures from us in terms of transportation surcharges or lower discounting, we would take action at some point if this elevated cost environment persists on the revenue side. We don't think that's needed just yet, but we're monitoring it very, very closely. So at the back half, we think we've got things balanced out given our levers.\n\nBut right now, the unknown is the higher elevated transportation cost, that's the primary factor, logistics from shipping and trucking from the higher diesel and fuel costs. So that's the one we're watching closely. And if it persists for a longer period of time, we'll need to make some counter measures to happen on the revenue side.\n\nOperator: Our next question comes from the line of Jamie Cook with Truist Securities.\n\nJamie Cook: I guess just 2 questions. I guess, encouraging to see we kept guidance the same and everything seems on track. Obviously, lots of positives and negatives out there. But Gerrit, if you could just comment on, one, understanding it's early on about how you're thinking about the setup for 2027, I guess, for ag in particular, where you would be most constructive or more worried, I guess, Brazil would probably be that area.\n\nAnd then from just a company-specific perspective, with a lot of the company-specific initiatives, streamlining of cost structure, supply chain, all those quality, all those things assuming a flat market in 2027, how do we think about earnings for CNH or potential positives that CNH could realize even in a flat market?\n\nGerrit Marx: Jamie, well, look, we're getting ready for whatever comes our way in 2027. We do see -- as I mentioned, momentum in Europe. We expect the U.S., the North American market to see the trough this year. And in South America, despite the very low levels where we are traveling and we are still probably in Brazil itself looking for the grounding in this trough. We will enter 2027 with a far greater level of certainty around certain factors. Elections in Brazil and South America will be behind us. We'll have the midterms behind us. We will have clarity around all the tariff items that Jim mentioned, most notably the 301.\n\nWe will see how the administration positions themselves in various different trade deals around the world. And we will see, and that is what I understood from my interactions in Washington is we will see a greater level of detail in the particular bilateral trade deals that are still ongoing and with a particular focus on commodity trade and commodity flows out from the U.S. This will give us a good footing there. I mean in the end, the aging machine park, every acre around the world has been planted and harvested this year, and the same is going to happen next year.\n\nAnd this puts the hours on all machines and everybody's machines that it takes in order to do the job. So despite markets going slow, the machines are aging at fairly the same pace. And as we enter into 2027 and looking at the average age of the machine parts, we do expect some support from replacement demand across the world, obviously, and then also with a greater level of certainty around those bilateral trade deals and maybe with some support of commodity price momentum for 2027. However, we do not back a market bounce in our own actions. What we do is we remain very disciplined on cost.\n\nWe are making good progress, great progress actually in taking cost out of our supply chain and procurement area. We have even slightly overdelivered our own internal expectations as it came to quality costs last year, and we will continue to do so over the course of this year. We are looking at structural costs. We do have identified pockets of AI deployment, which in first and foremost, will help us to drive productivity in our own operations, such as software coding. I mean we are here in Sioux Falls, and this is one of the sites where we do code our software.\n\nAnd I've seen great examples now of actually a pretty impressive acceleration from the AI advancements over the last 6 months, what can be done in this area. And all of these elements will help us to go faster with tech while reducing our cost base in relative terms and against the backdrop of global and heightened global certainty with those points that are causing right now the uncertainty among our farmers, particularly. So this is something that we stay focused on. And I feel pretty good about the progress we are making against all the commitments we put out there. And then we'll see when the market comes back.\n\nThis is overall still see and wait where we don't wait, actually, we act. So it's a see and act phase for us, improving things. And 2027 will be probably a better year than 2026.\n\nJames A. Nickolas: If I could just add one, we're also underproducing versus retail in 2026. So assuming we -- by about 4%. So assuming we produce at retail levels next year, that should be a natural tailwind revenues or profits.\n\nOperator: Our next question comes from the line of Kyle Menges with Citigroup.\n\nKyle Menges: I was hoping if you could talk about just any changes you're seeing in industry competition, specifically pricing across any of the major regions as well as just how you think your inventory position is versus the industry? And then just a quick tariff question. You mentioned could be a 0% to 50% tariff would just be helpful to hear examples of cases where it would be 0 versus 50% now?\n\nGerrit Marx: Thanks, Kyle. I will defer the tariff point to Jim. We do see a continued positive price cost development for us, which I don't know what the others are doing, but we do see that building on top of advancing technologies and product launches as well that we have throughout 2026 and the beginning of 2027. We have launched our new short rebase or standard rebased tractor in Europe, also on top of the range, long wheelbase tractor hitting first time ever segment CNH has never played in, which is a sector of 350 to 450 horsepower in the European style designed tractor that is sold around the world.\n\nAnd with these launches, and actually, we are sold out on those with the production slot we have allocated. We also sold out on our next-gen combines this year. We see great momentum in our product, great demand. And with that demand and obviously, further launches of our also offboard systems, connecting the onboard. We have a good base to advance our farmers and with that also have a good net price realization over the next couple of quarters as we also go into 2027. So for the full year, we expect a positive price cost here. On the inventory side, I alluded to a $500 million further reduction of our global channel inventory. This is -- dealer inventory.\n\nThis is something we will very closely monitor because if there are swings in markets that we see coming maybe more positive on the other way, more negative developments, we will adjust those in inventory targets and destocking activities accordingly. For now, we feel pretty good where we are. We get very good feedback from our dealers. We have cleared aged inventories. We have cleared stock that was hard to sell. And now we are approaching the levels that we want to see with our dealers also to lighten up the financial burden on floor planning, and their overall exposure to that. So that is on a good track. We delivered what we said we will.\n\nAnd I'm quite curious to see what happens in the next quarters, carefully reading commodity prices, carefully reading the demand in every region of the world. And I think, overall, in a good shape on our track in 2026, which is the trough year most notably, probably in like 20 or 30 years of ag. We have never been that low in terms of unit sales in our industry and we are holding up not only, but we are actually building further strength as we go into the future years. So that feels overall quite good. Jim, on tariffs.\n\nJames A. Nickolas: Yes. Kyle, it kind of depends on the HTS codes, the harmonized tariff schedules. There's a bunch of those. And I don't have the details to discuss this in particular, but we can take that probably offline at some point. .\n\nOperator: Our next question comes from the line of David Raso with Evercore ISI.\n\nDavid Raso: Two questions. One, can you give us an update on where you stand strategically with the construction business? And second, the production below retail of 4%. Can you give us a little color, be it geographic or large versus small tractors, combines just that combination that gets you to the down -- or sorry, below 4% retail globally?\n\nGerrit Marx: David, I'll take the first, and Jim takes the second question. As I mentioned during the last quarterly earnings call and the full year 2025 financials, we have restarted our discussions with several partners for our construction business. These discussions advance a pace. We don't rush anything. There are very good conversations that we have that will build a stronger CE lineup for the construction business, and that will also further enhance the construction machines that we expect to get shipped under the New Holland construction brand back to our ag dealers. So progress is made as we speak. We don't rush things.\n\nWe take the time it takes, and we will update you when we have made a conclusion not saying when that will be the case. But in -- I think over the course of the remainder of 2026 or first half of 2027, we should be clear on the path forward for our construction business, which is a very, very relevant piece as a product for our dealers, but not necessarily has to be in our ownership in order to deliver product and service to those through build and farm the world. So that is what I can tell you.\n\nSo time wise, we are pretty much a pace of what we said last time over the course of '26 and '27, we'll come back with the progress on that one. But I'm pretty confident that we are moving towards a solution here.\n\nJames A. Nickolas: Yes. And [indiscernible] question, the underproduction is a rough, but more underproduction happening in combines, less underproduction in tractors, although both are underproduced in 2026. And by geography, I would say balanced, but probably a little bit more under production occurring in Brazil this year for the -- there we talked earlier about the challenges there.\n\nOperator: Our next question comes from the line of Joel Jackson with BMO Capital Markets.\n\nUnknown Analyst: It's Evan on for Joel Jackson. I just wanted to circle back on the credit dynamic. You pointed out for Q2, Q3 considerations of higher risk reserves, just wonder to see if you can give any extra color on that. Is that all Brazil? Are you seeing delinquencies currently higher bad debt?\n\nJames A. Nickolas: Yes. It's slightly up in more mature markets, but nothing notable. The real increases are Brazil, primarily and secondarily, Argentina, but to a lesser degree. And in Brazil, May is a big payment month. And so every year in May, we see an uptick in delinquencies, that's typical seasonality. I would expect to see it again this year. And it remains elevated. It's something that bears watching. We're actively managing it. It is not getting worse, but it's not getting better at the same time, so it bears customer-by-customer discussions trying to make sure that they stay current. So I would expect an uptick in delinquencies in Q2 of this year, like we always see.\n\nAnd I'd say, again, it's mostly focused in Latin America is the issue.\n\nOperator: Our next question comes from the line of Tami Zakaria with JPMorgan.\n\nTami Zakaria: Question regarding South America, I see you tweaked lower your expectation for combines. But stepping back, should we view this year's decline in South America more like a temporary blip that reverses next year? Or are you seeing indications that this could be a weak market for a couple of more years before demand starts moving up again?\n\nGerrit Marx: Look Tami, the -- I mean Brazil, if you look back the last 40 years, Brazil, had always a very quick ramp to a peak year, and then it dropped quite sharply and it stayed there for a few years and then before it came back. I think the overall cycle dynamics in Brazil are very familiar to us. And the shape of the curve is this year no different than any other cycle before. What is a little different this time is that a few things come together, and like tariffs and the global trade and the new position of China when it comes to purchase global commodities and North and South American frictions.\n\nAnd I think that causes a little deeper and a little longer trough in this cycle than in prior cycles. And I think that is what we experienced right now in '26, which could drag into '27 as well. However, looking at the acreage in South America and knowing that we have 2.5 harvests in South America on many acres down there given the climate conditions that points at our machines aging 2.5x faster when it comes to ours on the machine than in other geographies that have only 1 harvest more or less 2.5x the ours. They planned and they plan differently. So maybe it's rather 2x the aging speed.\n\nBut that will point at a replacement plan across large ag equipment that becomes quite relevant as we enter into '27 and '28. So I think replacement will provide a floor. And while we go a little deep now and a little longer and in prior troughs, we would expect now that 2027 gives us some footing and with the new elected President in Brazil, whoever that will be certainty will in any case, add to more confidence when it comes to farming and purchase of machines. What that means the numbers we will need to see. But I think the floor will be reached over the course of this year as per our expectations.\n\nOperator: Our next question comes from the line of Daniela Costa with Goldman Sachs.\n\nDaniela Costa: I just wanted to follow up on Construction Equipment. You talked about the net pricing expectations for ag. And if you could elaborate sort of similar comments for construction equipment, do you think that can turn net positive at some point in the year? And then also on Construction Equipment, 2Q, given the volumes you guide for mid-teens, should we expected already to start breaking even in 2Q? .\n\nJames A. Nickolas: Daniela, it's Jim. So for the full year, we are not forecasting positive net pricing on the construction business because of the tariffs. Price loss balance to be net negative. Positive pricing, but then the product costs because of tariffs will grow at a higher rate. So net the product price and product cost net negative for the year. There'll be positive EBIT for the year, for the full year is still profitable, but the price cost is a negative equation for us this year. As it relates to Q2, construction business, yes, we do believe it will be above breakeven in Q2.\n\nAgain, they're going to -- they were penalized from the quality hole, the quality stock at the Wichita plant in Q1, and then that will be made up those sales will be realized in Q2. So a bit of a negative in Q1, bit of a positive in Q2, full year but of a wash.\n\nOperator: Our next question comes from the line of Ted Jackson with Northland.\n\nEdward Jackson: My question would be just kind of on sort of U.S. legislation and regulation. And I was just curious if you could give some kind of update and thoughts that you all have with regards to the farm bill, which is locked up inside of Congress and then also the efforts to push to EPA -- by the EPA to push for ethanol E15 full year. I mean if the farm bill gets locked up and those come out and we go through another year with it being funded down the road, does that change anything for you?\n\nAnd on the EPA side, on the EBIT team side, maybe just kind of some thoughts in terms of what you think it is in terms of the likelihood of that.\n\nGerrit Marx: Ted, look, the farm bill is -- has been long awaited and is still locked up and it is going to be helpful regardless. It is not going to suddenly boost in itself, it is not going to boost major equipment demands because our farmers, they need to see an operating profit on their bottom line, excluding subsidies and other money that is handed to them. Only if it's structurally positive, which is driven by commodity prices and input costs, only if that turns positive for them, this is the key enabler for equipment purchases because that means that the business is returning back to a healthy and sustainable operation allowing them to upgrade their fleets and advance new tech.\n\nSo farm bill is very, very helpful, and it's very needed. It is not going to be that one thing that is driving equipment demand from 1 day to another. When it comes to the regulation and legislations, I mean making E15 fuel, I mean, today, it was a temporary E10 -- and then -- sorry, temporary E15 now making it permanent. That has quite some positive impact on corn. I mean, we did some math here back of the envelope. And if everybody, which is not possible. But if everybody was shifting towards a consumption in the United States from E10 to E15, that amount of corn needed to produce that fuel.\n\nIf I just focus on corn, there are obviously other ways to produce that ethanol content. But that amount of corn is more or less equivalent probably to about the same acreage that is planted today with soybeans, earmarked for China. So I mean, there is a kind of a wash, however, not to be neglected that the marginality of soybeans for farmer is a significant higher than the marginality of corn. So while E15 will drive for corn, and we will see also other sources benefiting from that, and it will help stock levels to deplete a bit. It is overall a less profitable commodity than soybeans. So I think there is good momentum. It's helpful. It adds.\n\nIt is not a big ticket item that will turn things around, but it helps to build confidence. When it comes to EPA and emission standards, I mean, staying very, very focused on sustainability and low emissions, which we have already across the board with our machines. I think what EPA is targeting at is make it simpler and make it less disruptive if things happen in the field or reality strikes that suddenly, I don't know, you're running out of the additives and then the engine DD rates. So these things shouldn't happen, so it makes things simpler for our farmers in the field. I think that is also very beneficial the operation makes it simpler.\n\nIt does not take significant cost out of the machines though. If you imagine you were to roll back an emission standard for the United States, where we are running on, let's say, Tier 5, if you were to skip that or roll back. I mean the rest of the world will still move into higher level emission standards. And if I think if -- in North America, let's say, United States, if the emission standard would start to deviate from the rest of the world, I think that creates more complexity for us because we then need to build machines for a market with a specific, let's say, less sophisticated emission standard.\n\nAnd while the rest of the world is still on a higher level emission standard that might mean we can maybe reduce a few components from the machine because it's a less refined emission standard, but it does not lower the overall cost for us in producing because the rest of the world will not follow. So I think EPA's advancements are helpful to simplify and to make farmers life more focused on what they actually should do rather than be worried about their engines to be rail -- derate. But I think overall, as a cost reduction action, this has limitations when it comes to the machines themselves.\n\nOverall, all of it is helpful what it will take, needless to say and you all know that is better commodity prices and managed input costs so that a healthy operating margin emerges with the farmers, and they see the profitability or the overall farm health, which is not only the soil health, but also the economic health of the farm being sustainably advanced in the future, and it's very much driven by a few factors that are not yet clear, i.e., global trade commodity prices, and we'll see how the harvest will go this year.\n\nOperator: Our final question comes from the line of Judah Arnovitz with UBS.\n\nUnknown Analyst: Actually, 2 quick questions on price cost. In Ag, do you expect positive price cost each quarter for the rest of the year? And then just on the transportation costs, you mentioned if the conflict persists, what's your confidence in your ability to pass these costs on to customers in both ag and construction and then relative to the $70 million growth impact that you mentioned. What is that number year-to-date?\n\nJames A. Nickolas: Yes. Okay. So price cost for ag per quarter, yes, that just remained positive. So it's good news. On the construction side, we talked about that's not going to happen for the year given the tariff burden. And then I think your second question was the ability to pass on higher costs, logistics, et cetera. I think there will be a bit of a lag effect. And -- but you think that's certainly the ag business certainly has shown its ability to get pricing over time. I think that will continue. So I'd say, a high degree of confidence getting that pricing back. It may not be in the same quarter.\n\nAgain, there may be a bit of a lag, but a high degree of confidence in getting that back. On the construction business, less confident. It's a much more competitive fragmented market and not all players are impacted equally with these costs. So that's called medium level of confidence on the construction side. Year-to-date, I would say relatively small impact from elevated costs from the Iran conflict, et cetera, relatively small up till now. That's more in the windshield, not the review mirror. Again, we don't think it will be -- it will come to that.\n\nThat number I gave you $70 million is only if it persists sort of through the end of the year, and we don't think this is going to last at the end of the year.",
+              "source": {
+                "uri": "fool.com",
+                "dataType": "news",
+                "title": "The Motley Fool"
+              },
+              "authors": [
+                {
+                  "uri": "motley_fool_transcribing@fool.com",
+                  "name": "Motley Fool Transcribing",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://g.foolcdn.com/image/?url=https%3A%2F%2Fcdn.content.foolcdn.com%2Fimages%2F1umn9qeh%2Fproduction%2Fb4204f36ed605fc54d4ba32e2cb31d1dd892afd6-800x450.jpg%3Fw%3D800%26q%3D75%26fit%3Dmax%26auto%3Dformat&w=1200&op=resize",
+              "eventUri": null,
+              "sentiment": 0.2313725490196079,
+              "wgt": 515272659,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "MSFT",
+            "price": 404.71,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 54,
+            "false_breakouts": 13,
+            "strength_score": 84.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 407.73,
+            "nearest_lower_level": 385.73,
+            "first_touch_date": "02/05/26",
+            "source_date": "02/26/26",
+            "zone_low": 403.2,
+            "zone_high": 405.91,
+            "center": 404.51,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 84.0,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 423.68,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 39,
+            "false_breakouts": 17,
+            "strength_score": 76.97,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 419.86,
+            "first_touch_date": "02/10/26",
+            "source_date": "02/10/26",
+            "zone_low": 422.48,
+            "zone_high": 426.02,
+            "center": 424.33,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 76.97,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 420.26,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 40,
+            "false_breakouts": 4,
+            "strength_score": 51.97,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 424.33,
+            "nearest_lower_level": 416.3,
+            "first_touch_date": "02/04/26",
+            "source_date": "04/17/26",
+            "zone_low": 418.41,
+            "zone_high": 421.46,
+            "center": 419.86,
+            "families": [
+              "gap"
+            ],
+            "strength": 51.97,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 372.74,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 24,
+            "false_breakouts": 10,
+            "strength_score": 47.56,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 376.93,
+            "nearest_lower_level": 361.9,
+            "first_touch_date": "03/24/26",
+            "source_date": "03/25/26",
+            "zone_low": 371.09,
+            "zone_high": 373.94,
+            "center": 372.52,
+            "families": [
+              "gap"
+            ],
+            "strength": 47.56,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 408.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 25,
+            "false_breakouts": 3,
+            "strength_score": 35.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 416.3,
+            "nearest_lower_level": 404.51,
+            "first_touch_date": "02/05/26",
+            "source_date": "02/05/26",
+            "zone_low": 406.29,
+            "zone_high": 409.2,
+            "center": 407.73,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 35.0,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 385.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 18,
+            "false_breakouts": 4,
+            "strength_score": 29.59,
+            "created_by": "swing_high",
+            "nearest_upper_level": 404.51,
+            "nearest_lower_level": 381.07,
+            "first_touch_date": "02/23/26",
+            "source_date": "04/08/26",
+            "zone_low": 383.78,
+            "zone_high": 388.41,
+            "center": 385.73,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 29.59,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 381.71,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 1,
+            "strength_score": 15.56,
+            "created_by": "swing_low",
+            "nearest_upper_level": 385.73,
+            "nearest_lower_level": 376.93,
+            "first_touch_date": "02/24/26",
+            "source_date": "02/24/26",
+            "zone_low": 378.92,
+            "zone_high": 382.91,
+            "center": 381.07,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 15.56,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 416.3,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 1,
+            "strength_score": 14.9,
+            "created_by": "swing_low",
+            "nearest_upper_level": 419.86,
+            "nearest_lower_level": 407.73,
+            "first_touch_date": "02/04/26",
+            "source_date": "04/20/26",
+            "zone_low": 415.1,
+            "zone_high": 417.5,
+            "center": 416.3,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 14.9,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 376.93,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.56,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 381.07,
+            "nearest_lower_level": 372.52,
+            "first_touch_date": "03/24/26",
+            "source_date": "03/25/26",
+            "zone_low": 375.73,
+            "zone_high": 378.13,
+            "center": 376.93,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.56,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 361.9,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.29,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 372.52,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/27/26",
+            "source_date": "03/27/26",
+            "zone_low": 360.7,
+            "zone_high": 363.1,
+            "center": 361.9,
+            "families": [
+              "gap"
+            ],
+            "strength": 6.29,
+            "atr_value": 10.0
+          }
+        ]
+      },
+      "TSLA": {
+        "daily_atr": 12.294,
+        "technical_atr": 27.79,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Tesla Rival BYD Reports Plunging Earnings. China EV Giant Is Betting On A Flash Recovery. -- IBD",
+          "Tesla TSLA Q3 2024 Earnings Call Transcript | The Motley Fool",
+          "Tesla is facing up to $14.5 billion in lawsuits  --  and it's only getting worse"
+        ],
+        "news_provider_hits": [
+          "DJ-N",
+          "Electrek",
+          "The Motley Fool"
+        ],
+        "news_source_types": [
+          "external",
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "TSLA",
+          "headline": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+          "raw": {
+            "headline": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+            "published_at": "2026-04-30T19:17:39Z",
+            "source": "The Motley Fool",
+            "url": "https://www.fool.com/earnings/call-transcripts/2026/04/30/cnh-cnh-q1-2026-earnings-call-transcript/",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199318152",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "19:17:39",
+              "dateTime": "2026-04-30T19:17:39Z",
+              "dateTimePub": "2026-04-30T18:05:46Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.fool.com/earnings/call-transcripts/2026/04/30/cnh-cnh-q1-2026-earnings-call-transcript/",
+              "title": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+              "body": "Transportation and freight cost inflation -- if sustained -- could \"be up around $70 million.\" CFO James A. Nickolas stated, \"we would take action at some point if this elevated cost environment persists on the revenue side. We don't think that's needed just yet, but we're monitoring it very, very closely.\"\n\nManagement reaffirmed all major 2026 guidance ranges, including net sales, EBIT margins, and adjusted EPS, despite ongoing industry headwinds, currency shifts, and tariff policy volatility. The order book for Q2 is fully committed with disciplined loading practices, and Q3 coverage is substantial, reflecting emphasis on real dealer orders and risk management by geography. Strategic expansion in Europe via new product launches and multi-brand dealer consolidation is progressing, highlighted by a sold-out high-horsepower European tractor line and next-gen combine slot sell-outs. A new partnership with Abilene Machine is set to expand the company's aftermarket parts offering across dealer networks, further supported by technology deployments at 70% of dealer sites. Management confirmed production remains below retail by about 4%, especially in combines and Brazil. This may create a natural revenue/profit tailwind as inventory rationalization continues into 2027 when macro policy clarity is expected to improve.\n\nGerrit Marx: Thank you, Jason, and welcome to everyone joining the meeting. We are calling from Sioux Falls, South Dakota, where we just hosted our Board meeting. Sioux Falls is one of our CNH tech hubs, which we acquired through Raven. In Sioux Falls, we have about 300 colleagues who jointly with other sites, not only code and validate our on and offboard software, but also design the architecture of the next evolution of our digital machine hardware. I'm very proud of the advancements that we will be launching over the next couple of years. First quarter results were as expected and guided.\n\nGiven that Q1 seasonally our lowest quarter, we are at historically low industry demand in North America, and farmers in Brazil have ongoing financial challenges. During the quarter, additional complications emerged, including changing tariff rules and an escalated conflict in the Middle East. I'm very proud of the way the CNH team responded to all the challenges we faced, those we knew about going in and those that emerged during the quarter. We are now passing through what we expect to be the lowest period of the current ag industry cycle, supported by some replacement demand.\n\nAs we have said before, we also expect Q1 2026 to be the lowest quarter of the year, during which we diligently continued the disciplined management of all levers in our control. Despite the challenging quarter, we have many things to proudly share here. We kept production levels low in order to manage and contain channel inventory. Ag dealer inventory levels remained unchanged since the beginning of the year by design. Normally, dealers build inventory in Q1 in preparation for Q2, but the flat levels are in line with our overall plan to have the dealers reduce their inventories by about $500 million this year.\n\nWe have been quite disciplined to produce and ship only presold orders or fast-moving stock orders. The net of price and product cost was positive in agriculture as we focus on our operational efficiencies and quality improvements. And we do expect that some of price and product cost to be positive in agriculture for the full year as well. We are making solid progress on our efforts to take cost out and improve our overall product quality, countering the negative impact from tariffs and global supply chain disruptions. We also continue with a raving support our dealer and service network optimization with several new consolidations completed and our tech assist tool rolled out at about 70% of our dealer locations.\n\nAs a reminder, our AI tech assist delivers near instant diagnostic support while our visual parts search enables rapid and accurate parts identification. These capabilities enhance decision quality and deepen the value we deliver to customers and dealers, and there is much more to come, powered by the rapidly evolving power of artificial intelligence from generative to agentic capabilities. We, along with other industry participants have had productive discussions with members of the U.S. administration on how we can support farmers and builders during these times. We are optimistic about how some developments such as the recently announced increase in renewable fuel standards will help farmers through increased crop prices and demand.\n\nThere's a new equilibrium of supply and demand of agriculture commodities emerging in all major regions, as upcoming elections, trade deals, including and excluding the U.S. and rerouting of food and nonfood supply chains are settled over the next couple of years. So while market conditions are very dynamic, we are focused on solutions today and in the future that support our farmers and builders and that will deliver returns to our shareholders. Turning to the results, which reflect the expected and guided market headwinds and our decision to keep production very low. Consolidated revenues were $3.8 billion, flat year-over-year, including about 4% positive currency impacts. Our Ag segment sales were up 1% with EMEA up 20%.\n\nNorth America down 3%, and South America, down 28%. With farm incomes depressed and macroeconomic uncertainty, we saw continued softness in equipment demand. Industrial adjusted EBIT was a loss of $45 million, driven primarily by tariffs and high SG&A and R&D expenses, only partially offset by positive pricing and cost savings actions. For the quarter, adjusted net income was $21 million, with adjusted EPS at $0.01. Free cash flow from Industrial Activities was a $569 million outflow in line with Q1 2025 and consistent with the working capital seasonality of the first quarter, where we usually build up some company inventory in preparation for Q2 sales.\n\nWe remain more committed than ever to strengthen the company and prioritizing long-term value creation. Our company strategy is centered around 5 key strategic pillars: expanding product leadership, advancing our iron and tech integration, driving commercial excellence, operational excellence and quality as a mindset. These pillars remain front and center to ensure we stay aligned with our long-term strategic objectives and our team remains focused and united in our shared purpose to serve and advance those who feed and build the world we all live in. From all the great steps forward we took in the last quarter, I would like to focus today on our operational excellence and specifically our manufacturing plant efficiencies.\n\nWe use a wide range of tools and latest technologies to unlock cost efficiencies at our manufacturing plants. Last year, we conducted about 1,400 projects, which led to $45 million in savings as we reported to you already last quarter. Individually, these projects may seem modest, but the results are profound when we add them all up. In addition, many of the projects include quality improvements to the product shipped out from our factories. An example of one of those projects was a fiber laser installed last year at our Fargo, North Dakota plant where we make our 4-wheel drive tractors. This machine is used to cut sheet steel and replace an old plasma punch machine.\n\nThe new process is 52% faster than before, while also reducing other consumables such as oil and lubricants, minimizing secondary operations and my favorite, improving quality. More efficient operations paired with better quality are a win for both CNH and our customers. With that, I will now turn the call over to Jim to take us through the details of our financials and guidance.\n\nJames A. Nickolas: Thank you, Gerrit. Agriculture Q1 net sales were about $2.6 billion up 1% year-over-year, including 4% positive currency translation. Sales volumes were lower in North and South America and favorable pricing came mainly from North America. Sales volumes and pricing were up in EMEA, mostly in Europe for both tractors and combines, fueled by moderately favorable industry demand and some market share gain. Gross margin was 19.1% from 20% a year ago. Agriculture adjusted EBIT margin was 1% from 5.4% in Q1 2025. The positive pricing and the cost saving contribution only partially offset negative original mix and tariff impacts.\n\nThe higher year-over-year R&D and SG&A expenses were consistent with our indications with both affected by lower variable compensation in 2025 and labor inflation in 2026. Construction net sales in the quarter were lower 3% year-over-year to $574 million, as higher sales in EMEA were more than offset by lower sales in North and South America. We were initially expecting sales to be a bit higher in North America but we held back sales while working out a supplier quality issue to protect the customer. That issue is now resolved and those sales will be made up in Q2. Q1 gross margin was 11.8% from 14.9% a year ago, largely due to tariff impacts.\n\nConstruction SG&A was unfavorable due to trade show marketing costs, lower variable compensation in 2025 and labor inflation in 2026. Q1 adjusted EBIT margin was negative 4.9%. In Financial Services, segment net income in the quarter was $74 million, down versus 2025, mainly due to higher risk costs in Brazil. Retail originations in the first quarter were $2.2 billion, and the managed portfolio ended the quarter at $28 billion. Sequential delinquency rates increased slightly to 3.5%, primarily driven by persistent economic difficulties in South America. Our capital allocation priorities remain the same, reinvesting in our business while maintaining a healthy balance sheet and then returning cash to shareholders.\n\nDuring the first 3 months of 2026, we repurchased $26 billion worth of CNH stock at average price of about $10.70 per share. Before we dive into our guidance, let's take a look at the expected tariff impact on our margins, as we had a meaningful change recently in the way they will be applied to our products. First, we need to acknowledge that we did enjoy a brief period of release with naive tariffs were replaced by Section 122 tariffs at 10%, that lasted for about 1.5 months. Just something to keep in mind when we eventually think about run rates in 2027.\n\nAt the beginning of April, there was a change in the way Section 232 tariffs on steel and aluminum are applied. At a very simple level, it means we went from paying 50% on the value of only the metal to now paying anywhere from 0% to 50% on the total value of the component or machine, depending on what it is. For whole machine imports, we are now paying 25% on the total value of the unit, which overall is higher than what we paid before. However, for some component imports, the tariffs can actually be lower. In our Agriculture business, the impact of this change is net neutral for calendar year 2026.\n\nSo we still forecast the tariff cost impact to be about 210 to 220 basis points of impact on ag margins or no change from our view last quarter. For construction, we're not expecting to get as much of that component benefit as in ag. And so now we expect about a 600 basis point impact on our construction margins compared to our original expectations of roughly 500 points. It's important to note that Section 301 investigations are ongoing for products coming from China, the EU, India and Mexico. We have not included any factors for that in this forecast, but we will provide an update if there are material changes.\n\nLet's first look together at our agriculture industry outlook for 2026. We have slightly improved our outlook for small tractors and combines in North America. In EMEA, we have lowered the tractor outlook, but we are more optimistic for combines. And in South America, we have lowered the outlook for combines. Market risk in South America is elevated due to tighter credit and delays in government-backed financing in Brazil. As a result, we are watching the situation there closely. In total, we still see the industry at about 80% of mid-cycle.\n\nWhen we balance all those changes, along with our unchanged assumptions for favorable currency translation of 2% and positive pricing of 1.5% to 2%, we are comfortable reaffirming our net sales guidance of flat, down 5%. As mentioned earlier, our tariff assumptions for agriculture are net unchanged. While we are seeing increased freight and transportation costs, we are optimistic that our ongoing cost reduction programs and updated geographic mix will be able to offset those impacts. As a result, we are reaffirming our EBIT margin guidance of 4.5% to 5.5%. In construction, we have fine-tuned our industry forecasts across the regions based on Q1 trends and market conditions. And overall, we are slightly lower than our previous expectations.\n\nHowever, we still forecast our own net sales to be about flat year-over-year, including about 1% of favorable currency translation and 2% of pricing. EBIT margin is forecasted to be between 1% and 2% as we focus on cost reductions to offset the increased impact of the tariffs discussed earlier. Putting all those elements together, then we reaffirm our forecast for 2026 industrial net sales to be flat to down 4% year-over-year and industrial EBIT margin to be between 2.5% and 3.5%. Industrial free cash flow is still forecasted to be between $150 million and $350 million. Adjusted EPS is reaffirmed at between $0.35 and $0.45, assuming an average share count of about $1.25 billion.\n\nTo help you with remodeling, I'll provide some additional considerations for our second quarter. Our order books are full for the second quarter, and we're expecting agriculture net sales to be about flat on a year-over-year basis. We're keeping a close eye on conditions in South America as conditions for farmers there remain very difficult. Construction net sales will be higher in the mid-teens, and that includes some of those sales originally expected in Q1. The construction increase is most pronounced in North America. Transportation costs and the tariff payments are another watch point. The team has done a great job working through these rapid changes and will continue to be vigilant.\n\nI'll note, too, that grain prices ticked up a little along with oil prices, they remain below what many consider breakeven levels for farmers, which continue to be -- which continue to challenge their economics. Although both agriculture and construction Q2 EBIT margins are forecasted to follow into the full year guidance ranges. Taken together with the lower Q1, this implies that we expect margins in the second half of the year to be sequentially better than the first half, as is typical. Furthermore, we also expect that both the ag and construction margins will be better on a year-over-year basis in the second half of the year.\n\nFinancial Services net income in Q2 will be lower year-over-year by $20 million to $25 million. With that, I will turn it back to Gerrit.\n\nGerrit Marx: Thank you, Jim. Let me finish up with some thoughts about the rest of the year. Against the backdrop of heightened global uncertainty, we remain focused on our purpose to serve and advance the world's farmers and builders. That means closely monitoring developments while continuing to deliver for our dealers and end customers through disciplined production planning and a clear path to lean channel inventories by year-end. We continue working on our iron and our tech developments and product launches and delivering on our long-term margin improvement efforts. We continue to work with our dealer partners on finding the right network configuration in each of the markets that we serve.\n\nIn another step to support our dealers and farmers, we have recently entered into a strategic relationship with [ Abilene ] Machine through a minority equity stake. The relationship will allow CNH to offer our dealer network a comprehensive aftermarket parts portfolio with upcoming access to the Abilene Machine portfolio of all makes parts. This further enables our aim to provide our dealers and customers good, better and the best options to service their equipment fleets regardless of age or brand affinity. In North America and Europe, the average age of ag equipment in the field has been trending older. This should build up a modest demand for new machines in the coming quarters.\n\nSignificant equipment demand increases usually only happen when there is a good increase in commodity prices that support farm incomes. As Jim mentioned, farmers in South America are a little more cautious and will probably continue to be so at least through the end of the year, and so we will be as well. Selling a machine is one thing, collecting its monthly installments is another, and we have been thoughtfully managing that jointly with our network partners during this difficult period. As we expect to evolve from the industry trough, we look forward to capitalizing on all the improvements that we have made during -- serving and advancing those who feed and build the world, always breaking new ground.\n\nThis concludes our prepared remarks, and we can now start the Q&A session.\n\nOperator: [Operator Instructions] We will take our first question from the line of Tim Thein with Raymond James.\n\nTimothy Thein: I just had -- my question on ag. The -- as we look at the production slots for the coming quarters, can you maybe give some context there in terms of, a, I'm curious if you've seen -- has there been any significant changes in terms of the actual build rates implied within -- maybe by region or if there's been any changes there? And then just any comments in terms of kind of regional order commentary. I mean you stressed the softness and the concern around South America. Maybe a little bit more context of what you're seeing within that order board maybe in your largest region in North America?\n\nGerrit Marx: Thank you, Tim. So as Jim alluded to, we are fully booked in Q2, and we have a pretty healthy coverage already for Q3, while being very disciplined in actually loading orders to production because, as I said, we focus on real dealer, let's say, customer orders and orders from dealers referring to machines that have a very high probability to liquidate in due course as we continue to manage our general inventory. Usually, when we see the market picking up again, which we do not yet see at this point. We would obviously load production more with what we call company orders, where we hold inventory on our side to quickly react to a changing market environment.\n\nSo when we talk about already a Q2 fully booked into Q3 in a good shape, this happens on the basis of a very disciplined order loading to the factories. As per the regional differences, we're pretty happy with the way how things go in Europe. The team makes great progress in building the foundation for gaining share as we do. And we are accelerating our dealer multi-brand consolidation across the region. And you will hear us talk about that almost, I think, probably every quarter from now on.\n\nBut definitely, for the full year 2026, and obviously, this dealer network consolidation is going to drive as well order momentum in the region as we not only break new ground, but they actually gain ground. Similarly, for the United States, where the market is going backwards as we projected and guided to, we see on the low levels, very good momentum with our dealers when it comes to interacting with our customers. So that is also in a good place.\n\nAnd the region where we have extra efforts and extra attention is, as you also picked up is Latin America, particularly Brazil, although Argentina is not that different in its current dynamics where the farmers are still in a wait-and-see situation in light of upcoming elections in Brazil. And still, the consequences of trade deals still need to show in actual trades of commodities and pricing of those commodities. So I think in Latin America, we apply extra discipline to the taking of orders, making sure that we preserve margins despite a significant price pressure in the market given that all the industry participants had expected a better evolution of market demand, which isn't the case.\n\nAnd so extra discipline is required for LatAm in the order take and that is also seen in our Q3 order take. But overall, we are in a good shape going through Q2 as we look at Q3.\n\nJames A. Nickolas: If I could add to that, in the Latin America, Brazil, in particular, given the tight conditions, we, along others have tightened underwriting standards, and I think that's also acting industry demand. So it's not a CNH concern. It's an industry-wide country-wide concern.\n\nGerrit Marx: Yes. And maybe last commentary on Asia Pacific, although small, but growing quite a bit. Our teams in India have hit new record highs in terms of production market share, and we really, really built momentum there with our newly launched compact factor lineup, and the to be launched, new utility-light small tractor lineup, not only for India, but for the export, which will mean a step change in small and compact machines that we will ship around the world from India, while we see stable and good progress in China and a rather flattish development in Australia and New Zealand, where the market is basically running on replacement demand only at this point in time.\n\nOperator: Our next question comes from the line of Angel Castillo with Morgan Stanley.\n\nUnknown Analyst: This is Esther on for Angel Castillo. Just on tariffs and the broader trade backdrop, can you just give us a little bit more color on how you're sizing the impact you're seeing today versus the original tariff impact guide? And how much of that do you think is being offset by pricing versus operational actions? So just like more color on like kind of how you see that dynamic through the year?\n\nJames A. Nickolas: Sure. Yes. Esther. It's Jim. The -- as we indicated, the ag business, really no net change versus prior guidance. So you think about full year 210 to 220 basis points of a drag versus if there weren't tariffs. So call it, full year cost of $120 million on the ag business. Now that's -- and that's in line with where we were last quarter. There were some puts and takes. [indiscernible] lower gave us some relief, offset by higher impact, higher cost from Section 232 changes. And so that's really a broad for the ag business.\n\nOn the construction business, it's a bit of a headwind moving from 500 basis points of a headwind to 600 basis points of headwind, again, as opposed to no tariffs. So that's really where it ends up. So we took our lumps, I would say, when they were first launched at Liberation Day. And then since then, the changes thus far have been relatively minor for us overall. The one area that we haven't quantified and are waiting to see where it lands are the Section 301 tariffs, which are sort of related to investigations. The U.S. government is conducting with various counterparties in the trade, EU, India, Brazil, et cetera.\n\nSo that one is unknown at this point, but I think that covers the landscape of tariffs.\n\nOperator: Our next question comes from the line of Kristen Owen with Oppenheimer & Co.\n\nKristen Owen: I wanted to talk through how you're thinking about back half scenarios, just given the consents of now we're looking at higher fertilizer prices, higher transportation cost, some of these acute challenges that you've called out in Brazil versus maybe a little bit stronger forward commodity curve, how that's influencing the range of scenarios that we could see in the back half of the year?\n\nJames A. Nickolas: Yes. Kristen, the -- again, the range of probable outcomes is pretty wide still in keeping with the last year or so of macroeconomic uncertainty. The fertilizer impact higher cost. So that's less of a concern for 2026 for most of the world. I mean it's a concern, but it's not -- it shouldn't impact us too much this year, second half aside from Brazil, Brazil is where it's going to have more of an impact given their multiple harvests and planting seasons. So there's a little bit of risk, I think, in Brazil from the higher fertilizer costs on top of the credit conditions we mentioned earlier. Transportation costs are growing in most places.\n\nWe are viewing this as something we can offset today. It's sort of the higher cost due to the Iran conflict persist throughout the year, which we're not forecasting, but if they were to persist throughout the year, the gross net increase in cost could be up around $70 million, that $70 million is gross. It assumes no countermeasures from us in terms of transportation surcharges or lower discounting, we would take action at some point if this elevated cost environment persists on the revenue side. We don't think that's needed just yet, but we're monitoring it very, very closely. So at the back half, we think we've got things balanced out given our levers.\n\nBut right now, the unknown is the higher elevated transportation cost, that's the primary factor, logistics from shipping and trucking from the higher diesel and fuel costs. So that's the one we're watching closely. And if it persists for a longer period of time, we'll need to make some counter measures to happen on the revenue side.\n\nOperator: Our next question comes from the line of Jamie Cook with Truist Securities.\n\nJamie Cook: I guess just 2 questions. I guess, encouraging to see we kept guidance the same and everything seems on track. Obviously, lots of positives and negatives out there. But Gerrit, if you could just comment on, one, understanding it's early on about how you're thinking about the setup for 2027, I guess, for ag in particular, where you would be most constructive or more worried, I guess, Brazil would probably be that area.\n\nAnd then from just a company-specific perspective, with a lot of the company-specific initiatives, streamlining of cost structure, supply chain, all those quality, all those things assuming a flat market in 2027, how do we think about earnings for CNH or potential positives that CNH could realize even in a flat market?\n\nGerrit Marx: Jamie, well, look, we're getting ready for whatever comes our way in 2027. We do see -- as I mentioned, momentum in Europe. We expect the U.S., the North American market to see the trough this year. And in South America, despite the very low levels where we are traveling and we are still probably in Brazil itself looking for the grounding in this trough. We will enter 2027 with a far greater level of certainty around certain factors. Elections in Brazil and South America will be behind us. We'll have the midterms behind us. We will have clarity around all the tariff items that Jim mentioned, most notably the 301.\n\nWe will see how the administration positions themselves in various different trade deals around the world. And we will see, and that is what I understood from my interactions in Washington is we will see a greater level of detail in the particular bilateral trade deals that are still ongoing and with a particular focus on commodity trade and commodity flows out from the U.S. This will give us a good footing there. I mean in the end, the aging machine park, every acre around the world has been planted and harvested this year, and the same is going to happen next year.\n\nAnd this puts the hours on all machines and everybody's machines that it takes in order to do the job. So despite markets going slow, the machines are aging at fairly the same pace. And as we enter into 2027 and looking at the average age of the machine parts, we do expect some support from replacement demand across the world, obviously, and then also with a greater level of certainty around those bilateral trade deals and maybe with some support of commodity price momentum for 2027. However, we do not back a market bounce in our own actions. What we do is we remain very disciplined on cost.\n\nWe are making good progress, great progress actually in taking cost out of our supply chain and procurement area. We have even slightly overdelivered our own internal expectations as it came to quality costs last year, and we will continue to do so over the course of this year. We are looking at structural costs. We do have identified pockets of AI deployment, which in first and foremost, will help us to drive productivity in our own operations, such as software coding. I mean we are here in Sioux Falls, and this is one of the sites where we do code our software.\n\nAnd I've seen great examples now of actually a pretty impressive acceleration from the AI advancements over the last 6 months, what can be done in this area. And all of these elements will help us to go faster with tech while reducing our cost base in relative terms and against the backdrop of global and heightened global certainty with those points that are causing right now the uncertainty among our farmers, particularly. So this is something that we stay focused on. And I feel pretty good about the progress we are making against all the commitments we put out there. And then we'll see when the market comes back.\n\nThis is overall still see and wait where we don't wait, actually, we act. So it's a see and act phase for us, improving things. And 2027 will be probably a better year than 2026.\n\nJames A. Nickolas: If I could just add one, we're also underproducing versus retail in 2026. So assuming we -- by about 4%. So assuming we produce at retail levels next year, that should be a natural tailwind revenues or profits.\n\nOperator: Our next question comes from the line of Kyle Menges with Citigroup.\n\nKyle Menges: I was hoping if you could talk about just any changes you're seeing in industry competition, specifically pricing across any of the major regions as well as just how you think your inventory position is versus the industry? And then just a quick tariff question. You mentioned could be a 0% to 50% tariff would just be helpful to hear examples of cases where it would be 0 versus 50% now?\n\nGerrit Marx: Thanks, Kyle. I will defer the tariff point to Jim. We do see a continued positive price cost development for us, which I don't know what the others are doing, but we do see that building on top of advancing technologies and product launches as well that we have throughout 2026 and the beginning of 2027. We have launched our new short rebase or standard rebased tractor in Europe, also on top of the range, long wheelbase tractor hitting first time ever segment CNH has never played in, which is a sector of 350 to 450 horsepower in the European style designed tractor that is sold around the world.\n\nAnd with these launches, and actually, we are sold out on those with the production slot we have allocated. We also sold out on our next-gen combines this year. We see great momentum in our product, great demand. And with that demand and obviously, further launches of our also offboard systems, connecting the onboard. We have a good base to advance our farmers and with that also have a good net price realization over the next couple of quarters as we also go into 2027. So for the full year, we expect a positive price cost here. On the inventory side, I alluded to a $500 million further reduction of our global channel inventory. This is -- dealer inventory.\n\nThis is something we will very closely monitor because if there are swings in markets that we see coming maybe more positive on the other way, more negative developments, we will adjust those in inventory targets and destocking activities accordingly. For now, we feel pretty good where we are. We get very good feedback from our dealers. We have cleared aged inventories. We have cleared stock that was hard to sell. And now we are approaching the levels that we want to see with our dealers also to lighten up the financial burden on floor planning, and their overall exposure to that. So that is on a good track. We delivered what we said we will.\n\nAnd I'm quite curious to see what happens in the next quarters, carefully reading commodity prices, carefully reading the demand in every region of the world. And I think, overall, in a good shape on our track in 2026, which is the trough year most notably, probably in like 20 or 30 years of ag. We have never been that low in terms of unit sales in our industry and we are holding up not only, but we are actually building further strength as we go into the future years. So that feels overall quite good. Jim, on tariffs.\n\nJames A. Nickolas: Yes. Kyle, it kind of depends on the HTS codes, the harmonized tariff schedules. There's a bunch of those. And I don't have the details to discuss this in particular, but we can take that probably offline at some point. .\n\nOperator: Our next question comes from the line of David Raso with Evercore ISI.\n\nDavid Raso: Two questions. One, can you give us an update on where you stand strategically with the construction business? And second, the production below retail of 4%. Can you give us a little color, be it geographic or large versus small tractors, combines just that combination that gets you to the down -- or sorry, below 4% retail globally?\n\nGerrit Marx: David, I'll take the first, and Jim takes the second question. As I mentioned during the last quarterly earnings call and the full year 2025 financials, we have restarted our discussions with several partners for our construction business. These discussions advance a pace. We don't rush anything. There are very good conversations that we have that will build a stronger CE lineup for the construction business, and that will also further enhance the construction machines that we expect to get shipped under the New Holland construction brand back to our ag dealers. So progress is made as we speak. We don't rush things.\n\nWe take the time it takes, and we will update you when we have made a conclusion not saying when that will be the case. But in -- I think over the course of the remainder of 2026 or first half of 2027, we should be clear on the path forward for our construction business, which is a very, very relevant piece as a product for our dealers, but not necessarily has to be in our ownership in order to deliver product and service to those through build and farm the world. So that is what I can tell you.\n\nSo time wise, we are pretty much a pace of what we said last time over the course of '26 and '27, we'll come back with the progress on that one. But I'm pretty confident that we are moving towards a solution here.\n\nJames A. Nickolas: Yes. And [indiscernible] question, the underproduction is a rough, but more underproduction happening in combines, less underproduction in tractors, although both are underproduced in 2026. And by geography, I would say balanced, but probably a little bit more under production occurring in Brazil this year for the -- there we talked earlier about the challenges there.\n\nOperator: Our next question comes from the line of Joel Jackson with BMO Capital Markets.\n\nUnknown Analyst: It's Evan on for Joel Jackson. I just wanted to circle back on the credit dynamic. You pointed out for Q2, Q3 considerations of higher risk reserves, just wonder to see if you can give any extra color on that. Is that all Brazil? Are you seeing delinquencies currently higher bad debt?\n\nJames A. Nickolas: Yes. It's slightly up in more mature markets, but nothing notable. The real increases are Brazil, primarily and secondarily, Argentina, but to a lesser degree. And in Brazil, May is a big payment month. And so every year in May, we see an uptick in delinquencies, that's typical seasonality. I would expect to see it again this year. And it remains elevated. It's something that bears watching. We're actively managing it. It is not getting worse, but it's not getting better at the same time, so it bears customer-by-customer discussions trying to make sure that they stay current. So I would expect an uptick in delinquencies in Q2 of this year, like we always see.\n\nAnd I'd say, again, it's mostly focused in Latin America is the issue.\n\nOperator: Our next question comes from the line of Tami Zakaria with JPMorgan.\n\nTami Zakaria: Question regarding South America, I see you tweaked lower your expectation for combines. But stepping back, should we view this year's decline in South America more like a temporary blip that reverses next year? Or are you seeing indications that this could be a weak market for a couple of more years before demand starts moving up again?\n\nGerrit Marx: Look Tami, the -- I mean Brazil, if you look back the last 40 years, Brazil, had always a very quick ramp to a peak year, and then it dropped quite sharply and it stayed there for a few years and then before it came back. I think the overall cycle dynamics in Brazil are very familiar to us. And the shape of the curve is this year no different than any other cycle before. What is a little different this time is that a few things come together, and like tariffs and the global trade and the new position of China when it comes to purchase global commodities and North and South American frictions.\n\nAnd I think that causes a little deeper and a little longer trough in this cycle than in prior cycles. And I think that is what we experienced right now in '26, which could drag into '27 as well. However, looking at the acreage in South America and knowing that we have 2.5 harvests in South America on many acres down there given the climate conditions that points at our machines aging 2.5x faster when it comes to ours on the machine than in other geographies that have only 1 harvest more or less 2.5x the ours. They planned and they plan differently. So maybe it's rather 2x the aging speed.\n\nBut that will point at a replacement plan across large ag equipment that becomes quite relevant as we enter into '27 and '28. So I think replacement will provide a floor. And while we go a little deep now and a little longer and in prior troughs, we would expect now that 2027 gives us some footing and with the new elected President in Brazil, whoever that will be certainty will in any case, add to more confidence when it comes to farming and purchase of machines. What that means the numbers we will need to see. But I think the floor will be reached over the course of this year as per our expectations.\n\nOperator: Our next question comes from the line of Daniela Costa with Goldman Sachs.\n\nDaniela Costa: I just wanted to follow up on Construction Equipment. You talked about the net pricing expectations for ag. And if you could elaborate sort of similar comments for construction equipment, do you think that can turn net positive at some point in the year? And then also on Construction Equipment, 2Q, given the volumes you guide for mid-teens, should we expected already to start breaking even in 2Q? .\n\nJames A. Nickolas: Daniela, it's Jim. So for the full year, we are not forecasting positive net pricing on the construction business because of the tariffs. Price loss balance to be net negative. Positive pricing, but then the product costs because of tariffs will grow at a higher rate. So net the product price and product cost net negative for the year. There'll be positive EBIT for the year, for the full year is still profitable, but the price cost is a negative equation for us this year. As it relates to Q2, construction business, yes, we do believe it will be above breakeven in Q2.\n\nAgain, they're going to -- they were penalized from the quality hole, the quality stock at the Wichita plant in Q1, and then that will be made up those sales will be realized in Q2. So a bit of a negative in Q1, bit of a positive in Q2, full year but of a wash.\n\nOperator: Our next question comes from the line of Ted Jackson with Northland.\n\nEdward Jackson: My question would be just kind of on sort of U.S. legislation and regulation. And I was just curious if you could give some kind of update and thoughts that you all have with regards to the farm bill, which is locked up inside of Congress and then also the efforts to push to EPA -- by the EPA to push for ethanol E15 full year. I mean if the farm bill gets locked up and those come out and we go through another year with it being funded down the road, does that change anything for you?\n\nAnd on the EPA side, on the EBIT team side, maybe just kind of some thoughts in terms of what you think it is in terms of the likelihood of that.\n\nGerrit Marx: Ted, look, the farm bill is -- has been long awaited and is still locked up and it is going to be helpful regardless. It is not going to suddenly boost in itself, it is not going to boost major equipment demands because our farmers, they need to see an operating profit on their bottom line, excluding subsidies and other money that is handed to them. Only if it's structurally positive, which is driven by commodity prices and input costs, only if that turns positive for them, this is the key enabler for equipment purchases because that means that the business is returning back to a healthy and sustainable operation allowing them to upgrade their fleets and advance new tech.\n\nSo farm bill is very, very helpful, and it's very needed. It is not going to be that one thing that is driving equipment demand from 1 day to another. When it comes to the regulation and legislations, I mean making E15 fuel, I mean, today, it was a temporary E10 -- and then -- sorry, temporary E15 now making it permanent. That has quite some positive impact on corn. I mean, we did some math here back of the envelope. And if everybody, which is not possible. But if everybody was shifting towards a consumption in the United States from E10 to E15, that amount of corn needed to produce that fuel.\n\nIf I just focus on corn, there are obviously other ways to produce that ethanol content. But that amount of corn is more or less equivalent probably to about the same acreage that is planted today with soybeans, earmarked for China. So I mean, there is a kind of a wash, however, not to be neglected that the marginality of soybeans for farmer is a significant higher than the marginality of corn. So while E15 will drive for corn, and we will see also other sources benefiting from that, and it will help stock levels to deplete a bit. It is overall a less profitable commodity than soybeans. So I think there is good momentum. It's helpful. It adds.\n\nIt is not a big ticket item that will turn things around, but it helps to build confidence. When it comes to EPA and emission standards, I mean, staying very, very focused on sustainability and low emissions, which we have already across the board with our machines. I think what EPA is targeting at is make it simpler and make it less disruptive if things happen in the field or reality strikes that suddenly, I don't know, you're running out of the additives and then the engine DD rates. So these things shouldn't happen, so it makes things simpler for our farmers in the field. I think that is also very beneficial the operation makes it simpler.\n\nIt does not take significant cost out of the machines though. If you imagine you were to roll back an emission standard for the United States, where we are running on, let's say, Tier 5, if you were to skip that or roll back. I mean the rest of the world will still move into higher level emission standards. And if I think if -- in North America, let's say, United States, if the emission standard would start to deviate from the rest of the world, I think that creates more complexity for us because we then need to build machines for a market with a specific, let's say, less sophisticated emission standard.\n\nAnd while the rest of the world is still on a higher level emission standard that might mean we can maybe reduce a few components from the machine because it's a less refined emission standard, but it does not lower the overall cost for us in producing because the rest of the world will not follow. So I think EPA's advancements are helpful to simplify and to make farmers life more focused on what they actually should do rather than be worried about their engines to be rail -- derate. But I think overall, as a cost reduction action, this has limitations when it comes to the machines themselves.\n\nOverall, all of it is helpful what it will take, needless to say and you all know that is better commodity prices and managed input costs so that a healthy operating margin emerges with the farmers, and they see the profitability or the overall farm health, which is not only the soil health, but also the economic health of the farm being sustainably advanced in the future, and it's very much driven by a few factors that are not yet clear, i.e., global trade commodity prices, and we'll see how the harvest will go this year.\n\nOperator: Our final question comes from the line of Judah Arnovitz with UBS.\n\nUnknown Analyst: Actually, 2 quick questions on price cost. In Ag, do you expect positive price cost each quarter for the rest of the year? And then just on the transportation costs, you mentioned if the conflict persists, what's your confidence in your ability to pass these costs on to customers in both ag and construction and then relative to the $70 million growth impact that you mentioned. What is that number year-to-date?\n\nJames A. Nickolas: Yes. Okay. So price cost for ag per quarter, yes, that just remained positive. So it's good news. On the construction side, we talked about that's not going to happen for the year given the tariff burden. And then I think your second question was the ability to pass on higher costs, logistics, et cetera. I think there will be a bit of a lag effect. And -- but you think that's certainly the ag business certainly has shown its ability to get pricing over time. I think that will continue. So I'd say, a high degree of confidence getting that pricing back. It may not be in the same quarter.\n\nAgain, there may be a bit of a lag, but a high degree of confidence in getting that back. On the construction business, less confident. It's a much more competitive fragmented market and not all players are impacted equally with these costs. So that's called medium level of confidence on the construction side. Year-to-date, I would say relatively small impact from elevated costs from the Iran conflict, et cetera, relatively small up till now. That's more in the windshield, not the review mirror. Again, we don't think it will be -- it will come to that.\n\nThat number I gave you $70 million is only if it persists sort of through the end of the year, and we don't think this is going to last at the end of the year.",
+              "source": {
+                "uri": "fool.com",
+                "dataType": "news",
+                "title": "The Motley Fool"
+              },
+              "authors": [
+                {
+                  "uri": "motley_fool_transcribing@fool.com",
+                  "name": "Motley Fool Transcribing",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://g.foolcdn.com/image/?url=https%3A%2F%2Fcdn.content.foolcdn.com%2Fimages%2F1umn9qeh%2Fproduction%2Fb4204f36ed605fc54d4ba32e2cb31d1dd892afd6-800x450.jpg%3Fw%3D800%26q%3D75%26fit%3Dmax%26auto%3Dformat&w=1200&op=resize",
+              "eventUri": null,
+              "sentiment": 0.2313725490196079,
+              "wgt": 515272659,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "TSLA",
+            "price": 416.38,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 28,
+            "false_breakouts": 12,
+            "strength_score": 54.81,
+            "created_by": "swing_high",
+            "nearest_upper_level": 436.35,
+            "nearest_lower_level": 412.08,
+            "first_touch_date": "02/04/26",
+            "source_date": "03/11/26",
+            "zone_low": 414.9,
+            "zone_high": 418.92,
+            "center": 416.89,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 54.81,
+            "atr_value": 12.294
+          },
+          {
+            "symbol": "TSLA",
+            "price": 411.82,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 23,
+            "false_breakouts": 9,
+            "strength_score": 43.81,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 416.89,
+            "nearest_lower_level": 346.46,
+            "first_touch_date": "02/04/26",
+            "source_date": "02/23/26",
+            "zone_low": 410.34,
+            "zone_high": 413.84,
+            "center": 412.08,
+            "families": [
+              "gap"
+            ],
+            "strength": 43.81,
+            "atr_value": 12.294
+          },
+          {
+            "symbol": "TSLA",
+            "price": 346.65,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 4,
+            "strength_score": 21.53,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 412.08,
+            "nearest_lower_level": 337.24,
+            "first_touch_date": "04/06/26",
+            "source_date": "04/08/26",
+            "zone_low": 344.79,
+            "zone_high": 348.13,
+            "center": 346.46,
+            "families": [
+              "gap"
+            ],
+            "strength": 21.53,
+            "atr_value": 12.294
+          },
+          {
+            "symbol": "TSLA",
+            "price": 337.25,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 9.49,
+            "created_by": "swing_low",
+            "nearest_upper_level": 346.46,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/09/26",
+            "zone_low": 335.76,
+            "zone_high": 338.73,
+            "center": 337.24,
+            "families": [
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 9.49,
+            "atr_value": 12.294
+          },
+          {
+            "symbol": "TSLA",
+            "price": 436.35,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 416.89,
+            "first_touch_date": "02/11/26",
+            "source_date": "02/11/26",
+            "zone_low": 434.87,
+            "zone_high": 437.83,
+            "center": 436.35,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 4.2,
+            "atr_value": 12.294
+          }
+        ]
+      },
+      "AMZN": {
+        "daily_atr": 5.81,
+        "technical_atr": 0.52,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Dow Jones Futures: Google, Amazon, Meta, Microsoft Are Big Earnings Movers After Oil Prices Spike, Fed's PowellStays -- IBD",
+          "{A:800015:L:en}Amazon Earnings Beat Estimates. A Weak Spot May Still Be Weighing on the Stock. -- Barrons.com",
+          "{A:800015:L:en}Amazon Earnings Beat Estimates. The Stock Is Falling Anyway. -- Barrons.com",
+          "Amazon Stock Falls On Earnings Despite AWS 'Growing At Its Fastest Clip In 4 Years' - Amazon.com (NASDAQ:"
+        ],
+        "news_provider_hits": [
+          "Benzinga",
+          "CNBC",
+          "DJ-N",
+          "Investing.com"
+        ],
+        "news_source_types": [
+          "external",
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "AMZN",
+          "headline": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+          "raw": {
+            "headline": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+            "published_at": "2026-04-30T19:17:39Z",
+            "source": "The Motley Fool",
+            "url": "https://www.fool.com/earnings/call-transcripts/2026/04/30/cnh-cnh-q1-2026-earnings-call-transcript/",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199318152",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "19:17:39",
+              "dateTime": "2026-04-30T19:17:39Z",
+              "dateTimePub": "2026-04-30T18:05:46Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.fool.com/earnings/call-transcripts/2026/04/30/cnh-cnh-q1-2026-earnings-call-transcript/",
+              "title": "CNH (CNH) Q1 2026 Earnings Call Transcript | The Motley Fool",
+              "body": "Transportation and freight cost inflation -- if sustained -- could \"be up around $70 million.\" CFO James A. Nickolas stated, \"we would take action at some point if this elevated cost environment persists on the revenue side. We don't think that's needed just yet, but we're monitoring it very, very closely.\"\n\nManagement reaffirmed all major 2026 guidance ranges, including net sales, EBIT margins, and adjusted EPS, despite ongoing industry headwinds, currency shifts, and tariff policy volatility. The order book for Q2 is fully committed with disciplined loading practices, and Q3 coverage is substantial, reflecting emphasis on real dealer orders and risk management by geography. Strategic expansion in Europe via new product launches and multi-brand dealer consolidation is progressing, highlighted by a sold-out high-horsepower European tractor line and next-gen combine slot sell-outs. A new partnership with Abilene Machine is set to expand the company's aftermarket parts offering across dealer networks, further supported by technology deployments at 70% of dealer sites. Management confirmed production remains below retail by about 4%, especially in combines and Brazil. This may create a natural revenue/profit tailwind as inventory rationalization continues into 2027 when macro policy clarity is expected to improve.\n\nGerrit Marx: Thank you, Jason, and welcome to everyone joining the meeting. We are calling from Sioux Falls, South Dakota, where we just hosted our Board meeting. Sioux Falls is one of our CNH tech hubs, which we acquired through Raven. In Sioux Falls, we have about 300 colleagues who jointly with other sites, not only code and validate our on and offboard software, but also design the architecture of the next evolution of our digital machine hardware. I'm very proud of the advancements that we will be launching over the next couple of years. First quarter results were as expected and guided.\n\nGiven that Q1 seasonally our lowest quarter, we are at historically low industry demand in North America, and farmers in Brazil have ongoing financial challenges. During the quarter, additional complications emerged, including changing tariff rules and an escalated conflict in the Middle East. I'm very proud of the way the CNH team responded to all the challenges we faced, those we knew about going in and those that emerged during the quarter. We are now passing through what we expect to be the lowest period of the current ag industry cycle, supported by some replacement demand.\n\nAs we have said before, we also expect Q1 2026 to be the lowest quarter of the year, during which we diligently continued the disciplined management of all levers in our control. Despite the challenging quarter, we have many things to proudly share here. We kept production levels low in order to manage and contain channel inventory. Ag dealer inventory levels remained unchanged since the beginning of the year by design. Normally, dealers build inventory in Q1 in preparation for Q2, but the flat levels are in line with our overall plan to have the dealers reduce their inventories by about $500 million this year.\n\nWe have been quite disciplined to produce and ship only presold orders or fast-moving stock orders. The net of price and product cost was positive in agriculture as we focus on our operational efficiencies and quality improvements. And we do expect that some of price and product cost to be positive in agriculture for the full year as well. We are making solid progress on our efforts to take cost out and improve our overall product quality, countering the negative impact from tariffs and global supply chain disruptions. We also continue with a raving support our dealer and service network optimization with several new consolidations completed and our tech assist tool rolled out at about 70% of our dealer locations.\n\nAs a reminder, our AI tech assist delivers near instant diagnostic support while our visual parts search enables rapid and accurate parts identification. These capabilities enhance decision quality and deepen the value we deliver to customers and dealers, and there is much more to come, powered by the rapidly evolving power of artificial intelligence from generative to agentic capabilities. We, along with other industry participants have had productive discussions with members of the U.S. administration on how we can support farmers and builders during these times. We are optimistic about how some developments such as the recently announced increase in renewable fuel standards will help farmers through increased crop prices and demand.\n\nThere's a new equilibrium of supply and demand of agriculture commodities emerging in all major regions, as upcoming elections, trade deals, including and excluding the U.S. and rerouting of food and nonfood supply chains are settled over the next couple of years. So while market conditions are very dynamic, we are focused on solutions today and in the future that support our farmers and builders and that will deliver returns to our shareholders. Turning to the results, which reflect the expected and guided market headwinds and our decision to keep production very low. Consolidated revenues were $3.8 billion, flat year-over-year, including about 4% positive currency impacts. Our Ag segment sales were up 1% with EMEA up 20%.\n\nNorth America down 3%, and South America, down 28%. With farm incomes depressed and macroeconomic uncertainty, we saw continued softness in equipment demand. Industrial adjusted EBIT was a loss of $45 million, driven primarily by tariffs and high SG&A and R&D expenses, only partially offset by positive pricing and cost savings actions. For the quarter, adjusted net income was $21 million, with adjusted EPS at $0.01. Free cash flow from Industrial Activities was a $569 million outflow in line with Q1 2025 and consistent with the working capital seasonality of the first quarter, where we usually build up some company inventory in preparation for Q2 sales.\n\nWe remain more committed than ever to strengthen the company and prioritizing long-term value creation. Our company strategy is centered around 5 key strategic pillars: expanding product leadership, advancing our iron and tech integration, driving commercial excellence, operational excellence and quality as a mindset. These pillars remain front and center to ensure we stay aligned with our long-term strategic objectives and our team remains focused and united in our shared purpose to serve and advance those who feed and build the world we all live in. From all the great steps forward we took in the last quarter, I would like to focus today on our operational excellence and specifically our manufacturing plant efficiencies.\n\nWe use a wide range of tools and latest technologies to unlock cost efficiencies at our manufacturing plants. Last year, we conducted about 1,400 projects, which led to $45 million in savings as we reported to you already last quarter. Individually, these projects may seem modest, but the results are profound when we add them all up. In addition, many of the projects include quality improvements to the product shipped out from our factories. An example of one of those projects was a fiber laser installed last year at our Fargo, North Dakota plant where we make our 4-wheel drive tractors. This machine is used to cut sheet steel and replace an old plasma punch machine.\n\nThe new process is 52% faster than before, while also reducing other consumables such as oil and lubricants, minimizing secondary operations and my favorite, improving quality. More efficient operations paired with better quality are a win for both CNH and our customers. With that, I will now turn the call over to Jim to take us through the details of our financials and guidance.\n\nJames A. Nickolas: Thank you, Gerrit. Agriculture Q1 net sales were about $2.6 billion up 1% year-over-year, including 4% positive currency translation. Sales volumes were lower in North and South America and favorable pricing came mainly from North America. Sales volumes and pricing were up in EMEA, mostly in Europe for both tractors and combines, fueled by moderately favorable industry demand and some market share gain. Gross margin was 19.1% from 20% a year ago. Agriculture adjusted EBIT margin was 1% from 5.4% in Q1 2025. The positive pricing and the cost saving contribution only partially offset negative original mix and tariff impacts.\n\nThe higher year-over-year R&D and SG&A expenses were consistent with our indications with both affected by lower variable compensation in 2025 and labor inflation in 2026. Construction net sales in the quarter were lower 3% year-over-year to $574 million, as higher sales in EMEA were more than offset by lower sales in North and South America. We were initially expecting sales to be a bit higher in North America but we held back sales while working out a supplier quality issue to protect the customer. That issue is now resolved and those sales will be made up in Q2. Q1 gross margin was 11.8% from 14.9% a year ago, largely due to tariff impacts.\n\nConstruction SG&A was unfavorable due to trade show marketing costs, lower variable compensation in 2025 and labor inflation in 2026. Q1 adjusted EBIT margin was negative 4.9%. In Financial Services, segment net income in the quarter was $74 million, down versus 2025, mainly due to higher risk costs in Brazil. Retail originations in the first quarter were $2.2 billion, and the managed portfolio ended the quarter at $28 billion. Sequential delinquency rates increased slightly to 3.5%, primarily driven by persistent economic difficulties in South America. Our capital allocation priorities remain the same, reinvesting in our business while maintaining a healthy balance sheet and then returning cash to shareholders.\n\nDuring the first 3 months of 2026, we repurchased $26 billion worth of CNH stock at average price of about $10.70 per share. Before we dive into our guidance, let's take a look at the expected tariff impact on our margins, as we had a meaningful change recently in the way they will be applied to our products. First, we need to acknowledge that we did enjoy a brief period of release with naive tariffs were replaced by Section 122 tariffs at 10%, that lasted for about 1.5 months. Just something to keep in mind when we eventually think about run rates in 2027.\n\nAt the beginning of April, there was a change in the way Section 232 tariffs on steel and aluminum are applied. At a very simple level, it means we went from paying 50% on the value of only the metal to now paying anywhere from 0% to 50% on the total value of the component or machine, depending on what it is. For whole machine imports, we are now paying 25% on the total value of the unit, which overall is higher than what we paid before. However, for some component imports, the tariffs can actually be lower. In our Agriculture business, the impact of this change is net neutral for calendar year 2026.\n\nSo we still forecast the tariff cost impact to be about 210 to 220 basis points of impact on ag margins or no change from our view last quarter. For construction, we're not expecting to get as much of that component benefit as in ag. And so now we expect about a 600 basis point impact on our construction margins compared to our original expectations of roughly 500 points. It's important to note that Section 301 investigations are ongoing for products coming from China, the EU, India and Mexico. We have not included any factors for that in this forecast, but we will provide an update if there are material changes.\n\nLet's first look together at our agriculture industry outlook for 2026. We have slightly improved our outlook for small tractors and combines in North America. In EMEA, we have lowered the tractor outlook, but we are more optimistic for combines. And in South America, we have lowered the outlook for combines. Market risk in South America is elevated due to tighter credit and delays in government-backed financing in Brazil. As a result, we are watching the situation there closely. In total, we still see the industry at about 80% of mid-cycle.\n\nWhen we balance all those changes, along with our unchanged assumptions for favorable currency translation of 2% and positive pricing of 1.5% to 2%, we are comfortable reaffirming our net sales guidance of flat, down 5%. As mentioned earlier, our tariff assumptions for agriculture are net unchanged. While we are seeing increased freight and transportation costs, we are optimistic that our ongoing cost reduction programs and updated geographic mix will be able to offset those impacts. As a result, we are reaffirming our EBIT margin guidance of 4.5% to 5.5%. In construction, we have fine-tuned our industry forecasts across the regions based on Q1 trends and market conditions. And overall, we are slightly lower than our previous expectations.\n\nHowever, we still forecast our own net sales to be about flat year-over-year, including about 1% of favorable currency translation and 2% of pricing. EBIT margin is forecasted to be between 1% and 2% as we focus on cost reductions to offset the increased impact of the tariffs discussed earlier. Putting all those elements together, then we reaffirm our forecast for 2026 industrial net sales to be flat to down 4% year-over-year and industrial EBIT margin to be between 2.5% and 3.5%. Industrial free cash flow is still forecasted to be between $150 million and $350 million. Adjusted EPS is reaffirmed at between $0.35 and $0.45, assuming an average share count of about $1.25 billion.\n\nTo help you with remodeling, I'll provide some additional considerations for our second quarter. Our order books are full for the second quarter, and we're expecting agriculture net sales to be about flat on a year-over-year basis. We're keeping a close eye on conditions in South America as conditions for farmers there remain very difficult. Construction net sales will be higher in the mid-teens, and that includes some of those sales originally expected in Q1. The construction increase is most pronounced in North America. Transportation costs and the tariff payments are another watch point. The team has done a great job working through these rapid changes and will continue to be vigilant.\n\nI'll note, too, that grain prices ticked up a little along with oil prices, they remain below what many consider breakeven levels for farmers, which continue to be -- which continue to challenge their economics. Although both agriculture and construction Q2 EBIT margins are forecasted to follow into the full year guidance ranges. Taken together with the lower Q1, this implies that we expect margins in the second half of the year to be sequentially better than the first half, as is typical. Furthermore, we also expect that both the ag and construction margins will be better on a year-over-year basis in the second half of the year.\n\nFinancial Services net income in Q2 will be lower year-over-year by $20 million to $25 million. With that, I will turn it back to Gerrit.\n\nGerrit Marx: Thank you, Jim. Let me finish up with some thoughts about the rest of the year. Against the backdrop of heightened global uncertainty, we remain focused on our purpose to serve and advance the world's farmers and builders. That means closely monitoring developments while continuing to deliver for our dealers and end customers through disciplined production planning and a clear path to lean channel inventories by year-end. We continue working on our iron and our tech developments and product launches and delivering on our long-term margin improvement efforts. We continue to work with our dealer partners on finding the right network configuration in each of the markets that we serve.\n\nIn another step to support our dealers and farmers, we have recently entered into a strategic relationship with [ Abilene ] Machine through a minority equity stake. The relationship will allow CNH to offer our dealer network a comprehensive aftermarket parts portfolio with upcoming access to the Abilene Machine portfolio of all makes parts. This further enables our aim to provide our dealers and customers good, better and the best options to service their equipment fleets regardless of age or brand affinity. In North America and Europe, the average age of ag equipment in the field has been trending older. This should build up a modest demand for new machines in the coming quarters.\n\nSignificant equipment demand increases usually only happen when there is a good increase in commodity prices that support farm incomes. As Jim mentioned, farmers in South America are a little more cautious and will probably continue to be so at least through the end of the year, and so we will be as well. Selling a machine is one thing, collecting its monthly installments is another, and we have been thoughtfully managing that jointly with our network partners during this difficult period. As we expect to evolve from the industry trough, we look forward to capitalizing on all the improvements that we have made during -- serving and advancing those who feed and build the world, always breaking new ground.\n\nThis concludes our prepared remarks, and we can now start the Q&A session.\n\nOperator: [Operator Instructions] We will take our first question from the line of Tim Thein with Raymond James.\n\nTimothy Thein: I just had -- my question on ag. The -- as we look at the production slots for the coming quarters, can you maybe give some context there in terms of, a, I'm curious if you've seen -- has there been any significant changes in terms of the actual build rates implied within -- maybe by region or if there's been any changes there? And then just any comments in terms of kind of regional order commentary. I mean you stressed the softness and the concern around South America. Maybe a little bit more context of what you're seeing within that order board maybe in your largest region in North America?\n\nGerrit Marx: Thank you, Tim. So as Jim alluded to, we are fully booked in Q2, and we have a pretty healthy coverage already for Q3, while being very disciplined in actually loading orders to production because, as I said, we focus on real dealer, let's say, customer orders and orders from dealers referring to machines that have a very high probability to liquidate in due course as we continue to manage our general inventory. Usually, when we see the market picking up again, which we do not yet see at this point. We would obviously load production more with what we call company orders, where we hold inventory on our side to quickly react to a changing market environment.\n\nSo when we talk about already a Q2 fully booked into Q3 in a good shape, this happens on the basis of a very disciplined order loading to the factories. As per the regional differences, we're pretty happy with the way how things go in Europe. The team makes great progress in building the foundation for gaining share as we do. And we are accelerating our dealer multi-brand consolidation across the region. And you will hear us talk about that almost, I think, probably every quarter from now on.\n\nBut definitely, for the full year 2026, and obviously, this dealer network consolidation is going to drive as well order momentum in the region as we not only break new ground, but they actually gain ground. Similarly, for the United States, where the market is going backwards as we projected and guided to, we see on the low levels, very good momentum with our dealers when it comes to interacting with our customers. So that is also in a good place.\n\nAnd the region where we have extra efforts and extra attention is, as you also picked up is Latin America, particularly Brazil, although Argentina is not that different in its current dynamics where the farmers are still in a wait-and-see situation in light of upcoming elections in Brazil. And still, the consequences of trade deals still need to show in actual trades of commodities and pricing of those commodities. So I think in Latin America, we apply extra discipline to the taking of orders, making sure that we preserve margins despite a significant price pressure in the market given that all the industry participants had expected a better evolution of market demand, which isn't the case.\n\nAnd so extra discipline is required for LatAm in the order take and that is also seen in our Q3 order take. But overall, we are in a good shape going through Q2 as we look at Q3.\n\nJames A. Nickolas: If I could add to that, in the Latin America, Brazil, in particular, given the tight conditions, we, along others have tightened underwriting standards, and I think that's also acting industry demand. So it's not a CNH concern. It's an industry-wide country-wide concern.\n\nGerrit Marx: Yes. And maybe last commentary on Asia Pacific, although small, but growing quite a bit. Our teams in India have hit new record highs in terms of production market share, and we really, really built momentum there with our newly launched compact factor lineup, and the to be launched, new utility-light small tractor lineup, not only for India, but for the export, which will mean a step change in small and compact machines that we will ship around the world from India, while we see stable and good progress in China and a rather flattish development in Australia and New Zealand, where the market is basically running on replacement demand only at this point in time.\n\nOperator: Our next question comes from the line of Angel Castillo with Morgan Stanley.\n\nUnknown Analyst: This is Esther on for Angel Castillo. Just on tariffs and the broader trade backdrop, can you just give us a little bit more color on how you're sizing the impact you're seeing today versus the original tariff impact guide? And how much of that do you think is being offset by pricing versus operational actions? So just like more color on like kind of how you see that dynamic through the year?\n\nJames A. Nickolas: Sure. Yes. Esther. It's Jim. The -- as we indicated, the ag business, really no net change versus prior guidance. So you think about full year 210 to 220 basis points of a drag versus if there weren't tariffs. So call it, full year cost of $120 million on the ag business. Now that's -- and that's in line with where we were last quarter. There were some puts and takes. [indiscernible] lower gave us some relief, offset by higher impact, higher cost from Section 232 changes. And so that's really a broad for the ag business.\n\nOn the construction business, it's a bit of a headwind moving from 500 basis points of a headwind to 600 basis points of headwind, again, as opposed to no tariffs. So that's really where it ends up. So we took our lumps, I would say, when they were first launched at Liberation Day. And then since then, the changes thus far have been relatively minor for us overall. The one area that we haven't quantified and are waiting to see where it lands are the Section 301 tariffs, which are sort of related to investigations. The U.S. government is conducting with various counterparties in the trade, EU, India, Brazil, et cetera.\n\nSo that one is unknown at this point, but I think that covers the landscape of tariffs.\n\nOperator: Our next question comes from the line of Kristen Owen with Oppenheimer & Co.\n\nKristen Owen: I wanted to talk through how you're thinking about back half scenarios, just given the consents of now we're looking at higher fertilizer prices, higher transportation cost, some of these acute challenges that you've called out in Brazil versus maybe a little bit stronger forward commodity curve, how that's influencing the range of scenarios that we could see in the back half of the year?\n\nJames A. Nickolas: Yes. Kristen, the -- again, the range of probable outcomes is pretty wide still in keeping with the last year or so of macroeconomic uncertainty. The fertilizer impact higher cost. So that's less of a concern for 2026 for most of the world. I mean it's a concern, but it's not -- it shouldn't impact us too much this year, second half aside from Brazil, Brazil is where it's going to have more of an impact given their multiple harvests and planting seasons. So there's a little bit of risk, I think, in Brazil from the higher fertilizer costs on top of the credit conditions we mentioned earlier. Transportation costs are growing in most places.\n\nWe are viewing this as something we can offset today. It's sort of the higher cost due to the Iran conflict persist throughout the year, which we're not forecasting, but if they were to persist throughout the year, the gross net increase in cost could be up around $70 million, that $70 million is gross. It assumes no countermeasures from us in terms of transportation surcharges or lower discounting, we would take action at some point if this elevated cost environment persists on the revenue side. We don't think that's needed just yet, but we're monitoring it very, very closely. So at the back half, we think we've got things balanced out given our levers.\n\nBut right now, the unknown is the higher elevated transportation cost, that's the primary factor, logistics from shipping and trucking from the higher diesel and fuel costs. So that's the one we're watching closely. And if it persists for a longer period of time, we'll need to make some counter measures to happen on the revenue side.\n\nOperator: Our next question comes from the line of Jamie Cook with Truist Securities.\n\nJamie Cook: I guess just 2 questions. I guess, encouraging to see we kept guidance the same and everything seems on track. Obviously, lots of positives and negatives out there. But Gerrit, if you could just comment on, one, understanding it's early on about how you're thinking about the setup for 2027, I guess, for ag in particular, where you would be most constructive or more worried, I guess, Brazil would probably be that area.\n\nAnd then from just a company-specific perspective, with a lot of the company-specific initiatives, streamlining of cost structure, supply chain, all those quality, all those things assuming a flat market in 2027, how do we think about earnings for CNH or potential positives that CNH could realize even in a flat market?\n\nGerrit Marx: Jamie, well, look, we're getting ready for whatever comes our way in 2027. We do see -- as I mentioned, momentum in Europe. We expect the U.S., the North American market to see the trough this year. And in South America, despite the very low levels where we are traveling and we are still probably in Brazil itself looking for the grounding in this trough. We will enter 2027 with a far greater level of certainty around certain factors. Elections in Brazil and South America will be behind us. We'll have the midterms behind us. We will have clarity around all the tariff items that Jim mentioned, most notably the 301.\n\nWe will see how the administration positions themselves in various different trade deals around the world. And we will see, and that is what I understood from my interactions in Washington is we will see a greater level of detail in the particular bilateral trade deals that are still ongoing and with a particular focus on commodity trade and commodity flows out from the U.S. This will give us a good footing there. I mean in the end, the aging machine park, every acre around the world has been planted and harvested this year, and the same is going to happen next year.\n\nAnd this puts the hours on all machines and everybody's machines that it takes in order to do the job. So despite markets going slow, the machines are aging at fairly the same pace. And as we enter into 2027 and looking at the average age of the machine parts, we do expect some support from replacement demand across the world, obviously, and then also with a greater level of certainty around those bilateral trade deals and maybe with some support of commodity price momentum for 2027. However, we do not back a market bounce in our own actions. What we do is we remain very disciplined on cost.\n\nWe are making good progress, great progress actually in taking cost out of our supply chain and procurement area. We have even slightly overdelivered our own internal expectations as it came to quality costs last year, and we will continue to do so over the course of this year. We are looking at structural costs. We do have identified pockets of AI deployment, which in first and foremost, will help us to drive productivity in our own operations, such as software coding. I mean we are here in Sioux Falls, and this is one of the sites where we do code our software.\n\nAnd I've seen great examples now of actually a pretty impressive acceleration from the AI advancements over the last 6 months, what can be done in this area. And all of these elements will help us to go faster with tech while reducing our cost base in relative terms and against the backdrop of global and heightened global certainty with those points that are causing right now the uncertainty among our farmers, particularly. So this is something that we stay focused on. And I feel pretty good about the progress we are making against all the commitments we put out there. And then we'll see when the market comes back.\n\nThis is overall still see and wait where we don't wait, actually, we act. So it's a see and act phase for us, improving things. And 2027 will be probably a better year than 2026.\n\nJames A. Nickolas: If I could just add one, we're also underproducing versus retail in 2026. So assuming we -- by about 4%. So assuming we produce at retail levels next year, that should be a natural tailwind revenues or profits.\n\nOperator: Our next question comes from the line of Kyle Menges with Citigroup.\n\nKyle Menges: I was hoping if you could talk about just any changes you're seeing in industry competition, specifically pricing across any of the major regions as well as just how you think your inventory position is versus the industry? And then just a quick tariff question. You mentioned could be a 0% to 50% tariff would just be helpful to hear examples of cases where it would be 0 versus 50% now?\n\nGerrit Marx: Thanks, Kyle. I will defer the tariff point to Jim. We do see a continued positive price cost development for us, which I don't know what the others are doing, but we do see that building on top of advancing technologies and product launches as well that we have throughout 2026 and the beginning of 2027. We have launched our new short rebase or standard rebased tractor in Europe, also on top of the range, long wheelbase tractor hitting first time ever segment CNH has never played in, which is a sector of 350 to 450 horsepower in the European style designed tractor that is sold around the world.\n\nAnd with these launches, and actually, we are sold out on those with the production slot we have allocated. We also sold out on our next-gen combines this year. We see great momentum in our product, great demand. And with that demand and obviously, further launches of our also offboard systems, connecting the onboard. We have a good base to advance our farmers and with that also have a good net price realization over the next couple of quarters as we also go into 2027. So for the full year, we expect a positive price cost here. On the inventory side, I alluded to a $500 million further reduction of our global channel inventory. This is -- dealer inventory.\n\nThis is something we will very closely monitor because if there are swings in markets that we see coming maybe more positive on the other way, more negative developments, we will adjust those in inventory targets and destocking activities accordingly. For now, we feel pretty good where we are. We get very good feedback from our dealers. We have cleared aged inventories. We have cleared stock that was hard to sell. And now we are approaching the levels that we want to see with our dealers also to lighten up the financial burden on floor planning, and their overall exposure to that. So that is on a good track. We delivered what we said we will.\n\nAnd I'm quite curious to see what happens in the next quarters, carefully reading commodity prices, carefully reading the demand in every region of the world. And I think, overall, in a good shape on our track in 2026, which is the trough year most notably, probably in like 20 or 30 years of ag. We have never been that low in terms of unit sales in our industry and we are holding up not only, but we are actually building further strength as we go into the future years. So that feels overall quite good. Jim, on tariffs.\n\nJames A. Nickolas: Yes. Kyle, it kind of depends on the HTS codes, the harmonized tariff schedules. There's a bunch of those. And I don't have the details to discuss this in particular, but we can take that probably offline at some point. .\n\nOperator: Our next question comes from the line of David Raso with Evercore ISI.\n\nDavid Raso: Two questions. One, can you give us an update on where you stand strategically with the construction business? And second, the production below retail of 4%. Can you give us a little color, be it geographic or large versus small tractors, combines just that combination that gets you to the down -- or sorry, below 4% retail globally?\n\nGerrit Marx: David, I'll take the first, and Jim takes the second question. As I mentioned during the last quarterly earnings call and the full year 2025 financials, we have restarted our discussions with several partners for our construction business. These discussions advance a pace. We don't rush anything. There are very good conversations that we have that will build a stronger CE lineup for the construction business, and that will also further enhance the construction machines that we expect to get shipped under the New Holland construction brand back to our ag dealers. So progress is made as we speak. We don't rush things.\n\nWe take the time it takes, and we will update you when we have made a conclusion not saying when that will be the case. But in -- I think over the course of the remainder of 2026 or first half of 2027, we should be clear on the path forward for our construction business, which is a very, very relevant piece as a product for our dealers, but not necessarily has to be in our ownership in order to deliver product and service to those through build and farm the world. So that is what I can tell you.\n\nSo time wise, we are pretty much a pace of what we said last time over the course of '26 and '27, we'll come back with the progress on that one. But I'm pretty confident that we are moving towards a solution here.\n\nJames A. Nickolas: Yes. And [indiscernible] question, the underproduction is a rough, but more underproduction happening in combines, less underproduction in tractors, although both are underproduced in 2026. And by geography, I would say balanced, but probably a little bit more under production occurring in Brazil this year for the -- there we talked earlier about the challenges there.\n\nOperator: Our next question comes from the line of Joel Jackson with BMO Capital Markets.\n\nUnknown Analyst: It's Evan on for Joel Jackson. I just wanted to circle back on the credit dynamic. You pointed out for Q2, Q3 considerations of higher risk reserves, just wonder to see if you can give any extra color on that. Is that all Brazil? Are you seeing delinquencies currently higher bad debt?\n\nJames A. Nickolas: Yes. It's slightly up in more mature markets, but nothing notable. The real increases are Brazil, primarily and secondarily, Argentina, but to a lesser degree. And in Brazil, May is a big payment month. And so every year in May, we see an uptick in delinquencies, that's typical seasonality. I would expect to see it again this year. And it remains elevated. It's something that bears watching. We're actively managing it. It is not getting worse, but it's not getting better at the same time, so it bears customer-by-customer discussions trying to make sure that they stay current. So I would expect an uptick in delinquencies in Q2 of this year, like we always see.\n\nAnd I'd say, again, it's mostly focused in Latin America is the issue.\n\nOperator: Our next question comes from the line of Tami Zakaria with JPMorgan.\n\nTami Zakaria: Question regarding South America, I see you tweaked lower your expectation for combines. But stepping back, should we view this year's decline in South America more like a temporary blip that reverses next year? Or are you seeing indications that this could be a weak market for a couple of more years before demand starts moving up again?\n\nGerrit Marx: Look Tami, the -- I mean Brazil, if you look back the last 40 years, Brazil, had always a very quick ramp to a peak year, and then it dropped quite sharply and it stayed there for a few years and then before it came back. I think the overall cycle dynamics in Brazil are very familiar to us. And the shape of the curve is this year no different than any other cycle before. What is a little different this time is that a few things come together, and like tariffs and the global trade and the new position of China when it comes to purchase global commodities and North and South American frictions.\n\nAnd I think that causes a little deeper and a little longer trough in this cycle than in prior cycles. And I think that is what we experienced right now in '26, which could drag into '27 as well. However, looking at the acreage in South America and knowing that we have 2.5 harvests in South America on many acres down there given the climate conditions that points at our machines aging 2.5x faster when it comes to ours on the machine than in other geographies that have only 1 harvest more or less 2.5x the ours. They planned and they plan differently. So maybe it's rather 2x the aging speed.\n\nBut that will point at a replacement plan across large ag equipment that becomes quite relevant as we enter into '27 and '28. So I think replacement will provide a floor. And while we go a little deep now and a little longer and in prior troughs, we would expect now that 2027 gives us some footing and with the new elected President in Brazil, whoever that will be certainty will in any case, add to more confidence when it comes to farming and purchase of machines. What that means the numbers we will need to see. But I think the floor will be reached over the course of this year as per our expectations.\n\nOperator: Our next question comes from the line of Daniela Costa with Goldman Sachs.\n\nDaniela Costa: I just wanted to follow up on Construction Equipment. You talked about the net pricing expectations for ag. And if you could elaborate sort of similar comments for construction equipment, do you think that can turn net positive at some point in the year? And then also on Construction Equipment, 2Q, given the volumes you guide for mid-teens, should we expected already to start breaking even in 2Q? .\n\nJames A. Nickolas: Daniela, it's Jim. So for the full year, we are not forecasting positive net pricing on the construction business because of the tariffs. Price loss balance to be net negative. Positive pricing, but then the product costs because of tariffs will grow at a higher rate. So net the product price and product cost net negative for the year. There'll be positive EBIT for the year, for the full year is still profitable, but the price cost is a negative equation for us this year. As it relates to Q2, construction business, yes, we do believe it will be above breakeven in Q2.\n\nAgain, they're going to -- they were penalized from the quality hole, the quality stock at the Wichita plant in Q1, and then that will be made up those sales will be realized in Q2. So a bit of a negative in Q1, bit of a positive in Q2, full year but of a wash.\n\nOperator: Our next question comes from the line of Ted Jackson with Northland.\n\nEdward Jackson: My question would be just kind of on sort of U.S. legislation and regulation. And I was just curious if you could give some kind of update and thoughts that you all have with regards to the farm bill, which is locked up inside of Congress and then also the efforts to push to EPA -- by the EPA to push for ethanol E15 full year. I mean if the farm bill gets locked up and those come out and we go through another year with it being funded down the road, does that change anything for you?\n\nAnd on the EPA side, on the EBIT team side, maybe just kind of some thoughts in terms of what you think it is in terms of the likelihood of that.\n\nGerrit Marx: Ted, look, the farm bill is -- has been long awaited and is still locked up and it is going to be helpful regardless. It is not going to suddenly boost in itself, it is not going to boost major equipment demands because our farmers, they need to see an operating profit on their bottom line, excluding subsidies and other money that is handed to them. Only if it's structurally positive, which is driven by commodity prices and input costs, only if that turns positive for them, this is the key enabler for equipment purchases because that means that the business is returning back to a healthy and sustainable operation allowing them to upgrade their fleets and advance new tech.\n\nSo farm bill is very, very helpful, and it's very needed. It is not going to be that one thing that is driving equipment demand from 1 day to another. When it comes to the regulation and legislations, I mean making E15 fuel, I mean, today, it was a temporary E10 -- and then -- sorry, temporary E15 now making it permanent. That has quite some positive impact on corn. I mean, we did some math here back of the envelope. And if everybody, which is not possible. But if everybody was shifting towards a consumption in the United States from E10 to E15, that amount of corn needed to produce that fuel.\n\nIf I just focus on corn, there are obviously other ways to produce that ethanol content. But that amount of corn is more or less equivalent probably to about the same acreage that is planted today with soybeans, earmarked for China. So I mean, there is a kind of a wash, however, not to be neglected that the marginality of soybeans for farmer is a significant higher than the marginality of corn. So while E15 will drive for corn, and we will see also other sources benefiting from that, and it will help stock levels to deplete a bit. It is overall a less profitable commodity than soybeans. So I think there is good momentum. It's helpful. It adds.\n\nIt is not a big ticket item that will turn things around, but it helps to build confidence. When it comes to EPA and emission standards, I mean, staying very, very focused on sustainability and low emissions, which we have already across the board with our machines. I think what EPA is targeting at is make it simpler and make it less disruptive if things happen in the field or reality strikes that suddenly, I don't know, you're running out of the additives and then the engine DD rates. So these things shouldn't happen, so it makes things simpler for our farmers in the field. I think that is also very beneficial the operation makes it simpler.\n\nIt does not take significant cost out of the machines though. If you imagine you were to roll back an emission standard for the United States, where we are running on, let's say, Tier 5, if you were to skip that or roll back. I mean the rest of the world will still move into higher level emission standards. And if I think if -- in North America, let's say, United States, if the emission standard would start to deviate from the rest of the world, I think that creates more complexity for us because we then need to build machines for a market with a specific, let's say, less sophisticated emission standard.\n\nAnd while the rest of the world is still on a higher level emission standard that might mean we can maybe reduce a few components from the machine because it's a less refined emission standard, but it does not lower the overall cost for us in producing because the rest of the world will not follow. So I think EPA's advancements are helpful to simplify and to make farmers life more focused on what they actually should do rather than be worried about their engines to be rail -- derate. But I think overall, as a cost reduction action, this has limitations when it comes to the machines themselves.\n\nOverall, all of it is helpful what it will take, needless to say and you all know that is better commodity prices and managed input costs so that a healthy operating margin emerges with the farmers, and they see the profitability or the overall farm health, which is not only the soil health, but also the economic health of the farm being sustainably advanced in the future, and it's very much driven by a few factors that are not yet clear, i.e., global trade commodity prices, and we'll see how the harvest will go this year.\n\nOperator: Our final question comes from the line of Judah Arnovitz with UBS.\n\nUnknown Analyst: Actually, 2 quick questions on price cost. In Ag, do you expect positive price cost each quarter for the rest of the year? And then just on the transportation costs, you mentioned if the conflict persists, what's your confidence in your ability to pass these costs on to customers in both ag and construction and then relative to the $70 million growth impact that you mentioned. What is that number year-to-date?\n\nJames A. Nickolas: Yes. Okay. So price cost for ag per quarter, yes, that just remained positive. So it's good news. On the construction side, we talked about that's not going to happen for the year given the tariff burden. And then I think your second question was the ability to pass on higher costs, logistics, et cetera. I think there will be a bit of a lag effect. And -- but you think that's certainly the ag business certainly has shown its ability to get pricing over time. I think that will continue. So I'd say, a high degree of confidence getting that pricing back. It may not be in the same quarter.\n\nAgain, there may be a bit of a lag, but a high degree of confidence in getting that back. On the construction business, less confident. It's a much more competitive fragmented market and not all players are impacted equally with these costs. So that's called medium level of confidence on the construction side. Year-to-date, I would say relatively small impact from elevated costs from the Iran conflict, et cetera, relatively small up till now. That's more in the windshield, not the review mirror. Again, we don't think it will be -- it will come to that.\n\nThat number I gave you $70 million is only if it persists sort of through the end of the year, and we don't think this is going to last at the end of the year.",
+              "source": {
+                "uri": "fool.com",
+                "dataType": "news",
+                "title": "The Motley Fool"
+              },
+              "authors": [
+                {
+                  "uri": "motley_fool_transcribing@fool.com",
+                  "name": "Motley Fool Transcribing",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://g.foolcdn.com/image/?url=https%3A%2F%2Fcdn.content.foolcdn.com%2Fimages%2F1umn9qeh%2Fproduction%2Fb4204f36ed605fc54d4ba32e2cb31d1dd892afd6-800x450.jpg%3Fw%3D800%26q%3D75%26fit%3Dmax%26auto%3Dformat&w=1200&op=resize",
+              "eventUri": null,
+              "sentiment": 0.2313725490196079,
+              "wgt": 515272659,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "AMZN",
+            "price": 209.07,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 26,
+            "false_breakouts": 7,
+            "strength_score": 43.42,
+            "created_by": "swing_low",
+            "nearest_upper_level": 216.17,
+            "nearest_lower_level": 199.67,
+            "first_touch_date": "02/06/26",
+            "source_date": "04/07/26",
+            "zone_low": 208.37,
+            "zone_high": 209.77,
+            "center": 209.07,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 43.42,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 199.34,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 15,
+            "false_breakouts": 7,
+            "strength_score": 32.25,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 209.07,
+            "nearest_lower_level": null,
+            "first_touch_date": "02/06/26",
+            "source_date": "03/30/26",
+            "zone_low": 198.44,
+            "zone_high": 201.01,
+            "center": 199.67,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 32.25,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 255.09,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 6,
+            "strength_score": 27.83,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 258.39,
+            "nearest_lower_level": 252.38,
+            "first_touch_date": "04/17/26",
+            "source_date": "04/21/26",
+            "zone_low": 254.16,
+            "zone_high": 255.79,
+            "center": 255.01,
+            "families": [
+              "gap"
+            ],
+            "strength": 27.83,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 261.12,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 2,
+            "strength_score": 18.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 263.04,
+            "nearest_lower_level": 258.39,
+            "first_touch_date": "04/24/26",
+            "source_date": "04/28/26",
+            "zone_low": 259.28,
+            "zone_high": 261.82,
+            "center": 260.55,
+            "families": [
+              "gap"
+            ],
+            "strength": 18.0,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 215.7,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 11,
+            "false_breakouts": 2,
+            "strength_score": 17.98,
+            "created_by": "swing_high",
+            "nearest_upper_level": 218.94,
+            "nearest_lower_level": 209.07,
+            "first_touch_date": "03/04/26",
+            "source_date": "03/17/26",
+            "zone_low": 215.0,
+            "zone_high": 217.7,
+            "center": 216.17,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 17.98,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 252.54,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 0,
+            "strength_score": 12.83,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 255.01,
+            "nearest_lower_level": 244.9,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/22/26",
+            "zone_low": 251.48,
+            "zone_high": 253.24,
+            "center": 252.38,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.83,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 264.5,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 2,
+            "strength_score": 12.75,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 263.04,
+            "first_touch_date": "04/24/26",
+            "source_date": "04/24/26",
+            "zone_low": 263.8,
+            "zone_high": 265.2,
+            "center": 264.5,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 12.75,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 263.04,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 1,
+            "strength_score": 10.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 264.5,
+            "nearest_lower_level": 260.55,
+            "first_touch_date": "04/24/26",
+            "source_date": "04/30/26",
+            "zone_low": 262.34,
+            "zone_high": 263.74,
+            "center": 263.04,
+            "families": [
+              "gap"
+            ],
+            "strength": 10.0,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 232.99,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 2,
+            "strength_score": 9.49,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 240.43,
+            "nearest_lower_level": 220.47,
+            "first_touch_date": "02/04/26",
+            "source_date": "02/05/26",
+            "zone_low": 232.29,
+            "zone_high": 233.69,
+            "center": 232.99,
+            "families": [
+              "gap"
+            ],
+            "strength": 9.49,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 258.39,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 9.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 260.55,
+            "nearest_lower_level": 255.01,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/28/26",
+            "zone_low": 257.69,
+            "zone_high": 259.09,
+            "center": 258.39,
+            "families": [
+              "gap"
+            ],
+            "strength": 9.0,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 245.36,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 8.73,
+            "created_by": "swing_low",
+            "nearest_upper_level": 252.38,
+            "nearest_lower_level": 240.43,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/20/26",
+            "zone_low": 243.5,
+            "zone_high": 246.06,
+            "center": 244.9,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 8.73,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 240.43,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.56,
+            "created_by": "swing_high",
+            "nearest_upper_level": 244.9,
+            "nearest_lower_level": 232.99,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/10/26",
+            "zone_low": 239.73,
+            "zone_high": 241.13,
+            "center": 240.43,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 7.56,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 218.94,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.46,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 220.47,
+            "nearest_lower_level": 216.17,
+            "first_touch_date": "03/05/26",
+            "source_date": "03/06/26",
+            "zone_low": 218.24,
+            "zone_high": 219.64,
+            "center": 218.94,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.46,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 220.47,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.46,
+            "created_by": "swing_high",
+            "nearest_upper_level": 232.99,
+            "nearest_lower_level": 218.94,
+            "first_touch_date": "02/05/26",
+            "source_date": "03/05/26",
+            "zone_low": 219.77,
+            "zone_high": 221.17,
+            "center": 220.47,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 6.46,
+            "atr_value": 5.81
+          }
+        ]
+      }
+    },
+    "macro_risk": {
+      "blocked": false,
+      "headlines": [
+        "{A:800015:L:en}SPY ETF Closes Flat",
+        "{A:800015:L:en}SPY ETF Falls 0.5%",
+        "{A:800015:L:en}SPY ETF Climbs 0.2%, Outperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Rises 0.8%",
+        "{A:800015:L:en}SPY ETF Falls 0.4%",
+        "{A:800015:L:en}SPY ETF Gains 1.0%",
+        "{A:800015:L:en}SPY ETF Declines 0.7%, Underperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Declines 0.2%",
+        "{A:800015:L:en}SPY ETF Climbs 1.2%",
+        "{A:800015:L:en}SPY ETF Rises 0.2%, Underperforms Underlying Index"
+      ],
+      "matched_headlines": [],
+      "critical_matches": [],
+      "provider_hits": [
+        "DJ-RTG"
+      ],
+      "source_types": [
+        "ibkr"
+      ]
+    },
+    "ideas": [
+      {
+        "symbol": "BBBY",
+        "catalyst": "level interaction",
+        "entry": 4.94,
+        "stop": 4.8906,
+        "target": 6.27,
+        "decision": "WATCH"
+      },
+      {
+        "symbol": "SEI",
+        "catalyst": "{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance",
+        "entry": 75.02,
+        "stop": 74.44,
+        "target": 77.12,
+        "decision": "HOLD"
+      },
+      {
+        "symbol": "SANM",
+        "catalyst": "{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD",
+        "entry": 217.43,
+        "stop": 215.46,
+        "target": 230.56,
+        "decision": "HOLD"
+      }
+    ],
+    "research_symbols": [
+      "BBBY",
+      "SEI",
+      "SANM",
+      "AAPL",
+      "MSFT",
+      "TSLA",
+      "AMZN"
+    ]
+  }
+}
+```
+
+## Premarket Research (2026-04-30T15:34:23)
+- **strategy_loaded**: True
+- **trade_log_context_loaded**: True
+- **research_log_context_loaded**: True
+- **account_snapshot**: {'account': [{'account': 'DU5454348', 'tag': 'AccountType', 'value': 'INDIVIDUAL', 'currency': ''}, {'account': 'DU5454348', 'tag': 'Cushion', 'value': '1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemaining', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+1', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+2', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+3', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+4', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'LookAheadNextChange', 'value': '0', 'currency': ''}, {'account': 'DU5454348', 'tag': 'AccruedCash', 'value': '224.46', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'AvailableFunds', 'value': '101935.42', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'BuyingPower', 'value': '407716.48', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'EquityWithLoanValue', 'value': '101935.42', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'ExcessLiquidity', 'value': '101935.42', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullAvailableFunds', 'value': '101935.42', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullExcessLiquidity', 'value': '101935.42', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'GrossPositionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'InitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadAvailableFunds', 'value': '101935.42', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadExcessLiquidity', 'value': '101935.42', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'MaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'NetLiquidation', 'value': '102159.88', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'PreviousDayEquityWithLoanValue', 'value': '101929.12', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTEquity', 'value': '102159.88', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTMargin', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'SMA', 'value': '102159.88', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'TotalCashValue', 'value': '101935.42', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CashBalance', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.16572', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Currency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'CashBalance', 'value': '100761.92', 'currency': 'USD'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '100761.92', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '224.46', 'currency': 'USD'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '100986.38', 'currency': 'USD'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CashBalance', 'value': '101935.4199', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '101935.4199', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '224.46', 'currency': 'BASE'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '102159.8799', 'currency': 'BASE'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'BASE'}], 'positions': [], 'open_orders': []}
+- **research_symbols**: ['BBBY', 'SEI', 'SANM', 'AAPL', 'MSFT', 'TSLA', 'AMZN']
+- **macro_risk**: False
+- **macro_news_sources**: ['DJ-RTG']
+- **macro_news_source_types**: ['ibkr']
+- **actionable_ideas**: [{'symbol': 'BBBY', 'catalyst': 'level interaction', 'entry': 4.96, 'stop': 4.9104, 'target': 6.27, 'decision': 'WATCH'}, {'symbol': 'SEI', 'catalyst': '{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance', 'entry': 75.1, 'stop': 74.44, 'target': 77.12, 'decision': 'HOLD'}, {'symbol': 'SANM', 'catalyst': '{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD', 'entry': 217.05, 'stop': 215.46, 'target': 230.56, 'decision': 'HOLD'}]
+- **trade_decision**: READY_FOR_OPEN_VALIDATION
+
+## Workflow Premarket (2026-04-30T15:34:23)
+- **stage**: Premarket
+- **watchlist_symbols**: ['BBBY', 'SEI', 'SANM', 'AAPL', 'MSFT', 'TSLA', 'AMZN']
+```json
+{
+  "stage": "Premarket",
+  "payload": {
+    "watchlist": {
+      "BBBY": {
+        "daily_atr": 0.4667,
+        "technical_atr": 1.31,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "BBBY",
+          "headline": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+          "raw": {
+            "headline": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+            "published_at": "2026-04-30T19:20:55Z",
+            "source": "Seeking Alpha",
+            "url": "https://seekingalpha.com/article/4896781-eli-lilly-and-company-lly-q1-2026-earnings-call-transcript",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199327318",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "19:20:55",
+              "dateTime": "2026-04-30T19:20:55Z",
+              "dateTimePub": "2026-04-30T19:11:34Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://seekingalpha.com/article/4896781-eli-lilly-and-company-lly-q1-2026-earnings-call-transcript",
+              "title": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+              "body": "Ladies and gentlemen, thank you for standing by, and welcome to the Lilly Q1 2026 Earnings Conference Call. [Operator Instructions] I would now like to turn the conference over to your host, Michael Czapar, Senior Vice President of Investor Relations. Please go ahead.\n\nGood morning. Thank you for joining us for Eli Lilly and Company's Q1 2026 Earnings Call. I'm Mike Czapar, Senior Vice President of Investor Relations. Joining me on today's call are Dave Ricks, Lilly's Chair and CEO; Lucas Montarce, Chief Financial Officer; Dr. Dan Skovronsky, Chief Scientific and Product Officer; Adrienne Brown, President of Lilly Immunology, Dr. Carole Ho, President of Lilly Neuroscience; Ilya Yuffa, President of Lilly U.S.A. and Global Customer capabilities; Jacob Van Naarden, President of Lilly Oncology and Head of Business Development; Patrik Jonsson, President of Lilly International; and Ken Custer, President of Lilly Cardiometabolic Health.",
+              "source": {
+                "uri": "seekingalpha.com",
+                "dataType": "news",
+                "title": "Seeking Alpha"
+              },
+              "authors": [],
+              "image": "https://static.seekingalpha.com/assets/og_image_1200-29b2bfe1a595477db6826bd2126c63ac2091efb7ec76347a8e7f81ba17e3de6c.png",
+              "eventUri": null,
+              "sentiment": 0.2470588235294118,
+              "wgt": 515272855,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "BBBY",
+            "price": 7.7,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.93,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 6.27,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 7.64,
+            "zone_high": 7.76,
+            "center": 7.7,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.93,
+            "atr_value": 0.4667
+          },
+          {
+            "symbol": "BBBY",
+            "price": 6.27,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.93,
+            "created_by": "swing_high",
+            "nearest_upper_level": 7.7,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/20/26",
+            "source_date": "04/20/26",
+            "zone_low": 6.21,
+            "zone_high": 6.33,
+            "center": 6.27,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 6.93,
+            "atr_value": 0.4667
+          }
+        ]
+      },
+      "SEI": {
+        "daily_atr": 7.338,
+        "technical_atr": 0.66,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "SEI",
+          "headline": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+          "raw": {
+            "headline": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+            "published_at": "2026-04-30T19:20:55Z",
+            "source": "Seeking Alpha",
+            "url": "https://seekingalpha.com/article/4896781-eli-lilly-and-company-lly-q1-2026-earnings-call-transcript",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199327318",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "19:20:55",
+              "dateTime": "2026-04-30T19:20:55Z",
+              "dateTimePub": "2026-04-30T19:11:34Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://seekingalpha.com/article/4896781-eli-lilly-and-company-lly-q1-2026-earnings-call-transcript",
+              "title": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+              "body": "Ladies and gentlemen, thank you for standing by, and welcome to the Lilly Q1 2026 Earnings Conference Call. [Operator Instructions] I would now like to turn the conference over to your host, Michael Czapar, Senior Vice President of Investor Relations. Please go ahead.\n\nGood morning. Thank you for joining us for Eli Lilly and Company's Q1 2026 Earnings Call. I'm Mike Czapar, Senior Vice President of Investor Relations. Joining me on today's call are Dave Ricks, Lilly's Chair and CEO; Lucas Montarce, Chief Financial Officer; Dr. Dan Skovronsky, Chief Scientific and Product Officer; Adrienne Brown, President of Lilly Immunology, Dr. Carole Ho, President of Lilly Neuroscience; Ilya Yuffa, President of Lilly U.S.A. and Global Customer capabilities; Jacob Van Naarden, President of Lilly Oncology and Head of Business Development; Patrik Jonsson, President of Lilly International; and Ken Custer, President of Lilly Cardiometabolic Health.",
+              "source": {
+                "uri": "seekingalpha.com",
+                "dataType": "news",
+                "title": "Seeking Alpha"
+              },
+              "authors": [],
+              "image": "https://static.seekingalpha.com/assets/og_image_1200-29b2bfe1a595477db6826bd2126c63ac2091efb7ec76347a8e7f81ba17e3de6c.png",
+              "eventUri": null,
+              "sentiment": 0.2470588235294118,
+              "wgt": 515272855,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "SEI",
+            "price": 74.44,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 2,
+            "strength_score": 13.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 77.12,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/24/26",
+            "source_date": "04/29/26",
+            "zone_low": 73.56,
+            "zone_high": 75.32,
+            "center": 74.44,
+            "families": [
+              "gap"
+            ],
+            "strength": 13.0,
+            "atr_value": 7.338
+          },
+          {
+            "symbol": "SEI",
+            "price": 81.24,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.97,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 77.12,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 79.89,
+            "zone_high": 82.12,
+            "center": 81.12,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.97,
+            "atr_value": 7.338
+          },
+          {
+            "symbol": "SEI",
+            "price": 77.12,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 81.12,
+            "nearest_lower_level": 74.44,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 76.24,
+            "zone_high": 78.0,
+            "center": 77.12,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.0,
+            "atr_value": 7.338
+          }
+        ]
+      },
+      "SANM": {
+        "daily_atr": 16.786,
+        "technical_atr": 1.59,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD",
+          "{A:800015:L:en}AMD Supplier Up 40% This Month Soars On Earnings Beat -- IBD"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "SANM",
+          "headline": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+          "raw": {
+            "headline": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+            "published_at": "2026-04-30T19:20:55Z",
+            "source": "Seeking Alpha",
+            "url": "https://seekingalpha.com/article/4896781-eli-lilly-and-company-lly-q1-2026-earnings-call-transcript",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199327318",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "19:20:55",
+              "dateTime": "2026-04-30T19:20:55Z",
+              "dateTimePub": "2026-04-30T19:11:34Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://seekingalpha.com/article/4896781-eli-lilly-and-company-lly-q1-2026-earnings-call-transcript",
+              "title": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+              "body": "Ladies and gentlemen, thank you for standing by, and welcome to the Lilly Q1 2026 Earnings Conference Call. [Operator Instructions] I would now like to turn the conference over to your host, Michael Czapar, Senior Vice President of Investor Relations. Please go ahead.\n\nGood morning. Thank you for joining us for Eli Lilly and Company's Q1 2026 Earnings Call. I'm Mike Czapar, Senior Vice President of Investor Relations. Joining me on today's call are Dave Ricks, Lilly's Chair and CEO; Lucas Montarce, Chief Financial Officer; Dr. Dan Skovronsky, Chief Scientific and Product Officer; Adrienne Brown, President of Lilly Immunology, Dr. Carole Ho, President of Lilly Neuroscience; Ilya Yuffa, President of Lilly U.S.A. and Global Customer capabilities; Jacob Van Naarden, President of Lilly Oncology and Head of Business Development; Patrik Jonsson, President of Lilly International; and Ken Custer, President of Lilly Cardiometabolic Health.",
+              "source": {
+                "uri": "seekingalpha.com",
+                "dataType": "news",
+                "title": "Seeking Alpha"
+              },
+              "authors": [],
+              "image": "https://static.seekingalpha.com/assets/og_image_1200-29b2bfe1a595477db6826bd2126c63ac2091efb7ec76347a8e7f81ba17e3de6c.png",
+              "eventUri": null,
+              "sentiment": 0.2470588235294118,
+              "wgt": 515272855,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "SANM",
+            "price": 172.35,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 19,
+            "false_breakouts": 5,
+            "strength_score": 33.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 206.82,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/16/26",
+            "source_date": "04/16/26",
+            "zone_low": 166.96,
+            "zone_high": 174.36,
+            "center": 171.99,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 33.83,
+            "atr_value": 16.786
+          },
+          {
+            "symbol": "SANM",
+            "price": 215.46,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 4,
+            "strength_score": 21.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 230.56,
+            "nearest_lower_level": 206.82,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/29/26",
+            "zone_low": 211.78,
+            "zone_high": 219.68,
+            "center": 215.64,
+            "families": [
+              "gap"
+            ],
+            "strength": 21.0,
+            "atr_value": 16.786
+          },
+          {
+            "symbol": "SANM",
+            "price": 208.67,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 12.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 215.64,
+            "nearest_lower_level": 171.99,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/30/26",
+            "zone_low": 202.97,
+            "zone_high": 210.68,
+            "center": 206.82,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.0,
+            "atr_value": 16.786
+          },
+          {
+            "symbol": "SANM",
+            "price": 230.56,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.93,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 215.64,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 228.55,
+            "zone_high": 232.57,
+            "center": 230.56,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.93,
+            "atr_value": 16.786
+          }
+        ]
+      },
+      "AAPL": {
+        "daily_atr": 4.296,
+        "technical_atr": 0.03,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Fed News and Big Tech Earnings Collide This Week. The Mag 7 Matter Most. -- Barrons.com"
+        ],
+        "news_provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "AAPL",
+          "headline": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+          "raw": {
+            "headline": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+            "published_at": "2026-04-30T19:20:55Z",
+            "source": "Seeking Alpha",
+            "url": "https://seekingalpha.com/article/4896781-eli-lilly-and-company-lly-q1-2026-earnings-call-transcript",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199327318",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "19:20:55",
+              "dateTime": "2026-04-30T19:20:55Z",
+              "dateTimePub": "2026-04-30T19:11:34Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://seekingalpha.com/article/4896781-eli-lilly-and-company-lly-q1-2026-earnings-call-transcript",
+              "title": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+              "body": "Ladies and gentlemen, thank you for standing by, and welcome to the Lilly Q1 2026 Earnings Conference Call. [Operator Instructions] I would now like to turn the conference over to your host, Michael Czapar, Senior Vice President of Investor Relations. Please go ahead.\n\nGood morning. Thank you for joining us for Eli Lilly and Company's Q1 2026 Earnings Call. I'm Mike Czapar, Senior Vice President of Investor Relations. Joining me on today's call are Dave Ricks, Lilly's Chair and CEO; Lucas Montarce, Chief Financial Officer; Dr. Dan Skovronsky, Chief Scientific and Product Officer; Adrienne Brown, President of Lilly Immunology, Dr. Carole Ho, President of Lilly Neuroscience; Ilya Yuffa, President of Lilly U.S.A. and Global Customer capabilities; Jacob Van Naarden, President of Lilly Oncology and Head of Business Development; Patrik Jonsson, President of Lilly International; and Ken Custer, President of Lilly Cardiometabolic Health.",
+              "source": {
+                "uri": "seekingalpha.com",
+                "dataType": "news",
+                "title": "Seeking Alpha"
+              },
+              "authors": [],
+              "image": "https://static.seekingalpha.com/assets/og_image_1200-29b2bfe1a595477db6826bd2126c63ac2091efb7ec76347a8e7f81ba17e3de6c.png",
+              "eventUri": null,
+              "sentiment": 0.2470588235294118,
+              "wgt": 515272855,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "AAPL",
+            "price": 253.98,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 45,
+            "false_breakouts": 7,
+            "strength_score": 62.42,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 258.48,
+            "nearest_lower_level": 250.65,
+            "first_touch_date": "03/06/26",
+            "source_date": "03/23/26",
+            "zone_low": 252.98,
+            "zone_high": 254.5,
+            "center": 253.73,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 62.42,
+            "atr_value": 4.296
+          },
+          {
+            "symbol": "AAPL",
+            "price": 262.19,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 48,
+            "false_breakouts": 5,
+            "strength_score": 61.66,
+            "created_by": "swing_high",
+            "nearest_upper_level": 270.88,
+            "nearest_lower_level": 260.15,
+            "first_touch_date": "02/12/26",
+            "source_date": "04/10/26",
+            "zone_low": 261.64,
+            "zone_high": 263.0,
+            "center": 262.28,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 61.66,
+            "atr_value": 4.296
+          },
+          {
+            "symbol": "AAPL",
+            "price": 258.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 43,
+            "false_breakouts": 7,
+            "strength_score": 60.63,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 260.15,
+            "nearest_lower_level": 253.73,
+            "first_touch_date": "02/13/26",
+            "source_date": "04/07/26",
+            "zone_low": 257.64,
+            "zone_high": 259.38,
+            "center": 258.48,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 60.63,
+            "atr_value": 4.296
+          },
+          {
+            "symbol": "AAPL",
+            "price": 260.18,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 36,
+            "false_breakouts": 10,
+            "strength_score": 60.63,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 262.28,
+            "nearest_lower_level": 258.48,
+            "first_touch_date": "02/12/26",
+            "source_date": "02/12/26",
+            "zone_low": 259.61,
+            "zone_high": 260.7,
+            "center": 260.15,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 60.63,
+            "atr_value": 4.296
+          },
+          {
+            "symbol": "AAPL",
+            "price": 275.72,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 31,
+            "false_breakouts": 8,
+            "strength_score": 51.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 280.42,
+            "nearest_lower_level": 274.28,
+            "first_touch_date": "02/04/26",
+            "source_date": "02/12/26",
+            "zone_low": 275.2,
+            "zone_high": 276.63,
+            "center": 275.83,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 51.83,
+            "atr_value": 4.296
+          },
+          {
+            "symbol": "AAPL",
+            "price": 270.71,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 26,
+            "false_breakouts": 5,
+            "strength_score": 40.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 273.2,
+            "nearest_lower_level": 262.28,
+            "first_touch_date": "02/12/26",
+            "source_date": "04/29/26",
+            "zone_low": 270.19,
+            "zone_high": 271.58,
+            "center": 270.88,
+            "families": [
+              "gap"
+            ],
+            "strength": 40.0,
+            "atr_value": 4.296
+          },
+          {
+            "symbol": "AAPL",
+            "price": 273.2,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 16,
+            "false_breakouts": 5,
+            "strength_score": 30.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 274.28,
+            "nearest_lower_level": 270.88,
+            "first_touch_date": "02/04/26",
+            "source_date": "04/28/26",
+            "zone_low": 272.68,
+            "zone_high": 273.72,
+            "center": 273.2,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 30.0,
+            "atr_value": 4.296
+          },
+          {
+            "symbol": "AAPL",
+            "price": 249.55,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 20,
+            "false_breakouts": 2,
+            "strength_score": 27.42,
+            "created_by": "swing_low",
+            "nearest_upper_level": 250.65,
+            "nearest_lower_level": 247.99,
+            "first_touch_date": "03/13/26",
+            "source_date": "03/24/26",
+            "zone_low": 249.0,
+            "zone_high": 250.07,
+            "center": 249.54,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 27.42,
+            "atr_value": 4.296
+          },
+          {
+            "symbol": "AAPL",
+            "price": 274.28,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 3,
+            "strength_score": 22.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 275.83,
+            "nearest_lower_level": 273.2,
+            "first_touch_date": "02/04/26",
+            "source_date": "04/20/26",
+            "zone_low": 273.76,
+            "zone_high": 274.8,
+            "center": 274.28,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 22.0,
+            "atr_value": 4.296
+          },
+          {
+            "symbol": "AAPL",
+            "price": 246.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 0,
+            "strength_score": 15.42,
+            "created_by": "swing_low",
+            "nearest_upper_level": 247.99,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/20/26",
+            "source_date": "03/20/26",
+            "zone_low": 244.99,
+            "zone_high": 246.52,
+            "center": 245.73,
+            "families": [
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 15.42,
+            "atr_value": 4.296
+          },
+          {
+            "symbol": "AAPL",
+            "price": 250.65,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 0,
+            "strength_score": 15.42,
+            "created_by": "swing_low",
+            "nearest_upper_level": 253.73,
+            "nearest_lower_level": 249.54,
+            "first_touch_date": "03/13/26",
+            "source_date": "04/02/26",
+            "zone_low": 250.13,
+            "zone_high": 251.17,
+            "center": 250.65,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 15.42,
+            "atr_value": 4.296
+          },
+          {
+            "symbol": "AAPL",
+            "price": 247.99,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 11.42,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 249.54,
+            "nearest_lower_level": 245.73,
+            "first_touch_date": "03/19/26",
+            "source_date": "03/23/26",
+            "zone_low": 247.47,
+            "zone_high": 248.51,
+            "center": 247.99,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.42,
+            "atr_value": 4.296
+          },
+          {
+            "symbol": "AAPL",
+            "price": 280.18,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 5.17,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 275.83,
+            "first_touch_date": "02/06/26",
+            "source_date": "02/11/26",
+            "zone_low": 279.66,
+            "zone_high": 281.43,
+            "center": 280.42,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 5.17,
+            "atr_value": 4.296
+          }
+        ]
+      },
+      "MSFT": {
+        "daily_atr": 10.0,
+        "technical_atr": 0.92,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Dow Jones Futures: Google, Amazon, Meta, Microsoft Are Big Earnings Movers After Oil Prices Spike, Fed's PowellStays -- IBD"
+        ],
+        "news_provider_hits": [
+          "DJ-N",
+          "The Verge"
+        ],
+        "news_source_types": [
+          "external",
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "MSFT",
+          "headline": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+          "raw": {
+            "headline": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+            "published_at": "2026-04-30T19:20:55Z",
+            "source": "Seeking Alpha",
+            "url": "https://seekingalpha.com/article/4896781-eli-lilly-and-company-lly-q1-2026-earnings-call-transcript",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199327318",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "19:20:55",
+              "dateTime": "2026-04-30T19:20:55Z",
+              "dateTimePub": "2026-04-30T19:11:34Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://seekingalpha.com/article/4896781-eli-lilly-and-company-lly-q1-2026-earnings-call-transcript",
+              "title": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+              "body": "Ladies and gentlemen, thank you for standing by, and welcome to the Lilly Q1 2026 Earnings Conference Call. [Operator Instructions] I would now like to turn the conference over to your host, Michael Czapar, Senior Vice President of Investor Relations. Please go ahead.\n\nGood morning. Thank you for joining us for Eli Lilly and Company's Q1 2026 Earnings Call. I'm Mike Czapar, Senior Vice President of Investor Relations. Joining me on today's call are Dave Ricks, Lilly's Chair and CEO; Lucas Montarce, Chief Financial Officer; Dr. Dan Skovronsky, Chief Scientific and Product Officer; Adrienne Brown, President of Lilly Immunology, Dr. Carole Ho, President of Lilly Neuroscience; Ilya Yuffa, President of Lilly U.S.A. and Global Customer capabilities; Jacob Van Naarden, President of Lilly Oncology and Head of Business Development; Patrik Jonsson, President of Lilly International; and Ken Custer, President of Lilly Cardiometabolic Health.",
+              "source": {
+                "uri": "seekingalpha.com",
+                "dataType": "news",
+                "title": "Seeking Alpha"
+              },
+              "authors": [],
+              "image": "https://static.seekingalpha.com/assets/og_image_1200-29b2bfe1a595477db6826bd2126c63ac2091efb7ec76347a8e7f81ba17e3de6c.png",
+              "eventUri": null,
+              "sentiment": 0.2470588235294118,
+              "wgt": 515272855,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "MSFT",
+            "price": 404.71,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 54,
+            "false_breakouts": 13,
+            "strength_score": 84.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 407.73,
+            "nearest_lower_level": 385.73,
+            "first_touch_date": "02/05/26",
+            "source_date": "02/26/26",
+            "zone_low": 403.2,
+            "zone_high": 405.91,
+            "center": 404.51,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 84.0,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 423.68,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 39,
+            "false_breakouts": 17,
+            "strength_score": 76.97,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 419.86,
+            "first_touch_date": "02/10/26",
+            "source_date": "02/10/26",
+            "zone_low": 422.48,
+            "zone_high": 426.02,
+            "center": 424.33,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 76.97,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 420.26,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 40,
+            "false_breakouts": 4,
+            "strength_score": 51.97,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 424.33,
+            "nearest_lower_level": 416.3,
+            "first_touch_date": "02/04/26",
+            "source_date": "04/17/26",
+            "zone_low": 418.41,
+            "zone_high": 421.46,
+            "center": 419.86,
+            "families": [
+              "gap"
+            ],
+            "strength": 51.97,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 372.74,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 24,
+            "false_breakouts": 10,
+            "strength_score": 47.56,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 376.93,
+            "nearest_lower_level": 361.9,
+            "first_touch_date": "03/24/26",
+            "source_date": "03/25/26",
+            "zone_low": 371.09,
+            "zone_high": 373.94,
+            "center": 372.52,
+            "families": [
+              "gap"
+            ],
+            "strength": 47.56,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 408.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 25,
+            "false_breakouts": 3,
+            "strength_score": 35.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 416.3,
+            "nearest_lower_level": 404.51,
+            "first_touch_date": "02/05/26",
+            "source_date": "02/05/26",
+            "zone_low": 406.29,
+            "zone_high": 409.2,
+            "center": 407.73,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 35.0,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 385.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 18,
+            "false_breakouts": 4,
+            "strength_score": 29.59,
+            "created_by": "swing_high",
+            "nearest_upper_level": 404.51,
+            "nearest_lower_level": 381.07,
+            "first_touch_date": "02/23/26",
+            "source_date": "04/08/26",
+            "zone_low": 383.78,
+            "zone_high": 388.41,
+            "center": 385.73,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 29.59,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 381.71,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 1,
+            "strength_score": 15.56,
+            "created_by": "swing_low",
+            "nearest_upper_level": 385.73,
+            "nearest_lower_level": 376.93,
+            "first_touch_date": "02/24/26",
+            "source_date": "02/24/26",
+            "zone_low": 378.92,
+            "zone_high": 382.91,
+            "center": 381.07,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 15.56,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 416.3,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 1,
+            "strength_score": 14.9,
+            "created_by": "swing_low",
+            "nearest_upper_level": 419.86,
+            "nearest_lower_level": 407.73,
+            "first_touch_date": "02/04/26",
+            "source_date": "04/20/26",
+            "zone_low": 415.1,
+            "zone_high": 417.5,
+            "center": 416.3,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 14.9,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 376.93,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.56,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 381.07,
+            "nearest_lower_level": 372.52,
+            "first_touch_date": "03/24/26",
+            "source_date": "03/25/26",
+            "zone_low": 375.73,
+            "zone_high": 378.13,
+            "center": 376.93,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.56,
+            "atr_value": 10.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 361.9,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.29,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 372.52,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/27/26",
+            "source_date": "03/27/26",
+            "zone_low": 360.7,
+            "zone_high": 363.1,
+            "center": 361.9,
+            "families": [
+              "gap"
+            ],
+            "strength": 6.29,
+            "atr_value": 10.0
+          }
+        ]
+      },
+      "TSLA": {
+        "daily_atr": 12.294,
+        "technical_atr": 28.48,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Tesla Rival BYD Reports Plunging Earnings. China EV Giant Is Betting On A Flash Recovery. -- IBD",
+          "Tesla TSLA Q3 2024 Earnings Call Transcript | The Motley Fool",
+          "Tesla is facing up to $14.5 billion in lawsuits  --  and it's only getting worse"
+        ],
+        "news_provider_hits": [
+          "DJ-N",
+          "Electrek",
+          "Investing.com",
+          "The Motley Fool"
+        ],
+        "news_source_types": [
+          "external",
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "TSLA",
+          "headline": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+          "raw": {
+            "headline": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+            "published_at": "2026-04-30T19:20:55Z",
+            "source": "Seeking Alpha",
+            "url": "https://seekingalpha.com/article/4896781-eli-lilly-and-company-lly-q1-2026-earnings-call-transcript",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199327318",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "19:20:55",
+              "dateTime": "2026-04-30T19:20:55Z",
+              "dateTimePub": "2026-04-30T19:11:34Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://seekingalpha.com/article/4896781-eli-lilly-and-company-lly-q1-2026-earnings-call-transcript",
+              "title": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+              "body": "Ladies and gentlemen, thank you for standing by, and welcome to the Lilly Q1 2026 Earnings Conference Call. [Operator Instructions] I would now like to turn the conference over to your host, Michael Czapar, Senior Vice President of Investor Relations. Please go ahead.\n\nGood morning. Thank you for joining us for Eli Lilly and Company's Q1 2026 Earnings Call. I'm Mike Czapar, Senior Vice President of Investor Relations. Joining me on today's call are Dave Ricks, Lilly's Chair and CEO; Lucas Montarce, Chief Financial Officer; Dr. Dan Skovronsky, Chief Scientific and Product Officer; Adrienne Brown, President of Lilly Immunology, Dr. Carole Ho, President of Lilly Neuroscience; Ilya Yuffa, President of Lilly U.S.A. and Global Customer capabilities; Jacob Van Naarden, President of Lilly Oncology and Head of Business Development; Patrik Jonsson, President of Lilly International; and Ken Custer, President of Lilly Cardiometabolic Health.",
+              "source": {
+                "uri": "seekingalpha.com",
+                "dataType": "news",
+                "title": "Seeking Alpha"
+              },
+              "authors": [],
+              "image": "https://static.seekingalpha.com/assets/og_image_1200-29b2bfe1a595477db6826bd2126c63ac2091efb7ec76347a8e7f81ba17e3de6c.png",
+              "eventUri": null,
+              "sentiment": 0.2470588235294118,
+              "wgt": 515272855,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "TSLA",
+            "price": 416.38,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 28,
+            "false_breakouts": 12,
+            "strength_score": 54.81,
+            "created_by": "swing_high",
+            "nearest_upper_level": 436.35,
+            "nearest_lower_level": 412.08,
+            "first_touch_date": "02/04/26",
+            "source_date": "03/11/26",
+            "zone_low": 414.9,
+            "zone_high": 418.92,
+            "center": 416.89,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 54.81,
+            "atr_value": 12.294
+          },
+          {
+            "symbol": "TSLA",
+            "price": 411.82,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 23,
+            "false_breakouts": 9,
+            "strength_score": 43.81,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 416.89,
+            "nearest_lower_level": 346.46,
+            "first_touch_date": "02/04/26",
+            "source_date": "02/23/26",
+            "zone_low": 410.34,
+            "zone_high": 413.84,
+            "center": 412.08,
+            "families": [
+              "gap"
+            ],
+            "strength": 43.81,
+            "atr_value": 12.294
+          },
+          {
+            "symbol": "TSLA",
+            "price": 346.65,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 4,
+            "strength_score": 21.53,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 412.08,
+            "nearest_lower_level": 337.24,
+            "first_touch_date": "04/06/26",
+            "source_date": "04/08/26",
+            "zone_low": 344.79,
+            "zone_high": 348.13,
+            "center": 346.46,
+            "families": [
+              "gap"
+            ],
+            "strength": 21.53,
+            "atr_value": 12.294
+          },
+          {
+            "symbol": "TSLA",
+            "price": 337.25,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 9.49,
+            "created_by": "swing_low",
+            "nearest_upper_level": 346.46,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/09/26",
+            "zone_low": 335.76,
+            "zone_high": 338.73,
+            "center": 337.24,
+            "families": [
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 9.49,
+            "atr_value": 12.294
+          },
+          {
+            "symbol": "TSLA",
+            "price": 436.35,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 416.89,
+            "first_touch_date": "02/11/26",
+            "source_date": "02/11/26",
+            "zone_low": 434.87,
+            "zone_high": 437.83,
+            "center": 436.35,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 4.2,
+            "atr_value": 12.294
+          }
+        ]
+      },
+      "AMZN": {
+        "daily_atr": 5.81,
+        "technical_atr": 0.78,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Dow Jones Futures: Google, Amazon, Meta, Microsoft Are Big Earnings Movers After Oil Prices Spike, Fed's PowellStays -- IBD",
+          "{A:800015:L:en}Amazon Earnings Beat Estimates. A Weak Spot May Still Be Weighing on the Stock. -- Barrons.com",
+          "{A:800015:L:en}Amazon Earnings Beat Estimates. The Stock Is Falling Anyway. -- Barrons.com"
+        ],
+        "news_provider_hits": [
+          "CNN",
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "external",
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "AMZN",
+          "headline": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+          "raw": {
+            "headline": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+            "published_at": "2026-04-30T19:20:55Z",
+            "source": "Seeking Alpha",
+            "url": "https://seekingalpha.com/article/4896781-eli-lilly-and-company-lly-q1-2026-earnings-call-transcript",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9199327318",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-30",
+              "time": "19:20:55",
+              "dateTime": "2026-04-30T19:20:55Z",
+              "dateTimePub": "2026-04-30T19:11:34Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://seekingalpha.com/article/4896781-eli-lilly-and-company-lly-q1-2026-earnings-call-transcript",
+              "title": "Eli Lilly and Company (LLY) Q1 2026 Earnings Call Transcript",
+              "body": "Ladies and gentlemen, thank you for standing by, and welcome to the Lilly Q1 2026 Earnings Conference Call. [Operator Instructions] I would now like to turn the conference over to your host, Michael Czapar, Senior Vice President of Investor Relations. Please go ahead.\n\nGood morning. Thank you for joining us for Eli Lilly and Company's Q1 2026 Earnings Call. I'm Mike Czapar, Senior Vice President of Investor Relations. Joining me on today's call are Dave Ricks, Lilly's Chair and CEO; Lucas Montarce, Chief Financial Officer; Dr. Dan Skovronsky, Chief Scientific and Product Officer; Adrienne Brown, President of Lilly Immunology, Dr. Carole Ho, President of Lilly Neuroscience; Ilya Yuffa, President of Lilly U.S.A. and Global Customer capabilities; Jacob Van Naarden, President of Lilly Oncology and Head of Business Development; Patrik Jonsson, President of Lilly International; and Ken Custer, President of Lilly Cardiometabolic Health.",
+              "source": {
+                "uri": "seekingalpha.com",
+                "dataType": "news",
+                "title": "Seeking Alpha"
+              },
+              "authors": [],
+              "image": "https://static.seekingalpha.com/assets/og_image_1200-29b2bfe1a595477db6826bd2126c63ac2091efb7ec76347a8e7f81ba17e3de6c.png",
+              "eventUri": null,
+              "sentiment": 0.2470588235294118,
+              "wgt": 515272855,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "AMZN",
+            "price": 209.07,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 26,
+            "false_breakouts": 7,
+            "strength_score": 43.42,
+            "created_by": "swing_low",
+            "nearest_upper_level": 216.17,
+            "nearest_lower_level": 199.67,
+            "first_touch_date": "02/06/26",
+            "source_date": "04/07/26",
+            "zone_low": 208.37,
+            "zone_high": 209.77,
+            "center": 209.07,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 43.42,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 199.34,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 15,
+            "false_breakouts": 7,
+            "strength_score": 32.25,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 209.07,
+            "nearest_lower_level": null,
+            "first_touch_date": "02/06/26",
+            "source_date": "03/30/26",
+            "zone_low": 198.44,
+            "zone_high": 201.01,
+            "center": 199.67,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 32.25,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 255.09,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 6,
+            "strength_score": 27.83,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 258.39,
+            "nearest_lower_level": 252.38,
+            "first_touch_date": "04/17/26",
+            "source_date": "04/21/26",
+            "zone_low": 254.16,
+            "zone_high": 255.79,
+            "center": 255.01,
+            "families": [
+              "gap"
+            ],
+            "strength": 27.83,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 261.12,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 2,
+            "strength_score": 18.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 263.04,
+            "nearest_lower_level": 258.39,
+            "first_touch_date": "04/24/26",
+            "source_date": "04/28/26",
+            "zone_low": 259.28,
+            "zone_high": 261.82,
+            "center": 260.55,
+            "families": [
+              "gap"
+            ],
+            "strength": 18.0,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 215.7,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 11,
+            "false_breakouts": 2,
+            "strength_score": 17.98,
+            "created_by": "swing_high",
+            "nearest_upper_level": 218.94,
+            "nearest_lower_level": 209.07,
+            "first_touch_date": "03/04/26",
+            "source_date": "03/17/26",
+            "zone_low": 215.0,
+            "zone_high": 217.7,
+            "center": 216.17,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 17.98,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 252.54,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 0,
+            "strength_score": 12.83,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 255.01,
+            "nearest_lower_level": 244.9,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/22/26",
+            "zone_low": 251.48,
+            "zone_high": 253.24,
+            "center": 252.38,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.83,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 264.5,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 1,
+            "strength_score": 10.75,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 263.04,
+            "first_touch_date": "04/24/26",
+            "source_date": "04/24/26",
+            "zone_low": 263.8,
+            "zone_high": 265.2,
+            "center": 264.5,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 10.75,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 263.04,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 1,
+            "strength_score": 10.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 264.5,
+            "nearest_lower_level": 260.55,
+            "first_touch_date": "04/24/26",
+            "source_date": "04/30/26",
+            "zone_low": 262.34,
+            "zone_high": 263.74,
+            "center": 263.04,
+            "families": [
+              "gap"
+            ],
+            "strength": 10.0,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 232.99,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 2,
+            "strength_score": 9.49,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 240.43,
+            "nearest_lower_level": 220.47,
+            "first_touch_date": "02/04/26",
+            "source_date": "02/05/26",
+            "zone_low": 232.29,
+            "zone_high": 233.69,
+            "center": 232.99,
+            "families": [
+              "gap"
+            ],
+            "strength": 9.49,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 258.39,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 9.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 260.55,
+            "nearest_lower_level": 255.01,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/28/26",
+            "zone_low": 257.69,
+            "zone_high": 259.09,
+            "center": 258.39,
+            "families": [
+              "gap"
+            ],
+            "strength": 9.0,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 245.36,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 8.73,
+            "created_by": "swing_low",
+            "nearest_upper_level": 252.38,
+            "nearest_lower_level": 240.43,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/20/26",
+            "zone_low": 243.5,
+            "zone_high": 246.06,
+            "center": 244.9,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 8.73,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 240.43,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.56,
+            "created_by": "swing_high",
+            "nearest_upper_level": 244.9,
+            "nearest_lower_level": 232.99,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/10/26",
+            "zone_low": 239.73,
+            "zone_high": 241.13,
+            "center": 240.43,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 7.56,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 218.94,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.46,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 220.47,
+            "nearest_lower_level": 216.17,
+            "first_touch_date": "03/05/26",
+            "source_date": "03/06/26",
+            "zone_low": 218.24,
+            "zone_high": 219.64,
+            "center": 218.94,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.46,
+            "atr_value": 5.81
+          },
+          {
+            "symbol": "AMZN",
+            "price": 220.47,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.46,
+            "created_by": "swing_high",
+            "nearest_upper_level": 232.99,
+            "nearest_lower_level": 218.94,
+            "first_touch_date": "02/05/26",
+            "source_date": "03/05/26",
+            "zone_low": 219.77,
+            "zone_high": 221.17,
+            "center": 220.47,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 6.46,
+            "atr_value": 5.81
+          }
+        ]
+      }
+    },
+    "macro_risk": {
+      "blocked": false,
+      "headlines": [
+        "{A:800015:L:en}SPY ETF Closes Flat",
+        "{A:800015:L:en}SPY ETF Falls 0.5%",
+        "{A:800015:L:en}SPY ETF Climbs 0.2%, Outperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Rises 0.8%",
+        "{A:800015:L:en}SPY ETF Falls 0.4%",
+        "{A:800015:L:en}SPY ETF Gains 1.0%",
+        "{A:800015:L:en}SPY ETF Declines 0.7%, Underperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Declines 0.2%",
+        "{A:800015:L:en}SPY ETF Climbs 1.2%",
+        "{A:800015:L:en}SPY ETF Rises 0.2%, Underperforms Underlying Index"
+      ],
+      "matched_headlines": [],
+      "critical_matches": [],
+      "provider_hits": [
+        "DJ-RTG"
+      ],
+      "source_types": [
+        "ibkr"
+      ]
+    },
+    "ideas": [
+      {
+        "symbol": "BBBY",
+        "catalyst": "level interaction",
+        "entry": 4.96,
+        "stop": 4.9104,
+        "target": 6.27,
+        "decision": "WATCH"
+      },
+      {
+        "symbol": "SEI",
+        "catalyst": "{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance",
+        "entry": 75.1,
+        "stop": 74.44,
+        "target": 77.12,
+        "decision": "HOLD"
+      },
+      {
+        "symbol": "SANM",
+        "catalyst": "{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD",
+        "entry": 217.05,
+        "stop": 215.46,
+        "target": 230.56,
+        "decision": "HOLD"
+      }
+    ],
+    "research_symbols": [
+      "BBBY",
+      "SEI",
+      "SANM",
+      "AAPL",
+      "MSFT",
+      "TSLA",
+      "AMZN"
+    ]
+  }
+}
+```
+
+## Workflow Intraday (2026-04-30T15:35:06)
+- **stage**: Intraday
+- **tracked_symbols**: []
+- **actions**: []
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [],
+    "tracked_positions": []
+  }
+}
+```
