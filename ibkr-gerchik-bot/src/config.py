@@ -55,6 +55,7 @@ class RiskConfig:
 class StrategyConfig:
     min_avg_volume: int = int(os.getenv("MIN_AVG_VOLUME", "500000"))
     lookback_bars: int = int(os.getenv("LOOKBACK_BARS", "60"))
+    premarket_daily_lookback_days: int = int(os.getenv("PREMARKET_DAILY_LOOKBACK_DAYS", "60"))
     level_tolerance_pct: float = float(os.getenv("LEVEL_TOLERANCE_PCT", "0.0025"))
     consolidation_window: int = int(os.getenv("CONSOLIDATION_WINDOW", "20"))
     abnormal_range_multiplier: float = float(os.getenv("ABNORMAL_RANGE_MULTIPLIER", "2.0"))

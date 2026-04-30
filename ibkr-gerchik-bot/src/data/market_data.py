@@ -26,8 +26,9 @@ class MarketDataService:
             return pd.DataFrame(columns=["date", "open", "high", "low", "close", "volume"])
         return bars[["date", "open", "high", "low", "close", "volume"]].copy()
 
-    def get_daily_bars(self, symbol: str, duration: str = "30 D") -> pd.DataFrame:
-        bars = self.broker.get_historical_bars(symbol=symbol, duration=duration, bar_size="1 day")
+    def get_daily_bars(self, symbol: str, duration: str | None = None) -> pd.DataFrame:
+        resolved_duration = duration or f"{SETTINGS.strategy.premarket_daily_lookback_days} D"
+        bars = self.broker.get_historical_bars(symbol=symbol, duration=resolved_duration, bar_size="1 day")
         if bars is None:
             return pd.DataFrame(columns=["date", "open", "high", "low", "close", "volume"])
         if bars.empty:
