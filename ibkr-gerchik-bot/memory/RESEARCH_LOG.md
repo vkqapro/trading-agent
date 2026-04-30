@@ -68451,3 +68451,7522 @@ Premarket scans, intraday observations, and daily analysis are appended here.
   }
 }
 ```
+
+## Premarket Research (2026-04-29T08:20:28)
+- **strategy_loaded**: True
+- **trade_log_context_loaded**: True
+- **research_log_context_loaded**: True
+- **account_snapshot**: {'account': [{'account': 'DU5454348', 'tag': 'AccountType', 'value': 'INDIVIDUAL', 'currency': ''}, {'account': 'DU5454348', 'tag': 'Cushion', 'value': '1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemaining', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+1', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+2', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+3', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+4', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'LookAheadNextChange', 'value': '0', 'currency': ''}, {'account': 'DU5454348', 'tag': 'AccruedCash', 'value': '216.44', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'AvailableFunds', 'value': '101932.42', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'BuyingPower', 'value': '407729.69', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'EquityWithLoanValue', 'value': '101932.42', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'ExcessLiquidity', 'value': '101932.42', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullAvailableFunds', 'value': '101932.42', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullExcessLiquidity', 'value': '101932.42', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'GrossPositionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'InitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadAvailableFunds', 'value': '101932.42', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadExcessLiquidity', 'value': '101932.42', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'MaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'NetLiquidation', 'value': '102148.86', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'PreviousDayEquityWithLoanValue', 'value': '101933.15', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTEquity', 'value': '102148.86', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTMargin', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'SMA', 'value': '102148.86', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'TotalCashValue', 'value': '101932.42', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CashBalance', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.1705044', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Currency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'CashBalance', 'value': '100761.92', 'currency': 'USD'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '100761.92', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '216.44', 'currency': 'USD'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '100978.36', 'currency': 'USD'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CashBalance', 'value': '101932.4219', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '101932.4219', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '216.44', 'currency': 'BASE'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '102148.8619', 'currency': 'BASE'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'BASE'}], 'positions': [], 'open_orders': []}
+- **research_symbols**: ['BBBY', 'SEI', 'SANM', 'AAPL', 'MSFT', 'TSLA']
+- **macro_risk**: False
+- **macro_news_sources**: ['DJ-RTG']
+- **macro_news_source_types**: ['ibkr']
+- **actionable_ideas**: [{'symbol': 'BBBY', 'catalyst': 'level interaction', 'entry': 4.73, 'stop': 4.72, 'target': 4.78, 'decision': 'WATCH'}, {'symbol': 'SEI', 'catalyst': '{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance', 'entry': 74.5, 'stop': 71.86, 'target': 76.735, 'decision': 'HOLD'}, {'symbol': 'SANM', 'catalyst': '{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD', 'entry': 215.84, 'stop': 184.0, 'target': 222.3152, 'decision': 'HOLD'}]
+- **trade_decision**: READY_FOR_OPEN_VALIDATION
+
+## Workflow Premarket (2026-04-29T08:20:28)
+- **stage**: Premarket
+- **watchlist_symbols**: ['BBBY', 'SEI', 'SANM', 'AAPL', 'MSFT', 'TSLA']
+```json
+{
+  "stage": "Premarket",
+  "payload": {
+    "watchlist": {
+      "BBBY": {
+        "daily_atr": 0.54,
+        "technical_atr": 0.01,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "BBBY",
+          "headline": "Amphenol: Q1 Earnings Snapshot",
+          "raw": {
+            "headline": "Amphenol: Q1 Earnings Snapshot",
+            "published_at": "2026-04-29T12:17:45Z",
+            "source": "9NEWS",
+            "url": "https://www.9news.com/article/syndication/associatedpress/amphenol-q1-earnings-snapshot/616-b01d29f1-8896-4e89-b80c-fa700e01f8ed",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9197217324",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-29",
+              "time": "12:17:45",
+              "dateTime": "2026-04-29T12:17:45Z",
+              "dateTimePub": "2026-04-29T12:06:25Z",
+              "dataType": "news",
+              "sim": 0.6196078658103943,
+              "url": "https://www.9news.com/article/syndication/associatedpress/amphenol-q1-earnings-snapshot/616-b01d29f1-8896-4e89-b80c-fa700e01f8ed",
+              "title": "Amphenol: Q1 Earnings Snapshot",
+              "body": "WALLINGFORD, Conn.(AP) -- WALLINGFORD, Conn. (AP) -- Amphenol Corp. (APH) on Wednesday reported first-quarter earnings of $933 million.\n\nOn a per-share basis, the Wallingford, Connecticut-based company said it had net income of 72 cents. Earnings, adjusted for pretax expenses and amortization costs, came to $1.06 per share.\n\nThe results beat Wall Street expectations. The average estimate of four analysts surveyed by Zacks Investment Research was for earnings of 95 cents per share.\n\nThe maker of fiber-optic products posted revenue of $7.62 billion in the period.\n\nAmphenol shares have climbed slightly more than 6% since the beginning of the year, while the S&P's 500 index has increased slightly more than 4%. The stock has increased 89% in the last 12 months.\n\n_____\n\nThis story was generated by Automated Insights (http://automatedinsights.com/ap) using data from Zacks Investment Research. Access a Zacks stock report on APH at https://www.zacks.com/ap/APH",
+              "source": {
+                "uri": "9news.com",
+                "dataType": "news",
+                "title": "9NEWS"
+              },
+              "authors": [],
+              "image": "https://media.9news.com/assets/AssociatedPress/images/6a0b3dc4-c298-43fb-b3c7-e4ab99f0a1cf/20260429T121024/6a0b3dc4-c298-43fb-b3c7-e4ab99f0a1cf_1140x641.png",
+              "eventUri": "eng-11609527",
+              "sentiment": 0.1529411764705881,
+              "wgt": 515161065,
+              "relevance": 2
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "BBBY",
+            "price": 5.05,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 3,
+            "strength_score": 7.3,
+            "created_by": "swing_high",
+            "nearest_upper_level": 5.14,
+            "nearest_lower_level": 5.0
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.62,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 6,
+            "strength_score": 9.4,
+            "created_by": "swing_low",
+            "nearest_upper_level": 4.63,
+            "nearest_lower_level": 4.61
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.93,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 5,
+            "strength_score": 9.4,
+            "created_by": "swing_high",
+            "nearest_upper_level": 4.93,
+            "nearest_lower_level": 4.88
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.86,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 6,
+            "strength_score": 9.4,
+            "created_by": "swing_high",
+            "nearest_upper_level": 4.86,
+            "nearest_lower_level": 4.82
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.31,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 1,
+            "strength_score": 6.4,
+            "created_by": "swing_low",
+            "nearest_upper_level": 4.33,
+            "nearest_lower_level": 4.25
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.81,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 10,
+            "strength_score": 9.4,
+            "created_by": "swing_high",
+            "nearest_upper_level": 4.81,
+            "nearest_lower_level": 4.8
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.33,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 3,
+            "strength_score": 8.0,
+            "created_by": "swing_low",
+            "nearest_upper_level": 4.35,
+            "nearest_lower_level": 4.31
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.25,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 0,
+            "strength_score": 4.95,
+            "created_by": "swing_low",
+            "nearest_upper_level": 4.25,
+            "nearest_lower_level": null
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.14,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 2,
+            "strength_score": 6.5,
+            "created_by": "swing_high",
+            "nearest_upper_level": 5.21,
+            "nearest_lower_level": 5.05
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.55,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 5,
+            "strength_score": 9.4,
+            "created_by": "swing_low",
+            "nearest_upper_level": 4.55,
+            "nearest_lower_level": 4.53
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.88,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 4,
+            "strength_score": 9.4,
+            "created_by": "swing_high",
+            "nearest_upper_level": 4.88,
+            "nearest_lower_level": 4.86
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.48,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 3,
+            "strength_score": 8.0,
+            "created_by": "swing_low",
+            "nearest_upper_level": 4.5,
+            "nearest_lower_level": 4.37
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.4,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 2,
+            "strength_score": 7.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": 5.44,
+            "nearest_lower_level": 5.38
+          },
+          {
+            "symbol": "BBBY",
+            "price": 6.27,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 5.7,
+            "created_by": "swing_high",
+            "nearest_upper_level": 7.12,
+            "nearest_lower_level": 6.14
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.38,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 2,
+            "strength_score": 8.6,
+            "created_by": "swing_low",
+            "nearest_upper_level": 5.4,
+            "nearest_lower_level": 5.35
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.86,
+            "type": "mirror",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 6,
+            "strength_score": 10.15,
+            "created_by": "repeated_highs",
+            "nearest_upper_level": 4.88,
+            "nearest_lower_level": 4.86
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.64,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 9,
+            "strength_score": 7.9,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 4.64,
+            "nearest_lower_level": 4.63
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.88,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 4,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 4.93,
+            "nearest_lower_level": 4.88
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.8,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 10,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.81,
+            "nearest_lower_level": 4.78
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.81,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 10,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 4.82,
+            "nearest_lower_level": 4.81
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.67,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 10,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.69,
+            "nearest_lower_level": 4.66
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.72,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 9,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.73,
+            "nearest_lower_level": 4.71
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.78,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 10,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 4.8,
+            "nearest_lower_level": 4.73
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.73,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 9,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.78,
+            "nearest_lower_level": 4.72
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.59,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 5,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 4.6,
+            "nearest_lower_level": 4.55
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.5,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 2,
+            "strength_score": 7.85,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.53,
+            "nearest_lower_level": 4.48
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.53,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 2,
+            "strength_score": 7.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 4.55,
+            "nearest_lower_level": 4.5
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.37,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 3,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.48,
+            "nearest_lower_level": 4.35
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.69,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 10,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 4.7,
+            "nearest_lower_level": 4.67
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.64,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 9,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.66,
+            "nearest_lower_level": 4.64
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.66,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 11,
+            "false_breakouts": 10,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 4.67,
+            "nearest_lower_level": 4.64
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.55,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 5,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.59,
+            "nearest_lower_level": 4.55
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.6,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 5,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.61,
+            "nearest_lower_level": 4.59
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.35,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 3,
+            "strength_score": 6.5,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.37,
+            "nearest_lower_level": 4.33
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.82,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 8,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 4.86,
+            "nearest_lower_level": 4.81
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.71,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 9,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.72,
+            "nearest_lower_level": 4.7
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.61,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 5,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.62,
+            "nearest_lower_level": 4.6
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.7,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 9,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 4.71,
+            "nearest_lower_level": 4.69
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.63,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 9,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.64,
+            "nearest_lower_level": 4.62
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 3,
+            "strength_score": 7.25,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 5.05,
+            "nearest_lower_level": 4.93
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.93,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 5,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 5.0,
+            "nearest_lower_level": 4.93
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.35,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 3,
+            "strength_score": 7.2,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 5.38,
+            "nearest_lower_level": 5.34
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.28,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 5.34,
+            "nearest_lower_level": 5.21
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.44,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 4,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 5.52,
+            "nearest_lower_level": 5.4
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.21,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 3,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 5.28,
+            "nearest_lower_level": 5.14
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.74,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 5,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 5.9,
+            "nearest_lower_level": 5.66
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.66,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 4,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 5.74,
+            "nearest_lower_level": 5.62
+          },
+          {
+            "symbol": "BBBY",
+            "price": 6.14,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 6.27,
+            "nearest_lower_level": 6.07
+          },
+          {
+            "symbol": "BBBY",
+            "price": 6.07,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 6.14,
+            "nearest_lower_level": 6.0
+          },
+          {
+            "symbol": "BBBY",
+            "price": 6.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 4,
+            "strength_score": 5.15,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 6.07,
+            "nearest_lower_level": 5.98
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.9,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 3,
+            "strength_score": 6.5,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 5.98,
+            "nearest_lower_level": 5.74
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.98,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 4,
+            "strength_score": 4.4,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 6.0,
+            "nearest_lower_level": 5.9
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.62,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 5,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 5.66,
+            "nearest_lower_level": 5.52
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.52,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 4,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 5.62,
+            "nearest_lower_level": 5.44
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.34,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 3,
+            "strength_score": 7.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 5.35,
+            "nearest_lower_level": 5.28
+          }
+        ]
+      },
+      "SEI": {
+        "daily_atr": 5.728,
+        "technical_atr": 2.64,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance",
+          "{A:800015:L:en}Press Release: Solaris Energy Infrastructure Announces First Quarter 2026 Results, Updated Earnings Guidance, Signing Of Third Long-term Contract With Global Technology Company"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "SEI",
+          "headline": "Amphenol: Q1 Earnings Snapshot",
+          "raw": {
+            "headline": "Amphenol: Q1 Earnings Snapshot",
+            "published_at": "2026-04-29T12:17:45Z",
+            "source": "9NEWS",
+            "url": "https://www.9news.com/article/syndication/associatedpress/amphenol-q1-earnings-snapshot/616-b01d29f1-8896-4e89-b80c-fa700e01f8ed",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9197217324",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-29",
+              "time": "12:17:45",
+              "dateTime": "2026-04-29T12:17:45Z",
+              "dateTimePub": "2026-04-29T12:06:25Z",
+              "dataType": "news",
+              "sim": 0.6196078658103943,
+              "url": "https://www.9news.com/article/syndication/associatedpress/amphenol-q1-earnings-snapshot/616-b01d29f1-8896-4e89-b80c-fa700e01f8ed",
+              "title": "Amphenol: Q1 Earnings Snapshot",
+              "body": "WALLINGFORD, Conn.(AP) -- WALLINGFORD, Conn. (AP) -- Amphenol Corp. (APH) on Wednesday reported first-quarter earnings of $933 million.\n\nOn a per-share basis, the Wallingford, Connecticut-based company said it had net income of 72 cents. Earnings, adjusted for pretax expenses and amortization costs, came to $1.06 per share.\n\nThe results beat Wall Street expectations. The average estimate of four analysts surveyed by Zacks Investment Research was for earnings of 95 cents per share.\n\nThe maker of fiber-optic products posted revenue of $7.62 billion in the period.\n\nAmphenol shares have climbed slightly more than 6% since the beginning of the year, while the S&P's 500 index has increased slightly more than 4%. The stock has increased 89% in the last 12 months.\n\n_____\n\nThis story was generated by Automated Insights (http://automatedinsights.com/ap) using data from Zacks Investment Research. Access a Zacks stock report on APH at https://www.zacks.com/ap/APH",
+              "source": {
+                "uri": "9news.com",
+                "dataType": "news",
+                "title": "9NEWS"
+              },
+              "authors": [],
+              "image": "https://media.9news.com/assets/AssociatedPress/images/6a0b3dc4-c298-43fb-b3c7-e4ab99f0a1cf/20260429T121024/6a0b3dc4-c298-43fb-b3c7-e4ab99f0a1cf_1140x641.png",
+              "eventUri": "eng-11609527",
+              "sentiment": 0.1529411764705881,
+              "wgt": 515161065,
+              "relevance": 2
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "SEI",
+            "price": 70.17,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 6.6,
+            "created_by": "swing_high",
+            "nearest_upper_level": 70.63,
+            "nearest_lower_level": 69.48
+          },
+          {
+            "symbol": "SEI",
+            "price": 64.61,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 7,
+            "strength_score": 7.3,
+            "created_by": "swing_high",
+            "nearest_upper_level": 64.99,
+            "nearest_lower_level": 64.51
+          },
+          {
+            "symbol": "SEI",
+            "price": 60.21,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 5,
+            "strength_score": 8.7,
+            "created_by": "swing_low",
+            "nearest_upper_level": 60.26,
+            "nearest_lower_level": 59.8
+          },
+          {
+            "symbol": "SEI",
+            "price": 61.91,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 10,
+            "strength_score": 6.6,
+            "created_by": "swing_high",
+            "nearest_upper_level": 61.91,
+            "nearest_lower_level": 61.85
+          },
+          {
+            "symbol": "SEI",
+            "price": 51.66,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 0,
+            "strength_score": 4.2,
+            "created_by": "swing_low",
+            "nearest_upper_level": 51.66,
+            "nearest_lower_level": null
+          },
+          {
+            "symbol": "SEI",
+            "price": 59.8,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 6,
+            "strength_score": 6.6,
+            "created_by": "swing_high",
+            "nearest_upper_level": 60.21,
+            "nearest_lower_level": 59.7
+          },
+          {
+            "symbol": "SEI",
+            "price": 52.93,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 2,
+            "strength_score": 5.8,
+            "created_by": "swing_low",
+            "nearest_upper_level": 53.39,
+            "nearest_lower_level": 52.84
+          },
+          {
+            "symbol": "SEI",
+            "price": 52.32,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 1,
+            "strength_score": 5.0,
+            "created_by": "swing_low",
+            "nearest_upper_level": 52.32,
+            "nearest_lower_level": 51.66
+          },
+          {
+            "symbol": "SEI",
+            "price": 64.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 7,
+            "strength_score": 8.75,
+            "created_by": "swing_high",
+            "nearest_upper_level": 64.14,
+            "nearest_lower_level": 63.45
+          },
+          {
+            "symbol": "SEI",
+            "price": 59.41,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 5,
+            "strength_score": 7.3,
+            "created_by": "swing_low",
+            "nearest_upper_level": 59.7,
+            "nearest_lower_level": 59.0
+          },
+          {
+            "symbol": "SEI",
+            "price": 68.5,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 7.35,
+            "created_by": "swing_high",
+            "nearest_upper_level": 68.56,
+            "nearest_lower_level": 67.47
+          },
+          {
+            "symbol": "SEI",
+            "price": 62.91,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 8,
+            "strength_score": 7.3,
+            "created_by": "swing_low",
+            "nearest_upper_level": 63.19,
+            "nearest_lower_level": 62.0
+          },
+          {
+            "symbol": "SEI",
+            "price": 68.72,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 3,
+            "strength_score": 7.3,
+            "created_by": "swing_low",
+            "nearest_upper_level": 69.48,
+            "nearest_lower_level": 68.56
+          },
+          {
+            "symbol": "SEI",
+            "price": 61.91,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 10,
+            "strength_score": 5.1,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 62.0,
+            "nearest_lower_level": 61.91
+          },
+          {
+            "symbol": "SEI",
+            "price": 70.91,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 71.86,
+            "nearest_lower_level": 70.63
+          },
+          {
+            "symbol": "SEI",
+            "price": 64.14,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 7,
+            "strength_score": 6.5,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 64.51,
+            "nearest_lower_level": 64.0
+          },
+          {
+            "symbol": "SEI",
+            "price": 63.19,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 9,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 63.45,
+            "nearest_lower_level": 62.91
+          },
+          {
+            "symbol": "SEI",
+            "price": 68.56,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 3,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 68.72,
+            "nearest_lower_level": 68.5
+          },
+          {
+            "symbol": "SEI",
+            "price": 66.43,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 8,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 67.16,
+            "nearest_lower_level": 66.17
+          },
+          {
+            "symbol": "SEI",
+            "price": 61.81,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 10,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 61.85,
+            "nearest_lower_level": 61.0
+          },
+          {
+            "symbol": "SEI",
+            "price": 60.88,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 10,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 61.0,
+            "nearest_lower_level": 60.45
+          },
+          {
+            "symbol": "SEI",
+            "price": 60.26,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 5,
+            "strength_score": 7.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 60.45,
+            "nearest_lower_level": 60.21
+          },
+          {
+            "symbol": "SEI",
+            "price": 62.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 10,
+            "strength_score": 5.85,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 62.91,
+            "nearest_lower_level": 61.91
+          },
+          {
+            "symbol": "SEI",
+            "price": 61.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 10,
+            "strength_score": 5.85,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 61.81,
+            "nearest_lower_level": 60.88
+          },
+          {
+            "symbol": "SEI",
+            "price": 60.45,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 6,
+            "strength_score": 6.5,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 60.88,
+            "nearest_lower_level": 60.26
+          },
+          {
+            "symbol": "SEI",
+            "price": 59.7,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 6,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 59.8,
+            "nearest_lower_level": 59.41
+          },
+          {
+            "symbol": "SEI",
+            "price": 59.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 3,
+            "strength_score": 6.55,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 59.41,
+            "nearest_lower_level": 58.0
+          },
+          {
+            "symbol": "SEI",
+            "price": 57.83,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 58.0,
+            "nearest_lower_level": 56.51
+          },
+          {
+            "symbol": "SEI",
+            "price": 53.63,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 5,
+            "strength_score": 4.4,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 55.47,
+            "nearest_lower_level": 53.39
+          },
+          {
+            "symbol": "SEI",
+            "price": 52.84,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 2,
+            "strength_score": 4.3,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 52.93,
+            "nearest_lower_level": 52.32
+          },
+          {
+            "symbol": "SEI",
+            "price": 58.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.85,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 59.0,
+            "nearest_lower_level": 57.83
+          },
+          {
+            "symbol": "SEI",
+            "price": 56.51,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 5,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 57.83,
+            "nearest_lower_level": 55.72
+          },
+          {
+            "symbol": "SEI",
+            "price": 55.47,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 6,
+            "strength_score": 4.4,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 55.72,
+            "nearest_lower_level": 53.63
+          },
+          {
+            "symbol": "SEI",
+            "price": 53.39,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 5,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 53.63,
+            "nearest_lower_level": 52.93
+          },
+          {
+            "symbol": "SEI",
+            "price": 55.72,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 6,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 56.51,
+            "nearest_lower_level": 55.47
+          },
+          {
+            "symbol": "SEI",
+            "price": 63.45,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 9,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 64.0,
+            "nearest_lower_level": 63.19
+          },
+          {
+            "symbol": "SEI",
+            "price": 61.85,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 10,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 61.91,
+            "nearest_lower_level": 61.81
+          },
+          {
+            "symbol": "SEI",
+            "price": 65.62,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 9,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 65.96,
+            "nearest_lower_level": 65.47
+          },
+          {
+            "symbol": "SEI",
+            "price": 64.51,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 7,
+            "strength_score": 6.5,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 64.61,
+            "nearest_lower_level": 64.14
+          },
+          {
+            "symbol": "SEI",
+            "price": 65.96,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 8,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 66.17,
+            "nearest_lower_level": 65.62
+          },
+          {
+            "symbol": "SEI",
+            "price": 64.99,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 8,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 65.47,
+            "nearest_lower_level": 64.61
+          },
+          {
+            "symbol": "SEI",
+            "price": 67.47,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 6,
+            "strength_score": 4.4,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 68.5,
+            "nearest_lower_level": 67.16
+          },
+          {
+            "symbol": "SEI",
+            "price": 65.47,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 9,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 65.62,
+            "nearest_lower_level": 64.99
+          },
+          {
+            "symbol": "SEI",
+            "price": 67.16,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 5,
+            "strength_score": 6.5,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 67.47,
+            "nearest_lower_level": 66.43
+          },
+          {
+            "symbol": "SEI",
+            "price": 66.17,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 8,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 66.43,
+            "nearest_lower_level": 65.96
+          },
+          {
+            "symbol": "SEI",
+            "price": 71.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 3,
+            "strength_score": 4.4,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 77.12,
+            "nearest_lower_level": 70.91
+          },
+          {
+            "symbol": "SEI",
+            "price": 69.48,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 4,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 70.17,
+            "nearest_lower_level": 68.72
+          },
+          {
+            "symbol": "SEI",
+            "price": 70.63,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 3,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 70.91,
+            "nearest_lower_level": 70.17
+          }
+        ]
+      },
+      "SANM": {
+        "daily_atr": 10.2175,
+        "technical_atr": 31.84,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD",
+          "{A:800015:L:en}AMD Supplier Up 40% This Month Soars On Earnings Beat -- IBD"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "SANM",
+          "headline": "Amphenol: Q1 Earnings Snapshot",
+          "raw": {
+            "headline": "Amphenol: Q1 Earnings Snapshot",
+            "published_at": "2026-04-29T12:17:45Z",
+            "source": "9NEWS",
+            "url": "https://www.9news.com/article/syndication/associatedpress/amphenol-q1-earnings-snapshot/616-b01d29f1-8896-4e89-b80c-fa700e01f8ed",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9197217324",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-29",
+              "time": "12:17:45",
+              "dateTime": "2026-04-29T12:17:45Z",
+              "dateTimePub": "2026-04-29T12:06:25Z",
+              "dataType": "news",
+              "sim": 0.6196078658103943,
+              "url": "https://www.9news.com/article/syndication/associatedpress/amphenol-q1-earnings-snapshot/616-b01d29f1-8896-4e89-b80c-fa700e01f8ed",
+              "title": "Amphenol: Q1 Earnings Snapshot",
+              "body": "WALLINGFORD, Conn.(AP) -- WALLINGFORD, Conn. (AP) -- Amphenol Corp. (APH) on Wednesday reported first-quarter earnings of $933 million.\n\nOn a per-share basis, the Wallingford, Connecticut-based company said it had net income of 72 cents. Earnings, adjusted for pretax expenses and amortization costs, came to $1.06 per share.\n\nThe results beat Wall Street expectations. The average estimate of four analysts surveyed by Zacks Investment Research was for earnings of 95 cents per share.\n\nThe maker of fiber-optic products posted revenue of $7.62 billion in the period.\n\nAmphenol shares have climbed slightly more than 6% since the beginning of the year, while the S&P's 500 index has increased slightly more than 4%. The stock has increased 89% in the last 12 months.\n\n_____\n\nThis story was generated by Automated Insights (http://automatedinsights.com/ap) using data from Zacks Investment Research. Access a Zacks stock report on APH at https://www.zacks.com/ap/APH",
+              "source": {
+                "uri": "9news.com",
+                "dataType": "news",
+                "title": "9NEWS"
+              },
+              "authors": [],
+              "image": "https://media.9news.com/assets/AssociatedPress/images/6a0b3dc4-c298-43fb-b3c7-e4ab99f0a1cf/20260429T121024/6a0b3dc4-c298-43fb-b3c7-e4ab99f0a1cf_1140x641.png",
+              "eventUri": "eng-11609527",
+              "sentiment": 0.1529411764705881,
+              "wgt": 515161065,
+              "relevance": 2
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "SANM",
+            "price": 131.54,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 8,
+            "strength_score": 7.3,
+            "created_by": "swing_high",
+            "nearest_upper_level": 131.82,
+            "nearest_lower_level": 131.36
+          },
+          {
+            "symbol": "SANM",
+            "price": 121.7,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.9,
+            "created_by": "swing_low",
+            "nearest_upper_level": 122.17,
+            "nearest_lower_level": null
+          },
+          {
+            "symbol": "SANM",
+            "price": 138.69,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 2,
+            "strength_score": 6.5,
+            "created_by": "swing_high",
+            "nearest_upper_level": 141.84,
+            "nearest_lower_level": 138.56
+          },
+          {
+            "symbol": "SANM",
+            "price": 133.67,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 2,
+            "strength_score": 7.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": 133.67,
+            "nearest_lower_level": 133.61
+          },
+          {
+            "symbol": "SANM",
+            "price": 122.17,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 5.7,
+            "created_by": "swing_low",
+            "nearest_upper_level": 122.86,
+            "nearest_lower_level": 121.7
+          },
+          {
+            "symbol": "SANM",
+            "price": 133.61,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 2,
+            "strength_score": 7.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": 133.67,
+            "nearest_lower_level": 131.82
+          },
+          {
+            "symbol": "SANM",
+            "price": 124.89,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 6,
+            "strength_score": 6.6,
+            "created_by": "swing_low",
+            "nearest_upper_level": 125.03,
+            "nearest_lower_level": 124.1
+          },
+          {
+            "symbol": "SANM",
+            "price": 127.39,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 7,
+            "strength_score": 6.6,
+            "created_by": "swing_low",
+            "nearest_upper_level": 127.81,
+            "nearest_lower_level": 125.19
+          },
+          {
+            "symbol": "SANM",
+            "price": 156.54,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 1,
+            "strength_score": 5.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 168.97,
+            "nearest_lower_level": 152.34
+          },
+          {
+            "symbol": "SANM",
+            "price": 179.31,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 1,
+            "strength_score": 6.4,
+            "created_by": "swing_high",
+            "nearest_upper_level": 180.02,
+            "nearest_lower_level": 172.35
+          },
+          {
+            "symbol": "SANM",
+            "price": 172.33,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 1,
+            "strength_score": 7.1,
+            "created_by": "swing_low",
+            "nearest_upper_level": 172.35,
+            "nearest_lower_level": 171.8
+          },
+          {
+            "symbol": "SANM",
+            "price": 172.35,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 1,
+            "strength_score": 5.6,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 179.31,
+            "nearest_lower_level": 172.33
+          },
+          {
+            "symbol": "SANM",
+            "price": 152.34,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 156.54,
+            "nearest_lower_level": 143.87
+          },
+          {
+            "symbol": "SANM",
+            "price": 124.1,
+            "type": "consolidation",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 5,
+            "strength_score": 4.1,
+            "created_by": "consolidation_low",
+            "nearest_upper_level": 124.89,
+            "nearest_lower_level": 124.03
+          },
+          {
+            "symbol": "SANM",
+            "price": 125.03,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 6,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 125.19,
+            "nearest_lower_level": 124.89
+          },
+          {
+            "symbol": "SANM",
+            "price": 122.89,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 124.03,
+            "nearest_lower_level": 122.86
+          },
+          {
+            "symbol": "SANM",
+            "price": 130.23,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 9,
+            "strength_score": 4.4,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 130.9,
+            "nearest_lower_level": 130.18
+          },
+          {
+            "symbol": "SANM",
+            "price": 128.34,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 7,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 128.65,
+            "nearest_lower_level": 127.81
+          },
+          {
+            "symbol": "SANM",
+            "price": 128.65,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 6,
+            "strength_score": 6.5,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 128.71,
+            "nearest_lower_level": 128.34
+          },
+          {
+            "symbol": "SANM",
+            "price": 122.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 122.89,
+            "nearest_lower_level": 122.17
+          },
+          {
+            "symbol": "SANM",
+            "price": 134.8,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 3,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 135.83,
+            "nearest_lower_level": 133.67
+          },
+          {
+            "symbol": "SANM",
+            "price": 138.56,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 2,
+            "strength_score": 5.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 138.69,
+            "nearest_lower_level": 138.44
+          },
+          {
+            "symbol": "SANM",
+            "price": 135.83,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 4.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 137.01,
+            "nearest_lower_level": 134.8
+          },
+          {
+            "symbol": "SANM",
+            "price": 130.97,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 10,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 131.36,
+            "nearest_lower_level": 130.9
+          },
+          {
+            "symbol": "SANM",
+            "price": 128.71,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 6,
+            "strength_score": 6.5,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 129.64,
+            "nearest_lower_level": 128.65
+          },
+          {
+            "symbol": "SANM",
+            "price": 133.67,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 2,
+            "strength_score": 5.7,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 134.8,
+            "nearest_lower_level": 133.67
+          },
+          {
+            "symbol": "SANM",
+            "price": 130.9,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 10,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 130.97,
+            "nearest_lower_level": 130.23
+          },
+          {
+            "symbol": "SANM",
+            "price": 127.81,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 7,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 128.34,
+            "nearest_lower_level": 127.39
+          },
+          {
+            "symbol": "SANM",
+            "price": 124.03,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 5,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 124.1,
+            "nearest_lower_level": 122.89
+          },
+          {
+            "symbol": "SANM",
+            "price": 131.36,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 9,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 131.54,
+            "nearest_lower_level": 130.97
+          },
+          {
+            "symbol": "SANM",
+            "price": 129.64,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 8,
+            "strength_score": 6.5,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 130.18,
+            "nearest_lower_level": 128.71
+          },
+          {
+            "symbol": "SANM",
+            "price": 130.18,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 9,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 130.23,
+            "nearest_lower_level": 129.64
+          },
+          {
+            "symbol": "SANM",
+            "price": 125.19,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 6,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 127.39,
+            "nearest_lower_level": 125.03
+          },
+          {
+            "symbol": "SANM",
+            "price": 138.44,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 2,
+            "strength_score": 5.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 138.56,
+            "nearest_lower_level": 137.01
+          },
+          {
+            "symbol": "SANM",
+            "price": 131.82,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 8,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 133.61,
+            "nearest_lower_level": 131.54
+          },
+          {
+            "symbol": "SANM",
+            "price": 141.84,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 4.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 143.87,
+            "nearest_lower_level": 138.69
+          },
+          {
+            "symbol": "SANM",
+            "price": 184.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 2,
+            "strength_score": 4.35,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 188.08,
+            "nearest_lower_level": 180.02
+          }
+        ]
+      },
+      "AAPL": {
+        "daily_atr": 4.446,
+        "technical_atr": 0.3,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Fed News and Big Tech Earnings Collide This Week. The Mag 7 Matter Most. -- Barrons.com"
+        ],
+        "news_provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "AAPL",
+          "headline": "Amphenol: Q1 Earnings Snapshot",
+          "raw": {
+            "headline": "Amphenol: Q1 Earnings Snapshot",
+            "published_at": "2026-04-29T12:17:45Z",
+            "source": "9NEWS",
+            "url": "https://www.9news.com/article/syndication/associatedpress/amphenol-q1-earnings-snapshot/616-b01d29f1-8896-4e89-b80c-fa700e01f8ed",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9197217324",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-29",
+              "time": "12:17:45",
+              "dateTime": "2026-04-29T12:17:45Z",
+              "dateTimePub": "2026-04-29T12:06:25Z",
+              "dataType": "news",
+              "sim": 0.6196078658103943,
+              "url": "https://www.9news.com/article/syndication/associatedpress/amphenol-q1-earnings-snapshot/616-b01d29f1-8896-4e89-b80c-fa700e01f8ed",
+              "title": "Amphenol: Q1 Earnings Snapshot",
+              "body": "WALLINGFORD, Conn.(AP) -- WALLINGFORD, Conn. (AP) -- Amphenol Corp. (APH) on Wednesday reported first-quarter earnings of $933 million.\n\nOn a per-share basis, the Wallingford, Connecticut-based company said it had net income of 72 cents. Earnings, adjusted for pretax expenses and amortization costs, came to $1.06 per share.\n\nThe results beat Wall Street expectations. The average estimate of four analysts surveyed by Zacks Investment Research was for earnings of 95 cents per share.\n\nThe maker of fiber-optic products posted revenue of $7.62 billion in the period.\n\nAmphenol shares have climbed slightly more than 6% since the beginning of the year, while the S&P's 500 index has increased slightly more than 4%. The stock has increased 89% in the last 12 months.\n\n_____\n\nThis story was generated by Automated Insights (http://automatedinsights.com/ap) using data from Zacks Investment Research. Access a Zacks stock report on APH at https://www.zacks.com/ap/APH",
+              "source": {
+                "uri": "9news.com",
+                "dataType": "news",
+                "title": "9NEWS"
+              },
+              "authors": [],
+              "image": "https://media.9news.com/assets/AssociatedPress/images/6a0b3dc4-c298-43fb-b3c7-e4ab99f0a1cf/20260429T121024/6a0b3dc4-c298-43fb-b3c7-e4ab99f0a1cf_1140x641.png",
+              "eventUri": "eng-11609527",
+              "sentiment": 0.1529411764705881,
+              "wgt": 515161065,
+              "relevance": 2
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "AAPL",
+            "price": 246.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.35,
+            "created_by": "swing_low",
+            "nearest_upper_level": 247.99,
+            "nearest_lower_level": 245.7
+          },
+          {
+            "symbol": "AAPL",
+            "price": 249.55,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 6,
+            "strength_score": 8.0,
+            "created_by": "swing_low",
+            "nearest_upper_level": 250.65,
+            "nearest_lower_level": 247.99
+          },
+          {
+            "symbol": "AAPL",
+            "price": 257.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 1,
+            "strength_score": 8.55,
+            "created_by": "swing_high",
+            "nearest_upper_level": 258.4,
+            "nearest_lower_level": 256.66
+          },
+          {
+            "symbol": "AAPL",
+            "price": 245.51,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 5.6,
+            "created_by": "swing_low",
+            "nearest_upper_level": 245.7,
+            "nearest_lower_level": null
+          },
+          {
+            "symbol": "AAPL",
+            "price": 256.17,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 3,
+            "strength_score": 9.4,
+            "created_by": "swing_high",
+            "nearest_upper_level": 256.2,
+            "nearest_lower_level": 256.07
+          },
+          {
+            "symbol": "AAPL",
+            "price": 250.65,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 6,
+            "strength_score": 8.7,
+            "created_by": "swing_low",
+            "nearest_upper_level": 253.5,
+            "nearest_lower_level": 249.55
+          },
+          {
+            "symbol": "AAPL",
+            "price": 262.16,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 2,
+            "strength_score": 7.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": 262.19,
+            "nearest_lower_level": 258.86
+          },
+          {
+            "symbol": "AAPL",
+            "price": 245.7,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 5.6,
+            "created_by": "swing_low",
+            "nearest_upper_level": 245.7,
+            "nearest_lower_level": 245.51
+          },
+          {
+            "symbol": "AAPL",
+            "price": 256.07,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 3,
+            "strength_score": 9.4,
+            "created_by": "swing_low",
+            "nearest_upper_level": 256.07,
+            "nearest_lower_level": 253.98
+          },
+          {
+            "symbol": "AAPL",
+            "price": 262.19,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 2,
+            "strength_score": 7.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": 263.4,
+            "nearest_lower_level": 262.16
+          },
+          {
+            "symbol": "AAPL",
+            "price": 256.66,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 0,
+            "strength_score": 7.0,
+            "created_by": "swing_low",
+            "nearest_upper_level": 257.0,
+            "nearest_lower_level": 256.2
+          },
+          {
+            "symbol": "AAPL",
+            "price": 274.28,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 5.7,
+            "created_by": "swing_high",
+            "nearest_upper_level": 275.77,
+            "nearest_lower_level": 272.34
+          },
+          {
+            "symbol": "AAPL",
+            "price": 265.4,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 2,
+            "strength_score": 6.5,
+            "created_by": "swing_low",
+            "nearest_upper_level": 266.09,
+            "nearest_lower_level": 265.07
+          },
+          {
+            "symbol": "AAPL",
+            "price": 275.77,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 0,
+            "strength_score": 4.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": 275.77,
+            "nearest_lower_level": 274.28
+          },
+          {
+            "symbol": "AAPL",
+            "price": 265.07,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 2,
+            "strength_score": 6.5,
+            "created_by": "swing_low",
+            "nearest_upper_level": 265.4,
+            "nearest_lower_level": 263.4
+          },
+          {
+            "symbol": "AAPL",
+            "price": 256.2,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 3,
+            "strength_score": 7.9,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 256.66,
+            "nearest_lower_level": 256.17
+          },
+          {
+            "symbol": "AAPL",
+            "price": 245.7,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 4.1,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 245.7,
+            "nearest_lower_level": 245.7
+          },
+          {
+            "symbol": "AAPL",
+            "price": 245.7,
+            "type": "consolidation",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 4.1,
+            "created_by": "consolidation_low",
+            "nearest_upper_level": 246.0,
+            "nearest_lower_level": 245.7
+          },
+          {
+            "symbol": "AAPL",
+            "price": 253.98,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 10,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 256.07,
+            "nearest_lower_level": 253.5
+          },
+          {
+            "symbol": "AAPL",
+            "price": 247.99,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 5,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 249.55,
+            "nearest_lower_level": 246.0
+          },
+          {
+            "symbol": "AAPL",
+            "price": 258.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 6,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 262.16,
+            "nearest_lower_level": 258.4
+          },
+          {
+            "symbol": "AAPL",
+            "price": 256.07,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 3,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 256.17,
+            "nearest_lower_level": 256.07
+          },
+          {
+            "symbol": "AAPL",
+            "price": 258.4,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 5,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 258.86,
+            "nearest_lower_level": 257.0
+          },
+          {
+            "symbol": "AAPL",
+            "price": 253.5,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 10,
+            "strength_score": 5.85,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 253.98,
+            "nearest_lower_level": 250.65
+          },
+          {
+            "symbol": "AAPL",
+            "price": 267.07,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 3,
+            "strength_score": 7.2,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 267.61,
+            "nearest_lower_level": 266.09
+          },
+          {
+            "symbol": "AAPL",
+            "price": 271.06,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 6,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 272.34,
+            "nearest_lower_level": 267.61
+          },
+          {
+            "symbol": "AAPL",
+            "price": 266.09,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 4,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 267.07,
+            "nearest_lower_level": 265.4
+          },
+          {
+            "symbol": "AAPL",
+            "price": 272.34,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 5,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 274.28,
+            "nearest_lower_level": 271.06
+          },
+          {
+            "symbol": "AAPL",
+            "price": 267.61,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 4,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 271.06,
+            "nearest_lower_level": 267.07
+          }
+        ]
+      },
+      "MSFT": {
+        "daily_atr": 9.868,
+        "technical_atr": 2.22,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "Barchart.com",
+          "DJ-N",
+          "The Motley Fool",
+          "The Verge"
+        ],
+        "news_source_types": [
+          "external",
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "MSFT",
+          "headline": "Amphenol: Q1 Earnings Snapshot",
+          "raw": {
+            "headline": "Amphenol: Q1 Earnings Snapshot",
+            "published_at": "2026-04-29T12:17:45Z",
+            "source": "9NEWS",
+            "url": "https://www.9news.com/article/syndication/associatedpress/amphenol-q1-earnings-snapshot/616-b01d29f1-8896-4e89-b80c-fa700e01f8ed",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9197217324",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-29",
+              "time": "12:17:45",
+              "dateTime": "2026-04-29T12:17:45Z",
+              "dateTimePub": "2026-04-29T12:06:25Z",
+              "dataType": "news",
+              "sim": 0.6196078658103943,
+              "url": "https://www.9news.com/article/syndication/associatedpress/amphenol-q1-earnings-snapshot/616-b01d29f1-8896-4e89-b80c-fa700e01f8ed",
+              "title": "Amphenol: Q1 Earnings Snapshot",
+              "body": "WALLINGFORD, Conn.(AP) -- WALLINGFORD, Conn. (AP) -- Amphenol Corp. (APH) on Wednesday reported first-quarter earnings of $933 million.\n\nOn a per-share basis, the Wallingford, Connecticut-based company said it had net income of 72 cents. Earnings, adjusted for pretax expenses and amortization costs, came to $1.06 per share.\n\nThe results beat Wall Street expectations. The average estimate of four analysts surveyed by Zacks Investment Research was for earnings of 95 cents per share.\n\nThe maker of fiber-optic products posted revenue of $7.62 billion in the period.\n\nAmphenol shares have climbed slightly more than 6% since the beginning of the year, while the S&P's 500 index has increased slightly more than 4%. The stock has increased 89% in the last 12 months.\n\n_____\n\nThis story was generated by Automated Insights (http://automatedinsights.com/ap) using data from Zacks Investment Research. Access a Zacks stock report on APH at https://www.zacks.com/ap/APH",
+              "source": {
+                "uri": "9news.com",
+                "dataType": "news",
+                "title": "9NEWS"
+              },
+              "authors": [],
+              "image": "https://media.9news.com/assets/AssociatedPress/images/6a0b3dc4-c298-43fb-b3c7-e4ab99f0a1cf/20260429T121024/6a0b3dc4-c298-43fb-b3c7-e4ab99f0a1cf_1140x641.png",
+              "eventUri": "eng-11609527",
+              "sentiment": 0.1529411764705881,
+              "wgt": 515161065,
+              "relevance": 2
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "MSFT",
+            "price": 380.12,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 6.6,
+            "created_by": "swing_low",
+            "nearest_upper_level": 384.98,
+            "nearest_lower_level": 376.93
+          },
+          {
+            "symbol": "MSFT",
+            "price": 387.21,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 6.3,
+            "created_by": "swing_high",
+            "nearest_upper_level": 393.11,
+            "nearest_lower_level": 385.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 356.28,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 5.7,
+            "created_by": "swing_low",
+            "nearest_upper_level": 356.77,
+            "nearest_lower_level": null
+          },
+          {
+            "symbol": "MSFT",
+            "price": 373.99,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 7,
+            "strength_score": 9.4,
+            "created_by": "swing_high",
+            "nearest_upper_level": 376.93,
+            "nearest_lower_level": 373.73
+          },
+          {
+            "symbol": "MSFT",
+            "price": 364.15,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 2,
+            "strength_score": 5.8,
+            "created_by": "swing_low",
+            "nearest_upper_level": 364.41,
+            "nearest_lower_level": 363.07
+          },
+          {
+            "symbol": "MSFT",
+            "price": 373.73,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 9,
+            "strength_score": 9.4,
+            "created_by": "swing_high",
+            "nearest_upper_level": 373.99,
+            "nearest_lower_level": 372.74
+          },
+          {
+            "symbol": "MSFT",
+            "price": 366.56,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 3,
+            "strength_score": 7.3,
+            "created_by": "swing_low",
+            "nearest_upper_level": 367.05,
+            "nearest_lower_level": 365.97
+          },
+          {
+            "symbol": "MSFT",
+            "price": 385.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 3,
+            "strength_score": 8.05,
+            "created_by": "swing_high",
+            "nearest_upper_level": 387.21,
+            "nearest_lower_level": 384.98
+          },
+          {
+            "symbol": "MSFT",
+            "price": 367.05,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 3,
+            "strength_score": 7.3,
+            "created_by": "swing_low",
+            "nearest_upper_level": 372.29,
+            "nearest_lower_level": 366.56
+          },
+          {
+            "symbol": "MSFT",
+            "price": 431.58,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 1,
+            "strength_score": 5.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 432.92,
+            "nearest_lower_level": 424.82
+          },
+          {
+            "symbol": "MSFT",
+            "price": 416.3,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 2,
+            "strength_score": 7.9,
+            "created_by": "swing_low",
+            "nearest_upper_level": 419.69,
+            "nearest_lower_level": 414.37
+          },
+          {
+            "symbol": "MSFT",
+            "price": 433.7,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 1,
+            "strength_score": 5.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 433.7,
+            "nearest_lower_level": 432.92
+          },
+          {
+            "symbol": "MSFT",
+            "price": 411.41,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 5.7,
+            "created_by": "swing_low",
+            "nearest_upper_level": 414.37,
+            "nearest_lower_level": 411.22
+          },
+          {
+            "symbol": "MSFT",
+            "price": 414.37,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 2,
+            "strength_score": 4.3,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 416.3,
+            "nearest_lower_level": 411.41
+          },
+          {
+            "symbol": "MSFT",
+            "price": 363.07,
+            "type": "consolidation",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 4.2,
+            "created_by": "consolidation_low",
+            "nearest_upper_level": 364.15,
+            "nearest_lower_level": 361.9
+          },
+          {
+            "symbol": "MSFT",
+            "price": 376.93,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 380.12,
+            "nearest_lower_level": 373.99
+          },
+          {
+            "symbol": "MSFT",
+            "price": 372.74,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 11,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 373.73,
+            "nearest_lower_level": 372.29
+          },
+          {
+            "symbol": "MSFT",
+            "price": 365.97,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 3,
+            "strength_score": 6.5,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 366.56,
+            "nearest_lower_level": 364.41
+          },
+          {
+            "symbol": "MSFT",
+            "price": 356.77,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 4.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 358.96,
+            "nearest_lower_level": 356.28
+          },
+          {
+            "symbol": "MSFT",
+            "price": 364.41,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 2,
+            "strength_score": 5.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 365.97,
+            "nearest_lower_level": 364.15
+          },
+          {
+            "symbol": "MSFT",
+            "price": 384.98,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 3,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 385.0,
+            "nearest_lower_level": 380.12
+          },
+          {
+            "symbol": "MSFT",
+            "price": 372.29,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 10,
+            "strength_score": 7.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 372.74,
+            "nearest_lower_level": 367.05
+          },
+          {
+            "symbol": "MSFT",
+            "price": 398.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 4.95,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 411.22,
+            "nearest_lower_level": 396.73
+          },
+          {
+            "symbol": "MSFT",
+            "price": 393.11,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 2,
+            "strength_score": 4.3,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 396.73,
+            "nearest_lower_level": 387.21
+          },
+          {
+            "symbol": "MSFT",
+            "price": 419.9,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 6,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 420.26,
+            "nearest_lower_level": 419.69
+          },
+          {
+            "symbol": "MSFT",
+            "price": 411.22,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 4.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 411.41,
+            "nearest_lower_level": 398.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 424.82,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 6,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 431.58,
+            "nearest_lower_level": 420.26
+          },
+          {
+            "symbol": "MSFT",
+            "price": 420.26,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 6,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 424.82,
+            "nearest_lower_level": 419.9
+          },
+          {
+            "symbol": "MSFT",
+            "price": 419.69,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 6,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 419.9,
+            "nearest_lower_level": 416.3
+          }
+        ]
+      },
+      "TSLA": {
+        "daily_atr": 12.77,
+        "technical_atr": 0.35,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Tesla Rival BYD Reports Plunging Earnings. China EV Giant Is Betting On A Flash Recovery. -- IBD",
+          "Tesla TSLA Q3 2024 Earnings Call Transcript | The Motley Fool"
+        ],
+        "news_provider_hits": [
+          "DJ-N",
+          "The Motley Fool"
+        ],
+        "news_source_types": [
+          "external",
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "TSLA",
+          "headline": "Amphenol: Q1 Earnings Snapshot",
+          "raw": {
+            "headline": "Amphenol: Q1 Earnings Snapshot",
+            "published_at": "2026-04-29T12:17:45Z",
+            "source": "9NEWS",
+            "url": "https://www.9news.com/article/syndication/associatedpress/amphenol-q1-earnings-snapshot/616-b01d29f1-8896-4e89-b80c-fa700e01f8ed",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9197217324",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-29",
+              "time": "12:17:45",
+              "dateTime": "2026-04-29T12:17:45Z",
+              "dateTimePub": "2026-04-29T12:06:25Z",
+              "dataType": "news",
+              "sim": 0.6196078658103943,
+              "url": "https://www.9news.com/article/syndication/associatedpress/amphenol-q1-earnings-snapshot/616-b01d29f1-8896-4e89-b80c-fa700e01f8ed",
+              "title": "Amphenol: Q1 Earnings Snapshot",
+              "body": "WALLINGFORD, Conn.(AP) -- WALLINGFORD, Conn. (AP) -- Amphenol Corp. (APH) on Wednesday reported first-quarter earnings of $933 million.\n\nOn a per-share basis, the Wallingford, Connecticut-based company said it had net income of 72 cents. Earnings, adjusted for pretax expenses and amortization costs, came to $1.06 per share.\n\nThe results beat Wall Street expectations. The average estimate of four analysts surveyed by Zacks Investment Research was for earnings of 95 cents per share.\n\nThe maker of fiber-optic products posted revenue of $7.62 billion in the period.\n\nAmphenol shares have climbed slightly more than 6% since the beginning of the year, while the S&P's 500 index has increased slightly more than 4%. The stock has increased 89% in the last 12 months.\n\n_____\n\nThis story was generated by Automated Insights (http://automatedinsights.com/ap) using data from Zacks Investment Research. Access a Zacks stock report on APH at https://www.zacks.com/ap/APH",
+              "source": {
+                "uri": "9news.com",
+                "dataType": "news",
+                "title": "9NEWS"
+              },
+              "authors": [],
+              "image": "https://media.9news.com/assets/AssociatedPress/images/6a0b3dc4-c298-43fb-b3c7-e4ab99f0a1cf/20260429T121024/6a0b3dc4-c298-43fb-b3c7-e4ab99f0a1cf_1140x641.png",
+              "eventUri": "eng-11609527",
+              "sentiment": 0.1529411764705881,
+              "wgt": 515161065,
+              "relevance": 2
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "TSLA",
+            "price": 403.06,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 2,
+            "strength_score": 5.8,
+            "created_by": "swing_high",
+            "nearest_upper_level": 409.28,
+            "nearest_lower_level": 396.23
+          },
+          {
+            "symbol": "TSLA",
+            "price": 364.46,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 7,
+            "strength_score": 8.0,
+            "created_by": "swing_low",
+            "nearest_upper_level": 364.5,
+            "nearest_lower_level": 364.19
+          },
+          {
+            "symbol": "TSLA",
+            "price": 396.23,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 4,
+            "strength_score": 6.6,
+            "created_by": "swing_high",
+            "nearest_upper_level": 403.06,
+            "nearest_lower_level": 395.92
+          },
+          {
+            "symbol": "TSLA",
+            "price": 352.14,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 6.6,
+            "created_by": "swing_low",
+            "nearest_upper_level": 352.42,
+            "nearest_lower_level": 346.65
+          },
+          {
+            "symbol": "TSLA",
+            "price": 383.14,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 7,
+            "strength_score": 8.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 385.22,
+            "nearest_lower_level": 383.03
+          },
+          {
+            "symbol": "TSLA",
+            "price": 337.24,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.9,
+            "created_by": "swing_low",
+            "nearest_upper_level": 337.24,
+            "nearest_lower_level": null
+          },
+          {
+            "symbol": "TSLA",
+            "price": 364.5,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 7,
+            "strength_score": 8.75,
+            "created_by": "swing_high",
+            "nearest_upper_level": 365.86,
+            "nearest_lower_level": 364.46
+          },
+          {
+            "symbol": "TSLA",
+            "price": 337.25,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.65,
+            "created_by": "swing_low",
+            "nearest_upper_level": 346.27,
+            "nearest_lower_level": 337.24
+          },
+          {
+            "symbol": "TSLA",
+            "price": 394.65,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 5,
+            "strength_score": 8.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 394.65,
+            "nearest_lower_level": 392.78
+          },
+          {
+            "symbol": "TSLA",
+            "price": 409.28,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 0,
+            "strength_score": 4.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": 409.28,
+            "nearest_lower_level": 403.06
+          },
+          {
+            "symbol": "TSLA",
+            "price": 385.22,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 5,
+            "strength_score": 9.4,
+            "created_by": "swing_low",
+            "nearest_upper_level": 385.95,
+            "nearest_lower_level": 383.14
+          },
+          {
+            "symbol": "TSLA",
+            "price": 368.39,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 6,
+            "strength_score": 8.0,
+            "created_by": "swing_low",
+            "nearest_upper_level": 371.75,
+            "nearest_lower_level": 367.96
+          },
+          {
+            "symbol": "TSLA",
+            "price": 364.02,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 7,
+            "strength_score": 8.0,
+            "created_by": "swing_low",
+            "nearest_upper_level": 364.19,
+            "nearest_lower_level": 363.79
+          },
+          {
+            "symbol": "TSLA",
+            "price": 394.65,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 5,
+            "strength_score": 6.5,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 395.92,
+            "nearest_lower_level": 394.65
+          },
+          {
+            "symbol": "TSLA",
+            "price": 362.5,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 7,
+            "strength_score": 5.85,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 363.79,
+            "nearest_lower_level": 361.83
+          },
+          {
+            "symbol": "TSLA",
+            "price": 392.78,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 7,
+            "strength_score": 6.5,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 394.65,
+            "nearest_lower_level": 390.01
+          },
+          {
+            "symbol": "TSLA",
+            "price": 387.27,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 5,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 387.51,
+            "nearest_lower_level": 385.95
+          },
+          {
+            "symbol": "TSLA",
+            "price": 373.17,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 6,
+            "strength_score": 7.2,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 374.85,
+            "nearest_lower_level": 372.09
+          },
+          {
+            "symbol": "TSLA",
+            "price": 367.96,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 6,
+            "strength_score": 7.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 368.39,
+            "nearest_lower_level": 365.86
+          },
+          {
+            "symbol": "TSLA",
+            "price": 380.85,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 9,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 381.26,
+            "nearest_lower_level": 378.69
+          },
+          {
+            "symbol": "TSLA",
+            "price": 376.76,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 9,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 378.67,
+            "nearest_lower_level": 376.3
+          },
+          {
+            "symbol": "TSLA",
+            "price": 390.01,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 6,
+            "strength_score": 4.4,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 392.78,
+            "nearest_lower_level": 388.9
+          },
+          {
+            "symbol": "TSLA",
+            "price": 383.03,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 7,
+            "strength_score": 6.5,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 383.14,
+            "nearest_lower_level": 381.6
+          },
+          {
+            "symbol": "TSLA",
+            "price": 385.95,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 6,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 387.27,
+            "nearest_lower_level": 385.22
+          },
+          {
+            "symbol": "TSLA",
+            "price": 381.6,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 8,
+            "strength_score": 6.5,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 383.03,
+            "nearest_lower_level": 381.26
+          },
+          {
+            "symbol": "TSLA",
+            "price": 365.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 9,
+            "strength_score": 4.4,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 367.96,
+            "nearest_lower_level": 364.5
+          },
+          {
+            "symbol": "TSLA",
+            "price": 361.83,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 6,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 362.5,
+            "nearest_lower_level": 361.51
+          },
+          {
+            "symbol": "TSLA",
+            "price": 361.51,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 6,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 361.83,
+            "nearest_lower_level": 357.66
+          },
+          {
+            "symbol": "TSLA",
+            "price": 355.28,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 4,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 357.66,
+            "nearest_lower_level": 352.82
+          },
+          {
+            "symbol": "TSLA",
+            "price": 378.69,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 10,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 380.85,
+            "nearest_lower_level": 378.67
+          },
+          {
+            "symbol": "TSLA",
+            "price": 371.75,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 7,
+            "strength_score": 6.55,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 372.09,
+            "nearest_lower_level": 368.39
+          },
+          {
+            "symbol": "TSLA",
+            "price": 381.26,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 9,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 381.6,
+            "nearest_lower_level": 380.85
+          },
+          {
+            "symbol": "TSLA",
+            "price": 364.19,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 7,
+            "strength_score": 6.5,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 364.46,
+            "nearest_lower_level": 364.02
+          },
+          {
+            "symbol": "TSLA",
+            "price": 352.82,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 355.28,
+            "nearest_lower_level": 352.42
+          },
+          {
+            "symbol": "TSLA",
+            "price": 346.27,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 4,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 346.65,
+            "nearest_lower_level": 337.25
+          },
+          {
+            "symbol": "TSLA",
+            "price": 363.79,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 7,
+            "strength_score": 6.5,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 364.02,
+            "nearest_lower_level": 362.5
+          },
+          {
+            "symbol": "TSLA",
+            "price": 346.65,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 4,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 352.14,
+            "nearest_lower_level": 346.27
+          },
+          {
+            "symbol": "TSLA",
+            "price": 357.66,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 4,
+            "strength_score": 4.4,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 361.51,
+            "nearest_lower_level": 355.28
+          },
+          {
+            "symbol": "TSLA",
+            "price": 352.42,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 352.82,
+            "nearest_lower_level": 352.14
+          },
+          {
+            "symbol": "TSLA",
+            "price": 395.92,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 4,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 396.23,
+            "nearest_lower_level": 394.65
+          },
+          {
+            "symbol": "TSLA",
+            "price": 388.9,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 5,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 390.01,
+            "nearest_lower_level": 387.51
+          },
+          {
+            "symbol": "TSLA",
+            "price": 387.51,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 5,
+            "strength_score": 6.5,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 388.9,
+            "nearest_lower_level": 387.27
+          },
+          {
+            "symbol": "TSLA",
+            "price": 375.28,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 9,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 376.3,
+            "nearest_lower_level": 374.85
+          },
+          {
+            "symbol": "TSLA",
+            "price": 376.3,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 9,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 376.76,
+            "nearest_lower_level": 375.28
+          },
+          {
+            "symbol": "TSLA",
+            "price": 372.09,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 7,
+            "strength_score": 6.5,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 373.17,
+            "nearest_lower_level": 371.75
+          },
+          {
+            "symbol": "TSLA",
+            "price": 378.67,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 10,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 378.69,
+            "nearest_lower_level": 376.76
+          },
+          {
+            "symbol": "TSLA",
+            "price": 374.85,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 8,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 375.28,
+            "nearest_lower_level": 373.17
+          }
+        ]
+      }
+    },
+    "macro_risk": {
+      "blocked": false,
+      "headlines": [
+        "{A:800015:L:en}SPY ETF Climbs 0.2%, Outperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Rises 0.8%",
+        "{A:800015:L:en}SPY ETF Falls 0.4%",
+        "{A:800015:L:en}SPY ETF Gains 1.0%",
+        "{A:800015:L:en}SPY ETF Declines 0.7%, Underperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Declines 0.2%",
+        "{A:800015:L:en}SPY ETF Climbs 1.2%",
+        "{A:800015:L:en}SPY ETF Rises 0.2%, Underperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Gains 0.8%",
+        "{A:800015:L:en}SPY ETF Rises 1.2%"
+      ],
+      "matched_headlines": [],
+      "critical_matches": [],
+      "provider_hits": [
+        "DJ-RTG"
+      ],
+      "source_types": [
+        "ibkr"
+      ]
+    },
+    "ideas": [
+      {
+        "symbol": "BBBY",
+        "catalyst": "level interaction",
+        "entry": 4.73,
+        "stop": 4.72,
+        "target": 4.78,
+        "decision": "WATCH"
+      },
+      {
+        "symbol": "SEI",
+        "catalyst": "{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance",
+        "entry": 74.5,
+        "stop": 71.86,
+        "target": 76.735,
+        "decision": "HOLD"
+      },
+      {
+        "symbol": "SANM",
+        "catalyst": "{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD",
+        "entry": 215.84,
+        "stop": 184.0,
+        "target": 222.3152,
+        "decision": "HOLD"
+      }
+    ],
+    "research_symbols": [
+      "BBBY",
+      "SEI",
+      "SANM",
+      "AAPL",
+      "MSFT",
+      "TSLA"
+    ]
+  }
+}
+```
+
+## Workflow Open (2026-04-29T09:36:10)
+- **stage**: Open
+- **executed_symbols**: []
+```json
+{
+  "stage": "Open",
+  "payload": {
+    "executed": [],
+    "skipped": [
+      {
+        "symbol": "BBBY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SEI",
+        "reason": "symbol_news_risk"
+      },
+      {
+        "symbol": "SANM",
+        "reason": "symbol_news_risk"
+      },
+      {
+        "symbol": "AAPL",
+        "reason": "symbol_news_risk"
+      },
+      {
+        "symbol": "MSFT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TSLA",
+        "reason": "symbol_news_risk"
+      }
+    ]
+  }
+}
+```
+
+## Workflow Intraday (2026-04-29T10:05:04)
+- **stage**: Intraday
+- **tracked_symbols**: []
+- **actions**: []
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [],
+    "tracked_positions": []
+  }
+}
+```
+
+## Workflow Intraday (2026-04-29T10:35:06)
+- **stage**: Intraday
+- **tracked_symbols**: []
+- **actions**: []
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [],
+    "tracked_positions": []
+  }
+}
+```
+
+## Workflow Intraday (2026-04-29T11:05:07)
+- **stage**: Intraday
+- **tracked_symbols**: []
+- **actions**: []
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [],
+    "tracked_positions": []
+  }
+}
+```
+
+## Workflow Intraday (2026-04-29T11:35:06)
+- **stage**: Intraday
+- **tracked_symbols**: []
+- **actions**: []
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [],
+    "tracked_positions": []
+  }
+}
+```
+
+## Premarket Research (2026-04-29T11:50:23)
+- **strategy_loaded**: True
+- **trade_log_context_loaded**: True
+- **research_log_context_loaded**: True
+- **account_snapshot**: {'account': [{'account': 'DU5454348', 'tag': 'AccountType', 'value': 'INDIVIDUAL', 'currency': ''}, {'account': 'DU5454348', 'tag': 'Cushion', 'value': '1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemaining', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+1', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+2', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+3', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+4', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'LookAheadNextChange', 'value': '0', 'currency': ''}, {'account': 'DU5454348', 'tag': 'AccruedCash', 'value': '216.44', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'AvailableFunds', 'value': '101932.02', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'BuyingPower', 'value': '407728.06', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'EquityWithLoanValue', 'value': '101932.02', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'ExcessLiquidity', 'value': '101932.02', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullAvailableFunds', 'value': '101932.02', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullExcessLiquidity', 'value': '101932.02', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'GrossPositionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'InitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadAvailableFunds', 'value': '101932.02', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadExcessLiquidity', 'value': '101932.02', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'MaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'NetLiquidation', 'value': '102148.46', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'PreviousDayEquityWithLoanValue', 'value': '101933.15', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTEquity', 'value': '102148.46', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTMargin', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'SMA', 'value': '102148.46', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'TotalCashValue', 'value': '101932.02', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CashBalance', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.1705044', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Currency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'CashBalance', 'value': '100761.92', 'currency': 'USD'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '100761.92', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '216.44', 'currency': 'USD'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '100978.36', 'currency': 'USD'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CashBalance', 'value': '101932.0159', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '101932.0159', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '216.44', 'currency': 'BASE'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '102148.4559', 'currency': 'BASE'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'BASE'}], 'positions': [], 'open_orders': []}
+- **research_symbols**: ['BBBY', 'SEI', 'SANM', 'AAPL', 'MSFT', 'TSLA', 'AMZN']
+- **macro_risk**: False
+- **macro_news_sources**: ['DJ-RTG']
+- **macro_news_source_types**: ['ibkr']
+- **actionable_ideas**: [{'symbol': 'BBBY', 'catalyst': 'level interaction', 'entry': 4.81, 'stop': 4.8, 'target': 4.82, 'decision': 'WATCH'}, {'symbol': 'SEI', 'catalyst': '{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance', 'entry': 74.84, 'stop': 71.86, 'target': 81.24, 'decision': 'HOLD'}, {'symbol': 'SANM', 'catalyst': '{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD', 'entry': 209.96, 'stop': 184.0, 'target': 230.56, 'decision': 'HOLD'}]
+- **trade_decision**: READY_FOR_OPEN_VALIDATION
+
+## Workflow Premarket (2026-04-29T11:50:23)
+- **stage**: Premarket
+- **watchlist_symbols**: ['BBBY', 'SEI', 'SANM', 'AAPL', 'MSFT', 'TSLA', 'AMZN']
+```json
+{
+  "stage": "Premarket",
+  "payload": {
+    "watchlist": {
+      "BBBY": {
+        "daily_atr": 0.5167,
+        "technical_atr": 0.01,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "BBBY",
+            "price": 4.62,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 11,
+            "false_breakouts": 6,
+            "strength_score": 9.4,
+            "created_by": "swing_low",
+            "nearest_upper_level": 4.63,
+            "nearest_lower_level": 4.61
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.93,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 5,
+            "strength_score": 8.7,
+            "created_by": "swing_high",
+            "nearest_upper_level": 4.93,
+            "nearest_lower_level": 4.88
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.86,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 7,
+            "strength_score": 9.4,
+            "created_by": "swing_high",
+            "nearest_upper_level": 4.86,
+            "nearest_lower_level": 4.82
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.31,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 1,
+            "strength_score": 6.4,
+            "created_by": "swing_low",
+            "nearest_upper_level": 4.33,
+            "nearest_lower_level": 4.25
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.81,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 11,
+            "strength_score": 9.4,
+            "created_by": "swing_high",
+            "nearest_upper_level": 4.81,
+            "nearest_lower_level": 4.8
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.33,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 3,
+            "strength_score": 8.0,
+            "created_by": "swing_low",
+            "nearest_upper_level": 4.35,
+            "nearest_lower_level": 4.31
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.25,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 0,
+            "strength_score": 4.95,
+            "created_by": "swing_low",
+            "nearest_upper_level": 4.25,
+            "nearest_lower_level": null
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.14,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 2,
+            "strength_score": 7.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": 5.21,
+            "nearest_lower_level": 5.0
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.55,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 5,
+            "strength_score": 9.4,
+            "created_by": "swing_low",
+            "nearest_upper_level": 4.55,
+            "nearest_lower_level": 4.53
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.88,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 5,
+            "strength_score": 9.4,
+            "created_by": "swing_high",
+            "nearest_upper_level": 4.88,
+            "nearest_lower_level": 4.86
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.48,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 3,
+            "strength_score": 8.0,
+            "created_by": "swing_low",
+            "nearest_upper_level": 4.5,
+            "nearest_lower_level": 4.37
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.4,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 2,
+            "strength_score": 7.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": 5.44,
+            "nearest_lower_level": 5.38
+          },
+          {
+            "symbol": "BBBY",
+            "price": 6.27,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 5.7,
+            "created_by": "swing_high",
+            "nearest_upper_level": 7.12,
+            "nearest_lower_level": 6.14
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.38,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 2,
+            "strength_score": 8.6,
+            "created_by": "swing_low",
+            "nearest_upper_level": 5.4,
+            "nearest_lower_level": 5.35
+          },
+          {
+            "symbol": "BBBY",
+            "price": 7.7,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 0,
+            "strength_score": 4.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": 7.7,
+            "nearest_lower_level": 7.12
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.64,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 9,
+            "strength_score": 9.4,
+            "created_by": "swing_low",
+            "nearest_upper_level": 4.64,
+            "nearest_lower_level": 4.63
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.86,
+            "type": "mirror",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 7,
+            "strength_score": 10.15,
+            "created_by": "repeated_highs",
+            "nearest_upper_level": 4.88,
+            "nearest_lower_level": 4.86
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.64,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 9,
+            "strength_score": 7.9,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 4.64,
+            "nearest_lower_level": 4.64
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.88,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 5,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 4.93,
+            "nearest_lower_level": 4.88
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.8,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 11,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.81,
+            "nearest_lower_level": 4.78
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.81,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 11,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 4.82,
+            "nearest_lower_level": 4.81
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.67,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 11,
+            "false_breakouts": 10,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.69,
+            "nearest_lower_level": 4.66
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.72,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 9,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.73,
+            "nearest_lower_level": 4.71
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.78,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 11,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 4.8,
+            "nearest_lower_level": 4.73
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.73,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 10,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.78,
+            "nearest_lower_level": 4.72
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.59,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 5,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 4.6,
+            "nearest_lower_level": 4.55
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.5,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 2,
+            "strength_score": 7.85,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.53,
+            "nearest_lower_level": 4.48
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.53,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 2,
+            "strength_score": 7.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 4.55,
+            "nearest_lower_level": 4.5
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.37,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 3,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.48,
+            "nearest_lower_level": 4.35
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.69,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 10,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 4.7,
+            "nearest_lower_level": 4.67
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.64,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 9,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.66,
+            "nearest_lower_level": 4.64
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.66,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 10,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 4.67,
+            "nearest_lower_level": 4.64
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.55,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 5,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.59,
+            "nearest_lower_level": 4.55
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.6,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 5,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.61,
+            "nearest_lower_level": 4.59
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.35,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 3,
+            "strength_score": 6.5,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.37,
+            "nearest_lower_level": 4.33
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.82,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 9,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 4.86,
+            "nearest_lower_level": 4.81
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.71,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 9,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.72,
+            "nearest_lower_level": 4.7
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.61,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 5,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.62,
+            "nearest_lower_level": 4.6
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.7,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 9,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 4.71,
+            "nearest_lower_level": 4.69
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.63,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 9,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 4.64,
+            "nearest_lower_level": 4.62
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 4,
+            "strength_score": 6.55,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 5.14,
+            "nearest_lower_level": 4.93
+          },
+          {
+            "symbol": "BBBY",
+            "price": 4.93,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 5,
+            "strength_score": 7.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 5.0,
+            "nearest_lower_level": 4.93
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.35,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 3,
+            "strength_score": 7.2,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 5.38,
+            "nearest_lower_level": 5.34
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.28,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 5.34,
+            "nearest_lower_level": 5.21
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.44,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 4,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 5.52,
+            "nearest_lower_level": 5.4
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.21,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 3,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 5.28,
+            "nearest_lower_level": 5.14
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.74,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 5,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 5.9,
+            "nearest_lower_level": 5.66
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.66,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 4,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 5.74,
+            "nearest_lower_level": 5.62
+          },
+          {
+            "symbol": "BBBY",
+            "price": 6.14,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 6.27,
+            "nearest_lower_level": 6.07
+          },
+          {
+            "symbol": "BBBY",
+            "price": 6.07,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 6.14,
+            "nearest_lower_level": 6.0
+          },
+          {
+            "symbol": "BBBY",
+            "price": 6.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 4,
+            "strength_score": 5.15,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 6.07,
+            "nearest_lower_level": 5.98
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.9,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 3,
+            "strength_score": 6.5,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 5.98,
+            "nearest_lower_level": 5.74
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.98,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 4,
+            "strength_score": 4.4,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 6.0,
+            "nearest_lower_level": 5.9
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.62,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 5,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 5.66,
+            "nearest_lower_level": 5.52
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.52,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 4,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 5.62,
+            "nearest_lower_level": 5.44
+          },
+          {
+            "symbol": "BBBY",
+            "price": 5.34,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 3,
+            "strength_score": 7.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 5.35,
+            "nearest_lower_level": 5.28
+          }
+        ]
+      },
+      "SEI": {
+        "daily_atr": 6.282,
+        "technical_atr": 2.98,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance",
+          "{A:800015:L:en}Press Release: Solaris Energy Infrastructure Announces First Quarter 2026 Results, Updated Earnings Guidance, Signing Of Third Long-term Contract With Global Technology Company"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "SEI",
+          "headline": "American Assets Trust Q1 2026 Earnings Call: Complete Transcript - American Assets Trust (NYSE:AAT)",
+          "raw": {
+            "headline": "American Assets Trust Q1 2026 Earnings Call: Complete Transcript - American Assets Trust (NYSE:AAT)",
+            "published_at": "2026-04-29T15:49:16Z",
+            "source": "Benzinga",
+            "url": "https://www.benzinga.com/insights/news/26/04/52136391/american-assets-trust-q1-2026-earnings-call-complete-transcript",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9197514797",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-29",
+              "time": "15:49:16",
+              "dateTime": "2026-04-29T15:49:16Z",
+              "dateTimePub": "2026-04-29T15:44:21Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.benzinga.com/insights/news/26/04/52136391/american-assets-trust-q1-2026-earnings-call-complete-transcript",
+              "title": "American Assets Trust Q1 2026 Earnings Call: Complete Transcript - American Assets Trust (NYSE:AAT)",
+              "body": "On Wednesday, American Assets Trust (NYSE:AAT) discussed first-quarter financial results during its earnings call. The full transcript is provided below.\n\nThis transcript is brought to you by Benzinga APIs. For real-time access to our entire catalog, please visit https://www.benzinga.com/apis/ for a consultation.\n\nAccess the full call at https://edge.media-server.com/mmc/p/ikzn8r8j/\n\nSummary\n\nAmerican Assets Trust reported first quarter 2026 FFO of $0.51 per diluted share, starting the year in line with expectations.\n\nThe company successfully recast and upsized its unsecured credit facility, increasing the revolving line of credit from $400 million to $500 million, enhancing financial flexibility.\n\nOffice leasing showed strong activity with a 4.8% cash leasing spread and an 86% leased rate for the same store office portfolio.\n\nRetail assets remained robust with a 98% lease rate, while multifamily operations navigated a competitive supply environment with stable results.\n\nThe company reaffirmed its full-year FFO guidance range of $1.96 to $2.10 per share, with potential to reach the upper end if certain factors align.\n\nThe board approved a quarterly dividend of $0.34 per share, maintaining the current payout ratio despite elevated levels due to leasing-related capital expenditures.\n\nManagement highlighted the impact of AI on office demand and investments in technology to improve operations.\n\nTourism recovery at Waikiki Beachwalk remains gradual, with long-term confidence in the asset's value despite current challenges.\n\nFull Transcript\n\nOPERATOR\n\nMeliana Leverton (Associate General Counsel)\n\nAdam Weil (President and CEO)\n\nBob\n\nOPERATOR\n\nThank you. We will now begin the question and answer session. To ask a question, you may press Star then one on your touchtone phone. If you if you are using a speakerphone, please pick up your handset before pressing the keys. If at any time your question has been addressed and you would like to withdraw your question, please press star then two the first question comes from Todd Thomas from KeyBank. Please go ahead.\n\nSean Glass\n\nHi, good morning, this is Sean Glass on for Todd. You previously discussed some known move outs in the office portfolio. I think there was an expectation that there could be 300 or 400 basis points of occupancy from expected vacates. Have any tenant decisions shifted or changed since year end and could you remind us what's embedded in guidance for the office portfolio's year end lease rate?\n\nAdam Weil (President and CEO)\n\nSean Glass\n\nThank you, that's great. Color. I wanted to ask about La Jolla specifically. Some very good traction there on leasing. Can you talk about the pipeline a little, whether any additional leases are out for signature, anything documentation and maybe some color on where you might expect La Jolla to be at year end.\n\nAdam Weil (President and CEO)\n\nSean Glass\n\nOkay, if I could slip one more in on one beach. I mean some good traction there too. Could you talk a little about you touched on the AI demand or otherwise and also where you think that might be at your end and maybe you could touch on the one large opportunity that did in pencil if that changes the equation at all.\n\nAdam Weil (President and CEO)\n\nOPERATOR\n\nThank you. The next question comes from Hendel St. Just from Mizuho. Please go ahead.\n\nRobby Vandy\n\nHi there. Good morning guys. This is Robby Vandy on the line for Hundel. Hope you all are doing well. I wanted to ask a bit about the signed and not occupied pipeline in both office and retail. Can you give some, maybe some numbers as to how when you think leases will begin cash flowing for those two verticals and maybe regarding detail about the timing and when over the next couple years for both office and retail. Thank you.\n\nAdam Weil (President and CEO)\n\nRobby Vandy\n\nGot it. That's super helpful. I wanted to ask about the hotel in Hawaii. Notice the occupancy came up quite a bit as you discussed in your script, but was mostly offset by rate. What can we see regarding demand for tourism, foot traffic and how that asset is positioned from both seeing demand for both Japanese and American tourists right now?\n\nBob\n\nAdam Weil (President and CEO)\n\nRobby Vandy\n\nThank you. Appreciate the color, guys.\n\nOPERATOR\n\nThis concludes our question and answer session. I would like to turn the conference back over to Adam Weil for closing remarks.\n\nAdam Weil (President and CEO)\n\nYeah. Thanks everybody for calling and joining us today or listening on record later. We appreciate your interest and we'll be transparent as possible going forward. Take care.\n\nMarket News and Data brought to you by Benzinga APIs\n\nTo add Benzinga News as your preferred source on Google, click here.",
+              "source": {
+                "uri": "benzinga.com",
+                "dataType": "news",
+                "title": "Benzinga"
+              },
+              "authors": [
+                {
+                  "uri": "benzinga_insights@benzinga.com",
+                  "name": "Benzinga Insights",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://cdn.benzinga.com/files/images/story/2025/11/06/movers_2.jpg?width=1200&height=800&fit=crop",
+              "eventUri": null,
+              "sentiment": 0.4823529411764707,
+              "wgt": 515173756,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "SEI",
+            "price": 64.61,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 6,
+            "strength_score": 7.3,
+            "created_by": "swing_high",
+            "nearest_upper_level": 64.99,
+            "nearest_lower_level": 64.51
+          },
+          {
+            "symbol": "SEI",
+            "price": 60.21,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 4,
+            "strength_score": 8.7,
+            "created_by": "swing_low",
+            "nearest_upper_level": 60.26,
+            "nearest_lower_level": 59.8
+          },
+          {
+            "symbol": "SEI",
+            "price": 61.91,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 9,
+            "strength_score": 6.6,
+            "created_by": "swing_high",
+            "nearest_upper_level": 61.91,
+            "nearest_lower_level": 61.85
+          },
+          {
+            "symbol": "SEI",
+            "price": 51.66,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 0,
+            "strength_score": 4.2,
+            "created_by": "swing_low",
+            "nearest_upper_level": 51.66,
+            "nearest_lower_level": null
+          },
+          {
+            "symbol": "SEI",
+            "price": 59.8,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 5,
+            "strength_score": 6.6,
+            "created_by": "swing_high",
+            "nearest_upper_level": 60.21,
+            "nearest_lower_level": 59.7
+          },
+          {
+            "symbol": "SEI",
+            "price": 52.93,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 2,
+            "strength_score": 5.8,
+            "created_by": "swing_low",
+            "nearest_upper_level": 53.39,
+            "nearest_lower_level": 52.84
+          },
+          {
+            "symbol": "SEI",
+            "price": 52.32,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 1,
+            "strength_score": 5.0,
+            "created_by": "swing_low",
+            "nearest_upper_level": 52.32,
+            "nearest_lower_level": 51.66
+          },
+          {
+            "symbol": "SEI",
+            "price": 64.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 6,
+            "strength_score": 8.75,
+            "created_by": "swing_high",
+            "nearest_upper_level": 64.51,
+            "nearest_lower_level": 63.45
+          },
+          {
+            "symbol": "SEI",
+            "price": 59.41,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 5,
+            "strength_score": 6.6,
+            "created_by": "swing_low",
+            "nearest_upper_level": 59.7,
+            "nearest_lower_level": 59.0
+          },
+          {
+            "symbol": "SEI",
+            "price": 68.5,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 7.35,
+            "created_by": "swing_high",
+            "nearest_upper_level": 68.56,
+            "nearest_lower_level": 67.47
+          },
+          {
+            "symbol": "SEI",
+            "price": 62.91,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 7,
+            "strength_score": 7.3,
+            "created_by": "swing_low",
+            "nearest_upper_level": 63.45,
+            "nearest_lower_level": 62.0
+          },
+          {
+            "symbol": "SEI",
+            "price": 68.72,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 3,
+            "strength_score": 7.3,
+            "created_by": "swing_low",
+            "nearest_upper_level": 69.48,
+            "nearest_lower_level": 68.56
+          },
+          {
+            "symbol": "SEI",
+            "price": 81.24,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 0,
+            "strength_score": 4.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": 81.24,
+            "nearest_lower_level": 79.73
+          },
+          {
+            "symbol": "SEI",
+            "price": 61.91,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 9,
+            "strength_score": 5.1,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 62.0,
+            "nearest_lower_level": 61.91
+          },
+          {
+            "symbol": "SEI",
+            "price": 70.91,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 71.86,
+            "nearest_lower_level": 70.63
+          },
+          {
+            "symbol": "SEI",
+            "price": 68.56,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 3,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 68.72,
+            "nearest_lower_level": 68.5
+          },
+          {
+            "symbol": "SEI",
+            "price": 66.43,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 7,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 67.16,
+            "nearest_lower_level": 66.17
+          },
+          {
+            "symbol": "SEI",
+            "price": 61.81,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 9,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 61.85,
+            "nearest_lower_level": 61.0
+          },
+          {
+            "symbol": "SEI",
+            "price": 60.88,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 9,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 61.0,
+            "nearest_lower_level": 60.45
+          },
+          {
+            "symbol": "SEI",
+            "price": 60.26,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 4,
+            "strength_score": 7.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 60.45,
+            "nearest_lower_level": 60.21
+          },
+          {
+            "symbol": "SEI",
+            "price": 62.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 9,
+            "strength_score": 5.85,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 62.91,
+            "nearest_lower_level": 61.91
+          },
+          {
+            "symbol": "SEI",
+            "price": 61.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 9,
+            "strength_score": 5.85,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 61.81,
+            "nearest_lower_level": 60.88
+          },
+          {
+            "symbol": "SEI",
+            "price": 60.45,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 5,
+            "strength_score": 6.5,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 60.88,
+            "nearest_lower_level": 60.26
+          },
+          {
+            "symbol": "SEI",
+            "price": 59.7,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 5,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 59.8,
+            "nearest_lower_level": 59.41
+          },
+          {
+            "symbol": "SEI",
+            "price": 59.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 3,
+            "strength_score": 6.55,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 59.41,
+            "nearest_lower_level": 58.0
+          },
+          {
+            "symbol": "SEI",
+            "price": 57.83,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 58.0,
+            "nearest_lower_level": 56.51
+          },
+          {
+            "symbol": "SEI",
+            "price": 53.63,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 5,
+            "strength_score": 4.4,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 55.47,
+            "nearest_lower_level": 53.39
+          },
+          {
+            "symbol": "SEI",
+            "price": 52.84,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 2,
+            "strength_score": 4.3,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 52.93,
+            "nearest_lower_level": 52.32
+          },
+          {
+            "symbol": "SEI",
+            "price": 58.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.85,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 59.0,
+            "nearest_lower_level": 57.83
+          },
+          {
+            "symbol": "SEI",
+            "price": 56.51,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 5,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 57.83,
+            "nearest_lower_level": 55.72
+          },
+          {
+            "symbol": "SEI",
+            "price": 55.47,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 6,
+            "strength_score": 4.4,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 55.72,
+            "nearest_lower_level": 53.63
+          },
+          {
+            "symbol": "SEI",
+            "price": 53.39,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 5,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 53.63,
+            "nearest_lower_level": 52.93
+          },
+          {
+            "symbol": "SEI",
+            "price": 55.72,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 6,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 56.51,
+            "nearest_lower_level": 55.47
+          },
+          {
+            "symbol": "SEI",
+            "price": 63.45,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 8,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 64.0,
+            "nearest_lower_level": 62.91
+          },
+          {
+            "symbol": "SEI",
+            "price": 61.85,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 9,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 61.91,
+            "nearest_lower_level": 61.81
+          },
+          {
+            "symbol": "SEI",
+            "price": 65.62,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 8,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 65.96,
+            "nearest_lower_level": 65.47
+          },
+          {
+            "symbol": "SEI",
+            "price": 64.51,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 6,
+            "strength_score": 6.5,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 64.61,
+            "nearest_lower_level": 64.0
+          },
+          {
+            "symbol": "SEI",
+            "price": 65.96,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 7,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 66.17,
+            "nearest_lower_level": 65.62
+          },
+          {
+            "symbol": "SEI",
+            "price": 64.99,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 7,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 65.47,
+            "nearest_lower_level": 64.61
+          },
+          {
+            "symbol": "SEI",
+            "price": 67.47,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 6,
+            "strength_score": 4.4,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 68.5,
+            "nearest_lower_level": 67.16
+          },
+          {
+            "symbol": "SEI",
+            "price": 65.47,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 8,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 65.62,
+            "nearest_lower_level": 64.99
+          },
+          {
+            "symbol": "SEI",
+            "price": 67.16,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 5,
+            "strength_score": 6.5,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 67.47,
+            "nearest_lower_level": 66.43
+          },
+          {
+            "symbol": "SEI",
+            "price": 66.17,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 7,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 66.43,
+            "nearest_lower_level": 65.96
+          },
+          {
+            "symbol": "SEI",
+            "price": 71.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 3,
+            "strength_score": 4.4,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 74.44,
+            "nearest_lower_level": 70.91
+          },
+          {
+            "symbol": "SEI",
+            "price": 69.48,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 4,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 70.63,
+            "nearest_lower_level": 68.72
+          },
+          {
+            "symbol": "SEI",
+            "price": 70.63,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 3,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 70.91,
+            "nearest_lower_level": 69.48
+          }
+        ]
+      },
+      "SANM": {
+        "daily_atr": 15.602,
+        "technical_atr": 20.6,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD",
+          "{A:800015:L:en}AMD Supplier Up 40% This Month Soars On Earnings Beat -- IBD"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "SANM",
+          "headline": "American Assets Trust Q1 2026 Earnings Call: Complete Transcript - American Assets Trust (NYSE:AAT)",
+          "raw": {
+            "headline": "American Assets Trust Q1 2026 Earnings Call: Complete Transcript - American Assets Trust (NYSE:AAT)",
+            "published_at": "2026-04-29T15:49:16Z",
+            "source": "Benzinga",
+            "url": "https://www.benzinga.com/insights/news/26/04/52136391/american-assets-trust-q1-2026-earnings-call-complete-transcript",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9197514797",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-29",
+              "time": "15:49:16",
+              "dateTime": "2026-04-29T15:49:16Z",
+              "dateTimePub": "2026-04-29T15:44:21Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.benzinga.com/insights/news/26/04/52136391/american-assets-trust-q1-2026-earnings-call-complete-transcript",
+              "title": "American Assets Trust Q1 2026 Earnings Call: Complete Transcript - American Assets Trust (NYSE:AAT)",
+              "body": "On Wednesday, American Assets Trust (NYSE:AAT) discussed first-quarter financial results during its earnings call. The full transcript is provided below.\n\nThis transcript is brought to you by Benzinga APIs. For real-time access to our entire catalog, please visit https://www.benzinga.com/apis/ for a consultation.\n\nAccess the full call at https://edge.media-server.com/mmc/p/ikzn8r8j/\n\nSummary\n\nAmerican Assets Trust reported first quarter 2026 FFO of $0.51 per diluted share, starting the year in line with expectations.\n\nThe company successfully recast and upsized its unsecured credit facility, increasing the revolving line of credit from $400 million to $500 million, enhancing financial flexibility.\n\nOffice leasing showed strong activity with a 4.8% cash leasing spread and an 86% leased rate for the same store office portfolio.\n\nRetail assets remained robust with a 98% lease rate, while multifamily operations navigated a competitive supply environment with stable results.\n\nThe company reaffirmed its full-year FFO guidance range of $1.96 to $2.10 per share, with potential to reach the upper end if certain factors align.\n\nThe board approved a quarterly dividend of $0.34 per share, maintaining the current payout ratio despite elevated levels due to leasing-related capital expenditures.\n\nManagement highlighted the impact of AI on office demand and investments in technology to improve operations.\n\nTourism recovery at Waikiki Beachwalk remains gradual, with long-term confidence in the asset's value despite current challenges.\n\nFull Transcript\n\nOPERATOR\n\nMeliana Leverton (Associate General Counsel)\n\nAdam Weil (President and CEO)\n\nBob\n\nOPERATOR\n\nThank you. We will now begin the question and answer session. To ask a question, you may press Star then one on your touchtone phone. If you if you are using a speakerphone, please pick up your handset before pressing the keys. If at any time your question has been addressed and you would like to withdraw your question, please press star then two the first question comes from Todd Thomas from KeyBank. Please go ahead.\n\nSean Glass\n\nHi, good morning, this is Sean Glass on for Todd. You previously discussed some known move outs in the office portfolio. I think there was an expectation that there could be 300 or 400 basis points of occupancy from expected vacates. Have any tenant decisions shifted or changed since year end and could you remind us what's embedded in guidance for the office portfolio's year end lease rate?\n\nAdam Weil (President and CEO)\n\nSean Glass\n\nThank you, that's great. Color. I wanted to ask about La Jolla specifically. Some very good traction there on leasing. Can you talk about the pipeline a little, whether any additional leases are out for signature, anything documentation and maybe some color on where you might expect La Jolla to be at year end.\n\nAdam Weil (President and CEO)\n\nSean Glass\n\nOkay, if I could slip one more in on one beach. I mean some good traction there too. Could you talk a little about you touched on the AI demand or otherwise and also where you think that might be at your end and maybe you could touch on the one large opportunity that did in pencil if that changes the equation at all.\n\nAdam Weil (President and CEO)\n\nOPERATOR\n\nThank you. The next question comes from Hendel St. Just from Mizuho. Please go ahead.\n\nRobby Vandy\n\nHi there. Good morning guys. This is Robby Vandy on the line for Hundel. Hope you all are doing well. I wanted to ask a bit about the signed and not occupied pipeline in both office and retail. Can you give some, maybe some numbers as to how when you think leases will begin cash flowing for those two verticals and maybe regarding detail about the timing and when over the next couple years for both office and retail. Thank you.\n\nAdam Weil (President and CEO)\n\nRobby Vandy\n\nGot it. That's super helpful. I wanted to ask about the hotel in Hawaii. Notice the occupancy came up quite a bit as you discussed in your script, but was mostly offset by rate. What can we see regarding demand for tourism, foot traffic and how that asset is positioned from both seeing demand for both Japanese and American tourists right now?\n\nBob\n\nAdam Weil (President and CEO)\n\nRobby Vandy\n\nThank you. Appreciate the color, guys.\n\nOPERATOR\n\nThis concludes our question and answer session. I would like to turn the conference back over to Adam Weil for closing remarks.\n\nAdam Weil (President and CEO)\n\nYeah. Thanks everybody for calling and joining us today or listening on record later. We appreciate your interest and we'll be transparent as possible going forward. Take care.\n\nMarket News and Data brought to you by Benzinga APIs\n\nTo add Benzinga News as your preferred source on Google, click here.",
+              "source": {
+                "uri": "benzinga.com",
+                "dataType": "news",
+                "title": "Benzinga"
+              },
+              "authors": [
+                {
+                  "uri": "benzinga_insights@benzinga.com",
+                  "name": "Benzinga Insights",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://cdn.benzinga.com/files/images/story/2025/11/06/movers_2.jpg?width=1200&height=800&fit=crop",
+              "eventUri": null,
+              "sentiment": 0.4823529411764707,
+              "wgt": 515173756,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "SANM",
+            "price": 131.54,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 8,
+            "strength_score": 7.3,
+            "created_by": "swing_high",
+            "nearest_upper_level": 131.82,
+            "nearest_lower_level": 131.36
+          },
+          {
+            "symbol": "SANM",
+            "price": 121.7,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.9,
+            "created_by": "swing_low",
+            "nearest_upper_level": 122.17,
+            "nearest_lower_level": null
+          },
+          {
+            "symbol": "SANM",
+            "price": 138.69,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 2,
+            "strength_score": 6.5,
+            "created_by": "swing_high",
+            "nearest_upper_level": 141.84,
+            "nearest_lower_level": 138.56
+          },
+          {
+            "symbol": "SANM",
+            "price": 133.67,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 2,
+            "strength_score": 7.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": 133.67,
+            "nearest_lower_level": 133.61
+          },
+          {
+            "symbol": "SANM",
+            "price": 122.17,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 5.7,
+            "created_by": "swing_low",
+            "nearest_upper_level": 122.86,
+            "nearest_lower_level": 121.7
+          },
+          {
+            "symbol": "SANM",
+            "price": 133.61,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 2,
+            "strength_score": 7.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": 133.67,
+            "nearest_lower_level": 131.82
+          },
+          {
+            "symbol": "SANM",
+            "price": 124.89,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 5,
+            "strength_score": 6.6,
+            "created_by": "swing_low",
+            "nearest_upper_level": 124.89,
+            "nearest_lower_level": 124.03
+          },
+          {
+            "symbol": "SANM",
+            "price": 127.39,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 7,
+            "strength_score": 6.6,
+            "created_by": "swing_low",
+            "nearest_upper_level": 127.81,
+            "nearest_lower_level": 125.19
+          },
+          {
+            "symbol": "SANM",
+            "price": 156.54,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 1,
+            "strength_score": 5.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 168.97,
+            "nearest_lower_level": 152.34
+          },
+          {
+            "symbol": "SANM",
+            "price": 179.31,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 1,
+            "strength_score": 6.4,
+            "created_by": "swing_high",
+            "nearest_upper_level": 180.02,
+            "nearest_lower_level": 172.35
+          },
+          {
+            "symbol": "SANM",
+            "price": 172.33,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 1,
+            "strength_score": 7.1,
+            "created_by": "swing_low",
+            "nearest_upper_level": 172.35,
+            "nearest_lower_level": 171.8
+          },
+          {
+            "symbol": "SANM",
+            "price": 230.56,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 0,
+            "strength_score": 4.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": 230.56,
+            "nearest_lower_level": 217.67
+          },
+          {
+            "symbol": "SANM",
+            "price": 172.35,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 1,
+            "strength_score": 5.6,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 179.31,
+            "nearest_lower_level": 172.33
+          },
+          {
+            "symbol": "SANM",
+            "price": 152.34,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 156.54,
+            "nearest_lower_level": 143.87
+          },
+          {
+            "symbol": "SANM",
+            "price": 124.89,
+            "type": "consolidation",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 5,
+            "strength_score": 4.1,
+            "created_by": "consolidation_low",
+            "nearest_upper_level": 125.03,
+            "nearest_lower_level": 124.89
+          },
+          {
+            "symbol": "SANM",
+            "price": 125.03,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 5,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 125.19,
+            "nearest_lower_level": 124.89
+          },
+          {
+            "symbol": "SANM",
+            "price": 122.89,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 3,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 124.03,
+            "nearest_lower_level": 122.86
+          },
+          {
+            "symbol": "SANM",
+            "price": 130.23,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 9,
+            "strength_score": 4.4,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 130.9,
+            "nearest_lower_level": 130.18
+          },
+          {
+            "symbol": "SANM",
+            "price": 128.34,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 7,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 128.65,
+            "nearest_lower_level": 127.81
+          },
+          {
+            "symbol": "SANM",
+            "price": 128.65,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 6,
+            "strength_score": 6.5,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 128.71,
+            "nearest_lower_level": 128.34
+          },
+          {
+            "symbol": "SANM",
+            "price": 122.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 3,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 122.89,
+            "nearest_lower_level": 122.17
+          },
+          {
+            "symbol": "SANM",
+            "price": 134.8,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 3,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 135.83,
+            "nearest_lower_level": 133.67
+          },
+          {
+            "symbol": "SANM",
+            "price": 138.56,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 2,
+            "strength_score": 5.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 138.69,
+            "nearest_lower_level": 138.44
+          },
+          {
+            "symbol": "SANM",
+            "price": 135.83,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 4.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 137.01,
+            "nearest_lower_level": 134.8
+          },
+          {
+            "symbol": "SANM",
+            "price": 130.97,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 10,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 131.36,
+            "nearest_lower_level": 130.9
+          },
+          {
+            "symbol": "SANM",
+            "price": 128.71,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 6,
+            "strength_score": 6.5,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 129.64,
+            "nearest_lower_level": 128.65
+          },
+          {
+            "symbol": "SANM",
+            "price": 133.67,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 2,
+            "strength_score": 5.7,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 134.8,
+            "nearest_lower_level": 133.67
+          },
+          {
+            "symbol": "SANM",
+            "price": 130.9,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 10,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 130.97,
+            "nearest_lower_level": 130.23
+          },
+          {
+            "symbol": "SANM",
+            "price": 127.81,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 7,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 128.34,
+            "nearest_lower_level": 127.39
+          },
+          {
+            "symbol": "SANM",
+            "price": 124.03,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 4,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 124.89,
+            "nearest_lower_level": 122.89
+          },
+          {
+            "symbol": "SANM",
+            "price": 131.36,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 9,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 131.54,
+            "nearest_lower_level": 130.97
+          },
+          {
+            "symbol": "SANM",
+            "price": 129.64,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 8,
+            "strength_score": 6.5,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 130.18,
+            "nearest_lower_level": 128.71
+          },
+          {
+            "symbol": "SANM",
+            "price": 130.18,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 9,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 130.23,
+            "nearest_lower_level": 129.64
+          },
+          {
+            "symbol": "SANM",
+            "price": 125.19,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 5,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 127.39,
+            "nearest_lower_level": 125.03
+          },
+          {
+            "symbol": "SANM",
+            "price": 138.44,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 2,
+            "strength_score": 5.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 138.56,
+            "nearest_lower_level": 137.01
+          },
+          {
+            "symbol": "SANM",
+            "price": 131.82,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 8,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 133.61,
+            "nearest_lower_level": 131.54
+          },
+          {
+            "symbol": "SANM",
+            "price": 141.84,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 4.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 143.87,
+            "nearest_lower_level": 138.69
+          },
+          {
+            "symbol": "SANM",
+            "price": 184.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 2,
+            "strength_score": 4.35,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 188.08,
+            "nearest_lower_level": 180.02
+          }
+        ]
+      },
+      "AAPL": {
+        "daily_atr": 3.726,
+        "technical_atr": 1.17,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Fed News and Big Tech Earnings Collide This Week. The Mag 7 Matter Most. -- Barrons.com"
+        ],
+        "news_provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "AAPL",
+          "headline": "American Assets Trust Q1 2026 Earnings Call: Complete Transcript - American Assets Trust (NYSE:AAT)",
+          "raw": {
+            "headline": "American Assets Trust Q1 2026 Earnings Call: Complete Transcript - American Assets Trust (NYSE:AAT)",
+            "published_at": "2026-04-29T15:49:16Z",
+            "source": "Benzinga",
+            "url": "https://www.benzinga.com/insights/news/26/04/52136391/american-assets-trust-q1-2026-earnings-call-complete-transcript",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9197514797",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-29",
+              "time": "15:49:16",
+              "dateTime": "2026-04-29T15:49:16Z",
+              "dateTimePub": "2026-04-29T15:44:21Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.benzinga.com/insights/news/26/04/52136391/american-assets-trust-q1-2026-earnings-call-complete-transcript",
+              "title": "American Assets Trust Q1 2026 Earnings Call: Complete Transcript - American Assets Trust (NYSE:AAT)",
+              "body": "On Wednesday, American Assets Trust (NYSE:AAT) discussed first-quarter financial results during its earnings call. The full transcript is provided below.\n\nThis transcript is brought to you by Benzinga APIs. For real-time access to our entire catalog, please visit https://www.benzinga.com/apis/ for a consultation.\n\nAccess the full call at https://edge.media-server.com/mmc/p/ikzn8r8j/\n\nSummary\n\nAmerican Assets Trust reported first quarter 2026 FFO of $0.51 per diluted share, starting the year in line with expectations.\n\nThe company successfully recast and upsized its unsecured credit facility, increasing the revolving line of credit from $400 million to $500 million, enhancing financial flexibility.\n\nOffice leasing showed strong activity with a 4.8% cash leasing spread and an 86% leased rate for the same store office portfolio.\n\nRetail assets remained robust with a 98% lease rate, while multifamily operations navigated a competitive supply environment with stable results.\n\nThe company reaffirmed its full-year FFO guidance range of $1.96 to $2.10 per share, with potential to reach the upper end if certain factors align.\n\nThe board approved a quarterly dividend of $0.34 per share, maintaining the current payout ratio despite elevated levels due to leasing-related capital expenditures.\n\nManagement highlighted the impact of AI on office demand and investments in technology to improve operations.\n\nTourism recovery at Waikiki Beachwalk remains gradual, with long-term confidence in the asset's value despite current challenges.\n\nFull Transcript\n\nOPERATOR\n\nMeliana Leverton (Associate General Counsel)\n\nAdam Weil (President and CEO)\n\nBob\n\nOPERATOR\n\nThank you. We will now begin the question and answer session. To ask a question, you may press Star then one on your touchtone phone. If you if you are using a speakerphone, please pick up your handset before pressing the keys. If at any time your question has been addressed and you would like to withdraw your question, please press star then two the first question comes from Todd Thomas from KeyBank. Please go ahead.\n\nSean Glass\n\nHi, good morning, this is Sean Glass on for Todd. You previously discussed some known move outs in the office portfolio. I think there was an expectation that there could be 300 or 400 basis points of occupancy from expected vacates. Have any tenant decisions shifted or changed since year end and could you remind us what's embedded in guidance for the office portfolio's year end lease rate?\n\nAdam Weil (President and CEO)\n\nSean Glass\n\nThank you, that's great. Color. I wanted to ask about La Jolla specifically. Some very good traction there on leasing. Can you talk about the pipeline a little, whether any additional leases are out for signature, anything documentation and maybe some color on where you might expect La Jolla to be at year end.\n\nAdam Weil (President and CEO)\n\nSean Glass\n\nOkay, if I could slip one more in on one beach. I mean some good traction there too. Could you talk a little about you touched on the AI demand or otherwise and also where you think that might be at your end and maybe you could touch on the one large opportunity that did in pencil if that changes the equation at all.\n\nAdam Weil (President and CEO)\n\nOPERATOR\n\nThank you. The next question comes from Hendel St. Just from Mizuho. Please go ahead.\n\nRobby Vandy\n\nHi there. Good morning guys. This is Robby Vandy on the line for Hundel. Hope you all are doing well. I wanted to ask a bit about the signed and not occupied pipeline in both office and retail. Can you give some, maybe some numbers as to how when you think leases will begin cash flowing for those two verticals and maybe regarding detail about the timing and when over the next couple years for both office and retail. Thank you.\n\nAdam Weil (President and CEO)\n\nRobby Vandy\n\nGot it. That's super helpful. I wanted to ask about the hotel in Hawaii. Notice the occupancy came up quite a bit as you discussed in your script, but was mostly offset by rate. What can we see regarding demand for tourism, foot traffic and how that asset is positioned from both seeing demand for both Japanese and American tourists right now?\n\nBob\n\nAdam Weil (President and CEO)\n\nRobby Vandy\n\nThank you. Appreciate the color, guys.\n\nOPERATOR\n\nThis concludes our question and answer session. I would like to turn the conference back over to Adam Weil for closing remarks.\n\nAdam Weil (President and CEO)\n\nYeah. Thanks everybody for calling and joining us today or listening on record later. We appreciate your interest and we'll be transparent as possible going forward. Take care.\n\nMarket News and Data brought to you by Benzinga APIs\n\nTo add Benzinga News as your preferred source on Google, click here.",
+              "source": {
+                "uri": "benzinga.com",
+                "dataType": "news",
+                "title": "Benzinga"
+              },
+              "authors": [
+                {
+                  "uri": "benzinga_insights@benzinga.com",
+                  "name": "Benzinga Insights",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://cdn.benzinga.com/files/images/story/2025/11/06/movers_2.jpg?width=1200&height=800&fit=crop",
+              "eventUri": null,
+              "sentiment": 0.4823529411764707,
+              "wgt": 515173756,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "AAPL",
+            "price": 246.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.35,
+            "created_by": "swing_low",
+            "nearest_upper_level": 247.99,
+            "nearest_lower_level": 245.7
+          },
+          {
+            "symbol": "AAPL",
+            "price": 249.55,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 6,
+            "strength_score": 8.0,
+            "created_by": "swing_low",
+            "nearest_upper_level": 250.65,
+            "nearest_lower_level": 247.99
+          },
+          {
+            "symbol": "AAPL",
+            "price": 257.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 1,
+            "strength_score": 8.55,
+            "created_by": "swing_high",
+            "nearest_upper_level": 258.4,
+            "nearest_lower_level": 256.66
+          },
+          {
+            "symbol": "AAPL",
+            "price": 245.51,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 5.6,
+            "created_by": "swing_low",
+            "nearest_upper_level": 245.7,
+            "nearest_lower_level": null
+          },
+          {
+            "symbol": "AAPL",
+            "price": 256.17,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 3,
+            "strength_score": 9.4,
+            "created_by": "swing_high",
+            "nearest_upper_level": 256.2,
+            "nearest_lower_level": 256.07
+          },
+          {
+            "symbol": "AAPL",
+            "price": 250.65,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 6,
+            "strength_score": 8.7,
+            "created_by": "swing_low",
+            "nearest_upper_level": 253.5,
+            "nearest_lower_level": 249.55
+          },
+          {
+            "symbol": "AAPL",
+            "price": 262.16,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 2,
+            "strength_score": 7.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": 262.19,
+            "nearest_lower_level": 258.86
+          },
+          {
+            "symbol": "AAPL",
+            "price": 245.7,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 5.6,
+            "created_by": "swing_low",
+            "nearest_upper_level": 245.7,
+            "nearest_lower_level": 245.51
+          },
+          {
+            "symbol": "AAPL",
+            "price": 256.07,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 3,
+            "strength_score": 9.4,
+            "created_by": "swing_low",
+            "nearest_upper_level": 256.07,
+            "nearest_lower_level": 253.98
+          },
+          {
+            "symbol": "AAPL",
+            "price": 262.19,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 2,
+            "strength_score": 7.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": 263.4,
+            "nearest_lower_level": 262.16
+          },
+          {
+            "symbol": "AAPL",
+            "price": 256.66,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 0,
+            "strength_score": 7.0,
+            "created_by": "swing_low",
+            "nearest_upper_level": 257.0,
+            "nearest_lower_level": 256.2
+          },
+          {
+            "symbol": "AAPL",
+            "price": 274.28,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 5.7,
+            "created_by": "swing_high",
+            "nearest_upper_level": 275.77,
+            "nearest_lower_level": 273.2
+          },
+          {
+            "symbol": "AAPL",
+            "price": 265.4,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 2,
+            "strength_score": 6.5,
+            "created_by": "swing_low",
+            "nearest_upper_level": 266.09,
+            "nearest_lower_level": 265.07
+          },
+          {
+            "symbol": "AAPL",
+            "price": 275.77,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 0,
+            "strength_score": 4.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": 275.77,
+            "nearest_lower_level": 274.28
+          },
+          {
+            "symbol": "AAPL",
+            "price": 265.07,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 2,
+            "strength_score": 6.5,
+            "created_by": "swing_low",
+            "nearest_upper_level": 265.4,
+            "nearest_lower_level": 263.4
+          },
+          {
+            "symbol": "AAPL",
+            "price": 273.2,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 3,
+            "strength_score": 8.7,
+            "created_by": "swing_high",
+            "nearest_upper_level": 274.28,
+            "nearest_lower_level": 272.34
+          },
+          {
+            "symbol": "AAPL",
+            "price": 256.2,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 3,
+            "strength_score": 7.9,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 256.66,
+            "nearest_lower_level": 256.17
+          },
+          {
+            "symbol": "AAPL",
+            "price": 245.7,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 4.1,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 245.7,
+            "nearest_lower_level": 245.7
+          },
+          {
+            "symbol": "AAPL",
+            "price": 245.7,
+            "type": "consolidation",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 4.1,
+            "created_by": "consolidation_low",
+            "nearest_upper_level": 246.0,
+            "nearest_lower_level": 245.7
+          },
+          {
+            "symbol": "AAPL",
+            "price": 253.98,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 9,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 256.07,
+            "nearest_lower_level": 253.5
+          },
+          {
+            "symbol": "AAPL",
+            "price": 247.99,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 5,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 249.55,
+            "nearest_lower_level": 246.0
+          },
+          {
+            "symbol": "AAPL",
+            "price": 258.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 6,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 262.16,
+            "nearest_lower_level": 258.4
+          },
+          {
+            "symbol": "AAPL",
+            "price": 256.07,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 3,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 256.17,
+            "nearest_lower_level": 256.07
+          },
+          {
+            "symbol": "AAPL",
+            "price": 258.4,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 5,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 258.86,
+            "nearest_lower_level": 257.0
+          },
+          {
+            "symbol": "AAPL",
+            "price": 253.5,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 9,
+            "strength_score": 5.85,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 253.98,
+            "nearest_lower_level": 250.65
+          },
+          {
+            "symbol": "AAPL",
+            "price": 267.07,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 3,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 267.59,
+            "nearest_lower_level": 266.09
+          },
+          {
+            "symbol": "AAPL",
+            "price": 271.06,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 6,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 272.34,
+            "nearest_lower_level": 270.71
+          },
+          {
+            "symbol": "AAPL",
+            "price": 266.09,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 4,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 267.07,
+            "nearest_lower_level": 265.4
+          },
+          {
+            "symbol": "AAPL",
+            "price": 272.34,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 5,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 273.2,
+            "nearest_lower_level": 271.06
+          },
+          {
+            "symbol": "AAPL",
+            "price": 267.61,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 4,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 270.71,
+            "nearest_lower_level": 267.59
+          },
+          {
+            "symbol": "AAPL",
+            "price": 270.71,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 5,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 271.06,
+            "nearest_lower_level": 267.61
+          },
+          {
+            "symbol": "AAPL",
+            "price": 267.59,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 4,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 267.61,
+            "nearest_lower_level": 267.07
+          }
+        ]
+      },
+      "MSFT": {
+        "daily_atr": 8.87,
+        "technical_atr": 0.35,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Microsoft 3Q Sales Expected to Rise as Azure Looks Strong -- Earnings Preview"
+        ],
+        "news_provider_hits": [
+          "Barchart.com",
+          "DJ-N",
+          "The Verge"
+        ],
+        "news_source_types": [
+          "external",
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "MSFT",
+          "headline": "American Assets Trust Q1 2026 Earnings Call: Complete Transcript - American Assets Trust (NYSE:AAT)",
+          "raw": {
+            "headline": "American Assets Trust Q1 2026 Earnings Call: Complete Transcript - American Assets Trust (NYSE:AAT)",
+            "published_at": "2026-04-29T15:49:16Z",
+            "source": "Benzinga",
+            "url": "https://www.benzinga.com/insights/news/26/04/52136391/american-assets-trust-q1-2026-earnings-call-complete-transcript",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9197514797",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-29",
+              "time": "15:49:16",
+              "dateTime": "2026-04-29T15:49:16Z",
+              "dateTimePub": "2026-04-29T15:44:21Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.benzinga.com/insights/news/26/04/52136391/american-assets-trust-q1-2026-earnings-call-complete-transcript",
+              "title": "American Assets Trust Q1 2026 Earnings Call: Complete Transcript - American Assets Trust (NYSE:AAT)",
+              "body": "On Wednesday, American Assets Trust (NYSE:AAT) discussed first-quarter financial results during its earnings call. The full transcript is provided below.\n\nThis transcript is brought to you by Benzinga APIs. For real-time access to our entire catalog, please visit https://www.benzinga.com/apis/ for a consultation.\n\nAccess the full call at https://edge.media-server.com/mmc/p/ikzn8r8j/\n\nSummary\n\nAmerican Assets Trust reported first quarter 2026 FFO of $0.51 per diluted share, starting the year in line with expectations.\n\nThe company successfully recast and upsized its unsecured credit facility, increasing the revolving line of credit from $400 million to $500 million, enhancing financial flexibility.\n\nOffice leasing showed strong activity with a 4.8% cash leasing spread and an 86% leased rate for the same store office portfolio.\n\nRetail assets remained robust with a 98% lease rate, while multifamily operations navigated a competitive supply environment with stable results.\n\nThe company reaffirmed its full-year FFO guidance range of $1.96 to $2.10 per share, with potential to reach the upper end if certain factors align.\n\nThe board approved a quarterly dividend of $0.34 per share, maintaining the current payout ratio despite elevated levels due to leasing-related capital expenditures.\n\nManagement highlighted the impact of AI on office demand and investments in technology to improve operations.\n\nTourism recovery at Waikiki Beachwalk remains gradual, with long-term confidence in the asset's value despite current challenges.\n\nFull Transcript\n\nOPERATOR\n\nMeliana Leverton (Associate General Counsel)\n\nAdam Weil (President and CEO)\n\nBob\n\nOPERATOR\n\nThank you. We will now begin the question and answer session. To ask a question, you may press Star then one on your touchtone phone. If you if you are using a speakerphone, please pick up your handset before pressing the keys. If at any time your question has been addressed and you would like to withdraw your question, please press star then two the first question comes from Todd Thomas from KeyBank. Please go ahead.\n\nSean Glass\n\nHi, good morning, this is Sean Glass on for Todd. You previously discussed some known move outs in the office portfolio. I think there was an expectation that there could be 300 or 400 basis points of occupancy from expected vacates. Have any tenant decisions shifted or changed since year end and could you remind us what's embedded in guidance for the office portfolio's year end lease rate?\n\nAdam Weil (President and CEO)\n\nSean Glass\n\nThank you, that's great. Color. I wanted to ask about La Jolla specifically. Some very good traction there on leasing. Can you talk about the pipeline a little, whether any additional leases are out for signature, anything documentation and maybe some color on where you might expect La Jolla to be at year end.\n\nAdam Weil (President and CEO)\n\nSean Glass\n\nOkay, if I could slip one more in on one beach. I mean some good traction there too. Could you talk a little about you touched on the AI demand or otherwise and also where you think that might be at your end and maybe you could touch on the one large opportunity that did in pencil if that changes the equation at all.\n\nAdam Weil (President and CEO)\n\nOPERATOR\n\nThank you. The next question comes from Hendel St. Just from Mizuho. Please go ahead.\n\nRobby Vandy\n\nHi there. Good morning guys. This is Robby Vandy on the line for Hundel. Hope you all are doing well. I wanted to ask a bit about the signed and not occupied pipeline in both office and retail. Can you give some, maybe some numbers as to how when you think leases will begin cash flowing for those two verticals and maybe regarding detail about the timing and when over the next couple years for both office and retail. Thank you.\n\nAdam Weil (President and CEO)\n\nRobby Vandy\n\nGot it. That's super helpful. I wanted to ask about the hotel in Hawaii. Notice the occupancy came up quite a bit as you discussed in your script, but was mostly offset by rate. What can we see regarding demand for tourism, foot traffic and how that asset is positioned from both seeing demand for both Japanese and American tourists right now?\n\nBob\n\nAdam Weil (President and CEO)\n\nRobby Vandy\n\nThank you. Appreciate the color, guys.\n\nOPERATOR\n\nThis concludes our question and answer session. I would like to turn the conference back over to Adam Weil for closing remarks.\n\nAdam Weil (President and CEO)\n\nYeah. Thanks everybody for calling and joining us today or listening on record later. We appreciate your interest and we'll be transparent as possible going forward. Take care.\n\nMarket News and Data brought to you by Benzinga APIs\n\nTo add Benzinga News as your preferred source on Google, click here.",
+              "source": {
+                "uri": "benzinga.com",
+                "dataType": "news",
+                "title": "Benzinga"
+              },
+              "authors": [
+                {
+                  "uri": "benzinga_insights@benzinga.com",
+                  "name": "Benzinga Insights",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://cdn.benzinga.com/files/images/story/2025/11/06/movers_2.jpg?width=1200&height=800&fit=crop",
+              "eventUri": null,
+              "sentiment": 0.4823529411764707,
+              "wgt": 515173756,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "MSFT",
+            "price": 380.12,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 6.6,
+            "created_by": "swing_low",
+            "nearest_upper_level": 384.98,
+            "nearest_lower_level": 376.93
+          },
+          {
+            "symbol": "MSFT",
+            "price": 387.21,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 6.3,
+            "created_by": "swing_high",
+            "nearest_upper_level": 393.11,
+            "nearest_lower_level": 385.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 356.28,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 5.7,
+            "created_by": "swing_low",
+            "nearest_upper_level": 356.77,
+            "nearest_lower_level": null
+          },
+          {
+            "symbol": "MSFT",
+            "price": 373.99,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 7,
+            "strength_score": 9.4,
+            "created_by": "swing_high",
+            "nearest_upper_level": 376.93,
+            "nearest_lower_level": 373.73
+          },
+          {
+            "symbol": "MSFT",
+            "price": 364.15,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 2,
+            "strength_score": 5.8,
+            "created_by": "swing_low",
+            "nearest_upper_level": 364.15,
+            "nearest_lower_level": 361.9
+          },
+          {
+            "symbol": "MSFT",
+            "price": 373.73,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 9,
+            "strength_score": 9.4,
+            "created_by": "swing_high",
+            "nearest_upper_level": 373.99,
+            "nearest_lower_level": 372.74
+          },
+          {
+            "symbol": "MSFT",
+            "price": 366.56,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 3,
+            "strength_score": 7.3,
+            "created_by": "swing_low",
+            "nearest_upper_level": 367.05,
+            "nearest_lower_level": 365.97
+          },
+          {
+            "symbol": "MSFT",
+            "price": 385.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 3,
+            "strength_score": 8.05,
+            "created_by": "swing_high",
+            "nearest_upper_level": 387.21,
+            "nearest_lower_level": 384.98
+          },
+          {
+            "symbol": "MSFT",
+            "price": 367.05,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 3,
+            "strength_score": 7.3,
+            "created_by": "swing_low",
+            "nearest_upper_level": 372.29,
+            "nearest_lower_level": 366.56
+          },
+          {
+            "symbol": "MSFT",
+            "price": 431.58,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 1,
+            "strength_score": 5.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 432.92,
+            "nearest_lower_level": 429.92
+          },
+          {
+            "symbol": "MSFT",
+            "price": 416.3,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 2,
+            "strength_score": 7.9,
+            "created_by": "swing_low",
+            "nearest_upper_level": 419.69,
+            "nearest_lower_level": 414.37
+          },
+          {
+            "symbol": "MSFT",
+            "price": 433.7,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 1,
+            "strength_score": 5.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 433.7,
+            "nearest_lower_level": 432.92
+          },
+          {
+            "symbol": "MSFT",
+            "price": 411.41,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 5.7,
+            "created_by": "swing_low",
+            "nearest_upper_level": 414.37,
+            "nearest_lower_level": 411.22
+          },
+          {
+            "symbol": "MSFT",
+            "price": 429.92,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 6.6,
+            "created_by": "swing_high",
+            "nearest_upper_level": 431.58,
+            "nearest_lower_level": 429.25
+          },
+          {
+            "symbol": "MSFT",
+            "price": 414.37,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 2,
+            "strength_score": 4.3,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 416.3,
+            "nearest_lower_level": 411.41
+          },
+          {
+            "symbol": "MSFT",
+            "price": 376.93,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 380.12,
+            "nearest_lower_level": 373.99
+          },
+          {
+            "symbol": "MSFT",
+            "price": 372.74,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 11,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 373.73,
+            "nearest_lower_level": 372.29
+          },
+          {
+            "symbol": "MSFT",
+            "price": 365.97,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 3,
+            "strength_score": 6.5,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 366.56,
+            "nearest_lower_level": 364.41
+          },
+          {
+            "symbol": "MSFT",
+            "price": 356.77,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 4.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 358.96,
+            "nearest_lower_level": 356.28
+          },
+          {
+            "symbol": "MSFT",
+            "price": 364.41,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 2,
+            "strength_score": 5.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 365.97,
+            "nearest_lower_level": 364.15
+          },
+          {
+            "symbol": "MSFT",
+            "price": 384.98,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 3,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 385.0,
+            "nearest_lower_level": 380.12
+          },
+          {
+            "symbol": "MSFT",
+            "price": 372.29,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 10,
+            "strength_score": 7.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 372.74,
+            "nearest_lower_level": 367.05
+          },
+          {
+            "symbol": "MSFT",
+            "price": 398.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 1,
+            "strength_score": 4.25,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 411.22,
+            "nearest_lower_level": 396.73
+          },
+          {
+            "symbol": "MSFT",
+            "price": 393.11,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 2,
+            "strength_score": 4.3,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 396.73,
+            "nearest_lower_level": 387.21
+          },
+          {
+            "symbol": "MSFT",
+            "price": 419.9,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 6,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 420.26,
+            "nearest_lower_level": 419.69
+          },
+          {
+            "symbol": "MSFT",
+            "price": 411.22,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 4.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 411.41,
+            "nearest_lower_level": 398.0
+          },
+          {
+            "symbol": "MSFT",
+            "price": 424.82,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 7,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 429.25,
+            "nearest_lower_level": 424.39
+          },
+          {
+            "symbol": "MSFT",
+            "price": 420.26,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 6,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 424.39,
+            "nearest_lower_level": 419.9
+          },
+          {
+            "symbol": "MSFT",
+            "price": 419.69,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 6,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 419.9,
+            "nearest_lower_level": 416.3
+          },
+          {
+            "symbol": "MSFT",
+            "price": 429.25,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.85,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 429.92,
+            "nearest_lower_level": 424.82
+          },
+          {
+            "symbol": "MSFT",
+            "price": 424.39,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 6,
+            "strength_score": 7.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 424.82,
+            "nearest_lower_level": 420.26
+          }
+        ]
+      },
+      "TSLA": {
+        "daily_atr": 12.424,
+        "technical_atr": 0.8,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Tesla Rival BYD Reports Plunging Earnings. China EV Giant Is Betting On A Flash Recovery. -- IBD",
+          "Tesla TSLA Q3 2024 Earnings Call Transcript | The Motley Fool"
+        ],
+        "news_provider_hits": [
+          "DJ-N",
+          "The Motley Fool"
+        ],
+        "news_source_types": [
+          "external",
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "TSLA",
+          "headline": "American Assets Trust Q1 2026 Earnings Call: Complete Transcript - American Assets Trust (NYSE:AAT)",
+          "raw": {
+            "headline": "American Assets Trust Q1 2026 Earnings Call: Complete Transcript - American Assets Trust (NYSE:AAT)",
+            "published_at": "2026-04-29T15:49:16Z",
+            "source": "Benzinga",
+            "url": "https://www.benzinga.com/insights/news/26/04/52136391/american-assets-trust-q1-2026-earnings-call-complete-transcript",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9197514797",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-29",
+              "time": "15:49:16",
+              "dateTime": "2026-04-29T15:49:16Z",
+              "dateTimePub": "2026-04-29T15:44:21Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.benzinga.com/insights/news/26/04/52136391/american-assets-trust-q1-2026-earnings-call-complete-transcript",
+              "title": "American Assets Trust Q1 2026 Earnings Call: Complete Transcript - American Assets Trust (NYSE:AAT)",
+              "body": "On Wednesday, American Assets Trust (NYSE:AAT) discussed first-quarter financial results during its earnings call. The full transcript is provided below.\n\nThis transcript is brought to you by Benzinga APIs. For real-time access to our entire catalog, please visit https://www.benzinga.com/apis/ for a consultation.\n\nAccess the full call at https://edge.media-server.com/mmc/p/ikzn8r8j/\n\nSummary\n\nAmerican Assets Trust reported first quarter 2026 FFO of $0.51 per diluted share, starting the year in line with expectations.\n\nThe company successfully recast and upsized its unsecured credit facility, increasing the revolving line of credit from $400 million to $500 million, enhancing financial flexibility.\n\nOffice leasing showed strong activity with a 4.8% cash leasing spread and an 86% leased rate for the same store office portfolio.\n\nRetail assets remained robust with a 98% lease rate, while multifamily operations navigated a competitive supply environment with stable results.\n\nThe company reaffirmed its full-year FFO guidance range of $1.96 to $2.10 per share, with potential to reach the upper end if certain factors align.\n\nThe board approved a quarterly dividend of $0.34 per share, maintaining the current payout ratio despite elevated levels due to leasing-related capital expenditures.\n\nManagement highlighted the impact of AI on office demand and investments in technology to improve operations.\n\nTourism recovery at Waikiki Beachwalk remains gradual, with long-term confidence in the asset's value despite current challenges.\n\nFull Transcript\n\nOPERATOR\n\nMeliana Leverton (Associate General Counsel)\n\nAdam Weil (President and CEO)\n\nBob\n\nOPERATOR\n\nThank you. We will now begin the question and answer session. To ask a question, you may press Star then one on your touchtone phone. If you if you are using a speakerphone, please pick up your handset before pressing the keys. If at any time your question has been addressed and you would like to withdraw your question, please press star then two the first question comes from Todd Thomas from KeyBank. Please go ahead.\n\nSean Glass\n\nHi, good morning, this is Sean Glass on for Todd. You previously discussed some known move outs in the office portfolio. I think there was an expectation that there could be 300 or 400 basis points of occupancy from expected vacates. Have any tenant decisions shifted or changed since year end and could you remind us what's embedded in guidance for the office portfolio's year end lease rate?\n\nAdam Weil (President and CEO)\n\nSean Glass\n\nThank you, that's great. Color. I wanted to ask about La Jolla specifically. Some very good traction there on leasing. Can you talk about the pipeline a little, whether any additional leases are out for signature, anything documentation and maybe some color on where you might expect La Jolla to be at year end.\n\nAdam Weil (President and CEO)\n\nSean Glass\n\nOkay, if I could slip one more in on one beach. I mean some good traction there too. Could you talk a little about you touched on the AI demand or otherwise and also where you think that might be at your end and maybe you could touch on the one large opportunity that did in pencil if that changes the equation at all.\n\nAdam Weil (President and CEO)\n\nOPERATOR\n\nThank you. The next question comes from Hendel St. Just from Mizuho. Please go ahead.\n\nRobby Vandy\n\nHi there. Good morning guys. This is Robby Vandy on the line for Hundel. Hope you all are doing well. I wanted to ask a bit about the signed and not occupied pipeline in both office and retail. Can you give some, maybe some numbers as to how when you think leases will begin cash flowing for those two verticals and maybe regarding detail about the timing and when over the next couple years for both office and retail. Thank you.\n\nAdam Weil (President and CEO)\n\nRobby Vandy\n\nGot it. That's super helpful. I wanted to ask about the hotel in Hawaii. Notice the occupancy came up quite a bit as you discussed in your script, but was mostly offset by rate. What can we see regarding demand for tourism, foot traffic and how that asset is positioned from both seeing demand for both Japanese and American tourists right now?\n\nBob\n\nAdam Weil (President and CEO)\n\nRobby Vandy\n\nThank you. Appreciate the color, guys.\n\nOPERATOR\n\nThis concludes our question and answer session. I would like to turn the conference back over to Adam Weil for closing remarks.\n\nAdam Weil (President and CEO)\n\nYeah. Thanks everybody for calling and joining us today or listening on record later. We appreciate your interest and we'll be transparent as possible going forward. Take care.\n\nMarket News and Data brought to you by Benzinga APIs\n\nTo add Benzinga News as your preferred source on Google, click here.",
+              "source": {
+                "uri": "benzinga.com",
+                "dataType": "news",
+                "title": "Benzinga"
+              },
+              "authors": [
+                {
+                  "uri": "benzinga_insights@benzinga.com",
+                  "name": "Benzinga Insights",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://cdn.benzinga.com/files/images/story/2025/11/06/movers_2.jpg?width=1200&height=800&fit=crop",
+              "eventUri": null,
+              "sentiment": 0.4823529411764707,
+              "wgt": 515173756,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "TSLA",
+            "price": 364.46,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 7,
+            "strength_score": 8.0,
+            "created_by": "swing_low",
+            "nearest_upper_level": 364.5,
+            "nearest_lower_level": 364.19
+          },
+          {
+            "symbol": "TSLA",
+            "price": 396.23,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 6.6,
+            "created_by": "swing_high",
+            "nearest_upper_level": 409.28,
+            "nearest_lower_level": 395.92
+          },
+          {
+            "symbol": "TSLA",
+            "price": 352.14,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 6.6,
+            "created_by": "swing_low",
+            "nearest_upper_level": 352.42,
+            "nearest_lower_level": 346.65
+          },
+          {
+            "symbol": "TSLA",
+            "price": 383.14,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 7,
+            "strength_score": 8.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 385.22,
+            "nearest_lower_level": 383.03
+          },
+          {
+            "symbol": "TSLA",
+            "price": 337.24,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.9,
+            "created_by": "swing_low",
+            "nearest_upper_level": 337.24,
+            "nearest_lower_level": null
+          },
+          {
+            "symbol": "TSLA",
+            "price": 364.5,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 7,
+            "strength_score": 8.75,
+            "created_by": "swing_high",
+            "nearest_upper_level": 365.86,
+            "nearest_lower_level": 364.46
+          },
+          {
+            "symbol": "TSLA",
+            "price": 337.25,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.65,
+            "created_by": "swing_low",
+            "nearest_upper_level": 346.27,
+            "nearest_lower_level": 337.24
+          },
+          {
+            "symbol": "TSLA",
+            "price": 394.65,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 4,
+            "strength_score": 8.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 394.65,
+            "nearest_lower_level": 392.78
+          },
+          {
+            "symbol": "TSLA",
+            "price": 409.28,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 0,
+            "strength_score": 4.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": 409.28,
+            "nearest_lower_level": 396.23
+          },
+          {
+            "symbol": "TSLA",
+            "price": 385.22,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 5,
+            "strength_score": 9.4,
+            "created_by": "swing_low",
+            "nearest_upper_level": 385.95,
+            "nearest_lower_level": 383.14
+          },
+          {
+            "symbol": "TSLA",
+            "price": 368.39,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 6,
+            "strength_score": 8.0,
+            "created_by": "swing_low",
+            "nearest_upper_level": 371.75,
+            "nearest_lower_level": 367.96
+          },
+          {
+            "symbol": "TSLA",
+            "price": 364.02,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 7,
+            "strength_score": 8.0,
+            "created_by": "swing_low",
+            "nearest_upper_level": 364.19,
+            "nearest_lower_level": 363.79
+          },
+          {
+            "symbol": "TSLA",
+            "price": 382.29,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 6,
+            "strength_score": 8.7,
+            "created_by": "swing_high",
+            "nearest_upper_level": 383.03,
+            "nearest_lower_level": 381.6
+          },
+          {
+            "symbol": "TSLA",
+            "price": 394.65,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 4,
+            "strength_score": 6.5,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 395.92,
+            "nearest_lower_level": 394.65
+          },
+          {
+            "symbol": "TSLA",
+            "price": 362.5,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 7,
+            "strength_score": 5.85,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 363.79,
+            "nearest_lower_level": 361.83
+          },
+          {
+            "symbol": "TSLA",
+            "price": 392.78,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 7,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 394.65,
+            "nearest_lower_level": 390.01
+          },
+          {
+            "symbol": "TSLA",
+            "price": 387.27,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 5,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 387.51,
+            "nearest_lower_level": 385.95
+          },
+          {
+            "symbol": "TSLA",
+            "price": 373.17,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 7,
+            "strength_score": 7.2,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 374.85,
+            "nearest_lower_level": 372.09
+          },
+          {
+            "symbol": "TSLA",
+            "price": 367.96,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 6,
+            "strength_score": 7.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 368.39,
+            "nearest_lower_level": 365.86
+          },
+          {
+            "symbol": "TSLA",
+            "price": 380.85,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 9,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 381.26,
+            "nearest_lower_level": 378.69
+          },
+          {
+            "symbol": "TSLA",
+            "price": 376.76,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 9,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 378.67,
+            "nearest_lower_level": 376.3
+          },
+          {
+            "symbol": "TSLA",
+            "price": 390.01,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 6,
+            "strength_score": 4.4,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 392.78,
+            "nearest_lower_level": 388.9
+          },
+          {
+            "symbol": "TSLA",
+            "price": 383.03,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 7,
+            "strength_score": 6.5,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 383.14,
+            "nearest_lower_level": 382.29
+          },
+          {
+            "symbol": "TSLA",
+            "price": 385.95,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 6,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 387.27,
+            "nearest_lower_level": 385.22
+          },
+          {
+            "symbol": "TSLA",
+            "price": 381.6,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 8,
+            "strength_score": 6.5,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 382.29,
+            "nearest_lower_level": 381.26
+          },
+          {
+            "symbol": "TSLA",
+            "price": 365.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 9,
+            "strength_score": 4.4,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 367.96,
+            "nearest_lower_level": 364.5
+          },
+          {
+            "symbol": "TSLA",
+            "price": 361.83,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 6,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 362.5,
+            "nearest_lower_level": 361.51
+          },
+          {
+            "symbol": "TSLA",
+            "price": 361.51,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 6,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 361.83,
+            "nearest_lower_level": 357.66
+          },
+          {
+            "symbol": "TSLA",
+            "price": 355.28,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 4,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 357.66,
+            "nearest_lower_level": 352.82
+          },
+          {
+            "symbol": "TSLA",
+            "price": 378.69,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 10,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 380.85,
+            "nearest_lower_level": 378.67
+          },
+          {
+            "symbol": "TSLA",
+            "price": 371.75,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 8,
+            "strength_score": 6.55,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 372.09,
+            "nearest_lower_level": 368.39
+          },
+          {
+            "symbol": "TSLA",
+            "price": 381.26,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 9,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 381.6,
+            "nearest_lower_level": 380.85
+          },
+          {
+            "symbol": "TSLA",
+            "price": 364.19,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 7,
+            "strength_score": 6.5,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 364.46,
+            "nearest_lower_level": 364.02
+          },
+          {
+            "symbol": "TSLA",
+            "price": 352.82,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 355.28,
+            "nearest_lower_level": 352.42
+          },
+          {
+            "symbol": "TSLA",
+            "price": 346.27,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 4,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 346.65,
+            "nearest_lower_level": 337.25
+          },
+          {
+            "symbol": "TSLA",
+            "price": 363.79,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 7,
+            "strength_score": 6.5,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 364.02,
+            "nearest_lower_level": 362.5
+          },
+          {
+            "symbol": "TSLA",
+            "price": 346.65,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 4,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 352.14,
+            "nearest_lower_level": 346.27
+          },
+          {
+            "symbol": "TSLA",
+            "price": 357.66,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 4,
+            "strength_score": 4.4,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 361.51,
+            "nearest_lower_level": 355.28
+          },
+          {
+            "symbol": "TSLA",
+            "price": 352.42,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 352.82,
+            "nearest_lower_level": 352.14
+          },
+          {
+            "symbol": "TSLA",
+            "price": 395.92,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 396.23,
+            "nearest_lower_level": 394.65
+          },
+          {
+            "symbol": "TSLA",
+            "price": 388.9,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 5,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 390.01,
+            "nearest_lower_level": 387.51
+          },
+          {
+            "symbol": "TSLA",
+            "price": 387.51,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 5,
+            "strength_score": 6.5,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 388.9,
+            "nearest_lower_level": 387.27
+          },
+          {
+            "symbol": "TSLA",
+            "price": 375.28,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 10,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 376.3,
+            "nearest_lower_level": 374.85
+          },
+          {
+            "symbol": "TSLA",
+            "price": 376.3,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 9,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 376.76,
+            "nearest_lower_level": 375.28
+          },
+          {
+            "symbol": "TSLA",
+            "price": 372.09,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 8,
+            "strength_score": 6.5,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 373.17,
+            "nearest_lower_level": 371.75
+          },
+          {
+            "symbol": "TSLA",
+            "price": 378.67,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 10,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 378.69,
+            "nearest_lower_level": 376.76
+          },
+          {
+            "symbol": "TSLA",
+            "price": 374.85,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 9,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 375.28,
+            "nearest_lower_level": 373.17
+          }
+        ]
+      },
+      "AMZN": {
+        "daily_atr": 5.792,
+        "technical_atr": 0.01,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Amazon Earnings Preview: AI Momentum In Focus, But This Number Could Be 'Messy' -- IBD",
+          "{A:800015:L:en}UPS Earnings Beat Estimates. Why the Stock Is Falling Anyway. -- Barrons.com"
+        ],
+        "news_provider_hits": [
+          "Barchart.com",
+          "CNBC",
+          "DJ-N",
+          "Investing.com",
+          "The Motley Fool"
+        ],
+        "news_source_types": [
+          "external",
+          "ibkr"
+        ],
+        "earnings_event": {
+          "symbol": "AMZN",
+          "headline": "American Assets Trust Q1 2026 Earnings Call: Complete Transcript - American Assets Trust (NYSE:AAT)",
+          "raw": {
+            "headline": "American Assets Trust Q1 2026 Earnings Call: Complete Transcript - American Assets Trust (NYSE:AAT)",
+            "published_at": "2026-04-29T15:49:16Z",
+            "source": "Benzinga",
+            "url": "https://www.benzinga.com/insights/news/26/04/52136391/american-assets-trust-q1-2026-earnings-call-complete-transcript",
+            "provider_code": "",
+            "source_type": "external",
+            "raw": {
+              "uri": "9197514797",
+              "lang": "eng",
+              "isDuplicate": false,
+              "date": "2026-04-29",
+              "time": "15:49:16",
+              "dateTime": "2026-04-29T15:49:16Z",
+              "dateTimePub": "2026-04-29T15:44:21Z",
+              "dataType": "news",
+              "sim": 0,
+              "url": "https://www.benzinga.com/insights/news/26/04/52136391/american-assets-trust-q1-2026-earnings-call-complete-transcript",
+              "title": "American Assets Trust Q1 2026 Earnings Call: Complete Transcript - American Assets Trust (NYSE:AAT)",
+              "body": "On Wednesday, American Assets Trust (NYSE:AAT) discussed first-quarter financial results during its earnings call. The full transcript is provided below.\n\nThis transcript is brought to you by Benzinga APIs. For real-time access to our entire catalog, please visit https://www.benzinga.com/apis/ for a consultation.\n\nAccess the full call at https://edge.media-server.com/mmc/p/ikzn8r8j/\n\nSummary\n\nAmerican Assets Trust reported first quarter 2026 FFO of $0.51 per diluted share, starting the year in line with expectations.\n\nThe company successfully recast and upsized its unsecured credit facility, increasing the revolving line of credit from $400 million to $500 million, enhancing financial flexibility.\n\nOffice leasing showed strong activity with a 4.8% cash leasing spread and an 86% leased rate for the same store office portfolio.\n\nRetail assets remained robust with a 98% lease rate, while multifamily operations navigated a competitive supply environment with stable results.\n\nThe company reaffirmed its full-year FFO guidance range of $1.96 to $2.10 per share, with potential to reach the upper end if certain factors align.\n\nThe board approved a quarterly dividend of $0.34 per share, maintaining the current payout ratio despite elevated levels due to leasing-related capital expenditures.\n\nManagement highlighted the impact of AI on office demand and investments in technology to improve operations.\n\nTourism recovery at Waikiki Beachwalk remains gradual, with long-term confidence in the asset's value despite current challenges.\n\nFull Transcript\n\nOPERATOR\n\nMeliana Leverton (Associate General Counsel)\n\nAdam Weil (President and CEO)\n\nBob\n\nOPERATOR\n\nThank you. We will now begin the question and answer session. To ask a question, you may press Star then one on your touchtone phone. If you if you are using a speakerphone, please pick up your handset before pressing the keys. If at any time your question has been addressed and you would like to withdraw your question, please press star then two the first question comes from Todd Thomas from KeyBank. Please go ahead.\n\nSean Glass\n\nHi, good morning, this is Sean Glass on for Todd. You previously discussed some known move outs in the office portfolio. I think there was an expectation that there could be 300 or 400 basis points of occupancy from expected vacates. Have any tenant decisions shifted or changed since year end and could you remind us what's embedded in guidance for the office portfolio's year end lease rate?\n\nAdam Weil (President and CEO)\n\nSean Glass\n\nThank you, that's great. Color. I wanted to ask about La Jolla specifically. Some very good traction there on leasing. Can you talk about the pipeline a little, whether any additional leases are out for signature, anything documentation and maybe some color on where you might expect La Jolla to be at year end.\n\nAdam Weil (President and CEO)\n\nSean Glass\n\nOkay, if I could slip one more in on one beach. I mean some good traction there too. Could you talk a little about you touched on the AI demand or otherwise and also where you think that might be at your end and maybe you could touch on the one large opportunity that did in pencil if that changes the equation at all.\n\nAdam Weil (President and CEO)\n\nOPERATOR\n\nThank you. The next question comes from Hendel St. Just from Mizuho. Please go ahead.\n\nRobby Vandy\n\nHi there. Good morning guys. This is Robby Vandy on the line for Hundel. Hope you all are doing well. I wanted to ask a bit about the signed and not occupied pipeline in both office and retail. Can you give some, maybe some numbers as to how when you think leases will begin cash flowing for those two verticals and maybe regarding detail about the timing and when over the next couple years for both office and retail. Thank you.\n\nAdam Weil (President and CEO)\n\nRobby Vandy\n\nGot it. That's super helpful. I wanted to ask about the hotel in Hawaii. Notice the occupancy came up quite a bit as you discussed in your script, but was mostly offset by rate. What can we see regarding demand for tourism, foot traffic and how that asset is positioned from both seeing demand for both Japanese and American tourists right now?\n\nBob\n\nAdam Weil (President and CEO)\n\nRobby Vandy\n\nThank you. Appreciate the color, guys.\n\nOPERATOR\n\nThis concludes our question and answer session. I would like to turn the conference back over to Adam Weil for closing remarks.\n\nAdam Weil (President and CEO)\n\nYeah. Thanks everybody for calling and joining us today or listening on record later. We appreciate your interest and we'll be transparent as possible going forward. Take care.\n\nMarket News and Data brought to you by Benzinga APIs\n\nTo add Benzinga News as your preferred source on Google, click here.",
+              "source": {
+                "uri": "benzinga.com",
+                "dataType": "news",
+                "title": "Benzinga"
+              },
+              "authors": [
+                {
+                  "uri": "benzinga_insights@benzinga.com",
+                  "name": "Benzinga Insights",
+                  "type": "author",
+                  "isAgency": false
+                }
+              ],
+              "image": "https://cdn.benzinga.com/files/images/story/2025/11/06/movers_2.jpg?width=1200&height=800&fit=crop",
+              "eventUri": null,
+              "sentiment": 0.4823529411764707,
+              "wgt": 515173756,
+              "relevance": 1
+            }
+          }
+        },
+        "levels": [
+          {
+            "symbol": "AMZN",
+            "price": 204.31,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 1,
+            "strength_score": 6.4,
+            "created_by": "swing_low",
+            "nearest_upper_level": 204.89,
+            "nearest_lower_level": 201.47
+          },
+          {
+            "symbol": "AMZN",
+            "price": 212.8,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 4,
+            "strength_score": 8.7,
+            "created_by": "swing_high",
+            "nearest_upper_level": 213.07,
+            "nearest_lower_level": 211.66
+          },
+          {
+            "symbol": "AMZN",
+            "price": 206.64,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 4,
+            "strength_score": 8.0,
+            "created_by": "swing_low",
+            "nearest_upper_level": 207.14,
+            "nearest_lower_level": 206.54
+          },
+          {
+            "symbol": "AMZN",
+            "price": 213.07,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 3,
+            "strength_score": 9.4,
+            "created_by": "swing_high",
+            "nearest_upper_level": 213.58,
+            "nearest_lower_level": 212.8
+          },
+          {
+            "symbol": "AMZN",
+            "price": 199.14,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 1,
+            "strength_score": 5.0,
+            "created_by": "swing_low",
+            "nearest_upper_level": 199.34,
+            "nearest_lower_level": null
+          },
+          {
+            "symbol": "AMZN",
+            "price": 213.58,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 2,
+            "strength_score": 7.2,
+            "created_by": "swing_high",
+            "nearest_upper_level": 213.77,
+            "nearest_lower_level": 213.07
+          },
+          {
+            "symbol": "AMZN",
+            "price": 204.9,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 6.6,
+            "created_by": "swing_low",
+            "nearest_upper_level": 204.9,
+            "nearest_lower_level": 204.89
+          },
+          {
+            "symbol": "AMZN",
+            "price": 209.07,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 5,
+            "strength_score": 9.4,
+            "created_by": "swing_low",
+            "nearest_upper_level": 209.84,
+            "nearest_lower_level": 208.27
+          },
+          {
+            "symbol": "AMZN",
+            "price": 240.43,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 5.7,
+            "created_by": "swing_high",
+            "nearest_upper_level": 244.2,
+            "nearest_lower_level": 225.23
+          },
+          {
+            "symbol": "AMZN",
+            "price": 252.18,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 6.6,
+            "created_by": "swing_high",
+            "nearest_upper_level": 252.54,
+            "nearest_lower_level": 249.91
+          },
+          {
+            "symbol": "AMZN",
+            "price": 244.2,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 1,
+            "strength_score": 5.0,
+            "created_by": "swing_low",
+            "nearest_upper_level": 245.36,
+            "nearest_lower_level": 240.43
+          },
+          {
+            "symbol": "AMZN",
+            "price": 256.18,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 1,
+            "strength_score": 6.4,
+            "created_by": "swing_high",
+            "nearest_upper_level": 256.63,
+            "nearest_lower_level": 255.09
+          },
+          {
+            "symbol": "AMZN",
+            "price": 245.36,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 2,
+            "strength_score": 5.8,
+            "created_by": "swing_low",
+            "nearest_upper_level": 248.28,
+            "nearest_lower_level": 244.2
+          },
+          {
+            "symbol": "AMZN",
+            "price": 264.5,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 2,
+            "strength_score": 7.25,
+            "created_by": "swing_high",
+            "nearest_upper_level": 265.91,
+            "nearest_lower_level": 261.12
+          },
+          {
+            "symbol": "AMZN",
+            "price": 256.63,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 5.7,
+            "created_by": "swing_low",
+            "nearest_upper_level": 258.39,
+            "nearest_lower_level": 256.18
+          },
+          {
+            "symbol": "AMZN",
+            "price": 204.9,
+            "type": "consolidation",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 4.1,
+            "created_by": "consolidation_low",
+            "nearest_upper_level": 205.37,
+            "nearest_lower_level": 204.9
+          },
+          {
+            "symbol": "AMZN",
+            "price": 209.87,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 6,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 210.14,
+            "nearest_lower_level": 209.84
+          },
+          {
+            "symbol": "AMZN",
+            "price": 207.14,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 5,
+            "strength_score": 7.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 207.24,
+            "nearest_lower_level": 206.64
+          },
+          {
+            "symbol": "AMZN",
+            "price": 209.84,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 6,
+            "strength_score": 7.9,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 209.87,
+            "nearest_lower_level": 209.07
+          },
+          {
+            "symbol": "AMZN",
+            "price": 205.37,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 206.54,
+            "nearest_lower_level": 204.9
+          },
+          {
+            "symbol": "AMZN",
+            "price": 210.14,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 7,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 210.5,
+            "nearest_lower_level": 209.87
+          },
+          {
+            "symbol": "AMZN",
+            "price": 207.95,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 5,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 208.27,
+            "nearest_lower_level": 207.24
+          },
+          {
+            "symbol": "AMZN",
+            "price": 211.66,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 8,
+            "strength_score": 4.4,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 212.8,
+            "nearest_lower_level": 210.57
+          },
+          {
+            "symbol": "AMZN",
+            "price": 207.24,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 5,
+            "strength_score": 5.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 207.95,
+            "nearest_lower_level": 207.14
+          },
+          {
+            "symbol": "AMZN",
+            "price": 204.89,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 204.9,
+            "nearest_lower_level": 204.31
+          },
+          {
+            "symbol": "AMZN",
+            "price": 210.5,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 8,
+            "strength_score": 5.85,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 210.57,
+            "nearest_lower_level": 210.14
+          },
+          {
+            "symbol": "AMZN",
+            "price": 208.27,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 5,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 209.07,
+            "nearest_lower_level": 207.95
+          },
+          {
+            "symbol": "AMZN",
+            "price": 210.57,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 8,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 211.66,
+            "nearest_lower_level": 210.5
+          },
+          {
+            "symbol": "AMZN",
+            "price": 206.54,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 3,
+            "strength_score": 6.5,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 206.64,
+            "nearest_lower_level": 205.37
+          },
+          {
+            "symbol": "AMZN",
+            "price": 213.77,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 2,
+            "strength_score": 5.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 221.25,
+            "nearest_lower_level": 213.58
+          },
+          {
+            "symbol": "AMZN",
+            "price": 254.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 255.08,
+            "nearest_lower_level": 252.54
+          },
+          {
+            "symbol": "AMZN",
+            "price": 249.7,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 4,
+            "strength_score": 7.2,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 249.91,
+            "nearest_lower_level": 248.28
+          },
+          {
+            "symbol": "AMZN",
+            "price": 255.09,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 256.18,
+            "nearest_lower_level": 255.08
+          },
+          {
+            "symbol": "AMZN",
+            "price": 248.28,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 0,
+            "false_breakouts": 4,
+            "strength_score": 4.4,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 249.7,
+            "nearest_lower_level": 245.36
+          },
+          {
+            "symbol": "AMZN",
+            "price": 252.54,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 3,
+            "strength_score": 5.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 254.86,
+            "nearest_lower_level": 252.18
+          },
+          {
+            "symbol": "AMZN",
+            "price": 249.91,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 3,
+            "strength_score": 7.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 252.18,
+            "nearest_lower_level": 249.7
+          },
+          {
+            "symbol": "AMZN",
+            "price": 259.98,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 261.12,
+            "nearest_lower_level": 258.39
+          },
+          {
+            "symbol": "AMZN",
+            "price": 255.08,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 255.09,
+            "nearest_lower_level": 254.86
+          },
+          {
+            "symbol": "AMZN",
+            "price": 261.12,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 264.5,
+            "nearest_lower_level": 259.98
+          },
+          {
+            "symbol": "AMZN",
+            "price": 258.39,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 1,
+            "false_breakouts": 3,
+            "strength_score": 5.1,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 259.98,
+            "nearest_lower_level": 256.63
+          }
+        ]
+      }
+    },
+    "macro_risk": {
+      "blocked": false,
+      "headlines": [
+        "{A:800015:L:en}SPY ETF Climbs 0.2%, Outperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Rises 0.8%",
+        "{A:800015:L:en}SPY ETF Falls 0.4%",
+        "{A:800015:L:en}SPY ETF Gains 1.0%",
+        "{A:800015:L:en}SPY ETF Declines 0.7%, Underperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Declines 0.2%",
+        "{A:800015:L:en}SPY ETF Climbs 1.2%",
+        "{A:800015:L:en}SPY ETF Rises 0.2%, Underperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Gains 0.8%",
+        "{A:800015:L:en}SPY ETF Rises 1.2%"
+      ],
+      "matched_headlines": [],
+      "critical_matches": [],
+      "provider_hits": [
+        "DJ-RTG"
+      ],
+      "source_types": [
+        "ibkr"
+      ]
+    },
+    "ideas": [
+      {
+        "symbol": "BBBY",
+        "catalyst": "level interaction",
+        "entry": 4.81,
+        "stop": 4.8,
+        "target": 4.82,
+        "decision": "WATCH"
+      },
+      {
+        "symbol": "SEI",
+        "catalyst": "{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance",
+        "entry": 74.84,
+        "stop": 71.86,
+        "target": 81.24,
+        "decision": "HOLD"
+      },
+      {
+        "symbol": "SANM",
+        "catalyst": "{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD",
+        "entry": 209.96,
+        "stop": 184.0,
+        "target": 230.56,
+        "decision": "HOLD"
+      }
+    ],
+    "research_symbols": [
+      "BBBY",
+      "SEI",
+      "SANM",
+      "AAPL",
+      "MSFT",
+      "TSLA",
+      "AMZN"
+    ]
+  }
+}
+```
+
+## Workflow Intraday (2026-04-29T12:05:06)
+- **stage**: Intraday
+- **tracked_symbols**: []
+- **actions**: []
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [],
+    "tracked_positions": []
+  }
+}
+```
+
+## Workflow Intraday (2026-04-29T12:35:06)
+- **stage**: Intraday
+- **tracked_symbols**: []
+- **actions**: []
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [],
+    "tracked_positions": []
+  }
+}
+```
+
+## Workflow Intraday (2026-04-29T13:05:09)
+- **stage**: Intraday
+- **tracked_symbols**: []
+- **actions**: []
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [],
+    "tracked_positions": []
+  }
+}
+```
+
+## Workflow Intraday (2026-04-29T13:35:05)
+- **stage**: Intraday
+- **tracked_symbols**: []
+- **actions**: []
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [],
+    "tracked_positions": []
+  }
+}
+```
+
+## Workflow Intraday (2026-04-29T14:05:06)
+- **stage**: Intraday
+- **tracked_symbols**: []
+- **actions**: []
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [],
+    "tracked_positions": []
+  }
+}
+```
+
+## Workflow Intraday (2026-04-29T14:35:05)
+- **stage**: Intraday
+- **tracked_symbols**: []
+- **actions**: []
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [],
+    "tracked_positions": []
+  }
+}
+```
+
+## Workflow Intraday (2026-04-29T15:05:05)
+- **stage**: Intraday
+- **tracked_symbols**: []
+- **actions**: []
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [],
+    "tracked_positions": []
+  }
+}
+```
+
+## Workflow Intraday (2026-04-29T15:35:05)
+- **stage**: Intraday
+- **tracked_symbols**: []
+- **actions**: []
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [],
+    "tracked_positions": []
+  }
+}
+```
+
+## Workflow Intraday (2026-04-29T16:05:05)
+- **stage**: Intraday
+- **tracked_symbols**: []
+- **actions**: []
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [],
+    "tracked_positions": []
+  }
+}
+```

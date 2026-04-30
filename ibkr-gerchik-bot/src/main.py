@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -112,13 +113,19 @@ def _cash_from_summary(summary: List[Dict[str, object]]) -> float:
 def _load_state(state_path: Path) -> Dict[str, object]:
     if not state_path.exists():
         return {"watchlist": {}, "tracked_positions": [], "weekly_results": []}
-    with state_path.open("r", encoding="utf-8") as handle:
-        return json.load(handle)
+    try:
+        with state_path.open("r", encoding="utf-8") as handle:
+            return json.load(handle)
+    except json.JSONDecodeError:
+        LOGGER.warning("State file is invalid or temporarily empty: %s. Falling back to default state.", state_path)
+        return {"watchlist": {}, "tracked_positions": [], "weekly_results": []}
 
 
 def _save_state(state_path: Path, payload: Dict[str, object]) -> None:
-    with state_path.open("w", encoding="utf-8") as handle:
+    temp_path = state_path.with_suffix(f"{state_path.suffix}.tmp")
+    with temp_path.open("w", encoding="utf-8") as handle:
         json.dump(payload, handle, indent=2)
+    os.replace(temp_path, state_path)
 
 
 def _hydrate_from_logs(state: Dict[str, object]) -> Dict[str, object]:
