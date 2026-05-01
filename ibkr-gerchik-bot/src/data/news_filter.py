@@ -28,6 +28,7 @@ class NewsRiskFilter:
         news_items = self.news_service.fetch_news_by_symbol(symbol)
         headlines = [str(item.get("headline", "")) for item in news_items]
         matches = _matching_headlines(headlines, SETTINGS.news.high_risk_keywords)
+        risk_level = "HIGH" if matches else ("MEDIUM" if headlines else "LOW")
         provider_hits = sorted(
             {
                 str(item.get("provider_code") or item.get("source") or "")
@@ -39,6 +40,7 @@ class NewsRiskFilter:
         return {
             "symbol": symbol,
             "blocked": bool(matches),
+            "risk_level": risk_level,
             "headlines": headlines,
             "matched_headlines": matches,
             "provider_hits": provider_hits,
@@ -53,6 +55,8 @@ class NewsRiskFilter:
         headlines = [str(item.get("headline", "")) for item in macro_items]
         matches = _matching_headlines(headlines, SETTINGS.news.macro_risk_keywords)
         critical_matches = _matching_headlines(headlines, SETTINGS.news.critical_macro_keywords)
+        blocked = bool(critical_matches) or len(matches) >= SETTINGS.news.macro_min_match_count
+        risk_level = "HIGH" if blocked else ("MEDIUM" if matches else "LOW")
         provider_hits = sorted(
             {
                 str(item.get("provider_code") or item.get("source") or "")
@@ -62,7 +66,8 @@ class NewsRiskFilter:
         )
         source_types = sorted({str(item.get("source_type", "external")) for item in macro_items})
         return {
-            "blocked": bool(critical_matches) or len(matches) >= SETTINGS.news.macro_min_match_count,
+            "blocked": blocked,
+            "risk_level": risk_level,
             "headlines": headlines,
             "matched_headlines": matches,
             "critical_matches": critical_matches,

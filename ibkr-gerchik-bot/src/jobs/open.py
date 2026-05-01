@@ -1,17 +1,26 @@
-"""Market open job."""
+"""Market open entry-scanning loop."""
 
 from __future__ import annotations
 
-from typing import Dict, List
+import time
+from datetime import datetime
+from typing import Callable, Dict, List
 
-from src.config import SETTINGS, append_markdown_log
+from src.config import LOGGER, SETTINGS, append_markdown_log
 from src.data.market_data import MarketDataService
 from src.data.news_filter import NewsRiskFilter
 from src.execution.order_manager import OrderManager
-from src.memory_context import load_workflow_context
-from src.strategy.atr import atr_travel_filter, technical_atr_has_room
-from src.strategy.levels import Level
-from src.strategy.strategy_router import route_strategies
+from src.jobs.session_utils import (
+    get_scan_interval,
+    is_open_entry_window,
+    job_loop_lock,
+    next_scan_time,
+    run_entry_scan,
+    serialize_scan_results,
+    session_now,
+    sleep_until,
+    summarize_skip_reasons,
+)
 from src.workflow_log import append_workflow_snapshot
 
 
@@ -24,71 +33,101 @@ def run_open(
     cash_available: float,
     current_positions: List[Dict[str, object]],
     open_risk_amount: float,
+    *,
+    now_provider: Callable[[], datetime] | None = None,
+    sleep_provider: Callable[[float], None] | None = None,
 ) -> List[Dict[str, object]]:
-    """Re-check live prices, scan setups, validate, and execute."""
-    executed: List[Dict[str, object]] = []
-    skipped: List[Dict[str, object]] = []
-    context = load_workflow_context(SETTINGS.paths.strategy_doc, SETTINGS.paths.research_log, SETTINGS.paths.trade_log)
-    if not context["research_log_tail"]:
-        append_workflow_snapshot(SETTINGS.paths.research_log, "Open", {"blocked": True, "reason": "missing_research"})
-        return executed
-    macro_context = news_filter.get_macro_risk_context()
-    if macro_context["blocked"]:
+    """Scan repeatedly for entry signals during the opening phase."""
+    now_fn = now_provider or session_now
+    sleep_fn = sleep_provider or time.sleep
+
+    if not watchlist:
+        append_workflow_snapshot(SETTINGS.paths.research_log, "Open", {"blocked": True, "reason": "missing_watchlist"})
+        return []
+
+    current_time = now_fn()
+    if not market_data.market_is_open(current_time) or not is_open_entry_window(current_time):
+        LOGGER.info("Open job skipped outside open-entry window at %s", current_time.isoformat())
         append_workflow_snapshot(
             SETTINGS.paths.research_log,
             "Open",
-            {
-                "blocked": True,
-                "reason": "macro_risk",
-                "provider_hits": macro_context.get("provider_hits", []),
-                "source_types": macro_context.get("source_types", []),
-                "matched_headlines": macro_context.get("matched_headlines", []),
-            },
+            {"blocked": True, "reason": "outside_open_window", "timestamp": current_time.isoformat()},
         )
-        return executed
+        return []
 
-    for symbol, plan in watchlist.items():
-        if plan.get("news_blocked"):
-            skipped.append({"symbol": symbol, "reason": "symbol_news_risk"})
-            continue
-        intraday_bars = market_data.get_intraday_bars(symbol, duration="2 D", bar_size="5 mins")
-        quote = market_data.get_quote(symbol)
-        if intraday_bars.empty or quote.get("last", 0.0) <= 0:
-            skipped.append({"symbol": symbol, "reason": "missing_live_data"})
-            continue
+    executed_total: List[Dict[str, object]] = []
+    skipped_total: List[Dict[str, object]] = []
+    scans: List[Dict[str, object]] = []
 
-        levels = [Level(**level) for level in plan.get("levels", [])]
-        candidate_signals = route_strategies(symbol, intraday_bars, levels)
-        if not candidate_signals:
-            skipped.append({"symbol": symbol, "reason": "no_signal"})
-            continue
+    with job_loop_lock("open_session") as acquired:
+        if not acquired:
+            append_workflow_snapshot(
+                SETTINGS.paths.research_log,
+                "Open",
+                {"blocked": True, "reason": "loop_lock_held", "timestamp": current_time.isoformat()},
+            )
+            return []
 
-        session_low = float(intraday_bars["low"].min())
-        session_high = float(intraday_bars["high"].max())
-        for signal in candidate_signals:
-            atr_ok = technical_atr_has_room(float(plan.get("technical_atr", 0.0)), signal.entry)
-            trend_ok = atr_travel_filter(signal.entry, session_low, session_high, float(plan.get("daily_atr", 0.0)), False)
-            if not atr_ok or not trend_ok:
-                skipped.append({"symbol": symbol, "reason": "atr_filter"})
-                continue
-            success, payload = order_manager.execute_trade(
-                signal,
+        while True:
+            scan_time = now_fn()
+            if not market_data.market_is_open(scan_time) or not is_open_entry_window(scan_time):
+                break
+
+            interval = get_scan_interval(scan_time)
+            LOGGER.info("Open scan loop tick at %s interval=%ss", scan_time.isoformat(), interval)
+            scan_result = run_entry_scan(
+                stage_name="Open",
+                market_data=market_data,
+                order_manager=order_manager,
+                news_filter=news_filter,
+                watchlist=watchlist,
                 account_equity=account_equity,
                 cash_available=cash_available,
                 current_positions=current_positions,
                 open_risk_amount=open_risk_amount,
+                scan_time=scan_time,
             )
-            if success:
-                executed.append(payload)
-                current_positions.append({"symbol": symbol})
+            executed = scan_result["executed"]
+            skipped = scan_result["skipped"]
+            executed_total.extend(executed)
+            skipped_total.extend(skipped)
+            scans.append(
+                {
+                    "timestamp": scan_time.isoformat(),
+                    "interval_seconds": interval,
+                    "symbols_scanned": scan_result["symbols_scanned"],
+                    "signals_detected": scan_result["signals_detected"],
+                    "executed_count": len(executed),
+                    "skipped_count": len(skipped),
+                }
+            )
+            for payload in executed:
                 open_risk_amount += abs(float(payload["entry"]) - float(payload["stop_loss"])) * float(payload["quantity"])
+
+            next_run = next_scan_time(scan_time, interval)
+
+            if not market_data.market_is_open(now_fn()) or not is_open_entry_window(now_fn()) or interval <= 0:
                 break
-            skipped.append({"symbol": symbol, "reason": payload.get("reasons", ["rejected"])})
+
+            sleep_until(next_run, now_fn, sleep_fn)
 
     append_markdown_log(
         SETTINGS.paths.trade_log,
         "Market Open",
-        {"executed": executed or "none", "skipped": skipped or "none"},
+        {
+            "executed": executed_total or "none",
+            "skipped": skipped_total or "none",
+            "scan_count": len(scans),
+            "skip_reason_summary": summarize_skip_reasons(skipped_total) or "none",
+        },
     )
-    append_workflow_snapshot(SETTINGS.paths.research_log, "Open", {"executed": executed, "skipped": skipped})
-    return executed
+    append_workflow_snapshot(
+        SETTINGS.paths.research_log,
+        "Open",
+        {
+            "executed": executed_total,
+            "skipped": skipped_total,
+            "scans": serialize_scan_results(scans),
+        },
+    )
+    return executed_total

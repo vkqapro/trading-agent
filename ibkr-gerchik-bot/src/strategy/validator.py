@@ -80,3 +80,9 @@ def validate_trade(
     if not position_value_ok(quantity, entry, SETTINGS.risk.max_position_value, cash_available):
         reasons.append("position_value_invalid")
     return len(reasons) == 0, reasons
+
+
+def validate_trade_result(*args: object, **kwargs: object) -> Dict[str, object]:
+    """Explainable validator wrapper that preserves deterministic reason tracking."""
+    valid, reasons = validate_trade(*args, **kwargs)
+    return {"valid": valid, "reasons": reasons}

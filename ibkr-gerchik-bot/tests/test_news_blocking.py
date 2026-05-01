@@ -30,6 +30,8 @@ class NewsBlockingTests(unittest.TestCase):
         symbol_context = news_filter.get_symbol_risk_context("AAPL")
         macro_context = news_filter.get_macro_risk_context()
 
+        self.assertEqual(symbol_context["risk_level"], "HIGH")
+        self.assertEqual(macro_context["risk_level"], "HIGH")
         self.assertIn("BRFUPDN", symbol_context["provider_hits"])
         self.assertIn("ibkr", symbol_context["source_types"])
         self.assertIn("external", symbol_context["source_types"])

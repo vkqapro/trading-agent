@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import List
+from typing import Dict, List, Optional
 
 import pandas as pd
 
@@ -17,15 +17,20 @@ from src.strategy.rebound import detect_rebound
 from src.strategy.signal_models import TradeSignal
 
 
-def route_strategies(symbol: str, intraday_bars: pd.DataFrame, levels: List[Level]) -> List[TradeSignal]:
+def route_strategies(
+    symbol: str,
+    intraday_bars: pd.DataFrame,
+    levels: List[Level],
+    news_context: Optional[Dict[str, object]] = None,
+) -> List[TradeSignal]:
     signals: List[TradeSignal] = []
     for level in levels:
         candidates = [
             detect_rebound(symbol, intraday_bars, level),
             detect_breakout(symbol, intraday_bars, level),
-            detect_false_breakout_one_bar(symbol, intraday_bars, level),
-            detect_false_breakout_two_bar(symbol, intraday_bars, level),
-            detect_false_breakout_complex(symbol, intraday_bars, level),
+            detect_false_breakout_one_bar(symbol, intraday_bars, level, news_context=news_context),
+            detect_false_breakout_two_bar(symbol, intraday_bars, level, news_context=news_context),
+            detect_false_breakout_complex(symbol, intraday_bars, level, news_context=news_context),
         ]
         for signal in candidates:
             if signal is None:
