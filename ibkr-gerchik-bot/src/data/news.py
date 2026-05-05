@@ -65,6 +65,8 @@ class NewsService:
         self.broker = broker
 
     def fetch_news_by_symbol(self, symbol: str, limit: int = 10) -> List[Dict[str, object]]:
+        if SETTINGS.symbol_security_type(symbol) != "STK":
+            return []
         external_items = self._fetch_external_news_by_symbol(symbol, limit=limit)
         ibkr_items = self.fetch_ibkr_news_by_symbol(symbol, limit=limit)
         return self._merge_news_items(external_items, ibkr_items, limit=max(limit, self.config.ibkr_headline_limit))
@@ -125,7 +127,7 @@ class NewsService:
         return macro_items
 
     def fetch_earnings_calendar(self, symbols: Iterable[str], days_ahead: int = 14) -> List[Dict[str, object]]:
-        symbol_list = [symbol for symbol in symbols if symbol]
+        symbol_list = [symbol for symbol in symbols if symbol and SETTINGS.symbol_security_type(symbol) == "STK"]
         earnings_events: List[Dict[str, object]] = []
         for symbol in symbol_list:
             params = self._article_params(

@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
-from src.config import LOGGER, SETTINGS
+from src.config import LOGGER, SETTINGS, fx_pair_components
 
 
 def _ensure_event_loop() -> None:
@@ -22,10 +22,10 @@ def _ensure_event_loop() -> None:
 _ensure_event_loop()
 
 try:
-    from ib_insync import IB, LimitOrder, MarketOrder, Stock, StopOrder, Ticker, Trade, util
+    from ib_insync import IB, Forex, LimitOrder, MarketOrder, Stock, StopOrder, Ticker, Trade, util
 except ImportError:  # pragma: no cover - exercised only when dependency is missing.
     IB = None  # type: ignore[assignment]
-    LimitOrder = MarketOrder = StopOrder = Stock = Ticker = Trade = None  # type: ignore[assignment]
+    Forex = LimitOrder = MarketOrder = StopOrder = Stock = Ticker = Trade = None  # type: ignore[assignment]
     util = None  # type: ignore[assignment]
 
 
@@ -96,6 +96,20 @@ class IBKRClient:
         self.ib.qualifyContracts(contract)
         return contract
 
+    def create_forex_contract(self, symbol: str, exchange: str = "IDEALPRO") -> Any:
+        pair = fx_pair_components(symbol)
+        if pair is None:
+            raise ValueError(f"Unsupported forex symbol format: {symbol}")
+        base, quote = pair
+        contract = Forex(pair=f"{base}{quote}", exchange=exchange)
+        self.ib.qualifyContracts(contract)
+        return contract
+
+    def create_contract(self, symbol: str) -> Any:
+        if SETTINGS.symbol_security_type(symbol) == "CASH":
+            return self.create_forex_contract(symbol)
+        return self.create_stock_contract(symbol)
+
     def get_account_summary(self) -> List[Dict[str, Any]]:
         self.ensure_connection()
         summary: List[Dict[str, Any]] = []
@@ -154,7 +168,7 @@ class IBKRClient:
     def get_market_price(self, symbol: str) -> Dict[str, float]:
         """Request a snapshot and return bid/ask/last/close safely."""
         self.ensure_connection()
-        contract = self.create_stock_contract(symbol)
+        contract = self.create_contract(symbol)
         ticker: Ticker = self.ib.reqMktData(contract, "", snapshot=True, regulatorySnapshot=False)
         self.ib.sleep(2)
         return {
@@ -174,14 +188,17 @@ class IBKRClient:
     ) -> Any:
         """Fetch historical bars and return a DataFrame."""
         self.ensure_connection()
-        contract = self.create_stock_contract(symbol)
+        contract = self.create_contract(symbol)
+        is_fx = SETTINGS.symbol_security_type(symbol) == "CASH"
+        resolved_what_to_show = "MIDPOINT" if is_fx else what_to_show
+        resolved_use_rth = False if is_fx else use_rth
         bars = self.ib.reqHistoricalData(
             contract,
             endDateTime="",
             durationStr=duration,
             barSizeSetting=bar_size,
-            whatToShow=what_to_show,
-            useRTH=use_rth,
+            whatToShow=resolved_what_to_show,
+            useRTH=resolved_use_rth,
             formatDate=1,
         )
         return util.df(bars)
@@ -205,7 +222,7 @@ class IBKRClient:
         lookback_hours: int = 24,
     ) -> List[Dict[str, str]]:
         self.ensure_connection()
-        if not provider_codes:
+        if not provider_codes or SETTINGS.symbol_security_type(symbol) != "STK":
             return []
 
         try:

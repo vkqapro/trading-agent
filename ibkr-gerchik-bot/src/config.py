@@ -27,6 +27,29 @@ def _csv_env(name: str, default: str) -> List[str]:
     return [item.strip() for item in os.getenv(name, default).split(",") if item.strip()]
 
 
+def _csv_env_with_fallback(name: str, fallback_name: str, default: str) -> List[str]:
+    raw = os.getenv(name)
+    if raw is None:
+        raw = os.getenv(fallback_name, default)
+    return [item.strip() for item in raw.split(",") if item.strip()]
+
+
+def normalize_symbol(symbol: str) -> str:
+    return symbol.strip().upper()
+
+
+def fx_pair_components(symbol: str) -> tuple[str, str] | None:
+    normalized = normalize_symbol(symbol)
+    if "." in normalized:
+        base, quote = normalized.split(".", 1)
+        if len(base) == 3 and len(quote) == 3 and base.isalpha() and quote.isalpha():
+            return base, quote
+    compact = normalized.replace(".", "")
+    if len(compact) == 6 and compact.isalpha():
+        return compact[:3], compact[3:]
+    return None
+
+
 @dataclass(frozen=True)
 class BrokerConfig:
     host: str = os.getenv("IBKR_HOST", "127.0.0.1")
@@ -140,7 +163,14 @@ class Settings:
     auto_git_push: bool = os.getenv("AUTO_GIT_PUSH", "false").lower() == "true"
     git_branch: str = os.getenv("WORKFLOW_GIT_BRANCH", "Test")
     account_currency: str = os.getenv("ACCOUNT_CURRENCY", "USD")
-    symbols: List[str] = field(default_factory=lambda: _csv_env("BOT_SYMBOLS", "AAPL,MSFT,NVDA,AMD,TSLA,META,AMZN,NFLX"))
+    stock_symbols: List[str] = field(
+        default_factory=lambda: _csv_env_with_fallback(
+            "STOCK_SYMBOLS",
+            "BOT_SYMBOLS",
+            "AAPL,MSFT,NVDA,AMD,TSLA,META,AMZN,NFLX",
+        )
+    )
+    fx_symbols: List[str] = field(default_factory=lambda: _csv_env("FX_SYMBOLS", ""))
     broker: BrokerConfig = field(default_factory=BrokerConfig)
     risk: RiskConfig = field(default_factory=RiskConfig)
     strategy: StrategyConfig = field(default_factory=StrategyConfig)
@@ -154,6 +184,25 @@ class Settings:
     slack_command_prefix: str = os.getenv("SLACK_COMMAND_PREFIX", "ibkr").strip().lower()
     slack_allowed_user_ids: List[str] = field(default_factory=lambda: _csv_env("SLACK_ALLOWED_USER_IDS", ""))
     premarket_levels_export_min_strength: float = float(os.getenv("PREMARKET_LEVELS_EXPORT_MIN_STRENGTH", "7.0"))
+
+    @property
+    def symbols(self) -> List[str]:
+        merged: List[str] = []
+        seen: set[str] = set()
+        for symbol in [*self.stock_symbols, *self.fx_symbols]:
+            normalized = normalize_symbol(symbol)
+            if normalized and normalized not in seen:
+                seen.add(normalized)
+                merged.append(normalized)
+        return merged
+
+    def symbol_security_type(self, symbol: str) -> str:
+        normalized = normalize_symbol(symbol)
+        if normalized in {normalize_symbol(item) for item in self.fx_symbols}:
+            return "CASH"
+        if fx_pair_components(normalized) is not None:
+            return "CASH"
+        return "STK"
 
 
 SETTINGS = Settings()

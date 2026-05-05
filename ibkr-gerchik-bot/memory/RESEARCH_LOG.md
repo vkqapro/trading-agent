@@ -126566,3 +126566,13068 @@ Premarket scans, intraday observations, and daily analysis are appended here.
   }
 }
 ```
+
+## Premarket Research (2026-05-04T22:07:07)
+- **strategy_loaded**: True
+- **trade_log_context_loaded**: True
+- **research_log_context_loaded**: True
+- **account_snapshot**: {'account': [{'account': 'DU5454348', 'tag': 'AccountType', 'value': 'INDIVIDUAL', 'currency': ''}, {'account': 'DU5454348', 'tag': 'Cushion', 'value': '1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemaining', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+1', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+2', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+3', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+4', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'LookAheadNextChange', 'value': '0', 'currency': ''}, {'account': 'DU5454348', 'tag': 'AccruedCash', 'value': '240.40', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'AvailableFunds', 'value': '101920.30', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'BuyingPower', 'value': '407681.21', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'EquityWithLoanValue', 'value': '101920.30', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'ExcessLiquidity', 'value': '101920.30', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullAvailableFunds', 'value': '101920.30', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullExcessLiquidity', 'value': '101920.30', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'GrossPositionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'InitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadAvailableFunds', 'value': '101920.30', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadExcessLiquidity', 'value': '101920.30', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'MaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'NetLiquidation', 'value': '102160.70', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'PreviousDayEquityWithLoanValue', 'value': '101920.65', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTEquity', 'value': '102160.70', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTMargin', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'SMA', 'value': '102160.96', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'TotalCashValue', 'value': '101920.30', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CashBalance', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.168668', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Currency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'CashBalance', 'value': '100751.521', 'currency': 'USD'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '100751.521', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '240.40', 'currency': 'USD'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '100991.921', 'currency': 'USD'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '-10.40', 'currency': 'USD'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CashBalance', 'value': '101920.3023', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '101920.3023', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '240.40', 'currency': 'BASE'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '102160.7023', 'currency': 'BASE'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '-10.40', 'currency': 'BASE'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'BASE'}], 'positions': [], 'open_orders': []}
+- **research_symbols**: ['BBBY', 'SEI', 'SANM', 'AAPL', 'MSFT', 'TSLA', 'AMZN', 'AGPU', 'ALOY', 'BIRD', 'ISPC', 'MRLN', 'OPTX', 'ROLR', 'SKLZ', 'SKYQ', 'EUR.USD']
+- **macro_risk**: False
+- **macro_news_sources**: ['DJ-RTG']
+- **macro_news_source_types**: ['ibkr']
+- **actionable_ideas**: [{'symbol': 'BBBY', 'catalyst': 'level interaction', 'entry': 5.2, 'stop': 5.148, 'target': 6.27, 'decision': 'WATCH'}, {'symbol': 'SEI', 'catalyst': '{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance', 'entry': 74.5, 'stop': 74.44, 'target': 77.12, 'decision': 'HOLD'}, {'symbol': 'SANM', 'catalyst': '{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD', 'entry': 216.54, 'stop': 208.67, 'target': 217.67, 'decision': 'HOLD'}]
+- **trade_decision**: READY_FOR_OPEN_VALIDATION
+
+## Workflow Premarket (2026-05-04T22:07:07)
+- **stage**: Premarket
+- **watchlist_symbols**: ['BBBY', 'SEI', 'SANM', 'AAPL', 'MSFT', 'TSLA', 'AMZN', 'AGPU', 'ALOY', 'BIRD', 'ISPC', 'MRLN', 'OPTX', 'ROLR', 'SKLZ', 'SKYQ']
+```json
+{
+  "stage": "Premarket",
+  "payload": {
+    "watchlist": {
+      "BBBY": {
+        "daily_atr": 0.4675,
+        "technical_atr": 1.07,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "BBBY",
+            "price": 7.7,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.86,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 6.27,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 7.64,
+            "zone_high": 7.76,
+            "center": 7.7,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.86,
+            "atr_value": 0.4675
+          },
+          {
+            "symbol": "BBBY",
+            "price": 6.27,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.86,
+            "created_by": "swing_high",
+            "nearest_upper_level": 7.7,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/20/26",
+            "source_date": "04/20/26",
+            "zone_low": 6.21,
+            "zone_high": 6.33,
+            "center": 6.27,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 6.86,
+            "atr_value": 0.4675
+          }
+        ]
+      },
+      "SEI": {
+        "daily_atr": 6.7,
+        "technical_atr": 0.06,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "SEI",
+            "price": 74.44,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 3,
+            "strength_score": 17.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 77.12,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/24/26",
+            "source_date": "04/29/26",
+            "zone_low": 73.64,
+            "zone_high": 75.24,
+            "center": 74.44,
+            "families": [
+              "gap"
+            ],
+            "strength": 17.0,
+            "atr_value": 6.7
+          },
+          {
+            "symbol": "SEI",
+            "price": 81.24,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.9,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 77.12,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 79.97,
+            "zone_high": 82.04,
+            "center": 81.12,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.9,
+            "atr_value": 6.7
+          },
+          {
+            "symbol": "SEI",
+            "price": 77.12,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.93,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 81.12,
+            "nearest_lower_level": 74.44,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 76.32,
+            "zone_high": 77.92,
+            "center": 77.12,
+            "families": [
+              "gap"
+            ],
+            "strength": 6.93,
+            "atr_value": 6.7
+          }
+        ]
+      },
+      "SANM": {
+        "daily_atr": 16.738,
+        "technical_atr": 1.13,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD",
+          "{A:800015:L:en}AMD Supplier Up 40% This Month Soars On Earnings Beat -- IBD"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "SANM",
+            "price": 172.35,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 19,
+            "false_breakouts": 5,
+            "strength_score": 33.76,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 207.09,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/16/26",
+            "source_date": "04/16/26",
+            "zone_low": 166.96,
+            "zone_high": 174.36,
+            "center": 171.99,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 33.76,
+            "atr_value": 16.738
+          },
+          {
+            "symbol": "SANM",
+            "price": 217.67,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 14,
+            "false_breakouts": 5,
+            "strength_score": 28.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 230.17,
+            "nearest_lower_level": 207.09,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/29/26",
+            "zone_low": 211.78,
+            "zone_high": 219.68,
+            "center": 215.77,
+            "families": [
+              "gap"
+            ],
+            "strength": 28.0,
+            "atr_value": 16.738
+          },
+          {
+            "symbol": "SANM",
+            "price": 208.67,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 1,
+            "strength_score": 13.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 215.77,
+            "nearest_lower_level": 171.99,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/30/26",
+            "zone_low": 202.97,
+            "zone_high": 210.68,
+            "center": 207.09,
+            "families": [
+              "gap"
+            ],
+            "strength": 13.0,
+            "atr_value": 16.738
+          },
+          {
+            "symbol": "SANM",
+            "price": 230.56,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.97,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 215.77,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 226.99,
+            "zone_high": 232.57,
+            "center": 230.17,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.97,
+            "atr_value": 16.738
+          }
+        ]
+      },
+      "AAPL": {
+        "daily_atr": 6.204,
+        "technical_atr": 2.01,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Tech Trader: AI Spending Has Upended the Earnings Season Playbook -- Barron's",
+          "{A:800015:L:en}Stock Market Today: Nasdaq, S&P Make History; Buffett's Berkshire Reports Earnings Saturday (Live Coverage) -- IBD"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "AAPL",
+            "price": 260.18,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 36,
+            "false_breakouts": 14,
+            "strength_score": 68.56,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 262.27,
+            "nearest_lower_level": 249.94,
+            "first_touch_date": "02/12/26",
+            "source_date": "02/12/26",
+            "zone_low": 259.39,
+            "zone_high": 260.92,
+            "center": 260.15,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 68.56,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 262.19,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 53,
+            "false_breakouts": 5,
+            "strength_score": 66.59,
+            "created_by": "swing_high",
+            "nearest_upper_level": 278.86,
+            "nearest_lower_level": 260.15,
+            "first_touch_date": "02/12/26",
+            "source_date": "04/10/26",
+            "zone_low": 261.42,
+            "zone_high": 263.22,
+            "center": 262.27,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 66.59,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 249.52,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 33,
+            "false_breakouts": 9,
+            "strength_score": 54.36,
+            "created_by": "swing_low",
+            "nearest_upper_level": 260.15,
+            "nearest_lower_level": 247.99,
+            "first_touch_date": "03/13/26",
+            "source_date": "03/13/26",
+            "zone_low": 248.78,
+            "zone_high": 251.39,
+            "center": 249.94,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 54.36,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 246.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 1,
+            "strength_score": 17.36,
+            "created_by": "swing_low",
+            "nearest_upper_level": 247.99,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/20/26",
+            "source_date": "03/20/26",
+            "zone_low": 244.77,
+            "zone_high": 246.74,
+            "center": 245.73,
+            "families": [
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 17.36,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 247.99,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 11.36,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 249.94,
+            "nearest_lower_level": 245.73,
+            "first_touch_date": "03/19/26",
+            "source_date": "03/23/26",
+            "zone_low": 247.25,
+            "zone_high": 248.73,
+            "center": 247.99,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.36,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 278.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 1,
+            "strength_score": 11.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 262.27,
+            "first_touch_date": "02/06/26",
+            "source_date": "05/01/26",
+            "zone_low": 278.12,
+            "zone_high": 279.6,
+            "center": 278.86,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.0,
+            "atr_value": 6.204
+          }
+        ]
+      },
+      "MSFT": {
+        "daily_atr": 9.524,
+        "technical_atr": 5.92,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Tech Trader: AI Spending Has Upended the Earnings Season Playbook -- Barron's"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "MSFT",
+            "price": 404.71,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 51,
+            "false_breakouts": 13,
+            "strength_score": 80.93,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 407.63,
+            "nearest_lower_level": 392.59,
+            "first_touch_date": "02/09/26",
+            "source_date": "02/26/26",
+            "zone_low": 403.26,
+            "zone_high": 405.85,
+            "center": 404.51,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 80.93,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 423.68,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 38,
+            "false_breakouts": 17,
+            "strength_score": 75.9,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 419.86,
+            "first_touch_date": "02/10/26",
+            "source_date": "02/10/26",
+            "zone_low": 422.54,
+            "zone_high": 425.96,
+            "center": 424.31,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 75.9,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 420.26,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 40,
+            "false_breakouts": 4,
+            "strength_score": 52.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 424.31,
+            "nearest_lower_level": 407.63,
+            "first_touch_date": "02/10/26",
+            "source_date": "04/17/26",
+            "zone_low": 418.47,
+            "zone_high": 421.4,
+            "center": 419.86,
+            "families": [
+              "gap"
+            ],
+            "strength": 52.0,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 372.74,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 24,
+            "false_breakouts": 9,
+            "strength_score": 45.49,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 376.93,
+            "nearest_lower_level": 361.9,
+            "first_touch_date": "03/24/26",
+            "source_date": "03/25/26",
+            "zone_low": 371.15,
+            "zone_high": 373.88,
+            "center": 372.52,
+            "families": [
+              "gap"
+            ],
+            "strength": 45.49,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 393.28,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 27,
+            "false_breakouts": 5,
+            "strength_score": 40.53,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 404.51,
+            "nearest_lower_level": 385.73,
+            "first_touch_date": "02/06/26",
+            "source_date": "03/03/26",
+            "zone_low": 389.74,
+            "zone_high": 394.42,
+            "center": 392.59,
+            "families": [
+              "gap"
+            ],
+            "strength": 40.53,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 407.78,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 24,
+            "false_breakouts": 2,
+            "strength_score": 31.93,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 419.86,
+            "nearest_lower_level": 404.51,
+            "first_touch_date": "02/09/26",
+            "source_date": "05/01/26",
+            "zone_low": 406.35,
+            "zone_high": 408.92,
+            "center": 407.63,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 31.93,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 385.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 18,
+            "false_breakouts": 4,
+            "strength_score": 29.53,
+            "created_by": "swing_high",
+            "nearest_upper_level": 392.59,
+            "nearest_lower_level": 381.07,
+            "first_touch_date": "02/23/26",
+            "source_date": "04/08/26",
+            "zone_low": 383.84,
+            "zone_high": 388.35,
+            "center": 385.73,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 29.53,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 381.71,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 1,
+            "strength_score": 15.49,
+            "created_by": "swing_low",
+            "nearest_upper_level": 385.73,
+            "nearest_lower_level": 376.93,
+            "first_touch_date": "02/24/26",
+            "source_date": "02/24/26",
+            "zone_low": 378.98,
+            "zone_high": 382.85,
+            "center": 381.07,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 15.49,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 376.93,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.49,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 381.07,
+            "nearest_lower_level": 372.52,
+            "first_touch_date": "03/24/26",
+            "source_date": "03/25/26",
+            "zone_low": 375.79,
+            "zone_high": 378.07,
+            "center": 376.93,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.49,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 361.9,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.19,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 372.52,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/27/26",
+            "source_date": "03/27/26",
+            "zone_low": 360.76,
+            "zone_high": 363.04,
+            "center": 361.9,
+            "families": [
+              "gap"
+            ],
+            "strength": 5.19,
+            "atr_value": 9.524
+          }
+        ]
+      },
+      "TSLA": {
+        "daily_atr": 12.31,
+        "technical_atr": 19.24,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "TSLA",
+            "price": 416.38,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 25,
+            "false_breakouts": 12,
+            "strength_score": 51.75,
+            "created_by": "swing_high",
+            "nearest_upper_level": 436.35,
+            "nearest_lower_level": 412.08,
+            "first_touch_date": "02/09/26",
+            "source_date": "03/11/26",
+            "zone_low": 414.9,
+            "zone_high": 418.92,
+            "center": 416.89,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 51.75,
+            "atr_value": 12.31
+          },
+          {
+            "symbol": "TSLA",
+            "price": 411.82,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 21,
+            "false_breakouts": 9,
+            "strength_score": 41.75,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 416.89,
+            "nearest_lower_level": 346.46,
+            "first_touch_date": "02/06/26",
+            "source_date": "02/23/26",
+            "zone_low": 410.34,
+            "zone_high": 413.84,
+            "center": 412.08,
+            "families": [
+              "gap"
+            ],
+            "strength": 41.75,
+            "atr_value": 12.31
+          },
+          {
+            "symbol": "TSLA",
+            "price": 346.65,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 4,
+            "strength_score": 21.46,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 412.08,
+            "nearest_lower_level": 337.24,
+            "first_touch_date": "04/06/26",
+            "source_date": "04/08/26",
+            "zone_low": 344.79,
+            "zone_high": 348.13,
+            "center": 346.46,
+            "families": [
+              "gap"
+            ],
+            "strength": 21.46,
+            "atr_value": 12.31
+          },
+          {
+            "symbol": "TSLA",
+            "price": 337.25,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 9.42,
+            "created_by": "swing_low",
+            "nearest_upper_level": 346.46,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/09/26",
+            "zone_low": 335.76,
+            "zone_high": 338.73,
+            "center": 337.24,
+            "families": [
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 9.42,
+            "atr_value": 12.31
+          },
+          {
+            "symbol": "TSLA",
+            "price": 436.35,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.14,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 416.89,
+            "first_touch_date": "02/11/26",
+            "source_date": "02/11/26",
+            "zone_low": 434.87,
+            "zone_high": 437.83,
+            "center": 436.35,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 4.14,
+            "atr_value": 12.31
+          }
+        ]
+      },
+      "AMZN": {
+        "daily_atr": 9.642,
+        "technical_atr": 7.55,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}GameStop Is Offering to Buy eBay for $56 Billion, CEO Ryan Cohen Says -- Update",
+          "{A:800015:L:en}!GameStop Is Offering to Buy eBay For $56 Billion, CEO Ryan Cohen Says -- WSJ",
+          "{A:800015:L:en}!* GameStop Offering to Buy eBay for $125 a Share, or About $56 Billion, CEO Ryan Cohen Says -- WSJ"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "AMZN",
+            "price": 249.91,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 19,
+            "false_breakouts": 11,
+            "strength_score": 44.73,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 256.3,
+            "nearest_lower_level": 244.78,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/22/26",
+            "zone_low": 247.12,
+            "zone_high": 251.07,
+            "center": 249.4,
+            "families": [
+              "gap"
+            ],
+            "strength": 44.73,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 256.16,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 25,
+            "false_breakouts": 6,
+            "strength_score": 41.93,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 264.5,
+            "nearest_lower_level": 249.4,
+            "first_touch_date": "04/17/26",
+            "source_date": "04/30/26",
+            "zone_low": 255.0,
+            "zone_high": 257.79,
+            "center": 256.3,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 41.93,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 264.5,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 2,
+            "strength_score": 13.72,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 256.3,
+            "first_touch_date": "04/24/26",
+            "source_date": "04/24/26",
+            "zone_low": 263.34,
+            "zone_high": 265.66,
+            "center": 264.5,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 13.72,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 221.25,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 2,
+            "strength_score": 11.39,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 224.46,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/05/26",
+            "source_date": "04/09/26",
+            "zone_low": 217.78,
+            "zone_high": 222.41,
+            "center": 220.09,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.39,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 245.36,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 9.66,
+            "created_by": "swing_low",
+            "nearest_upper_level": 249.4,
+            "nearest_lower_level": 240.43,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/20/26",
+            "zone_low": 243.04,
+            "zone_high": 246.52,
+            "center": 244.78,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 9.66,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 240.43,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.49,
+            "created_by": "swing_high",
+            "nearest_upper_level": 244.78,
+            "nearest_lower_level": 224.46,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/10/26",
+            "zone_low": 239.27,
+            "zone_high": 241.59,
+            "center": 240.43,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 7.49,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 225.23,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.42,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 240.43,
+            "nearest_lower_level": 220.09,
+            "first_touch_date": "04/08/26",
+            "source_date": "04/09/26",
+            "zone_low": 222.53,
+            "zone_high": 226.39,
+            "center": 224.46,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.42,
+            "atr_value": 9.642
+          }
+        ]
+      },
+      "AGPU": {
+        "daily_atr": 0.6519,
+        "technical_atr": 0.05,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "AGPU",
+            "price": 5.93,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 4,
+            "strength_score": 23.97,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 6.16,
+            "nearest_lower_level": 5.27,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/29/26",
+            "zone_low": 5.78,
+            "zone_high": 6.01,
+            "center": 5.9,
+            "families": [
+              "gap"
+            ],
+            "strength": 23.97,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 5.23,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 16,
+            "false_breakouts": 1,
+            "strength_score": 23.0,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 5.9,
+            "nearest_lower_level": 4.88,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/10/26",
+            "zone_low": 5.15,
+            "zone_high": 5.36,
+            "center": 5.27,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 23.0,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 7.1,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 2,
+            "strength_score": 16.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 10.86,
+            "nearest_lower_level": 6.71,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/27/26",
+            "zone_low": 7.02,
+            "zone_high": 7.28,
+            "center": 7.12,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 16.83,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 4.17,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 1,
+            "strength_score": 15.69,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 4.88,
+            "nearest_lower_level": 2.81,
+            "first_touch_date": "04/01/26",
+            "source_date": "04/01/26",
+            "zone_low": 4.09,
+            "zone_high": 4.25,
+            "center": 4.17,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 15.69,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 6.64,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 2,
+            "strength_score": 14.86,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 7.12,
+            "nearest_lower_level": 6.46,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/27/26",
+            "zone_low": 6.56,
+            "zone_high": 6.88,
+            "center": 6.71,
+            "families": [
+              "gap"
+            ],
+            "strength": 14.86,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 6.46,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.86,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 6.71,
+            "nearest_lower_level": 6.16,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/07/26",
+            "zone_low": 6.38,
+            "zone_high": 6.54,
+            "center": 6.46,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.86,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 4.88,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 2,
+            "strength_score": 12.69,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 5.27,
+            "nearest_lower_level": 4.17,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/22/26",
+            "zone_low": 4.8,
+            "zone_high": 4.96,
+            "center": 4.88,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.69,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 2.83,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 11.25,
+            "created_by": "swing_high",
+            "nearest_upper_level": 4.17,
+            "nearest_lower_level": 1.25,
+            "first_touch_date": "02/10/26",
+            "source_date": "02/25/26",
+            "zone_low": 2.71,
+            "zone_high": 2.91,
+            "center": 2.81,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 11.25,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 6.16,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 8.97,
+            "created_by": "swing_high",
+            "nearest_upper_level": 6.46,
+            "nearest_lower_level": 5.9,
+            "first_touch_date": "04/07/26",
+            "source_date": "05/01/26",
+            "zone_low": 6.08,
+            "zone_high": 6.24,
+            "center": 6.16,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 8.97,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 10.86,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.73,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 7.12,
+            "first_touch_date": "04/22/26",
+            "source_date": "04/22/26",
+            "zone_low": 10.77,
+            "zone_high": 10.94,
+            "center": 10.86,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 8.73,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 1.25,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.15,
+            "created_by": "swing_low",
+            "nearest_upper_level": 2.81,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/19/26",
+            "source_date": "03/19/26",
+            "zone_low": 1.17,
+            "zone_high": 1.33,
+            "center": 1.25,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 6.15,
+            "atr_value": 0.6519
+          }
+        ]
+      },
+      "ALOY": {
+        "daily_atr": 0.9334,
+        "technical_atr": 1.01,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "ALOY",
+            "price": 10.44,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 44,
+            "false_breakouts": 6,
+            "strength_score": 59.69,
+            "created_by": "swing_high",
+            "nearest_upper_level": 11.86,
+            "nearest_lower_level": null,
+            "first_touch_date": "02/12/26",
+            "source_date": "03/30/26",
+            "zone_low": 10.29,
+            "zone_high": 10.64,
+            "center": 10.47,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 59.69,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 16.32,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 30,
+            "false_breakouts": 0,
+            "strength_score": 33.76,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 16.57,
+            "nearest_lower_level": 15.7,
+            "first_touch_date": "02/24/26",
+            "source_date": "02/26/26",
+            "zone_low": 16.01,
+            "zone_high": 16.43,
+            "center": 16.25,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 33.76,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 15.81,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 18,
+            "false_breakouts": 2,
+            "strength_score": 24.76,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 16.25,
+            "nearest_lower_level": 14.82,
+            "first_touch_date": "02/23/26",
+            "source_date": "02/26/26",
+            "zone_low": 15.47,
+            "zone_high": 15.93,
+            "center": 15.7,
+            "families": [
+              "gap"
+            ],
+            "strength": 24.76,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 11.86,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 17,
+            "false_breakouts": 2,
+            "strength_score": 24.62,
+            "created_by": "swing_high",
+            "nearest_upper_level": 14.82,
+            "nearest_lower_level": 10.47,
+            "first_touch_date": "02/09/26",
+            "source_date": "03/25/26",
+            "zone_low": 11.75,
+            "zone_high": 11.97,
+            "center": 11.86,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 24.62,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 16.87,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 1,
+            "strength_score": 12.72,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 18.53,
+            "nearest_lower_level": 16.57,
+            "first_touch_date": "02/24/26",
+            "source_date": "03/12/26",
+            "zone_low": 16.76,
+            "zone_high": 16.98,
+            "center": 16.87,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.72,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 16.57,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 0,
+            "strength_score": 11.76,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 16.87,
+            "nearest_lower_level": 16.25,
+            "first_touch_date": "02/24/26",
+            "source_date": "03/12/26",
+            "zone_low": 16.46,
+            "zone_high": 16.68,
+            "center": 16.57,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.76,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 14.82,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 10.76,
+            "created_by": "swing_low",
+            "nearest_upper_level": 15.7,
+            "nearest_lower_level": 11.86,
+            "first_touch_date": "02/23/26",
+            "source_date": "03/09/26",
+            "zone_low": 14.71,
+            "zone_high": 14.93,
+            "center": 14.82,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 10.76,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 18.46,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 10.52,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 18.92,
+            "nearest_lower_level": 16.87,
+            "first_touch_date": "02/24/26",
+            "source_date": "03/02/26",
+            "zone_low": 18.35,
+            "zone_high": 18.7,
+            "center": 18.53,
+            "families": [
+              "gap"
+            ],
+            "strength": 10.52,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 18.92,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 9.52,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 19.75,
+            "nearest_lower_level": 18.53,
+            "first_touch_date": "02/24/26",
+            "source_date": "02/24/26",
+            "zone_low": 18.81,
+            "zone_high": 19.03,
+            "center": 18.92,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 9.52,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 21.69,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 1,
+            "strength_score": 7.59,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 24.41,
+            "nearest_lower_level": 21.12,
+            "first_touch_date": "03/03/26",
+            "source_date": "03/06/26",
+            "zone_low": 21.58,
+            "zone_high": 21.8,
+            "center": 21.69,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 19.75,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.52,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 20.74,
+            "nearest_lower_level": 18.92,
+            "first_touch_date": "02/27/26",
+            "source_date": "02/27/26",
+            "zone_low": 19.64,
+            "zone_high": 19.86,
+            "center": 19.75,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.52,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 21.12,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 6.59,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 21.69,
+            "nearest_lower_level": 20.74,
+            "first_touch_date": "03/03/26",
+            "source_date": "03/04/26",
+            "zone_low": 21.01,
+            "zone_high": 21.23,
+            "center": 21.12,
+            "families": [
+              "gap"
+            ],
+            "strength": 6.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 25.88,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 6.59,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 26.19,
+            "nearest_lower_level": 24.41,
+            "first_touch_date": "03/04/26",
+            "source_date": "03/05/26",
+            "zone_low": 25.77,
+            "zone_high": 25.99,
+            "center": 25.88,
+            "families": [
+              "gap"
+            ],
+            "strength": 6.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 20.74,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.59,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 21.12,
+            "nearest_lower_level": 19.75,
+            "first_touch_date": "03/03/26",
+            "source_date": "03/05/26",
+            "zone_low": 20.63,
+            "zone_high": 20.85,
+            "center": 20.74,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 5.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 26.64,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.59,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 26.19,
+            "first_touch_date": "03/04/26",
+            "source_date": "03/05/26",
+            "zone_low": 26.53,
+            "zone_high": 26.75,
+            "center": 26.64,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 5.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 24.41,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.59,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 25.88,
+            "nearest_lower_level": 21.69,
+            "first_touch_date": "03/04/26",
+            "source_date": "03/04/26",
+            "zone_low": 24.29,
+            "zone_high": 24.52,
+            "center": 24.41,
+            "families": [
+              "gap"
+            ],
+            "strength": 4.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 26.19,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.59,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 26.64,
+            "nearest_lower_level": 25.88,
+            "first_touch_date": "03/04/26",
+            "source_date": "03/05/26",
+            "zone_low": 26.08,
+            "zone_high": 26.3,
+            "center": 26.19,
+            "families": [
+              "gap"
+            ],
+            "strength": 4.59,
+            "atr_value": 0.9334
+          }
+        ]
+      },
+      "BIRD": {
+        "daily_atr": 0.558,
+        "technical_atr": 0.24,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "BIRD",
+            "price": 8.5,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 4,
+            "strength_score": 21.8,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 9.25,
+            "nearest_lower_level": 8.18,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/21/26",
+            "zone_low": 8.41,
+            "zone_high": 8.57,
+            "center": 8.49,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 21.8,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 6.68,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 3,
+            "strength_score": 19.97,
+            "created_by": "swing_high",
+            "nearest_upper_level": 7.53,
+            "nearest_lower_level": 6.08,
+            "first_touch_date": "04/15/26",
+            "source_date": "05/01/26",
+            "zone_low": 6.48,
+            "zone_high": 6.75,
+            "center": 6.62,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 19.97,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 7.55,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 0,
+            "strength_score": 16.86,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 8.01,
+            "nearest_lower_level": 6.62,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/22/26",
+            "zone_low": 7.41,
+            "zone_high": 7.62,
+            "center": 7.53,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 16.86,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 12.5,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.66,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 13.48,
+            "nearest_lower_level": 11.49,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/20/26",
+            "zone_low": 12.43,
+            "zone_high": 12.59,
+            "center": 12.51,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 12.66,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 6.11,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 11.0,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 6.62,
+            "nearest_lower_level": 3.8,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/15/26",
+            "zone_low": 5.97,
+            "zone_high": 6.18,
+            "center": 6.08,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 11.0,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 10.56,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 10.69,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 11.2,
+            "nearest_lower_level": 9.25,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/17/26",
+            "zone_low": 10.49,
+            "zone_high": 10.63,
+            "center": 10.56,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 10.69,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 8.01,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 1,
+            "strength_score": 9.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 8.18,
+            "nearest_lower_level": 7.53,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/24/26",
+            "zone_low": 7.94,
+            "zone_high": 8.08,
+            "center": 8.01,
+            "families": [
+              "gap"
+            ],
+            "strength": 9.8,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 11.49,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 9.69,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 12.51,
+            "nearest_lower_level": 11.2,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/21/26",
+            "zone_low": 11.42,
+            "zone_high": 11.56,
+            "center": 11.49,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 9.69,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 11.2,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 8.69,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 11.49,
+            "nearest_lower_level": 10.56,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/20/26",
+            "zone_low": 11.13,
+            "zone_high": 11.27,
+            "center": 11.2,
+            "families": [
+              "gap"
+            ],
+            "strength": 8.69,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 14.44,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.59,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 24.31,
+            "nearest_lower_level": 13.48,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/16/26",
+            "zone_low": 14.33,
+            "zone_high": 14.51,
+            "center": 14.42,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 8.59,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 8.18,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 8.49,
+            "nearest_lower_level": 8.01,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/23/26",
+            "zone_low": 8.11,
+            "zone_high": 8.25,
+            "center": 8.18,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.8,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 9.25,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.73,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 10.56,
+            "nearest_lower_level": 8.49,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/22/26",
+            "zone_low": 9.18,
+            "zone_high": 9.32,
+            "center": 9.25,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 7.73,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 13.48,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.63,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 14.42,
+            "nearest_lower_level": 12.51,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/17/26",
+            "zone_low": 13.41,
+            "zone_high": 13.55,
+            "center": 13.48,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 7.63,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 24.31,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.56,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 14.42,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/15/26",
+            "zone_low": 24.24,
+            "zone_high": 24.38,
+            "center": 24.31,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.56,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 3.8,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.75,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 6.08,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/10/26",
+            "source_date": "03/11/26",
+            "zone_low": 3.73,
+            "zone_high": 3.87,
+            "center": 3.8,
+            "families": [
+              "gap"
+            ],
+            "strength": 4.75,
+            "atr_value": 0.558
+          }
+        ]
+      },
+      "ISPC": {
+        "daily_atr": 1.194,
+        "technical_atr": 1.83,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "ISPC",
+            "price": 7.28,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 38,
+            "false_breakouts": 5,
+            "strength_score": 52.76,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 8.38,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/16/26",
+            "source_date": "03/16/26",
+            "zone_low": 7.06,
+            "zone_high": 7.43,
+            "center": 7.25,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 52.76,
+            "atr_value": 1.194
+          },
+          {
+            "symbol": "ISPC",
+            "price": 9.64,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 14,
+            "false_breakouts": 3,
+            "strength_score": 22.86,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 14.8,
+            "nearest_lower_level": 8.38,
+            "first_touch_date": "02/23/26",
+            "source_date": "02/24/26",
+            "zone_low": 9.5,
+            "zone_high": 9.78,
+            "center": 9.64,
+            "families": [
+              "gap"
+            ],
+            "strength": 22.86,
+            "atr_value": 1.194
+          },
+          {
+            "symbol": "ISPC",
+            "price": 8.38,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 7.97,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 9.64,
+            "nearest_lower_level": 7.25,
+            "first_touch_date": "03/16/26",
+            "source_date": "03/18/26",
+            "zone_low": 8.23,
+            "zone_high": 8.52,
+            "center": 8.38,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.97,
+            "atr_value": 1.194
+          },
+          {
+            "symbol": "ISPC",
+            "price": 14.8,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.79,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 9.64,
+            "first_touch_date": "02/13/26",
+            "source_date": "02/13/26",
+            "zone_low": 14.66,
+            "zone_high": 14.94,
+            "center": 14.8,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.79,
+            "atr_value": 1.194
+          }
+        ]
+      },
+      "MRLN": {
+        "daily_atr": 1.59,
+        "technical_atr": 3.07,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "MRLN",
+            "price": 13.66,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 29,
+            "false_breakouts": 12,
+            "strength_score": 57.76,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 14.65,
+            "nearest_lower_level": 6.53,
+            "first_touch_date": "03/25/26",
+            "source_date": "04/21/26",
+            "zone_low": 13.33,
+            "zone_high": 14.09,
+            "center": 13.63,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 57.76,
+            "atr_value": 1.59
+          },
+          {
+            "symbol": "MRLN",
+            "price": 6.51,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 0,
+            "strength_score": 16.38,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 13.63,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/17/26",
+            "source_date": "03/17/26",
+            "zone_low": 6.32,
+            "zone_high": 6.75,
+            "center": 6.53,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 16.38,
+            "atr_value": 1.59
+          },
+          {
+            "symbol": "MRLN",
+            "price": 16.79,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 0,
+            "strength_score": 11.62,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 16.09,
+            "first_touch_date": "04/16/26",
+            "source_date": "04/17/26",
+            "zone_low": 16.53,
+            "zone_high": 17.19,
+            "center": 16.86,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 11.62,
+            "atr_value": 1.59
+          },
+          {
+            "symbol": "MRLN",
+            "price": 14.69,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 10.62,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 16.09,
+            "nearest_lower_level": 13.63,
+            "first_touch_date": "03/25/26",
+            "source_date": "04/15/26",
+            "zone_low": 14.41,
+            "zone_high": 14.88,
+            "center": 14.65,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 10.62,
+            "atr_value": 1.59
+          },
+          {
+            "symbol": "MRLN",
+            "price": 16.09,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.62,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 16.86,
+            "nearest_lower_level": 14.65,
+            "first_touch_date": "04/16/26",
+            "source_date": "04/17/26",
+            "zone_low": 15.9,
+            "zone_high": 16.28,
+            "center": 16.09,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.62,
+            "atr_value": 1.59
+          }
+        ]
+      },
+      "OPTX": {
+        "daily_atr": 0.9575,
+        "technical_atr": 0.37,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Press Release: Syntec Optics (Nasdaq: OPTX) Announces Closing of $20 Million Underwritten Public Offering of Common Stock",
+          "{A:800015:L:en}* H.C. Wainwright & Co. Acting as Sole Book-Running Manager for Syntec Optics Offering >OPTX",
+          "{A:800015:L:en}* Syntec Optics Offering Is Expected to Close on or About April 30 >OPTX"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "OPTX",
+            "price": 8.44,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 14,
+            "false_breakouts": 1,
+            "strength_score": 20.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 10.34,
+            "nearest_lower_level": null,
+            "first_touch_date": "02/06/26",
+            "source_date": "03/11/26",
+            "zone_low": 8.33,
+            "zone_high": 8.55,
+            "center": 8.44,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 20.0,
+            "atr_value": 0.9575
+          },
+          {
+            "symbol": "OPTX",
+            "price": 11.28,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 11,
+            "false_breakouts": 2,
+            "strength_score": 18.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 12.0,
+            "nearest_lower_level": 10.34,
+            "first_touch_date": "04/13/26",
+            "source_date": "04/15/26",
+            "zone_low": 11.13,
+            "zone_high": 11.57,
+            "center": 11.31,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 18.8,
+            "atr_value": 0.9575
+          },
+          {
+            "symbol": "OPTX",
+            "price": 10.34,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 1,
+            "strength_score": 14.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 11.31,
+            "nearest_lower_level": 8.44,
+            "first_touch_date": "04/13/26",
+            "source_date": "04/13/26",
+            "zone_low": 10.23,
+            "zone_high": 10.45,
+            "center": 10.34,
+            "families": [
+              "gap"
+            ],
+            "strength": 14.8,
+            "atr_value": 0.9575
+          },
+          {
+            "symbol": "OPTX",
+            "price": 12.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 6.28,
+            "created_by": "gap_upper",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 11.31,
+            "first_touch_date": "04/13/26",
+            "source_date": "04/14/26",
+            "zone_low": 11.89,
+            "zone_high": 12.11,
+            "center": 12.0,
+            "families": [
+              "gap"
+            ],
+            "strength": 6.28,
+            "atr_value": 0.9575
+          }
+        ]
+      },
+      "ROLR": {
+        "daily_atr": 1.3731,
+        "technical_atr": 0.71,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "ROLR",
+            "price": 6.0,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 13,
+            "false_breakouts": 2,
+            "strength_score": 21.59,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 6.4,
+            "nearest_lower_level": null,
+            "first_touch_date": "02/06/26",
+            "source_date": "04/16/26",
+            "zone_low": 5.61,
+            "zone_high": 6.16,
+            "center": 5.85,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 21.59,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 9.92,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 1,
+            "strength_score": 10.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 10.71,
+            "nearest_lower_level": 6.86,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/29/26",
+            "zone_low": 9.76,
+            "zone_high": 10.08,
+            "center": 9.92,
+            "families": [
+              "gap"
+            ],
+            "strength": 10.9,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 10.71,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.9,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 11.74,
+            "nearest_lower_level": 9.92,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/29/26",
+            "zone_low": 10.55,
+            "zone_high": 10.87,
+            "center": 10.71,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 8.9,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 11.74,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 12.85,
+            "nearest_lower_level": 10.71,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/14/26",
+            "zone_low": 11.58,
+            "zone_high": 11.9,
+            "center": 11.74,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 8.83,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 12.85,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 11.74,
+            "first_touch_date": "04/27/26",
+            "source_date": "04/27/26",
+            "zone_low": 12.69,
+            "zone_high": 13.01,
+            "center": 12.85,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.83,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 6.4,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.59,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 6.86,
+            "nearest_lower_level": 5.85,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/16/26",
+            "zone_low": 6.24,
+            "zone_high": 6.56,
+            "center": 6.4,
+            "families": [
+              "gap"
+            ],
+            "strength": 5.59,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 6.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.59,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 9.92,
+            "nearest_lower_level": 6.4,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/15/26",
+            "zone_low": 6.7,
+            "zone_high": 7.02,
+            "center": 6.86,
+            "families": [
+              "gap"
+            ],
+            "strength": 5.59,
+            "atr_value": 1.3731
+          }
+        ]
+      },
+      "SKLZ": {
+        "daily_atr": 1.52,
+        "technical_atr": 0.46,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "SKLZ",
+            "price": 6.3,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 25,
+            "false_breakouts": 10,
+            "strength_score": 49.93,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 7.2,
+            "nearest_lower_level": 5.58,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/27/26",
+            "zone_low": 6.03,
+            "zone_high": 6.54,
+            "center": 6.3,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 49.93,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 7.75,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 11,
+            "false_breakouts": 4,
+            "strength_score": 23.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 8.61,
+            "nearest_lower_level": 7.2,
+            "first_touch_date": "04/23/26",
+            "source_date": "05/01/26",
+            "zone_low": 7.57,
+            "zone_high": 8.24,
+            "center": 7.89,
+            "families": [
+              "gap"
+            ],
+            "strength": 23.0,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 8.47,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 18,
+            "false_breakouts": 0,
+            "strength_score": 22.97,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 9.15,
+            "nearest_lower_level": 7.89,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/30/26",
+            "zone_low": 8.29,
+            "zone_high": 8.88,
+            "center": 8.61,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 22.97,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 7.23,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 0,
+            "strength_score": 17.0,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 7.89,
+            "nearest_lower_level": 6.3,
+            "first_touch_date": "04/23/26",
+            "source_date": "05/01/26",
+            "zone_low": 6.99,
+            "zone_high": 7.41,
+            "center": 7.2,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 17.0,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 5.62,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 12.93,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 6.3,
+            "nearest_lower_level": 4.49,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/30/26",
+            "zone_low": 5.36,
+            "zone_high": 5.8,
+            "center": 5.58,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.93,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 9.2,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 10.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 20.0,
+            "nearest_lower_level": 8.61,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/24/26",
+            "zone_low": 8.92,
+            "zone_high": 9.38,
+            "center": 9.15,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 10.83,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 4.49,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.76,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 5.58,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/15/26",
+            "zone_low": 4.31,
+            "zone_high": 4.67,
+            "center": 4.49,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 8.76,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 20.0,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 8.51,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 9.15,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/23/26",
+            "zone_low": 19.82,
+            "zone_high": 20.18,
+            "center": 20.0,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 8.51,
+            "atr_value": 1.52
+          }
+        ]
+      },
+      "SKYQ": {
+        "daily_atr": 1.012,
+        "technical_atr": 0.91,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "SKYQ",
+            "price": 5.0,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 44,
+            "false_breakouts": 13,
+            "strength_score": 74.86,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 7.17,
+            "nearest_lower_level": 1.85,
+            "first_touch_date": "03/02/26",
+            "source_date": "04/08/26",
+            "zone_low": 4.75,
+            "zone_high": 5.22,
+            "center": 4.99,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 74.86,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 7.29,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 20,
+            "false_breakouts": 4,
+            "strength_score": 31.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 7.75,
+            "nearest_lower_level": 4.99,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/10/26",
+            "zone_low": 6.94,
+            "zone_high": 7.41,
+            "center": 7.17,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 31.9,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 8.32,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 20,
+            "false_breakouts": 0,
+            "strength_score": 24.76,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 8.84,
+            "nearest_lower_level": 8.01,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/07/26",
+            "zone_low": 8.2,
+            "zone_high": 8.62,
+            "center": 8.37,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 24.76,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 8.84,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.72,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 9.56,
+            "nearest_lower_level": 8.37,
+            "first_touch_date": "04/09/26",
+            "source_date": "04/15/26",
+            "zone_low": 8.72,
+            "zone_high": 8.96,
+            "center": 8.84,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 12.72,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 9.56,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.69,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 9.82,
+            "nearest_lower_level": 8.84,
+            "first_touch_date": "04/09/26",
+            "source_date": "04/09/26",
+            "zone_low": 9.44,
+            "zone_high": 9.68,
+            "center": 9.56,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 12.69,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 9.82,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 1,
+            "strength_score": 12.69,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 10.38,
+            "nearest_lower_level": 9.56,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/17/26",
+            "zone_low": 9.7,
+            "zone_high": 9.94,
+            "center": 9.82,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.69,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 10.34,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 0,
+            "strength_score": 12.69,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 11.62,
+            "nearest_lower_level": 9.82,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/14/26",
+            "zone_low": 10.22,
+            "zone_high": 10.54,
+            "center": 10.38,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.69,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 8.01,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 11.76,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 8.37,
+            "nearest_lower_level": 7.75,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/20/26",
+            "zone_low": 7.89,
+            "zone_high": 8.13,
+            "center": 8.01,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.76,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 7.75,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 8.76,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 8.01,
+            "nearest_lower_level": 7.17,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/10/26",
+            "zone_low": 7.63,
+            "zone_high": 7.87,
+            "center": 7.75,
+            "families": [
+              "gap"
+            ],
+            "strength": 8.76,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 11.62,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.48,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 12.59,
+            "nearest_lower_level": 10.38,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/14/26",
+            "zone_low": 11.5,
+            "zone_high": 11.74,
+            "center": 11.62,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.48,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 12.59,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.48,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 15.35,
+            "nearest_lower_level": 11.62,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/13/26",
+            "zone_low": 12.47,
+            "zone_high": 12.71,
+            "center": 12.59,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.48,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 19.45,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.48,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 15.35,
+            "first_touch_date": "04/13/26",
+            "source_date": "04/13/26",
+            "zone_low": 19.33,
+            "zone_high": 19.57,
+            "center": 19.45,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.48,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 15.35,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 6.48,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 19.45,
+            "nearest_lower_level": 12.59,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/10/26",
+            "zone_low": 15.23,
+            "zone_high": 15.47,
+            "center": 15.35,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 6.48,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 1.85,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.14,
+            "created_by": "swing_low",
+            "nearest_upper_level": 4.99,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/26/26",
+            "source_date": "03/26/26",
+            "zone_low": 1.73,
+            "zone_high": 1.97,
+            "center": 1.85,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 5.14,
+            "atr_value": 1.012
+          }
+        ]
+      }
+    },
+    "macro_risk": {
+      "blocked": false,
+      "risk_level": "LOW",
+      "headlines": [
+        "{A:800015:L:en}SPY ETF Gains 0.3%",
+        "{A:800015:L:en}SPY ETF Rises 1.0%",
+        "{A:800015:L:en}SPY ETF Closes Flat",
+        "{A:800015:L:en}SPY ETF Falls 0.5%",
+        "{A:800015:L:en}SPY ETF Climbs 0.2%, Outperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Rises 0.8%",
+        "{A:800015:L:en}SPY ETF Falls 0.4%",
+        "{A:800015:L:en}SPY ETF Gains 1.0%",
+        "{A:800015:L:en}SPY ETF Declines 0.7%, Underperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Declines 0.2%"
+      ],
+      "matched_headlines": [],
+      "critical_matches": [],
+      "provider_hits": [
+        "DJ-RTG"
+      ],
+      "source_types": [
+        "ibkr"
+      ]
+    },
+    "ideas": [
+      {
+        "symbol": "BBBY",
+        "catalyst": "level interaction",
+        "entry": 5.2,
+        "stop": 5.148,
+        "target": 6.27,
+        "decision": "WATCH"
+      },
+      {
+        "symbol": "SEI",
+        "catalyst": "{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance",
+        "entry": 74.5,
+        "stop": 74.44,
+        "target": 77.12,
+        "decision": "HOLD"
+      },
+      {
+        "symbol": "SANM",
+        "catalyst": "{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD",
+        "entry": 216.54,
+        "stop": 208.67,
+        "target": 217.67,
+        "decision": "HOLD"
+      }
+    ],
+    "research_symbols": [
+      "BBBY",
+      "SEI",
+      "SANM",
+      "AAPL",
+      "MSFT",
+      "TSLA",
+      "AMZN",
+      "AGPU",
+      "ALOY",
+      "BIRD",
+      "ISPC",
+      "MRLN",
+      "OPTX",
+      "ROLR",
+      "SKLZ",
+      "SKYQ",
+      "EUR.USD"
+    ]
+  }
+}
+```
+
+## Premarket Research (2026-05-04T22:18:57)
+- **strategy_loaded**: True
+- **trade_log_context_loaded**: True
+- **research_log_context_loaded**: True
+- **account_snapshot**: {'account': [{'account': 'DU5454348', 'tag': 'AccountType', 'value': 'INDIVIDUAL', 'currency': ''}, {'account': 'DU5454348', 'tag': 'Cushion', 'value': '1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemaining', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+1', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+2', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+3', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+4', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'LookAheadNextChange', 'value': '0', 'currency': ''}, {'account': 'DU5454348', 'tag': 'AccruedCash', 'value': '240.40', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'AvailableFunds', 'value': '101920.24', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'BuyingPower', 'value': '407680.96', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'EquityWithLoanValue', 'value': '101920.24', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'ExcessLiquidity', 'value': '101920.24', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullAvailableFunds', 'value': '101920.24', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullExcessLiquidity', 'value': '101920.24', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'GrossPositionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'InitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadAvailableFunds', 'value': '101920.24', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadExcessLiquidity', 'value': '101920.24', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'MaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'NetLiquidation', 'value': '102160.64', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'PreviousDayEquityWithLoanValue', 'value': '101920.65', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTEquity', 'value': '102160.64', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTMargin', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'SMA', 'value': '102160.96', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'TotalCashValue', 'value': '101920.24', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CashBalance', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.168668', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Currency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'CashBalance', 'value': '100751.521', 'currency': 'USD'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '100751.521', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '240.40', 'currency': 'USD'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '100991.921', 'currency': 'USD'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '-10.40', 'currency': 'USD'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CashBalance', 'value': '101920.239', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '101920.239', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '240.40', 'currency': 'BASE'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '102160.639', 'currency': 'BASE'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '-10.40', 'currency': 'BASE'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'BASE'}], 'positions': [], 'open_orders': []}
+- **research_symbols**: ['BBBY', 'SEI', 'SANM', 'AAPL', 'MSFT', 'TSLA', 'AMZN', 'AGPU', 'ALOY', 'BIRD', 'ISPC', 'MRLN', 'OPTX', 'ROLR', 'SKLZ', 'SKYQ', 'EUR.USD']
+- **macro_risk**: False
+- **macro_news_sources**: ['DJ-RTG']
+- **macro_news_source_types**: ['ibkr']
+- **actionable_ideas**: [{'symbol': 'BBBY', 'catalyst': 'level interaction', 'entry': 5.2, 'stop': 5.148, 'target': 6.27, 'decision': 'WATCH'}, {'symbol': 'SEI', 'catalyst': '{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance', 'entry': 74.5, 'stop': 74.44, 'target': 77.12, 'decision': 'HOLD'}, {'symbol': 'SANM', 'catalyst': '{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD', 'entry': 216.54, 'stop': 208.67, 'target': 217.67, 'decision': 'HOLD'}]
+- **trade_decision**: READY_FOR_OPEN_VALIDATION
+
+## Workflow Premarket (2026-05-04T22:18:57)
+- **stage**: Premarket
+- **watchlist_symbols**: ['BBBY', 'SEI', 'SANM', 'AAPL', 'MSFT', 'TSLA', 'AMZN', 'AGPU', 'ALOY', 'BIRD', 'ISPC', 'MRLN', 'OPTX', 'ROLR', 'SKLZ', 'SKYQ', 'EUR.USD']
+```json
+{
+  "stage": "Premarket",
+  "payload": {
+    "watchlist": {
+      "BBBY": {
+        "security_type": "STK",
+        "daily_atr": 0.4675,
+        "technical_atr": 1.07,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "BBBY",
+            "price": 7.7,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.86,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 6.27,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 7.64,
+            "zone_high": 7.76,
+            "center": 7.7,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.86,
+            "atr_value": 0.4675
+          },
+          {
+            "symbol": "BBBY",
+            "price": 6.27,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.86,
+            "created_by": "swing_high",
+            "nearest_upper_level": 7.7,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/20/26",
+            "source_date": "04/20/26",
+            "zone_low": 6.21,
+            "zone_high": 6.33,
+            "center": 6.27,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 6.86,
+            "atr_value": 0.4675
+          }
+        ]
+      },
+      "SEI": {
+        "security_type": "STK",
+        "daily_atr": 6.7,
+        "technical_atr": 0.06,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "SEI",
+            "price": 74.44,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 3,
+            "strength_score": 17.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 77.12,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/24/26",
+            "source_date": "04/29/26",
+            "zone_low": 73.64,
+            "zone_high": 75.24,
+            "center": 74.44,
+            "families": [
+              "gap"
+            ],
+            "strength": 17.0,
+            "atr_value": 6.7
+          },
+          {
+            "symbol": "SEI",
+            "price": 81.24,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.9,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 77.12,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 79.97,
+            "zone_high": 82.04,
+            "center": 81.12,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.9,
+            "atr_value": 6.7
+          },
+          {
+            "symbol": "SEI",
+            "price": 77.12,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.93,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 81.12,
+            "nearest_lower_level": 74.44,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 76.32,
+            "zone_high": 77.92,
+            "center": 77.12,
+            "families": [
+              "gap"
+            ],
+            "strength": 6.93,
+            "atr_value": 6.7
+          }
+        ]
+      },
+      "SANM": {
+        "security_type": "STK",
+        "daily_atr": 16.738,
+        "technical_atr": 1.13,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD",
+          "{A:800015:L:en}AMD Supplier Up 40% This Month Soars On Earnings Beat -- IBD"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "SANM",
+            "price": 172.35,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 19,
+            "false_breakouts": 5,
+            "strength_score": 33.76,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 207.09,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/16/26",
+            "source_date": "04/16/26",
+            "zone_low": 166.96,
+            "zone_high": 174.36,
+            "center": 171.99,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 33.76,
+            "atr_value": 16.738
+          },
+          {
+            "symbol": "SANM",
+            "price": 217.67,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 14,
+            "false_breakouts": 5,
+            "strength_score": 28.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 230.17,
+            "nearest_lower_level": 207.09,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/29/26",
+            "zone_low": 211.78,
+            "zone_high": 219.68,
+            "center": 215.77,
+            "families": [
+              "gap"
+            ],
+            "strength": 28.0,
+            "atr_value": 16.738
+          },
+          {
+            "symbol": "SANM",
+            "price": 208.67,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 1,
+            "strength_score": 13.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 215.77,
+            "nearest_lower_level": 171.99,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/30/26",
+            "zone_low": 202.97,
+            "zone_high": 210.68,
+            "center": 207.09,
+            "families": [
+              "gap"
+            ],
+            "strength": 13.0,
+            "atr_value": 16.738
+          },
+          {
+            "symbol": "SANM",
+            "price": 230.56,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.97,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 215.77,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 226.99,
+            "zone_high": 232.57,
+            "center": 230.17,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.97,
+            "atr_value": 16.738
+          }
+        ]
+      },
+      "AAPL": {
+        "security_type": "STK",
+        "daily_atr": 6.204,
+        "technical_atr": 2.01,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Tech Trader: AI Spending Has Upended the Earnings Season Playbook -- Barron's",
+          "{A:800015:L:en}Stock Market Today: Nasdaq, S&P Make History; Buffett's Berkshire Reports Earnings Saturday (Live Coverage) -- IBD"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "AAPL",
+            "price": 260.18,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 36,
+            "false_breakouts": 14,
+            "strength_score": 68.56,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 262.27,
+            "nearest_lower_level": 249.94,
+            "first_touch_date": "02/12/26",
+            "source_date": "02/12/26",
+            "zone_low": 259.39,
+            "zone_high": 260.92,
+            "center": 260.15,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 68.56,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 262.19,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 53,
+            "false_breakouts": 5,
+            "strength_score": 66.59,
+            "created_by": "swing_high",
+            "nearest_upper_level": 278.86,
+            "nearest_lower_level": 260.15,
+            "first_touch_date": "02/12/26",
+            "source_date": "04/10/26",
+            "zone_low": 261.42,
+            "zone_high": 263.22,
+            "center": 262.27,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 66.59,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 249.52,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 33,
+            "false_breakouts": 9,
+            "strength_score": 54.36,
+            "created_by": "swing_low",
+            "nearest_upper_level": 260.15,
+            "nearest_lower_level": 247.99,
+            "first_touch_date": "03/13/26",
+            "source_date": "03/13/26",
+            "zone_low": 248.78,
+            "zone_high": 251.39,
+            "center": 249.94,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 54.36,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 246.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 1,
+            "strength_score": 17.36,
+            "created_by": "swing_low",
+            "nearest_upper_level": 247.99,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/20/26",
+            "source_date": "03/20/26",
+            "zone_low": 244.77,
+            "zone_high": 246.74,
+            "center": 245.73,
+            "families": [
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 17.36,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 247.99,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 11.36,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 249.94,
+            "nearest_lower_level": 245.73,
+            "first_touch_date": "03/19/26",
+            "source_date": "03/23/26",
+            "zone_low": 247.25,
+            "zone_high": 248.73,
+            "center": 247.99,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.36,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 278.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 1,
+            "strength_score": 11.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 262.27,
+            "first_touch_date": "02/06/26",
+            "source_date": "05/01/26",
+            "zone_low": 278.12,
+            "zone_high": 279.6,
+            "center": 278.86,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.0,
+            "atr_value": 6.204
+          }
+        ]
+      },
+      "MSFT": {
+        "security_type": "STK",
+        "daily_atr": 9.524,
+        "technical_atr": 5.92,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Tech Trader: AI Spending Has Upended the Earnings Season Playbook -- Barron's"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "MSFT",
+            "price": 404.71,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 51,
+            "false_breakouts": 13,
+            "strength_score": 80.93,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 407.63,
+            "nearest_lower_level": 392.59,
+            "first_touch_date": "02/09/26",
+            "source_date": "02/26/26",
+            "zone_low": 403.26,
+            "zone_high": 405.85,
+            "center": 404.51,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 80.93,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 423.68,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 38,
+            "false_breakouts": 17,
+            "strength_score": 75.9,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 419.86,
+            "first_touch_date": "02/10/26",
+            "source_date": "02/10/26",
+            "zone_low": 422.54,
+            "zone_high": 425.96,
+            "center": 424.31,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 75.9,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 420.26,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 40,
+            "false_breakouts": 4,
+            "strength_score": 52.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 424.31,
+            "nearest_lower_level": 407.63,
+            "first_touch_date": "02/10/26",
+            "source_date": "04/17/26",
+            "zone_low": 418.47,
+            "zone_high": 421.4,
+            "center": 419.86,
+            "families": [
+              "gap"
+            ],
+            "strength": 52.0,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 372.74,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 24,
+            "false_breakouts": 9,
+            "strength_score": 45.49,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 376.93,
+            "nearest_lower_level": 361.9,
+            "first_touch_date": "03/24/26",
+            "source_date": "03/25/26",
+            "zone_low": 371.15,
+            "zone_high": 373.88,
+            "center": 372.52,
+            "families": [
+              "gap"
+            ],
+            "strength": 45.49,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 393.28,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 27,
+            "false_breakouts": 5,
+            "strength_score": 40.53,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 404.51,
+            "nearest_lower_level": 385.73,
+            "first_touch_date": "02/06/26",
+            "source_date": "03/03/26",
+            "zone_low": 389.74,
+            "zone_high": 394.42,
+            "center": 392.59,
+            "families": [
+              "gap"
+            ],
+            "strength": 40.53,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 407.78,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 24,
+            "false_breakouts": 2,
+            "strength_score": 31.93,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 419.86,
+            "nearest_lower_level": 404.51,
+            "first_touch_date": "02/09/26",
+            "source_date": "05/01/26",
+            "zone_low": 406.35,
+            "zone_high": 408.92,
+            "center": 407.63,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 31.93,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 385.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 18,
+            "false_breakouts": 4,
+            "strength_score": 29.53,
+            "created_by": "swing_high",
+            "nearest_upper_level": 392.59,
+            "nearest_lower_level": 381.07,
+            "first_touch_date": "02/23/26",
+            "source_date": "04/08/26",
+            "zone_low": 383.84,
+            "zone_high": 388.35,
+            "center": 385.73,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 29.53,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 381.71,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 1,
+            "strength_score": 15.49,
+            "created_by": "swing_low",
+            "nearest_upper_level": 385.73,
+            "nearest_lower_level": 376.93,
+            "first_touch_date": "02/24/26",
+            "source_date": "02/24/26",
+            "zone_low": 378.98,
+            "zone_high": 382.85,
+            "center": 381.07,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 15.49,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 376.93,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.49,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 381.07,
+            "nearest_lower_level": 372.52,
+            "first_touch_date": "03/24/26",
+            "source_date": "03/25/26",
+            "zone_low": 375.79,
+            "zone_high": 378.07,
+            "center": 376.93,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.49,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 361.9,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.19,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 372.52,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/27/26",
+            "source_date": "03/27/26",
+            "zone_low": 360.76,
+            "zone_high": 363.04,
+            "center": 361.9,
+            "families": [
+              "gap"
+            ],
+            "strength": 5.19,
+            "atr_value": 9.524
+          }
+        ]
+      },
+      "TSLA": {
+        "security_type": "STK",
+        "daily_atr": 12.31,
+        "technical_atr": 19.24,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "TSLA",
+            "price": 416.38,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 25,
+            "false_breakouts": 12,
+            "strength_score": 51.75,
+            "created_by": "swing_high",
+            "nearest_upper_level": 436.35,
+            "nearest_lower_level": 412.08,
+            "first_touch_date": "02/09/26",
+            "source_date": "03/11/26",
+            "zone_low": 414.9,
+            "zone_high": 418.92,
+            "center": 416.89,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 51.75,
+            "atr_value": 12.31
+          },
+          {
+            "symbol": "TSLA",
+            "price": 411.82,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 21,
+            "false_breakouts": 9,
+            "strength_score": 41.75,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 416.89,
+            "nearest_lower_level": 346.46,
+            "first_touch_date": "02/06/26",
+            "source_date": "02/23/26",
+            "zone_low": 410.34,
+            "zone_high": 413.84,
+            "center": 412.08,
+            "families": [
+              "gap"
+            ],
+            "strength": 41.75,
+            "atr_value": 12.31
+          },
+          {
+            "symbol": "TSLA",
+            "price": 346.65,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 4,
+            "strength_score": 21.46,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 412.08,
+            "nearest_lower_level": 337.24,
+            "first_touch_date": "04/06/26",
+            "source_date": "04/08/26",
+            "zone_low": 344.79,
+            "zone_high": 348.13,
+            "center": 346.46,
+            "families": [
+              "gap"
+            ],
+            "strength": 21.46,
+            "atr_value": 12.31
+          },
+          {
+            "symbol": "TSLA",
+            "price": 337.25,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 9.42,
+            "created_by": "swing_low",
+            "nearest_upper_level": 346.46,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/09/26",
+            "zone_low": 335.76,
+            "zone_high": 338.73,
+            "center": 337.24,
+            "families": [
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 9.42,
+            "atr_value": 12.31
+          },
+          {
+            "symbol": "TSLA",
+            "price": 436.35,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.14,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 416.89,
+            "first_touch_date": "02/11/26",
+            "source_date": "02/11/26",
+            "zone_low": 434.87,
+            "zone_high": 437.83,
+            "center": 436.35,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 4.14,
+            "atr_value": 12.31
+          }
+        ]
+      },
+      "AMZN": {
+        "security_type": "STK",
+        "daily_atr": 9.642,
+        "technical_atr": 7.55,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}GameStop Is Offering to Buy eBay for $56 Billion, CEO Ryan Cohen Says -- Update",
+          "{A:800015:L:en}!GameStop Is Offering to Buy eBay For $56 Billion, CEO Ryan Cohen Says -- WSJ",
+          "{A:800015:L:en}!* GameStop Offering to Buy eBay for $125 a Share, or About $56 Billion, CEO Ryan Cohen Says -- WSJ"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "AMZN",
+            "price": 249.91,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 19,
+            "false_breakouts": 11,
+            "strength_score": 44.73,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 256.3,
+            "nearest_lower_level": 244.78,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/22/26",
+            "zone_low": 247.12,
+            "zone_high": 251.07,
+            "center": 249.4,
+            "families": [
+              "gap"
+            ],
+            "strength": 44.73,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 256.16,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 25,
+            "false_breakouts": 6,
+            "strength_score": 41.93,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 264.5,
+            "nearest_lower_level": 249.4,
+            "first_touch_date": "04/17/26",
+            "source_date": "04/30/26",
+            "zone_low": 255.0,
+            "zone_high": 257.79,
+            "center": 256.3,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 41.93,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 264.5,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 2,
+            "strength_score": 13.72,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 256.3,
+            "first_touch_date": "04/24/26",
+            "source_date": "04/24/26",
+            "zone_low": 263.34,
+            "zone_high": 265.66,
+            "center": 264.5,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 13.72,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 221.25,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 2,
+            "strength_score": 11.39,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 224.46,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/05/26",
+            "source_date": "04/09/26",
+            "zone_low": 217.78,
+            "zone_high": 222.41,
+            "center": 220.09,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.39,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 245.36,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 9.66,
+            "created_by": "swing_low",
+            "nearest_upper_level": 249.4,
+            "nearest_lower_level": 240.43,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/20/26",
+            "zone_low": 243.04,
+            "zone_high": 246.52,
+            "center": 244.78,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 9.66,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 240.43,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.49,
+            "created_by": "swing_high",
+            "nearest_upper_level": 244.78,
+            "nearest_lower_level": 224.46,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/10/26",
+            "zone_low": 239.27,
+            "zone_high": 241.59,
+            "center": 240.43,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 7.49,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 225.23,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.42,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 240.43,
+            "nearest_lower_level": 220.09,
+            "first_touch_date": "04/08/26",
+            "source_date": "04/09/26",
+            "zone_low": 222.53,
+            "zone_high": 226.39,
+            "center": 224.46,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.42,
+            "atr_value": 9.642
+          }
+        ]
+      },
+      "AGPU": {
+        "security_type": "STK",
+        "daily_atr": 0.6519,
+        "technical_atr": 0.05,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "AGPU",
+            "price": 5.93,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 4,
+            "strength_score": 23.97,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 6.16,
+            "nearest_lower_level": 5.27,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/29/26",
+            "zone_low": 5.78,
+            "zone_high": 6.01,
+            "center": 5.9,
+            "families": [
+              "gap"
+            ],
+            "strength": 23.97,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 5.23,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 16,
+            "false_breakouts": 1,
+            "strength_score": 23.0,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 5.9,
+            "nearest_lower_level": 4.88,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/10/26",
+            "zone_low": 5.15,
+            "zone_high": 5.36,
+            "center": 5.27,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 23.0,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 7.1,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 2,
+            "strength_score": 16.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 10.86,
+            "nearest_lower_level": 6.71,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/27/26",
+            "zone_low": 7.02,
+            "zone_high": 7.28,
+            "center": 7.12,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 16.83,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 4.17,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 1,
+            "strength_score": 15.69,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 4.88,
+            "nearest_lower_level": 2.81,
+            "first_touch_date": "04/01/26",
+            "source_date": "04/01/26",
+            "zone_low": 4.09,
+            "zone_high": 4.25,
+            "center": 4.17,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 15.69,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 6.64,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 2,
+            "strength_score": 14.86,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 7.12,
+            "nearest_lower_level": 6.46,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/27/26",
+            "zone_low": 6.56,
+            "zone_high": 6.88,
+            "center": 6.71,
+            "families": [
+              "gap"
+            ],
+            "strength": 14.86,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 6.46,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.86,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 6.71,
+            "nearest_lower_level": 6.16,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/07/26",
+            "zone_low": 6.38,
+            "zone_high": 6.54,
+            "center": 6.46,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.86,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 4.88,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 2,
+            "strength_score": 12.69,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 5.27,
+            "nearest_lower_level": 4.17,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/22/26",
+            "zone_low": 4.8,
+            "zone_high": 4.96,
+            "center": 4.88,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.69,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 2.83,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 11.25,
+            "created_by": "swing_high",
+            "nearest_upper_level": 4.17,
+            "nearest_lower_level": 1.25,
+            "first_touch_date": "02/10/26",
+            "source_date": "02/25/26",
+            "zone_low": 2.71,
+            "zone_high": 2.91,
+            "center": 2.81,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 11.25,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 6.16,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 8.97,
+            "created_by": "swing_high",
+            "nearest_upper_level": 6.46,
+            "nearest_lower_level": 5.9,
+            "first_touch_date": "04/07/26",
+            "source_date": "05/01/26",
+            "zone_low": 6.08,
+            "zone_high": 6.24,
+            "center": 6.16,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 8.97,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 10.86,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.73,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 7.12,
+            "first_touch_date": "04/22/26",
+            "source_date": "04/22/26",
+            "zone_low": 10.77,
+            "zone_high": 10.94,
+            "center": 10.86,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 8.73,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 1.25,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.15,
+            "created_by": "swing_low",
+            "nearest_upper_level": 2.81,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/19/26",
+            "source_date": "03/19/26",
+            "zone_low": 1.17,
+            "zone_high": 1.33,
+            "center": 1.25,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 6.15,
+            "atr_value": 0.6519
+          }
+        ]
+      },
+      "ALOY": {
+        "security_type": "STK",
+        "daily_atr": 0.9334,
+        "technical_atr": 1.01,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "ALOY",
+            "price": 10.44,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 44,
+            "false_breakouts": 6,
+            "strength_score": 59.69,
+            "created_by": "swing_high",
+            "nearest_upper_level": 11.86,
+            "nearest_lower_level": null,
+            "first_touch_date": "02/12/26",
+            "source_date": "03/30/26",
+            "zone_low": 10.29,
+            "zone_high": 10.64,
+            "center": 10.47,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 59.69,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 16.32,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 30,
+            "false_breakouts": 0,
+            "strength_score": 33.76,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 16.57,
+            "nearest_lower_level": 15.7,
+            "first_touch_date": "02/24/26",
+            "source_date": "02/26/26",
+            "zone_low": 16.01,
+            "zone_high": 16.43,
+            "center": 16.25,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 33.76,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 15.81,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 18,
+            "false_breakouts": 2,
+            "strength_score": 24.76,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 16.25,
+            "nearest_lower_level": 14.82,
+            "first_touch_date": "02/23/26",
+            "source_date": "02/26/26",
+            "zone_low": 15.47,
+            "zone_high": 15.93,
+            "center": 15.7,
+            "families": [
+              "gap"
+            ],
+            "strength": 24.76,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 11.86,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 17,
+            "false_breakouts": 2,
+            "strength_score": 24.62,
+            "created_by": "swing_high",
+            "nearest_upper_level": 14.82,
+            "nearest_lower_level": 10.47,
+            "first_touch_date": "02/09/26",
+            "source_date": "03/25/26",
+            "zone_low": 11.75,
+            "zone_high": 11.97,
+            "center": 11.86,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 24.62,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 16.87,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 1,
+            "strength_score": 12.72,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 18.53,
+            "nearest_lower_level": 16.57,
+            "first_touch_date": "02/24/26",
+            "source_date": "03/12/26",
+            "zone_low": 16.76,
+            "zone_high": 16.98,
+            "center": 16.87,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.72,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 16.57,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 0,
+            "strength_score": 11.76,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 16.87,
+            "nearest_lower_level": 16.25,
+            "first_touch_date": "02/24/26",
+            "source_date": "03/12/26",
+            "zone_low": 16.46,
+            "zone_high": 16.68,
+            "center": 16.57,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.76,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 14.82,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 10.76,
+            "created_by": "swing_low",
+            "nearest_upper_level": 15.7,
+            "nearest_lower_level": 11.86,
+            "first_touch_date": "02/23/26",
+            "source_date": "03/09/26",
+            "zone_low": 14.71,
+            "zone_high": 14.93,
+            "center": 14.82,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 10.76,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 18.46,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 10.52,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 18.92,
+            "nearest_lower_level": 16.87,
+            "first_touch_date": "02/24/26",
+            "source_date": "03/02/26",
+            "zone_low": 18.35,
+            "zone_high": 18.7,
+            "center": 18.53,
+            "families": [
+              "gap"
+            ],
+            "strength": 10.52,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 18.92,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 9.52,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 19.75,
+            "nearest_lower_level": 18.53,
+            "first_touch_date": "02/24/26",
+            "source_date": "02/24/26",
+            "zone_low": 18.81,
+            "zone_high": 19.03,
+            "center": 18.92,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 9.52,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 21.69,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 1,
+            "strength_score": 7.59,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 24.41,
+            "nearest_lower_level": 21.12,
+            "first_touch_date": "03/03/26",
+            "source_date": "03/06/26",
+            "zone_low": 21.58,
+            "zone_high": 21.8,
+            "center": 21.69,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 19.75,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.52,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 20.74,
+            "nearest_lower_level": 18.92,
+            "first_touch_date": "02/27/26",
+            "source_date": "02/27/26",
+            "zone_low": 19.64,
+            "zone_high": 19.86,
+            "center": 19.75,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.52,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 21.12,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 6.59,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 21.69,
+            "nearest_lower_level": 20.74,
+            "first_touch_date": "03/03/26",
+            "source_date": "03/04/26",
+            "zone_low": 21.01,
+            "zone_high": 21.23,
+            "center": 21.12,
+            "families": [
+              "gap"
+            ],
+            "strength": 6.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 25.88,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 6.59,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 26.19,
+            "nearest_lower_level": 24.41,
+            "first_touch_date": "03/04/26",
+            "source_date": "03/05/26",
+            "zone_low": 25.77,
+            "zone_high": 25.99,
+            "center": 25.88,
+            "families": [
+              "gap"
+            ],
+            "strength": 6.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 20.74,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.59,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 21.12,
+            "nearest_lower_level": 19.75,
+            "first_touch_date": "03/03/26",
+            "source_date": "03/05/26",
+            "zone_low": 20.63,
+            "zone_high": 20.85,
+            "center": 20.74,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 5.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 26.64,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.59,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 26.19,
+            "first_touch_date": "03/04/26",
+            "source_date": "03/05/26",
+            "zone_low": 26.53,
+            "zone_high": 26.75,
+            "center": 26.64,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 5.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 24.41,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.59,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 25.88,
+            "nearest_lower_level": 21.69,
+            "first_touch_date": "03/04/26",
+            "source_date": "03/04/26",
+            "zone_low": 24.29,
+            "zone_high": 24.52,
+            "center": 24.41,
+            "families": [
+              "gap"
+            ],
+            "strength": 4.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 26.19,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.59,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 26.64,
+            "nearest_lower_level": 25.88,
+            "first_touch_date": "03/04/26",
+            "source_date": "03/05/26",
+            "zone_low": 26.08,
+            "zone_high": 26.3,
+            "center": 26.19,
+            "families": [
+              "gap"
+            ],
+            "strength": 4.59,
+            "atr_value": 0.9334
+          }
+        ]
+      },
+      "BIRD": {
+        "security_type": "STK",
+        "daily_atr": 0.558,
+        "technical_atr": 0.24,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "BIRD",
+            "price": 8.5,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 4,
+            "strength_score": 21.8,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 9.25,
+            "nearest_lower_level": 8.18,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/21/26",
+            "zone_low": 8.41,
+            "zone_high": 8.57,
+            "center": 8.49,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 21.8,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 6.68,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 3,
+            "strength_score": 19.97,
+            "created_by": "swing_high",
+            "nearest_upper_level": 7.53,
+            "nearest_lower_level": 6.08,
+            "first_touch_date": "04/15/26",
+            "source_date": "05/01/26",
+            "zone_low": 6.48,
+            "zone_high": 6.75,
+            "center": 6.62,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 19.97,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 7.55,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 0,
+            "strength_score": 16.86,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 8.01,
+            "nearest_lower_level": 6.62,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/22/26",
+            "zone_low": 7.41,
+            "zone_high": 7.62,
+            "center": 7.53,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 16.86,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 12.5,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.66,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 13.48,
+            "nearest_lower_level": 11.49,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/20/26",
+            "zone_low": 12.43,
+            "zone_high": 12.59,
+            "center": 12.51,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 12.66,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 6.11,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 11.0,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 6.62,
+            "nearest_lower_level": 3.8,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/15/26",
+            "zone_low": 5.97,
+            "zone_high": 6.18,
+            "center": 6.08,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 11.0,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 10.56,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 10.69,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 11.2,
+            "nearest_lower_level": 9.25,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/17/26",
+            "zone_low": 10.49,
+            "zone_high": 10.63,
+            "center": 10.56,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 10.69,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 8.01,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 1,
+            "strength_score": 9.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 8.18,
+            "nearest_lower_level": 7.53,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/24/26",
+            "zone_low": 7.94,
+            "zone_high": 8.08,
+            "center": 8.01,
+            "families": [
+              "gap"
+            ],
+            "strength": 9.8,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 11.49,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 9.69,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 12.51,
+            "nearest_lower_level": 11.2,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/21/26",
+            "zone_low": 11.42,
+            "zone_high": 11.56,
+            "center": 11.49,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 9.69,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 11.2,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 8.69,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 11.49,
+            "nearest_lower_level": 10.56,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/20/26",
+            "zone_low": 11.13,
+            "zone_high": 11.27,
+            "center": 11.2,
+            "families": [
+              "gap"
+            ],
+            "strength": 8.69,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 14.44,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.59,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 24.31,
+            "nearest_lower_level": 13.48,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/16/26",
+            "zone_low": 14.33,
+            "zone_high": 14.51,
+            "center": 14.42,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 8.59,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 8.18,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 8.49,
+            "nearest_lower_level": 8.01,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/23/26",
+            "zone_low": 8.11,
+            "zone_high": 8.25,
+            "center": 8.18,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.8,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 9.25,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.73,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 10.56,
+            "nearest_lower_level": 8.49,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/22/26",
+            "zone_low": 9.18,
+            "zone_high": 9.32,
+            "center": 9.25,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 7.73,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 13.48,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.63,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 14.42,
+            "nearest_lower_level": 12.51,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/17/26",
+            "zone_low": 13.41,
+            "zone_high": 13.55,
+            "center": 13.48,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 7.63,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 24.31,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.56,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 14.42,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/15/26",
+            "zone_low": 24.24,
+            "zone_high": 24.38,
+            "center": 24.31,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.56,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 3.8,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.75,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 6.08,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/10/26",
+            "source_date": "03/11/26",
+            "zone_low": 3.73,
+            "zone_high": 3.87,
+            "center": 3.8,
+            "families": [
+              "gap"
+            ],
+            "strength": 4.75,
+            "atr_value": 0.558
+          }
+        ]
+      },
+      "ISPC": {
+        "security_type": "STK",
+        "daily_atr": 1.194,
+        "technical_atr": 1.83,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "ISPC",
+            "price": 7.28,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 38,
+            "false_breakouts": 5,
+            "strength_score": 52.76,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 8.38,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/16/26",
+            "source_date": "03/16/26",
+            "zone_low": 7.06,
+            "zone_high": 7.43,
+            "center": 7.25,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 52.76,
+            "atr_value": 1.194
+          },
+          {
+            "symbol": "ISPC",
+            "price": 9.64,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 14,
+            "false_breakouts": 3,
+            "strength_score": 22.86,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 14.8,
+            "nearest_lower_level": 8.38,
+            "first_touch_date": "02/23/26",
+            "source_date": "02/24/26",
+            "zone_low": 9.5,
+            "zone_high": 9.78,
+            "center": 9.64,
+            "families": [
+              "gap"
+            ],
+            "strength": 22.86,
+            "atr_value": 1.194
+          },
+          {
+            "symbol": "ISPC",
+            "price": 8.38,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 7.97,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 9.64,
+            "nearest_lower_level": 7.25,
+            "first_touch_date": "03/16/26",
+            "source_date": "03/18/26",
+            "zone_low": 8.23,
+            "zone_high": 8.52,
+            "center": 8.38,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.97,
+            "atr_value": 1.194
+          },
+          {
+            "symbol": "ISPC",
+            "price": 14.8,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.79,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 9.64,
+            "first_touch_date": "02/13/26",
+            "source_date": "02/13/26",
+            "zone_low": 14.66,
+            "zone_high": 14.94,
+            "center": 14.8,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.79,
+            "atr_value": 1.194
+          }
+        ]
+      },
+      "MRLN": {
+        "security_type": "STK",
+        "daily_atr": 1.59,
+        "technical_atr": 3.07,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "MRLN",
+            "price": 13.66,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 29,
+            "false_breakouts": 12,
+            "strength_score": 57.76,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 14.65,
+            "nearest_lower_level": 6.53,
+            "first_touch_date": "03/25/26",
+            "source_date": "04/21/26",
+            "zone_low": 13.33,
+            "zone_high": 14.09,
+            "center": 13.63,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 57.76,
+            "atr_value": 1.59
+          },
+          {
+            "symbol": "MRLN",
+            "price": 6.51,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 0,
+            "strength_score": 16.38,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 13.63,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/17/26",
+            "source_date": "03/17/26",
+            "zone_low": 6.32,
+            "zone_high": 6.75,
+            "center": 6.53,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 16.38,
+            "atr_value": 1.59
+          },
+          {
+            "symbol": "MRLN",
+            "price": 16.79,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 0,
+            "strength_score": 11.62,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 16.09,
+            "first_touch_date": "04/16/26",
+            "source_date": "04/17/26",
+            "zone_low": 16.53,
+            "zone_high": 17.19,
+            "center": 16.86,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 11.62,
+            "atr_value": 1.59
+          },
+          {
+            "symbol": "MRLN",
+            "price": 14.69,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 10.62,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 16.09,
+            "nearest_lower_level": 13.63,
+            "first_touch_date": "03/25/26",
+            "source_date": "04/15/26",
+            "zone_low": 14.41,
+            "zone_high": 14.88,
+            "center": 14.65,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 10.62,
+            "atr_value": 1.59
+          },
+          {
+            "symbol": "MRLN",
+            "price": 16.09,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.62,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 16.86,
+            "nearest_lower_level": 14.65,
+            "first_touch_date": "04/16/26",
+            "source_date": "04/17/26",
+            "zone_low": 15.9,
+            "zone_high": 16.28,
+            "center": 16.09,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.62,
+            "atr_value": 1.59
+          }
+        ]
+      },
+      "OPTX": {
+        "security_type": "STK",
+        "daily_atr": 0.9575,
+        "technical_atr": 0.37,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Press Release: Syntec Optics (Nasdaq: OPTX) Announces Closing of $20 Million Underwritten Public Offering of Common Stock",
+          "{A:800015:L:en}* H.C. Wainwright & Co. Acting as Sole Book-Running Manager for Syntec Optics Offering >OPTX",
+          "{A:800015:L:en}* Syntec Optics Offering Is Expected to Close on or About April 30 >OPTX"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "OPTX",
+            "price": 8.44,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 14,
+            "false_breakouts": 1,
+            "strength_score": 20.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 10.34,
+            "nearest_lower_level": null,
+            "first_touch_date": "02/06/26",
+            "source_date": "03/11/26",
+            "zone_low": 8.33,
+            "zone_high": 8.55,
+            "center": 8.44,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 20.0,
+            "atr_value": 0.9575
+          },
+          {
+            "symbol": "OPTX",
+            "price": 11.28,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 11,
+            "false_breakouts": 2,
+            "strength_score": 18.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 12.0,
+            "nearest_lower_level": 10.34,
+            "first_touch_date": "04/13/26",
+            "source_date": "04/15/26",
+            "zone_low": 11.13,
+            "zone_high": 11.57,
+            "center": 11.31,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 18.8,
+            "atr_value": 0.9575
+          },
+          {
+            "symbol": "OPTX",
+            "price": 10.34,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 1,
+            "strength_score": 14.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 11.31,
+            "nearest_lower_level": 8.44,
+            "first_touch_date": "04/13/26",
+            "source_date": "04/13/26",
+            "zone_low": 10.23,
+            "zone_high": 10.45,
+            "center": 10.34,
+            "families": [
+              "gap"
+            ],
+            "strength": 14.8,
+            "atr_value": 0.9575
+          },
+          {
+            "symbol": "OPTX",
+            "price": 12.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 6.28,
+            "created_by": "gap_upper",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 11.31,
+            "first_touch_date": "04/13/26",
+            "source_date": "04/14/26",
+            "zone_low": 11.89,
+            "zone_high": 12.11,
+            "center": 12.0,
+            "families": [
+              "gap"
+            ],
+            "strength": 6.28,
+            "atr_value": 0.9575
+          }
+        ]
+      },
+      "ROLR": {
+        "security_type": "STK",
+        "daily_atr": 1.3731,
+        "technical_atr": 0.71,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "ROLR",
+            "price": 6.0,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 13,
+            "false_breakouts": 2,
+            "strength_score": 21.59,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 6.4,
+            "nearest_lower_level": null,
+            "first_touch_date": "02/06/26",
+            "source_date": "04/16/26",
+            "zone_low": 5.61,
+            "zone_high": 6.16,
+            "center": 5.85,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 21.59,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 9.92,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 1,
+            "strength_score": 10.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 10.71,
+            "nearest_lower_level": 6.86,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/29/26",
+            "zone_low": 9.76,
+            "zone_high": 10.08,
+            "center": 9.92,
+            "families": [
+              "gap"
+            ],
+            "strength": 10.9,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 10.71,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.9,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 11.74,
+            "nearest_lower_level": 9.92,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/29/26",
+            "zone_low": 10.55,
+            "zone_high": 10.87,
+            "center": 10.71,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 8.9,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 11.74,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 12.85,
+            "nearest_lower_level": 10.71,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/14/26",
+            "zone_low": 11.58,
+            "zone_high": 11.9,
+            "center": 11.74,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 8.83,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 12.85,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 11.74,
+            "first_touch_date": "04/27/26",
+            "source_date": "04/27/26",
+            "zone_low": 12.69,
+            "zone_high": 13.01,
+            "center": 12.85,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.83,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 6.4,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.59,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 6.86,
+            "nearest_lower_level": 5.85,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/16/26",
+            "zone_low": 6.24,
+            "zone_high": 6.56,
+            "center": 6.4,
+            "families": [
+              "gap"
+            ],
+            "strength": 5.59,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 6.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.59,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 9.92,
+            "nearest_lower_level": 6.4,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/15/26",
+            "zone_low": 6.7,
+            "zone_high": 7.02,
+            "center": 6.86,
+            "families": [
+              "gap"
+            ],
+            "strength": 5.59,
+            "atr_value": 1.3731
+          }
+        ]
+      },
+      "SKLZ": {
+        "security_type": "STK",
+        "daily_atr": 1.52,
+        "technical_atr": 0.46,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "SKLZ",
+            "price": 6.3,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 25,
+            "false_breakouts": 10,
+            "strength_score": 49.93,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 7.2,
+            "nearest_lower_level": 5.58,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/27/26",
+            "zone_low": 6.03,
+            "zone_high": 6.54,
+            "center": 6.3,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 49.93,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 7.75,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 11,
+            "false_breakouts": 4,
+            "strength_score": 23.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 8.61,
+            "nearest_lower_level": 7.2,
+            "first_touch_date": "04/23/26",
+            "source_date": "05/01/26",
+            "zone_low": 7.57,
+            "zone_high": 8.24,
+            "center": 7.89,
+            "families": [
+              "gap"
+            ],
+            "strength": 23.0,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 8.47,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 18,
+            "false_breakouts": 0,
+            "strength_score": 22.97,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 9.15,
+            "nearest_lower_level": 7.89,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/30/26",
+            "zone_low": 8.29,
+            "zone_high": 8.88,
+            "center": 8.61,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 22.97,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 7.23,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 0,
+            "strength_score": 17.0,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 7.89,
+            "nearest_lower_level": 6.3,
+            "first_touch_date": "04/23/26",
+            "source_date": "05/01/26",
+            "zone_low": 6.99,
+            "zone_high": 7.41,
+            "center": 7.2,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 17.0,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 5.62,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 12.93,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 6.3,
+            "nearest_lower_level": 4.49,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/30/26",
+            "zone_low": 5.36,
+            "zone_high": 5.8,
+            "center": 5.58,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.93,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 9.2,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 10.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 20.0,
+            "nearest_lower_level": 8.61,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/24/26",
+            "zone_low": 8.92,
+            "zone_high": 9.38,
+            "center": 9.15,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 10.83,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 4.49,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.76,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 5.58,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/15/26",
+            "zone_low": 4.31,
+            "zone_high": 4.67,
+            "center": 4.49,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 8.76,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 20.0,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 8.51,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 9.15,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/23/26",
+            "zone_low": 19.82,
+            "zone_high": 20.18,
+            "center": 20.0,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 8.51,
+            "atr_value": 1.52
+          }
+        ]
+      },
+      "SKYQ": {
+        "security_type": "STK",
+        "daily_atr": 1.012,
+        "technical_atr": 0.91,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "SKYQ",
+            "price": 5.0,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 44,
+            "false_breakouts": 13,
+            "strength_score": 74.86,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 7.17,
+            "nearest_lower_level": 1.85,
+            "first_touch_date": "03/02/26",
+            "source_date": "04/08/26",
+            "zone_low": 4.75,
+            "zone_high": 5.22,
+            "center": 4.99,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 74.86,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 7.29,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 20,
+            "false_breakouts": 4,
+            "strength_score": 31.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 7.75,
+            "nearest_lower_level": 4.99,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/10/26",
+            "zone_low": 6.94,
+            "zone_high": 7.41,
+            "center": 7.17,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 31.9,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 8.32,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 20,
+            "false_breakouts": 0,
+            "strength_score": 24.76,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 8.84,
+            "nearest_lower_level": 8.01,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/07/26",
+            "zone_low": 8.2,
+            "zone_high": 8.62,
+            "center": 8.37,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 24.76,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 8.84,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.72,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 9.56,
+            "nearest_lower_level": 8.37,
+            "first_touch_date": "04/09/26",
+            "source_date": "04/15/26",
+            "zone_low": 8.72,
+            "zone_high": 8.96,
+            "center": 8.84,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 12.72,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 9.56,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.69,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 9.82,
+            "nearest_lower_level": 8.84,
+            "first_touch_date": "04/09/26",
+            "source_date": "04/09/26",
+            "zone_low": 9.44,
+            "zone_high": 9.68,
+            "center": 9.56,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 12.69,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 9.82,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 1,
+            "strength_score": 12.69,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 10.38,
+            "nearest_lower_level": 9.56,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/17/26",
+            "zone_low": 9.7,
+            "zone_high": 9.94,
+            "center": 9.82,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.69,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 10.34,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 0,
+            "strength_score": 12.69,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 11.62,
+            "nearest_lower_level": 9.82,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/14/26",
+            "zone_low": 10.22,
+            "zone_high": 10.54,
+            "center": 10.38,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.69,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 8.01,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 11.76,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 8.37,
+            "nearest_lower_level": 7.75,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/20/26",
+            "zone_low": 7.89,
+            "zone_high": 8.13,
+            "center": 8.01,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.76,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 7.75,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 8.76,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 8.01,
+            "nearest_lower_level": 7.17,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/10/26",
+            "zone_low": 7.63,
+            "zone_high": 7.87,
+            "center": 7.75,
+            "families": [
+              "gap"
+            ],
+            "strength": 8.76,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 11.62,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.48,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 12.59,
+            "nearest_lower_level": 10.38,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/14/26",
+            "zone_low": 11.5,
+            "zone_high": 11.74,
+            "center": 11.62,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.48,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 12.59,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.48,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 15.35,
+            "nearest_lower_level": 11.62,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/13/26",
+            "zone_low": 12.47,
+            "zone_high": 12.71,
+            "center": 12.59,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.48,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 19.45,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.48,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 15.35,
+            "first_touch_date": "04/13/26",
+            "source_date": "04/13/26",
+            "zone_low": 19.33,
+            "zone_high": 19.57,
+            "center": 19.45,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.48,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 15.35,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 6.48,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 19.45,
+            "nearest_lower_level": 12.59,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/10/26",
+            "zone_low": 15.23,
+            "zone_high": 15.47,
+            "center": 15.35,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 6.48,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 1.85,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.14,
+            "created_by": "swing_low",
+            "nearest_upper_level": 4.99,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/26/26",
+            "source_date": "03/26/26",
+            "zone_low": 1.73,
+            "zone_high": 1.97,
+            "center": 1.85,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 5.14,
+            "atr_value": 1.012
+          }
+        ]
+      },
+      "EUR.USD": {
+        "security_type": "CASH",
+        "daily_atr": 0.0071,
+        "technical_atr": 0.0087,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [],
+        "news_source_types": [],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "EUR.USD",
+            "price": 1.16,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 70,
+            "false_breakouts": 0,
+            "strength_score": 75.36,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 1.15,
+            "first_touch_date": "03/03/26",
+            "source_date": "03/19/26",
+            "zone_low": 1.16,
+            "zone_high": 1.16,
+            "center": 1.16,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "limit_player",
+              "mirror",
+              "structural"
+            ],
+            "strength": 75.36,
+            "atr_value": 0.0071
+          },
+          {
+            "symbol": "EUR.USD",
+            "price": 1.15,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 32,
+            "false_breakouts": 0,
+            "strength_score": 37.15,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 1.16,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/13/26",
+            "source_date": "03/03/26",
+            "zone_low": 1.15,
+            "zone_high": 1.15,
+            "center": 1.15,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "limit_player",
+              "mirror",
+              "structural"
+            ],
+            "strength": 37.15,
+            "atr_value": 0.0071
+          }
+        ]
+      }
+    },
+    "macro_risk": {
+      "blocked": false,
+      "risk_level": "LOW",
+      "headlines": [
+        "{A:800015:L:en}SPY ETF Gains 0.3%",
+        "{A:800015:L:en}SPY ETF Rises 1.0%",
+        "{A:800015:L:en}SPY ETF Closes Flat",
+        "{A:800015:L:en}SPY ETF Falls 0.5%",
+        "{A:800015:L:en}SPY ETF Climbs 0.2%, Outperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Rises 0.8%",
+        "{A:800015:L:en}SPY ETF Falls 0.4%",
+        "{A:800015:L:en}SPY ETF Gains 1.0%",
+        "{A:800015:L:en}SPY ETF Declines 0.7%, Underperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Declines 0.2%"
+      ],
+      "matched_headlines": [],
+      "critical_matches": [],
+      "provider_hits": [
+        "DJ-RTG"
+      ],
+      "source_types": [
+        "ibkr"
+      ]
+    },
+    "ideas": [
+      {
+        "symbol": "BBBY",
+        "catalyst": "level interaction",
+        "entry": 5.2,
+        "stop": 5.148,
+        "target": 6.27,
+        "decision": "WATCH"
+      },
+      {
+        "symbol": "SEI",
+        "catalyst": "{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance",
+        "entry": 74.5,
+        "stop": 74.44,
+        "target": 77.12,
+        "decision": "HOLD"
+      },
+      {
+        "symbol": "SANM",
+        "catalyst": "{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD",
+        "entry": 216.54,
+        "stop": 208.67,
+        "target": 217.67,
+        "decision": "HOLD"
+      }
+    ],
+    "research_symbols": [
+      "BBBY",
+      "SEI",
+      "SANM",
+      "AAPL",
+      "MSFT",
+      "TSLA",
+      "AMZN",
+      "AGPU",
+      "ALOY",
+      "BIRD",
+      "ISPC",
+      "MRLN",
+      "OPTX",
+      "ROLR",
+      "SKLZ",
+      "SKYQ",
+      "EUR.USD"
+    ]
+  }
+}
+```
+
+## Premarket Research (2026-05-04T23:00:07)
+- **strategy_loaded**: True
+- **trade_log_context_loaded**: True
+- **research_log_context_loaded**: True
+- **account_snapshot**: {'account': [{'account': 'DU5454348', 'tag': 'AccountType', 'value': 'INDIVIDUAL', 'currency': ''}, {'account': 'DU5454348', 'tag': 'Cushion', 'value': '1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemaining', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+1', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+2', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+3', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+4', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'LookAheadNextChange', 'value': '0', 'currency': ''}, {'account': 'DU5454348', 'tag': 'AccruedCash', 'value': '264.16', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'AvailableFunds', 'value': '101906.33', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'BuyingPower', 'value': '407625.32', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'EquityWithLoanValue', 'value': '101906.33', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'ExcessLiquidity', 'value': '101906.33', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullAvailableFunds', 'value': '101906.33', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullExcessLiquidity', 'value': '101906.33', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'GrossPositionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'InitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadAvailableFunds', 'value': '101906.33', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadExcessLiquidity', 'value': '101906.33', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'MaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'NetLiquidation', 'value': '102170.49', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'PreviousDayEquityWithLoanValue', 'value': '101920.65', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTEquity', 'value': '102170.49', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTMargin', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'SMA', 'value': '102170.49', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'TotalCashValue', 'value': '101906.33', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CashBalance', 'value': '1060.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '1060.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '1060.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.1688189', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Currency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'CashBalance', 'value': '100667.381', 'currency': 'USD'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '100667.381', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '264.16', 'currency': 'USD'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '100931.541', 'currency': 'USD'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CashBalance', 'value': '101906.329', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '101906.329', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '264.16', 'currency': 'BASE'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '102170.489', 'currency': 'BASE'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'BASE'}], 'positions': [{'symbol': 'EUR', 'position': 40.0, 'avg_cost': 1.2689000000000001, 'sec_type': 'CASH'}], 'open_orders': []}
+- **research_symbols**: ['EUR.USD', 'BBBY', 'SEI', 'SANM', 'AAPL', 'MSFT', 'TSLA', 'AMZN', 'AGPU', 'ALOY', 'BIRD', 'ISPC', 'MRLN', 'OPTX', 'ROLR', 'SKLZ', 'SKYQ']
+- **macro_risk**: False
+- **macro_news_sources**: ['DJ-RTG']
+- **macro_news_source_types**: ['ibkr']
+- **actionable_ideas**: [{'symbol': 'EUR.USD', 'catalyst': 'level interaction', 'entry': 1.168765, 'stop': 1.16, 'target': 1.20382795, 'decision': 'WATCH'}, {'symbol': 'BBBY', 'catalyst': 'level interaction', 'entry': 5.2, 'stop': 5.148, 'target': 6.27, 'decision': 'WATCH'}, {'symbol': 'SEI', 'catalyst': '{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance', 'entry': 74.5, 'stop': 74.44, 'target': 77.12, 'decision': 'HOLD'}]
+- **trade_decision**: READY_FOR_OPEN_VALIDATION
+
+## Workflow Premarket (2026-05-04T23:00:07)
+- **stage**: Premarket
+- **watchlist_symbols**: ['EUR.USD', 'BBBY', 'SEI', 'SANM', 'AAPL', 'MSFT', 'TSLA', 'AMZN', 'AGPU', 'ALOY', 'BIRD', 'ISPC', 'MRLN', 'OPTX', 'ROLR', 'SKLZ', 'SKYQ']
+```json
+{
+  "stage": "Premarket",
+  "payload": {
+    "watchlist": {
+      "EUR.USD": {
+        "security_type": "CASH",
+        "daily_atr": 0.0071,
+        "technical_atr": 0.0088,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [],
+        "news_source_types": [],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "EUR.USD",
+            "price": 1.16,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 70,
+            "false_breakouts": 0,
+            "strength_score": 75.36,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 1.15,
+            "first_touch_date": "03/03/26",
+            "source_date": "03/19/26",
+            "zone_low": 1.16,
+            "zone_high": 1.16,
+            "center": 1.16,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "limit_player",
+              "mirror",
+              "structural"
+            ],
+            "strength": 75.36,
+            "atr_value": 0.0071
+          },
+          {
+            "symbol": "EUR.USD",
+            "price": 1.15,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 32,
+            "false_breakouts": 0,
+            "strength_score": 37.15,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 1.16,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/13/26",
+            "source_date": "03/03/26",
+            "zone_low": 1.15,
+            "zone_high": 1.15,
+            "center": 1.15,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "limit_player",
+              "mirror",
+              "structural"
+            ],
+            "strength": 37.15,
+            "atr_value": 0.0071
+          }
+        ]
+      },
+      "BBBY": {
+        "security_type": "STK",
+        "daily_atr": 0.4675,
+        "technical_atr": 1.07,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "BBBY",
+            "price": 7.7,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.86,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 6.27,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 7.64,
+            "zone_high": 7.76,
+            "center": 7.7,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.86,
+            "atr_value": 0.4675
+          },
+          {
+            "symbol": "BBBY",
+            "price": 6.27,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.86,
+            "created_by": "swing_high",
+            "nearest_upper_level": 7.7,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/20/26",
+            "source_date": "04/20/26",
+            "zone_low": 6.21,
+            "zone_high": 6.33,
+            "center": 6.27,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 6.86,
+            "atr_value": 0.4675
+          }
+        ]
+      },
+      "SEI": {
+        "security_type": "STK",
+        "daily_atr": 6.7,
+        "technical_atr": 0.06,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "SEI",
+            "price": 74.44,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 3,
+            "strength_score": 17.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 77.12,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/24/26",
+            "source_date": "04/29/26",
+            "zone_low": 73.64,
+            "zone_high": 75.24,
+            "center": 74.44,
+            "families": [
+              "gap"
+            ],
+            "strength": 17.0,
+            "atr_value": 6.7
+          },
+          {
+            "symbol": "SEI",
+            "price": 81.24,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.9,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 77.12,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 79.97,
+            "zone_high": 82.04,
+            "center": 81.12,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.9,
+            "atr_value": 6.7
+          },
+          {
+            "symbol": "SEI",
+            "price": 77.12,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.93,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 81.12,
+            "nearest_lower_level": 74.44,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 76.32,
+            "zone_high": 77.92,
+            "center": 77.12,
+            "families": [
+              "gap"
+            ],
+            "strength": 6.93,
+            "atr_value": 6.7
+          }
+        ]
+      },
+      "SANM": {
+        "security_type": "STK",
+        "daily_atr": 16.738,
+        "technical_atr": 1.13,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD",
+          "{A:800015:L:en}AMD Supplier Up 40% This Month Soars On Earnings Beat -- IBD"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "SANM",
+            "price": 172.35,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 19,
+            "false_breakouts": 5,
+            "strength_score": 33.76,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 207.09,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/16/26",
+            "source_date": "04/16/26",
+            "zone_low": 166.96,
+            "zone_high": 174.36,
+            "center": 171.99,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 33.76,
+            "atr_value": 16.738
+          },
+          {
+            "symbol": "SANM",
+            "price": 217.67,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 14,
+            "false_breakouts": 5,
+            "strength_score": 28.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 230.17,
+            "nearest_lower_level": 207.09,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/29/26",
+            "zone_low": 211.78,
+            "zone_high": 219.68,
+            "center": 215.77,
+            "families": [
+              "gap"
+            ],
+            "strength": 28.0,
+            "atr_value": 16.738
+          },
+          {
+            "symbol": "SANM",
+            "price": 208.67,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 1,
+            "strength_score": 13.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 215.77,
+            "nearest_lower_level": 171.99,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/30/26",
+            "zone_low": 202.97,
+            "zone_high": 210.68,
+            "center": 207.09,
+            "families": [
+              "gap"
+            ],
+            "strength": 13.0,
+            "atr_value": 16.738
+          },
+          {
+            "symbol": "SANM",
+            "price": 230.56,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.97,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 215.77,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 226.99,
+            "zone_high": 232.57,
+            "center": 230.17,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.97,
+            "atr_value": 16.738
+          }
+        ]
+      },
+      "AAPL": {
+        "security_type": "STK",
+        "daily_atr": 6.204,
+        "technical_atr": 2.01,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Tech Trader: AI Spending Has Upended the Earnings Season Playbook -- Barron's",
+          "{A:800015:L:en}Stock Market Today: Nasdaq, S&P Make History; Buffett's Berkshire Reports Earnings Saturday (Live Coverage) -- IBD"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "AAPL",
+            "price": 260.18,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 36,
+            "false_breakouts": 14,
+            "strength_score": 68.56,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 262.27,
+            "nearest_lower_level": 249.94,
+            "first_touch_date": "02/12/26",
+            "source_date": "02/12/26",
+            "zone_low": 259.39,
+            "zone_high": 260.92,
+            "center": 260.15,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 68.56,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 262.19,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 53,
+            "false_breakouts": 5,
+            "strength_score": 66.59,
+            "created_by": "swing_high",
+            "nearest_upper_level": 278.86,
+            "nearest_lower_level": 260.15,
+            "first_touch_date": "02/12/26",
+            "source_date": "04/10/26",
+            "zone_low": 261.42,
+            "zone_high": 263.22,
+            "center": 262.27,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 66.59,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 249.52,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 33,
+            "false_breakouts": 9,
+            "strength_score": 54.36,
+            "created_by": "swing_low",
+            "nearest_upper_level": 260.15,
+            "nearest_lower_level": 247.99,
+            "first_touch_date": "03/13/26",
+            "source_date": "03/13/26",
+            "zone_low": 248.78,
+            "zone_high": 251.39,
+            "center": 249.94,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 54.36,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 246.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 1,
+            "strength_score": 17.36,
+            "created_by": "swing_low",
+            "nearest_upper_level": 247.99,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/20/26",
+            "source_date": "03/20/26",
+            "zone_low": 244.77,
+            "zone_high": 246.74,
+            "center": 245.73,
+            "families": [
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 17.36,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 247.99,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 11.36,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 249.94,
+            "nearest_lower_level": 245.73,
+            "first_touch_date": "03/19/26",
+            "source_date": "03/23/26",
+            "zone_low": 247.25,
+            "zone_high": 248.73,
+            "center": 247.99,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.36,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 278.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 1,
+            "strength_score": 11.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 262.27,
+            "first_touch_date": "02/06/26",
+            "source_date": "05/01/26",
+            "zone_low": 278.12,
+            "zone_high": 279.6,
+            "center": 278.86,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.0,
+            "atr_value": 6.204
+          }
+        ]
+      },
+      "MSFT": {
+        "security_type": "STK",
+        "daily_atr": 9.524,
+        "technical_atr": 5.92,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Tech Trader: AI Spending Has Upended the Earnings Season Playbook -- Barron's"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "MSFT",
+            "price": 404.71,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 51,
+            "false_breakouts": 13,
+            "strength_score": 80.93,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 407.63,
+            "nearest_lower_level": 392.59,
+            "first_touch_date": "02/09/26",
+            "source_date": "02/26/26",
+            "zone_low": 403.26,
+            "zone_high": 405.85,
+            "center": 404.51,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 80.93,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 423.68,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 38,
+            "false_breakouts": 17,
+            "strength_score": 75.9,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 419.86,
+            "first_touch_date": "02/10/26",
+            "source_date": "02/10/26",
+            "zone_low": 422.54,
+            "zone_high": 425.96,
+            "center": 424.31,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 75.9,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 420.26,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 40,
+            "false_breakouts": 4,
+            "strength_score": 52.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 424.31,
+            "nearest_lower_level": 407.63,
+            "first_touch_date": "02/10/26",
+            "source_date": "04/17/26",
+            "zone_low": 418.47,
+            "zone_high": 421.4,
+            "center": 419.86,
+            "families": [
+              "gap"
+            ],
+            "strength": 52.0,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 372.74,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 24,
+            "false_breakouts": 9,
+            "strength_score": 45.49,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 376.93,
+            "nearest_lower_level": 361.9,
+            "first_touch_date": "03/24/26",
+            "source_date": "03/25/26",
+            "zone_low": 371.15,
+            "zone_high": 373.88,
+            "center": 372.52,
+            "families": [
+              "gap"
+            ],
+            "strength": 45.49,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 393.28,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 27,
+            "false_breakouts": 5,
+            "strength_score": 40.53,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 404.51,
+            "nearest_lower_level": 385.73,
+            "first_touch_date": "02/06/26",
+            "source_date": "03/03/26",
+            "zone_low": 389.74,
+            "zone_high": 394.42,
+            "center": 392.59,
+            "families": [
+              "gap"
+            ],
+            "strength": 40.53,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 407.78,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 24,
+            "false_breakouts": 2,
+            "strength_score": 31.93,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 419.86,
+            "nearest_lower_level": 404.51,
+            "first_touch_date": "02/09/26",
+            "source_date": "05/01/26",
+            "zone_low": 406.35,
+            "zone_high": 408.92,
+            "center": 407.63,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 31.93,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 385.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 18,
+            "false_breakouts": 4,
+            "strength_score": 29.53,
+            "created_by": "swing_high",
+            "nearest_upper_level": 392.59,
+            "nearest_lower_level": 381.07,
+            "first_touch_date": "02/23/26",
+            "source_date": "04/08/26",
+            "zone_low": 383.84,
+            "zone_high": 388.35,
+            "center": 385.73,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 29.53,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 381.71,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 1,
+            "strength_score": 15.49,
+            "created_by": "swing_low",
+            "nearest_upper_level": 385.73,
+            "nearest_lower_level": 376.93,
+            "first_touch_date": "02/24/26",
+            "source_date": "02/24/26",
+            "zone_low": 378.98,
+            "zone_high": 382.85,
+            "center": 381.07,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 15.49,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 376.93,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.49,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 381.07,
+            "nearest_lower_level": 372.52,
+            "first_touch_date": "03/24/26",
+            "source_date": "03/25/26",
+            "zone_low": 375.79,
+            "zone_high": 378.07,
+            "center": 376.93,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.49,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 361.9,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.19,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 372.52,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/27/26",
+            "source_date": "03/27/26",
+            "zone_low": 360.76,
+            "zone_high": 363.04,
+            "center": 361.9,
+            "families": [
+              "gap"
+            ],
+            "strength": 5.19,
+            "atr_value": 9.524
+          }
+        ]
+      },
+      "TSLA": {
+        "security_type": "STK",
+        "daily_atr": 12.31,
+        "technical_atr": 19.24,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "TSLA",
+            "price": 416.38,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 25,
+            "false_breakouts": 12,
+            "strength_score": 51.75,
+            "created_by": "swing_high",
+            "nearest_upper_level": 436.35,
+            "nearest_lower_level": 412.08,
+            "first_touch_date": "02/09/26",
+            "source_date": "03/11/26",
+            "zone_low": 414.9,
+            "zone_high": 418.92,
+            "center": 416.89,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 51.75,
+            "atr_value": 12.31
+          },
+          {
+            "symbol": "TSLA",
+            "price": 411.82,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 21,
+            "false_breakouts": 9,
+            "strength_score": 41.75,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 416.89,
+            "nearest_lower_level": 346.46,
+            "first_touch_date": "02/06/26",
+            "source_date": "02/23/26",
+            "zone_low": 410.34,
+            "zone_high": 413.84,
+            "center": 412.08,
+            "families": [
+              "gap"
+            ],
+            "strength": 41.75,
+            "atr_value": 12.31
+          },
+          {
+            "symbol": "TSLA",
+            "price": 346.65,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 4,
+            "strength_score": 21.46,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 412.08,
+            "nearest_lower_level": 337.24,
+            "first_touch_date": "04/06/26",
+            "source_date": "04/08/26",
+            "zone_low": 344.79,
+            "zone_high": 348.13,
+            "center": 346.46,
+            "families": [
+              "gap"
+            ],
+            "strength": 21.46,
+            "atr_value": 12.31
+          },
+          {
+            "symbol": "TSLA",
+            "price": 337.25,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 9.42,
+            "created_by": "swing_low",
+            "nearest_upper_level": 346.46,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/09/26",
+            "zone_low": 335.76,
+            "zone_high": 338.73,
+            "center": 337.24,
+            "families": [
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 9.42,
+            "atr_value": 12.31
+          },
+          {
+            "symbol": "TSLA",
+            "price": 436.35,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.14,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 416.89,
+            "first_touch_date": "02/11/26",
+            "source_date": "02/11/26",
+            "zone_low": 434.87,
+            "zone_high": 437.83,
+            "center": 436.35,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 4.14,
+            "atr_value": 12.31
+          }
+        ]
+      },
+      "AMZN": {
+        "security_type": "STK",
+        "daily_atr": 9.642,
+        "technical_atr": 7.55,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}GameStop Is Offering to Buy eBay for $56 Billion, CEO Ryan Cohen Says -- Update",
+          "{A:800015:L:en}!GameStop Is Offering to Buy eBay For $56 Billion, CEO Ryan Cohen Says -- WSJ",
+          "{A:800015:L:en}!* GameStop Offering to Buy eBay for $125 a Share, or About $56 Billion, CEO Ryan Cohen Says -- WSJ"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "AMZN",
+            "price": 249.91,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 19,
+            "false_breakouts": 11,
+            "strength_score": 44.73,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 256.3,
+            "nearest_lower_level": 244.78,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/22/26",
+            "zone_low": 247.12,
+            "zone_high": 251.07,
+            "center": 249.4,
+            "families": [
+              "gap"
+            ],
+            "strength": 44.73,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 256.16,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 25,
+            "false_breakouts": 6,
+            "strength_score": 41.93,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 264.5,
+            "nearest_lower_level": 249.4,
+            "first_touch_date": "04/17/26",
+            "source_date": "04/30/26",
+            "zone_low": 255.0,
+            "zone_high": 257.79,
+            "center": 256.3,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 41.93,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 264.5,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 2,
+            "strength_score": 13.72,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 256.3,
+            "first_touch_date": "04/24/26",
+            "source_date": "04/24/26",
+            "zone_low": 263.34,
+            "zone_high": 265.66,
+            "center": 264.5,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 13.72,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 221.25,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 2,
+            "strength_score": 11.39,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 224.46,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/05/26",
+            "source_date": "04/09/26",
+            "zone_low": 217.78,
+            "zone_high": 222.41,
+            "center": 220.09,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.39,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 245.36,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 9.66,
+            "created_by": "swing_low",
+            "nearest_upper_level": 249.4,
+            "nearest_lower_level": 240.43,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/20/26",
+            "zone_low": 243.04,
+            "zone_high": 246.52,
+            "center": 244.78,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 9.66,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 240.43,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.49,
+            "created_by": "swing_high",
+            "nearest_upper_level": 244.78,
+            "nearest_lower_level": 224.46,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/10/26",
+            "zone_low": 239.27,
+            "zone_high": 241.59,
+            "center": 240.43,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 7.49,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 225.23,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.42,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 240.43,
+            "nearest_lower_level": 220.09,
+            "first_touch_date": "04/08/26",
+            "source_date": "04/09/26",
+            "zone_low": 222.53,
+            "zone_high": 226.39,
+            "center": 224.46,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.42,
+            "atr_value": 9.642
+          }
+        ]
+      },
+      "AGPU": {
+        "security_type": "STK",
+        "daily_atr": 0.6519,
+        "technical_atr": 0.05,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "AGPU",
+            "price": 5.93,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 4,
+            "strength_score": 23.97,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 6.16,
+            "nearest_lower_level": 5.27,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/29/26",
+            "zone_low": 5.78,
+            "zone_high": 6.01,
+            "center": 5.9,
+            "families": [
+              "gap"
+            ],
+            "strength": 23.97,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 5.23,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 16,
+            "false_breakouts": 1,
+            "strength_score": 23.0,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 5.9,
+            "nearest_lower_level": 4.88,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/10/26",
+            "zone_low": 5.15,
+            "zone_high": 5.36,
+            "center": 5.27,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 23.0,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 7.1,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 2,
+            "strength_score": 16.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 10.86,
+            "nearest_lower_level": 6.71,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/27/26",
+            "zone_low": 7.02,
+            "zone_high": 7.28,
+            "center": 7.12,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 16.83,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 4.17,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 1,
+            "strength_score": 15.69,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 4.88,
+            "nearest_lower_level": 2.81,
+            "first_touch_date": "04/01/26",
+            "source_date": "04/01/26",
+            "zone_low": 4.09,
+            "zone_high": 4.25,
+            "center": 4.17,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 15.69,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 6.64,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 2,
+            "strength_score": 14.86,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 7.12,
+            "nearest_lower_level": 6.46,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/27/26",
+            "zone_low": 6.56,
+            "zone_high": 6.88,
+            "center": 6.71,
+            "families": [
+              "gap"
+            ],
+            "strength": 14.86,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 6.46,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.86,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 6.71,
+            "nearest_lower_level": 6.16,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/07/26",
+            "zone_low": 6.38,
+            "zone_high": 6.54,
+            "center": 6.46,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.86,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 4.88,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 2,
+            "strength_score": 12.69,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 5.27,
+            "nearest_lower_level": 4.17,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/22/26",
+            "zone_low": 4.8,
+            "zone_high": 4.96,
+            "center": 4.88,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.69,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 2.83,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 11.25,
+            "created_by": "swing_high",
+            "nearest_upper_level": 4.17,
+            "nearest_lower_level": 1.25,
+            "first_touch_date": "02/10/26",
+            "source_date": "02/25/26",
+            "zone_low": 2.71,
+            "zone_high": 2.91,
+            "center": 2.81,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 11.25,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 6.16,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 8.97,
+            "created_by": "swing_high",
+            "nearest_upper_level": 6.46,
+            "nearest_lower_level": 5.9,
+            "first_touch_date": "04/07/26",
+            "source_date": "05/01/26",
+            "zone_low": 6.08,
+            "zone_high": 6.24,
+            "center": 6.16,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 8.97,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 10.86,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.73,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 7.12,
+            "first_touch_date": "04/22/26",
+            "source_date": "04/22/26",
+            "zone_low": 10.77,
+            "zone_high": 10.94,
+            "center": 10.86,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 8.73,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 1.25,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.15,
+            "created_by": "swing_low",
+            "nearest_upper_level": 2.81,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/19/26",
+            "source_date": "03/19/26",
+            "zone_low": 1.17,
+            "zone_high": 1.33,
+            "center": 1.25,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 6.15,
+            "atr_value": 0.6519
+          }
+        ]
+      },
+      "ALOY": {
+        "security_type": "STK",
+        "daily_atr": 0.9334,
+        "technical_atr": 1.01,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "ALOY",
+            "price": 10.44,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 44,
+            "false_breakouts": 6,
+            "strength_score": 59.69,
+            "created_by": "swing_high",
+            "nearest_upper_level": 11.86,
+            "nearest_lower_level": null,
+            "first_touch_date": "02/12/26",
+            "source_date": "03/30/26",
+            "zone_low": 10.29,
+            "zone_high": 10.64,
+            "center": 10.47,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 59.69,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 16.32,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 30,
+            "false_breakouts": 0,
+            "strength_score": 33.76,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 16.57,
+            "nearest_lower_level": 15.7,
+            "first_touch_date": "02/24/26",
+            "source_date": "02/26/26",
+            "zone_low": 16.01,
+            "zone_high": 16.43,
+            "center": 16.25,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 33.76,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 15.81,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 18,
+            "false_breakouts": 2,
+            "strength_score": 24.76,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 16.25,
+            "nearest_lower_level": 14.82,
+            "first_touch_date": "02/23/26",
+            "source_date": "02/26/26",
+            "zone_low": 15.47,
+            "zone_high": 15.93,
+            "center": 15.7,
+            "families": [
+              "gap"
+            ],
+            "strength": 24.76,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 11.86,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 17,
+            "false_breakouts": 2,
+            "strength_score": 24.62,
+            "created_by": "swing_high",
+            "nearest_upper_level": 14.82,
+            "nearest_lower_level": 10.47,
+            "first_touch_date": "02/09/26",
+            "source_date": "03/25/26",
+            "zone_low": 11.75,
+            "zone_high": 11.97,
+            "center": 11.86,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 24.62,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 16.87,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 1,
+            "strength_score": 12.72,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 18.53,
+            "nearest_lower_level": 16.57,
+            "first_touch_date": "02/24/26",
+            "source_date": "03/12/26",
+            "zone_low": 16.76,
+            "zone_high": 16.98,
+            "center": 16.87,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.72,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 16.57,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 0,
+            "strength_score": 11.76,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 16.87,
+            "nearest_lower_level": 16.25,
+            "first_touch_date": "02/24/26",
+            "source_date": "03/12/26",
+            "zone_low": 16.46,
+            "zone_high": 16.68,
+            "center": 16.57,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.76,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 14.82,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 10.76,
+            "created_by": "swing_low",
+            "nearest_upper_level": 15.7,
+            "nearest_lower_level": 11.86,
+            "first_touch_date": "02/23/26",
+            "source_date": "03/09/26",
+            "zone_low": 14.71,
+            "zone_high": 14.93,
+            "center": 14.82,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 10.76,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 18.46,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 10.52,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 18.92,
+            "nearest_lower_level": 16.87,
+            "first_touch_date": "02/24/26",
+            "source_date": "03/02/26",
+            "zone_low": 18.35,
+            "zone_high": 18.7,
+            "center": 18.53,
+            "families": [
+              "gap"
+            ],
+            "strength": 10.52,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 18.92,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 9.52,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 19.75,
+            "nearest_lower_level": 18.53,
+            "first_touch_date": "02/24/26",
+            "source_date": "02/24/26",
+            "zone_low": 18.81,
+            "zone_high": 19.03,
+            "center": 18.92,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 9.52,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 21.69,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 1,
+            "strength_score": 7.59,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 24.41,
+            "nearest_lower_level": 21.12,
+            "first_touch_date": "03/03/26",
+            "source_date": "03/06/26",
+            "zone_low": 21.58,
+            "zone_high": 21.8,
+            "center": 21.69,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 19.75,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.52,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 20.74,
+            "nearest_lower_level": 18.92,
+            "first_touch_date": "02/27/26",
+            "source_date": "02/27/26",
+            "zone_low": 19.64,
+            "zone_high": 19.86,
+            "center": 19.75,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.52,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 21.12,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 6.59,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 21.69,
+            "nearest_lower_level": 20.74,
+            "first_touch_date": "03/03/26",
+            "source_date": "03/04/26",
+            "zone_low": 21.01,
+            "zone_high": 21.23,
+            "center": 21.12,
+            "families": [
+              "gap"
+            ],
+            "strength": 6.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 25.88,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 6.59,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 26.19,
+            "nearest_lower_level": 24.41,
+            "first_touch_date": "03/04/26",
+            "source_date": "03/05/26",
+            "zone_low": 25.77,
+            "zone_high": 25.99,
+            "center": 25.88,
+            "families": [
+              "gap"
+            ],
+            "strength": 6.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 20.74,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.59,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 21.12,
+            "nearest_lower_level": 19.75,
+            "first_touch_date": "03/03/26",
+            "source_date": "03/05/26",
+            "zone_low": 20.63,
+            "zone_high": 20.85,
+            "center": 20.74,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 5.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 26.64,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.59,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 26.19,
+            "first_touch_date": "03/04/26",
+            "source_date": "03/05/26",
+            "zone_low": 26.53,
+            "zone_high": 26.75,
+            "center": 26.64,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 5.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 24.41,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.59,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 25.88,
+            "nearest_lower_level": 21.69,
+            "first_touch_date": "03/04/26",
+            "source_date": "03/04/26",
+            "zone_low": 24.29,
+            "zone_high": 24.52,
+            "center": 24.41,
+            "families": [
+              "gap"
+            ],
+            "strength": 4.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 26.19,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.59,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 26.64,
+            "nearest_lower_level": 25.88,
+            "first_touch_date": "03/04/26",
+            "source_date": "03/05/26",
+            "zone_low": 26.08,
+            "zone_high": 26.3,
+            "center": 26.19,
+            "families": [
+              "gap"
+            ],
+            "strength": 4.59,
+            "atr_value": 0.9334
+          }
+        ]
+      },
+      "BIRD": {
+        "security_type": "STK",
+        "daily_atr": 0.558,
+        "technical_atr": 0.24,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "BIRD",
+            "price": 8.5,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 4,
+            "strength_score": 21.8,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 9.25,
+            "nearest_lower_level": 8.18,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/21/26",
+            "zone_low": 8.41,
+            "zone_high": 8.57,
+            "center": 8.49,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 21.8,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 6.68,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 3,
+            "strength_score": 19.97,
+            "created_by": "swing_high",
+            "nearest_upper_level": 7.53,
+            "nearest_lower_level": 6.08,
+            "first_touch_date": "04/15/26",
+            "source_date": "05/01/26",
+            "zone_low": 6.48,
+            "zone_high": 6.75,
+            "center": 6.62,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 19.97,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 7.55,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 0,
+            "strength_score": 16.86,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 8.01,
+            "nearest_lower_level": 6.62,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/22/26",
+            "zone_low": 7.41,
+            "zone_high": 7.62,
+            "center": 7.53,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 16.86,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 12.5,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.66,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 13.48,
+            "nearest_lower_level": 11.49,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/20/26",
+            "zone_low": 12.43,
+            "zone_high": 12.59,
+            "center": 12.51,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 12.66,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 6.11,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 11.0,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 6.62,
+            "nearest_lower_level": 3.8,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/15/26",
+            "zone_low": 5.97,
+            "zone_high": 6.18,
+            "center": 6.08,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 11.0,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 10.56,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 10.69,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 11.2,
+            "nearest_lower_level": 9.25,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/17/26",
+            "zone_low": 10.49,
+            "zone_high": 10.63,
+            "center": 10.56,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 10.69,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 8.01,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 1,
+            "strength_score": 9.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 8.18,
+            "nearest_lower_level": 7.53,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/24/26",
+            "zone_low": 7.94,
+            "zone_high": 8.08,
+            "center": 8.01,
+            "families": [
+              "gap"
+            ],
+            "strength": 9.8,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 11.49,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 9.69,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 12.51,
+            "nearest_lower_level": 11.2,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/21/26",
+            "zone_low": 11.42,
+            "zone_high": 11.56,
+            "center": 11.49,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 9.69,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 11.2,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 8.69,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 11.49,
+            "nearest_lower_level": 10.56,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/20/26",
+            "zone_low": 11.13,
+            "zone_high": 11.27,
+            "center": 11.2,
+            "families": [
+              "gap"
+            ],
+            "strength": 8.69,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 14.44,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.59,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 24.31,
+            "nearest_lower_level": 13.48,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/16/26",
+            "zone_low": 14.33,
+            "zone_high": 14.51,
+            "center": 14.42,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 8.59,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 8.18,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 8.49,
+            "nearest_lower_level": 8.01,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/23/26",
+            "zone_low": 8.11,
+            "zone_high": 8.25,
+            "center": 8.18,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.8,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 9.25,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.73,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 10.56,
+            "nearest_lower_level": 8.49,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/22/26",
+            "zone_low": 9.18,
+            "zone_high": 9.32,
+            "center": 9.25,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 7.73,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 13.48,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.63,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 14.42,
+            "nearest_lower_level": 12.51,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/17/26",
+            "zone_low": 13.41,
+            "zone_high": 13.55,
+            "center": 13.48,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 7.63,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 24.31,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.56,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 14.42,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/15/26",
+            "zone_low": 24.24,
+            "zone_high": 24.38,
+            "center": 24.31,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.56,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 3.8,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.75,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 6.08,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/10/26",
+            "source_date": "03/11/26",
+            "zone_low": 3.73,
+            "zone_high": 3.87,
+            "center": 3.8,
+            "families": [
+              "gap"
+            ],
+            "strength": 4.75,
+            "atr_value": 0.558
+          }
+        ]
+      },
+      "ISPC": {
+        "security_type": "STK",
+        "daily_atr": 1.194,
+        "technical_atr": 1.83,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "ISPC",
+            "price": 7.28,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 38,
+            "false_breakouts": 5,
+            "strength_score": 52.76,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 8.38,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/16/26",
+            "source_date": "03/16/26",
+            "zone_low": 7.06,
+            "zone_high": 7.43,
+            "center": 7.25,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 52.76,
+            "atr_value": 1.194
+          },
+          {
+            "symbol": "ISPC",
+            "price": 9.64,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 14,
+            "false_breakouts": 3,
+            "strength_score": 22.86,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 14.8,
+            "nearest_lower_level": 8.38,
+            "first_touch_date": "02/23/26",
+            "source_date": "02/24/26",
+            "zone_low": 9.5,
+            "zone_high": 9.78,
+            "center": 9.64,
+            "families": [
+              "gap"
+            ],
+            "strength": 22.86,
+            "atr_value": 1.194
+          },
+          {
+            "symbol": "ISPC",
+            "price": 8.38,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 7.97,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 9.64,
+            "nearest_lower_level": 7.25,
+            "first_touch_date": "03/16/26",
+            "source_date": "03/18/26",
+            "zone_low": 8.23,
+            "zone_high": 8.52,
+            "center": 8.38,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.97,
+            "atr_value": 1.194
+          },
+          {
+            "symbol": "ISPC",
+            "price": 14.8,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.79,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 9.64,
+            "first_touch_date": "02/13/26",
+            "source_date": "02/13/26",
+            "zone_low": 14.66,
+            "zone_high": 14.94,
+            "center": 14.8,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.79,
+            "atr_value": 1.194
+          }
+        ]
+      },
+      "MRLN": {
+        "security_type": "STK",
+        "daily_atr": 1.59,
+        "technical_atr": 3.07,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "MRLN",
+            "price": 13.66,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 29,
+            "false_breakouts": 12,
+            "strength_score": 57.76,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 14.65,
+            "nearest_lower_level": 6.53,
+            "first_touch_date": "03/25/26",
+            "source_date": "04/21/26",
+            "zone_low": 13.33,
+            "zone_high": 14.09,
+            "center": 13.63,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 57.76,
+            "atr_value": 1.59
+          },
+          {
+            "symbol": "MRLN",
+            "price": 6.51,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 0,
+            "strength_score": 16.38,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 13.63,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/17/26",
+            "source_date": "03/17/26",
+            "zone_low": 6.32,
+            "zone_high": 6.75,
+            "center": 6.53,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 16.38,
+            "atr_value": 1.59
+          },
+          {
+            "symbol": "MRLN",
+            "price": 16.79,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 0,
+            "strength_score": 11.62,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 16.09,
+            "first_touch_date": "04/16/26",
+            "source_date": "04/17/26",
+            "zone_low": 16.53,
+            "zone_high": 17.19,
+            "center": 16.86,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 11.62,
+            "atr_value": 1.59
+          },
+          {
+            "symbol": "MRLN",
+            "price": 14.69,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 10.62,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 16.09,
+            "nearest_lower_level": 13.63,
+            "first_touch_date": "03/25/26",
+            "source_date": "04/15/26",
+            "zone_low": 14.41,
+            "zone_high": 14.88,
+            "center": 14.65,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 10.62,
+            "atr_value": 1.59
+          },
+          {
+            "symbol": "MRLN",
+            "price": 16.09,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.62,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 16.86,
+            "nearest_lower_level": 14.65,
+            "first_touch_date": "04/16/26",
+            "source_date": "04/17/26",
+            "zone_low": 15.9,
+            "zone_high": 16.28,
+            "center": 16.09,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.62,
+            "atr_value": 1.59
+          }
+        ]
+      },
+      "OPTX": {
+        "security_type": "STK",
+        "daily_atr": 0.9575,
+        "technical_atr": 0.37,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Press Release: Syntec Optics (Nasdaq: OPTX) Announces Closing of $20 Million Underwritten Public Offering of Common Stock",
+          "{A:800015:L:en}* H.C. Wainwright & Co. Acting as Sole Book-Running Manager for Syntec Optics Offering >OPTX",
+          "{A:800015:L:en}* Syntec Optics Offering Is Expected to Close on or About April 30 >OPTX"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "OPTX",
+            "price": 8.44,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 14,
+            "false_breakouts": 1,
+            "strength_score": 20.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 10.34,
+            "nearest_lower_level": null,
+            "first_touch_date": "02/06/26",
+            "source_date": "03/11/26",
+            "zone_low": 8.33,
+            "zone_high": 8.55,
+            "center": 8.44,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 20.0,
+            "atr_value": 0.9575
+          },
+          {
+            "symbol": "OPTX",
+            "price": 11.28,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 11,
+            "false_breakouts": 2,
+            "strength_score": 18.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 12.0,
+            "nearest_lower_level": 10.34,
+            "first_touch_date": "04/13/26",
+            "source_date": "04/15/26",
+            "zone_low": 11.13,
+            "zone_high": 11.57,
+            "center": 11.31,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 18.8,
+            "atr_value": 0.9575
+          },
+          {
+            "symbol": "OPTX",
+            "price": 10.34,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 1,
+            "strength_score": 14.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 11.31,
+            "nearest_lower_level": 8.44,
+            "first_touch_date": "04/13/26",
+            "source_date": "04/13/26",
+            "zone_low": 10.23,
+            "zone_high": 10.45,
+            "center": 10.34,
+            "families": [
+              "gap"
+            ],
+            "strength": 14.8,
+            "atr_value": 0.9575
+          },
+          {
+            "symbol": "OPTX",
+            "price": 12.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 6.28,
+            "created_by": "gap_upper",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 11.31,
+            "first_touch_date": "04/13/26",
+            "source_date": "04/14/26",
+            "zone_low": 11.89,
+            "zone_high": 12.11,
+            "center": 12.0,
+            "families": [
+              "gap"
+            ],
+            "strength": 6.28,
+            "atr_value": 0.9575
+          }
+        ]
+      },
+      "ROLR": {
+        "security_type": "STK",
+        "daily_atr": 1.3731,
+        "technical_atr": 0.71,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "ROLR",
+            "price": 6.0,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 13,
+            "false_breakouts": 2,
+            "strength_score": 21.59,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 6.4,
+            "nearest_lower_level": null,
+            "first_touch_date": "02/06/26",
+            "source_date": "04/16/26",
+            "zone_low": 5.61,
+            "zone_high": 6.16,
+            "center": 5.85,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 21.59,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 9.92,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 1,
+            "strength_score": 10.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 10.71,
+            "nearest_lower_level": 6.86,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/29/26",
+            "zone_low": 9.76,
+            "zone_high": 10.08,
+            "center": 9.92,
+            "families": [
+              "gap"
+            ],
+            "strength": 10.9,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 10.71,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.9,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 11.74,
+            "nearest_lower_level": 9.92,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/29/26",
+            "zone_low": 10.55,
+            "zone_high": 10.87,
+            "center": 10.71,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 8.9,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 11.74,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 12.85,
+            "nearest_lower_level": 10.71,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/14/26",
+            "zone_low": 11.58,
+            "zone_high": 11.9,
+            "center": 11.74,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 8.83,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 12.85,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 11.74,
+            "first_touch_date": "04/27/26",
+            "source_date": "04/27/26",
+            "zone_low": 12.69,
+            "zone_high": 13.01,
+            "center": 12.85,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.83,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 6.4,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.59,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 6.86,
+            "nearest_lower_level": 5.85,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/16/26",
+            "zone_low": 6.24,
+            "zone_high": 6.56,
+            "center": 6.4,
+            "families": [
+              "gap"
+            ],
+            "strength": 5.59,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 6.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.59,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 9.92,
+            "nearest_lower_level": 6.4,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/15/26",
+            "zone_low": 6.7,
+            "zone_high": 7.02,
+            "center": 6.86,
+            "families": [
+              "gap"
+            ],
+            "strength": 5.59,
+            "atr_value": 1.3731
+          }
+        ]
+      },
+      "SKLZ": {
+        "security_type": "STK",
+        "daily_atr": 1.52,
+        "technical_atr": 0.46,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "SKLZ",
+            "price": 6.3,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 25,
+            "false_breakouts": 10,
+            "strength_score": 49.93,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 7.2,
+            "nearest_lower_level": 5.58,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/27/26",
+            "zone_low": 6.03,
+            "zone_high": 6.54,
+            "center": 6.3,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 49.93,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 7.75,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 11,
+            "false_breakouts": 4,
+            "strength_score": 23.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 8.61,
+            "nearest_lower_level": 7.2,
+            "first_touch_date": "04/23/26",
+            "source_date": "05/01/26",
+            "zone_low": 7.57,
+            "zone_high": 8.24,
+            "center": 7.89,
+            "families": [
+              "gap"
+            ],
+            "strength": 23.0,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 8.47,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 18,
+            "false_breakouts": 0,
+            "strength_score": 22.97,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 9.15,
+            "nearest_lower_level": 7.89,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/30/26",
+            "zone_low": 8.29,
+            "zone_high": 8.88,
+            "center": 8.61,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 22.97,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 7.23,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 0,
+            "strength_score": 17.0,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 7.89,
+            "nearest_lower_level": 6.3,
+            "first_touch_date": "04/23/26",
+            "source_date": "05/01/26",
+            "zone_low": 6.99,
+            "zone_high": 7.41,
+            "center": 7.2,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 17.0,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 5.62,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 12.93,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 6.3,
+            "nearest_lower_level": 4.49,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/30/26",
+            "zone_low": 5.36,
+            "zone_high": 5.8,
+            "center": 5.58,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.93,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 9.2,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 10.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 20.0,
+            "nearest_lower_level": 8.61,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/24/26",
+            "zone_low": 8.92,
+            "zone_high": 9.38,
+            "center": 9.15,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 10.83,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 4.49,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.76,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 5.58,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/15/26",
+            "zone_low": 4.31,
+            "zone_high": 4.67,
+            "center": 4.49,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 8.76,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 20.0,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 8.51,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 9.15,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/23/26",
+            "zone_low": 19.82,
+            "zone_high": 20.18,
+            "center": 20.0,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 8.51,
+            "atr_value": 1.52
+          }
+        ]
+      },
+      "SKYQ": {
+        "security_type": "STK",
+        "daily_atr": 1.012,
+        "technical_atr": 0.91,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "SKYQ",
+            "price": 5.0,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 44,
+            "false_breakouts": 13,
+            "strength_score": 74.86,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 7.17,
+            "nearest_lower_level": 1.85,
+            "first_touch_date": "03/02/26",
+            "source_date": "04/08/26",
+            "zone_low": 4.75,
+            "zone_high": 5.22,
+            "center": 4.99,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 74.86,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 7.29,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 20,
+            "false_breakouts": 4,
+            "strength_score": 31.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 7.75,
+            "nearest_lower_level": 4.99,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/10/26",
+            "zone_low": 6.94,
+            "zone_high": 7.41,
+            "center": 7.17,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 31.9,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 8.32,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 20,
+            "false_breakouts": 0,
+            "strength_score": 24.76,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 8.84,
+            "nearest_lower_level": 8.01,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/07/26",
+            "zone_low": 8.2,
+            "zone_high": 8.62,
+            "center": 8.37,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 24.76,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 8.84,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.72,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 9.56,
+            "nearest_lower_level": 8.37,
+            "first_touch_date": "04/09/26",
+            "source_date": "04/15/26",
+            "zone_low": 8.72,
+            "zone_high": 8.96,
+            "center": 8.84,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 12.72,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 9.56,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.69,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 9.82,
+            "nearest_lower_level": 8.84,
+            "first_touch_date": "04/09/26",
+            "source_date": "04/09/26",
+            "zone_low": 9.44,
+            "zone_high": 9.68,
+            "center": 9.56,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 12.69,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 9.82,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 1,
+            "strength_score": 12.69,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 10.38,
+            "nearest_lower_level": 9.56,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/17/26",
+            "zone_low": 9.7,
+            "zone_high": 9.94,
+            "center": 9.82,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.69,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 10.34,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 0,
+            "strength_score": 12.69,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 11.62,
+            "nearest_lower_level": 9.82,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/14/26",
+            "zone_low": 10.22,
+            "zone_high": 10.54,
+            "center": 10.38,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.69,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 8.01,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 11.76,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 8.37,
+            "nearest_lower_level": 7.75,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/20/26",
+            "zone_low": 7.89,
+            "zone_high": 8.13,
+            "center": 8.01,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.76,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 7.75,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 8.76,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 8.01,
+            "nearest_lower_level": 7.17,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/10/26",
+            "zone_low": 7.63,
+            "zone_high": 7.87,
+            "center": 7.75,
+            "families": [
+              "gap"
+            ],
+            "strength": 8.76,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 11.62,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.48,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 12.59,
+            "nearest_lower_level": 10.38,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/14/26",
+            "zone_low": 11.5,
+            "zone_high": 11.74,
+            "center": 11.62,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.48,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 12.59,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.48,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 15.35,
+            "nearest_lower_level": 11.62,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/13/26",
+            "zone_low": 12.47,
+            "zone_high": 12.71,
+            "center": 12.59,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.48,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 19.45,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.48,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 15.35,
+            "first_touch_date": "04/13/26",
+            "source_date": "04/13/26",
+            "zone_low": 19.33,
+            "zone_high": 19.57,
+            "center": 19.45,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.48,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 15.35,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 6.48,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 19.45,
+            "nearest_lower_level": 12.59,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/10/26",
+            "zone_low": 15.23,
+            "zone_high": 15.47,
+            "center": 15.35,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 6.48,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 1.85,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.14,
+            "created_by": "swing_low",
+            "nearest_upper_level": 4.99,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/26/26",
+            "source_date": "03/26/26",
+            "zone_low": 1.73,
+            "zone_high": 1.97,
+            "center": 1.85,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 5.14,
+            "atr_value": 1.012
+          }
+        ]
+      }
+    },
+    "macro_risk": {
+      "blocked": false,
+      "risk_level": "LOW",
+      "headlines": [
+        "{A:800015:L:en}SPY ETF Gains 0.3%",
+        "{A:800015:L:en}SPY ETF Rises 1.0%",
+        "{A:800015:L:en}SPY ETF Closes Flat",
+        "{A:800015:L:en}SPY ETF Falls 0.5%",
+        "{A:800015:L:en}SPY ETF Climbs 0.2%, Outperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Rises 0.8%",
+        "{A:800015:L:en}SPY ETF Falls 0.4%",
+        "{A:800015:L:en}SPY ETF Gains 1.0%",
+        "{A:800015:L:en}SPY ETF Declines 0.7%, Underperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Declines 0.2%"
+      ],
+      "matched_headlines": [],
+      "critical_matches": [],
+      "provider_hits": [
+        "DJ-RTG"
+      ],
+      "source_types": [
+        "ibkr"
+      ]
+    },
+    "ideas": [
+      {
+        "symbol": "EUR.USD",
+        "catalyst": "level interaction",
+        "entry": 1.168765,
+        "stop": 1.16,
+        "target": 1.20382795,
+        "decision": "WATCH"
+      },
+      {
+        "symbol": "BBBY",
+        "catalyst": "level interaction",
+        "entry": 5.2,
+        "stop": 5.148,
+        "target": 6.27,
+        "decision": "WATCH"
+      },
+      {
+        "symbol": "SEI",
+        "catalyst": "{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance",
+        "entry": 74.5,
+        "stop": 74.44,
+        "target": 77.12,
+        "decision": "HOLD"
+      }
+    ],
+    "research_symbols": [
+      "EUR.USD",
+      "BBBY",
+      "SEI",
+      "SANM",
+      "AAPL",
+      "MSFT",
+      "TSLA",
+      "AMZN",
+      "AGPU",
+      "ALOY",
+      "BIRD",
+      "ISPC",
+      "MRLN",
+      "OPTX",
+      "ROLR",
+      "SKLZ",
+      "SKYQ"
+    ]
+  }
+}
+```
+
+## Premarket Research (2026-05-05T08:20:27)
+- **strategy_loaded**: True
+- **trade_log_context_loaded**: True
+- **research_log_context_loaded**: True
+- **account_snapshot**: {'account': [{'account': 'DU5454348', 'tag': 'AccountType', 'value': 'INDIVIDUAL', 'currency': ''}, {'account': 'DU5454348', 'tag': 'Cushion', 'value': '1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemaining', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+1', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+2', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+3', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+4', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'LookAheadNextChange', 'value': '0', 'currency': ''}, {'account': 'DU5454348', 'tag': 'AccruedCash', 'value': '264.16', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'AvailableFunds', 'value': '101788.84', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'BuyingPower', 'value': '407155.36', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'EquityWithLoanValue', 'value': '101788.84', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'ExcessLiquidity', 'value': '101788.84', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullAvailableFunds', 'value': '101788.84', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullExcessLiquidity', 'value': '101788.84', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'GrossPositionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'InitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadAvailableFunds', 'value': '101788.84', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadExcessLiquidity', 'value': '101788.84', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'MaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'NetLiquidation', 'value': '102053.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'PreviousDayEquityWithLoanValue', 'value': '101920.65', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTEquity', 'value': '102053.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTMargin', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'SMA', 'value': '102160.96', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'TotalCashValue', 'value': '101788.84', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'JPY', 'currency': 'JPY'}, {'account': 'All', 'tag': 'CashBalance', 'value': '3931150.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '3931150.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '3931150.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '0.0063574', 'currency': 'JPY'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'JPY'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'JPY', 'currency': 'JPY'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'Currency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CashBalance', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '1000.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.167755', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Currency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'CashBalance', 'value': '75701.0796', 'currency': 'USD'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '75701.0796', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '264.16', 'currency': 'USD'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '75965.2396', 'currency': 'USD'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CashBalance', 'value': '101788.8405', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '101788.8405', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '264.16', 'currency': 'BASE'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '102053.0005', 'currency': 'BASE'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'BASE'}], 'positions': [], 'open_orders': []}
+- **research_symbols**: ['BBBY', 'SEI', 'SANM', 'AAPL', 'MSFT', 'TSLA', 'AMZN', 'AGPU', 'ALOY', 'BIRD', 'ISPC', 'MRLN', 'OPTX', 'ROLR', 'SKLZ', 'SKYQ', 'EUR.USD']
+- **macro_risk**: False
+- **macro_news_sources**: ['DJ-RTG']
+- **macro_news_source_types**: ['ibkr']
+- **actionable_ideas**: [{'symbol': 'BBBY', 'catalyst': 'level interaction', 'entry': 5.2, 'stop': 5.148, 'target': 6.27, 'decision': 'WATCH'}, {'symbol': 'SEI', 'catalyst': '{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance', 'entry': 74.5, 'stop': 74.44, 'target': 77.12, 'decision': 'HOLD'}, {'symbol': 'SANM', 'catalyst': '{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD', 'entry': 216.54, 'stop': 208.67, 'target': 217.67, 'decision': 'HOLD'}]
+- **trade_decision**: READY_FOR_OPEN_VALIDATION
+
+## Workflow Premarket (2026-05-05T08:20:27)
+- **stage**: Premarket
+- **watchlist_symbols**: ['BBBY', 'SEI', 'SANM', 'AAPL', 'MSFT', 'TSLA', 'AMZN', 'AGPU', 'ALOY', 'BIRD', 'ISPC', 'MRLN', 'OPTX', 'ROLR', 'SKLZ', 'SKYQ', 'EUR.USD']
+```json
+{
+  "stage": "Premarket",
+  "payload": {
+    "watchlist": {
+      "BBBY": {
+        "security_type": "STK",
+        "daily_atr": 0.4675,
+        "technical_atr": 1.07,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "BBBY",
+            "price": 7.7,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.86,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 6.27,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 7.64,
+            "zone_high": 7.76,
+            "center": 7.7,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.86,
+            "atr_value": 0.4675
+          },
+          {
+            "symbol": "BBBY",
+            "price": 6.27,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.86,
+            "created_by": "swing_high",
+            "nearest_upper_level": 7.7,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/20/26",
+            "source_date": "04/20/26",
+            "zone_low": 6.21,
+            "zone_high": 6.33,
+            "center": 6.27,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 6.86,
+            "atr_value": 0.4675
+          }
+        ]
+      },
+      "SEI": {
+        "security_type": "STK",
+        "daily_atr": 6.7,
+        "technical_atr": 0.06,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "SEI",
+            "price": 74.44,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 3,
+            "strength_score": 17.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 77.12,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/24/26",
+            "source_date": "04/29/26",
+            "zone_low": 73.64,
+            "zone_high": 75.24,
+            "center": 74.44,
+            "families": [
+              "gap"
+            ],
+            "strength": 17.0,
+            "atr_value": 6.7
+          },
+          {
+            "symbol": "SEI",
+            "price": 81.24,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.9,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 77.12,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 79.97,
+            "zone_high": 82.04,
+            "center": 81.12,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.9,
+            "atr_value": 6.7
+          },
+          {
+            "symbol": "SEI",
+            "price": 77.12,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.93,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 81.12,
+            "nearest_lower_level": 74.44,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 76.32,
+            "zone_high": 77.92,
+            "center": 77.12,
+            "families": [
+              "gap"
+            ],
+            "strength": 6.93,
+            "atr_value": 6.7
+          }
+        ]
+      },
+      "SANM": {
+        "security_type": "STK",
+        "daily_atr": 16.738,
+        "technical_atr": 1.13,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "SANM",
+            "price": 172.35,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 19,
+            "false_breakouts": 5,
+            "strength_score": 33.76,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 207.09,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/16/26",
+            "source_date": "04/16/26",
+            "zone_low": 166.96,
+            "zone_high": 174.36,
+            "center": 171.99,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 33.76,
+            "atr_value": 16.738
+          },
+          {
+            "symbol": "SANM",
+            "price": 217.67,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 14,
+            "false_breakouts": 5,
+            "strength_score": 28.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 230.17,
+            "nearest_lower_level": 207.09,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/29/26",
+            "zone_low": 211.78,
+            "zone_high": 219.68,
+            "center": 215.77,
+            "families": [
+              "gap"
+            ],
+            "strength": 28.0,
+            "atr_value": 16.738
+          },
+          {
+            "symbol": "SANM",
+            "price": 208.67,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 1,
+            "strength_score": 13.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 215.77,
+            "nearest_lower_level": 171.99,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/30/26",
+            "zone_low": 202.97,
+            "zone_high": 210.68,
+            "center": 207.09,
+            "families": [
+              "gap"
+            ],
+            "strength": 13.0,
+            "atr_value": 16.738
+          },
+          {
+            "symbol": "SANM",
+            "price": 230.56,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.97,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 215.77,
+            "first_touch_date": "04/28/26",
+            "source_date": "04/28/26",
+            "zone_low": 226.99,
+            "zone_high": 232.57,
+            "center": 230.17,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.97,
+            "atr_value": 16.738
+          }
+        ]
+      },
+      "AAPL": {
+        "security_type": "STK",
+        "daily_atr": 6.204,
+        "technical_atr": 2.01,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Tech Trader: AI Spending Has Upended the Earnings Season Playbook -- Barron's"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "AAPL",
+            "price": 260.18,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 36,
+            "false_breakouts": 14,
+            "strength_score": 68.56,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 262.27,
+            "nearest_lower_level": 249.94,
+            "first_touch_date": "02/12/26",
+            "source_date": "02/12/26",
+            "zone_low": 259.39,
+            "zone_high": 260.92,
+            "center": 260.15,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 68.56,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 262.19,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 53,
+            "false_breakouts": 5,
+            "strength_score": 66.59,
+            "created_by": "swing_high",
+            "nearest_upper_level": 278.86,
+            "nearest_lower_level": 260.15,
+            "first_touch_date": "02/12/26",
+            "source_date": "04/10/26",
+            "zone_low": 261.42,
+            "zone_high": 263.22,
+            "center": 262.27,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 66.59,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 249.52,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 33,
+            "false_breakouts": 9,
+            "strength_score": 54.36,
+            "created_by": "swing_low",
+            "nearest_upper_level": 260.15,
+            "nearest_lower_level": 247.99,
+            "first_touch_date": "03/13/26",
+            "source_date": "03/13/26",
+            "zone_low": 248.78,
+            "zone_high": 251.39,
+            "center": 249.94,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 54.36,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 246.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 1,
+            "strength_score": 17.36,
+            "created_by": "swing_low",
+            "nearest_upper_level": 247.99,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/20/26",
+            "source_date": "03/20/26",
+            "zone_low": 244.77,
+            "zone_high": 246.74,
+            "center": 245.73,
+            "families": [
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 17.36,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 247.99,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 11.36,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 249.94,
+            "nearest_lower_level": 245.73,
+            "first_touch_date": "03/19/26",
+            "source_date": "03/23/26",
+            "zone_low": 247.25,
+            "zone_high": 248.73,
+            "center": 247.99,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.36,
+            "atr_value": 6.204
+          },
+          {
+            "symbol": "AAPL",
+            "price": 278.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 1,
+            "strength_score": 11.0,
+            "created_by": "gap_upper",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 262.27,
+            "first_touch_date": "02/06/26",
+            "source_date": "05/01/26",
+            "zone_low": 278.12,
+            "zone_high": 279.6,
+            "center": 278.86,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.0,
+            "atr_value": 6.204
+          }
+        ]
+      },
+      "MSFT": {
+        "security_type": "STK",
+        "daily_atr": 9.524,
+        "technical_atr": 5.92,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Tech Trader: AI Spending Has Upended the Earnings Season Playbook -- Barron's"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "MSFT",
+            "price": 404.71,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 51,
+            "false_breakouts": 13,
+            "strength_score": 80.93,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 407.63,
+            "nearest_lower_level": 392.59,
+            "first_touch_date": "02/09/26",
+            "source_date": "02/26/26",
+            "zone_low": 403.26,
+            "zone_high": 405.85,
+            "center": 404.51,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 80.93,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 423.68,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 38,
+            "false_breakouts": 17,
+            "strength_score": 75.9,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 419.86,
+            "first_touch_date": "02/10/26",
+            "source_date": "02/10/26",
+            "zone_low": 422.54,
+            "zone_high": 425.96,
+            "center": 424.31,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 75.9,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 420.26,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 40,
+            "false_breakouts": 4,
+            "strength_score": 52.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 424.31,
+            "nearest_lower_level": 407.63,
+            "first_touch_date": "02/10/26",
+            "source_date": "04/17/26",
+            "zone_low": 418.47,
+            "zone_high": 421.4,
+            "center": 419.86,
+            "families": [
+              "gap"
+            ],
+            "strength": 52.0,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 372.74,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 24,
+            "false_breakouts": 9,
+            "strength_score": 45.49,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 376.93,
+            "nearest_lower_level": 361.9,
+            "first_touch_date": "03/24/26",
+            "source_date": "03/25/26",
+            "zone_low": 371.15,
+            "zone_high": 373.88,
+            "center": 372.52,
+            "families": [
+              "gap"
+            ],
+            "strength": 45.49,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 393.28,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 27,
+            "false_breakouts": 5,
+            "strength_score": 40.53,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 404.51,
+            "nearest_lower_level": 385.73,
+            "first_touch_date": "02/06/26",
+            "source_date": "03/03/26",
+            "zone_low": 389.74,
+            "zone_high": 394.42,
+            "center": 392.59,
+            "families": [
+              "gap"
+            ],
+            "strength": 40.53,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 407.78,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 24,
+            "false_breakouts": 2,
+            "strength_score": 31.93,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 419.86,
+            "nearest_lower_level": 404.51,
+            "first_touch_date": "02/09/26",
+            "source_date": "05/01/26",
+            "zone_low": 406.35,
+            "zone_high": 408.92,
+            "center": 407.63,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 31.93,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 385.0,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 18,
+            "false_breakouts": 4,
+            "strength_score": 29.53,
+            "created_by": "swing_high",
+            "nearest_upper_level": 392.59,
+            "nearest_lower_level": 381.07,
+            "first_touch_date": "02/23/26",
+            "source_date": "04/08/26",
+            "zone_low": 383.84,
+            "zone_high": 388.35,
+            "center": 385.73,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 29.53,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 381.71,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 1,
+            "strength_score": 15.49,
+            "created_by": "swing_low",
+            "nearest_upper_level": 385.73,
+            "nearest_lower_level": 376.93,
+            "first_touch_date": "02/24/26",
+            "source_date": "02/24/26",
+            "zone_low": 378.98,
+            "zone_high": 382.85,
+            "center": 381.07,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 15.49,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 376.93,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.49,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 381.07,
+            "nearest_lower_level": 372.52,
+            "first_touch_date": "03/24/26",
+            "source_date": "03/25/26",
+            "zone_low": 375.79,
+            "zone_high": 378.07,
+            "center": 376.93,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.49,
+            "atr_value": 9.524
+          },
+          {
+            "symbol": "MSFT",
+            "price": 361.9,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.19,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 372.52,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/27/26",
+            "source_date": "03/27/26",
+            "zone_low": 360.76,
+            "zone_high": 363.04,
+            "center": 361.9,
+            "families": [
+              "gap"
+            ],
+            "strength": 5.19,
+            "atr_value": 9.524
+          }
+        ]
+      },
+      "TSLA": {
+        "security_type": "STK",
+        "daily_atr": 12.274,
+        "technical_atr": 19.24,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "TSLA",
+            "price": 416.38,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 25,
+            "false_breakouts": 12,
+            "strength_score": 51.75,
+            "created_by": "swing_high",
+            "nearest_upper_level": 436.35,
+            "nearest_lower_level": 412.08,
+            "first_touch_date": "02/09/26",
+            "source_date": "03/11/26",
+            "zone_low": 414.91,
+            "zone_high": 418.91,
+            "center": 416.89,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 51.75,
+            "atr_value": 12.274
+          },
+          {
+            "symbol": "TSLA",
+            "price": 411.82,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 21,
+            "false_breakouts": 9,
+            "strength_score": 41.75,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 416.89,
+            "nearest_lower_level": 346.46,
+            "first_touch_date": "02/06/26",
+            "source_date": "02/23/26",
+            "zone_low": 410.35,
+            "zone_high": 413.83,
+            "center": 412.08,
+            "families": [
+              "gap"
+            ],
+            "strength": 41.75,
+            "atr_value": 12.274
+          },
+          {
+            "symbol": "TSLA",
+            "price": 346.65,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 4,
+            "strength_score": 21.46,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 412.08,
+            "nearest_lower_level": 337.24,
+            "first_touch_date": "04/06/26",
+            "source_date": "04/08/26",
+            "zone_low": 344.8,
+            "zone_high": 348.12,
+            "center": 346.46,
+            "families": [
+              "gap"
+            ],
+            "strength": 21.46,
+            "atr_value": 12.274
+          },
+          {
+            "symbol": "TSLA",
+            "price": 337.25,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 9.42,
+            "created_by": "swing_low",
+            "nearest_upper_level": 346.46,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/09/26",
+            "zone_low": 335.77,
+            "zone_high": 338.72,
+            "center": 337.24,
+            "families": [
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 9.42,
+            "atr_value": 12.274
+          },
+          {
+            "symbol": "TSLA",
+            "price": 436.35,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.14,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 416.89,
+            "first_touch_date": "02/11/26",
+            "source_date": "02/11/26",
+            "zone_low": 434.88,
+            "zone_high": 437.82,
+            "center": 436.35,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 4.14,
+            "atr_value": 12.274
+          }
+        ]
+      },
+      "AMZN": {
+        "security_type": "STK",
+        "daily_atr": 9.642,
+        "technical_atr": 7.55,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}AI Stocks: Winners Shift As Google Leads. Palantir, Arista, CoreWeave Earnings On Deck -- IBD"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "AMZN",
+            "price": 249.91,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 19,
+            "false_breakouts": 11,
+            "strength_score": 44.73,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 256.3,
+            "nearest_lower_level": 244.78,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/22/26",
+            "zone_low": 247.12,
+            "zone_high": 251.07,
+            "center": 249.4,
+            "families": [
+              "gap"
+            ],
+            "strength": 44.73,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 256.16,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 25,
+            "false_breakouts": 6,
+            "strength_score": 41.93,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 264.5,
+            "nearest_lower_level": 249.4,
+            "first_touch_date": "04/17/26",
+            "source_date": "04/30/26",
+            "zone_low": 255.0,
+            "zone_high": 257.79,
+            "center": 256.3,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 41.93,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 264.5,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 2,
+            "strength_score": 13.72,
+            "created_by": "swing_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 256.3,
+            "first_touch_date": "04/24/26",
+            "source_date": "04/24/26",
+            "zone_low": 263.34,
+            "zone_high": 265.66,
+            "center": 264.5,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 13.72,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 221.25,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 2,
+            "strength_score": 11.39,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 224.46,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/05/26",
+            "source_date": "04/09/26",
+            "zone_low": 217.78,
+            "zone_high": 222.41,
+            "center": 220.09,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.39,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 245.36,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 9.66,
+            "created_by": "swing_low",
+            "nearest_upper_level": 249.4,
+            "nearest_lower_level": 240.43,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/20/26",
+            "zone_low": 243.04,
+            "zone_high": 246.52,
+            "center": 244.78,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 9.66,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 240.43,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.49,
+            "created_by": "swing_high",
+            "nearest_upper_level": 244.78,
+            "nearest_lower_level": 224.46,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/10/26",
+            "zone_low": 239.27,
+            "zone_high": 241.59,
+            "center": 240.43,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 7.49,
+            "atr_value": 9.642
+          },
+          {
+            "symbol": "AMZN",
+            "price": 225.23,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.42,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 240.43,
+            "nearest_lower_level": 220.09,
+            "first_touch_date": "04/08/26",
+            "source_date": "04/09/26",
+            "zone_low": 222.53,
+            "zone_high": 226.39,
+            "center": 224.46,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.42,
+            "atr_value": 9.642
+          }
+        ]
+      },
+      "AGPU": {
+        "security_type": "STK",
+        "daily_atr": 0.6519,
+        "technical_atr": 0.05,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "AGPU",
+            "price": 5.93,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 4,
+            "strength_score": 23.97,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 6.16,
+            "nearest_lower_level": 5.27,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/29/26",
+            "zone_low": 5.78,
+            "zone_high": 6.01,
+            "center": 5.9,
+            "families": [
+              "gap"
+            ],
+            "strength": 23.97,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 5.23,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 16,
+            "false_breakouts": 1,
+            "strength_score": 23.0,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 5.9,
+            "nearest_lower_level": 4.88,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/10/26",
+            "zone_low": 5.15,
+            "zone_high": 5.36,
+            "center": 5.27,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 23.0,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 7.1,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 2,
+            "strength_score": 16.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 10.86,
+            "nearest_lower_level": 6.71,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/27/26",
+            "zone_low": 7.02,
+            "zone_high": 7.28,
+            "center": 7.12,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 16.83,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 4.17,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 1,
+            "strength_score": 15.69,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 4.88,
+            "nearest_lower_level": 2.81,
+            "first_touch_date": "04/01/26",
+            "source_date": "04/01/26",
+            "zone_low": 4.09,
+            "zone_high": 4.25,
+            "center": 4.17,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 15.69,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 6.64,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 2,
+            "strength_score": 14.86,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 7.12,
+            "nearest_lower_level": 6.46,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/27/26",
+            "zone_low": 6.56,
+            "zone_high": 6.88,
+            "center": 6.71,
+            "families": [
+              "gap"
+            ],
+            "strength": 14.86,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 6.46,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.86,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 6.71,
+            "nearest_lower_level": 6.16,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/07/26",
+            "zone_low": 6.38,
+            "zone_high": 6.54,
+            "center": 6.46,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.86,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 4.88,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 2,
+            "strength_score": 12.69,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 5.27,
+            "nearest_lower_level": 4.17,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/22/26",
+            "zone_low": 4.8,
+            "zone_high": 4.96,
+            "center": 4.88,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.69,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 2.83,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 11.25,
+            "created_by": "swing_high",
+            "nearest_upper_level": 4.17,
+            "nearest_lower_level": 1.25,
+            "first_touch_date": "02/10/26",
+            "source_date": "02/25/26",
+            "zone_low": 2.71,
+            "zone_high": 2.91,
+            "center": 2.81,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 11.25,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 6.16,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 8.97,
+            "created_by": "swing_high",
+            "nearest_upper_level": 6.46,
+            "nearest_lower_level": 5.9,
+            "first_touch_date": "04/07/26",
+            "source_date": "05/01/26",
+            "zone_low": 6.08,
+            "zone_high": 6.24,
+            "center": 6.16,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 8.97,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 10.86,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.73,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 7.12,
+            "first_touch_date": "04/22/26",
+            "source_date": "04/22/26",
+            "zone_low": 10.77,
+            "zone_high": 10.94,
+            "center": 10.86,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 8.73,
+            "atr_value": 0.6519
+          },
+          {
+            "symbol": "AGPU",
+            "price": 1.25,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 6.15,
+            "created_by": "swing_low",
+            "nearest_upper_level": 2.81,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/19/26",
+            "source_date": "03/19/26",
+            "zone_low": 1.17,
+            "zone_high": 1.33,
+            "center": 1.25,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 6.15,
+            "atr_value": 0.6519
+          }
+        ]
+      },
+      "ALOY": {
+        "security_type": "STK",
+        "daily_atr": 0.9334,
+        "technical_atr": 1.01,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "ALOY",
+            "price": 10.44,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 44,
+            "false_breakouts": 6,
+            "strength_score": 59.69,
+            "created_by": "swing_high",
+            "nearest_upper_level": 11.86,
+            "nearest_lower_level": null,
+            "first_touch_date": "02/12/26",
+            "source_date": "03/30/26",
+            "zone_low": 10.29,
+            "zone_high": 10.64,
+            "center": 10.47,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 59.69,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 16.32,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 30,
+            "false_breakouts": 0,
+            "strength_score": 33.76,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 16.57,
+            "nearest_lower_level": 15.7,
+            "first_touch_date": "02/24/26",
+            "source_date": "02/26/26",
+            "zone_low": 16.01,
+            "zone_high": 16.43,
+            "center": 16.25,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 33.76,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 15.81,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 18,
+            "false_breakouts": 2,
+            "strength_score": 24.76,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 16.25,
+            "nearest_lower_level": 14.82,
+            "first_touch_date": "02/23/26",
+            "source_date": "02/26/26",
+            "zone_low": 15.47,
+            "zone_high": 15.93,
+            "center": 15.7,
+            "families": [
+              "gap"
+            ],
+            "strength": 24.76,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 11.86,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 17,
+            "false_breakouts": 2,
+            "strength_score": 24.62,
+            "created_by": "swing_high",
+            "nearest_upper_level": 14.82,
+            "nearest_lower_level": 10.47,
+            "first_touch_date": "02/09/26",
+            "source_date": "03/25/26",
+            "zone_low": 11.75,
+            "zone_high": 11.97,
+            "center": 11.86,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 24.62,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 16.87,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 1,
+            "strength_score": 12.72,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 18.53,
+            "nearest_lower_level": 16.57,
+            "first_touch_date": "02/24/26",
+            "source_date": "03/12/26",
+            "zone_low": 16.76,
+            "zone_high": 16.98,
+            "center": 16.87,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.72,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 16.57,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 0,
+            "strength_score": 11.76,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 16.87,
+            "nearest_lower_level": 16.25,
+            "first_touch_date": "02/24/26",
+            "source_date": "03/12/26",
+            "zone_low": 16.46,
+            "zone_high": 16.68,
+            "center": 16.57,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.76,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 14.82,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 10.76,
+            "created_by": "swing_low",
+            "nearest_upper_level": 15.7,
+            "nearest_lower_level": 11.86,
+            "first_touch_date": "02/23/26",
+            "source_date": "03/09/26",
+            "zone_low": 14.71,
+            "zone_high": 14.93,
+            "center": 14.82,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 10.76,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 18.46,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 10.52,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 18.92,
+            "nearest_lower_level": 16.87,
+            "first_touch_date": "02/24/26",
+            "source_date": "03/02/26",
+            "zone_low": 18.35,
+            "zone_high": 18.7,
+            "center": 18.53,
+            "families": [
+              "gap"
+            ],
+            "strength": 10.52,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 18.92,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 9.52,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 19.75,
+            "nearest_lower_level": 18.53,
+            "first_touch_date": "02/24/26",
+            "source_date": "02/24/26",
+            "zone_low": 18.81,
+            "zone_high": 19.03,
+            "center": 18.92,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 9.52,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 21.69,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 1,
+            "strength_score": 7.59,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 24.41,
+            "nearest_lower_level": 21.12,
+            "first_touch_date": "03/03/26",
+            "source_date": "03/06/26",
+            "zone_low": 21.58,
+            "zone_high": 21.8,
+            "center": 21.69,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 19.75,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.52,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 20.74,
+            "nearest_lower_level": 18.92,
+            "first_touch_date": "02/27/26",
+            "source_date": "02/27/26",
+            "zone_low": 19.64,
+            "zone_high": 19.86,
+            "center": 19.75,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.52,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 21.12,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 6.59,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 21.69,
+            "nearest_lower_level": 20.74,
+            "first_touch_date": "03/03/26",
+            "source_date": "03/04/26",
+            "zone_low": 21.01,
+            "zone_high": 21.23,
+            "center": 21.12,
+            "families": [
+              "gap"
+            ],
+            "strength": 6.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 25.88,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 6.59,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 26.19,
+            "nearest_lower_level": 24.41,
+            "first_touch_date": "03/04/26",
+            "source_date": "03/05/26",
+            "zone_low": 25.77,
+            "zone_high": 25.99,
+            "center": 25.88,
+            "families": [
+              "gap"
+            ],
+            "strength": 6.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 20.74,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.59,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 21.12,
+            "nearest_lower_level": 19.75,
+            "first_touch_date": "03/03/26",
+            "source_date": "03/05/26",
+            "zone_low": 20.63,
+            "zone_high": 20.85,
+            "center": 20.74,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 5.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 26.64,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.59,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 26.19,
+            "first_touch_date": "03/04/26",
+            "source_date": "03/05/26",
+            "zone_low": 26.53,
+            "zone_high": 26.75,
+            "center": 26.64,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 5.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 24.41,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.59,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 25.88,
+            "nearest_lower_level": 21.69,
+            "first_touch_date": "03/04/26",
+            "source_date": "03/04/26",
+            "zone_low": 24.29,
+            "zone_high": 24.52,
+            "center": 24.41,
+            "families": [
+              "gap"
+            ],
+            "strength": 4.59,
+            "atr_value": 0.9334
+          },
+          {
+            "symbol": "ALOY",
+            "price": 26.19,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.59,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 26.64,
+            "nearest_lower_level": 25.88,
+            "first_touch_date": "03/04/26",
+            "source_date": "03/05/26",
+            "zone_low": 26.08,
+            "zone_high": 26.3,
+            "center": 26.19,
+            "families": [
+              "gap"
+            ],
+            "strength": 4.59,
+            "atr_value": 0.9334
+          }
+        ]
+      },
+      "BIRD": {
+        "security_type": "STK",
+        "daily_atr": 0.558,
+        "technical_atr": 0.24,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "BIRD",
+            "price": 8.5,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 4,
+            "strength_score": 21.8,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 9.25,
+            "nearest_lower_level": 8.18,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/21/26",
+            "zone_low": 8.41,
+            "zone_high": 8.57,
+            "center": 8.49,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 21.8,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 6.68,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 10,
+            "false_breakouts": 3,
+            "strength_score": 19.97,
+            "created_by": "swing_high",
+            "nearest_upper_level": 7.53,
+            "nearest_lower_level": 6.08,
+            "first_touch_date": "04/15/26",
+            "source_date": "05/01/26",
+            "zone_low": 6.48,
+            "zone_high": 6.75,
+            "center": 6.62,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 19.97,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 7.55,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 0,
+            "strength_score": 16.86,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 8.01,
+            "nearest_lower_level": 6.62,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/22/26",
+            "zone_low": 7.41,
+            "zone_high": 7.62,
+            "center": 7.53,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 16.86,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 12.5,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.66,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 13.48,
+            "nearest_lower_level": 11.49,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/20/26",
+            "zone_low": 12.43,
+            "zone_high": 12.59,
+            "center": 12.51,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 12.66,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 6.11,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 11.0,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 6.62,
+            "nearest_lower_level": 3.8,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/15/26",
+            "zone_low": 5.97,
+            "zone_high": 6.18,
+            "center": 6.08,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 11.0,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 10.56,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 10.69,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 11.2,
+            "nearest_lower_level": 9.25,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/17/26",
+            "zone_low": 10.49,
+            "zone_high": 10.63,
+            "center": 10.56,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 10.69,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 8.01,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 1,
+            "strength_score": 9.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 8.18,
+            "nearest_lower_level": 7.53,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/24/26",
+            "zone_low": 7.94,
+            "zone_high": 8.08,
+            "center": 8.01,
+            "families": [
+              "gap"
+            ],
+            "strength": 9.8,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 11.49,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 9.69,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 12.51,
+            "nearest_lower_level": 11.2,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/21/26",
+            "zone_low": 11.42,
+            "zone_high": 11.56,
+            "center": 11.49,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 9.69,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 11.2,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 8.69,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 11.49,
+            "nearest_lower_level": 10.56,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/20/26",
+            "zone_low": 11.13,
+            "zone_high": 11.27,
+            "center": 11.2,
+            "families": [
+              "gap"
+            ],
+            "strength": 8.69,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 14.44,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.59,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 24.31,
+            "nearest_lower_level": 13.48,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/16/26",
+            "zone_low": 14.33,
+            "zone_high": 14.51,
+            "center": 14.42,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 8.59,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 8.18,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.8,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 8.49,
+            "nearest_lower_level": 8.01,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/23/26",
+            "zone_low": 8.11,
+            "zone_high": 8.25,
+            "center": 8.18,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.8,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 9.25,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.73,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 10.56,
+            "nearest_lower_level": 8.49,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/22/26",
+            "zone_low": 9.18,
+            "zone_high": 9.32,
+            "center": 9.25,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 7.73,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 13.48,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.63,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 14.42,
+            "nearest_lower_level": 12.51,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/17/26",
+            "zone_low": 13.41,
+            "zone_high": 13.55,
+            "center": 13.48,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 7.63,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 24.31,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.56,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 14.42,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/15/26",
+            "zone_low": 24.24,
+            "zone_high": 24.38,
+            "center": 24.31,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.56,
+            "atr_value": 0.558
+          },
+          {
+            "symbol": "BIRD",
+            "price": 3.8,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 4.75,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 6.08,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/10/26",
+            "source_date": "03/11/26",
+            "zone_low": 3.73,
+            "zone_high": 3.87,
+            "center": 3.8,
+            "families": [
+              "gap"
+            ],
+            "strength": 4.75,
+            "atr_value": 0.558
+          }
+        ]
+      },
+      "ISPC": {
+        "security_type": "STK",
+        "daily_atr": 1.194,
+        "technical_atr": 1.84,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "ISPC",
+            "price": 7.28,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 38,
+            "false_breakouts": 5,
+            "strength_score": 52.76,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 8.38,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/16/26",
+            "source_date": "03/16/26",
+            "zone_low": 7.06,
+            "zone_high": 7.43,
+            "center": 7.25,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 52.76,
+            "atr_value": 1.194
+          },
+          {
+            "symbol": "ISPC",
+            "price": 9.64,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 14,
+            "false_breakouts": 3,
+            "strength_score": 22.86,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 14.8,
+            "nearest_lower_level": 8.38,
+            "first_touch_date": "02/23/26",
+            "source_date": "02/24/26",
+            "zone_low": 9.5,
+            "zone_high": 9.78,
+            "center": 9.64,
+            "families": [
+              "gap"
+            ],
+            "strength": 22.86,
+            "atr_value": 1.194
+          },
+          {
+            "symbol": "ISPC",
+            "price": 8.38,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 7.97,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 9.64,
+            "nearest_lower_level": 7.25,
+            "first_touch_date": "03/16/26",
+            "source_date": "03/18/26",
+            "zone_low": 8.23,
+            "zone_high": 8.52,
+            "center": 8.38,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.97,
+            "atr_value": 1.194
+          },
+          {
+            "symbol": "ISPC",
+            "price": 14.8,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 7.79,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 9.64,
+            "first_touch_date": "02/13/26",
+            "source_date": "02/13/26",
+            "zone_low": 14.66,
+            "zone_high": 14.94,
+            "center": 14.8,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.79,
+            "atr_value": 1.194
+          }
+        ]
+      },
+      "MRLN": {
+        "security_type": "STK",
+        "daily_atr": 1.59,
+        "technical_atr": 3.07,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "MRLN",
+            "price": 13.66,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 29,
+            "false_breakouts": 12,
+            "strength_score": 57.76,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 14.65,
+            "nearest_lower_level": 6.53,
+            "first_touch_date": "03/25/26",
+            "source_date": "04/21/26",
+            "zone_low": 13.33,
+            "zone_high": 14.09,
+            "center": 13.63,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 57.76,
+            "atr_value": 1.59
+          },
+          {
+            "symbol": "MRLN",
+            "price": 6.51,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 0,
+            "strength_score": 16.38,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 13.63,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/17/26",
+            "source_date": "03/17/26",
+            "zone_low": 6.32,
+            "zone_high": 6.75,
+            "center": 6.53,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 16.38,
+            "atr_value": 1.59
+          },
+          {
+            "symbol": "MRLN",
+            "price": 16.79,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 0,
+            "strength_score": 11.62,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 16.09,
+            "first_touch_date": "04/16/26",
+            "source_date": "04/17/26",
+            "zone_low": 16.53,
+            "zone_high": 17.19,
+            "center": 16.86,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 11.62,
+            "atr_value": 1.59
+          },
+          {
+            "symbol": "MRLN",
+            "price": 14.69,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 10.62,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 16.09,
+            "nearest_lower_level": 13.63,
+            "first_touch_date": "03/25/26",
+            "source_date": "04/15/26",
+            "zone_low": 14.41,
+            "zone_high": 14.88,
+            "center": 14.65,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 10.62,
+            "atr_value": 1.59
+          },
+          {
+            "symbol": "MRLN",
+            "price": 16.09,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.62,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 16.86,
+            "nearest_lower_level": 14.65,
+            "first_touch_date": "04/16/26",
+            "source_date": "04/17/26",
+            "zone_low": 15.9,
+            "zone_high": 16.28,
+            "center": 16.09,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.62,
+            "atr_value": 1.59
+          }
+        ]
+      },
+      "OPTX": {
+        "security_type": "STK",
+        "daily_atr": 0.9575,
+        "technical_atr": 0.37,
+        "news_blocked": true,
+        "matched_headlines": [
+          "{A:800015:L:en}Press Release: Syntec Optics (Nasdaq: OPTX) Announces Closing of $20 Million Underwritten Public Offering of Common Stock",
+          "{A:800015:L:en}* H.C. Wainwright & Co. Acting as Sole Book-Running Manager for Syntec Optics Offering >OPTX"
+        ],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "OPTX",
+            "price": 8.44,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 14,
+            "false_breakouts": 1,
+            "strength_score": 20.0,
+            "created_by": "swing_high",
+            "nearest_upper_level": 10.34,
+            "nearest_lower_level": null,
+            "first_touch_date": "02/06/26",
+            "source_date": "03/11/26",
+            "zone_low": 8.33,
+            "zone_high": 8.55,
+            "center": 8.44,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 20.0,
+            "atr_value": 0.9575
+          },
+          {
+            "symbol": "OPTX",
+            "price": 11.28,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 11,
+            "false_breakouts": 2,
+            "strength_score": 18.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 12.0,
+            "nearest_lower_level": 10.34,
+            "first_touch_date": "04/13/26",
+            "source_date": "04/15/26",
+            "zone_low": 11.13,
+            "zone_high": 11.57,
+            "center": 11.31,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 18.8,
+            "atr_value": 0.9575
+          },
+          {
+            "symbol": "OPTX",
+            "price": 10.34,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 1,
+            "strength_score": 14.8,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 11.31,
+            "nearest_lower_level": 8.44,
+            "first_touch_date": "04/13/26",
+            "source_date": "04/13/26",
+            "zone_low": 10.23,
+            "zone_high": 10.45,
+            "center": 10.34,
+            "families": [
+              "gap"
+            ],
+            "strength": 14.8,
+            "atr_value": 0.9575
+          },
+          {
+            "symbol": "OPTX",
+            "price": 12.0,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 6.28,
+            "created_by": "gap_upper",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 11.31,
+            "first_touch_date": "04/13/26",
+            "source_date": "04/14/26",
+            "zone_low": 11.89,
+            "zone_high": 12.11,
+            "center": 12.0,
+            "families": [
+              "gap"
+            ],
+            "strength": 6.28,
+            "atr_value": 0.9575
+          }
+        ]
+      },
+      "ROLR": {
+        "security_type": "STK",
+        "daily_atr": 1.3731,
+        "technical_atr": 0.71,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "ROLR",
+            "price": 6.0,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 13,
+            "false_breakouts": 2,
+            "strength_score": 21.59,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 6.4,
+            "nearest_lower_level": null,
+            "first_touch_date": "02/06/26",
+            "source_date": "04/16/26",
+            "zone_low": 5.61,
+            "zone_high": 6.16,
+            "center": 5.85,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 21.59,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 9.92,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 1,
+            "strength_score": 10.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 10.71,
+            "nearest_lower_level": 6.86,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/29/26",
+            "zone_low": 9.76,
+            "zone_high": 10.08,
+            "center": 9.92,
+            "families": [
+              "gap"
+            ],
+            "strength": 10.9,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 10.71,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.9,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 11.74,
+            "nearest_lower_level": 9.92,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/29/26",
+            "zone_low": 10.55,
+            "zone_high": 10.87,
+            "center": 10.71,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 8.9,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 11.74,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 12.85,
+            "nearest_lower_level": 10.71,
+            "first_touch_date": "04/14/26",
+            "source_date": "04/14/26",
+            "zone_low": 11.58,
+            "zone_high": 11.9,
+            "center": 11.74,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 8.83,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 12.85,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 11.74,
+            "first_touch_date": "04/27/26",
+            "source_date": "04/27/26",
+            "zone_low": 12.69,
+            "zone_high": 13.01,
+            "center": 12.85,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.83,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 6.4,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.59,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 6.86,
+            "nearest_lower_level": 5.85,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/16/26",
+            "zone_low": 6.24,
+            "zone_high": 6.56,
+            "center": 6.4,
+            "families": [
+              "gap"
+            ],
+            "strength": 5.59,
+            "atr_value": 1.3731
+          },
+          {
+            "symbol": "ROLR",
+            "price": 6.86,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.59,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 9.92,
+            "nearest_lower_level": 6.4,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/15/26",
+            "zone_low": 6.7,
+            "zone_high": 7.02,
+            "center": 6.86,
+            "families": [
+              "gap"
+            ],
+            "strength": 5.59,
+            "atr_value": 1.3731
+          }
+        ]
+      },
+      "SKLZ": {
+        "security_type": "STK",
+        "daily_atr": 1.52,
+        "technical_atr": 0.46,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "SKLZ",
+            "price": 6.3,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 25,
+            "false_breakouts": 10,
+            "strength_score": 49.93,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 7.2,
+            "nearest_lower_level": 5.58,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/27/26",
+            "zone_low": 6.03,
+            "zone_high": 6.54,
+            "center": 6.3,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "structural"
+            ],
+            "strength": 49.93,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 7.75,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 11,
+            "false_breakouts": 4,
+            "strength_score": 23.0,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 8.61,
+            "nearest_lower_level": 7.2,
+            "first_touch_date": "04/23/26",
+            "source_date": "05/01/26",
+            "zone_low": 7.57,
+            "zone_high": 8.24,
+            "center": 7.89,
+            "families": [
+              "gap"
+            ],
+            "strength": 23.0,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 8.47,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 18,
+            "false_breakouts": 0,
+            "strength_score": 22.97,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 9.15,
+            "nearest_lower_level": 7.89,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/30/26",
+            "zone_low": 8.29,
+            "zone_high": 8.88,
+            "center": 8.61,
+            "families": [
+              "abnormal_candle",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 22.97,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 7.23,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 12,
+            "false_breakouts": 0,
+            "strength_score": 17.0,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 7.89,
+            "nearest_lower_level": 6.3,
+            "first_touch_date": "04/23/26",
+            "source_date": "05/01/26",
+            "zone_low": 6.99,
+            "zone_high": 7.41,
+            "center": 7.2,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 17.0,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 5.62,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 12.93,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 6.3,
+            "nearest_lower_level": 4.49,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/30/26",
+            "zone_low": 5.36,
+            "zone_high": 5.8,
+            "center": 5.58,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 12.93,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 9.2,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 0,
+            "strength_score": 10.83,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 20.0,
+            "nearest_lower_level": 8.61,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/24/26",
+            "zone_low": 8.92,
+            "zone_high": 9.38,
+            "center": 9.15,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 10.83,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 4.49,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 4,
+            "false_breakouts": 0,
+            "strength_score": 8.76,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 5.58,
+            "nearest_lower_level": null,
+            "first_touch_date": "04/15/26",
+            "source_date": "04/15/26",
+            "zone_low": 4.31,
+            "zone_high": 4.67,
+            "center": 4.49,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 8.76,
+            "atr_value": 1.52
+          },
+          {
+            "symbol": "SKLZ",
+            "price": 20.0,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 8.51,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 9.15,
+            "first_touch_date": "04/23/26",
+            "source_date": "04/23/26",
+            "zone_low": 19.82,
+            "zone_high": 20.18,
+            "center": 20.0,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 8.51,
+            "atr_value": 1.52
+          }
+        ]
+      },
+      "SKYQ": {
+        "security_type": "STK",
+        "daily_atr": 1.012,
+        "technical_atr": 0.91,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [
+          "DJ-N"
+        ],
+        "news_source_types": [
+          "ibkr"
+        ],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "SKYQ",
+            "price": 5.0,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 44,
+            "false_breakouts": 13,
+            "strength_score": 74.86,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 7.17,
+            "nearest_lower_level": 1.85,
+            "first_touch_date": "03/02/26",
+            "source_date": "04/08/26",
+            "zone_low": 4.75,
+            "zone_high": 5.22,
+            "center": 4.99,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 74.86,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 7.29,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 20,
+            "false_breakouts": 4,
+            "strength_score": 31.9,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 7.75,
+            "nearest_lower_level": 4.99,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/10/26",
+            "zone_low": 6.94,
+            "zone_high": 7.41,
+            "center": 7.17,
+            "families": [
+              "gap",
+              "historical",
+              "structural"
+            ],
+            "strength": 31.9,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 8.32,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 20,
+            "false_breakouts": 0,
+            "strength_score": 24.76,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 8.84,
+            "nearest_lower_level": 8.01,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/07/26",
+            "zone_low": 8.2,
+            "zone_high": 8.62,
+            "center": 8.37,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "structural"
+            ],
+            "strength": 24.76,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 8.84,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.72,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 9.56,
+            "nearest_lower_level": 8.37,
+            "first_touch_date": "04/09/26",
+            "source_date": "04/15/26",
+            "zone_low": 8.72,
+            "zone_high": 8.96,
+            "center": 8.84,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 12.72,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 9.56,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 8,
+            "false_breakouts": 0,
+            "strength_score": 12.69,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 9.82,
+            "nearest_lower_level": 8.84,
+            "first_touch_date": "04/09/26",
+            "source_date": "04/09/26",
+            "zone_low": 9.44,
+            "zone_high": 9.68,
+            "center": 9.56,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 12.69,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 9.82,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 7,
+            "false_breakouts": 1,
+            "strength_score": 12.69,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 10.38,
+            "nearest_lower_level": 9.56,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/17/26",
+            "zone_low": 9.7,
+            "zone_high": 9.94,
+            "center": 9.82,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.69,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 10.34,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 9,
+            "false_breakouts": 0,
+            "strength_score": 12.69,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 11.62,
+            "nearest_lower_level": 9.82,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/14/26",
+            "zone_low": 10.22,
+            "zone_high": 10.54,
+            "center": 10.38,
+            "families": [
+              "gap"
+            ],
+            "strength": 12.69,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 8.01,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 6,
+            "false_breakouts": 1,
+            "strength_score": 11.76,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 8.37,
+            "nearest_lower_level": 7.75,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/20/26",
+            "zone_low": 7.89,
+            "zone_high": 8.13,
+            "center": 8.01,
+            "families": [
+              "gap"
+            ],
+            "strength": 11.76,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 7.75,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 5,
+            "false_breakouts": 0,
+            "strength_score": 8.76,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 8.01,
+            "nearest_lower_level": 7.17,
+            "first_touch_date": "04/07/26",
+            "source_date": "04/10/26",
+            "zone_low": 7.63,
+            "zone_high": 7.87,
+            "center": 7.75,
+            "families": [
+              "gap"
+            ],
+            "strength": 8.76,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 11.62,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.48,
+            "created_by": "gap_upper",
+            "nearest_upper_level": 12.59,
+            "nearest_lower_level": 10.38,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/14/26",
+            "zone_low": 11.5,
+            "zone_high": 11.74,
+            "center": 11.62,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.48,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 12.59,
+            "type": "gap",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 1,
+            "strength_score": 7.48,
+            "created_by": "gap_lower",
+            "nearest_upper_level": 15.35,
+            "nearest_lower_level": 11.62,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/13/26",
+            "zone_low": 12.47,
+            "zone_high": 12.71,
+            "center": 12.59,
+            "families": [
+              "gap"
+            ],
+            "strength": 7.48,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 19.45,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 3,
+            "false_breakouts": 0,
+            "strength_score": 7.48,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 15.35,
+            "first_touch_date": "04/13/26",
+            "source_date": "04/13/26",
+            "zone_low": 19.33,
+            "zone_high": 19.57,
+            "center": 19.45,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "structural"
+            ],
+            "strength": 7.48,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 15.35,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 6.48,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": 19.45,
+            "nearest_lower_level": 12.59,
+            "first_touch_date": "04/10/26",
+            "source_date": "04/10/26",
+            "zone_low": 15.23,
+            "zone_high": 15.47,
+            "center": 15.35,
+            "families": [
+              "abnormal_candle",
+              "structural"
+            ],
+            "strength": 6.48,
+            "atr_value": 1.012
+          },
+          {
+            "symbol": "SKYQ",
+            "price": 1.85,
+            "type": "historical",
+            "timeframe": "daily",
+            "touches": 2,
+            "false_breakouts": 0,
+            "strength_score": 5.14,
+            "created_by": "swing_low",
+            "nearest_upper_level": 4.99,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/26/26",
+            "source_date": "03/26/26",
+            "zone_low": 1.73,
+            "zone_high": 1.97,
+            "center": 1.85,
+            "families": [
+              "historical",
+              "structural"
+            ],
+            "strength": 5.14,
+            "atr_value": 1.012
+          }
+        ]
+      },
+      "EUR.USD": {
+        "security_type": "CASH",
+        "daily_atr": 0.0061,
+        "technical_atr": 0.0092,
+        "news_blocked": false,
+        "matched_headlines": [],
+        "news_provider_hits": [],
+        "news_source_types": [],
+        "earnings_event": {},
+        "levels": [
+          {
+            "symbol": "EUR.USD",
+            "price": 1.16,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 70,
+            "false_breakouts": 0,
+            "strength_score": 75.36,
+            "created_by": "abnormal_high",
+            "nearest_upper_level": null,
+            "nearest_lower_level": 1.15,
+            "first_touch_date": "03/03/26",
+            "source_date": "03/19/26",
+            "zone_low": 1.16,
+            "zone_high": 1.16,
+            "center": 1.16,
+            "families": [
+              "abnormal_candle",
+              "consolidation",
+              "historical",
+              "limit_player",
+              "mirror",
+              "structural"
+            ],
+            "strength": 75.36,
+            "atr_value": 0.0061
+          },
+          {
+            "symbol": "EUR.USD",
+            "price": 1.15,
+            "type": "abnormal_candle",
+            "timeframe": "daily",
+            "touches": 32,
+            "false_breakouts": 0,
+            "strength_score": 37.15,
+            "created_by": "abnormal_low",
+            "nearest_upper_level": 1.16,
+            "nearest_lower_level": null,
+            "first_touch_date": "03/13/26",
+            "source_date": "03/03/26",
+            "zone_low": 1.15,
+            "zone_high": 1.15,
+            "center": 1.15,
+            "families": [
+              "abnormal_candle",
+              "historical",
+              "limit_player",
+              "mirror",
+              "structural"
+            ],
+            "strength": 37.15,
+            "atr_value": 0.0061
+          }
+        ]
+      }
+    },
+    "macro_risk": {
+      "blocked": false,
+      "risk_level": "LOW",
+      "headlines": [
+        "{A:800015:L:en}SPY ETF Gains 0.3%",
+        "{A:800015:L:en}SPY ETF Rises 1.0%",
+        "{A:800015:L:en}SPY ETF Closes Flat",
+        "{A:800015:L:en}SPY ETF Falls 0.5%",
+        "{A:800015:L:en}SPY ETF Climbs 0.2%, Outperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Rises 0.8%",
+        "{A:800015:L:en}SPY ETF Falls 0.4%",
+        "{A:800015:L:en}SPY ETF Gains 1.0%",
+        "{A:800015:L:en}SPY ETF Declines 0.7%, Underperforms Underlying Index",
+        "{A:800015:L:en}SPY ETF Declines 0.2%"
+      ],
+      "matched_headlines": [],
+      "critical_matches": [],
+      "provider_hits": [
+        "DJ-RTG"
+      ],
+      "source_types": [
+        "ibkr"
+      ]
+    },
+    "ideas": [
+      {
+        "symbol": "BBBY",
+        "catalyst": "level interaction",
+        "entry": 5.2,
+        "stop": 5.148,
+        "target": 6.27,
+        "decision": "WATCH"
+      },
+      {
+        "symbol": "SEI",
+        "catalyst": "{A:800015:L:en}Solaris Energy Infrastructure Shares Climb on 1Q Earnings Beat, Lifted 2Q Guidance",
+        "entry": 74.5,
+        "stop": 74.44,
+        "target": 77.12,
+        "decision": "HOLD"
+      },
+      {
+        "symbol": "SANM",
+        "catalyst": "{A:800015:L:en}AMD Supplier Up 65% This Month Soars On Earnings Beat -- IBD",
+        "entry": 216.54,
+        "stop": 208.67,
+        "target": 217.67,
+        "decision": "HOLD"
+      }
+    ],
+    "research_symbols": [
+      "BBBY",
+      "SEI",
+      "SANM",
+      "AAPL",
+      "MSFT",
+      "TSLA",
+      "AMZN",
+      "AGPU",
+      "ALOY",
+      "BIRD",
+      "ISPC",
+      "MRLN",
+      "OPTX",
+      "ROLR",
+      "SKLZ",
+      "SKYQ",
+      "EUR.USD"
+    ]
+  }
+}
+```
+
+## Workflow Intraday (2026-05-05T10:35:42)
+- **stage**: Intraday
+- **executed_symbols**: []
+- **tracked_symbols**: []
+- **actions**: [{'event': 'kill_switch', 'reasons': ['missing_protective_stop']}]
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [
+      {
+        "event": "kill_switch",
+        "reasons": [
+          "missing_protective_stop"
+        ]
+      }
+    ],
+    "executed": [],
+    "skipped": [
+      {
+        "symbol": "BBBY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SEI",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "SANM",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "AAPL",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "MSFT",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "TSLA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMZN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AGPU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ALOY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIRD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ISPC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRLN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "OPTX",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "ROLR",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKLZ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKYQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "EUR.USD",
+        "reason": "no_signal"
+      }
+    ],
+    "tracked_positions": [],
+    "scans": [
+      {
+        "timestamp": "2026-05-05T10:35:03.057749-04:00",
+        "interval_seconds": 600,
+        "symbols_scanned": 17,
+        "signals_detected": 0,
+        "executed_count": 0,
+        "skipped_count": 17
+      }
+    ]
+  }
+}
+```

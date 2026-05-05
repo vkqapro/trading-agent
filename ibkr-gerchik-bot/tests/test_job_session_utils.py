@@ -9,6 +9,7 @@ from src.jobs.session_utils import (
     get_scan_interval,
     is_open_entry_window,
     next_scan_time,
+    protective_stops_ok,
 )
 
 
@@ -35,3 +36,59 @@ class JobSessionUtilsTests(TestCase):
         self.assertFalse(can_scan_for_new_entries(current))
         self.assertEqual(get_scan_interval(current), 600)
 
+    def test_protective_stop_recheck_passes_when_stop_appears_on_retry(self) -> None:
+        class BrokerStub:
+            def __init__(self) -> None:
+                self.calls = 0
+
+            def get_open_orders(self):
+                self.calls += 1
+                if self.calls == 1:
+                    return []
+                return [{"symbol": "BBBY", "type": "STP", "order_id": 123}]
+
+        broker = BrokerStub()
+        tracked_positions = [
+            {
+                "symbol": "BBBY",
+                "quantity": 100,
+                "direction": "long",
+                "stop_order_id": 123,
+            }
+        ]
+
+        slept: list[float] = []
+        self.assertTrue(
+            protective_stops_ok(
+                broker,
+                tracked_positions,
+                now_provider=lambda: datetime(2026, 5, 5, 10, 35, tzinfo=TZ),
+                sleep_provider=lambda seconds: slept.append(seconds),
+            )
+        )
+        self.assertEqual(len(slept), 1)
+
+    def test_protective_stop_recheck_respects_grace_window_for_new_position(self) -> None:
+        class BrokerStub:
+            def get_open_orders(self):
+                return []
+
+        now = datetime(2026, 5, 5, 10, 35, tzinfo=TZ)
+        tracked_positions = [
+            {
+                "symbol": "BBBY",
+                "quantity": 100,
+                "direction": "long",
+                "stop_order_id": 123,
+                "opened_at": now.isoformat(),
+            }
+        ]
+
+        self.assertTrue(
+            protective_stops_ok(
+                BrokerStub(),
+                tracked_positions,
+                now_provider=lambda: now,
+                sleep_provider=lambda _seconds: None,
+            )
+        )

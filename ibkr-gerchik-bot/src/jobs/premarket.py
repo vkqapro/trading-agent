@@ -50,6 +50,7 @@ def run_premarket(
         symbol_news = news_filter.get_symbol_risk_context(symbol)
 
         watchlist[symbol] = {
+            "security_type": SETTINGS.symbol_security_type(symbol),
             "daily_atr": daily_atr,
             "technical_atr": technical_atr,
             "news_blocked": symbol_news["blocked"],

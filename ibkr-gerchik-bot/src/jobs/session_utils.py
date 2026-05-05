@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import time
 from contextlib import contextmanager
 from dataclasses import asdict, is_dataclass
 from datetime import datetime, time as dt_time, timedelta
@@ -34,6 +35,9 @@ MARKET_CLOSE_TIME = dt_time(
     hour=SETTINGS.trading_hours.market_close_hour,
     minute=SETTINGS.trading_hours.market_close_minute,
 )
+STOP_INTEGRITY_RECHECK_SECONDS = 2.0
+STOP_INTEGRITY_RECHECK_ATTEMPTS = 3
+STOP_GRACE_PERIOD_SECONDS = 30.0
 
 
 def session_now() -> datetime:
@@ -153,6 +157,103 @@ def _normalize_skip_reason(reason: object) -> str:
     return str(reason)
 
 
+def _tracked_symbol_needs_stop(position: Dict[str, object]) -> bool:
+    quantity = int(float(position.get("quantity", 0) or 0))
+    direction = str(position.get("direction", "")).strip().lower()
+    symbol = str(position.get("symbol", "")).strip().upper()
+    return bool(symbol and quantity > 0 and direction in {"long", "short"})
+
+
+def _position_is_within_stop_grace(position: Dict[str, object], now: datetime) -> bool:
+    opened_at = str(position.get("opened_at", "") or "").strip()
+    if not opened_at:
+        return False
+    try:
+        opened_dt = datetime.fromisoformat(opened_at)
+    except ValueError:
+        return False
+    if opened_dt.tzinfo is None:
+        opened_dt = opened_dt.replace(tzinfo=now.tzinfo)
+    return (now - opened_dt).total_seconds() <= STOP_GRACE_PERIOD_SECONDS
+
+
+def protective_stops_ok(
+    broker: IBKRClient,
+    tracked_positions: List[Dict[str, object]],
+    *,
+    now_provider: NowProvider | None = None,
+    sleep_provider: SleepProvider | None = None,
+) -> bool:
+    """Recheck stop integrity before tripping the kill switch for missing stops."""
+    now_fn = now_provider or session_now
+    sleep_fn = sleep_provider or time.sleep
+
+    positions_requiring_stops = [position for position in tracked_positions if _tracked_symbol_needs_stop(position)]
+    if not positions_requiring_stops:
+        return True
+
+    symbols_requiring_stops = {str(position["symbol"]).strip().upper() for position in positions_requiring_stops}
+    stop_order_ids = {
+        int(float(position.get("stop_order_id", 0) or 0))
+        for position in positions_requiring_stops
+        if int(float(position.get("stop_order_id", 0) or 0)) > 0
+    }
+
+    for attempt in range(1, STOP_INTEGRITY_RECHECK_ATTEMPTS + 1):
+        open_orders = broker.get_open_orders()
+        stop_symbols = {
+            str(order.get("symbol", "")).strip().upper()
+            for order in open_orders
+            if str(order.get("type", "")).strip().upper() == "STP"
+        }
+        stop_ids = {
+            int(float(order.get("order_id", 0) or 0))
+            for order in open_orders
+            if str(order.get("type", "")).strip().upper() == "STP"
+        }
+
+        missing = {
+            symbol
+            for symbol in symbols_requiring_stops
+            if symbol not in stop_symbols
+        }
+
+        if stop_order_ids and stop_order_ids.issubset(stop_ids):
+            return True
+        if not missing:
+            return True
+
+        now = now_fn()
+        grace_symbols = {
+            str(position["symbol"]).strip().upper()
+            for position in positions_requiring_stops
+            if _position_is_within_stop_grace(position, now)
+        }
+        unresolved = missing - grace_symbols
+        if not unresolved:
+            LOGGER.warning(
+                "Protective stop recheck attempt %s/%s deferred by grace window for symbols=%s",
+                attempt,
+                STOP_INTEGRITY_RECHECK_ATTEMPTS,
+                sorted(missing),
+            )
+            return True
+
+        if attempt < STOP_INTEGRITY_RECHECK_ATTEMPTS:
+            LOGGER.warning(
+                "Protective stop recheck attempt %s/%s failed for symbols=%s; retrying in %.1fs",
+                attempt,
+                STOP_INTEGRITY_RECHECK_ATTEMPTS,
+                sorted(unresolved),
+                STOP_INTEGRITY_RECHECK_SECONDS,
+            )
+            sleep_fn(STOP_INTEGRITY_RECHECK_SECONDS)
+        else:
+            LOGGER.warning("Protective stop recheck failed for symbols=%s", sorted(unresolved))
+
+    return False
+
+
 def run_entry_scan(
     *,
     stage_name: str,
@@ -252,6 +353,8 @@ def run_entry_scan(
                         "entry": float(payload.get("entry", 0.0)),
                         "stop_loss": float(payload.get("stop_loss", 0.0)),
                         "direction": str(payload.get("direction", "long")),
+                        "stop_order_id": int(payload.get("stop_order_id", 0) or 0),
+                        "opened_at": current_time.isoformat(),
                     }
                 )
                 open_risk_amount += abs(float(payload["entry"]) - float(payload["stop_loss"])) * float(payload["quantity"])
@@ -290,8 +393,7 @@ def manage_positions(
     """Manage open positions, exits, and stop hygiene."""
     actions: List[Dict[str, object]] = []
     closed_symbols: set[str] = set()
-    open_orders = broker.get_open_orders()
-    stop_symbols = {order.get("symbol") for order in open_orders if order.get("type") == "STP"}
+    stop_integrity_ok = protective_stops_ok(broker, tracked_positions)
     macro_risk = news_filter.is_macro_risk()
     kill_switch, reasons = should_trigger_kill_switch(
         account_equity=account_equity,
@@ -300,7 +402,7 @@ def manage_positions(
         broker_positions=broker.get_positions(),
         internal_positions=tracked_positions,
         macro_risk=macro_risk,
-        stop_integrity_ok=all(position.get("symbol") in stop_symbols for position in tracked_positions),
+        stop_integrity_ok=stop_integrity_ok,
     )
     if kill_switch:
         for position in tracked_positions:
@@ -449,12 +551,17 @@ def refresh_watchlist_if_missing(broker: IBKRClient) -> Dict[str, object]:
     seen: set[str] = set()
     for position in positions:
         sec_type = str(position.get("sec_type", "")).strip().upper()
-        if sec_type and sec_type != "STK":
-            continue
         symbol = str(position.get("symbol", "")).strip().upper()
-        if symbol and symbol not in seen:
-            seen.add(symbol)
-            symbols.append(symbol)
+        if not symbol:
+            continue
+        normalized = symbol
+        if sec_type == "CASH" and symbol != SETTINGS.account_currency.upper():
+            normalized = f"{symbol}.{SETTINGS.account_currency.upper()}"
+        elif sec_type and sec_type != "STK":
+            continue
+        if normalized not in seen:
+            seen.add(normalized)
+            symbols.append(normalized)
     for configured in SETTINGS.symbols:
         symbol = configured.strip().upper()
         if symbol and symbol not in seen:

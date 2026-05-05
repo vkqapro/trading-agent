@@ -44,12 +44,17 @@ def _build_research_symbols(positions: List[Dict[str, object]]) -> List[str]:
 
     for item in positions:
         sec_type = str(item.get("sec_type", "")).strip().upper()
-        if sec_type and sec_type != "STK":
-            continue
         symbol = str(item.get("symbol", "")).strip().upper()
-        if symbol and symbol not in seen:
-            seen.add(symbol)
-            merged.append(symbol)
+        if not symbol:
+            continue
+        normalized = symbol
+        if sec_type == "CASH" and symbol != SETTINGS.account_currency.upper():
+            normalized = f"{symbol}.{SETTINGS.account_currency.upper()}"
+        elif sec_type and sec_type != "STK":
+            continue
+        if normalized not in seen:
+            seen.add(normalized)
+            merged.append(normalized)
 
     for symbol in SETTINGS.symbols:
         normalized = symbol.strip().upper()
