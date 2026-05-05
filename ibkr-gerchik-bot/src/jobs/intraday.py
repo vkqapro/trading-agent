@@ -15,7 +15,6 @@ from src.jobs.session_utils import (
     calculate_open_risk_amount,
     can_scan_for_new_entries,
     get_scan_interval,
-    job_loop_lock,
     load_runtime_state,
     manage_positions,
     next_scan_time,
@@ -66,97 +65,88 @@ def run_intraday(
     actions_total: List[Dict[str, object]] = []
     scans: List[Dict[str, object]] = []
 
-    with job_loop_lock("intraday_session") as acquired:
-        if not acquired:
-            append_workflow_snapshot(
-                SETTINGS.paths.research_log,
-                "Intraday",
-                {"actions": [], "blocked": True, "reason": "loop_lock_held", "timestamp": current_time.isoformat()},
-            )
-            return []
+    while True:
+        loop_time = now_fn()
+        if not market_data.market_is_open(loop_time):
+            break
 
-        while True:
-            loop_time = now_fn()
-            if not market_data.market_is_open(loop_time):
-                break
+        interval = get_scan_interval(loop_time)
+        LOGGER.info("Intraday loop tick at %s interval=%ss", loop_time.isoformat(), interval)
+        iteration_executed: List[Dict[str, object]] = []
+        iteration_skipped: List[Dict[str, object]] = []
+        symbols_scanned = 0
+        signals_detected = 0
+        entries_enabled = can_scan_for_new_entries(loop_time)
 
-            interval = get_scan_interval(loop_time)
-            LOGGER.info("Intraday loop tick at %s interval=%ss", loop_time.isoformat(), interval)
-            iteration_executed: List[Dict[str, object]] = []
-            iteration_skipped: List[Dict[str, object]] = []
-            symbols_scanned = 0
-            signals_detected = 0
-            entries_enabled = can_scan_for_new_entries(loop_time)
-
-            if entries_enabled and watchlist:
-                scan_result = run_entry_scan(
-                    stage_name="Intraday",
-                    market_data=market_data,
-                    order_manager=order_manager,
-                    news_filter=news_filter,
-                    watchlist=watchlist,
-                    account_equity=account_equity,
-                    cash_available=account_equity,
-                    current_positions=tracked_positions,
-                    open_risk_amount=calculate_open_risk_amount(tracked_positions),
-                    scan_time=loop_time,
-                )
-                executed = scan_result["executed"]
-                skipped = scan_result["skipped"]
-                iteration_executed = executed
-                iteration_skipped = skipped
-                symbols_scanned = int(scan_result["symbols_scanned"])
-                signals_detected = int(scan_result["signals_detected"])
-                executed_total.extend(executed)
-                skipped_total.extend(skipped)
-                scans.append(
-                    {
-                        "timestamp": loop_time.isoformat(),
-                        "interval_seconds": interval,
-                        "symbols_scanned": scan_result["symbols_scanned"],
-                        "signals_detected": scan_result["signals_detected"],
-                        "executed_count": len(executed),
-                        "skipped_count": len(skipped),
-                    }
-                )
-
-            management = manage_positions(
-                broker=broker,
+        if entries_enabled and watchlist:
+            scan_result = run_entry_scan(
+                stage_name="Intraday",
+                market_data=market_data,
+                order_manager=order_manager,
                 news_filter=news_filter,
-                tracked_positions=tracked_positions,
+                watchlist=watchlist,
                 account_equity=account_equity,
-                daily_realized_pnl=daily_realized_pnl,
-                dry_run=dry_run,
+                cash_available=account_equity,
+                current_positions=tracked_positions,
+                open_risk_amount=calculate_open_risk_amount(tracked_positions),
+                scan_time=loop_time,
             )
-            actions = management["actions"]
-            actions_total.extend(actions)
-            persist_tracked_positions(tracked_positions)
-            alerter.send_intraday_heartbeat(
+            executed = scan_result["executed"]
+            skipped = scan_result["skipped"]
+            iteration_executed = executed
+            iteration_skipped = skipped
+            symbols_scanned = int(scan_result["symbols_scanned"])
+            signals_detected = int(scan_result["signals_detected"])
+            executed_total.extend(executed)
+            skipped_total.extend(skipped)
+            scans.append(
                 {
                     "timestamp": loop_time.isoformat(),
-                    "tracked_symbols": [position.get("symbol") for position in tracked_positions],
-                    "actions": actions,
-                    "macro_risk": news_filter.is_macro_risk(),
-                    "entries_enabled": entries_enabled,
                     "interval_seconds": interval,
-                    "symbols_scanned": symbols_scanned,
-                    "signals_detected": signals_detected,
-                    "executed": iteration_executed,
-                    "skipped": iteration_skipped,
-                    "skip_reason_summary": summarize_skip_reasons(iteration_skipped),
+                    "symbols_scanned": scan_result["symbols_scanned"],
+                    "signals_detected": scan_result["signals_detected"],
+                    "executed_count": len(executed),
+                    "skipped_count": len(skipped),
                 }
             )
 
-            if management.get("kill_switch"):
-                break
+        management = manage_positions(
+            broker=broker,
+            news_filter=news_filter,
+            tracked_positions=tracked_positions,
+            account_equity=account_equity,
+            daily_realized_pnl=daily_realized_pnl,
+            dry_run=dry_run,
+        )
+        actions = management["actions"]
+        actions_total.extend(actions)
+        persist_tracked_positions(tracked_positions)
+        alerter.send_intraday_heartbeat(
+            {
+                "timestamp": loop_time.isoformat(),
+                "tracked_symbols": [position.get("symbol") for position in tracked_positions],
+                "actions": actions,
+                "macro_risk": news_filter.is_macro_risk(),
+                "entries_enabled": entries_enabled,
+                "interval_seconds": interval,
+                "symbols_scanned": symbols_scanned,
+                "signals_detected": signals_detected,
+                "executed": iteration_executed,
+                "skipped": iteration_skipped,
+                "skip_reason_summary": summarize_skip_reasons(iteration_skipped),
+            }
+        )
 
-            if interval <= 0:
-                break
+        if management.get("kill_switch"):
+            break
 
-            next_run = next_scan_time(loop_time, interval)
-            if not market_data.market_is_open(now_fn()):
-                break
-            sleep_until(next_run, now_fn, sleep_fn)
+        if interval <= 0:
+            break
+
+        next_run = next_scan_time(loop_time, interval)
+        if not market_data.market_is_open(now_fn()):
+            break
+        sleep_until(next_run, now_fn, sleep_fn)
 
     append_markdown_log(
         SETTINGS.paths.trade_log,

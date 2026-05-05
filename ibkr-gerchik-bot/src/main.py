@@ -24,6 +24,13 @@ from src.jobs.eod import run_eod
 from src.jobs.intraday import run_intraday
 from src.jobs.open import run_open
 from src.jobs.premarket import run_premarket
+from src.jobs.session_utils import (
+    can_scan_for_new_entries,
+    get_scan_interval,
+    job_loop_lock,
+    next_scan_time,
+    session_now,
+)
 from src.jobs.weekly import run_weekly
 from src.risk.kill_switch import should_trigger_kill_switch
 from src.risk.risk_manager import RiskManager
@@ -146,6 +153,25 @@ def _hydrate_from_logs(state: Dict[str, object]) -> Dict[str, object]:
     return hydrated
 
 
+def _duplicate_session_message(job_name: str) -> str:
+    """Build a short Slack/operator message for blocked duplicate session jobs."""
+    now = session_now()
+    interval = get_scan_interval(now)
+    if job_name == "open":
+        if interval > 0:
+            next_run = next_scan_time(now, interval)
+            return f"{job_name.title()} already running; next scan at ~{next_run.strftime('%I:%M %p ET')}."
+        return f"{job_name.title()} already running."
+
+    if job_name == "intraday":
+        if can_scan_for_new_entries(now) and interval > 0:
+            next_run = next_scan_time(now, interval)
+            return f"Intraday already running; next scheduled scan at ~{next_run.strftime('%I:%M %p ET')}."
+        return "Intraday already running; new entries are currently disabled, position management remains active."
+
+    return f"{job_name.title()} already running."
+
+
 def run_job(job_name: str, dry_run_override: Optional[bool] = None) -> Dict[str, object]:
     ensure_directories()
     state_path = SETTINGS.paths.state_file
@@ -162,6 +188,31 @@ def run_job(job_name: str, dry_run_override: Optional[bool] = None) -> Dict[str,
         metrics = run_weekly(state.get("weekly_results", []))
         return {"job": job_name, "metrics": metrics, "dry_run": dry_run}
 
+    preconnect_lock_name = None
+    if job_name == "open":
+        preconnect_lock_name = "open_session"
+    elif job_name == "intraday":
+        preconnect_lock_name = "intraday_session"
+
+    if preconnect_lock_name is not None:
+        with job_loop_lock(preconnect_lock_name) as acquired:
+            if not acquired:
+                LOGGER.info("Skipping %s job because %s is already active.", job_name, preconnect_lock_name)
+                SlackAlerter().send_channel_message(_duplicate_session_message(job_name))
+                return {"job": job_name, "blocked": True, "reasons": ["session_already_running"], "dry_run": dry_run}
+            return _run_connected_job(job_name, state_path, state, dry_run)
+
+    return _run_connected_job(job_name, state_path, state, dry_run)
+
+
+def _run_connected_job(
+    job_name: str,
+    state_path: Path,
+    state: Dict[str, object],
+    dry_run: bool,
+) -> Dict[str, object]:
+    """Run broker-connected jobs after state and locking checks have passed."""
+    alerter = SlackAlerter()
     broker = IBKRClient()
     try:
         broker.connect()

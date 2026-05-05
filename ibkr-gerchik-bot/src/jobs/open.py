@@ -13,7 +13,6 @@ from src.execution.order_manager import OrderManager
 from src.jobs.session_utils import (
     get_scan_interval,
     is_open_entry_window,
-    job_loop_lock,
     next_scan_time,
     run_entry_scan,
     serialize_scan_results,
@@ -59,57 +58,48 @@ def run_open(
     skipped_total: List[Dict[str, object]] = []
     scans: List[Dict[str, object]] = []
 
-    with job_loop_lock("open_session") as acquired:
-        if not acquired:
-            append_workflow_snapshot(
-                SETTINGS.paths.research_log,
-                "Open",
-                {"blocked": True, "reason": "loop_lock_held", "timestamp": current_time.isoformat()},
-            )
-            return []
+    while True:
+        scan_time = now_fn()
+        if not market_data.market_is_open(scan_time) or not is_open_entry_window(scan_time):
+            break
 
-        while True:
-            scan_time = now_fn()
-            if not market_data.market_is_open(scan_time) or not is_open_entry_window(scan_time):
-                break
+        interval = get_scan_interval(scan_time)
+        LOGGER.info("Open scan loop tick at %s interval=%ss", scan_time.isoformat(), interval)
+        scan_result = run_entry_scan(
+            stage_name="Open",
+            market_data=market_data,
+            order_manager=order_manager,
+            news_filter=news_filter,
+            watchlist=watchlist,
+            account_equity=account_equity,
+            cash_available=cash_available,
+            current_positions=current_positions,
+            open_risk_amount=open_risk_amount,
+            scan_time=scan_time,
+        )
+        executed = scan_result["executed"]
+        skipped = scan_result["skipped"]
+        executed_total.extend(executed)
+        skipped_total.extend(skipped)
+        scans.append(
+            {
+                "timestamp": scan_time.isoformat(),
+                "interval_seconds": interval,
+                "symbols_scanned": scan_result["symbols_scanned"],
+                "signals_detected": scan_result["signals_detected"],
+                "executed_count": len(executed),
+                "skipped_count": len(skipped),
+            }
+        )
+        for payload in executed:
+            open_risk_amount += abs(float(payload["entry"]) - float(payload["stop_loss"])) * float(payload["quantity"])
 
-            interval = get_scan_interval(scan_time)
-            LOGGER.info("Open scan loop tick at %s interval=%ss", scan_time.isoformat(), interval)
-            scan_result = run_entry_scan(
-                stage_name="Open",
-                market_data=market_data,
-                order_manager=order_manager,
-                news_filter=news_filter,
-                watchlist=watchlist,
-                account_equity=account_equity,
-                cash_available=cash_available,
-                current_positions=current_positions,
-                open_risk_amount=open_risk_amount,
-                scan_time=scan_time,
-            )
-            executed = scan_result["executed"]
-            skipped = scan_result["skipped"]
-            executed_total.extend(executed)
-            skipped_total.extend(skipped)
-            scans.append(
-                {
-                    "timestamp": scan_time.isoformat(),
-                    "interval_seconds": interval,
-                    "symbols_scanned": scan_result["symbols_scanned"],
-                    "signals_detected": scan_result["signals_detected"],
-                    "executed_count": len(executed),
-                    "skipped_count": len(skipped),
-                }
-            )
-            for payload in executed:
-                open_risk_amount += abs(float(payload["entry"]) - float(payload["stop_loss"])) * float(payload["quantity"])
+        next_run = next_scan_time(scan_time, interval)
 
-            next_run = next_scan_time(scan_time, interval)
+        if not market_data.market_is_open(now_fn()) or not is_open_entry_window(now_fn()) or interval <= 0:
+            break
 
-            if not market_data.market_is_open(now_fn()) or not is_open_entry_window(now_fn()) or interval <= 0:
-                break
-
-            sleep_until(next_run, now_fn, sleep_fn)
+        sleep_until(next_run, now_fn, sleep_fn)
 
     append_markdown_log(
         SETTINGS.paths.trade_log,
