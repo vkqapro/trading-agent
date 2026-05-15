@@ -8,6 +8,7 @@ import time
 from contextlib import contextmanager
 from dataclasses import asdict, is_dataclass
 from datetime import datetime, time as dt_time, timedelta
+from pathlib import Path
 from typing import Callable, Dict, Iterator, List, Optional
 from zoneinfo import ZoneInfo
 
@@ -38,6 +39,7 @@ MARKET_CLOSE_TIME = dt_time(
 STOP_INTEGRITY_RECHECK_SECONDS = 2.0
 STOP_INTEGRITY_RECHECK_ATTEMPTS = 3
 STOP_GRACE_PERIOD_SECONDS = 30.0
+SESSION_LOCK_STALE_AFTER = timedelta(hours=8)
 
 
 def session_now() -> datetime:
@@ -96,6 +98,14 @@ def sleep_until(next_run: datetime, now_provider: NowProvider, sleep_provider: S
         sleep_provider(min(remaining, 30.0))
 
 
+def _lock_is_stale(lock_path: Path) -> bool:
+    try:
+        modified_at = datetime.fromtimestamp(lock_path.stat().st_mtime)
+    except OSError:
+        return False
+    return datetime.now() - modified_at > SESSION_LOCK_STALE_AFTER
+
+
 @contextmanager
 def job_loop_lock(lock_name: str) -> Iterator[bool]:
     """Prevent overlapping session loops across scheduled invocations."""
@@ -103,13 +113,23 @@ def job_loop_lock(lock_name: str) -> Iterator[bool]:
     acquired = False
     handle: Optional[int] = None
     try:
-        try:
-            handle = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-            os.write(handle, f"{os.getpid()}|{datetime.now().isoformat()}".encode("utf-8"))
-            acquired = True
-        except FileExistsError:
-            LOGGER.warning("Loop lock already held: %s", lock_path.name)
-            acquired = False
+        for attempt in range(2):
+            try:
+                handle = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+                os.write(handle, f"{os.getpid()}|{datetime.now().isoformat()}".encode("utf-8"))
+                acquired = True
+                break
+            except FileExistsError:
+                if attempt == 0 and _lock_is_stale(lock_path):
+                    try:
+                        lock_path.unlink()
+                        LOGGER.warning("Recovered stale loop lock: %s", lock_path.name)
+                        continue
+                    except OSError:
+                        LOGGER.warning("Failed to recover stale loop lock: %s", lock_path.name)
+                LOGGER.warning("Loop lock already held: %s", lock_path.name)
+                acquired = False
+                break
         yield acquired
     finally:
         if handle is not None:

@@ -129,8 +129,8 @@ class SlackCommandProcessor:
             return
 
         if command.kind == "job" and command.job_name:
-            self.alerter.send_channel_message(f"Starting `{command.job_name}` in dry-run mode from Slack command.")
-            result = run_job_callback(command.job_name, True)
+            self.alerter.send_channel_message(f"Starting `{command.job_name}` from Slack command.")
+            result = run_job_callback(command.job_name, None)
             summary = self._summarize_job_result(command.job_name, result)
             self.alerter.send_channel_message(summary)
 

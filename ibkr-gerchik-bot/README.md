@@ -107,20 +107,18 @@ ibkr-gerchik-bot/
 ## Running Jobs
 
 ```powershell
-python -m src.main --job premarket --dry-run
-python -m src.main --job open --dry-run
-python -m src.main --job intraday --dry-run
-python -m src.main --job eod --dry-run
-python -m src.main --job weekly --dry-run
+python -m src.main --job premarket
+python -m src.main --job open
+python -m src.main --job intraday
+python -m src.main --job eod
+python -m src.main --job weekly
 ```
-
-Remove `--dry-run` only after validating TWS paper connectivity and the workflow logs.
 
 ## Windows Task Scheduler
 
 Use:
 - `Program/script`: full path to `python.exe`
-- `Add arguments`: `-m src.main --job premarket --dry-run`
+- `Add arguments`: `-m src.main --job premarket`
 - `Start in`: full path to `ibkr-gerchik-bot`
 
 Suggested cadence:

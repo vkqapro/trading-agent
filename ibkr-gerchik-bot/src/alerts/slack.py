@@ -218,6 +218,7 @@ class SlackAlerter:
         decision_summary = summary.get("decision_summary", {})
         top_rejections = decision_summary.get("top_rejection_reasons", []) if isinstance(decision_summary, dict) else []
         ticker_sections = decision_summary.get("ticker_sections", []) if isinstance(decision_summary, dict) else []
+        status_notes = decision_summary.get("status_notes", []) if isinstance(decision_summary, dict) else []
         daily_pnl = float(summary.get("daily_pnl", 0.0) or 0.0)
         daily_pnl_pct = float(summary.get("daily_pnl_pct", 0.0) or 0.0)
         blocked_reasons = summary.get("reasons", [])
@@ -244,6 +245,11 @@ class SlackAlerter:
             lines.append("Top rejection reasons:")
             for reason, count in top_rejections[:3]:
                 lines.append(f"🔴 {reason}: {count}")
+
+        if isinstance(status_notes, list) and status_notes:
+            lines.append("Status:")
+            for note in status_notes[:3]:
+                lines.append(f"- {note}")
 
         if isinstance(ticker_sections, list) and ticker_sections:
             lines.append("Ticker decisions:")

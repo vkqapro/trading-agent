@@ -6,15 +6,16 @@ import json
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from src.alerts.slack import SlackAlerter
 from src.config import SETTINGS, append_markdown_log
 from src.risk.risk_manager import RiskManager
-from src.workflow_log import append_workflow_snapshot
+from src.workflow_log import append_workflow_snapshot, read_latest_workflow_snapshot
 
 
 DAILY_DECISIONS_PATH = Path(__file__).resolve().parents[2] / "memory" / "daily_decisions.json"
+RUNTIME_LOG_PATH = Path(__file__).resolve().parents[2] / "memory" / "runtime" / "application.log"
 
 
 def _load_daily_decisions() -> Dict[str, object]:
@@ -30,6 +31,55 @@ def _load_daily_decisions() -> Dict[str, object]:
     if str(payload.get("date")) != today:
         return default_payload
     return payload if isinstance(payload, dict) else default_payload
+
+
+def _payload_matches_today(payload: Dict[str, object]) -> bool:
+    today = datetime.now().date().isoformat()
+    timestamp = str(payload.get("timestamp", "")).strip()
+    if timestamp.startswith(today):
+        return True
+    scans = payload.get("scans", [])
+    if isinstance(scans, list):
+        for scan in scans:
+            if isinstance(scan, dict) and str(scan.get("timestamp", "")).startswith(today):
+                return True
+    return False
+
+
+def _load_today_workflow_snapshot(stage: str) -> Optional[Dict[str, object]]:
+    payload = read_latest_workflow_snapshot(SETTINGS.paths.research_log, stage)
+    if not isinstance(payload, dict):
+        return None
+    return payload if _payload_matches_today(payload) else None
+
+
+def _normalize_reasons(reason: object) -> List[str]:
+    if isinstance(reason, list):
+        return [str(item) for item in reason if str(item).strip()]
+    if reason is None:
+        return []
+    text = str(reason).strip()
+    return [text] if text else []
+
+
+def _load_today_job_blockers() -> List[str]:
+    if not RUNTIME_LOG_PATH.exists():
+        return []
+    today = datetime.now().date().isoformat()
+    blockers: List[str] = []
+    try:
+        lines = RUNTIME_LOG_PATH.read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return blockers
+
+    for line in lines:
+        if today not in line or "session_already_running" not in line:
+            continue
+        if "'job': 'open'" in line:
+            blockers.append("open blocked by an active session lock")
+        elif "'job': 'intraday'" in line:
+            blockers.append("intraday blocked by an active session lock")
+    return blockers
 
 
 def _format_reason_lines(reasons: List[str]) -> List[str]:
@@ -127,6 +177,68 @@ def _build_summary(decisions: Dict[str, object], open_positions: List[Dict[str, 
     return summary
 
 
+def _build_workflow_fallback_summary(open_positions: List[Dict[str, object]]) -> Optional[Dict[str, object]]:
+    open_snapshot = _load_today_workflow_snapshot("Open")
+    intraday_snapshot = _load_today_workflow_snapshot("Intraday")
+    job_blockers = _load_today_job_blockers()
+
+    scans: List[Dict[str, object]] = []
+    executed: List[Dict[str, object]] = []
+    skipped: List[Dict[str, object]] = []
+
+    for payload in [open_snapshot, intraday_snapshot]:
+        if not isinstance(payload, dict):
+            continue
+        payload_scans = payload.get("scans", [])
+        payload_executed = payload.get("executed", [])
+        payload_skipped = payload.get("skipped", [])
+        if isinstance(payload_scans, list):
+            scans.extend(item for item in payload_scans if isinstance(item, dict))
+        if isinstance(payload_executed, list):
+            executed.extend(item for item in payload_executed if isinstance(item, dict))
+        if isinstance(payload_skipped, list):
+            skipped.extend(item for item in payload_skipped if isinstance(item, dict))
+
+    if not scans and not executed and not skipped and not job_blockers:
+        return None
+
+    skip_reasons: Counter[str] = Counter()
+    for item in skipped:
+        skip_reasons.update(_normalize_reasons(item.get("reason")))
+
+    scan_iterations = len(scans)
+    scanned_estimate = max((int(scan.get("symbols_scanned", 0) or 0) for scan in scans), default=0)
+    raw_signals = sum(int(scan.get("signals_detected", 0) or 0) for scan in scans)
+    status_notes = [
+        "Daily decision log was empty, so this summary used workflow snapshots."
+    ]
+    if scan_iterations:
+        status_notes.append(
+            f"Observed {scan_iterations} scan iterations, up to {scanned_estimate} tickers per pass, and {raw_signals} raw signals."
+        )
+    if job_blockers:
+        status_notes.append(f"Session jobs did not run normally: {', '.join(job_blockers)}.")
+
+    return {
+        "total_tickers_scanned": scanned_estimate,
+        "valid_setups": len(executed),
+        "trades_taken": len(executed),
+        "skipped": len(skipped),
+        "top_rejection_reasons": skip_reasons.most_common(5),
+        "open_symbols": sorted(
+            {
+                str(position.get("symbol", "")).strip().upper()
+                for position in open_positions
+                if str(position.get("symbol", "")).strip()
+            }
+        ),
+        "ticker_sections": [],
+        "source": "workflow_fallback",
+        "status_notes": status_notes,
+        "raw_signals_detected": raw_signals,
+    }
+
+
 def run_eod(
     risk_manager: RiskManager,
     account_snapshot: Dict[str, object],
@@ -141,8 +253,19 @@ def run_eod(
         daily_decisions.get("decisions", {}) if isinstance(daily_decisions.get("decisions"), dict) else {},
         open_positions,
     )
+    if decision_summary["total_tickers_scanned"] == 0:
+        workflow_fallback = _build_workflow_fallback_summary(open_positions)
+        if workflow_fallback is not None:
+            decision_summary = workflow_fallback
 
-    report_text = "\n".join(decision_summary["ticker_sections"]) if decision_summary["ticker_sections"] else "No ticker decisions recorded today."
+    if decision_summary["ticker_sections"]:
+        report_text = "\n".join(decision_summary["ticker_sections"])
+    else:
+        notes = decision_summary.get("status_notes", [])
+        if isinstance(notes, list) and notes:
+            report_text = "\n".join(str(note) for note in notes)
+        else:
+            report_text = "No ticker decisions recorded today."
     summary = {
         "date": datetime.now().date().isoformat(),
         "daily_pnl": round(daily_pnl, 2),
@@ -175,4 +298,3 @@ def run_eod(
     append_workflow_snapshot(SETTINGS.paths.trade_log, "EOD", {"summary": summary})
     alerter.send_daily_summary(summary)
     return summary
-
