@@ -1,16 +1,21 @@
 from __future__ import annotations
 
+import os
+import tempfile
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from unittest import TestCase
 
 from src.jobs.session_utils import (
+    SESSION_LOCK_STALE_AFTER,
     can_scan_for_new_entries,
     get_scan_interval,
     is_open_entry_window,
+    job_loop_lock,
     next_scan_time,
     protective_stops_ok,
 )
+from src.config import SETTINGS
 
 
 TZ = ZoneInfo("America/New_York")
@@ -92,3 +97,19 @@ class JobSessionUtilsTests(TestCase):
                 sleep_provider=lambda _seconds: None,
             )
         )
+
+    def test_job_loop_lock_recovers_stale_lock_file(self) -> None:
+        original_runtime_dir = SETTINGS.paths.runtime_dir
+        with tempfile.TemporaryDirectory() as temp_dir:
+            object.__setattr__(SETTINGS.paths, "runtime_dir", original_runtime_dir.__class__(temp_dir))
+            lock_path = SETTINGS.paths.runtime_dir / "open_session.lock"
+            lock_path.write_text("123|stale\n", encoding="utf-8")
+            stale_timestamp = datetime.now().timestamp() - SESSION_LOCK_STALE_AFTER.total_seconds() - 60
+            os.utime(lock_path, (stale_timestamp, stale_timestamp))
+
+            with job_loop_lock("open_session") as acquired:
+                self.assertTrue(acquired)
+                self.assertTrue(lock_path.exists())
+
+            self.assertFalse(lock_path.exists())
+        object.__setattr__(SETTINGS.paths, "runtime_dir", original_runtime_dir)

@@ -38,6 +38,10 @@ class OrderManager:
         cash_available: float,
         current_positions: List[Dict[str, object]],
         open_risk_amount: float,
+        *,
+        allow_after_hours: bool = False,
+        allow_extended_hours_order: bool = False,
+        time_in_force: str | None = None,
     ) -> Tuple[bool, Dict[str, object]]:
         quote = self.market_data.get_quote(signal.symbol)
         spread_pct = self._spread_pct(quote)
@@ -57,7 +61,7 @@ class OrderManager:
             paper_trading=SETTINGS.paper_trading,
             tws_connected=self.broker.is_connected,
             account_synced=True,
-            market_open=self.market_data.market_is_open(),
+            market_open=self.market_data.market_is_open() or allow_after_hours,
             first_unstable_minutes=self.market_data.unstable_open_window(),
             allow_first_unstable_minutes=False,
             has_symbol_news_risk=self.news_filter.has_high_risk_news(signal.symbol),
@@ -76,16 +80,50 @@ class OrderManager:
             append_markdown_log(SETTINGS.paths.trade_log, f"Simulated Trade {signal.symbol}", trade_payload)
             return True, trade_payload
 
-        entry_order = self.broker.place_market_order(signal.symbol, signal.signal, quantity)
-        stop_action = "SELL" if signal.signal == "BUY" else "BUY"
-        stop_order = self.broker.place_stop_order(signal.symbol, stop_action, quantity, signal.stop)
-        limit_order_id = 0
+        limit_price = None
         if signal.partial_targets:
             first_target = signal.partial_targets[0]
-            tp_qty = max(int(quantity * float(first_target["qty_pct"])), 1)
-            limit_order = self.broker.place_limit_order(signal.symbol, stop_action, tp_qty, float(first_target["price"]))
-            limit_order_id = limit_order.order_id
-        trade_payload = self._build_payload(signal, quantity, entry_order.order_id, stop_order.order_id, limit_order_id=limit_order_id, status="executed")
+            limit_price = float(first_target["price"])
+        entry_order, stop_order, limit_order = self.broker.place_market_bracket_order(
+            signal.symbol,
+            signal.signal,
+            quantity,
+            signal.stop,
+            limit_price=limit_price,
+            outside_rth=allow_extended_hours_order,
+            tif=time_in_force,
+        )
+        broker_statuses = {
+            "market_order": entry_order.status,
+            "stop_order": stop_order.status,
+            "limit_order": None if limit_order is None else limit_order.status,
+        }
+        failure_statuses = {"cancelled", "inactive", "apicancelled"}
+        if any(
+            isinstance(status, str) and status.strip().lower() in failure_statuses
+            for status in broker_statuses.values()
+            if status is not None
+        ):
+            payload = {
+                "status": "broker_rejected",
+                "reasons": ["broker_cancelled_order"],
+                "signal": enriched_signal,
+                "broker_statuses": broker_statuses,
+                "market_order_id": entry_order.order_id,
+                "stop_order_id": stop_order.order_id,
+                "limit_order_id": 0 if limit_order is None else limit_order.order_id,
+            }
+            LOGGER.warning("Broker cancelled bracket order: %s", payload)
+            return False, payload
+        trade_payload = self._build_payload(
+            signal,
+            quantity,
+            entry_order.order_id,
+            stop_order.order_id,
+            limit_order_id=0 if limit_order is None else limit_order.order_id,
+            status="executed",
+        )
+        trade_payload["broker_statuses"] = broker_statuses
         append_markdown_log(SETTINGS.paths.trade_log, f"Trade {signal.symbol}", trade_payload)
         self.alerter.send_trade_executed(trade_payload)
         return True, trade_payload

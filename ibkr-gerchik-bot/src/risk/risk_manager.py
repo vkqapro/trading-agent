@@ -32,7 +32,10 @@ class RiskManager:
         for position in positions:
             quantity = abs(float(position.get("quantity", 0.0)))
             entry = float(position.get("entry", 0.0))
-            stop = float(position.get("stop_loss", 0.0))
+            stop_raw = position.get("stop_loss", 0.0)
+            stop = float(stop_raw or 0.0)
+            if quantity <= 0 or entry <= 0 or stop <= 0:
+                continue
             open_risk += abs(entry - stop) * quantity
         self.snapshot.open_risk_amount = open_risk
         self._evaluate_limits()

@@ -16270,31 +16270,6 @@
       "symbol": "ALOY",
       "attempts": [
         {
-          "timestamp": "2026-05-18T09:40:39",
-          "strategy": "false_breakout_complex",
-          "level": 19.75,
-          "level_type": "abnormal_candle",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              19.68,
-              19.82
-            ],
-            "pattern": "COMPLEX"
-          }
-        },
-        {
           "timestamp": "2026-05-18T09:40:40",
           "strategy": "false_breakout_one_bar",
           "level": 7.84,
@@ -18767,14 +18742,39 @@
               21.97
             ],
             "pattern": "COMPLEX"
+          }
+        },
+        {
+          "timestamp": "2026-05-18T10:36:26",
+          "strategy": "false_breakout_one_bar",
+          "level": 25.88,
+          "level_type": "gap",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              25.81,
+              25.95
+            ],
+            "pattern": "ONE_BAR"
           }
         }
       ],
       "best_decision": {
         "timestamp": "2026-05-18T10:36:26",
-        "strategy": "false_breakout_complex",
-        "level": 21.9,
-        "level_type": "abnormal_candle",
+        "strategy": "false_breakout_one_bar",
+        "level": 25.88,
+        "level_type": "gap",
         "signal": "NONE",
         "entry": null,
         "stop": null,
@@ -18789,10 +18789,10 @@
           "atr_status": "OK",
           "news_risk": "MEDIUM",
           "zone": [
-            21.83,
-            21.97
+            25.81,
+            25.95
           ],
-          "pattern": "COMPLEX"
+          "pattern": "ONE_BAR"
         }
       }
     },

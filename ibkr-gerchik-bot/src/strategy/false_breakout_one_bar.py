@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import os
+import time
 from dataclasses import dataclass
 from datetime import date, datetime
 from pathlib import Path
@@ -40,7 +42,11 @@ DEFAULT_CONFIG: Dict[str, float] = {
 }
 
 DAILY_DECISIONS_PATH = Path(__file__).resolve().parents[2] / "memory" / "daily_decisions.json"
+DAILY_DECISIONS_LOCK_PATH = DAILY_DECISIONS_PATH.with_suffix(".json.lock")
 MAX_STORED_ATTEMPTS = 100
+DAILY_DECISIONS_WRITE_ATTEMPTS = 8
+DAILY_DECISIONS_WRITE_DELAY_SECONDS = 0.1
+DAILY_DECISIONS_LOCK_STALE_SECONDS = 30.0
 
 
 @dataclass(frozen=True)
@@ -302,49 +308,118 @@ def _load_daily_decisions() -> Dict[str, object]:
     return payload if isinstance(payload, dict) else default_payload
 
 
-def _save_daily_decisions(payload: Dict[str, object]) -> None:
+def _lock_is_stale(lock_path: Path) -> bool:
+    try:
+        modified_at = lock_path.stat().st_mtime
+    except OSError:
+        return False
+    return (time.time() - modified_at) > DAILY_DECISIONS_LOCK_STALE_SECONDS
+
+
+def _acquire_daily_decisions_lock() -> int:
+    DAILY_DECISIONS_LOCK_PATH.parent.mkdir(parents=True, exist_ok=True)
+    last_error: OSError | None = None
+    for attempt in range(DAILY_DECISIONS_WRITE_ATTEMPTS):
+        try:
+            handle = os.open(str(DAILY_DECISIONS_LOCK_PATH), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            os.write(handle, f"{os.getpid()}|{datetime.now().isoformat()}".encode("utf-8"))
+            return handle
+        except FileExistsError as exc:
+            last_error = exc
+            if _lock_is_stale(DAILY_DECISIONS_LOCK_PATH):
+                try:
+                    DAILY_DECISIONS_LOCK_PATH.unlink()
+                    LOGGER.warning("Recovered stale daily decisions lock: %s", DAILY_DECISIONS_LOCK_PATH.name)
+                    continue
+                except OSError:
+                    pass
+            time.sleep(DAILY_DECISIONS_WRITE_DELAY_SECONDS * (attempt + 1))
+    raise TimeoutError(f"Could not acquire daily decisions lock: {last_error}")
+
+
+def _release_daily_decisions_lock(handle: int) -> None:
+    os.close(handle)
+    try:
+        DAILY_DECISIONS_LOCK_PATH.unlink()
+    except OSError:
+        LOGGER.warning("Failed to remove daily decisions lock: %s", DAILY_DECISIONS_LOCK_PATH)
+
+
+def _save_daily_decisions(payload: Dict[str, object]) -> bool:
     DAILY_DECISIONS_PATH.parent.mkdir(parents=True, exist_ok=True)
     temp_path = DAILY_DECISIONS_PATH.with_suffix(".json.tmp")
     with temp_path.open("w", encoding="utf-8") as handle:
         json.dump(payload, handle, indent=2)
-    temp_path.replace(DAILY_DECISIONS_PATH)
+    for attempt in range(DAILY_DECISIONS_WRITE_ATTEMPTS):
+        try:
+            os.replace(temp_path, DAILY_DECISIONS_PATH)
+            return True
+        except PermissionError:
+            if attempt == DAILY_DECISIONS_WRITE_ATTEMPTS - 1:
+                break
+            time.sleep(DAILY_DECISIONS_WRITE_DELAY_SECONDS * (attempt + 1))
+        except OSError as exc:
+            if getattr(exc, "winerror", None) not in {5, 32} or attempt == DAILY_DECISIONS_WRITE_ATTEMPTS - 1:
+                break
+            time.sleep(DAILY_DECISIONS_WRITE_DELAY_SECONDS * (attempt + 1))
+    LOGGER.warning("Failed to replace daily decisions file after retries: %s", DAILY_DECISIONS_PATH)
+    try:
+        temp_path.unlink()
+    except OSError:
+        pass
+    return False
 
 
 def _persist_daily_decision(symbol: str, level: Level, strategy_name: str, result: Dict[str, object]) -> None:
-    payload = _load_daily_decisions()
-    decisions = payload.setdefault("decisions", {})
-    symbol_payload = decisions.setdefault(symbol, {"symbol": symbol, "attempts": [], "best_decision": None})
-    attempt = {
-        "timestamp": datetime.now().isoformat(timespec="seconds"),
-        "strategy": strategy_name,
-        "level": round(level.price, 2),
-        "level_type": level.type,
-        "signal": result.get("signal"),
-        "entry": result.get("entry"),
-        "stop": result.get("stop"),
-        "target": result.get("target"),
-        "position_modifier": result.get("position_modifier"),
-        "confidence": result.get("confidence"),
-        "reason": list(result.get("reason", [])),
-        "context": dict(result.get("context", {})),
-    }
-    attempts = symbol_payload.setdefault("attempts", [])
-    if isinstance(attempts, list):
-        attempts.append(attempt)
-        if len(attempts) > MAX_STORED_ATTEMPTS:
-            del attempts[:-MAX_STORED_ATTEMPTS]
-    best_decision = symbol_payload.get("best_decision")
-    if not isinstance(best_decision, dict) or _decision_rank(result) >= _decision_rank(best_decision):
-        symbol_payload["best_decision"] = attempt
-    _save_daily_decisions(payload)
-    LOGGER.info(
-        "Stored daily decision symbol=%s strategy=%s signal=%s reasons=%s context=%s",
-        symbol,
-        strategy_name,
-        result.get("signal"),
-        result.get("reason"),
-        result.get("context"),
-    )
+    lock_handle: int | None = None
+    try:
+        lock_handle = _acquire_daily_decisions_lock()
+        payload = _load_daily_decisions()
+        decisions = payload.setdefault("decisions", {})
+        symbol_payload = decisions.setdefault(symbol, {"symbol": symbol, "attempts": [], "best_decision": None})
+        attempt = {
+            "timestamp": datetime.now().isoformat(timespec="seconds"),
+            "strategy": strategy_name,
+            "level": round(level.price, 2),
+            "level_type": level.type,
+            "signal": result.get("signal"),
+            "entry": result.get("entry"),
+            "stop": result.get("stop"),
+            "target": result.get("target"),
+            "position_modifier": result.get("position_modifier"),
+            "confidence": result.get("confidence"),
+            "reason": list(result.get("reason", [])),
+            "context": dict(result.get("context", {})),
+        }
+        attempts = symbol_payload.setdefault("attempts", [])
+        if isinstance(attempts, list):
+            attempts.append(attempt)
+            if len(attempts) > MAX_STORED_ATTEMPTS:
+                del attempts[:-MAX_STORED_ATTEMPTS]
+        best_decision = symbol_payload.get("best_decision")
+        if not isinstance(best_decision, dict) or _decision_rank(result) >= _decision_rank(best_decision):
+            symbol_payload["best_decision"] = attempt
+        if _save_daily_decisions(payload):
+            LOGGER.info(
+                "Stored daily decision symbol=%s strategy=%s signal=%s reasons=%s context=%s",
+                symbol,
+                strategy_name,
+                result.get("signal"),
+                result.get("reason"),
+                result.get("context"),
+            )
+        else:
+            LOGGER.warning(
+                "Skipped persisting daily decision after write failure symbol=%s strategy=%s signal=%s",
+                symbol,
+                strategy_name,
+                result.get("signal"),
+            )
+    except TimeoutError:
+        LOGGER.warning("Skipped persisting daily decision due to lock timeout symbol=%s strategy=%s", symbol, strategy_name)
+    finally:
+        if lock_handle is not None:
+            _release_daily_decisions_lock(lock_handle)
 
 
 def _dict_to_trade_signal(symbol: str, level: Level, strategy_name: str, result: Dict[str, object]) -> Optional[TradeSignal]:
@@ -542,4 +617,3 @@ def detect_false_breakout_one_bar(
     result = detect_false_breakout(bars, level, atr=atr, news_context=news_context, config=config)
     _persist_daily_decision(symbol, level, "false_breakout_one_bar", result)
     return _dict_to_trade_signal(symbol, level, "false_breakout_one_bar", result)
-

@@ -504,6 +504,8 @@ def calculate_open_risk_amount(positions: List[Dict[str, object]]) -> float:
         quantity = float(position.get("quantity", 0.0) or 0.0)
         entry = float(position.get("entry", 0.0) or position.get("avg_cost", 0.0) or 0.0)
         stop_loss = float(position.get("stop_loss", 0.0) or 0.0)
+        if quantity <= 0 or entry <= 0 or stop_loss <= 0:
+            continue
         total += abs(entry - stop_loss) * quantity
     return total
 

@@ -112,7 +112,14 @@ python -m src.main --job open
 python -m src.main --job intraday
 python -m src.main --job eod
 python -m src.main --job weekly
+python -m src.main --job manual_watch --symbol SANM --entry 241.97 --stop 237.09 --target 255.22
+python -m src.main --job manual_watch --symbol SANM --entry 241.97 --stop 237.09 --target 255.22 --execute
 ```
+
+`manual_watch` is a one-shot validation / replay command for a single setup.
+- By default it runs in simulation mode, even if `DRY_RUN_MODE=false`.
+- Add `--execute` to actually submit the order to your connected paper account.
+- If `--signal` is omitted, the bot infers `BUY` or `SELL` from the entry / stop / target relationship.
 
 ## Windows Task Scheduler
 

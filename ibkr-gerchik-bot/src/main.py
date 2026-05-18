@@ -6,6 +6,7 @@ import argparse
 import json
 import os
 import sys
+import time
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -25,6 +26,7 @@ from src.jobs.intraday import run_intraday
 from src.jobs.open import run_open
 from src.jobs.premarket import run_premarket
 from src.jobs.session_utils import (
+    calculate_open_risk_amount,
     can_scan_for_new_entries,
     get_scan_interval,
     job_loop_lock,
@@ -34,8 +36,10 @@ from src.jobs.session_utils import (
 from src.jobs.weekly import run_weekly
 from src.risk.kill_switch import should_trigger_kill_switch
 from src.risk.risk_manager import RiskManager
+from src.risk.take_profit import reward_risk_ratio
 from src.slack_commands import SlackCommandProcessor
-from src.workflow_log import read_latest_workflow_snapshot
+from src.strategy.signal_models import TradeSignal
+from src.workflow_log import append_workflow_snapshot, read_latest_workflow_snapshot
 
 
 def _build_research_symbols(positions: List[Dict[str, object]]) -> List[str]:
@@ -175,6 +179,175 @@ def _duplicate_session_message(job_name: str) -> str:
         return "Intraday already running; new entries are currently disabled, position management remains active."
 
     return f"{job_name.title()} already running."
+
+
+def _infer_manual_watch_signal(entry: float, stop: float, target: float) -> str:
+    if target > entry and stop < entry:
+        return "BUY"
+    if target < entry and stop > entry:
+        return "SELL"
+    raise ValueError("Unable to infer signal direction from entry/stop/target. Pass --signal explicitly.")
+
+
+def _build_manual_watch_trade_signal(
+    *,
+    symbol: str,
+    entry: float,
+    stop: float,
+    target: float,
+    signal: Optional[str],
+    level_price: Optional[float],
+    level_type: str,
+    strategy: str,
+) -> TradeSignal:
+    normalized_signal = (signal or _infer_manual_watch_signal(entry, stop, target)).strip().upper()
+    if normalized_signal not in {"BUY", "SELL"}:
+        raise ValueError("Signal must be BUY or SELL.")
+    direction = "long" if normalized_signal == "BUY" else "short"
+    resolved_level_price = float(level_price) if level_price is not None else float(stop)
+    return TradeSignal(
+        symbol=symbol.strip().upper(),
+        strategy=strategy,
+        signal=normalized_signal,
+        direction=direction,
+        entry=float(entry),
+        stop=float(stop),
+        target=float(target),
+        level_price=resolved_level_price,
+        level_type=level_type,
+        nearest_upper_level=float(target) if normalized_signal == "BUY" else None,
+        nearest_lower_level=float(target) if normalized_signal == "SELL" else None,
+        reward_risk=round(reward_risk_ratio(float(entry), float(stop), float(target)), 2),
+        partial_targets=[{"qty_pct": 1.0, "price": float(target)}],
+        notes=["manual_watch_job"],
+    )
+
+
+def run_manual_watch(
+    *,
+    symbol: str,
+    entry: float,
+    stop: float,
+    target: float,
+    signal: Optional[str] = None,
+    level_price: Optional[float] = None,
+    level_type: str = "manual_watch",
+    strategy: str = "manual_watch",
+    execute: bool = False,
+    allow_after_hours: bool = False,
+    auto_cancel_seconds: int = 0,
+) -> Dict[str, object]:
+    ensure_directories()
+    state_path = SETTINGS.paths.state_file
+    state = _hydrate_from_logs(_load_state(state_path))
+    alerter = SlackAlerter()
+    dry_run = not execute
+    if allow_after_hours and not SETTINGS.paper_trading:
+        raise ValueError("--allow-after-hours is supported only when PAPER_TRADING=true.")
+    broker = IBKRClient()
+    try:
+        broker.connect()
+        news_service = NewsService(broker=broker)
+        news_filter = NewsRiskFilter(news_service)
+        market_data = MarketDataService(broker)
+        order_manager = OrderManager(broker, market_data, alerter, news_filter, dry_run=dry_run)
+        account_summary = broker.get_account_summary()
+        account_equity = _account_equity_from_summary(account_summary)
+        cash_available = _cash_from_summary(account_summary)
+        positions = broker.get_positions()
+        open_orders = broker.get_open_orders()
+        state["tracked_positions"] = _sync_tracked_positions_with_broker(
+            state.get("tracked_positions", []),
+            positions,
+        )
+        account_snapshot = {"account": account_summary, "positions": positions, "open_orders": open_orders}
+        _save_state(state_path, state)
+
+        trade_signal = _build_manual_watch_trade_signal(
+            symbol=symbol,
+            entry=entry,
+            stop=stop,
+            target=target,
+            signal=signal,
+            level_price=level_price,
+            level_type=level_type,
+            strategy=strategy,
+        )
+        success, payload = order_manager.execute_trade(
+            trade_signal,
+            account_equity=account_equity,
+            cash_available=cash_available,
+            current_positions=positions,
+            open_risk_amount=calculate_open_risk_amount(state.get("tracked_positions", [])),
+            allow_after_hours=allow_after_hours,
+            allow_extended_hours_order=allow_after_hours,
+            time_in_force="GTC" if allow_after_hours else None,
+        )
+
+        if success:
+            tracked_positions = state.get("tracked_positions", [])
+            if not payload.get("dry_run", False):
+                tracked_positions.append(
+                    {
+                        "symbol": trade_signal.symbol,
+                        "quantity": int(payload.get("quantity", 0) or 0),
+                        "entry": float(payload.get("entry", 0.0) or 0.0),
+                        "avg_cost": float(payload.get("entry", 0.0) or 0.0),
+                        "direction": trade_signal.direction,
+                        "sec_type": "STK",
+                        "stop_order_id": int(payload.get("stop_order_id", 0) or 0),
+                    }
+                )
+                state["tracked_positions"] = tracked_positions
+                _save_state(state_path, state)
+
+                if auto_cancel_seconds > 0:
+                    time.sleep(auto_cancel_seconds)
+                    cancel_ids = [
+                        int(payload.get("limit_order_id", 0) or 0),
+                        int(payload.get("stop_order_id", 0) or 0),
+                        int(payload.get("market_order_id", 0) or 0),
+                    ]
+                    cancelled_order_ids: List[int] = []
+                    for order_id in cancel_ids:
+                        if order_id <= 0:
+                            continue
+                        if broker.cancel_order(order_id):
+                            cancelled_order_ids.append(order_id)
+                    if allow_after_hours and int(payload.get("market_order_id", 0) or 0) in cancelled_order_ids:
+                        state["tracked_positions"] = [
+                            item for item in state.get("tracked_positions", []) if str(item.get("symbol", "")).upper() != trade_signal.symbol
+                        ]
+                        _save_state(state_path, state)
+                    payload["auto_cancel"] = {
+                        "requested_after_seconds": int(auto_cancel_seconds),
+                        "cancelled_order_ids": cancelled_order_ids,
+                    }
+
+        result = {
+            "job": "manual_watch",
+            "symbol": trade_signal.symbol,
+            "dry_run": dry_run,
+            "success": success,
+            "account_snapshot": account_snapshot,
+            "request": {
+                "symbol": trade_signal.symbol,
+                "signal": trade_signal.signal,
+                "entry": trade_signal.entry,
+                "stop": trade_signal.stop,
+                "target": trade_signal.target,
+                "level_price": trade_signal.level_price,
+                "level_type": trade_signal.level_type,
+                "strategy": trade_signal.strategy,
+                "allow_after_hours": allow_after_hours,
+                "auto_cancel_seconds": int(auto_cancel_seconds),
+            },
+            "result": payload,
+        }
+        append_workflow_snapshot(SETTINGS.paths.trade_log, "ManualWatch", result)
+        return result
+    finally:
+        broker.disconnect()
 
 
 def run_job(job_name: str, dry_run_override: Optional[bool] = None) -> Dict[str, object]:
@@ -353,15 +526,66 @@ def _run_connected_job(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="IBKR Gerchik bot job runner.")
-    parser.add_argument("--job", required=True, choices=["premarket", "open", "intraday", "eod", "weekly", "slack"])
+    parser.add_argument("--job", required=True, choices=["premarket", "open", "intraday", "eod", "weekly", "slack", "manual_watch"])
     parser.add_argument("--dry-run", action="store_true", help="Simulate trades without placing broker orders.")
+    parser.add_argument("--symbol", help="Ticker symbol for manual_watch jobs.")
+    parser.add_argument("--entry", type=float, help="Entry price for manual_watch jobs.")
+    parser.add_argument("--stop", type=float, help="Stop price for manual_watch jobs.")
+    parser.add_argument("--target", type=float, help="Target price for manual_watch jobs.")
+    parser.add_argument("--signal", choices=["BUY", "SELL"], help="Optional explicit side for manual_watch jobs.")
+    parser.add_argument("--level-price", type=float, help="Optional reference level price for manual_watch jobs.")
+    parser.add_argument("--level-type", default="manual_watch", help="Reference level type for manual_watch jobs.")
+    parser.add_argument("--strategy", default="manual_watch", help="Strategy label for manual_watch jobs.")
+    parser.add_argument(
+        "--execute",
+        action="store_true",
+        help="For manual_watch only: actually submit the order. Without this flag the job runs in simulation mode.",
+    )
+    parser.add_argument(
+        "--allow-after-hours",
+        action="store_true",
+        help="For manual_watch only: allow paper-order submission outside regular market hours.",
+    )
+    parser.add_argument(
+        "--auto-cancel-seconds",
+        type=int,
+        default=0,
+        help="For manual_watch only: cancel submitted bracket orders after the given number of seconds.",
+    )
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
     try:
-        result = run_job(args.job, dry_run_override=True if args.dry_run else None)
+        if args.job == "manual_watch":
+            missing = [
+                name
+                for name, value in {
+                    "symbol": args.symbol,
+                    "entry": args.entry,
+                    "stop": args.stop,
+                    "target": args.target,
+                }.items()
+                if value is None
+            ]
+            if missing:
+                raise ValueError(f"manual_watch requires: {', '.join(missing)}")
+            result = run_manual_watch(
+                symbol=str(args.symbol),
+                entry=float(args.entry),
+                stop=float(args.stop),
+                target=float(args.target),
+                signal=args.signal,
+                level_price=args.level_price,
+                level_type=str(args.level_type),
+                strategy=str(args.strategy),
+                execute=bool(args.execute),
+                allow_after_hours=bool(args.allow_after_hours),
+                auto_cancel_seconds=max(int(args.auto_cancel_seconds or 0), 0),
+            )
+        else:
+            result = run_job(args.job, dry_run_override=True if args.dry_run else None)
         LOGGER.info("Job completed: %s", result)
         return 0
     except Exception as exc:  # pragma: no cover - top-level safety net.
