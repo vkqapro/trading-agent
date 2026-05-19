@@ -17,6 +17,7 @@ class SlackCommand:
 
     kind: str
     job_name: str = ""
+    symbol: str = ""
 
 
 class SlackCommandProcessor:
@@ -30,7 +31,7 @@ class SlackCommandProcessor:
     def process(
         self,
         state: Dict[str, object],
-        run_job_callback: Callable[[str, Optional[bool]], Dict[str, object]],
+        run_job_callback: Callable[[str, Optional[bool], Optional[Dict[str, object]]], Dict[str, object]],
     ) -> Dict[str, object]:
         if not SETTINGS.slack_commands_enabled:
             return {"enabled": False, "processed": 0}
@@ -82,6 +83,14 @@ class SlackCommandProcessor:
             return SlackCommand(kind="status")
         if body in {"latest report", "latest levels report", "levels report"}:
             return SlackCommand(kind="latest_report")
+        if body.startswith("quote_check "):
+            symbol = body[len("quote_check ") :].strip()
+            if symbol.startswith("--"):
+                symbol = symbol[2:].strip()
+            symbol = symbol.upper()
+            if symbol:
+                return SlackCommand(kind="job", job_name="quote_check", symbol=symbol)
+            return None
 
         for starter in ("rerun ", "run "):
             if body.startswith(starter):
@@ -95,12 +104,13 @@ class SlackCommandProcessor:
     def _dispatch(
         self,
         command: SlackCommand,
-        run_job_callback: Callable[[str, Optional[bool]], Dict[str, object]],
+        run_job_callback: Callable[[str, Optional[bool], Optional[Dict[str, object]]], Dict[str, object]],
     ) -> None:
         if command.kind == "help":
             self.alerter.send_channel_message(
                 "Slack commands: `ibkr status`, `ibkr premarket`, `ibkr open`, "
-                "`ibkr intraday`, `ibkr eod`, `ibkr weekly`, `ibkr latest report`."
+                "`ibkr intraday`, `ibkr eod`, `ibkr weekly`, `ibkr latest report`, "
+                "`ibkr quote_check --MSFT`."
             )
             return
 
@@ -129,8 +139,16 @@ class SlackCommandProcessor:
             return
 
         if command.kind == "job" and command.job_name:
-            self.alerter.send_channel_message(f"Starting `{command.job_name}` from Slack command.")
-            result = run_job_callback(command.job_name, None)
+            if command.job_name == "quote_check" and command.symbol:
+                self.alerter.send_channel_message(f"Starting `quote_check` for `{command.symbol}` from Slack command.")
+                result = run_job_callback(
+                    command.job_name,
+                    False,
+                    {"symbol": command.symbol},
+                )
+            else:
+                self.alerter.send_channel_message(f"Starting `{command.job_name}` from Slack command.")
+                result = run_job_callback(command.job_name, None, None)
             summary = self._summarize_job_result(command.job_name, result)
             self.alerter.send_channel_message(summary)
 
@@ -145,6 +163,13 @@ class SlackCommandProcessor:
 
     @staticmethod
     def _summarize_job_result(job_name: str, result: Dict[str, object]) -> str:
+        if job_name == "quote_check":
+            return (
+                f"`quote_check` {result.get('symbol')}: "
+                f"bid={result.get('bid')} ask={result.get('ask')} "
+                f"spread_pct={result.get('spread_pct_percent')}% "
+                f"passes_spread_filter={result.get('passes_spread_filter')}"
+            )
         if job_name == "premarket":
             return (
                 f"`premarket` finished: watchlist_count={result.get('watchlist_count')} "

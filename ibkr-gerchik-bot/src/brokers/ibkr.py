@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import math
 import time
 from dataclasses import dataclass
 from datetime import datetime, timedelta
@@ -43,6 +44,15 @@ class OrderResult:
     status: str
 
 
+def _safe_market_price(value: object) -> float:
+    """Normalize broker quote values so NaN/inf become missing-data zeros."""
+    try:
+        numeric = float(value or 0.0)
+    except (TypeError, ValueError):
+        return 0.0
+    return numeric if math.isfinite(numeric) else 0.0
+
+
 class IBKRClient:
     """Thin broker adapter responsible for connectivity and core order actions."""
 
@@ -53,10 +63,63 @@ class IBKRClient:
             )
         self.ib = IB()
         self.config = SETTINGS.broker
+        self._ib_error_handler_registered = False
 
     @property
     def is_connected(self) -> bool:
         return self.ib.isConnected()
+
+    def _attach_error_handler(self) -> None:
+        if self._ib_error_handler_registered:
+            return
+        error_event = getattr(self.ib, "errorEvent", None)
+        if error_event is None:
+            return
+        error_event += self._on_ib_error
+        self._ib_error_handler_registered = True
+
+    def _detach_error_handler(self) -> None:
+        if not self._ib_error_handler_registered:
+            return
+        error_event = getattr(self.ib, "errorEvent", None)
+        if error_event is None:
+            self._ib_error_handler_registered = False
+            return
+        error_event -= self._on_ib_error
+        self._ib_error_handler_registered = False
+
+    @staticmethod
+    def _contract_summary(contract: Any | None) -> str:
+        if contract is None:
+            return ""
+        symbol = str(getattr(contract, "symbol", "") or "").strip()
+        exchange = str(getattr(contract, "exchange", "") or "").strip()
+        primary_exchange = str(getattr(contract, "primaryExchange", "") or "").strip()
+        currency = str(getattr(contract, "currency", "") or "").strip()
+        parts = [item for item in [symbol, exchange or primary_exchange, currency] if item]
+        return " ".join(parts)
+
+    def _on_ib_error(
+        self,
+        req_id: int,
+        error_code: int,
+        error_string: str,
+        contract: Any | None = None,
+        *args: object,
+    ) -> None:
+        del args
+        contract_text = self._contract_summary(contract)
+        message = f"IBKR API error code={error_code} reqId={req_id} message={error_string}"
+        if contract_text:
+            message = f"{message} contract={contract_text}"
+
+        informational_codes = {2104, 2106, 2107, 2108, 2158}
+        if error_code in informational_codes:
+            LOGGER.info(message)
+        elif error_code > 0:
+            LOGGER.warning(message)
+        else:
+            LOGGER.error(message)
 
     def connect(self) -> None:
         """Connect to IBKR TWS or IB Gateway with retry logic."""
@@ -72,6 +135,7 @@ class IBKRClient:
                     clientId=self.config.client_id,
                     timeout=self.config.market_data_timeout_seconds,
                 )
+                self._attach_error_handler()
                 LOGGER.info("Connected to IBKR.")
                 return
             except Exception as exc:  # pragma: no cover - needs live broker/network.
@@ -81,6 +145,7 @@ class IBKRClient:
         raise ConnectionError(f"Unable to connect to IBKR after retries: {last_error}")
 
     def disconnect(self) -> None:
+        self._detach_error_handler()
         if self.ib.isConnected():
             self.ib.disconnect()
             LOGGER.info("Disconnected from IBKR.")
@@ -171,11 +236,12 @@ class IBKRClient:
         contract = self.create_contract(symbol)
         ticker: Ticker = self.ib.reqMktData(contract, "", snapshot=True, regulatorySnapshot=False)
         self.ib.sleep(2)
+        close_price = _safe_market_price(ticker.close)
         return {
-            "bid": float(ticker.bid or 0.0),
-            "ask": float(ticker.ask or 0.0),
-            "last": float(ticker.last or ticker.close or 0.0),
-            "close": float(ticker.close or 0.0),
+            "bid": _safe_market_price(ticker.bid),
+            "ask": _safe_market_price(ticker.ask),
+            "last": _safe_market_price(ticker.last) or close_price,
+            "close": close_price,
         }
 
     def get_historical_bars(

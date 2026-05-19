@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from typing import Dict, List, Tuple
 
 from src.alerts.slack import SlackAlerter
@@ -130,12 +131,21 @@ class OrderManager:
 
     @staticmethod
     def _spread_pct(quote: Dict[str, float]) -> float:
-        bid = float(quote.get("bid", 0.0))
-        ask = float(quote.get("ask", 0.0))
-        mid = ((bid + ask) / 2) or float(quote.get("last", 0.0))
+        bid = OrderManager._finite_or_zero(quote.get("bid", 0.0))
+        ask = OrderManager._finite_or_zero(quote.get("ask", 0.0))
+        last = OrderManager._finite_or_zero(quote.get("last", 0.0))
+        mid = ((bid + ask) / 2.0) if bid > 0 and ask > 0 else last
         if mid <= 0:
             return 1.0
         return abs(ask - bid) / mid
+
+    @staticmethod
+    def _finite_or_zero(value: object) -> float:
+        try:
+            numeric = float(value or 0.0)
+        except (TypeError, ValueError):
+            return 0.0
+        return numeric if math.isfinite(numeric) else 0.0
 
     @staticmethod
     def _build_payload(

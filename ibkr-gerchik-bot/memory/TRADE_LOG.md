@@ -20964,3 +20964,36 @@ Reasons:
   }
 }
 ```
+
+## Workflow ValidateWatchlist (2026-05-18T22:04:00)
+- **stage**: ValidateWatchlist
+- **summary**: {'symbols_seen': 63, 'macro_blocked': 0, 'symbol_news_blocked': 6, 'missing_live_data': 0, 'no_signal': 57, 'symbols_with_signal': 0, 'atr_filtered': 0, 'candidate_rejected': 0, 'placeable': 0, 'symbols_without_placeable_signal': 0}
+```json
+{
+  "stage": "ValidateWatchlist",
+  "payload": {
+    "job": "validate_watchlist",
+    "dry_run": true,
+    "watchlist_count": 63,
+    "macro_risk_level": "LOW",
+    "summary": {
+      "symbols_seen": 63,
+      "macro_blocked": 0,
+      "symbol_news_blocked": 6,
+      "missing_live_data": 0,
+      "no_signal": 57,
+      "symbols_with_signal": 0,
+      "atr_filtered": 0,
+      "candidate_rejected": 0,
+      "placeable": 0,
+      "symbols_without_placeable_signal": 0
+    },
+    "reason_counts": {
+      "no_signal": 57,
+      "symbol_news_risk": 6
+    },
+    "placeable": [],
+    "sample_rejections": []
+  }
+}
+```

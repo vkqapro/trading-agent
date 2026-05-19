@@ -4,9 +4,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import sys
 import time
+from collections import Counter
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -39,7 +42,10 @@ from src.risk.kill_switch import should_trigger_kill_switch
 from src.risk.risk_manager import RiskManager
 from src.risk.take_profit import reward_risk_ratio
 from src.slack_commands import SlackCommandProcessor
+from src.strategy.atr import atr_travel_filter, technical_atr_has_room
+from src.strategy.levels import Level
 from src.strategy.signal_models import TradeSignal
+from src.strategy.strategy_router import route_strategies
 from src.workflow_log import append_workflow_snapshot, read_latest_workflow_snapshot
 
 
@@ -181,6 +187,199 @@ def _build_manual_watch_trade_signal(
     )
 
 
+@contextmanager
+def _suppress_daily_decision_persistence():
+    """Prevent validation-only jobs from polluting the daily decision store."""
+    import src.strategy.false_breakout_complex as fb_complex
+    import src.strategy.false_breakout_one_bar as fb_one
+    import src.strategy.false_breakout_two_bar as fb_two
+
+    original_one = fb_one._persist_daily_decision
+    original_two = fb_two._persist_daily_decision
+    original_complex = fb_complex._persist_daily_decision
+    try:
+        fb_one._persist_daily_decision = lambda *args, **kwargs: None
+        fb_two._persist_daily_decision = lambda *args, **kwargs: None
+        fb_complex._persist_daily_decision = lambda *args, **kwargs: None
+        yield
+    finally:
+        fb_one._persist_daily_decision = original_one
+        fb_two._persist_daily_decision = original_two
+        fb_complex._persist_daily_decision = original_complex
+
+
+def _validate_watchlist_once(
+    *,
+    watchlist: Dict[str, object],
+    market_data: MarketDataService,
+    order_manager: OrderManager,
+    news_filter: NewsRiskFilter,
+    account_equity: float,
+    cash_available: float,
+    current_positions: List[Dict[str, object]],
+    open_risk_amount: float,
+    allow_after_hours: bool,
+) -> Dict[str, object]:
+    """Evaluate whether any current watchlist symbols would pass full order validation."""
+    summary = Counter()
+    reason_counts = Counter()
+    placeable: List[Dict[str, object]] = []
+    sample_rejections: List[Dict[str, object]] = []
+    macro_context = news_filter.get_macro_risk_context()
+
+    summary["watchlist_count"] = len(watchlist)
+    summary["symbols_seen"] = len(watchlist)
+    if macro_context.get("risk_level") == "HIGH":
+        summary["macro_blocked"] = 1
+
+    working_positions = [dict(item) for item in current_positions]
+    working_open_risk_amount = float(open_risk_amount)
+
+    with _suppress_daily_decision_persistence():
+        for symbol, plan in watchlist.items():
+            symbol_news_context = news_filter.get_symbol_risk_context(symbol)
+            if symbol_news_context.get("risk_level") == "HIGH":
+                summary["symbol_news_blocked"] += 1
+                reason_counts["symbol_news_risk"] += 1
+                continue
+
+            intraday_bars = market_data.get_intraday_bars(symbol, duration="2 D", bar_size="5 mins")
+            quote = market_data.get_quote(symbol)
+            if intraday_bars.empty or float(quote.get("last", 0.0) or 0.0) <= 0:
+                summary["missing_live_data"] += 1
+                reason_counts["missing_live_data"] += 1
+                continue
+
+            levels = [Level(**level) for level in plan.get("levels", [])]
+            candidate_signals = route_strategies(symbol, intraday_bars, levels, news_context=symbol_news_context)
+            if not candidate_signals:
+                summary["no_signal"] += 1
+                reason_counts["no_signal"] += 1
+                continue
+
+            summary["symbols_with_signal"] += 1
+            session_low = float(intraday_bars["low"].min())
+            session_high = float(intraday_bars["high"].max())
+            placed_this_symbol = False
+
+            for signal in candidate_signals:
+                atr_ok = technical_atr_has_room(float(plan.get("technical_atr", 0.0)), signal.entry)
+                trend_ok = atr_travel_filter(
+                    signal.entry,
+                    session_low,
+                    session_high,
+                    float(plan.get("daily_atr", 0.0)),
+                    False,
+                )
+                if not atr_ok or not trend_ok:
+                    summary["atr_filtered"] += 1
+                    reason_counts["atr_filter"] += 1
+                    continue
+
+                success, payload = order_manager.execute_trade(
+                    signal,
+                    account_equity=account_equity,
+                    cash_available=cash_available,
+                    current_positions=working_positions,
+                    open_risk_amount=working_open_risk_amount,
+                    allow_after_hours=allow_after_hours,
+                    allow_extended_hours_order=allow_after_hours,
+                    time_in_force="GTC" if allow_after_hours else None,
+                )
+                if success:
+                    placed_this_symbol = True
+                    summary["placeable"] += 1
+                    placeable.append(
+                        {
+                            "symbol": symbol,
+                            "strategy": payload.get("strategy"),
+                            "direction": payload.get("direction"),
+                            "entry": payload.get("entry"),
+                            "stop_loss": payload.get("stop_loss"),
+                            "target": payload.get("target"),
+                            "quantity": payload.get("quantity"),
+                            "reward_risk": payload.get("reward_risk"),
+                            "simulated": bool(payload.get("dry_run", False)),
+                        }
+                    )
+                    working_positions.append({"symbol": symbol})
+                    working_open_risk_amount += abs(float(payload["entry"]) - float(payload["stop_loss"])) * float(payload["quantity"])
+                    break
+
+                summary["candidate_rejected"] += 1
+                reasons = [str(item) for item in payload.get("reasons", ["rejected"])]
+                for reason in reasons:
+                    reason_counts[reason] += 1
+                if len(sample_rejections) < 12:
+                    sample_rejections.append(
+                        {
+                            "symbol": symbol,
+                            "strategy": signal.strategy,
+                            "reasons": reasons,
+                            "reward_risk": payload.get("signal", {}).get("reward_risk"),
+                            "quantity": payload.get("signal", {}).get("quantity"),
+                        }
+                    )
+
+            if not placed_this_symbol and candidate_signals:
+                summary["symbols_without_placeable_signal"] += 1
+
+    return {
+        "watchlist_count": int(summary["watchlist_count"]),
+        "macro_risk_level": str(macro_context.get("risk_level", "UNKNOWN")),
+        "summary": {
+            "symbols_seen": int(summary["symbols_seen"]),
+            "macro_blocked": int(summary["macro_blocked"]),
+            "symbol_news_blocked": int(summary["symbol_news_blocked"]),
+            "missing_live_data": int(summary["missing_live_data"]),
+            "no_signal": int(summary["no_signal"]),
+            "symbols_with_signal": int(summary["symbols_with_signal"]),
+            "atr_filtered": int(summary["atr_filtered"]),
+            "candidate_rejected": int(summary["candidate_rejected"]),
+            "placeable": int(summary["placeable"]),
+            "symbols_without_placeable_signal": int(summary["symbols_without_placeable_signal"]),
+        },
+        "reason_counts": dict(reason_counts.most_common()),
+        "placeable": placeable,
+        "sample_rejections": sample_rejections,
+    }
+
+
+def _quote_check_once(symbol: str, market_data: MarketDataService) -> Dict[str, object]:
+    """Report quote spread details for a single symbol against the configured limit."""
+    def _finite_or_zero(value: object) -> float:
+        try:
+            numeric = float(value or 0.0)
+        except (TypeError, ValueError):
+            return 0.0
+        return numeric if math.isfinite(numeric) else 0.0
+
+    normalized_symbol = symbol.strip().upper()
+    quote = market_data.get_quote(normalized_symbol)
+    bid = _finite_or_zero(quote.get("bid", 0.0))
+    ask = _finite_or_zero(quote.get("ask", 0.0))
+    last = _finite_or_zero(quote.get("last", 0.0))
+    mid = ((bid + ask) / 2.0) if bid > 0 and ask > 0 else last
+    spread = abs(ask - bid) if bid > 0 and ask > 0 else 0.0
+    spread_pct = (spread / mid) if mid > 0 else 1.0
+    max_spread_dollars = (mid * SETTINGS.risk.max_spread_pct) if mid > 0 else 0.0
+    return {
+        "job": "quote_check",
+        "symbol": normalized_symbol,
+        "bid": bid,
+        "ask": ask,
+        "last": last,
+        "mid": round(mid, 6),
+        "spread": round(spread, 6),
+        "spread_pct": round(spread_pct, 6),
+        "spread_pct_percent": round(spread_pct * 100.0, 4),
+        "max_spread_pct": SETTINGS.risk.max_spread_pct,
+        "max_spread_pct_percent": round(SETTINGS.risk.max_spread_pct * 100.0, 4),
+        "max_spread_dollars": round(max_spread_dollars, 6),
+        "passes_spread_filter": spread_pct <= SETTINGS.risk.max_spread_pct,
+    }
+
+
 def run_manual_watch(
     *,
     symbol: str,
@@ -310,6 +509,14 @@ def run_manual_watch(
 
 
 def run_job(job_name: str, dry_run_override: Optional[bool] = None) -> Dict[str, object]:
+    return run_job_with_context(job_name, dry_run_override=dry_run_override, command_context=None)
+
+
+def run_job_with_context(
+    job_name: str,
+    dry_run_override: Optional[bool] = None,
+    command_context: Optional[Dict[str, object]] = None,
+) -> Dict[str, object]:
     ensure_directories()
     state_path = SETTINGS.paths.state_file
     state = _hydrate_from_logs(_load_state(state_path))
@@ -317,7 +524,7 @@ def run_job(job_name: str, dry_run_override: Optional[bool] = None) -> Dict[str,
     dry_run = SETTINGS.dry_run_mode if dry_run_override is None else dry_run_override
 
     if job_name == "slack":
-        result = SlackCommandProcessor(alerter).process(state, run_job)
+        result = SlackCommandProcessor(alerter).process(state, run_job_with_context)
         _save_state(state_path, state)
         return {"job": job_name, **result}
 
@@ -337,9 +544,9 @@ def run_job(job_name: str, dry_run_override: Optional[bool] = None) -> Dict[str,
                 LOGGER.info("Skipping %s job because %s is already active.", job_name, preconnect_lock_name)
                 SlackAlerter().send_channel_message(_duplicate_session_message(job_name))
                 return {"job": job_name, "blocked": True, "reasons": ["session_already_running"], "dry_run": dry_run}
-            return _run_connected_job(job_name, state_path, state, dry_run)
+            return _run_connected_job(job_name, state_path, state, dry_run, command_context=command_context)
 
-    return _run_connected_job(job_name, state_path, state, dry_run)
+    return _run_connected_job(job_name, state_path, state, dry_run, command_context=command_context)
 
 
 def _run_connected_job(
@@ -347,6 +554,8 @@ def _run_connected_job(
     state_path: Path,
     state: Dict[str, object],
     dry_run: bool,
+    *,
+    command_context: Optional[Dict[str, object]] = None,
 ) -> Dict[str, object]:
     """Run broker-connected jobs after state and locking checks have passed."""
     alerter = SlackAlerter()
@@ -479,6 +688,38 @@ def _run_connected_job(
             )
             return {"job": job_name, "summary": summary, "dry_run": dry_run}
 
+        if job_name == "validate_watchlist":
+            if not state.get("watchlist"):
+                premarket_summary = run_premarket(
+                    market_data,
+                    news_service,
+                    news_filter,
+                    account_snapshot,
+                    research_symbols,
+                )
+                state["watchlist"] = premarket_summary.get("watchlist", {})
+                _save_state(state_path, state)
+            validation = _validate_watchlist_once(
+                watchlist=state.get("watchlist", {}),
+                market_data=market_data,
+                order_manager=order_manager,
+                news_filter=news_filter,
+                account_equity=account_equity,
+                cash_available=cash_available,
+                current_positions=positions,
+                open_risk_amount=calculate_open_risk_amount(state.get("tracked_positions", [])),
+                allow_after_hours=True,
+            )
+            result = {"job": job_name, "dry_run": True, **validation}
+            append_workflow_snapshot(SETTINGS.paths.trade_log, "ValidateWatchlist", result)
+            return result
+
+        if job_name == "quote_check":
+            symbol = str((command_context or {}).get("symbol", "")).strip().upper()
+            if not symbol:
+                raise ValueError("quote_check requires a symbol.")
+            return _quote_check_once(symbol, market_data)
+
         raise ValueError(f"Unsupported job '{job_name}'")
     finally:
         broker.disconnect()
@@ -486,7 +727,7 @@ def _run_connected_job(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="IBKR Gerchik bot job runner.")
-    parser.add_argument("--job", required=True, choices=["premarket", "open", "intraday", "eod", "weekly", "slack", "manual_watch"])
+    parser.add_argument("--job", required=True, choices=["premarket", "open", "intraday", "eod", "weekly", "slack", "manual_watch", "validate_watchlist", "quote_check"])
     parser.add_argument("--dry-run", action="store_true", help="Simulate trades without placing broker orders.")
     parser.add_argument("--symbol", help="Ticker symbol for manual_watch jobs.")
     parser.add_argument("--entry", type=float, help="Entry price for manual_watch jobs.")
@@ -543,6 +784,14 @@ def main() -> int:
                 execute=bool(args.execute),
                 allow_after_hours=bool(args.allow_after_hours),
                 auto_cancel_seconds=max(int(args.auto_cancel_seconds or 0), 0),
+            )
+        elif args.job == "quote_check":
+            if not args.symbol:
+                raise ValueError("quote_check requires: symbol")
+            result = run_job_with_context(
+                "quote_check",
+                dry_run_override=False,
+                command_context={"symbol": str(args.symbol)},
             )
         else:
             result = run_job(args.job, dry_run_override=True if args.dry_run else None)
