@@ -48,6 +48,8 @@ from src.strategy.signal_models import TradeSignal
 from src.strategy.strategy_router import route_strategies
 from src.workflow_log import append_workflow_snapshot, read_latest_workflow_snapshot
 
+BUILD_VERSION_MARKER = "2026-05-19-startup-marker-v1"
+
 
 def _build_research_symbols(positions: List[Dict[str, object]]) -> List[str]:
     merged: List[str] = []
@@ -380,6 +382,27 @@ def _quote_check_once(symbol: str, market_data: MarketDataService) -> Dict[str, 
     }
 
 
+def _log_job_start(job_name: str, *, dry_run: bool, command_context: Optional[Dict[str, object]] = None) -> None:
+    """Write an explicit startup marker so operators can identify the running code generation."""
+    context_summary = ""
+    if command_context:
+        visible_items = ", ".join(
+            f"{key}={value}"
+            for key, value in sorted(command_context.items())
+            if value not in {None, ""}
+        )
+        if visible_items:
+            context_summary = f" context={visible_items}"
+    LOGGER.info(
+        "Job startup marker: build=%s job=%s dry_run=%s pid=%s%s",
+        BUILD_VERSION_MARKER,
+        job_name,
+        dry_run,
+        os.getpid(),
+        context_summary,
+    )
+
+
 def run_manual_watch(
     *,
     symbol: str,
@@ -399,6 +422,15 @@ def run_manual_watch(
     state = _hydrate_from_logs(_load_state(state_path))
     alerter = SlackAlerter()
     dry_run = not execute
+    _log_job_start(
+        "manual_watch",
+        dry_run=dry_run,
+        command_context={
+            "symbol": symbol.strip().upper(),
+            "execute": execute,
+            "allow_after_hours": allow_after_hours,
+        },
+    )
     if allow_after_hours and not SETTINGS.paper_trading:
         raise ValueError("--allow-after-hours is supported only when PAPER_TRADING=true.")
     broker = IBKRClient()
@@ -522,6 +554,7 @@ def run_job_with_context(
     state = _hydrate_from_logs(_load_state(state_path))
     alerter = SlackAlerter()
     dry_run = SETTINGS.dry_run_mode if dry_run_override is None else dry_run_override
+    _log_job_start(job_name, dry_run=dry_run, command_context=command_context)
 
     if job_name == "slack":
         result = SlackCommandProcessor(alerter).process(state, run_job_with_context)
@@ -565,7 +598,14 @@ def _run_connected_job(
         news_service = NewsService(broker=broker)
         news_filter = NewsRiskFilter(news_service)
         market_data = MarketDataService(broker)
-        order_manager = OrderManager(broker, market_data, alerter, news_filter, dry_run=dry_run)
+        order_manager = OrderManager(
+            broker,
+            market_data,
+            alerter,
+            news_filter,
+            dry_run=dry_run,
+            alert_on_manual_candidates=job_name != "validate_watchlist",
+        )
         account_summary = broker.get_account_summary()
         account_equity = _account_equity_from_summary(account_summary)
         cash_available = _cash_from_summary(account_summary)

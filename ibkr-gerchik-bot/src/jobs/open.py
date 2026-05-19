@@ -56,6 +56,7 @@ def run_open(
 
     executed_total: List[Dict[str, object]] = []
     skipped_total: List[Dict[str, object]] = []
+    manual_candidates_total: List[Dict[str, object]] = []
     scans: List[Dict[str, object]] = []
 
     while True:
@@ -79,8 +80,11 @@ def run_open(
         )
         executed = scan_result["executed"]
         skipped = scan_result["skipped"]
+        manual_candidates = scan_result.get("manual_candidates", [])
         executed_total.extend(executed)
         skipped_total.extend(skipped)
+        if isinstance(manual_candidates, list):
+            manual_candidates_total.extend(manual_candidates)
         scans.append(
             {
                 "timestamp": scan_time.isoformat(),
@@ -89,6 +93,7 @@ def run_open(
                 "signals_detected": scan_result["signals_detected"],
                 "executed_count": len(executed),
                 "skipped_count": len(skipped),
+                "manual_candidate_count": len(manual_candidates) if isinstance(manual_candidates, list) else 0,
             }
         )
         for payload in executed:
@@ -107,6 +112,7 @@ def run_open(
         {
             "executed": executed_total or "none",
             "skipped": skipped_total or "none",
+            "manual_candidates": manual_candidates_total or "none",
             "scan_count": len(scans),
             "skip_reason_summary": summarize_skip_reasons(skipped_total) or "none",
         },
@@ -117,6 +123,7 @@ def run_open(
         {
             "executed": executed_total,
             "skipped": skipped_total,
+            "manual_candidates": manual_candidates_total,
             "scans": serialize_scan_results(scans),
         },
     )

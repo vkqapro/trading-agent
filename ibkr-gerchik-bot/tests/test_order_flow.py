@@ -35,6 +35,25 @@ def _sanm_signal() -> TradeSignal:
     )
 
 
+def _manual_candidate_signal() -> TradeSignal:
+    return TradeSignal(
+        symbol="KO",
+        strategy="manual_watch",
+        signal="BUY",
+        direction="long",
+        entry=80.0,
+        stop=76.0,
+        target=92.0,
+        level_price=76.0,
+        level_type="manual_watch",
+        nearest_upper_level=92.0,
+        nearest_lower_level=None,
+        reward_risk=3.0,
+        partial_targets=[{"qty_pct": 1.0, "price": 92.0}],
+        notes=[],
+    )
+
+
 def _intraday_bars() -> pd.DataFrame:
     return pd.DataFrame(
         [
@@ -126,6 +145,12 @@ class _MarketDataStub:
         return _intraday_bars()
 
 
+class _SubscriptionBlockedMarketDataStub(_MarketDataStub):
+    def get_quote(self, symbol: str | None = None) -> Dict[str, float]:
+        del symbol
+        return {"bid": 0.0, "ask": 0.0, "last": 80.0, "close": 79.5, "quote_status": "subscription_blocked"}
+
+
 class _NewsFilterStub:
     def has_high_risk_news(self, symbol: str) -> bool:
         del symbol
@@ -176,6 +201,30 @@ class OrderFlowTests(unittest.TestCase):
         self.assertIn("reward_risk_too_low", payload["reasons"])
         self.assertIn("order_size_invalid", payload["reasons"])
         self.assertIn("position_value_invalid", payload["reasons"])
+        self.assertEqual(broker.orders, [])
+
+    def test_subscription_blocked_quote_becomes_manual_candidate(self) -> None:
+        broker = _BrokerStub()
+        order_manager = OrderManager(
+            broker=broker,
+            market_data=_SubscriptionBlockedMarketDataStub(),
+            alerter=SlackAlerter(),
+            news_filter=_NewsFilterStub(),
+            dry_run=False,
+        )
+
+        success, payload = order_manager.execute_trade(
+            _manual_candidate_signal(),
+            account_equity=100_000.0,
+            cash_available=100_000.0,
+            current_positions=[],
+            open_risk_amount=0.0,
+        )
+
+        self.assertFalse(success)
+        self.assertEqual(payload["status"], "manual_candidate")
+        self.assertEqual(payload["reasons"], ["quote_subscription_required"])
+        self.assertEqual(payload["symbol"], "KO")
         self.assertEqual(broker.orders, [])
 
     def test_allow_after_hours_submits_valid_trade_when_other_rules_pass(self) -> None:
@@ -287,11 +336,55 @@ class OrderFlowTests(unittest.TestCase):
 
         self.assertEqual(len(result["executed"]), 1)
         self.assertEqual(result["executed"][0]["symbol"], "SANM")
+        self.assertEqual(result["report_rows"][0]["stock_symbol"], "SANM")
+        self.assertEqual(result["report_rows"][0]["reason_not_entered"], "entered")
         self.assertEqual([order["order_type"] for order in broker.orders], ["MKT", "STP", "LMT"])
         self.assertEqual(broker.orders[0]["action"], "BUY")
         self.assertEqual(broker.orders[1]["action"], "SELL")
         self.assertEqual(broker.orders[2]["action"], "SELL")
         self.assertEqual(broker.orders[0]["quantity"], 102)
+
+    def test_run_entry_scan_keeps_subscription_blocked_setup_as_manual_candidate(self) -> None:
+        broker = _BrokerStub()
+        market_data = _SubscriptionBlockedMarketDataStub()
+        order_manager = OrderManager(
+            broker=broker,
+            market_data=market_data,
+            alerter=SlackAlerter(),
+            news_filter=_NewsFilterStub(),
+            dry_run=False,
+        )
+        watchlist = {
+            "KO": {
+                "daily_atr": 40.0,
+                "technical_atr": 10.0,
+                "levels": [],
+            }
+        }
+
+        with (
+            patch("src.jobs.session_utils.route_strategies", return_value=[_manual_candidate_signal()]),
+            patch("src.jobs.session_utils.technical_atr_has_room", return_value=True),
+            patch("src.jobs.session_utils.atr_travel_filter", return_value=True),
+        ):
+            result = run_entry_scan(
+                stage_name="Intraday",
+                market_data=market_data,
+                order_manager=order_manager,
+                news_filter=_NewsFilterStub(),
+                watchlist=watchlist,
+                account_equity=100_000.0,
+                cash_available=100_000.0,
+                current_positions=[],
+                open_risk_amount=0.0,
+            )
+
+        self.assertEqual(result["executed"], [])
+        self.assertEqual(len(result["manual_candidates"]), 1)
+        self.assertEqual(result["manual_candidates"][0]["symbol"], "KO")
+        self.assertEqual(result["skipped"][0]["reason"], "quote_subscription_required")
+        self.assertEqual(result["report_rows"][0]["stock_symbol"], "KO")
+        self.assertEqual(result["report_rows"][0]["reason_not_entered"], "quote_subscription_required")
 
 
 if __name__ == "__main__":

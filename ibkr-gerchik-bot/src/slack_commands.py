@@ -23,6 +23,8 @@ class SlackCommand:
 class SlackCommandProcessor:
     """Poll a Slack channel for whitelisted bot commands."""
 
+    _DASH_VARIANTS = ("-", "—", "–", "−")
+
     def __init__(self, alerter: SlackAlerter) -> None:
         self.alerter = alerter
         self.prefix = SETTINGS.slack_command_prefix or "ibkr"
@@ -84,9 +86,7 @@ class SlackCommandProcessor:
         if body in {"latest report", "latest levels report", "levels report"}:
             return SlackCommand(kind="latest_report")
         if body.startswith("quote_check "):
-            symbol = body[len("quote_check ") :].strip()
-            if symbol.startswith("--"):
-                symbol = symbol[2:].strip()
+            symbol = self._normalize_symbol_arg(body[len("quote_check ") :])
             symbol = symbol.upper()
             if symbol:
                 return SlackCommand(kind="job", job_name="quote_check", symbol=symbol)
@@ -156,6 +156,13 @@ class SlackCommandProcessor:
         if text.startswith(f"{self.prefix} "):
             return text[len(self.prefix) :].strip()
         return None
+
+    @classmethod
+    def _normalize_symbol_arg(cls, raw_symbol: str) -> str:
+        symbol = raw_symbol.strip()
+        while symbol.startswith(cls._DASH_VARIANTS):
+            symbol = symbol[1:].strip()
+        return symbol
 
     @staticmethod
     def _is_bot_message(message: Dict[str, object]) -> bool:

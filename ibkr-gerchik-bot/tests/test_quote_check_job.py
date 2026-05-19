@@ -53,8 +53,16 @@ class _NewsRiskFilterStub:
 
 
 class _OrderManagerStub:
-    def __init__(self, broker: object, market_data: object, alerter: object, news_filter: object, dry_run: bool = False) -> None:
-        del broker, market_data, alerter, news_filter, dry_run
+    def __init__(
+        self,
+        broker: object,
+        market_data: object,
+        alerter: object,
+        news_filter: object,
+        dry_run: bool = False,
+        alert_on_manual_candidates: bool = True,
+    ) -> None:
+        del broker, market_data, alerter, news_filter, dry_run, alert_on_manual_candidates
 
 
 class QuoteCheckJobTests(unittest.TestCase):

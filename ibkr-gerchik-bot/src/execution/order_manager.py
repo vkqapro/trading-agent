@@ -25,12 +25,15 @@ class OrderManager:
         alerter: SlackAlerter,
         news_filter: NewsRiskFilter,
         dry_run: bool = False,
+        alert_on_manual_candidates: bool = True,
     ) -> None:
         self.broker = broker
         self.market_data = market_data
         self.alerter = alerter
         self.news_filter = news_filter
         self.dry_run = dry_run
+        self.alert_on_manual_candidates = alert_on_manual_candidates
+        self._manual_candidate_alert_keys: set[tuple[str, float, float, float, str]] = set()
 
     def execute_trade(
         self,
@@ -48,6 +51,7 @@ class OrderManager:
         spread_pct = self._spread_pct(quote)
         quantity = calculate_position_size(account_equity, SETTINGS.risk.risk_per_trade, signal.entry, signal.stop)
         order_size_valid = position_value_ok(quantity, signal.entry, SETTINGS.risk.max_position_value, cash_available)
+        quote_status = str(quote.get("quote_status", "unknown") or "unknown")
         enriched_signal = signal.to_dict()
         enriched_signal["quantity"] = quantity
         enriched_signal["risk_amount"] = abs(signal.entry - signal.stop) * quantity
@@ -72,6 +76,17 @@ class OrderManager:
             cash_available=cash_available,
         )
         if not is_valid or quantity <= 0:
+            manual_candidate = self._build_manual_candidate_payload(
+                enriched_signal,
+                reasons,
+                quote_status=quote_status,
+                quantity=quantity,
+            )
+            if manual_candidate is not None:
+                if self.alert_on_manual_candidates:
+                    self._notify_manual_candidate(manual_candidate)
+                LOGGER.warning("Trade requires manual placement due to quote subscription: %s", manual_candidate)
+                return False, manual_candidate
             payload = {"status": "rejected", "reasons": reasons or ["position_size_zero"], "signal": enriched_signal}
             LOGGER.warning("Trade rejected: %s", payload)
             return False, payload
@@ -134,7 +149,9 @@ class OrderManager:
         bid = OrderManager._finite_or_zero(quote.get("bid", 0.0))
         ask = OrderManager._finite_or_zero(quote.get("ask", 0.0))
         last = OrderManager._finite_or_zero(quote.get("last", 0.0))
-        mid = ((bid + ask) / 2.0) if bid > 0 and ask > 0 else last
+        if bid <= 0 or ask <= 0:
+            return 1.0
+        mid = ((bid + ask) / 2.0) or last
         if mid <= 0:
             return 1.0
         return abs(ask - bid) / mid
@@ -146,6 +163,50 @@ class OrderManager:
         except (TypeError, ValueError):
             return 0.0
         return numeric if math.isfinite(numeric) else 0.0
+
+    def _build_manual_candidate_payload(
+        self,
+        enriched_signal: Dict[str, object],
+        reasons: List[str],
+        *,
+        quote_status: str,
+        quantity: int,
+    ) -> Dict[str, object] | None:
+        if quantity <= 0:
+            return None
+        if quote_status != "subscription_blocked":
+            return None
+        non_quote_reasons = [reason for reason in reasons if reason != "spread_too_wide"]
+        if non_quote_reasons:
+            return None
+        return {
+            "status": "manual_candidate",
+            "reasons": ["quote_subscription_required"],
+            "signal": enriched_signal,
+            "symbol": enriched_signal.get("symbol"),
+            "strategy": enriched_signal.get("strategy"),
+            "direction": enriched_signal.get("direction"),
+            "signal_side": enriched_signal.get("signal"),
+            "entry": enriched_signal.get("entry"),
+            "stop_loss": enriched_signal.get("stop"),
+            "target": enriched_signal.get("target"),
+            "reward_risk": enriched_signal.get("reward_risk"),
+            "quantity": quantity,
+            "quote_status": quote_status,
+        }
+
+    def _notify_manual_candidate(self, payload: Dict[str, object]) -> None:
+        key = (
+            str(payload.get("symbol", "") or ""),
+            float(payload.get("entry", 0.0) or 0.0),
+            float(payload.get("stop_loss", 0.0) or 0.0),
+            float(payload.get("target", 0.0) or 0.0),
+            str(payload.get("strategy", "") or ""),
+        )
+        if key in self._manual_candidate_alert_keys:
+            return
+        self._manual_candidate_alert_keys.add(key)
+        self.alerter.send_manual_candidate(payload)
 
     @staticmethod
     def _build_payload(

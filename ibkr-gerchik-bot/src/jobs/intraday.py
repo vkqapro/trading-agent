@@ -26,6 +26,7 @@ from src.jobs.session_utils import (
     summarize_skip_reasons,
     sync_tracked_positions_with_broker,
 )
+from src.reports.intraday_report import write_intraday_scan_report
 from src.workflow_log import append_workflow_snapshot
 
 
@@ -63,6 +64,7 @@ def run_intraday(
 
     executed_total: List[Dict[str, object]] = []
     skipped_total: List[Dict[str, object]] = []
+    manual_candidates_total: List[Dict[str, object]] = []
     actions_total: List[Dict[str, object]] = []
     scans: List[Dict[str, object]] = []
 
@@ -83,6 +85,8 @@ def run_intraday(
         LOGGER.info("Intraday loop tick at %s interval=%ss", loop_time.isoformat(), interval)
         iteration_executed: List[Dict[str, object]] = []
         iteration_skipped: List[Dict[str, object]] = []
+        iteration_manual_candidates: List[Dict[str, object]] = []
+        iteration_report_rows: List[Dict[str, object]] = []
         symbols_scanned = 0
         signals_detected = 0
         entries_enabled = can_scan_for_new_entries(loop_time)
@@ -102,12 +106,19 @@ def run_intraday(
             )
             executed = scan_result["executed"]
             skipped = scan_result["skipped"]
+            manual_candidates = scan_result.get("manual_candidates", [])
+            report_rows = scan_result.get("report_rows", [])
             iteration_executed = executed
             iteration_skipped = skipped
+            if isinstance(manual_candidates, list):
+                iteration_manual_candidates = manual_candidates
+            if isinstance(report_rows, list):
+                iteration_report_rows = report_rows
             symbols_scanned = int(scan_result["symbols_scanned"])
             signals_detected = int(scan_result["signals_detected"])
             executed_total.extend(executed)
             skipped_total.extend(skipped)
+            manual_candidates_total.extend(iteration_manual_candidates)
             scans.append(
                 {
                     "timestamp": loop_time.isoformat(),
@@ -116,6 +127,7 @@ def run_intraday(
                     "signals_detected": scan_result["signals_detected"],
                     "executed_count": len(executed),
                     "skipped_count": len(skipped),
+                    "manual_candidate_count": len(iteration_manual_candidates),
                 }
             )
 
@@ -142,9 +154,25 @@ def run_intraday(
                 "signals_detected": signals_detected,
                 "executed": iteration_executed,
                 "skipped": iteration_skipped,
+                "manual_candidates": iteration_manual_candidates,
                 "skip_reason_summary": summarize_skip_reasons(iteration_skipped),
             }
         )
+        if iteration_report_rows:
+            report_path = write_intraday_scan_report(
+                report_rows=iteration_report_rows,
+                scan_time=loop_time,
+                report_dir=SETTINGS.paths.reports_dir,
+            )
+            alerter.upload_file(
+                report_path,
+                title=f"Intraday Scan {loop_time.strftime('%Y-%m-%d %H:%M')}",
+                initial_comment=(
+                    "Intraday scan report\n"
+                    f"Scanned: {symbols_scanned} | Signals: {signals_detected} | "
+                    f"Executed: {len(iteration_executed)} | Skipped: {len(iteration_skipped)}"
+                ),
+            )
 
         if management.get("kill_switch"):
             break
@@ -164,6 +192,7 @@ def run_intraday(
             "actions": actions_total or "none",
             "executed": executed_total or "none",
             "skipped": skipped_total or "none",
+            "manual_candidates": manual_candidates_total or "none",
             "scan_count": len(scans),
             "skip_reason_summary": summarize_skip_reasons(skipped_total) or "none",
         },
@@ -175,6 +204,7 @@ def run_intraday(
             "actions": actions_total,
             "executed": executed_total,
             "skipped": skipped_total,
+            "manual_candidates": manual_candidates_total,
             "tracked_positions": tracked_positions,
             "scans": serialize_scan_results(scans),
         },

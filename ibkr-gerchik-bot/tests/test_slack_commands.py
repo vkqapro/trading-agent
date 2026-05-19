@@ -41,6 +41,15 @@ class SlackCommandTests(unittest.TestCase):
         self.assertEqual(command.job_name, "quote_check")
         self.assertEqual(command.symbol, "MSFT")
 
+    def test_parses_quote_check_command_with_unicode_dash(self) -> None:
+        for text in ("ibkr quote_check —TSLA", "ibkr quote_check –TSLA", "ibkr quote_check −TSLA"):
+            command = self.processor.parse_command(text)
+            self.assertIsNotNone(command)
+            assert command is not None
+            self.assertEqual(command.kind, "job")
+            self.assertEqual(command.job_name, "quote_check")
+            self.assertEqual(command.symbol, "TSLA")
+
     def test_dispatches_quote_check_with_symbol_and_dry_run_off(self) -> None:
         command = self.processor.parse_command("ibkr quote_check --MSFT")
         assert command is not None

@@ -19,6 +19,7 @@ from src.data.market_data import MarketDataService
 from src.data.news import NewsService
 from src.data.news_filter import NewsRiskFilter
 from src.execution.order_manager import OrderManager
+from src.reports.intraday_report import nearest_level_details
 from src.risk.kill_switch import should_trigger_kill_switch
 from src.strategy.atr import atr_travel_filter, technical_atr_has_room
 from src.strategy.levels import Level
@@ -175,6 +176,22 @@ def _normalize_skip_reason(reason: object) -> str:
     if isinstance(reason, list):
         return ", ".join(str(item) for item in reason)
     return str(reason)
+
+
+def _symbol_report_row(
+    *,
+    symbol: str,
+    plan: Dict[str, object],
+    quote: Optional[Dict[str, object]],
+    reason: object,
+) -> Dict[str, object]:
+    nearest_level, nearest_level_type = nearest_level_details(plan, quote)
+    return {
+        "stock_symbol": symbol,
+        "nearest_level": round(nearest_level, 2) if nearest_level is not None else None,
+        "nearest_level_type": nearest_level_type,
+        "reason_not_entered": _normalize_skip_reason(reason),
+    }
 
 
 def _tracked_symbol_needs_stop(position: Dict[str, object]) -> bool:
@@ -353,6 +370,8 @@ def run_entry_scan(
     current_time = scan_time or session_now()
     executed: List[Dict[str, object]] = []
     skipped: List[Dict[str, object]] = []
+    manual_candidates: List[Dict[str, object]] = []
+    report_rows: List[Dict[str, object]] = []
     signals_detected = 0
     scanned_symbols = 0
 
@@ -369,6 +388,8 @@ def run_entry_scan(
         return {
             "executed": executed,
             "skipped": [{"symbol": "*", "reason": "macro_risk", "provider_hits": macro_context.get("provider_hits", [])}],
+            "manual_candidates": manual_candidates,
+            "report_rows": [],
             "signals_detected": signals_detected,
             "symbols_scanned": scanned_symbols,
             "macro_risk": macro_context,
@@ -385,13 +406,42 @@ def run_entry_scan(
                 "provider_hits": symbol_news_context.get("provider_hits", []),
             }
             skipped.append(reason)
+            report_rows.append(
+                _symbol_report_row(
+                    symbol=symbol,
+                    plan=plan,
+                    quote=None,
+                    reason="symbol_news_risk",
+                )
+            )
             LOGGER.info("%s skip %s: %s", stage_name, symbol, reason)
             continue
 
         intraday_bars = market_data.get_intraday_bars(symbol, duration="2 D", bar_size="5 mins")
         quote = market_data.get_quote(symbol)
-        if intraday_bars.empty or float(quote.get("last", 0.0) or 0.0) <= 0:
+        quote_status = str(quote.get("quote_status", "") or "")
+        if intraday_bars.empty:
             skipped.append({"symbol": symbol, "reason": "missing_live_data"})
+            report_rows.append(
+                _symbol_report_row(
+                    symbol=symbol,
+                    plan=plan,
+                    quote=quote,
+                    reason="missing_live_data",
+                )
+            )
+            LOGGER.info("%s skip %s: missing_live_data", stage_name, symbol)
+            continue
+        if float(quote.get("last", 0.0) or 0.0) <= 0 and quote_status != "subscription_blocked":
+            skipped.append({"symbol": symbol, "reason": "missing_live_data"})
+            report_rows.append(
+                _symbol_report_row(
+                    symbol=symbol,
+                    plan=plan,
+                    quote=quote,
+                    reason="missing_live_data",
+                )
+            )
             LOGGER.info("%s skip %s: missing_live_data", stage_name, symbol)
             continue
 
@@ -400,11 +450,21 @@ def run_entry_scan(
         signals_detected += len(candidate_signals)
         if not candidate_signals:
             skipped.append({"symbol": symbol, "reason": "no_signal"})
+            report_rows.append(
+                _symbol_report_row(
+                    symbol=symbol,
+                    plan=plan,
+                    quote=quote,
+                    reason="no_signal",
+                )
+            )
             LOGGER.info("%s skip %s: no_signal", stage_name, symbol)
             continue
 
         session_low = float(intraday_bars["low"].min())
         session_high = float(intraday_bars["high"].max())
+        symbol_result_recorded = False
+        symbol_reasons: List[str] = []
         for signal in candidate_signals:
             atr_ok = technical_atr_has_room(float(plan.get("technical_atr", 0.0)), signal.entry)
             trend_ok = atr_travel_filter(
@@ -416,6 +476,7 @@ def run_entry_scan(
             )
             if not atr_ok or not trend_ok:
                 skipped.append({"symbol": symbol, "reason": "atr_filter"})
+                symbol_reasons.append("atr_filter")
                 LOGGER.info("%s skip %s: atr_filter", stage_name, symbol)
                 continue
 
@@ -428,6 +489,15 @@ def run_entry_scan(
             )
             if success:
                 executed.append(payload)
+                report_rows.append(
+                    _symbol_report_row(
+                        symbol=symbol,
+                        plan=plan,
+                        quote=quote,
+                        reason="entered",
+                    )
+                )
+                symbol_result_recorded = True
                 current_positions.append(
                     {
                         "symbol": symbol,
@@ -443,20 +513,50 @@ def run_entry_scan(
                 LOGGER.info("%s executed %s via %s", stage_name, symbol, payload.get("strategy"))
                 break
 
+            if payload.get("status") == "manual_candidate":
+                manual_candidates.append(payload)
+                skipped.append({"symbol": symbol, "reason": "quote_subscription_required"})
+                report_rows.append(
+                    _symbol_report_row(
+                        symbol=symbol,
+                        plan=plan,
+                        quote=quote,
+                        reason="quote_subscription_required",
+                    )
+                )
+                symbol_result_recorded = True
+                LOGGER.warning("%s manual candidate %s: quote_subscription_required", stage_name, symbol)
+                break
+
             skipped.append({"symbol": symbol, "reason": payload.get("reasons", ["rejected"])})
+            symbol_reasons.append(_normalize_skip_reason(payload.get("reasons", ["rejected"])))
             LOGGER.info("%s skip %s: %s", stage_name, symbol, payload.get("reasons", ["rejected"]))
 
+        if not symbol_result_recorded:
+            report_reason = ", ".join(dict.fromkeys(symbol_reasons)) if symbol_reasons else "not_entered"
+            report_rows.append(
+                _symbol_report_row(
+                    symbol=symbol,
+                    plan=plan,
+                    quote=quote,
+                    reason=report_reason,
+                )
+            )
+
     LOGGER.info(
-        "%s scan finished: scanned=%s signals=%s executed=%s skipped=%s",
+        "%s scan finished: scanned=%s signals=%s executed=%s skipped=%s manual_candidates=%s",
         stage_name,
         scanned_symbols,
         signals_detected,
         len(executed),
         len(skipped),
+        len(manual_candidates),
     )
     return {
         "executed": executed,
         "skipped": skipped,
+        "manual_candidates": manual_candidates,
+        "report_rows": report_rows,
         "signals_detected": signals_detected,
         "symbols_scanned": scanned_symbols,
         "macro_risk": macro_context,
@@ -601,6 +701,7 @@ def build_job_dependencies(
     news_filter: NewsRiskFilter,
     *,
     dry_run: bool,
+    alert_on_manual_candidates: bool = True,
 ) -> tuple[MarketDataService, OrderManager]:
     """Construct job-level reusable services from the live broker context."""
     market_data = MarketDataService(broker)
@@ -610,6 +711,7 @@ def build_job_dependencies(
         alerter,
         news_filter,
         dry_run=dry_run,
+        alert_on_manual_candidates=alert_on_manual_candidates,
     )
     return market_data, order_manager
 

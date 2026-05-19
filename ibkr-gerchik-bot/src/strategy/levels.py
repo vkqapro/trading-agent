@@ -390,6 +390,7 @@ def merge_nearby_levels(
     resolved_zone_buffer = zone_buffer if zone_buffer is not None else resolved_zone_buffer
     resolved_merge_distance = merge_distance if merge_distance is not None else default_merge_distance
     resolved_ultra_close = ultra_close_distance if ultra_close_distance is not None else default_ultra_close
+    max_zone_width = resolved_atr * MAX_ZONE_WIDTH_ATR_MULTIPLIER if resolved_atr > 0 else None
 
     by_symbol_timeframe: Dict[tuple[str, str], List[Level]] = {}
     for level in levels:
@@ -397,39 +398,62 @@ def merge_nearby_levels(
 
     merged_levels: List[Level] = []
     for (_, _), symbol_levels in by_symbol_timeframe.items():
-        clusters = _cluster_levels(symbol_levels, resolved_merge_distance, resolved_ultra_close)
+        clusters = _cluster_levels(symbol_levels, resolved_merge_distance, resolved_ultra_close, max_zone_width=max_zone_width)
         for cluster in clusters:
             merged_levels.append(_merge_cluster(cluster, daily_bars, resolved_atr, resolved_zone_buffer))
     return merged_levels
 
 
-def _cluster_levels(levels: List[Level], merge_distance: float, ultra_close_distance: float) -> List[List[Level]]:
+def _cluster_levels(
+    levels: List[Level],
+    merge_distance: float,
+    ultra_close_distance: float,
+    *,
+    max_zone_width: Optional[float] = None,
+) -> List[List[Level]]:
     if not levels:
         return []
 
     ordered = sorted(levels, key=lambda level: level.price)
-    adjacency: Dict[int, set[int]] = {index: set() for index in range(len(ordered))}
-    for left in range(len(ordered)):
-        for right in range(left + 1, len(ordered)):
-            if _should_merge(ordered[left], ordered[right], merge_distance, ultra_close_distance):
-                adjacency[left].add(right)
-                adjacency[right].add(left)
-
-    visited: set[int] = set()
     clusters: List[List[Level]] = []
-    for start in range(len(ordered)):
-        if start in visited:
+    current_cluster: List[Level] = [ordered[0]]
+    current_low = ordered[0].zone_low if ordered[0].zone_low is not None else ordered[0].price
+    current_high = ordered[0].zone_high if ordered[0].zone_high is not None else ordered[0].price
+
+    for candidate in ordered[1:]:
+        tail = current_cluster[-1]
+        if not _should_merge(tail, candidate, merge_distance, ultra_close_distance):
+            clusters.append(current_cluster)
+            current_cluster = [candidate]
+            current_low = candidate.zone_low if candidate.zone_low is not None else candidate.price
+            current_high = candidate.zone_high if candidate.zone_high is not None else candidate.price
             continue
-        queue = [start]
-        component: List[Level] = []
-        while queue:
-            current = queue.pop()
-            if current in visited:
-                continue
-            visited.add(current)
-            component.append(ordered[current])
-            queue.extend(adjacency[current] - visited)
-        clusters.append(sorted(component, key=lambda level: level.price))
+
+        candidate_low = candidate.zone_low if candidate.zone_low is not None else candidate.price
+        candidate_high = candidate.zone_high if candidate.zone_high is not None else candidate.price
+        prospective_low = min(current_low, candidate_low)
+        prospective_high = max(current_high, candidate_high)
+        prospective_width = prospective_high - prospective_low
+
+        if max_zone_width is not None and prospective_width > max_zone_width:
+            LOGGER.info(
+                "Split merge cluster before %s %.2f: prospective_zone_width=%.4f > %.4f",
+                candidate.type,
+                candidate.price,
+                prospective_width,
+                max_zone_width,
+            )
+            clusters.append(current_cluster)
+            current_cluster = [candidate]
+            current_low = candidate_low
+            current_high = candidate_high
+            continue
+
+        current_cluster.append(candidate)
+        current_low = prospective_low
+        current_high = prospective_high
+
+    clusters.append(current_cluster)
     return clusters
 
 

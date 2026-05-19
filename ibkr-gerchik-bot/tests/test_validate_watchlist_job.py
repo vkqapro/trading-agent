@@ -82,8 +82,16 @@ class _MarketDataServiceStub:
 
 
 class _OrderManagerStub:
-    def __init__(self, broker: object, market_data: object, alerter: object, news_filter: object, dry_run: bool = False) -> None:
-        del broker, market_data, alerter, news_filter
+    def __init__(
+        self,
+        broker: object,
+        market_data: object,
+        alerter: object,
+        news_filter: object,
+        dry_run: bool = False,
+        alert_on_manual_candidates: bool = True,
+    ) -> None:
+        del broker, market_data, alerter, news_filter, alert_on_manual_candidates
         self.dry_run = dry_run
 
     def execute_trade(

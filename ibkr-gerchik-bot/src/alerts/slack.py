@@ -73,6 +73,14 @@ class SlackAlerter:
             f"Entry: {trade['entry']} Stop: {trade['stop_loss']} Target: {trade['target']}"
         )
 
+    def send_manual_candidate(self, candidate: Dict[str, object]) -> bool:
+        return self.send_channel_message(
+            "Manual candidate\n"
+            f"{candidate.get('symbol')} {candidate.get('signal_side', candidate.get('direction', '?'))} qty={candidate.get('quantity')}\n"
+            f"Entry: {candidate.get('entry')} Stop: {candidate.get('stop_loss')} Target: {candidate.get('target')}\n"
+            "Auto-submit blocked: quote subscription required"
+        )
+
     def send_stop_triggered(self, symbol: str, stop_price: float) -> bool:
         return self.send_channel_message(f"Stop triggered: {symbol} at {stop_price}")
 
@@ -88,6 +96,8 @@ class SlackAlerter:
         executed_count = len(executed) if isinstance(executed, list) else 0
         skipped = summary.get("skipped")
         skipped_count = len(skipped) if isinstance(skipped, list) else 0
+        manual_candidates = summary.get("manual_candidates")
+        manual_candidate_count = len(manual_candidates) if isinstance(manual_candidates, list) else 0
         macro_risk = bool(summary.get("macro_risk", False))
         entries_enabled = bool(summary.get("entries_enabled", False))
         interval_seconds = int(summary.get("interval_seconds", 0) or 0)
@@ -104,6 +114,7 @@ class SlackAlerter:
             f"Entries: {'ON' if entries_enabled else 'OFF'}",
             f"Scan interval: {interval_seconds // 60 if interval_seconds else 0} min",
             f"Scanned: {symbols_scanned} | Signals: {signals_detected} | Executed: {executed_count} | Skipped: {skipped_count}",
+            f"Manual candidates: {manual_candidate_count}",
             f"Status: {action_label}",
         ]
         if isinstance(tracked_symbols, list) and tracked_symbols:
@@ -123,6 +134,14 @@ class SlackAlerter:
             top_reasons = sorted(skip_reason_summary.items(), key=lambda item: (-int(item[1]), str(item[0])))
             formatted = ", ".join(f"{reason}={count}" for reason, count in top_reasons[:3])
             lines.append(f"Skipped: {formatted}")
+        if manual_candidate_count and isinstance(manual_candidates, list):
+            preview = ", ".join(
+                f"{item.get('symbol', '?')} {item.get('signal_side', item.get('direction', '?'))}"
+                for item in manual_candidates[:3]
+                if isinstance(item, dict)
+            )
+            if preview:
+                lines.append(f"Manual: {preview}")
         if action_count and isinstance(actions, list):
             latest = actions[0]
             if isinstance(latest, dict):

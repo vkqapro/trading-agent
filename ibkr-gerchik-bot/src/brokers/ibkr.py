@@ -64,6 +64,7 @@ class IBKRClient:
         self.ib = IB()
         self.config = SETTINGS.broker
         self._ib_error_handler_registered = False
+        self._recent_api_errors: List[Dict[str, object]] = []
 
     @property
     def is_connected(self) -> bool:
@@ -109,6 +110,17 @@ class IBKRClient:
     ) -> None:
         del args
         contract_text = self._contract_summary(contract)
+        symbol = str(getattr(contract, "symbol", "") or "").strip().upper()
+        self._recent_api_errors.append(
+            {
+                "timestamp": time.time(),
+                "req_id": int(req_id),
+                "error_code": int(error_code),
+                "message": str(error_string),
+                "symbol": symbol,
+            }
+        )
+        self._recent_api_errors = self._recent_api_errors[-50:]
         message = f"IBKR API error code={error_code} reqId={req_id} message={error_string}"
         if contract_text:
             message = f"{message} contract={contract_text}"
@@ -120,6 +132,19 @@ class IBKRClient:
             LOGGER.warning(message)
         else:
             LOGGER.error(message)
+
+    def has_recent_market_data_subscription_error(self, symbol: str, *, within_seconds: float = 10.0) -> bool:
+        normalized_symbol = symbol.strip().upper()
+        threshold = time.time() - within_seconds
+        for item in reversed(self._recent_api_errors):
+            if float(item.get("timestamp", 0.0) or 0.0) < threshold:
+                break
+            if int(item.get("error_code", 0) or 0) != 10089:
+                continue
+            error_symbol = str(item.get("symbol", "") or "").strip().upper()
+            if not error_symbol or error_symbol == normalized_symbol:
+                return True
+        return False
 
     def connect(self) -> None:
         """Connect to IBKR TWS or IB Gateway with retry logic."""
@@ -236,12 +261,25 @@ class IBKRClient:
         contract = self.create_contract(symbol)
         ticker: Ticker = self.ib.reqMktData(contract, "", snapshot=True, regulatorySnapshot=False)
         self.ib.sleep(2)
+        bid = _safe_market_price(ticker.bid)
+        ask = _safe_market_price(ticker.ask)
+        last = _safe_market_price(ticker.last)
         close_price = _safe_market_price(ticker.close)
+        subscription_blocked = self.has_recent_market_data_subscription_error(symbol)
+        if subscription_blocked:
+            quote_status = "subscription_blocked"
+        elif bid > 0 and ask > 0:
+            quote_status = "ok"
+        elif last > 0 or close_price > 0:
+            quote_status = "partial"
+        else:
+            quote_status = "missing"
         return {
-            "bid": _safe_market_price(ticker.bid),
-            "ask": _safe_market_price(ticker.ask),
-            "last": _safe_market_price(ticker.last) or close_price,
+            "bid": bid,
+            "ask": ask,
+            "last": last or close_price,
             "close": close_price,
+            "quote_status": quote_status,
         }
 
     def get_historical_bars(

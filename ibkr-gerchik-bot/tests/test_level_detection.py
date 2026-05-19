@@ -124,6 +124,43 @@ class LevelDetectionTests(unittest.TestCase):
         merged = merge_nearby_levels(levels, daily, atr_value=1.0, merge_distance=0.25, ultra_close_distance=0.08, zone_buffer=0.12)
         self.assertEqual(len(merged), 1)
 
+    def test_merge_nearby_levels_splits_chain_before_zone_becomes_too_wide(self) -> None:
+        daily = pd.DataFrame(
+            [
+                {"date": "2026-05-01", "open": 70.0, "high": 71.5, "low": 69.5, "close": 70.8},
+                {"date": "2026-05-02", "open": 71.0, "high": 72.5, "low": 70.8, "close": 72.0},
+                {"date": "2026-05-05", "open": 78.0, "high": 79.8, "low": 77.7, "close": 79.2},
+            ]
+        )
+        levels = [
+            Level(
+                "SEI", 70.17, "historical", "daily", 8, 1, 10.0, "swing_low",
+                zone_low=69.51, zone_high=70.83, center=70.17, families=["historical", "structural"],
+            ),
+            Level(
+                "SEI", 71.05, "abnormal_candle", "daily", 7, 1, 9.0, "abnormal_low",
+                zone_low=70.39, zone_high=71.71, center=71.05, families=["abnormal_candle", "structural"],
+            ),
+            Level(
+                "SEI", 71.86, "gap", "daily", 5, 0, 6.0, "gap_lower",
+                zone_low=71.20, zone_high=72.52, center=71.86, families=["gap"],
+            ),
+            Level(
+                "SEI", 73.07, "gap", "daily", 4, 0, 5.0, "gap_lower",
+                zone_low=72.41, zone_high=73.73, center=73.07, families=["gap"],
+            ),
+        ]
+
+        merged = merge_nearby_levels(levels, daily, atr_value=5.508, merge_distance=1.377, ultra_close_distance=0.4406, zone_buffer=0.661)
+
+        self.assertEqual(len(merged), 2)
+        self.assertEqual([level.price for level in merged], [70.17, 71.86])
+        self.assertAlmostEqual(merged[0].center, 70.58, places=2)
+        self.assertEqual(merged[0].zone_low, 69.51)
+        self.assertEqual(merged[0].zone_high, 71.71)
+        self.assertEqual(merged[1].zone_low, 71.2)
+        self.assertEqual(merged[1].zone_high, 73.73)
+
     def test_filter_weak_levels_rejects_too_close_weaker_overlap(self) -> None:
         daily = pd.DataFrame(
             [
