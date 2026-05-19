@@ -106295,606 +106295,6 @@
       "symbol": "LABT",
       "attempts": [
         {
-          "timestamp": "2026-05-19T14:46:49",
-          "strategy": "false_breakout_complex",
-          "level": 3.89,
-          "level_type": "gap",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              3.83,
-              3.95
-            ],
-            "pattern": "COMPLEX"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:50",
-          "strategy": "false_breakout_one_bar",
-          "level": 5.74,
-          "level_type": "abnormal_candle",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              5.68,
-              5.81
-            ],
-            "pattern": "ONE_BAR"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:50",
-          "strategy": "false_breakout_two_bar",
-          "level": 5.74,
-          "level_type": "abnormal_candle",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              5.68,
-              5.81
-            ],
-            "pattern": "TWO_BAR"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:50",
-          "strategy": "false_breakout_complex",
-          "level": 5.74,
-          "level_type": "abnormal_candle",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              5.68,
-              5.81
-            ],
-            "pattern": "COMPLEX"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:50",
-          "strategy": "false_breakout_one_bar",
-          "level": 7.35,
-          "level_type": "gap",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              7.29,
-              7.41
-            ],
-            "pattern": "ONE_BAR"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:51",
-          "strategy": "false_breakout_two_bar",
-          "level": 7.35,
-          "level_type": "gap",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              7.29,
-              7.41
-            ],
-            "pattern": "TWO_BAR"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:51",
-          "strategy": "false_breakout_complex",
-          "level": 7.35,
-          "level_type": "gap",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              7.29,
-              7.41
-            ],
-            "pattern": "COMPLEX"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:51",
-          "strategy": "false_breakout_one_bar",
-          "level": 1.35,
-          "level_type": "gap",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              1.29,
-              1.41
-            ],
-            "pattern": "ONE_BAR"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:51",
-          "strategy": "false_breakout_two_bar",
-          "level": 1.35,
-          "level_type": "gap",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              1.29,
-              1.41
-            ],
-            "pattern": "TWO_BAR"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:52",
-          "strategy": "false_breakout_complex",
-          "level": 1.35,
-          "level_type": "gap",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              1.29,
-              1.41
-            ],
-            "pattern": "COMPLEX"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:52",
-          "strategy": "false_breakout_one_bar",
-          "level": 6.06,
-          "level_type": "abnormal_candle",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              6.0,
-              6.12
-            ],
-            "pattern": "ONE_BAR"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:52",
-          "strategy": "false_breakout_two_bar",
-          "level": 6.06,
-          "level_type": "abnormal_candle",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              6.0,
-              6.12
-            ],
-            "pattern": "TWO_BAR"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:52",
-          "strategy": "false_breakout_complex",
-          "level": 6.06,
-          "level_type": "abnormal_candle",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              6.0,
-              6.12
-            ],
-            "pattern": "COMPLEX"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:53",
-          "strategy": "false_breakout_one_bar",
-          "level": 7.01,
-          "level_type": "abnormal_candle",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              6.95,
-              7.07
-            ],
-            "pattern": "ONE_BAR"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:53",
-          "strategy": "false_breakout_two_bar",
-          "level": 7.01,
-          "level_type": "abnormal_candle",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              6.95,
-              7.07
-            ],
-            "pattern": "TWO_BAR"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:53",
-          "strategy": "false_breakout_complex",
-          "level": 7.01,
-          "level_type": "abnormal_candle",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              6.95,
-              7.07
-            ],
-            "pattern": "COMPLEX"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:54",
-          "strategy": "false_breakout_one_bar",
-          "level": 9.4,
-          "level_type": "abnormal_candle",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              9.34,
-              9.46
-            ],
-            "pattern": "ONE_BAR"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:54",
-          "strategy": "false_breakout_two_bar",
-          "level": 9.4,
-          "level_type": "abnormal_candle",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              9.34,
-              9.46
-            ],
-            "pattern": "TWO_BAR"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:54",
-          "strategy": "false_breakout_complex",
-          "level": 9.4,
-          "level_type": "abnormal_candle",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              9.34,
-              9.46
-            ],
-            "pattern": "COMPLEX"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:54",
-          "strategy": "false_breakout_one_bar",
-          "level": 4.22,
-          "level_type": "gap",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              4.16,
-              4.28
-            ],
-            "pattern": "ONE_BAR"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:55",
-          "strategy": "false_breakout_two_bar",
-          "level": 4.22,
-          "level_type": "gap",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              4.16,
-              4.28
-            ],
-            "pattern": "TWO_BAR"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:55",
-          "strategy": "false_breakout_complex",
-          "level": 4.22,
-          "level_type": "gap",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              4.16,
-              4.28
-            ],
-            "pattern": "COMPLEX"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:55",
-          "strategy": "false_breakout_one_bar",
-          "level": 4.61,
-          "level_type": "historical",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              4.55,
-              4.67
-            ],
-            "pattern": "ONE_BAR"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:46:55",
-          "strategy": "false_breakout_two_bar",
-          "level": 4.61,
-          "level_type": "historical",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              4.55,
-              4.67
-            ],
-            "pattern": "TWO_BAR"
-          }
-        },
-        {
           "timestamp": "2026-05-19T14:46:56",
           "strategy": "false_breakout_complex",
           "level": 4.61,
@@ -108793,13 +108193,613 @@
             ],
             "pattern": "COMPLEX"
           }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:13",
+          "strategy": "false_breakout_one_bar",
+          "level": 5.74,
+          "level_type": "abnormal_candle",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              5.68,
+              5.81
+            ],
+            "pattern": "ONE_BAR"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:13",
+          "strategy": "false_breakout_two_bar",
+          "level": 5.74,
+          "level_type": "abnormal_candle",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              5.68,
+              5.81
+            ],
+            "pattern": "TWO_BAR"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:14",
+          "strategy": "false_breakout_complex",
+          "level": 5.74,
+          "level_type": "abnormal_candle",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              5.68,
+              5.81
+            ],
+            "pattern": "COMPLEX"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:14",
+          "strategy": "false_breakout_one_bar",
+          "level": 7.35,
+          "level_type": "gap",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              7.29,
+              7.41
+            ],
+            "pattern": "ONE_BAR"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:15",
+          "strategy": "false_breakout_two_bar",
+          "level": 7.35,
+          "level_type": "gap",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              7.29,
+              7.41
+            ],
+            "pattern": "TWO_BAR"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:16",
+          "strategy": "false_breakout_complex",
+          "level": 7.35,
+          "level_type": "gap",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              7.29,
+              7.41
+            ],
+            "pattern": "COMPLEX"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:16",
+          "strategy": "false_breakout_one_bar",
+          "level": 1.35,
+          "level_type": "gap",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              1.29,
+              1.41
+            ],
+            "pattern": "ONE_BAR"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:16",
+          "strategy": "false_breakout_two_bar",
+          "level": 1.35,
+          "level_type": "gap",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              1.29,
+              1.41
+            ],
+            "pattern": "TWO_BAR"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:17",
+          "strategy": "false_breakout_complex",
+          "level": 1.35,
+          "level_type": "gap",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              1.29,
+              1.41
+            ],
+            "pattern": "COMPLEX"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:17",
+          "strategy": "false_breakout_one_bar",
+          "level": 6.06,
+          "level_type": "abnormal_candle",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              6.0,
+              6.12
+            ],
+            "pattern": "ONE_BAR"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:17",
+          "strategy": "false_breakout_two_bar",
+          "level": 6.06,
+          "level_type": "abnormal_candle",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              6.0,
+              6.12
+            ],
+            "pattern": "TWO_BAR"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:18",
+          "strategy": "false_breakout_complex",
+          "level": 6.06,
+          "level_type": "abnormal_candle",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              6.0,
+              6.12
+            ],
+            "pattern": "COMPLEX"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:18",
+          "strategy": "false_breakout_one_bar",
+          "level": 7.01,
+          "level_type": "abnormal_candle",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              6.95,
+              7.07
+            ],
+            "pattern": "ONE_BAR"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:18",
+          "strategy": "false_breakout_two_bar",
+          "level": 7.01,
+          "level_type": "abnormal_candle",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              6.95,
+              7.07
+            ],
+            "pattern": "TWO_BAR"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:19",
+          "strategy": "false_breakout_complex",
+          "level": 7.01,
+          "level_type": "abnormal_candle",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              6.95,
+              7.07
+            ],
+            "pattern": "COMPLEX"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:19",
+          "strategy": "false_breakout_one_bar",
+          "level": 9.4,
+          "level_type": "abnormal_candle",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              9.34,
+              9.46
+            ],
+            "pattern": "ONE_BAR"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:19",
+          "strategy": "false_breakout_two_bar",
+          "level": 9.4,
+          "level_type": "abnormal_candle",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              9.34,
+              9.46
+            ],
+            "pattern": "TWO_BAR"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:20",
+          "strategy": "false_breakout_complex",
+          "level": 9.4,
+          "level_type": "abnormal_candle",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              9.34,
+              9.46
+            ],
+            "pattern": "COMPLEX"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:20",
+          "strategy": "false_breakout_one_bar",
+          "level": 4.22,
+          "level_type": "gap",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              4.16,
+              4.28
+            ],
+            "pattern": "ONE_BAR"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:20",
+          "strategy": "false_breakout_two_bar",
+          "level": 4.22,
+          "level_type": "gap",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              4.16,
+              4.28
+            ],
+            "pattern": "TWO_BAR"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:21",
+          "strategy": "false_breakout_complex",
+          "level": 4.22,
+          "level_type": "gap",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              4.16,
+              4.28
+            ],
+            "pattern": "COMPLEX"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:21",
+          "strategy": "false_breakout_one_bar",
+          "level": 4.61,
+          "level_type": "historical",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              4.55,
+              4.67
+            ],
+            "pattern": "ONE_BAR"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:22",
+          "strategy": "false_breakout_two_bar",
+          "level": 4.61,
+          "level_type": "historical",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              4.55,
+              4.67
+            ],
+            "pattern": "TWO_BAR"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:22",
+          "strategy": "false_breakout_complex",
+          "level": 4.61,
+          "level_type": "historical",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              4.55,
+              4.67
+            ],
+            "pattern": "COMPLEX"
+          }
         }
       ],
       "best_decision": {
-        "timestamp": "2026-05-19T15:17:13",
+        "timestamp": "2026-05-19T15:17:22",
         "strategy": "false_breakout_complex",
-        "level": 3.89,
-        "level_type": "gap",
+        "level": 4.61,
+        "level_type": "historical",
         "signal": "NONE",
         "entry": null,
         "stop": null,
@@ -108814,8 +108814,8 @@
           "atr_status": "OK",
           "news_risk": "MEDIUM",
           "zone": [
-            3.83,
-            3.95
+            4.55,
+            4.67
           ],
           "pattern": "COMPLEX"
         }
@@ -108824,106 +108824,6 @@
     "BNZI": {
       "symbol": "BNZI",
       "attempts": [
-        {
-          "timestamp": "2026-05-19T14:21:59",
-          "strategy": "false_breakout_complex",
-          "level": 17.92,
-          "level_type": "historical",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              17.28,
-              18.14
-            ],
-            "pattern": "COMPLEX"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:21:59",
-          "strategy": "false_breakout_one_bar",
-          "level": 26.0,
-          "level_type": "historical",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              25.77,
-              26.43
-            ],
-            "pattern": "ONE_BAR"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:21:59",
-          "strategy": "false_breakout_two_bar",
-          "level": 26.0,
-          "level_type": "historical",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              25.77,
-              26.43
-            ],
-            "pattern": "TWO_BAR"
-          }
-        },
-        {
-          "timestamp": "2026-05-19T14:21:59",
-          "strategy": "false_breakout_complex",
-          "level": 26.0,
-          "level_type": "historical",
-          "signal": "NONE",
-          "entry": null,
-          "stop": null,
-          "target": null,
-          "position_modifier": 1.0,
-          "confidence": 0.0,
-          "reason": [
-            "no return inside zone"
-          ],
-          "context": {
-            "trend": "RANGE",
-            "atr_status": "OK",
-            "news_risk": "MEDIUM",
-            "zone": [
-              25.77,
-              26.43
-            ],
-            "pattern": "COMPLEX"
-          }
-        },
         {
           "timestamp": "2026-05-19T14:36:52",
           "strategy": "false_breakout_one_bar",
@@ -111323,13 +111223,113 @@
             ],
             "pattern": "COMPLEX"
           }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:25",
+          "strategy": "false_breakout_one_bar",
+          "level": 13.9,
+          "level_type": "abnormal_candle",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              13.52,
+              14.13
+            ],
+            "pattern": "ONE_BAR"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:25",
+          "strategy": "false_breakout_two_bar",
+          "level": 13.9,
+          "level_type": "abnormal_candle",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              13.52,
+              14.13
+            ],
+            "pattern": "TWO_BAR"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:25",
+          "strategy": "false_breakout_complex",
+          "level": 13.9,
+          "level_type": "abnormal_candle",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              13.52,
+              14.13
+            ],
+            "pattern": "COMPLEX"
+          }
+        },
+        {
+          "timestamp": "2026-05-19T15:17:26",
+          "strategy": "false_breakout_one_bar",
+          "level": 15.8,
+          "level_type": "abnormal_candle",
+          "signal": "NONE",
+          "entry": null,
+          "stop": null,
+          "target": null,
+          "position_modifier": 1.0,
+          "confidence": 0.0,
+          "reason": [
+            "no return inside zone"
+          ],
+          "context": {
+            "trend": "RANGE",
+            "atr_status": "OK",
+            "news_risk": "MEDIUM",
+            "zone": [
+              15.19,
+              16.03
+            ],
+            "pattern": "ONE_BAR"
+          }
         }
       ],
       "best_decision": {
-        "timestamp": "2026-05-19T15:07:49",
-        "strategy": "false_breakout_complex",
-        "level": 26.0,
-        "level_type": "historical",
+        "timestamp": "2026-05-19T15:17:26",
+        "strategy": "false_breakout_one_bar",
+        "level": 15.8,
+        "level_type": "abnormal_candle",
         "signal": "NONE",
         "entry": null,
         "stop": null,
@@ -111344,10 +111344,10 @@
           "atr_status": "OK",
           "news_risk": "MEDIUM",
           "zone": [
-            25.77,
-            26.43
+            15.19,
+            16.03
           ],
-          "pattern": "COMPLEX"
+          "pattern": "ONE_BAR"
         }
       }
     },
