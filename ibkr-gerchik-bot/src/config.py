@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import csv
 import logging
 import os
 from dataclasses import dataclass, field
@@ -32,6 +33,73 @@ def _csv_env_with_fallback(name: str, fallback_name: str, default: str) -> List[
     if raw is None:
         raw = os.getenv(fallback_name, default)
     return [item.strip() for item in raw.split(",") if item.strip()]
+
+
+def _resolve_env_path(path_value: str) -> Path:
+    candidate = Path(path_value).expanduser()
+    if candidate.is_absolute():
+        return candidate
+    return BASE_DIR / candidate
+
+
+def _dedupe_preserve_order(values: List[str]) -> List[str]:
+    merged: List[str] = []
+    seen: set[str] = set()
+    for value in values:
+        normalized = value.strip()
+        if not normalized or normalized in seen:
+            continue
+        seen.add(normalized)
+        merged.append(normalized)
+    return merged
+
+
+def _csv_env_file_or_fallback(path_name: str, inline_name: str, fallback_name: str, default: str) -> List[str]:
+    path_value = os.getenv(path_name, "").strip()
+    if path_value:
+        file_values = _load_symbol_csv(_resolve_env_path(path_value))
+        if file_values:
+            return file_values
+    return _csv_env_with_fallback(inline_name, fallback_name, default)
+
+
+def _load_symbol_csv(path: Path) -> List[str]:
+    if not path.exists():
+        return []
+
+    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        reader = csv.reader(handle)
+        rows = [row for row in reader if row and any(cell.strip() for cell in row)]
+
+    if not rows:
+        return []
+
+    header = [cell.strip().lower() for cell in rows[0]]
+    symbol_index = None
+    for candidate in ("symbol", "symbols", "ticker", "tickers", "stock_symbol", "stock_symbols"):
+        if candidate in header:
+            symbol_index = header.index(candidate)
+            break
+
+    values: List[str] = []
+    data_rows = rows[1:] if symbol_index is not None else rows
+    for row in data_rows:
+        cleaned = [cell.strip() for cell in row]
+        if not cleaned:
+            continue
+        first_cell = cleaned[0]
+        if first_cell.startswith("#"):
+            continue
+        if symbol_index is not None:
+            if symbol_index >= len(cleaned):
+                continue
+            symbol = cleaned[symbol_index]
+            if symbol:
+                values.append(symbol)
+            continue
+        values.append(first_cell)
+
+    return _dedupe_preserve_order(values)
 
 
 def normalize_symbol(symbol: str) -> str:
@@ -164,7 +232,8 @@ class Settings:
     git_branch: str = os.getenv("WORKFLOW_GIT_BRANCH", "Test")
     account_currency: str = os.getenv("ACCOUNT_CURRENCY", "USD")
     stock_symbols: List[str] = field(
-        default_factory=lambda: _csv_env_with_fallback(
+        default_factory=lambda: _csv_env_file_or_fallback(
+            "STOCK_SYMBOLS_FILE",
             "STOCK_SYMBOLS",
             "BOT_SYMBOLS",
             "AAPL,MSFT,NVDA,AMD,TSLA,META,AMZN,NFLX",
