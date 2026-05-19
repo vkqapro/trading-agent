@@ -168997,3 +168997,111 @@ Premarket scans, intraday observations, and daily analysis are appended here.
   }
 }
 ```
+
+## Workflow Intraday (2026-05-18T13:00:07)
+- **stage**: Intraday
+- **executed_symbols**: []
+- **tracked_symbols**: []
+- **actions**: [{'event': 'kill_switch', 'reasons': ['account_not_synced', 'missing_protective_stop']}]
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [
+      {
+        "event": "kill_switch",
+        "reasons": [
+          "account_not_synced",
+          "missing_protective_stop"
+        ]
+      }
+    ],
+    "executed": [],
+    "skipped": [
+      {
+        "symbol": "SEI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BBBY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TSLA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SANM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AAPL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSFT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMZN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AGPU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ALOY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIRD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ISPC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRLN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "OPTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ROLR",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKLZ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKYQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "EUR.USD",
+        "reason": "no_signal"
+      }
+    ],
+    "tracked_positions": [],
+    "scans": [
+      {
+        "timestamp": "2026-05-18T12:58:05.323627-04:00",
+        "interval_seconds": 900,
+        "symbols_scanned": 18,
+        "signals_detected": 0,
+        "executed_count": 0,
+        "skipped_count": 18
+      }
+    ]
+  }
+}
+```

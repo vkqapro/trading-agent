@@ -24,6 +24,7 @@ from src.jobs.session_utils import (
     session_now,
     sleep_until,
     summarize_skip_reasons,
+    sync_tracked_positions_with_broker,
 )
 from src.workflow_log import append_workflow_snapshot
 
@@ -69,6 +70,14 @@ def run_intraday(
         loop_time = now_fn()
         if not market_data.market_is_open(loop_time):
             break
+
+        broker_positions = broker.get_positions()
+        open_orders = broker.get_open_orders()
+        tracked_positions[:] = sync_tracked_positions_with_broker(
+            tracked_positions,
+            broker_positions,
+            open_orders,
+        )
 
         interval = get_scan_interval(loop_time)
         LOGGER.info("Intraday loop tick at %s interval=%ss", loop_time.isoformat(), interval)

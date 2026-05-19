@@ -274,6 +274,68 @@ def protective_stops_ok(
     return False
 
 
+def sync_tracked_positions_with_broker(
+    tracked_positions: List[Dict[str, object]],
+    broker_positions: List[Dict[str, object]],
+    open_orders: List[Dict[str, object]],
+) -> List[Dict[str, object]]:
+    """Rebuild tracked equity positions from the broker and preserve local metadata."""
+    existing_by_symbol: Dict[str, Dict[str, object]] = {}
+    for position in tracked_positions:
+        symbol = str(position.get("symbol", "")).strip().upper()
+        if symbol:
+            existing_by_symbol[symbol] = dict(position)
+
+    stop_order_ids_by_symbol: Dict[str, int] = {}
+    for order in open_orders:
+        if str(order.get("type", "")).strip().upper() != "STP":
+            continue
+        symbol = str(order.get("symbol", "")).strip().upper()
+        order_id = int(float(order.get("order_id", 0) or 0))
+        if symbol and order_id > 0 and symbol not in stop_order_ids_by_symbol:
+            stop_order_ids_by_symbol[symbol] = order_id
+
+    synced: List[Dict[str, object]] = []
+    seen: set[str] = set()
+    for broker_position in broker_positions:
+        sec_type = str(broker_position.get("sec_type", "")).strip().upper()
+        if sec_type != "STK":
+            continue
+
+        symbol = str(broker_position.get("symbol", "")).strip().upper()
+        if not symbol or symbol in seen:
+            continue
+        seen.add(symbol)
+
+        signed_quantity = float(broker_position.get("position", 0.0) or 0.0)
+        quantity = abs(int(signed_quantity))
+        if quantity <= 0:
+            continue
+        avg_cost = float(broker_position.get("avg_cost", 0.0) or 0.0)
+        direction = "long" if signed_quantity >= 0 else "short"
+
+        base_position = existing_by_symbol.get(symbol, {})
+        merged_position = dict(base_position)
+        merged_position.update(
+            {
+                "symbol": symbol,
+                "quantity": quantity,
+                "entry": float(base_position.get("entry", avg_cost) or avg_cost),
+                "avg_cost": avg_cost,
+                "direction": direction,
+                "sec_type": sec_type,
+            }
+        )
+
+        stop_order_id = stop_order_ids_by_symbol.get(symbol)
+        if stop_order_id is not None:
+            merged_position["stop_order_id"] = stop_order_id
+
+        synced.append(merged_position)
+
+    return synced
+
+
 def run_entry_scan(
     *,
     stage_name: str,
