@@ -56,6 +56,8 @@ class _NewsRiskFilterStub:
 
 
 class _MarketDataServiceStub:
+    requests: List[Dict[str, str]] = []
+
     def __init__(self, _broker: object) -> None:
         self._bars = pd.DataFrame(
             [
@@ -65,7 +67,7 @@ class _MarketDataServiceStub:
         )
 
     def get_intraday_bars(self, symbol: str, duration: str = "2 D", bar_size: str = "5 mins") -> pd.DataFrame:
-        del symbol, duration, bar_size
+        self.requests.append({"symbol": symbol, "duration": duration, "bar_size": bar_size})
         return self._bars.copy()
 
     def get_quote(self, symbol: str) -> Dict[str, float]:
@@ -160,6 +162,7 @@ class ValidateWatchlistJobTests(unittest.TestCase):
 }""",
                 encoding="utf-8",
             )
+            _MarketDataServiceStub.requests = []
 
             def fake_route_strategies(symbol: str, intraday_bars: object, levels: object, news_context: object = None):
                 del intraday_bars, levels, news_context
@@ -220,6 +223,9 @@ class ValidateWatchlistJobTests(unittest.TestCase):
             self.assertEqual(result["placeable"][0]["symbol"], "AAPL")
             self.assertEqual(result["sample_rejections"][0]["symbol"], "MSFT")
             self.assertIn("reward_risk_too_low", result["reason_counts"])
+            self.assertTrue(_MarketDataServiceStub.requests)
+            self.assertEqual(_MarketDataServiceStub.requests[0]["duration"], SETTINGS.strategy.intraday_bar_duration)
+            self.assertEqual(_MarketDataServiceStub.requests[0]["bar_size"], SETTINGS.strategy.intraday_bar_size)
 
         object.__setattr__(SETTINGS.paths, "trade_log", original_trade_log)
         object.__setattr__(SETTINGS.paths, "state_file", original_state_file)

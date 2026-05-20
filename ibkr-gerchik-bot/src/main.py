@@ -245,7 +245,11 @@ def _validate_watchlist_once(
                 reason_counts["symbol_news_risk"] += 1
                 continue
 
-            intraday_bars = market_data.get_intraday_bars(symbol, duration="2 D", bar_size="5 mins")
+            intraday_bars = market_data.get_intraday_bars(
+                symbol,
+                duration=SETTINGS.strategy.intraday_bar_duration,
+                bar_size=SETTINGS.strategy.intraday_bar_size,
+            )
             quote = market_data.get_quote(symbol)
             if intraday_bars.empty or float(quote.get("last", 0.0) or 0.0) <= 0:
                 summary["missing_live_data"] += 1
@@ -592,9 +596,8 @@ def _run_connected_job(
 ) -> Dict[str, object]:
     """Run broker-connected jobs after state and locking checks have passed."""
     alerter = SlackAlerter()
-    broker = IBKRClient()
+    broker = _connect_broker_with_startup_retry(job_name)
     try:
-        broker.connect()
         news_service = NewsService(broker=broker)
         news_filter = NewsRiskFilter(news_service)
         market_data = MarketDataService(broker)
@@ -763,6 +766,48 @@ def _run_connected_job(
         raise ValueError(f"Unsupported job '{job_name}'")
     finally:
         broker.disconnect()
+
+
+def _connect_broker_with_startup_retry(job_name: str) -> IBKRClient:
+    """Create and connect an IBKR client, waiting through temporary startup contention."""
+    retry_window = SETTINGS.broker.startup_retry_window_seconds if job_name == "intraday" else 0
+    retry_delay = max(1, SETTINGS.broker.startup_retry_delay_seconds)
+    deadline = time.monotonic() + max(0, retry_window)
+    attempt = 0
+
+    while True:
+        attempt += 1
+        broker = IBKRClient()
+        try:
+            broker.connect()
+            if attempt > 1:
+                LOGGER.info("Connected to IBKR after startup retry job=%s attempt=%s", job_name, attempt)
+            return broker
+        except ConnectionError as exc:
+            try:
+                broker.disconnect()
+            except Exception:  # pragma: no cover - defensive cleanup for live broker edge cases.
+                LOGGER.debug("Broker cleanup after failed startup connection raised.", exc_info=True)
+
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                LOGGER.error(
+                    "IBKR startup retry exhausted job=%s attempts=%s window_seconds=%s",
+                    job_name,
+                    attempt,
+                    retry_window,
+                )
+                raise
+
+            sleep_seconds = min(retry_delay, remaining)
+            LOGGER.warning(
+                "IBKR unavailable at %s startup; waiting %.0fs before retry attempt %s: %s",
+                job_name,
+                sleep_seconds,
+                attempt + 1,
+                exc,
+            )
+            time.sleep(sleep_seconds)
 
 
 def parse_args() -> argparse.Namespace:

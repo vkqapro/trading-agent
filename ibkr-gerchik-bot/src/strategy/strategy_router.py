@@ -10,6 +10,7 @@ from src.risk.stop_loss import calculate_stop_loss
 from src.risk.take_profit import build_partial_targets, calculate_take_profit, reward_risk_ratio
 from src.strategy.breakout import detect_breakout
 from src.strategy.false_breakout_complex import detect_false_breakout_complex
+from src.strategy.false_breakout_continuation import detect_false_breakout_continuation
 from src.strategy.false_breakout_one_bar import detect_false_breakout_one_bar
 from src.strategy.false_breakout_two_bar import detect_false_breakout_two_bar
 from src.strategy.levels import Level
@@ -31,6 +32,7 @@ def route_strategies(
             detect_false_breakout_one_bar(symbol, intraday_bars, level, news_context=news_context),
             detect_false_breakout_two_bar(symbol, intraday_bars, level, news_context=news_context),
             detect_false_breakout_complex(symbol, intraday_bars, level, news_context=news_context),
+            detect_false_breakout_continuation(symbol, intraday_bars, level, news_context=news_context),
         ]
         for signal in candidates:
             if signal is None:

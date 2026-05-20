@@ -440,7 +440,11 @@ def run_entry_scan(
             LOGGER.info("%s skip %s: %s", stage_name, symbol, reason)
             continue
 
-        intraday_bars = market_data.get_intraday_bars(symbol, duration="2 D", bar_size="5 mins")
+        intraday_bars = market_data.get_intraday_bars(
+            symbol,
+            duration=SETTINGS.strategy.intraday_bar_duration,
+            bar_size=SETTINGS.strategy.intraday_bar_size,
+        )
         quote = market_data.get_quote(symbol)
         quote_status = str(quote.get("quote_status", "") or "")
         intraday_reference_price = float(intraday_bars.iloc[-1]["close"]) if not intraday_bars.empty else None

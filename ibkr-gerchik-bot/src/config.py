@@ -156,6 +156,8 @@ class BrokerConfig:
     reconnect_retries: int = _env_int("IBKR_RECONNECT_RETRIES", 5)
     reconnect_delay_seconds: int = _env_int("IBKR_RECONNECT_DELAY_SECONDS", 5)
     market_data_timeout_seconds: int = _env_int("IBKR_MARKET_DATA_TIMEOUT_SECONDS", 10)
+    startup_retry_window_seconds: int = _env_int("IBKR_STARTUP_RETRY_WINDOW_SECONDS", 300)
+    startup_retry_delay_seconds: int = _env_int("IBKR_STARTUP_RETRY_DELAY_SECONDS", 30)
 
 
 @dataclass(frozen=True)
@@ -177,6 +179,8 @@ class StrategyConfig:
     min_avg_volume: int = _env_int("MIN_AVG_VOLUME", 500000)
     lookback_bars: int = _env_int("LOOKBACK_BARS", 60)
     premarket_daily_lookback_days: int = _env_int("PREMARKET_DAILY_LOOKBACK_DAYS", 60)
+    intraday_bar_duration: str = _env_str("INTRADAY_BAR_DURATION", "5 D")
+    intraday_bar_size: str = _env_str("INTRADAY_BAR_SIZE", "5 mins")
     level_tolerance_pct: float = _env_float("LEVEL_TOLERANCE_PCT", 0.0025)
     consolidation_window: int = _env_int("CONSOLIDATION_WINDOW", 20)
     abnormal_range_multiplier: float = _env_float("ABNORMAL_RANGE_MULTIPLIER", 2.0)

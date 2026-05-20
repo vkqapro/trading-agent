@@ -39,9 +39,15 @@ class StrategyRouterNewsContextTests(unittest.TestCase):
         )
 
     def test_router_blocks_false_breakout_on_high_news_risk(self) -> None:
-        with patch("src.strategy.strategy_router.calculate_stop_loss", side_effect=lambda entry, stop, direction: stop):
+        with (
+            patch("src.strategy.strategy_router.calculate_stop_loss", side_effect=lambda entry, stop, direction: stop),
+            patch("src.strategy.false_breakout_one_bar._persist_daily_decision"),
+            patch("src.strategy.false_breakout_two_bar._persist_daily_decision"),
+            patch("src.strategy.false_breakout_complex._persist_daily_decision"),
+            patch("src.strategy.false_breakout_continuation._persist_daily_decision"),
+        ):
             signals = route_strategies("AAPL", self.bars, [self.level], news_context={"risk_level": "HIGH"})
-        self.assertEqual(signals, [])
+        self.assertFalse(any(signal.strategy.startswith("false_breakout") for signal in signals))
 
     def test_router_allows_false_breakout_on_medium_news_risk(self) -> None:
         level = Level(
@@ -72,7 +78,13 @@ class StrategyRouterNewsContextTests(unittest.TestCase):
                 {"open": 100.8, "high": 101.3, "low": 100.5, "close": 101.1},
             ]
         )
-        with patch("src.strategy.strategy_router.calculate_stop_loss", side_effect=lambda entry, stop, direction: stop):
+        with (
+            patch("src.strategy.strategy_router.calculate_stop_loss", side_effect=lambda entry, stop, direction: stop),
+            patch("src.strategy.false_breakout_one_bar._persist_daily_decision"),
+            patch("src.strategy.false_breakout_two_bar._persist_daily_decision"),
+            patch("src.strategy.false_breakout_complex._persist_daily_decision"),
+            patch("src.strategy.false_breakout_continuation._persist_daily_decision"),
+        ):
             signals = route_strategies("AAPL", medium_bars, [level], news_context={"risk_level": "MEDIUM"})
         self.assertTrue(any(signal.strategy == "false_breakout_two_bar" for signal in signals))
 
