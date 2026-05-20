@@ -338,6 +338,11 @@ class OrderFlowTests(unittest.TestCase):
         self.assertEqual(result["executed"][0]["symbol"], "SANM")
         self.assertEqual(result["report_rows"][0]["stock_symbol"], "SANM")
         self.assertEqual(result["report_rows"][0]["reason_not_entered"], "entered")
+        self.assertEqual(result["signal_details"][0]["symbol"], "SANM")
+        self.assertEqual(result["signal_details"][0]["strategy"], "premarket_watch_validation")
+        self.assertEqual(result["signal_details"][0]["status"], "executed")
+        self.assertEqual(result["signal_details"][0]["reason"], "entered")
+        self.assertEqual(result["signal_details"][0]["signal_level"], 237.09)
         self.assertEqual([order["order_type"] for order in broker.orders], ["MKT", "STP", "LMT"])
         self.assertEqual(broker.orders[0]["action"], "BUY")
         self.assertEqual(broker.orders[1]["action"], "SELL")
@@ -385,6 +390,9 @@ class OrderFlowTests(unittest.TestCase):
         self.assertEqual(result["skipped"][0]["reason"], "quote_subscription_required")
         self.assertEqual(result["report_rows"][0]["stock_symbol"], "KO")
         self.assertEqual(result["report_rows"][0]["reason_not_entered"], "quote_subscription_required")
+        self.assertEqual(result["signal_details"][0]["symbol"], "KO")
+        self.assertEqual(result["signal_details"][0]["status"], "manual_candidate")
+        self.assertEqual(result["signal_details"][0]["reason"], "quote_subscription_required")
 
 
 if __name__ == "__main__":

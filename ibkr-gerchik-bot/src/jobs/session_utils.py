@@ -23,6 +23,7 @@ from src.reports.intraday_report import nearest_level_details
 from src.risk.kill_switch import should_trigger_kill_switch
 from src.strategy.atr import atr_travel_filter, technical_atr_has_room
 from src.strategy.levels import Level
+from src.strategy.signal_models import TradeSignal
 from src.strategy.strategy_router import route_strategies
 from src.workflow_log import append_workflow_snapshot, read_latest_workflow_snapshot
 
@@ -200,6 +201,13 @@ def _normalize_skip_reason(reason: object) -> str:
     return str(reason)
 
 
+def _price_value(value: object) -> Optional[float]:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
 def _symbol_report_row(
     *,
     symbol: str,
@@ -214,6 +222,34 @@ def _symbol_report_row(
         "nearest_level": round(nearest_level, 2) if nearest_level is not None else None,
         "nearest_level_type": nearest_level_type,
         "reason_not_entered": _normalize_skip_reason(reason),
+    }
+
+
+def _signal_detail(
+    *,
+    signal: TradeSignal,
+    plan: Dict[str, object],
+    quote: Optional[Dict[str, object]],
+    reason: object,
+    status: str,
+    reference_price: Optional[float] = None,
+) -> Dict[str, object]:
+    nearest_level, nearest_level_type = nearest_level_details(plan, quote, reference_price=reference_price)
+    return {
+        "symbol": signal.symbol,
+        "strategy": signal.strategy,
+        "signal": signal.signal,
+        "direction": signal.direction,
+        "entry": _price_value(signal.entry),
+        "stop": _price_value(signal.stop),
+        "target": _price_value(signal.target),
+        "signal_level": _price_value(signal.level_price),
+        "signal_level_type": signal.level_type,
+        "nearest_level": _price_value(nearest_level),
+        "nearest_level_type": nearest_level_type,
+        "reward_risk": _price_value(signal.reward_risk),
+        "status": status,
+        "reason": _normalize_skip_reason(reason),
     }
 
 
@@ -395,6 +431,7 @@ def run_entry_scan(
     skipped: List[Dict[str, object]] = []
     manual_candidates: List[Dict[str, object]] = []
     report_rows: List[Dict[str, object]] = []
+    signal_details: List[Dict[str, object]] = []
     signals_detected = 0
     scanned_symbols = 0
 
@@ -413,6 +450,7 @@ def run_entry_scan(
             "skipped": [{"symbol": "*", "reason": "macro_risk", "provider_hits": macro_context.get("provider_hits", [])}],
             "manual_candidates": manual_candidates,
             "report_rows": [],
+            "signal_details": signal_details,
             "signals_detected": signals_detected,
             "symbols_scanned": scanned_symbols,
             "macro_risk": macro_context,
@@ -507,6 +545,16 @@ def run_entry_scan(
             if not atr_ok or not trend_ok:
                 skipped.append({"symbol": symbol, "reason": "atr_filter"})
                 symbol_reasons.append("atr_filter")
+                signal_details.append(
+                    _signal_detail(
+                        signal=signal,
+                        plan=plan,
+                        quote=quote,
+                        reason="atr_filter",
+                        status="skipped",
+                        reference_price=intraday_reference_price,
+                    )
+                )
                 LOGGER.info("%s skip %s: atr_filter", stage_name, symbol)
                 continue
 
@@ -519,6 +567,16 @@ def run_entry_scan(
             )
             if success:
                 executed.append(payload)
+                signal_details.append(
+                    _signal_detail(
+                        signal=signal,
+                        plan=plan,
+                        quote=quote,
+                        reason="entered",
+                        status=str(payload.get("status", "executed")),
+                        reference_price=intraday_reference_price,
+                    )
+                )
                 report_rows.append(
                     _symbol_report_row(
                         symbol=symbol,
@@ -547,6 +605,16 @@ def run_entry_scan(
             if payload.get("status") == "manual_candidate":
                 manual_candidates.append(payload)
                 skipped.append({"symbol": symbol, "reason": "quote_subscription_required"})
+                signal_details.append(
+                    _signal_detail(
+                        signal=signal,
+                        plan=plan,
+                        quote=quote,
+                        reason="quote_subscription_required",
+                        status="manual_candidate",
+                        reference_price=intraday_reference_price,
+                    )
+                )
                 report_rows.append(
                     _symbol_report_row(
                         symbol=symbol,
@@ -560,9 +628,20 @@ def run_entry_scan(
                 LOGGER.warning("%s manual candidate %s: quote_subscription_required", stage_name, symbol)
                 break
 
-            skipped.append({"symbol": symbol, "reason": payload.get("reasons", ["rejected"])})
-            symbol_reasons.append(_normalize_skip_reason(payload.get("reasons", ["rejected"])))
-            LOGGER.info("%s skip %s: %s", stage_name, symbol, payload.get("reasons", ["rejected"]))
+            rejection_reasons = payload.get("reasons", ["rejected"])
+            skipped.append({"symbol": symbol, "reason": rejection_reasons})
+            symbol_reasons.append(_normalize_skip_reason(rejection_reasons))
+            signal_details.append(
+                _signal_detail(
+                    signal=signal,
+                    plan=plan,
+                    quote=quote,
+                    reason=rejection_reasons,
+                    status=str(payload.get("status", "rejected")),
+                    reference_price=intraday_reference_price,
+                )
+            )
+            LOGGER.info("%s skip %s: %s", stage_name, symbol, rejection_reasons)
 
         if not symbol_result_recorded:
             report_reason = ", ".join(dict.fromkeys(symbol_reasons)) if symbol_reasons else "not_entered"
@@ -590,6 +669,7 @@ def run_entry_scan(
         "skipped": skipped,
         "manual_candidates": manual_candidates,
         "report_rows": report_rows,
+        "signal_details": signal_details,
         "signals_detected": signals_detected,
         "symbols_scanned": scanned_symbols,
         "macro_risk": macro_context,

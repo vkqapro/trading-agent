@@ -99,6 +99,7 @@ def run_intraday(
         iteration_skipped: List[Dict[str, object]] = []
         iteration_manual_candidates: List[Dict[str, object]] = []
         iteration_report_rows: List[Dict[str, object]] = []
+        iteration_signal_details: List[Dict[str, object]] = []
         symbols_scanned = 0
         signals_detected = 0
         entries_enabled = can_scan_for_new_entries(loop_time)
@@ -126,12 +127,15 @@ def run_intraday(
             skipped = scan_result["skipped"]
             manual_candidates = scan_result.get("manual_candidates", [])
             report_rows = scan_result.get("report_rows", [])
+            signal_details = scan_result.get("signal_details", [])
             iteration_executed = executed
             iteration_skipped = skipped
             if isinstance(manual_candidates, list):
                 iteration_manual_candidates = manual_candidates
             if isinstance(report_rows, list):
                 iteration_report_rows = report_rows
+            if isinstance(signal_details, list):
+                iteration_signal_details = signal_details
             symbols_scanned = int(scan_result["symbols_scanned"])
             signals_detected = int(scan_result["signals_detected"])
             executed_total.extend(executed)
@@ -146,6 +150,7 @@ def run_intraday(
                     "executed_count": len(executed),
                     "skipped_count": len(skipped),
                     "manual_candidate_count": len(iteration_manual_candidates),
+                    "signal_details": iteration_signal_details,
                 }
             )
         elif not entries_enabled:
@@ -180,6 +185,7 @@ def run_intraday(
                 "executed": iteration_executed,
                 "skipped": iteration_skipped,
                 "manual_candidates": iteration_manual_candidates,
+                "signal_details": iteration_signal_details,
                 "skip_reason_summary": summarize_skip_reasons(iteration_skipped),
             }
         )

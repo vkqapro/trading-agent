@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from pathlib import Path
 from typing import Dict, List
 
@@ -87,6 +88,49 @@ class SlackAlerter:
     def send_error(self, message: str) -> bool:
         return self.send_channel_message(f"Error: {message}")
 
+    @staticmethod
+    def _format_price(value: object) -> str:
+        try:
+            numeric = float(value)
+        except (TypeError, ValueError):
+            return "-"
+        if not math.isfinite(numeric):
+            return "-"
+        decimals = 4 if abs(numeric) < 1 else 2
+        return f"{numeric:.{decimals}f}".rstrip("0").rstrip(".")
+
+    @staticmethod
+    def _compact_text(value: object, *, max_length: int = 80) -> str:
+        text = str(value or "").strip()
+        if len(text) <= max_length:
+            return text
+        return f"{text[: max_length - 3]}..."
+
+    def _format_signal_detail(self, item: Dict[str, object]) -> str:
+        symbol = str(item.get("symbol", "?") or "?").upper()
+        side = str(item.get("signal", item.get("direction", "?")) or "?").upper()
+        strategy = str(item.get("strategy", "unknown") or "unknown")
+        entry = self._format_price(item.get("entry"))
+        signal_level = self._format_price(item.get("signal_level"))
+        signal_level_type = str(item.get("signal_level_type", "") or "").strip()
+        nearest_level = self._format_price(item.get("nearest_level"))
+        nearest_level_type = str(item.get("nearest_level_type", "") or "").strip()
+        status = str(item.get("status", "not_entered") or "not_entered")
+        reason = self._compact_text(item.get("reason", status))
+        reward_risk = self._format_price(item.get("reward_risk"))
+
+        parts = [f"{symbol}: {side} {strategy}", f"entry {entry}"]
+        if signal_level != "-":
+            level_label = f" {signal_level_type}" if signal_level_type else ""
+            parts.append(f"signal level {signal_level}{level_label}")
+        if nearest_level != "-":
+            nearest_label = f" {nearest_level_type}" if nearest_level_type else ""
+            parts.append(f"nearest {nearest_level}{nearest_label}")
+        if reward_risk != "-":
+            parts.append(f"R:R {reward_risk}")
+        parts.append(f"{status}: {reason}" if reason != status else status)
+        return " | ".join(parts)
+
     def send_intraday_heartbeat(self, summary: Dict[str, object]) -> bool:
         tracked_symbols = summary.get("tracked_symbols")
         tracked_count = len(tracked_symbols) if isinstance(tracked_symbols, list) else 0
@@ -103,6 +147,7 @@ class SlackAlerter:
         interval_seconds = int(summary.get("interval_seconds", 0) or 0)
         symbols_scanned = int(summary.get("symbols_scanned", 0) or 0)
         signals_detected = int(summary.get("signals_detected", 0) or 0)
+        signal_details = summary.get("signal_details")
         skip_reason_summary = summary.get("skip_reason_summary", {})
         timestamp = str(summary.get("timestamp", ""))
         action_label = "actions taken" if action_count else "no action"
@@ -130,6 +175,18 @@ class SlackAlerter:
             )
             if executed_preview:
                 lines.append(f"Executed: {executed_preview}")
+        if signals_detected and isinstance(signal_details, list) and signal_details:
+            lines.append("Signals:")
+            formatted_signals = [
+                self._format_signal_detail(item)
+                for item in signal_details[:5]
+                if isinstance(item, dict)
+            ]
+            for detail in formatted_signals:
+                lines.append(f"- {detail}")
+            remaining = len(signal_details) - len(formatted_signals)
+            if remaining > 0:
+                lines.append(f"- ... {remaining} more")
         if skipped_count and isinstance(skip_reason_summary, dict) and skip_reason_summary:
             top_reasons = sorted(skip_reason_summary.items(), key=lambda item: (-int(item[1]), str(item[0])))
             formatted = ", ".join(f"{reason}={count}" for reason, count in top_reasons[:3])
