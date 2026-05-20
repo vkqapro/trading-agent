@@ -10,6 +10,7 @@ from unittest.mock import patch
 from src.alerts.slack import SlackAlerter
 from src.config import SETTINGS
 from src.jobs import eod as eod_module
+from src.jobs.session_utils import load_runtime_state
 from src.main import _hydrate_from_logs
 from src.risk.risk_manager import RiskManager
 from src.workflow_log import append_workflow_snapshot
@@ -70,6 +71,33 @@ class MemoryFlowTests(unittest.TestCase):
             self.assertEqual(hydrated["tracked_positions"][0]["symbol"], "TSLA")
 
         object.__setattr__(SETTINGS.paths, "research_log", original_research_log)
+
+    def test_load_runtime_state_prefers_latest_premarket_watchlist_over_stale_state(self) -> None:
+        original_research_log = SETTINGS.paths.research_log
+        original_state_file = SETTINGS.paths.state_file
+        with tempfile.TemporaryDirectory() as temp_dir:
+            research_log = Path(temp_dir) / "RESEARCH_LOG.md"
+            state_file = Path(temp_dir) / "state.json"
+            research_log.write_text("# Research Log\n", encoding="utf-8")
+            state_file.write_text(
+                json.dumps({"watchlist": {"SEI": {"levels": [{"price": 79.19}]}}, "tracked_positions": []}),
+                encoding="utf-8",
+            )
+            object.__setattr__(SETTINGS.paths, "research_log", research_log)
+            object.__setattr__(SETTINGS.paths, "state_file", state_file)
+
+            append_workflow_snapshot(
+                research_log,
+                "Premarket",
+                {"watchlist": {"SEI": {"levels": [{"price": 71.05}]}}},
+            )
+
+            loaded = load_runtime_state()
+
+            self.assertEqual(loaded["watchlist"]["SEI"]["levels"][0]["price"], 71.05)
+
+        object.__setattr__(SETTINGS.paths, "research_log", original_research_log)
+        object.__setattr__(SETTINGS.paths, "state_file", original_state_file)
 
     def test_eod_uses_workflow_fallback_when_daily_decisions_are_empty(self) -> None:
         original_research_log = SETTINGS.paths.research_log

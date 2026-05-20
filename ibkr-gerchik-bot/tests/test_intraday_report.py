@@ -32,6 +32,53 @@ class IntradayReportTests(unittest.TestCase):
         self.assertEqual(level, 102.0)
         self.assertEqual(level_type, "gap")
 
+    def test_nearest_level_details_prefers_intraday_reference_over_stale_quote_close(self) -> None:
+        plan = {
+            "levels": [
+                {"price": 5.98, "center": 5.98, "type": "historical", "strength_score": 16.0},
+                {"price": 4.88, "center": 4.88, "type": "mirror", "strength_score": 12.0},
+                {"price": 4.61, "center": 4.61, "type": "historical", "strength_score": 20.0},
+                {"price": 4.48, "center": 4.48, "type": "consolidation", "strength_score": 22.0},
+                {"price": 6.27, "center": 6.27, "type": "historical", "strength_score": 6.0},
+            ]
+        }
+
+        level, level_type = nearest_level_details(
+            plan,
+            {"bid": 0.0, "ask": 0.0, "last": 0.0, "close": 5.98, "quote_status": "partial"},
+            reference_price=4.58,
+        )
+
+        self.assertEqual(level, 4.61)
+        self.assertEqual(level_type, "historical")
+
+    def test_nearest_level_details_uses_zone_proximity_but_returns_level_price(self) -> None:
+        plan = {
+            "levels": [
+                {
+                    "price": 71.05,
+                    "center": 70.75,
+                    "zone_low": 69.53,
+                    "zone_high": 71.77,
+                    "type": "abnormal_candle",
+                    "strength_score": 140.0,
+                },
+                {
+                    "price": 74.44,
+                    "center": 74.36,
+                    "zone_low": 73.19,
+                    "zone_high": 75.56,
+                    "type": "gap",
+                    "strength_score": 66.0,
+                },
+            ]
+        }
+
+        level, level_type = nearest_level_details(plan, {"last": 72.44}, reference_price=72.44)
+
+        self.assertEqual(level, 71.05)
+        self.assertEqual(level_type, "abnormal_candle")
+
     def test_write_intraday_scan_report_creates_workbook(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             report_path = write_intraday_scan_report(

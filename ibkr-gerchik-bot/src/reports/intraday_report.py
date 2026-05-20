@@ -35,27 +35,47 @@ def _quote_reference_price(quote: Dict[str, object]) -> Optional[float]:
     return None
 
 
-def nearest_level_details(plan: Dict[str, object], quote: Optional[Dict[str, object]] = None) -> Tuple[Optional[float], str]:
+def nearest_level_details(
+    plan: Dict[str, object],
+    quote: Optional[Dict[str, object]] = None,
+    *,
+    reference_price: Optional[float] = None,
+) -> Tuple[Optional[float], str]:
     """Return the most relevant watchlist level for reporting."""
     levels = plan.get("levels", [])
     if not isinstance(levels, list) or not levels:
         return None, ""
 
     quote_payload = quote if isinstance(quote, dict) else {}
-    reference_price = _quote_reference_price(quote_payload)
+    resolved_reference_price = reference_price if reference_price is not None and reference_price > 0 else _quote_reference_price(quote_payload)
     chosen_level: Optional[Dict[str, object]] = None
 
-    if reference_price is not None:
+    if resolved_reference_price is not None:
         best_distance: Optional[float] = None
         for raw_level in levels:
             if not isinstance(raw_level, dict):
                 continue
-            level_price = _coerce_float(raw_level.get("center"))
-            if level_price is None:
-                level_price = _coerce_float(raw_level.get("price"))
-            if level_price is None:
+            zone_low = _coerce_float(raw_level.get("zone_low"))
+            zone_high = _coerce_float(raw_level.get("zone_high"))
+            comparison_price = _coerce_float(raw_level.get("center"))
+            if comparison_price is None:
+                comparison_price = _coerce_float(raw_level.get("price"))
+            if comparison_price is None:
                 continue
-            distance = abs(level_price - reference_price)
+
+            if zone_low is not None and zone_high is not None:
+                lower_bound = min(zone_low, zone_high)
+                upper_bound = max(zone_low, zone_high)
+                if lower_bound <= resolved_reference_price <= upper_bound:
+                    distance = 0.0
+                else:
+                    distance = min(
+                        abs(lower_bound - resolved_reference_price),
+                        abs(upper_bound - resolved_reference_price),
+                    )
+            else:
+                distance = abs(comparison_price - resolved_reference_price)
+
             if best_distance is None or distance < best_distance:
                 best_distance = distance
                 chosen_level = raw_level
@@ -69,9 +89,9 @@ def nearest_level_details(plan: Dict[str, object], quote: Optional[Dict[str, obj
             key=lambda level: _coerce_float(level.get("strength_score")) or _coerce_float(level.get("strength")) or 0.0,
         )
 
-    nearest_level = _coerce_float(chosen_level.get("center"))
+    nearest_level = _coerce_float(chosen_level.get("price"))
     if nearest_level is None:
-        nearest_level = _coerce_float(chosen_level.get("price"))
+        nearest_level = _coerce_float(chosen_level.get("center"))
     level_type = str(chosen_level.get("type", "") or "")
     return nearest_level, level_type
 

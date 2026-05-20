@@ -24,15 +24,45 @@ LOG_DIR = MEMORY_DIR / "runtime"
 load_dotenv(BASE_DIR / ".env", override=False)
 
 
+def _strip_env_comment(value: str) -> str:
+    normalized = value.strip()
+    if " #" in normalized:
+        normalized = normalized.split(" #", 1)[0].strip()
+    if "\t#" in normalized:
+        normalized = normalized.split("\t#", 1)[0].strip()
+    return normalized
+
+
+def _env_str(name: str, default: str) -> str:
+    raw = os.getenv(name)
+    if raw is None:
+        return default
+    cleaned = _strip_env_comment(raw)
+    return cleaned or default
+
+
+def _env_int(name: str, default: int) -> int:
+    return int(_env_str(name, str(default)))
+
+
+def _env_float(name: str, default: float) -> float:
+    return float(_env_str(name, str(default)))
+
+
+def _env_bool(name: str, default: bool) -> bool:
+    fallback = "true" if default else "false"
+    return _env_str(name, fallback).lower() == "true"
+
+
 def _csv_env(name: str, default: str) -> List[str]:
-    return [item.strip() for item in os.getenv(name, default).split(",") if item.strip()]
+    return [item.strip() for item in _env_str(name, default).split(",") if item.strip()]
 
 
 def _csv_env_with_fallback(name: str, fallback_name: str, default: str) -> List[str]:
     raw = os.getenv(name)
     if raw is None:
-        raw = os.getenv(fallback_name, default)
-    return [item.strip() for item in raw.split(",") if item.strip()]
+        raw = os.getenv(fallback_name)
+    return [item.strip() for item in _strip_env_comment(raw or default).split(",") if item.strip()]
 
 
 def _resolve_env_path(path_value: str) -> Path:
@@ -55,7 +85,7 @@ def _dedupe_preserve_order(values: List[str]) -> List[str]:
 
 
 def _csv_env_file_or_fallback(path_name: str, inline_name: str, fallback_name: str, default: str) -> List[str]:
-    path_value = os.getenv(path_name, "").strip()
+    path_value = _env_str(path_name, "")
     if path_value:
         file_values = _load_symbol_csv(_resolve_env_path(path_value))
         if file_values:
@@ -120,69 +150,77 @@ def fx_pair_components(symbol: str) -> tuple[str, str] | None:
 
 @dataclass(frozen=True)
 class BrokerConfig:
-    host: str = os.getenv("IBKR_HOST", "127.0.0.1")
-    port: int = int(os.getenv("IBKR_PORT", "7497"))
-    client_id: int = int(os.getenv("IBKR_CLIENT_ID", "1"))
-    reconnect_retries: int = int(os.getenv("IBKR_RECONNECT_RETRIES", "5"))
-    reconnect_delay_seconds: int = int(os.getenv("IBKR_RECONNECT_DELAY_SECONDS", "5"))
-    market_data_timeout_seconds: int = int(os.getenv("IBKR_MARKET_DATA_TIMEOUT_SECONDS", "10"))
+    host: str = _env_str("IBKR_HOST", "127.0.0.1")
+    port: int = _env_int("IBKR_PORT", 7497)
+    client_id: int = _env_int("IBKR_CLIENT_ID", 1)
+    reconnect_retries: int = _env_int("IBKR_RECONNECT_RETRIES", 5)
+    reconnect_delay_seconds: int = _env_int("IBKR_RECONNECT_DELAY_SECONDS", 5)
+    market_data_timeout_seconds: int = _env_int("IBKR_MARKET_DATA_TIMEOUT_SECONDS", 10)
 
 
 @dataclass(frozen=True)
 class RiskConfig:
-    risk_per_trade: float = float(os.getenv("RISK_PER_TRADE", "0.01"))
-    max_daily_loss_pct: float = float(os.getenv("MAX_DAILY_LOSS", "0.02"))
-    max_positions: int = int(os.getenv("MAX_OPEN_POSITIONS", "5"))
-    max_open_risk_pct: float = float(os.getenv("MAX_OPEN_RISK", "0.03"))
-    min_reward_risk_ratio: float = float(os.getenv("MIN_REWARD_RISK", "3.0"))
-    max_spread_pct: float = float(os.getenv("MAX_SPREAD_PCT", "0.003"))
-    max_position_value: float = float(os.getenv("MAX_POSITION_VALUE", "25000"))
-    calculated_stop_pct: float = float(os.getenv("CALCULATED_STOP_PCT", "0.0015"))
-    max_stop_vs_calculated_multiplier: float = float(os.getenv("MAX_STOP_VS_CALCULATED_MULTIPLIER", "1.2"))
-    first_unstable_minutes: int = int(os.getenv("FIRST_UNSTABLE_MINUTES", "5"))
+    risk_per_trade: float = _env_float("RISK_PER_TRADE", 0.01)
+    max_daily_loss_pct: float = _env_float("MAX_DAILY_LOSS", 0.02)
+    max_positions: int = _env_int("MAX_OPEN_POSITIONS", 5)
+    max_open_risk_pct: float = _env_float("MAX_OPEN_RISK", 0.03)
+    min_reward_risk_ratio: float = _env_float("MIN_REWARD_RISK", 3.0)
+    max_spread_pct: float = _env_float("MAX_SPREAD_PCT", 0.003)
+    max_position_value: float = _env_float("MAX_POSITION_VALUE", 25000.0)
+    calculated_stop_pct: float = _env_float("CALCULATED_STOP_PCT", 0.0015)
+    max_stop_vs_calculated_multiplier: float = _env_float("MAX_STOP_VS_CALCULATED_MULTIPLIER", 1.2)
+    first_unstable_minutes: int = _env_int("FIRST_UNSTABLE_MINUTES", 5)
 
 
 @dataclass(frozen=True)
 class StrategyConfig:
-    min_avg_volume: int = int(os.getenv("MIN_AVG_VOLUME", "500000"))
-    lookback_bars: int = int(os.getenv("LOOKBACK_BARS", "60"))
-    premarket_daily_lookback_days: int = int(os.getenv("PREMARKET_DAILY_LOOKBACK_DAYS", "60"))
-    level_tolerance_pct: float = float(os.getenv("LEVEL_TOLERANCE_PCT", "0.0025"))
-    consolidation_window: int = int(os.getenv("CONSOLIDATION_WINDOW", "20"))
-    abnormal_range_multiplier: float = float(os.getenv("ABNORMAL_RANGE_MULTIPLIER", "2.0"))
-    compression_range_multiplier: float = float(os.getenv("COMPRESSION_RANGE_MULTIPLIER", "0.6"))
-    atr_travel_limit_pct: float = float(os.getenv("ATR_TRAVEL_LIMIT_PCT", "0.8"))
-    minimum_technical_atr_pct: float = float(os.getenv("MIN_TECHNICAL_ATR_PCT", "0.01"))
-    level_strength_threshold: float = float(os.getenv("LEVEL_STRENGTH_THRESHOLD", "4.0"))
-    level_merge_tolerance_pct: float = float(os.getenv("LEVEL_MERGE_TOLERANCE_PCT", "0.0015"))
-    level_merge_min_dollars: float = float(os.getenv("LEVEL_MERGE_MIN_DOLLARS", "0.05"))
+    min_avg_volume: int = _env_int("MIN_AVG_VOLUME", 500000)
+    lookback_bars: int = _env_int("LOOKBACK_BARS", 60)
+    premarket_daily_lookback_days: int = _env_int("PREMARKET_DAILY_LOOKBACK_DAYS", 60)
+    level_tolerance_pct: float = _env_float("LEVEL_TOLERANCE_PCT", 0.0025)
+    consolidation_window: int = _env_int("CONSOLIDATION_WINDOW", 20)
+    abnormal_range_multiplier: float = _env_float("ABNORMAL_RANGE_MULTIPLIER", 2.0)
+    compression_range_multiplier: float = _env_float("COMPRESSION_RANGE_MULTIPLIER", 0.6)
+    atr_travel_limit_pct: float = _env_float("ATR_TRAVEL_LIMIT_PCT", 0.8)
+    minimum_technical_atr_pct: float = _env_float("MIN_TECHNICAL_ATR_PCT", 0.01)
+    level_strength_threshold: float = _env_float("LEVEL_STRENGTH_THRESHOLD", 4.0)
+    level_merge_tolerance_pct: float = _env_float("LEVEL_MERGE_TOLERANCE_PCT", 0.0015)
+    level_merge_min_dollars: float = _env_float("LEVEL_MERGE_MIN_DOLLARS", 0.05)
 
 
 @dataclass(frozen=True)
 class TradingHours:
-    timezone: str = os.getenv("TRADING_TIMEZONE", "America/New_York")
-    market_open_hour: int = int(os.getenv("MARKET_OPEN_HOUR", "9"))
-    market_open_minute: int = int(os.getenv("MARKET_OPEN_MINUTE", "30"))
-    market_close_hour: int = int(os.getenv("MARKET_CLOSE_HOUR", "16"))
-    market_close_minute: int = int(os.getenv("MARKET_CLOSE_MINUTE", "0"))
+    timezone: str = _env_str("TRADING_TIMEZONE", "America/New_York")
+    market_open_hour: int = _env_int("MARKET_OPEN_HOUR", 9)
+    market_open_minute: int = _env_int("MARKET_OPEN_MINUTE", 30)
+    open_scan_start_hour: int = _env_int("OPEN_SCAN_START_HOUR", 9)
+    open_scan_start_minute: int = _env_int("OPEN_SCAN_START_MINUTE", 35)
+    open_scan_end_hour: int = _env_int("OPEN_SCAN_END_HOUR", 10)
+    open_scan_end_minute: int = _env_int("OPEN_SCAN_END_MINUTE", 30)
+    market_close_hour: int = _env_int("MARKET_CLOSE_HOUR", 16)
+    market_close_minute: int = _env_int("MARKET_CLOSE_MINUTE", 0)
+    no_new_entry_after_hour: int = _env_int("NO_NEW_ENTRY_AFTER_HOUR", 15)
+    no_new_entry_after_minute: int = _env_int("NO_NEW_ENTRY_AFTER_MINUTE", 45)
+    intraday_end_hour: int = _env_int("INTRADAY_END_HOUR", 15)
+    intraday_end_minute: int = _env_int("INTRADAY_END_MINUTE", 45)
 
 
 @dataclass(frozen=True)
 class NewsConfig:
-    api_key: str = os.getenv("NEWS_API_KEY", "")
-    base_url: str = os.getenv("NEWS_API_BASE_URL", "https://eventregistry.org/api/v1/article/getArticles")
-    macro_url: str = os.getenv("NEWS_MACRO_URL", "https://eventregistry.org/api/v1/article/getArticles")
-    earnings_url: str = os.getenv("NEWS_EARNINGS_URL", "https://eventregistry.org/api/v1/article/getArticles")
-    request_timeout_seconds: int = int(os.getenv("NEWS_TIMEOUT_SECONDS", "10"))
-    ibkr_news_enabled: bool = os.getenv("IBKR_NEWS_ENABLED", "true").lower() == "true"
+    api_key: str = _env_str("NEWS_API_KEY", "")
+    base_url: str = _env_str("NEWS_API_BASE_URL", "https://eventregistry.org/api/v1/article/getArticles")
+    macro_url: str = _env_str("NEWS_MACRO_URL", "https://eventregistry.org/api/v1/article/getArticles")
+    earnings_url: str = _env_str("NEWS_EARNINGS_URL", "https://eventregistry.org/api/v1/article/getArticles")
+    request_timeout_seconds: int = _env_int("NEWS_TIMEOUT_SECONDS", 10)
+    ibkr_news_enabled: bool = _env_bool("IBKR_NEWS_ENABLED", True)
     ibkr_symbol_providers: Tuple[str, ...] = tuple(
         item for item in _csv_env("IBKR_NEWS_SYMBOL_PROVIDERS", "BRFUPDN,DJ-N") if item
     )
     ibkr_macro_providers: Tuple[str, ...] = tuple(
         item for item in _csv_env("IBKR_NEWS_MACRO_PROVIDERS", "BRFG,DJ-RTG") if item
     )
-    ibkr_headline_limit: int = int(os.getenv("IBKR_NEWS_HEADLINE_LIMIT", "10"))
-    ibkr_lookback_hours: int = int(os.getenv("IBKR_NEWS_LOOKBACK_HOURS", "24"))
+    ibkr_headline_limit: int = _env_int("IBKR_NEWS_HEADLINE_LIMIT", 10)
+    ibkr_lookback_hours: int = _env_int("IBKR_NEWS_LOOKBACK_HOURS", 24)
     high_risk_keywords: Tuple[str, ...] = (
         "earnings",
         "lawsuit",
@@ -203,8 +241,8 @@ class NewsConfig:
         "sanctions",
     )
     critical_macro_keywords: Tuple[str, ...] = ("cpi", "fomc", "fed speech", "federal reserve", "powell")
-    macro_min_match_count: int = int(os.getenv("NEWS_MACRO_MIN_MATCH_COUNT", "2"))
-    default_macro_query: str = os.getenv(
+    macro_min_match_count: int = _env_int("NEWS_MACRO_MIN_MATCH_COUNT", 2)
+    default_macro_query: str = _env_str(
         "NEWS_MACRO_QUERY",
         "CPI OR FOMC OR \"Fed speech\" OR \"Federal Reserve\" OR geopolitical OR sanctions",
     )
@@ -226,11 +264,11 @@ class PathsConfig:
 @dataclass(frozen=True)
 class Settings:
     app_name: str = "ibkr-gerchik-bot"
-    paper_trading: bool = os.getenv("PAPER_TRADING", "true").lower() == "true"
-    dry_run_mode: bool = os.getenv("DRY_RUN_MODE", "true").lower() == "true"
-    auto_git_push: bool = os.getenv("AUTO_GIT_PUSH", "false").lower() == "true"
-    git_branch: str = os.getenv("WORKFLOW_GIT_BRANCH", "Test")
-    account_currency: str = os.getenv("ACCOUNT_CURRENCY", "USD")
+    paper_trading: bool = _env_bool("PAPER_TRADING", True)
+    dry_run_mode: bool = _env_bool("DRY_RUN_MODE", True)
+    auto_git_push: bool = _env_bool("AUTO_GIT_PUSH", False)
+    git_branch: str = _env_str("WORKFLOW_GIT_BRANCH", "Test")
+    account_currency: str = _env_str("ACCOUNT_CURRENCY", "USD")
     stock_symbols: List[str] = field(
         default_factory=lambda: _csv_env_file_or_fallback(
             "STOCK_SYMBOLS_FILE",
@@ -246,13 +284,13 @@ class Settings:
     trading_hours: TradingHours = field(default_factory=TradingHours)
     news: NewsConfig = field(default_factory=NewsConfig)
     paths: PathsConfig = field(default_factory=PathsConfig)
-    slack_webhook: str = os.getenv("SLACK_WEBHOOK", "")
-    slack_bot_token: str = os.getenv("SLACK_BOT_TOKEN", "")
-    slack_channel: str = os.getenv("SLACK_CHANNEL", "")
-    slack_commands_enabled: bool = os.getenv("SLACK_COMMANDS_ENABLED", "true").lower() == "true"
-    slack_command_prefix: str = os.getenv("SLACK_COMMAND_PREFIX", "ibkr").strip().lower()
+    slack_webhook: str = _env_str("SLACK_WEBHOOK", "")
+    slack_bot_token: str = _env_str("SLACK_BOT_TOKEN", "")
+    slack_channel: str = _env_str("SLACK_CHANNEL", "")
+    slack_commands_enabled: bool = _env_bool("SLACK_COMMANDS_ENABLED", True)
+    slack_command_prefix: str = _env_str("SLACK_COMMAND_PREFIX", "ibkr").strip().lower()
     slack_allowed_user_ids: List[str] = field(default_factory=lambda: _csv_env("SLACK_ALLOWED_USER_IDS", ""))
-    premarket_levels_export_min_strength: float = float(os.getenv("PREMARKET_LEVELS_EXPORT_MIN_STRENGTH", "7.0"))
+    premarket_levels_export_min_strength: float = _env_float("PREMARKET_LEVELS_EXPORT_MIN_STRENGTH", 7.0)
 
     @property
     def symbols(self) -> List[str]:

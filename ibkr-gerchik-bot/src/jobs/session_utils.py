@@ -30,12 +30,25 @@ from src.workflow_log import append_workflow_snapshot, read_latest_workflow_snap
 NowProvider = Callable[[], datetime]
 SleepProvider = Callable[[float], None]
 
-OPEN_SCAN_START = dt_time(hour=9, minute=35)
-OPEN_SCAN_END = dt_time(hour=10, minute=30)
-NO_NEW_ENTRY_AFTER = dt_time(hour=15, minute=45)
+OPEN_SCAN_START = dt_time(
+    hour=SETTINGS.trading_hours.open_scan_start_hour,
+    minute=SETTINGS.trading_hours.open_scan_start_minute,
+)
+OPEN_SCAN_END = dt_time(
+    hour=SETTINGS.trading_hours.open_scan_end_hour,
+    minute=SETTINGS.trading_hours.open_scan_end_minute,
+)
+NO_NEW_ENTRY_AFTER = dt_time(
+    hour=SETTINGS.trading_hours.no_new_entry_after_hour,
+    minute=SETTINGS.trading_hours.no_new_entry_after_minute,
+)
 MARKET_CLOSE_TIME = dt_time(
     hour=SETTINGS.trading_hours.market_close_hour,
     minute=SETTINGS.trading_hours.market_close_minute,
+)
+INTRADAY_END_TIME = dt_time(
+    hour=SETTINGS.trading_hours.intraday_end_hour,
+    minute=SETTINGS.trading_hours.intraday_end_minute,
 )
 STOP_INTEGRITY_RECHECK_SECONDS = 2.0
 STOP_INTEGRITY_RECHECK_ATTEMPTS = 3
@@ -51,6 +64,8 @@ def session_now() -> datetime:
 def get_scan_interval(current_time: datetime) -> int:
     """Return the scan cadence in seconds for the current market phase."""
     local_time = current_time.timetz().replace(tzinfo=None)
+    if local_time >= INTRADAY_END_TIME:
+        return 0
     if dt_time(9, 35) <= local_time < dt_time(10, 30):
         return 300
     if dt_time(10, 30) <= local_time < dt_time(11, 30):
@@ -78,6 +93,14 @@ def can_scan_for_new_entries(current_time: datetime) -> bool:
         return False
     local_time = current_time.timetz().replace(tzinfo=None)
     return OPEN_SCAN_START <= local_time < NO_NEW_ENTRY_AFTER
+
+
+def intraday_session_active(current_time: datetime) -> bool:
+    """Return True while the intraday loop itself should remain active."""
+    if current_time.weekday() >= 5:
+        return False
+    local_time = current_time.timetz().replace(tzinfo=None)
+    return OPEN_SCAN_START <= local_time < INTRADAY_END_TIME
 
 
 def next_scan_time(current_time: datetime, interval_seconds: int) -> datetime:
@@ -158,10 +181,9 @@ def load_runtime_state() -> Dict[str, object]:
             LOGGER.warning("Failed to read runtime state; falling back to default state.")
             state = _default_state()
 
-    if not state.get("watchlist"):
-        premarket = read_latest_workflow_snapshot(SETTINGS.paths.research_log, "Premarket")
-        if isinstance(premarket, dict) and isinstance(premarket.get("watchlist"), dict):
-            state["watchlist"] = premarket["watchlist"]
+    premarket = read_latest_workflow_snapshot(SETTINGS.paths.research_log, "Premarket")
+    if isinstance(premarket, dict) and isinstance(premarket.get("watchlist"), dict) and premarket["watchlist"]:
+        state["watchlist"] = premarket["watchlist"]
     return state
 
 
@@ -184,8 +206,9 @@ def _symbol_report_row(
     plan: Dict[str, object],
     quote: Optional[Dict[str, object]],
     reason: object,
+    reference_price: Optional[float] = None,
 ) -> Dict[str, object]:
-    nearest_level, nearest_level_type = nearest_level_details(plan, quote)
+    nearest_level, nearest_level_type = nearest_level_details(plan, quote, reference_price=reference_price)
     return {
         "stock_symbol": symbol,
         "nearest_level": round(nearest_level, 2) if nearest_level is not None else None,
@@ -420,6 +443,7 @@ def run_entry_scan(
         intraday_bars = market_data.get_intraday_bars(symbol, duration="2 D", bar_size="5 mins")
         quote = market_data.get_quote(symbol)
         quote_status = str(quote.get("quote_status", "") or "")
+        intraday_reference_price = float(intraday_bars.iloc[-1]["close"]) if not intraday_bars.empty else None
         if intraday_bars.empty:
             skipped.append({"symbol": symbol, "reason": "missing_live_data"})
             report_rows.append(
@@ -440,6 +464,7 @@ def run_entry_scan(
                     plan=plan,
                     quote=quote,
                     reason="missing_live_data",
+                    reference_price=intraday_reference_price,
                 )
             )
             LOGGER.info("%s skip %s: missing_live_data", stage_name, symbol)
@@ -456,6 +481,7 @@ def run_entry_scan(
                     plan=plan,
                     quote=quote,
                     reason="no_signal",
+                    reference_price=intraday_reference_price,
                 )
             )
             LOGGER.info("%s skip %s: no_signal", stage_name, symbol)
@@ -495,6 +521,7 @@ def run_entry_scan(
                         plan=plan,
                         quote=quote,
                         reason="entered",
+                        reference_price=intraday_reference_price,
                     )
                 )
                 symbol_result_recorded = True
@@ -522,6 +549,7 @@ def run_entry_scan(
                         plan=plan,
                         quote=quote,
                         reason="quote_subscription_required",
+                        reference_price=intraday_reference_price,
                     )
                 )
                 symbol_result_recorded = True
@@ -540,6 +568,7 @@ def run_entry_scan(
                     plan=plan,
                     quote=quote,
                     reason=report_reason,
+                    reference_price=intraday_reference_price,
                 )
             )
 
@@ -575,8 +604,11 @@ def manage_positions(
     """Manage open positions, exits, and stop hygiene."""
     actions: List[Dict[str, object]] = []
     closed_symbols: set[str] = set()
+    LOGGER.info("Intraday management started: tracked_positions=%s", len(tracked_positions))
     stop_integrity_ok = protective_stops_ok(broker, tracked_positions)
+    LOGGER.info("Intraday management: evaluating macro risk")
     macro_risk = news_filter.is_macro_risk()
+    LOGGER.info("Intraday management: checking kill switch state")
     kill_switch, reasons = should_trigger_kill_switch(
         account_equity=account_equity,
         daily_realized_pnl=daily_realized_pnl,
@@ -649,6 +681,7 @@ def manage_positions(
     if closed_symbols:
         tracked_positions[:] = [position for position in tracked_positions if str(position.get("symbol")) not in closed_symbols]
 
+    LOGGER.info("Intraday management finished: actions=%s kill_switch=%s", len(actions), False)
     return {"actions": actions, "macro_risk": macro_risk, "kill_switch": False, "reasons": []}
 
 

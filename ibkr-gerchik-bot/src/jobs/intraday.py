@@ -15,6 +15,7 @@ from src.jobs.session_utils import (
     calculate_open_risk_amount,
     can_scan_for_new_entries,
     get_scan_interval,
+    intraday_session_active,
     load_runtime_state,
     manage_positions,
     next_scan_time,
@@ -56,6 +57,14 @@ def run_intraday(
             {"actions": [], "blocked": True, "reason": "market_closed", "timestamp": current_time.isoformat()},
         )
         return []
+    if not intraday_session_active(current_time):
+        LOGGER.info("Intraday job skipped because the intraday session is inactive at %s", current_time.isoformat())
+        append_workflow_snapshot(
+            SETTINGS.paths.research_log,
+            "Intraday",
+            {"actions": [], "blocked": True, "reason": "intraday_session_inactive", "timestamp": current_time.isoformat()},
+        )
+        return []
 
     state = load_runtime_state()
     watchlist = state.get("watchlist", {})
@@ -71,6 +80,9 @@ def run_intraday(
     while True:
         loop_time = now_fn()
         if not market_data.market_is_open(loop_time):
+            break
+        if not intraday_session_active(loop_time):
+            LOGGER.info("Intraday session ended at %s", loop_time.isoformat())
             break
 
         broker_positions = broker.get_positions()
@@ -90,6 +102,12 @@ def run_intraday(
         symbols_scanned = 0
         signals_detected = 0
         entries_enabled = can_scan_for_new_entries(loop_time)
+        LOGGER.info(
+            "Intraday loop state: entries_enabled=%s watchlist_symbols=%s tracked_positions=%s",
+            entries_enabled,
+            len(watchlist),
+            len(tracked_positions),
+        )
 
         if entries_enabled and watchlist:
             scan_result = run_entry_scan(
@@ -130,6 +148,13 @@ def run_intraday(
                     "manual_candidate_count": len(iteration_manual_candidates),
                 }
             )
+        elif not entries_enabled:
+            LOGGER.info(
+                "Intraday entries disabled at %s; managing positions only until next loop.",
+                loop_time.isoformat(),
+            )
+        else:
+            LOGGER.info("Intraday watchlist is empty; managing positions only until next loop.")
 
         management = manage_positions(
             broker=broker,
