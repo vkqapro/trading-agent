@@ -132,26 +132,45 @@ def _lock_is_stale(lock_path: Path) -> bool:
 
 
 @contextmanager
-def job_loop_lock(lock_name: str) -> Iterator[bool]:
+def job_loop_lock(
+    lock_name: str,
+    *,
+    wait_timeout_seconds: float = 0.0,
+    retry_delay_seconds: float = 5.0,
+) -> Iterator[bool]:
     """Prevent overlapping session loops across scheduled invocations."""
     lock_path = SETTINGS.paths.runtime_dir / f"{lock_name}.lock"
     acquired = False
     handle: Optional[int] = None
+    deadline = time.monotonic() + max(float(wait_timeout_seconds), 0.0)
+    retry_delay = max(float(retry_delay_seconds), 1.0)
     try:
-        for attempt in range(2):
+        while True:
             try:
                 handle = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
                 os.write(handle, f"{os.getpid()}|{datetime.now().isoformat()}".encode("utf-8"))
                 acquired = True
                 break
             except FileExistsError:
-                if attempt == 0 and _lock_is_stale(lock_path):
+                if _lock_is_stale(lock_path):
                     try:
                         lock_path.unlink()
                         LOGGER.warning("Recovered stale loop lock: %s", lock_path.name)
                         continue
                     except OSError:
                         LOGGER.warning("Failed to recover stale loop lock: %s", lock_path.name)
+
+                remaining = deadline - time.monotonic()
+                if remaining > 0:
+                    sleep_seconds = min(retry_delay, remaining)
+                    LOGGER.info(
+                        "Loop lock already held: %s; waiting %.0fs before retry.",
+                        lock_path.name,
+                        sleep_seconds,
+                    )
+                    time.sleep(sleep_seconds)
+                    continue
+
                 LOGGER.warning("Loop lock already held: %s", lock_path.name)
                 acquired = False
                 break

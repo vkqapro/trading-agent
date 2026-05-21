@@ -114,9 +114,9 @@ def calculate_atr(candles: pd.DataFrame, period: int = 5) -> float:
 def _atr_distances(atr_value: float) -> tuple[float, float, float]:
     if atr_value <= 0:
         return 0.05, 0.10, 0.05
-    zone_buffer = atr_value * ZONE_BUFFER_MULTIPLIER
-    merge_distance = atr_value * MERGE_DISTANCE_MULTIPLIER
-    ultra_close_distance = atr_value * ULTRA_CLOSE_DISTANCE_MULTIPLIER
+    zone_buffer = atr_value * SETTINGS.strategy.level_zone_buffer_atr_pct
+    merge_distance = atr_value * SETTINGS.strategy.level_merge_distance_atr_pct
+    ultra_close_distance = atr_value * SETTINGS.strategy.level_ultra_close_atr_pct
     return zone_buffer, merge_distance, ultra_close_distance
 
 
@@ -260,7 +260,9 @@ def _raw_level(
         zone_high=zone_high,
         center=center,
         families=[_family_group(level_type), level_type],
-        atr_value=zone_buffer / ZONE_BUFFER_MULTIPLIER if zone_buffer > 0 else 0.0,
+        atr_value=zone_buffer / SETTINGS.strategy.level_zone_buffer_atr_pct
+        if zone_buffer > 0 and SETTINGS.strategy.level_zone_buffer_atr_pct > 0
+        else 0.0,
         touch_indices=touch_indices,
         false_breakout_indices=false_breakout_indices,
         last_touch_index=max(touch_indices) if touch_indices else None,
@@ -390,7 +392,7 @@ def merge_nearby_levels(
     resolved_zone_buffer = zone_buffer if zone_buffer is not None else resolved_zone_buffer
     resolved_merge_distance = merge_distance if merge_distance is not None else default_merge_distance
     resolved_ultra_close = ultra_close_distance if ultra_close_distance is not None else default_ultra_close
-    max_zone_width = resolved_atr * MAX_ZONE_WIDTH_ATR_MULTIPLIER if resolved_atr > 0 else None
+    max_zone_width = resolved_atr * SETTINGS.strategy.max_level_zone_width_atr_pct if resolved_atr > 0 else None
 
     by_symbol_timeframe: Dict[tuple[str, str], List[Level]] = {}
     for level in levels:
@@ -496,8 +498,8 @@ def _merge_cluster(cluster: List[Level], daily_bars: pd.DataFrame, atr_value: fl
         price=representative.price,
         type=representative.type,
         timeframe=representative.timeframe,
-        touches=sum(level.touches for level in cluster),
-        false_breakouts=sum(level.false_breakouts for level in cluster),
+        touches=len(touch_indices),
+        false_breakouts=len(false_breakout_indices),
         strength_score=0.0,
         created_by=representative.created_by,
         first_touch_date=_first_touch_date_from_indices(daily_bars, touch_indices),
@@ -526,8 +528,9 @@ def filter_weak_levels(levels: List[Level], daily_bars: pd.DataFrame, atr_value:
         if level.touches < MIN_TOUCHES:
             LOGGER.info("Rejected level %s %.2f: touches=%s < %s", level.type, level.price, level.touches, MIN_TOUCHES)
             continue
-        if atr_value > 0 and zone_width > atr_value * MAX_ZONE_WIDTH_ATR_MULTIPLIER:
-            LOGGER.info("Rejected level %s %.2f: zone_width=%.4f > %.4f", level.type, level.price, zone_width, atr_value * MAX_ZONE_WIDTH_ATR_MULTIPLIER)
+        max_zone_width = atr_value * SETTINGS.strategy.max_level_zone_width_atr_pct
+        if atr_value > 0 and zone_width > max_zone_width:
+            LOGGER.info("Rejected level %s %.2f: zone_width=%.4f > %.4f", level.type, level.price, zone_width, max_zone_width)
             continue
         if _is_floating(level, daily_bars):
             LOGGER.info("Rejected level %s %.2f: floating/no clear clustering", level.type, level.price)
@@ -537,6 +540,87 @@ def filter_weak_levels(levels: List[Level], daily_bars: pd.DataFrame, atr_value:
             continue
         kept.append(level)
     return kept
+
+
+def _clean_gap_between_levels(lower: Level, upper: Level) -> float:
+    lower_zone_high = lower.zone_high if lower.zone_high is not None else lower.price
+    upper_zone_low = upper.zone_low if upper.zone_low is not None else upper.price
+    return max(float(upper_zone_low) - float(lower_zone_high), 0.0)
+
+
+def _clean_gap_atr_pct_between_levels(left: Level, right: Level, daily_atr: float) -> Optional[float]:
+    if daily_atr <= 0:
+        return None
+    lower, upper = sorted([left, right], key=lambda item: item.center or item.price)
+    return _clean_gap_between_levels(lower, upper) / daily_atr
+
+
+def _trade_level_priority(level: Level) -> tuple[int, float, int, float]:
+    return (
+        int(level.touches),
+        float(level.strength_score or level.strength or 0.0),
+        int(level.false_breakouts),
+        float(level.center or level.price),
+    )
+
+
+def optimize_trade_levels(
+    levels: List[Level],
+    daily_atr: float,
+    *,
+    min_gap_atr_pct: Optional[float] = None,
+    min_touches: Optional[int] = None,
+) -> List[Level]:
+    """Return the tradable level set after enforcing clean ATR spacing.
+
+    Raw detected levels can be close together because they represent evidence.
+    This optimized set is what entry strategies should use, so adjacent chosen
+    levels must have enough clean room between their zones.
+    """
+    if not levels:
+        return []
+
+    minimum_gap = SETTINGS.strategy.min_clean_level_gap_atr_pct if min_gap_atr_pct is None else float(min_gap_atr_pct)
+    minimum_touches = SETTINGS.strategy.min_trade_level_touches if min_touches is None else int(min_touches)
+    eligible = [level for level in levels if int(level.touches) >= minimum_touches]
+    if not eligible:
+        LOGGER.info("Optimized trade levels: no levels met min_touches=%s", minimum_touches)
+        return []
+    if daily_atr <= 0 or minimum_gap <= 0:
+        optimized = sorted(eligible, key=lambda level: level.strength_score, reverse=True)
+        enrich_nearest_levels(optimized)
+        return optimized
+
+    selected: List[Level] = []
+    for candidate in sorted(eligible, key=_trade_level_priority, reverse=True):
+        too_close_to_selected = False
+        for selected_level in selected:
+            clean_gap_atr_pct = _clean_gap_atr_pct_between_levels(candidate, selected_level, daily_atr)
+            if clean_gap_atr_pct is None or clean_gap_atr_pct < minimum_gap:
+                too_close_to_selected = True
+                LOGGER.info(
+                    "Excluded trade level %s %.2f: clean_gap_atr=%.4f < %.4f near selected %.2f",
+                    candidate.type,
+                    candidate.price,
+                    clean_gap_atr_pct or 0.0,
+                    minimum_gap,
+                    selected_level.price,
+                )
+                break
+        if not too_close_to_selected:
+            selected.append(candidate)
+
+    optimized = sorted(selected, key=lambda level: level.strength_score, reverse=True)
+    enrich_nearest_levels(optimized)
+    LOGGER.info(
+        "Optimized trade levels: raw=%s eligible=%s optimized=%s min_gap_atr=%.4f min_touches=%s",
+        len(levels),
+        len(eligible),
+        len(optimized),
+        minimum_gap,
+        minimum_touches,
+    )
+    return optimized
 
 
 def _is_floating(level: Level, daily_bars: pd.DataFrame) -> bool:

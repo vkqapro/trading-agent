@@ -232,7 +232,17 @@ class SlackAlerter:
                 entry = idea.get("entry", "-")
                 stop = idea.get("stop", "-")
                 target = idea.get("target", "-")
-                lines.append(f"{symbol}: {decision} entry {entry} stop {stop} target {target}")
+                reason = idea.get("reason")
+                nearest_lower = idea.get("nearest_lower")
+                nearest_upper = idea.get("nearest_upper")
+                clean_gap_atr_pct = idea.get("clean_gap_atr_pct")
+                if entry == "wait_for_intraday_strategy":
+                    detail = f"lower {nearest_lower} upper {nearest_upper}"
+                    if clean_gap_atr_pct is not None:
+                        detail = f"{detail} clean_gap_atr {float(clean_gap_atr_pct):.2f}"
+                    lines.append(f"{symbol}: {decision} {detail} reason {reason}")
+                else:
+                    lines.append(f"{symbol}: {decision} entry {entry} stop {stop} target {target}")
         else:
             lines.append("Ideas: none")
 

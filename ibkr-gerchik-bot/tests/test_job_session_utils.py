@@ -5,6 +5,7 @@ import tempfile
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from unittest import TestCase
+from unittest.mock import patch
 
 from src.jobs.session_utils import (
     SESSION_LOCK_STALE_AFTER,
@@ -39,7 +40,7 @@ class JobSessionUtilsTests(TestCase):
     def test_new_entries_stop_after_1545(self) -> None:
         current = datetime(2026, 5, 1, 15, 46, tzinfo=TZ)
         self.assertFalse(can_scan_for_new_entries(current))
-        self.assertEqual(get_scan_interval(current), 600)
+        self.assertEqual(get_scan_interval(current), 0)
 
     def test_protective_stop_recheck_passes_when_stop_appears_on_retry(self) -> None:
         class BrokerStub:
@@ -111,5 +112,30 @@ class JobSessionUtilsTests(TestCase):
                 self.assertTrue(acquired)
                 self.assertTrue(lock_path.exists())
 
+            self.assertFalse(lock_path.exists())
+        object.__setattr__(SETTINGS.paths, "runtime_dir", original_runtime_dir)
+
+    def test_job_loop_lock_waits_for_active_lock_to_clear(self) -> None:
+        original_runtime_dir = SETTINGS.paths.runtime_dir
+        with tempfile.TemporaryDirectory() as temp_dir:
+            object.__setattr__(SETTINGS.paths, "runtime_dir", original_runtime_dir.__class__(temp_dir))
+            lock_path = SETTINGS.paths.runtime_dir / "market_session.lock"
+            lock_path.write_text("123|active\n", encoding="utf-8")
+            slept: list[float] = []
+
+            def release_lock_after_sleep(seconds: float) -> None:
+                slept.append(seconds)
+                lock_path.unlink()
+
+            with patch("src.jobs.session_utils.time.sleep", release_lock_after_sleep):
+                with job_loop_lock(
+                    "market_session",
+                    wait_timeout_seconds=60,
+                    retry_delay_seconds=5,
+                ) as acquired:
+                    self.assertTrue(acquired)
+                    self.assertTrue(lock_path.exists())
+
+            self.assertEqual(slept, [5])
             self.assertFalse(lock_path.exists())
         object.__setattr__(SETTINGS.paths, "runtime_dir", original_runtime_dir)

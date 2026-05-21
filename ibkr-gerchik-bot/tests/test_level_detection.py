@@ -11,6 +11,7 @@ from src.strategy.levels import (
     detect_levels,
     filter_weak_levels,
     merge_nearby_levels,
+    optimize_trade_levels,
 )
 
 
@@ -109,6 +110,33 @@ class LevelDetectionTests(unittest.TestCase):
         self.assertIn("mirror", merged[0].families)
         self.assertIn("historical", merged[0].families)
 
+    def test_merge_nearby_levels_counts_unique_touch_candles(self) -> None:
+        daily = pd.DataFrame(
+            [
+                {"date": "2026-05-07", "open": 239.62, "high": 241.31, "low": 230.00, "close": 237.09},
+                {"date": "2026-05-08", "open": 240.50, "high": 255.22, "low": 236.27, "close": 248.35},
+                {"date": "2026-05-11", "open": 244.37, "high": 253.47, "low": 243.15, "close": 245.44},
+            ]
+        )
+        levels = [
+            Level(
+                "SANM", 242.04, "gap", "daily", 3, 1, 7.0, "gap_upper",
+                zone_low=239.00, zone_high=243.54, center=242.04, families=["gap"],
+                touch_indices=[0, 1, 2], false_breakout_indices=[1], last_touch_index=2,
+            ),
+            Level(
+                "SANM", 241.96, "historical", "daily", 3, 1, 6.0, "swing_high",
+                zone_low=239.20, zone_high=243.40, center=241.96, families=["historical", "structural"],
+                touch_indices=[0, 1, 2], false_breakout_indices=[1], last_touch_index=2,
+            ),
+        ]
+
+        merged = merge_nearby_levels(levels, daily, atr_value=12.5, merge_distance=3.125, ultra_close_distance=1.0, zone_buffer=1.5)
+
+        self.assertEqual(len(merged), 1)
+        self.assertEqual(merged[0].touches, 3)
+        self.assertEqual(merged[0].false_breakouts, 1)
+
     def test_ultra_close_merges_across_families(self) -> None:
         daily = pd.DataFrame(
             [
@@ -181,6 +209,34 @@ class LevelDetectionTests(unittest.TestCase):
         filtered = filter_weak_levels([stronger, weaker], daily, atr_value=3.0, merge_distance=0.75)
         self.assertEqual(len(filtered), 1)
         self.assertEqual(filtered[0].price, 100.0)
+
+    def test_optimize_trade_levels_enforces_clean_atr_spacing(self) -> None:
+        levels = [
+            Level(
+                "SANM", 242.04, "gap", "daily", 6, 1, 11.86, "gap_upper",
+                zone_low=239.00, zone_high=243.54, center=242.04, families=["gap"],
+            ),
+            Level(
+                "SANM", 236.27, "historical", "daily", 9, 2, 22.75, "swing_high",
+                zone_low=233.28, zone_high=238.59, center=236.27, families=["historical", "structural"],
+            ),
+            Level(
+                "SANM", 216.54, "historical", "daily", 7, 1, 16.97, "swing_low",
+                zone_low=211.97, zone_high=218.04, center=216.54, families=["historical", "structural"],
+            ),
+            Level(
+                "SANM", 204.98, "gap", "daily", 3, 0, 6.53, "gap_lower",
+                zone_low=203.48, zone_high=206.48, center=204.98, families=["gap"],
+            ),
+        ]
+
+        optimized = optimize_trade_levels(levels, daily_atr=12.5, min_gap_atr_pct=1.5, min_touches=3)
+        selected_prices = {level.price for level in optimized}
+
+        self.assertIn(236.27, selected_prices)
+        self.assertIn(204.98, selected_prices)
+        self.assertNotIn(242.04, selected_prices)
+        self.assertNotIn(216.54, selected_prices)
 
 
 if __name__ == "__main__":

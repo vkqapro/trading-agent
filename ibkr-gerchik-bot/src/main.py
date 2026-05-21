@@ -48,7 +48,8 @@ from src.strategy.signal_models import TradeSignal
 from src.strategy.strategy_router import route_strategies
 from src.workflow_log import append_workflow_snapshot, read_latest_workflow_snapshot
 
-BUILD_VERSION_MARKER = "2026-05-19-startup-marker-v1"
+BUILD_VERSION_MARKER = "2026-05-21-market-session-lock-v1"
+MARKET_SESSION_LOCK_NAME = "market_session"
 
 
 def _build_research_symbols(positions: List[Dict[str, object]]) -> List[str]:
@@ -145,6 +146,17 @@ def _duplicate_session_message(job_name: str) -> str:
         return "Intraday already running; new entries are currently disabled, position management remains active."
 
     return f"{job_name.title()} already running."
+
+
+def _market_session_busy_message(job_name: str, wait_seconds: int) -> str:
+    """Build a non-fatal operator message when the shared IBKR session remains busy."""
+    wait_minutes = max(round(wait_seconds / 60), 1)
+    if job_name == "intraday":
+        return (
+            f"Intraday waited {wait_minutes} min for the market/open session to finish, "
+            "but IBKR is still busy. The next scheduled intraday run can try again."
+        )
+    return f"{job_name.title()} skipped because another market session is already using IBKR."
 
 
 def _infer_manual_watch_signal(entry: float, stop: float, target: float) -> str:
@@ -581,7 +593,34 @@ def run_job_with_context(
                 LOGGER.info("Skipping %s job because %s is already active.", job_name, preconnect_lock_name)
                 SlackAlerter().send_channel_message(_duplicate_session_message(job_name))
                 return {"job": job_name, "blocked": True, "reasons": ["session_already_running"], "dry_run": dry_run}
-            return _run_connected_job(job_name, state_path, state, dry_run, command_context=command_context)
+
+            market_lock_wait_seconds = (
+                SETTINGS.broker.market_session_lock_wait_seconds
+                if job_name == "intraday"
+                else 0
+            )
+            with job_loop_lock(
+                MARKET_SESSION_LOCK_NAME,
+                wait_timeout_seconds=market_lock_wait_seconds,
+                retry_delay_seconds=SETTINGS.broker.startup_retry_delay_seconds,
+            ) as market_acquired:
+                if not market_acquired:
+                    LOGGER.warning(
+                        "Skipping %s job because %s remained active after %ss.",
+                        job_name,
+                        MARKET_SESSION_LOCK_NAME,
+                        market_lock_wait_seconds,
+                    )
+                    SlackAlerter().send_channel_message(
+                        _market_session_busy_message(job_name, market_lock_wait_seconds)
+                    )
+                    return {
+                        "job": job_name,
+                        "blocked": True,
+                        "reasons": ["market_session_busy"],
+                        "dry_run": dry_run,
+                    }
+                return _run_connected_job(job_name, state_path, state, dry_run, command_context=command_context)
 
     return _run_connected_job(job_name, state_path, state, dry_run, command_context=command_context)
 

@@ -158,6 +158,7 @@ class BrokerConfig:
     market_data_timeout_seconds: int = _env_int("IBKR_MARKET_DATA_TIMEOUT_SECONDS", 10)
     startup_retry_window_seconds: int = _env_int("IBKR_STARTUP_RETRY_WINDOW_SECONDS", 300)
     startup_retry_delay_seconds: int = _env_int("IBKR_STARTUP_RETRY_DELAY_SECONDS", 30)
+    market_session_lock_wait_seconds: int = _env_int("MARKET_SESSION_LOCK_WAIT_SECONDS", 1800)
 
 
 @dataclass(frozen=True)
@@ -190,6 +191,12 @@ class StrategyConfig:
     level_strength_threshold: float = _env_float("LEVEL_STRENGTH_THRESHOLD", 4.0)
     level_merge_tolerance_pct: float = _env_float("LEVEL_MERGE_TOLERANCE_PCT", 0.0015)
     level_merge_min_dollars: float = _env_float("LEVEL_MERGE_MIN_DOLLARS", 0.05)
+    level_zone_buffer_atr_pct: float = _env_float("LEVEL_ZONE_BUFFER_ATR_PCT", 0.12)
+    level_merge_distance_atr_pct: float = _env_float("LEVEL_MERGE_DISTANCE_ATR_PCT", 0.25)
+    level_ultra_close_atr_pct: float = _env_float("LEVEL_ULTRA_CLOSE_ATR_PCT", 0.08)
+    max_level_zone_width_atr_pct: float = _env_float("MAX_LEVEL_ZONE_WIDTH_ATR_PCT", 0.5)
+    min_clean_level_gap_atr_pct: float = _env_float("MIN_CLEAN_LEVEL_GAP_ATR_PCT", 1.5)
+    min_trade_level_touches: int = _env_int("MIN_TRADE_LEVEL_TOUCHES", 3)
 
 
 @dataclass(frozen=True)
