@@ -68,6 +68,7 @@ class FalseBreakoutContinuationTests(unittest.TestCase):
             patch("src.strategy.strategy_router.detect_false_breakout_two_bar", return_value=None),
             patch("src.strategy.strategy_router.detect_false_breakout_complex", return_value=None),
             patch("src.strategy.false_breakout_continuation._persist_daily_decision"),
+            patch("src.strategy.false_breakout_one_bar._persist_daily_decision"),
         ):
             signals = route_strategies("SEI", bars, [self.level], news_context={"risk_level": "LOW"})
 

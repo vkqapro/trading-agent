@@ -288,7 +288,13 @@ def _short_score(false_candle: pd.Series, confirmations: Sequence[pd.Series], zo
 
 
 def _decision_rank(result: Dict[str, object]) -> tuple[int, float]:
-    signal_rank = 1 if result.get("signal") in {"BUY", "SELL"} else 0
+    router_status = str(result.get("router_status", "") or "").strip().lower()
+    if router_status == "accepted" and result.get("signal") in {"BUY", "SELL"}:
+        signal_rank = 3
+    elif router_status == "rejected":
+        signal_rank = 2
+    else:
+        signal_rank = 1 if result.get("signal") in {"BUY", "SELL"} else 0
     return signal_rank, float(result.get("confidence", 0.0))
 
 
@@ -391,6 +397,9 @@ def _persist_daily_decision(symbol: str, level: Level, strategy_name: str, resul
             "reason": list(result.get("reason", [])),
             "context": dict(result.get("context", {})),
         }
+        for optional_key in ("router_status", "raw_signal"):
+            if result.get(optional_key) is not None:
+                attempt[optional_key] = result.get(optional_key)
         attempts = symbol_payload.setdefault("attempts", [])
         if isinstance(attempts, list):
             attempts.append(attempt)

@@ -61,6 +61,14 @@ class DailyDecisionsPersistenceTests(unittest.TestCase):
         with patch.object(fb1b, "_acquire_daily_decisions_lock", side_effect=TimeoutError("busy")):
             fb1b._persist_daily_decision("KO", level, "false_breakout_one_bar", result)
 
+    def test_router_rejected_attempt_ranks_above_raw_unvalidated_signal(self) -> None:
+        raw_signal = {"signal": "BUY", "confidence": 1.0}
+        router_rejected = {"signal": "NONE", "confidence": 1.0, "router_status": "rejected"}
+        router_accepted = {"signal": "BUY", "confidence": 1.0, "router_status": "accepted"}
+
+        self.assertGreater(fb1b._decision_rank(router_rejected), fb1b._decision_rank(raw_signal))
+        self.assertGreater(fb1b._decision_rank(router_accepted), fb1b._decision_rank(router_rejected))
+
 
 if __name__ == "__main__":
     unittest.main()

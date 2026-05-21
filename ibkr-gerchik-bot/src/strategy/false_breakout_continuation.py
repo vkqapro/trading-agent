@@ -147,7 +147,7 @@ def detect_false_breakout_continuation(
 
 
 def _target_for_continuation(level: Level, entry: float, stop: float) -> Optional[float]:
-    if isinstance(level.nearest_upper_level, float):
+    if isinstance(level.nearest_upper_level, float) and level.nearest_upper_level > entry:
         if reward_risk_ratio(entry, stop, level.nearest_upper_level) >= SETTINGS.risk.min_reward_risk_ratio:
             return round(level.nearest_upper_level, 2)
     risk = abs(entry - stop)

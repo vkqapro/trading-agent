@@ -10,6 +10,10 @@ from src.config import SETTINGS
 def calculate_take_profit(entry: float, stop: float, next_level: Optional[float], direction: str) -> Optional[float]:
     if next_level is None:
         return None
+    if direction == "long" and next_level <= entry:
+        return None
+    if direction == "short" and next_level >= entry:
+        return None
     reward_risk = reward_risk_ratio(entry, stop, next_level)
     if reward_risk < SETTINGS.risk.min_reward_risk_ratio:
         return None

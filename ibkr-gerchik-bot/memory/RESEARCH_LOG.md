@@ -271661,3 +271661,3684 @@ Premarket scans, intraday observations, and daily analysis are appended here.
   }
 }
 ```
+
+## Workflow Intraday (2026-05-20T15:47:55)
+- **stage**: Intraday
+- **executed_symbols**: []
+- **tracked_symbols**: []
+- **actions**: []
+```json
+{
+  "stage": "Intraday",
+  "payload": {
+    "actions": [],
+    "executed": [],
+    "skipped": [
+      {
+        "symbol": "BBBY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SEI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SANM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AAPL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSFT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TSLA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMZN",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "AGPU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ALOY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIRD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ISPC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRLN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "OPTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ROLR",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKLZ",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "SKYQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WGRX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "HCAI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOVX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SBFM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AIM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VRAX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GCTS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NCEW",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ICCC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BAND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "QUCY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PMI",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "CISS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIDU",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "GSHD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KYTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SRAD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "MDU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SION",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRSH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TREX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ASND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSEX",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "ZTO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SPOT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GMM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WTBA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BTM",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "LICN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "YOOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NEOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LABT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BNZI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOSS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMAT",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "XP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "FLD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "CRAQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LVO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "IMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ITIC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "DAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PDD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "AMP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KMDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "EUR.USD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BBBY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SEI",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "SANM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AAPL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSFT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TSLA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMZN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AGPU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ALOY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIRD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ISPC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRLN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "OPTX",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "OPTX",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "ROLR",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKLZ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKYQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WGRX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "HCAI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOVX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SBFM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AIM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VRAX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GCTS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NCEW",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ICCC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BAND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "QUCY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PMI",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "CISS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIDU",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "GSHD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KYTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SRAD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "MDU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SION",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRSH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TREX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ASND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSEX",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "ZTO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SPOT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GMM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WTBA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BTM",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "LICN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "YOOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NEOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LABT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BNZI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOSS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMAT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "XP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "FLD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "CRAQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LVO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "IMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ITIC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "DAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PDD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "AMP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KMDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "EUR.USD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BBBY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SEI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SANM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AAPL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSFT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TSLA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMZN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AGPU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ALOY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIRD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ISPC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRLN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "OPTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ROLR",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKLZ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKYQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WGRX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "HCAI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOVX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SBFM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AIM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VRAX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GCTS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NCEW",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ICCC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BAND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "QUCY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PMI",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "CISS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIDU",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "GSHD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KYTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SRAD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "MDU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SION",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRSH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TREX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ASND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSEX",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "ZTO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SPOT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GMM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WTBA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BTM",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "LICN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "YOOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NEOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LABT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BNZI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOSS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMAT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "XP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "FLD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "CRAQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LVO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "IMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ITIC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "DAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PDD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "AMP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KMDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "EUR.USD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BBBY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SEI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SANM",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "AAPL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSFT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TSLA",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "AMZN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AGPU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ALOY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIRD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ISPC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRLN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "OPTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ROLR",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKLZ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKYQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WGRX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "HCAI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOVX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SBFM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AIM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VRAX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GCTS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NCEW",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ICCC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BAND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "QUCY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PMI",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "CISS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIDU",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "GSHD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KYTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SRAD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "MDU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SION",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRSH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TREX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ASND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSEX",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "ZTO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SPOT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GMM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WTBA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BTM",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "LICN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "YOOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NEOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LABT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BNZI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOSS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMAT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "XP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "FLD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "CRAQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LVO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "IMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ITIC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "DAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PDD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "AMP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KMDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "EUR.USD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BBBY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SEI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SANM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AAPL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSFT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TSLA",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "AMZN",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "AGPU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ALOY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIRD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ISPC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRLN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "OPTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ROLR",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKLZ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKYQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WGRX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "HCAI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOVX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SBFM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AIM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VRAX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GCTS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NCEW",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ICCC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BAND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "QUCY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PMI",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "CISS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIDU",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "GSHD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KYTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SRAD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "MDU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SION",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRSH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TREX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ASND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSEX",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "ZTO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SPOT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GMM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WTBA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BTM",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "LICN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "YOOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NEOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LABT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BNZI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOSS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMAT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "XP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "FLD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "CRAQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LVO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "IMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ITIC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "DAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PDD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "AMP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KMDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "EUR.USD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BBBY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SEI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SANM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AAPL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSFT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TSLA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMZN",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "AGPU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ALOY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIRD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ISPC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRLN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "OPTX",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "OPTX",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "ROLR",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKLZ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKYQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WGRX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "HCAI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOVX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SBFM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AIM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VRAX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GCTS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NCEW",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ICCC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BAND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "QUCY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PMI",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "CISS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIDU",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "GSHD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KYTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SRAD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "MDU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SION",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRSH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TREX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ASND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSEX",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "ZTO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SPOT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GMM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WTBA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BTM",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "LICN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "YOOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NEOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LABT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BNZI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOSS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMAT",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "XP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "FLD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "CRAQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LVO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "IMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ITIC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "DAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PDD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "AMP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KMDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "EUR.USD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BBBY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SEI",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "SANM",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "AAPL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSFT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TSLA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMZN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AGPU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ALOY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIRD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ISPC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRLN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "OPTX",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "OPTX",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "ROLR",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKLZ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKYQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WGRX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "HCAI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOVX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SBFM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AIM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VRAX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GCTS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NCEW",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ICCC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BAND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "QUCY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PMI",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "CISS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIDU",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "GSHD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KYTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SRAD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "MDU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SION",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRSH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TREX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ASND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSEX",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "ZTO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SPOT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GMM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WTBA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BTM",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "LICN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "YOOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NEOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LABT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BNZI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOSS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMAT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "XP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "FLD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "CRAQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LVO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "IMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ITIC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "DAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PDD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "AMP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KMDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "EUR.USD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BBBY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SEI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SANM",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "AAPL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSFT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TSLA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMZN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AGPU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ALOY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIRD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ISPC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRLN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "OPTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ROLR",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKLZ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKYQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WGRX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "HCAI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOVX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SBFM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AIM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VRAX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GCTS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NCEW",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ICCC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BAND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "QUCY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PMI",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "CISS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIDU",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "GSHD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KYTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SRAD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "MDU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SION",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRSH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TREX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ASND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSEX",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "ZTO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SPOT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GMM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WTBA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BTM",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "LICN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "YOOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NEOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LABT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BNZI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOSS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMAT",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "XP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "FLD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "CRAQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LVO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "IMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ITIC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "DAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PDD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "AMP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KMDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "EUR.USD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BBBY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SEI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SANM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AAPL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSFT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TSLA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMZN",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "AGPU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ALOY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIRD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ISPC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRLN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "OPTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ROLR",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKLZ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKYQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WGRX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "HCAI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOVX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SBFM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AIM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VRAX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GCTS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NCEW",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ICCC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BAND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "QUCY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PMI",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "CISS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIDU",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "GSHD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KYTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SRAD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "MDU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SION",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRSH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TREX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ASND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSEX",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "ZTO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SPOT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GMM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WTBA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BTM",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "LICN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "YOOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NEOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LABT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BNZI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOSS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMAT",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "XP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "FLD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "CRAQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LVO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "IMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ITIC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "DAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PDD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "AMP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KMDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "EUR.USD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BBBY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SEI",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "SANM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AAPL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSFT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TSLA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMZN",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "AGPU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ALOY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIRD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ISPC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRLN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "OPTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ROLR",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKLZ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKYQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WGRX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "HCAI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOVX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SBFM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AIM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VRAX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GCTS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NCEW",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ICCC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BAND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "QUCY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PMI",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "CISS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIDU",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "GSHD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KYTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SRAD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "MDU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SION",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRSH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TREX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ASND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSEX",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "ZTO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SPOT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GMM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WTBA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BTM",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "LICN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "YOOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NEOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LABT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BNZI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOSS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMAT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "XP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "FLD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "CRAQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LVO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "IMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ITIC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "DAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PDD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "AMP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KMDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "EUR.USD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BBBY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SEI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SANM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AAPL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSFT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TSLA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMZN",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "AGPU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ALOY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIRD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ISPC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRLN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "OPTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ROLR",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKLZ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKYQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WGRX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "HCAI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOVX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SBFM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AIM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VRAX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GCTS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NCEW",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ICCC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BAND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "QUCY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PMI",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "CISS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIDU",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "GSHD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KYTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SRAD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "MDU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SION",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRSH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TREX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ASND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSEX",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "ZTO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SPOT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GMM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WTBA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BTM",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "LICN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "YOOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NEOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LABT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BNZI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOSS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMAT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "XP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "FLD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "CRAQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LVO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "IMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ITIC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "DAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PDD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "AMP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KMDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "EUR.USD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BBBY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SEI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SANM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AAPL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSFT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TSLA",
+        "reason": "atr_filter"
+      },
+      {
+        "symbol": "AMZN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AGPU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ALOY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIRD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ISPC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRLN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "OPTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ROLR",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKLZ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SKYQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WGRX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "HCAI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOVX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SBFM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AIM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VRAX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GCTS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NCEW",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ICCC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "VAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BAND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "QUCY",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PMI",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "CISS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BIDU",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "GSHD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KYTX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SRAD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "MDU",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SION",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MRSH",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "TREX",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ASND",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "MSEX",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "ZTO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SPOT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GMM",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "WTBA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BTM",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "LICN",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "YOOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "NEOV",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LABT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "BNZI",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "GOSS",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "SDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "AMAT",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "XP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "FLD",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "CRAQ",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "LVO",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "IMA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "ITIC",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "DAL",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "PDD",
+        "reason": "symbol_news_risk",
+        "risk_level": "HIGH",
+        "provider_hits": [
+          "BRFUPDN",
+          "DJ-N"
+        ]
+      },
+      {
+        "symbol": "AMP",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "KMDA",
+        "reason": "no_signal"
+      },
+      {
+        "symbol": "EUR.USD",
+        "reason": "no_signal"
+      }
+    ],
+    "manual_candidates": [],
+    "tracked_positions": [],
+    "scans": [
+      {
+        "timestamp": "2026-05-20T12:00:13.219083-04:00",
+        "interval_seconds": 900,
+        "symbols_scanned": 67,
+        "signals_detected": 3,
+        "executed_count": 0,
+        "skipped_count": 67,
+        "manual_candidate_count": 0
+      },
+      {
+        "timestamp": "2026-05-20T12:18:19.623452-04:00",
+        "interval_seconds": 900,
+        "symbols_scanned": 67,
+        "signals_detected": 3,
+        "executed_count": 0,
+        "skipped_count": 68,
+        "manual_candidate_count": 0
+      },
+      {
+        "timestamp": "2026-05-20T12:36:22.463517-04:00",
+        "interval_seconds": 900,
+        "symbols_scanned": 67,
+        "signals_detected": 0,
+        "executed_count": 0,
+        "skipped_count": 67,
+        "manual_candidate_count": 0
+      },
+      {
+        "timestamp": "2026-05-20T12:56:24.892588-04:00",
+        "interval_seconds": 900,
+        "symbols_scanned": 67,
+        "signals_detected": 2,
+        "executed_count": 0,
+        "skipped_count": 67,
+        "manual_candidate_count": 0
+      },
+      {
+        "timestamp": "2026-05-20T13:15:34.930728-04:00",
+        "interval_seconds": 900,
+        "symbols_scanned": 67,
+        "signals_detected": 2,
+        "executed_count": 0,
+        "skipped_count": 67,
+        "manual_candidate_count": 0
+      },
+      {
+        "timestamp": "2026-05-20T13:34:44.833314-04:00",
+        "interval_seconds": 900,
+        "symbols_scanned": 67,
+        "signals_detected": 4,
+        "executed_count": 0,
+        "skipped_count": 68,
+        "manual_candidate_count": 0
+      },
+      {
+        "timestamp": "2026-05-20T13:53:47.751219-04:00",
+        "interval_seconds": 900,
+        "symbols_scanned": 67,
+        "signals_detected": 4,
+        "executed_count": 0,
+        "skipped_count": 68,
+        "manual_candidate_count": 0
+      },
+      {
+        "timestamp": "2026-05-20T14:12:55.516101-04:00",
+        "interval_seconds": 900,
+        "symbols_scanned": 67,
+        "signals_detected": 2,
+        "executed_count": 0,
+        "skipped_count": 67,
+        "manual_candidate_count": 0
+      },
+      {
+        "timestamp": "2026-05-20T14:31:58.830662-04:00",
+        "interval_seconds": 600,
+        "symbols_scanned": 67,
+        "signals_detected": 2,
+        "executed_count": 0,
+        "skipped_count": 67,
+        "manual_candidate_count": 0
+      },
+      {
+        "timestamp": "2026-05-20T14:51:07.218836-04:00",
+        "interval_seconds": 600,
+        "symbols_scanned": 67,
+        "signals_detected": 2,
+        "executed_count": 0,
+        "skipped_count": 67,
+        "manual_candidate_count": 0
+      },
+      {
+        "timestamp": "2026-05-20T15:10:11.640988-04:00",
+        "interval_seconds": 600,
+        "symbols_scanned": 67,
+        "signals_detected": 1,
+        "executed_count": 0,
+        "skipped_count": 67,
+        "manual_candidate_count": 0
+      },
+      {
+        "timestamp": "2026-05-20T15:28:55.899982-04:00",
+        "interval_seconds": 600,
+        "symbols_scanned": 67,
+        "signals_detected": 1,
+        "executed_count": 0,
+        "skipped_count": 67,
+        "manual_candidate_count": 0
+      }
+    ]
+  }
+}
+```
