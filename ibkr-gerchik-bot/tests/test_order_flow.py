@@ -349,6 +349,68 @@ class OrderFlowTests(unittest.TestCase):
         self.assertEqual(broker.orders[2]["action"], "SELL")
         self.assertEqual(broker.orders[0]["quantity"], 102)
 
+    def test_run_entry_scan_reports_specific_technical_atr_filter_reason(self) -> None:
+        original_min_technical_atr_pct = SETTINGS.strategy.minimum_technical_atr_pct
+        try:
+            object.__setattr__(SETTINGS.strategy, "minimum_technical_atr_pct", 0.01)
+            broker = _BrokerStub()
+            market_data = _MarketDataStub()
+            order_manager = OrderManager(
+                broker=broker,
+                market_data=market_data,
+                alerter=SlackAlerter(),
+                news_filter=_NewsFilterStub(),
+                dry_run=False,
+            )
+            watchlist = {
+                "SANM": {
+                    "daily_atr": 30.0,
+                    "technical_atr": 1.0,
+                    "levels": [
+                        {
+                            "symbol": "SANM",
+                            "price": 237.09,
+                            "type": "gap",
+                            "timeframe": "daily",
+                            "touches": 4,
+                            "false_breakouts": 1,
+                            "strength_score": 12.0,
+                            "created_by": "gap_lower",
+                            "nearest_upper_level": 255.22,
+                            "nearest_lower_level": 209.08,
+                            "zone_low": 234.28,
+                            "zone_high": 240.31,
+                            "center": 236.99,
+                            "strength": 12.0,
+                            "atr_value": 12.978,
+                        }
+                    ],
+                }
+            }
+
+            with patch("src.jobs.session_utils.route_strategies", return_value=[_sanm_signal()]):
+                result = run_entry_scan(
+                    stage_name="Intraday",
+                    market_data=market_data,
+                    order_manager=order_manager,
+                    news_filter=_NewsFilterStub(),
+                    watchlist=watchlist,
+                    account_equity=50_000.0,
+                    cash_available=50_000.0,
+                    current_positions=[],
+                    open_risk_amount=0.0,
+                )
+        finally:
+            object.__setattr__(SETTINGS.strategy, "minimum_technical_atr_pct", original_min_technical_atr_pct)
+
+        self.assertEqual(result["executed"], [])
+        self.assertEqual(result["skipped"][0]["reason"], "technical_atr_too_low")
+        self.assertIn("technical_atr_too_low", result["signal_details"][0]["reason"])
+        self.assertIn("actual=1", result["signal_details"][0]["reason"])
+        self.assertIn("required=2.4197", result["signal_details"][0]["reason"])
+        self.assertIn("technical_atr_too_low", result["report_rows"][0]["reason_not_entered"])
+        self.assertEqual(broker.orders, [])
+
     def test_run_entry_scan_keeps_subscription_blocked_setup_as_manual_candidate(self) -> None:
         broker = _BrokerStub()
         market_data = _SubscriptionBlockedMarketDataStub()

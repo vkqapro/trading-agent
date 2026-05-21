@@ -227,6 +227,55 @@ def _price_value(value: object) -> Optional[float]:
         return None
 
 
+def _format_reason_number(value: float, *, decimals: int = 4) -> str:
+    rounded = f"{value:.{decimals}f}"
+    return rounded.rstrip("0").rstrip(".")
+
+
+def _atr_filter_reason_details(
+    *,
+    technical_atr: float,
+    entry_price: float,
+    session_low: float,
+    session_high: float,
+    daily_atr: float,
+    atr_ok: bool,
+    trend_ok: bool,
+) -> tuple[object, str]:
+    """Return stable skip reason codes plus human-readable ATR gate details."""
+    reason_codes: List[str] = []
+    details: List[str] = []
+
+    if not atr_ok:
+        reason_codes.append("technical_atr_too_low")
+        required_room = max(entry_price, 0.0) * SETTINGS.strategy.minimum_technical_atr_pct
+        actual_pct = (technical_atr / entry_price) if entry_price > 0 else 0.0
+        details.append(
+            "technical_atr_too_low "
+            f"actual={_format_reason_number(technical_atr)} "
+            f"required={_format_reason_number(required_room)} "
+            f"actual_pct={actual_pct:.2%} "
+            f"min_pct={SETTINGS.strategy.minimum_technical_atr_pct:.2%}"
+        )
+
+    if not trend_ok:
+        reason_codes.append("atr_travel_exhausted")
+        travel_limit = max(daily_atr, 0.0) * SETTINGS.strategy.atr_travel_limit_pct
+        distance_traveled = max(abs(entry_price - session_low), abs(session_high - entry_price))
+        details.append(
+            "atr_travel_exhausted "
+            f"traveled={_format_reason_number(distance_traveled)} "
+            f"limit={_format_reason_number(travel_limit)} "
+            f"daily_atr={_format_reason_number(daily_atr)} "
+            f"limit_pct={SETTINGS.strategy.atr_travel_limit_pct:.0%}"
+        )
+
+    if not reason_codes:
+        return "atr_filter", "atr_filter"
+    summary_reason: object = reason_codes[0] if len(reason_codes) == 1 else reason_codes
+    return summary_reason, "; ".join(details)
+
+
 def _symbol_report_row(
     *,
     symbol: str,
@@ -553,28 +602,39 @@ def run_entry_scan(
         symbol_result_recorded = False
         symbol_reasons: List[str] = []
         for signal in candidate_signals:
-            atr_ok = technical_atr_has_room(float(plan.get("technical_atr", 0.0)), signal.entry)
+            technical_atr = float(plan.get("technical_atr", 0.0))
+            daily_atr = float(plan.get("daily_atr", 0.0))
+            atr_ok = technical_atr_has_room(technical_atr, signal.entry)
             trend_ok = atr_travel_filter(
                 signal.entry,
                 session_low,
                 session_high,
-                float(plan.get("daily_atr", 0.0)),
+                daily_atr,
                 False,
             )
             if not atr_ok or not trend_ok:
-                skipped.append({"symbol": symbol, "reason": "atr_filter"})
-                symbol_reasons.append("atr_filter")
+                atr_summary_reason, atr_detail_reason = _atr_filter_reason_details(
+                    technical_atr=technical_atr,
+                    entry_price=float(signal.entry),
+                    session_low=session_low,
+                    session_high=session_high,
+                    daily_atr=daily_atr,
+                    atr_ok=atr_ok,
+                    trend_ok=trend_ok,
+                )
+                skipped.append({"symbol": symbol, "reason": atr_summary_reason})
+                symbol_reasons.append(atr_detail_reason)
                 signal_details.append(
                     _signal_detail(
                         signal=signal,
                         plan=plan,
                         quote=quote,
-                        reason="atr_filter",
+                        reason=atr_detail_reason,
                         status="skipped",
                         reference_price=intraday_reference_price,
                     )
                 )
-                LOGGER.info("%s skip %s: atr_filter", stage_name, symbol)
+                LOGGER.info("%s skip %s: %s", stage_name, symbol, atr_detail_reason)
                 continue
 
             success, payload = order_manager.execute_trade(

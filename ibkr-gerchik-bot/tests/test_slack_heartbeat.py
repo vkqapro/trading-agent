@@ -22,9 +22,9 @@ class SlackHeartbeatTests(unittest.TestCase):
                 "symbols_scanned": 67,
                 "signals_detected": 1,
                 "executed": [],
-                "skipped": [{"symbol": "SEI", "reason": "atr_filter"}],
+                "skipped": [{"symbol": "SEI", "reason": "technical_atr_too_low"}],
                 "manual_candidates": [],
-                "skip_reason_summary": {"atr_filter": 1},
+                "skip_reason_summary": {"technical_atr_too_low": 1},
                 "signal_details": [
                     {
                         "symbol": "SEI",
@@ -37,7 +37,7 @@ class SlackHeartbeatTests(unittest.TestCase):
                         "nearest_level_type": "gap",
                         "reward_risk": 2.6,
                         "status": "skipped",
-                        "reason": "atr_filter",
+                        "reason": "technical_atr_too_low actual=1.35 required=3.03 actual_pct=0.45% min_pct=1.00%",
                     }
                 ],
             }
@@ -49,7 +49,8 @@ class SlackHeartbeatTests(unittest.TestCase):
         self.assertIn("SEI: BUY false_breakout_continuation", messages[0])
         self.assertIn("signal level 71.05 abnormal_candle", messages[0])
         self.assertIn("nearest 74.44 gap", messages[0])
-        self.assertIn("skipped: atr_filter", messages[0])
+        self.assertIn("skipped: technical_atr_too_low", messages[0])
+        self.assertIn("Skipped: technical_atr_too_low=1", messages[0])
 
 
 if __name__ == "__main__":
