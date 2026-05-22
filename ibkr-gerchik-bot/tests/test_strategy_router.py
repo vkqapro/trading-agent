@@ -5,6 +5,7 @@ from unittest.mock import patch
 
 import pandas as pd
 
+from src.config import SETTINGS
 from src.strategy.levels import Level
 from src.strategy.signal_models import TradeSignal
 from src.strategy.strategy_router import route_strategies
@@ -41,7 +42,7 @@ class StrategyRouterNewsContextTests(unittest.TestCase):
 
     def test_router_blocks_false_breakout_on_high_news_risk(self) -> None:
         with (
-            patch("src.strategy.strategy_router.calculate_stop_loss", side_effect=lambda entry, stop, direction: stop),
+            patch("src.strategy.strategy_router.calculate_stop_loss", side_effect=lambda entry, stop, direction, **_kwargs: stop),
             patch("src.strategy.false_breakout_one_bar._persist_daily_decision"),
             patch("src.strategy.false_breakout_two_bar._persist_daily_decision"),
             patch("src.strategy.false_breakout_complex._persist_daily_decision"),
@@ -51,6 +52,7 @@ class StrategyRouterNewsContextTests(unittest.TestCase):
         self.assertFalse(any(signal.strategy.startswith("false_breakout") for signal in signals))
 
     def test_router_allows_false_breakout_on_medium_news_risk(self) -> None:
+        original_enabled = SETTINGS.strategy.enabled_strategies
         level = Level(
             symbol="AAPL",
             price=100.0,
@@ -79,17 +81,31 @@ class StrategyRouterNewsContextTests(unittest.TestCase):
                 {"open": 100.8, "high": 101.3, "low": 100.5, "close": 101.1},
             ]
         )
-        with (
-            patch("src.strategy.strategy_router.calculate_stop_loss", side_effect=lambda entry, stop, direction: stop),
-            patch("src.strategy.false_breakout_one_bar._persist_daily_decision"),
-            patch("src.strategy.false_breakout_two_bar._persist_daily_decision"),
-            patch("src.strategy.false_breakout_complex._persist_daily_decision"),
-            patch("src.strategy.false_breakout_continuation._persist_daily_decision"),
-        ):
-            signals = route_strategies("AAPL", medium_bars, [level], news_context={"risk_level": "MEDIUM"})
+        try:
+            object.__setattr__(
+                SETTINGS.strategy,
+                "enabled_strategies",
+                ("rebound", "confirmed_breakout", "false_breakout_one_bar", "false_breakout_two_bar"),
+            )
+            with (
+                patch("src.strategy.strategy_router.calculate_stop_loss", side_effect=lambda entry, stop, direction, **_kwargs: stop),
+                patch("src.strategy.false_breakout_one_bar._persist_daily_decision"),
+                patch("src.strategy.false_breakout_two_bar._persist_daily_decision"),
+                patch("src.strategy.false_breakout_complex._persist_daily_decision"),
+                patch("src.strategy.false_breakout_continuation._persist_daily_decision"),
+            ):
+                signals = route_strategies("AAPL", medium_bars, [level], news_context={"risk_level": "MEDIUM"})
+        finally:
+            object.__setattr__(SETTINGS.strategy, "enabled_strategies", original_enabled)
         self.assertTrue(any(signal.strategy == "false_breakout_two_bar" for signal in signals))
 
+    def test_router_defaults_to_phase_one_strategies(self) -> None:
+        enabled = {str(item).lower() for item in SETTINGS.strategy.enabled_strategies}
+
+        self.assertEqual(enabled, {"rebound", "confirmed_breakout", "false_breakout_one_bar"})
+
     def test_router_persists_rejection_for_raw_signal_that_cannot_be_ordered(self) -> None:
+        original_enabled = SETTINGS.strategy.enabled_strategies
         raw_signal = TradeSignal(
             symbol="AGPU",
             strategy="false_breakout_continuation",
@@ -110,16 +126,24 @@ class StrategyRouterNewsContextTests(unittest.TestCase):
         )
         persisted = []
 
-        with (
-            patch("src.strategy.strategy_router.detect_rebound", return_value=None),
-            patch("src.strategy.strategy_router.detect_breakout", return_value=None),
-            patch("src.strategy.strategy_router.detect_false_breakout_one_bar", return_value=None),
-            patch("src.strategy.strategy_router.detect_false_breakout_two_bar", return_value=None),
-            patch("src.strategy.strategy_router.detect_false_breakout_complex", return_value=None),
-            patch("src.strategy.strategy_router.detect_false_breakout_continuation", return_value=raw_signal),
-            patch("src.strategy.false_breakout_one_bar._persist_daily_decision", side_effect=lambda *args: persisted.append(args)),
-        ):
-            signals = route_strategies("AGPU", self.bars, [self.level], news_context={"risk_level": "LOW"})
+        try:
+            object.__setattr__(
+                SETTINGS.strategy,
+                "enabled_strategies",
+                ("rebound", "confirmed_breakout", "false_breakout_one_bar", "false_breakout_continuation"),
+            )
+            with (
+                patch("src.strategy.strategy_router.detect_rebound", return_value=None),
+                patch("src.strategy.strategy_router.detect_breakout", return_value=None),
+                patch("src.strategy.strategy_router.detect_false_breakout_one_bar", return_value=None),
+                patch("src.strategy.strategy_router.detect_false_breakout_two_bar", return_value=None),
+                patch("src.strategy.strategy_router.detect_false_breakout_complex", return_value=None),
+                patch("src.strategy.strategy_router.detect_false_breakout_continuation", return_value=raw_signal),
+                patch("src.strategy.false_breakout_one_bar._persist_daily_decision", side_effect=lambda *args: persisted.append(args)),
+            ):
+                signals = route_strategies("AGPU", self.bars, [self.level], news_context={"risk_level": "LOW"})
+        finally:
+            object.__setattr__(SETTINGS.strategy, "enabled_strategies", original_enabled)
 
         self.assertEqual(signals, [])
         self.assertEqual(len(persisted), 1)

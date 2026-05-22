@@ -96,10 +96,7 @@ class OrderManager:
             append_markdown_log(SETTINGS.paths.trade_log, f"Simulated Trade {signal.symbol}", trade_payload)
             return True, trade_payload
 
-        limit_price = None
-        if signal.partial_targets:
-            first_target = signal.partial_targets[0]
-            limit_price = float(first_target["price"])
+        limit_price = float(signal.target) if signal.target else None
         entry_order, stop_order, limit_order = self.broker.place_market_bracket_order(
             signal.symbol,
             signal.signal,

@@ -145,6 +145,18 @@ class _MarketDataStub:
         return _intraday_bars()
 
 
+class _MultiSessionMarketDataStub(_MarketDataStub):
+    def get_intraday_bars(self, symbol: str, duration: str = "2 D", bar_size: str = "5 mins") -> pd.DataFrame:
+        del symbol, duration, bar_size
+        return pd.DataFrame(
+            [
+                {"datetime": "2026-05-21T15:55:00-04:00", "open": 205.0, "high": 242.1, "low": 200.0, "close": 241.0},
+                {"datetime": "2026-05-22T09:35:00-04:00", "open": 241.7, "high": 242.0, "low": 241.6, "close": 241.8},
+                {"datetime": "2026-05-22T09:40:00-04:00", "open": 241.8, "high": 242.1, "low": 241.7, "close": 241.97},
+            ]
+        )
+
+
 class _SubscriptionBlockedMarketDataStub(_MarketDataStub):
     def get_quote(self, symbol: str | None = None) -> Dict[str, float]:
         del symbol
@@ -273,6 +285,7 @@ class OrderFlowTests(unittest.TestCase):
         self.assertTrue(success)
         self.assertEqual(payload["status"], "executed")
         self.assertEqual([order["order_type"] for order in broker.orders], ["MKT", "STP", "LMT"])
+        self.assertEqual(broker.orders[2]["limit_price"], signal.target)
 
     def test_run_entry_scan_places_sanm_orders_when_signal_and_limits_allow(self) -> None:
         original_trade_log = SETTINGS.paths.trade_log
@@ -347,6 +360,7 @@ class OrderFlowTests(unittest.TestCase):
         self.assertEqual(broker.orders[0]["action"], "BUY")
         self.assertEqual(broker.orders[1]["action"], "SELL")
         self.assertEqual(broker.orders[2]["action"], "SELL")
+        self.assertEqual(broker.orders[2]["limit_price"], result["executed"][0]["target"])
         self.assertEqual(broker.orders[0]["quantity"], 102)
 
     def test_run_entry_scan_reports_specific_technical_atr_filter_reason(self) -> None:
@@ -455,6 +469,73 @@ class OrderFlowTests(unittest.TestCase):
         self.assertEqual(result["signal_details"][0]["symbol"], "KO")
         self.assertEqual(result["signal_details"][0]["status"], "manual_candidate")
         self.assertEqual(result["signal_details"][0]["reason"], "quote_subscription_required")
+
+    def test_run_entry_scan_uses_current_session_range_for_atr_travel(self) -> None:
+        original_trade_log = SETTINGS.paths.trade_log
+        original_min_rr = SETTINGS.risk.min_reward_risk_ratio
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_trade_log = Path(temp_dir) / "TRADE_LOG.md"
+            temp_trade_log.write_text("# Trade Log\n", encoding="utf-8")
+            object.__setattr__(SETTINGS.paths, "trade_log", temp_trade_log)
+            object.__setattr__(SETTINGS.risk, "min_reward_risk_ratio", 2.5)
+
+            broker = _BrokerStub()
+            market_data = _MultiSessionMarketDataStub()
+            order_manager = OrderManager(
+                broker=broker,
+                market_data=market_data,
+                alerter=SlackAlerter(),
+                news_filter=_NewsFilterStub(),
+                dry_run=False,
+            )
+            watchlist = {
+                "SANM": {
+                    "daily_atr": 5.0,
+                    "technical_atr": 10.0,
+                    "levels": [
+                        {
+                            "symbol": "SANM",
+                            "price": 237.09,
+                            "type": "gap",
+                            "timeframe": "daily",
+                            "touches": 4,
+                            "false_breakouts": 1,
+                            "strength_score": 12.0,
+                            "created_by": "gap_lower",
+                            "nearest_upper_level": 255.22,
+                            "nearest_lower_level": 209.08,
+                            "zone_low": 234.28,
+                            "zone_high": 240.31,
+                            "center": 236.99,
+                            "strength": 12.0,
+                            "atr_value": 12.978,
+                        }
+                    ],
+                }
+            }
+
+            with patch("src.jobs.session_utils.route_strategies", return_value=[_sanm_signal()]):
+                result = run_entry_scan(
+                    stage_name="Intraday",
+                    market_data=market_data,
+                    order_manager=order_manager,
+                    news_filter=_NewsFilterStub(),
+                    watchlist=watchlist,
+                    account_equity=50_000.0,
+                    cash_available=50_000.0,
+                    current_positions=[],
+                    open_risk_amount=0.0,
+                    scan_time=pd.Timestamp("2026-05-22T09:40:00-04:00").to_pydatetime(),
+                )
+
+        object.__setattr__(SETTINGS.paths, "trade_log", original_trade_log)
+        object.__setattr__(SETTINGS.risk, "min_reward_risk_ratio", original_min_rr)
+
+        self.assertEqual(result["skipped"], [])
+        self.assertEqual(len(result["executed"]), 1)
+        self.assertEqual(result["executed"][0]["symbol"], "SANM")
+        self.assertEqual(result["signal_details"][0]["reason"], "entered")
+        self.assertEqual([order["order_type"] for order in broker.orders], ["MKT", "STP", "LMT"])
 
 
 if __name__ == "__main__":

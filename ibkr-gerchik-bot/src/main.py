@@ -50,6 +50,8 @@ from src.workflow_log import append_workflow_snapshot, read_latest_workflow_snap
 
 BUILD_VERSION_MARKER = "2026-05-21-market-session-lock-v1"
 MARKET_SESSION_LOCK_NAME = "market_session"
+STATE_SAVE_RETRY_ATTEMPTS = 8
+STATE_SAVE_RETRY_DELAY_SECONDS = 0.1
 
 
 def _build_research_symbols(positions: List[Dict[str, object]]) -> List[str]:
@@ -106,9 +108,21 @@ def _load_state(state_path: Path) -> Dict[str, object]:
 
 def _save_state(state_path: Path, payload: Dict[str, object]) -> None:
     temp_path = state_path.with_suffix(f"{state_path.suffix}.tmp")
-    with temp_path.open("w", encoding="utf-8") as handle:
-        json.dump(payload, handle, indent=2)
-    os.replace(temp_path, state_path)
+    last_error: Optional[OSError] = None
+    for attempt in range(STATE_SAVE_RETRY_ATTEMPTS):
+        try:
+            with temp_path.open("w", encoding="utf-8") as handle:
+                json.dump(payload, handle, indent=2)
+            os.replace(temp_path, state_path)
+            return
+        except OSError as exc:
+            last_error = exc
+            if getattr(exc, "winerror", None) not in {5, 32} or attempt == STATE_SAVE_RETRY_ATTEMPTS - 1:
+                raise
+            time.sleep(STATE_SAVE_RETRY_DELAY_SECONDS * (attempt + 1))
+
+    if last_error is not None:
+        raise last_error
 
 
 def _hydrate_from_logs(state: Dict[str, object]) -> Dict[str, object]:
@@ -287,7 +301,7 @@ def _validate_watchlist_once(
                     session_low,
                     session_high,
                     float(plan.get("daily_atr", 0.0)),
-                    False,
+                    bool(signal.is_new_extreme),
                 )
                 if not atr_ok or not trend_ok:
                     summary["atr_filtered"] += 1

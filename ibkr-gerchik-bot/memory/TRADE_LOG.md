@@ -24936,3 +24936,2069 @@ Reasons:
 - **manual_candidates**: none
 - **scan_count**: 5
 - **skip_reason_summary**: {'no_signal': 281, 'atr_filter': 15, 'symbol_news_risk': 35, 'missing_live_data': 8}
+
+## Intraday Actions (2026-05-21T15:50:00)
+- **actions**: none
+- **executed**: none
+- **skipped**: [{'symbol': 'BBBY', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'AGPU', 'reason': 'missing_live_data'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'BIRD', 'reason': 'no_signal'}, {'symbol': 'ISPC', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'missing_live_data'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKLZ', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'WGRX', 'reason': 'no_signal'}, {'symbol': 'HCAI', 'reason': 'no_signal'}, {'symbol': 'GOVX', 'reason': 'no_signal'}, {'symbol': 'SBFM', 'reason': 'no_signal'}, {'symbol': 'AIM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'VRAX', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'BAND', 'reason': 'no_signal'}, {'symbol': 'QUCY', 'reason': 'no_signal'}, {'symbol': 'PMI', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'CISS', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'GMM', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'BTM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'LICN', 'reason': 'no_signal'}, {'symbol': 'YOOV', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'LABT', 'reason': 'no_signal'}, {'symbol': 'BNZI', 'reason': 'no_signal'}, {'symbol': 'GOSS', 'reason': 'no_signal'}, {'symbol': 'SDA', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'atr_travel_exhausted'}, {'symbol': 'FLD', 'reason': 'no_signal'}, {'symbol': 'CRAQ', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'atr_travel_exhausted'}, {'symbol': 'IMA', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'PDD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'BBBY', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'AGPU', 'reason': 'missing_live_data'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'BIRD', 'reason': 'no_signal'}, {'symbol': 'ISPC', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'missing_live_data'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKLZ', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'WGRX', 'reason': 'no_signal'}, {'symbol': 'HCAI', 'reason': 'no_signal'}, {'symbol': 'GOVX', 'reason': 'no_signal'}, {'symbol': 'SBFM', 'reason': 'no_signal'}, {'symbol': 'AIM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'VRAX', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'BAND', 'reason': 'no_signal'}, {'symbol': 'QUCY', 'reason': 'no_signal'}, {'symbol': 'PMI', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'CISS', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'atr_travel_exhausted'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'atr_travel_exhausted'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'GMM', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'BTM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'LICN', 'reason': 'no_signal'}, {'symbol': 'YOOV', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'LABT', 'reason': 'no_signal'}, {'symbol': 'BNZI', 'reason': 'no_signal'}, {'symbol': 'GOSS', 'reason': 'no_signal'}, {'symbol': 'SDA', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'atr_travel_exhausted'}, {'symbol': 'FLD', 'reason': 'no_signal'}, {'symbol': 'CRAQ', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'IMA', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'PDD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'BBBY', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': ['technical_atr_too_low', 'atr_travel_exhausted']}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'AGPU', 'reason': 'missing_live_data'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'BIRD', 'reason': 'no_signal'}, {'symbol': 'ISPC', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'missing_live_data'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKLZ', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'WGRX', 'reason': 'no_signal'}, {'symbol': 'HCAI', 'reason': 'no_signal'}, {'symbol': 'GOVX', 'reason': 'no_signal'}, {'symbol': 'SBFM', 'reason': 'no_signal'}, {'symbol': 'AIM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'VRAX', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'BAND', 'reason': 'no_signal'}, {'symbol': 'QUCY', 'reason': 'no_signal'}, {'symbol': 'PMI', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'CISS', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'atr_travel_exhausted'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'atr_travel_exhausted'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'ZTO', 'reason': 'atr_travel_exhausted'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'GMM', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'BTM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'LICN', 'reason': 'no_signal'}, {'symbol': 'YOOV', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'LABT', 'reason': 'no_signal'}, {'symbol': 'BNZI', 'reason': 'no_signal'}, {'symbol': 'GOSS', 'reason': 'no_signal'}, {'symbol': 'SDA', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'atr_travel_exhausted'}, {'symbol': 'FLD', 'reason': 'no_signal'}, {'symbol': 'CRAQ', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'IMA', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'PDD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'BBBY', 'reason': 'atr_travel_exhausted'}, {'symbol': 'BBBY', 'reason': 'atr_travel_exhausted'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': ['technical_atr_too_low', 'atr_travel_exhausted']}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'AGPU', 'reason': 'missing_live_data'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'BIRD', 'reason': 'no_signal'}, {'symbol': 'ISPC', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'missing_live_data'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKLZ', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'WGRX', 'reason': 'no_signal'}, {'symbol': 'HCAI', 'reason': 'no_signal'}, {'symbol': 'GOVX', 'reason': 'no_signal'}, {'symbol': 'SBFM', 'reason': 'no_signal'}, {'symbol': 'AIM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'VRAX', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'BAND', 'reason': 'no_signal'}, {'symbol': 'QUCY', 'reason': 'no_signal'}, {'symbol': 'PMI', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'CISS', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'GMM', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'BTM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'LICN', 'reason': 'no_signal'}, {'symbol': 'YOOV', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'LABT', 'reason': 'no_signal'}, {'symbol': 'BNZI', 'reason': 'no_signal'}, {'symbol': 'GOSS', 'reason': 'no_signal'}, {'symbol': 'SDA', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'atr_travel_exhausted'}, {'symbol': 'FLD', 'reason': 'no_signal'}, {'symbol': 'CRAQ', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'IMA', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'PDD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'BBBY', 'reason': 'atr_travel_exhausted'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': ['technical_atr_too_low', 'atr_travel_exhausted']}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'AGPU', 'reason': 'missing_live_data'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'BIRD', 'reason': 'no_signal'}, {'symbol': 'ISPC', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'missing_live_data'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKLZ', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'WGRX', 'reason': 'no_signal'}, {'symbol': 'HCAI', 'reason': 'no_signal'}, {'symbol': 'GOVX', 'reason': 'no_signal'}, {'symbol': 'SBFM', 'reason': 'no_signal'}, {'symbol': 'AIM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'VRAX', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'BAND', 'reason': 'no_signal'}, {'symbol': 'QUCY', 'reason': 'no_signal'}, {'symbol': 'PMI', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'CISS', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'atr_travel_exhausted'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'atr_travel_exhausted'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'GMM', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'BTM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'LICN', 'reason': 'no_signal'}, {'symbol': 'YOOV', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'LABT', 'reason': 'no_signal'}, {'symbol': 'BNZI', 'reason': 'no_signal'}, {'symbol': 'GOSS', 'reason': 'no_signal'}, {'symbol': 'SDA', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'FLD', 'reason': 'no_signal'}, {'symbol': 'CRAQ', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'IMA', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'PDD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'BBBY', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'AGPU', 'reason': 'missing_live_data'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'BIRD', 'reason': 'no_signal'}, {'symbol': 'ISPC', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'missing_live_data'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKLZ', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'WGRX', 'reason': 'no_signal'}, {'symbol': 'HCAI', 'reason': 'no_signal'}, {'symbol': 'GOVX', 'reason': 'no_signal'}, {'symbol': 'SBFM', 'reason': 'no_signal'}, {'symbol': 'AIM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'VRAX', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'BAND', 'reason': 'no_signal'}, {'symbol': 'QUCY', 'reason': 'no_signal'}, {'symbol': 'PMI', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'CISS', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'ZTO', 'reason': 'atr_travel_exhausted'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'GMM', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'BTM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'LICN', 'reason': 'no_signal'}, {'symbol': 'YOOV', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'LABT', 'reason': 'no_signal'}, {'symbol': 'BNZI', 'reason': 'no_signal'}, {'symbol': 'GOSS', 'reason': 'no_signal'}, {'symbol': 'SDA', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'FLD', 'reason': 'no_signal'}, {'symbol': 'CRAQ', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'IMA', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'PDD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'BBBY', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'AGPU', 'reason': 'missing_live_data'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'BIRD', 'reason': 'no_signal'}, {'symbol': 'ISPC', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'missing_live_data'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKLZ', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'WGRX', 'reason': 'no_signal'}, {'symbol': 'HCAI', 'reason': 'no_signal'}, {'symbol': 'GOVX', 'reason': 'no_signal'}, {'symbol': 'SBFM', 'reason': 'no_signal'}, {'symbol': 'AIM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'VRAX', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'BAND', 'reason': 'no_signal'}, {'symbol': 'QUCY', 'reason': 'no_signal'}, {'symbol': 'PMI', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'CISS', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': ['technical_atr_too_low', 'atr_travel_exhausted']}, {'symbol': 'BIDU', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'atr_travel_exhausted'}, {'symbol': 'SMA', 'reason': 'atr_travel_exhausted'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'ZTO', 'reason': 'atr_travel_exhausted'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'GMM', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'BTM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'LICN', 'reason': 'no_signal'}, {'symbol': 'YOOV', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'LABT', 'reason': 'no_signal'}, {'symbol': 'BNZI', 'reason': 'no_signal'}, {'symbol': 'GOSS', 'reason': 'no_signal'}, {'symbol': 'SDA', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'atr_travel_exhausted'}, {'symbol': 'FLD', 'reason': 'no_signal'}, {'symbol': 'CRAQ', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'IMA', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'PDD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'BBBY', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': ['technical_atr_too_low', 'atr_travel_exhausted']}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'AGPU', 'reason': 'missing_live_data'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'BIRD', 'reason': 'no_signal'}, {'symbol': 'ISPC', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'missing_live_data'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKLZ', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'WGRX', 'reason': 'no_signal'}, {'symbol': 'HCAI', 'reason': 'no_signal'}, {'symbol': 'GOVX', 'reason': 'no_signal'}, {'symbol': 'SBFM', 'reason': 'no_signal'}, {'symbol': 'AIM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'VRAX', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'BAND', 'reason': 'no_signal'}, {'symbol': 'QUCY', 'reason': 'no_signal'}, {'symbol': 'PMI', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'CISS', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': ['technical_atr_too_low', 'atr_travel_exhausted']}, {'symbol': 'BIDU', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'GMM', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'BTM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'LICN', 'reason': 'no_signal'}, {'symbol': 'YOOV', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'LABT', 'reason': 'no_signal'}, {'symbol': 'BNZI', 'reason': 'no_signal'}, {'symbol': 'GOSS', 'reason': 'no_signal'}, {'symbol': 'SDA', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'FLD', 'reason': 'no_signal'}, {'symbol': 'CRAQ', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'IMA', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'PDD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'BBBY', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'AGPU', 'reason': 'missing_live_data'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'BIRD', 'reason': 'no_signal'}, {'symbol': 'ISPC', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'missing_live_data'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKLZ', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'WGRX', 'reason': 'no_signal'}, {'symbol': 'HCAI', 'reason': 'no_signal'}, {'symbol': 'GOVX', 'reason': 'no_signal'}, {'symbol': 'SBFM', 'reason': 'no_signal'}, {'symbol': 'AIM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'VRAX', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'BAND', 'reason': 'no_signal'}, {'symbol': 'QUCY', 'reason': 'no_signal'}, {'symbol': 'PMI', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'CISS', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'atr_travel_exhausted'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'GMM', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'BTM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'LICN', 'reason': 'no_signal'}, {'symbol': 'YOOV', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'LABT', 'reason': 'no_signal'}, {'symbol': 'BNZI', 'reason': 'no_signal'}, {'symbol': 'GOSS', 'reason': 'no_signal'}, {'symbol': 'SDA', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'FLD', 'reason': 'no_signal'}, {'symbol': 'CRAQ', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'IMA', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'PDD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'BBBY', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'AGPU', 'reason': 'missing_live_data'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'BIRD', 'reason': 'no_signal'}, {'symbol': 'ISPC', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'missing_live_data'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKLZ', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'WGRX', 'reason': 'no_signal'}, {'symbol': 'HCAI', 'reason': 'no_signal'}, {'symbol': 'GOVX', 'reason': 'no_signal'}, {'symbol': 'SBFM', 'reason': 'no_signal'}, {'symbol': 'AIM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'VRAX', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'BAND', 'reason': 'no_signal'}, {'symbol': 'QUCY', 'reason': 'no_signal'}, {'symbol': 'PMI', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'CISS', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'atr_travel_exhausted'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'GMM', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'BTM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'LICN', 'reason': 'no_signal'}, {'symbol': 'YOOV', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'LABT', 'reason': 'no_signal'}, {'symbol': 'BNZI', 'reason': 'no_signal'}, {'symbol': 'GOSS', 'reason': 'no_signal'}, {'symbol': 'SDA', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'FLD', 'reason': 'no_signal'}, {'symbol': 'CRAQ', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'IMA', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'PDD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'BBBY', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'AGPU', 'reason': 'missing_live_data'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'BIRD', 'reason': 'no_signal'}, {'symbol': 'ISPC', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'missing_live_data'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKLZ', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'WGRX', 'reason': 'no_signal'}, {'symbol': 'HCAI', 'reason': 'no_signal'}, {'symbol': 'GOVX', 'reason': 'no_signal'}, {'symbol': 'SBFM', 'reason': 'no_signal'}, {'symbol': 'AIM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'VRAX', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'BAND', 'reason': 'no_signal'}, {'symbol': 'QUCY', 'reason': 'no_signal'}, {'symbol': 'PMI', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'CISS', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'GMM', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'BTM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'LICN', 'reason': 'no_signal'}, {'symbol': 'YOOV', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'LABT', 'reason': 'no_signal'}, {'symbol': 'BNZI', 'reason': 'no_signal'}, {'symbol': 'GOSS', 'reason': 'no_signal'}, {'symbol': 'SDA', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'FLD', 'reason': 'no_signal'}, {'symbol': 'CRAQ', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'IMA', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'PDD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'BBBY', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'AGPU', 'reason': 'missing_live_data'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'BIRD', 'reason': 'no_signal'}, {'symbol': 'ISPC', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'missing_live_data'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKLZ', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'WGRX', 'reason': 'no_signal'}, {'symbol': 'HCAI', 'reason': 'no_signal'}, {'symbol': 'GOVX', 'reason': 'no_signal'}, {'symbol': 'SBFM', 'reason': 'no_signal'}, {'symbol': 'AIM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'VRAX', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'BAND', 'reason': 'no_signal'}, {'symbol': 'QUCY', 'reason': 'no_signal'}, {'symbol': 'PMI', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'CISS', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'atr_travel_exhausted'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'atr_travel_exhausted'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'GMM', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'BTM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'LICN', 'reason': 'no_signal'}, {'symbol': 'YOOV', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'LABT', 'reason': 'no_signal'}, {'symbol': 'BNZI', 'reason': 'no_signal'}, {'symbol': 'GOSS', 'reason': 'no_signal'}, {'symbol': 'SDA', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'atr_travel_exhausted'}, {'symbol': 'FLD', 'reason': 'no_signal'}, {'symbol': 'CRAQ', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'atr_travel_exhausted'}, {'symbol': 'IMA', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'PDD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'BBBY', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'AGPU', 'reason': 'missing_live_data'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'BIRD', 'reason': 'no_signal'}, {'symbol': 'ISPC', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'missing_live_data'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKLZ', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'WGRX', 'reason': 'no_signal'}, {'symbol': 'HCAI', 'reason': 'no_signal'}, {'symbol': 'GOVX', 'reason': 'no_signal'}, {'symbol': 'SBFM', 'reason': 'no_signal'}, {'symbol': 'AIM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'VRAX', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'BAND', 'reason': 'no_signal'}, {'symbol': 'QUCY', 'reason': 'no_signal'}, {'symbol': 'PMI', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'CISS', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'atr_travel_exhausted'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'GMM', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'BTM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'LICN', 'reason': 'no_signal'}, {'symbol': 'YOOV', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'LABT', 'reason': 'no_signal'}, {'symbol': 'BNZI', 'reason': 'no_signal'}, {'symbol': 'GOSS', 'reason': 'no_signal'}, {'symbol': 'SDA', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'FLD', 'reason': 'no_signal'}, {'symbol': 'CRAQ', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'IMA', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'PDD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'BBBY', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': ['technical_atr_too_low', 'atr_travel_exhausted']}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'AGPU', 'reason': 'missing_live_data'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'BIRD', 'reason': 'no_signal'}, {'symbol': 'ISPC', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'missing_live_data'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKLZ', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'WGRX', 'reason': 'no_signal'}, {'symbol': 'HCAI', 'reason': 'no_signal'}, {'symbol': 'GOVX', 'reason': 'no_signal'}, {'symbol': 'SBFM', 'reason': 'no_signal'}, {'symbol': 'AIM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'VRAX', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'BAND', 'reason': 'no_signal'}, {'symbol': 'QUCY', 'reason': 'no_signal'}, {'symbol': 'PMI', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'CISS', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'atr_travel_exhausted'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'ZTO', 'reason': 'atr_travel_exhausted'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'GMM', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'BTM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'LICN', 'reason': 'no_signal'}, {'symbol': 'YOOV', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'LABT', 'reason': 'no_signal'}, {'symbol': 'BNZI', 'reason': 'no_signal'}, {'symbol': 'GOSS', 'reason': 'no_signal'}, {'symbol': 'SDA', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'FLD', 'reason': 'no_signal'}, {'symbol': 'CRAQ', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'IMA', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'PDD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}]
+- **manual_candidates**: none
+- **scan_count**: 14
+- **skip_reason_summary**: {'no_signal': 749, 'symbol_news_risk': 126, 'missing_live_data': 28, 'atr_travel_exhausted': 29, 'technical_atr_too_low, atr_travel_exhausted': 7}
+
+## End Of Day (2026-05-21T16:10:03)
+- **summary**: {'date': '2026-05-21', 'daily_pnl': 0.0, 'daily_pnl_pct': 0.0, 'total_tickers_scanned': 60, 'valid_setups': 15, 'trades_taken': 0, 'skipped': 60, 'top_rejection_reasons': [('no prior false breakdown', 34), ('prior false breakdown continuation', 9), ('router_rejected: reward_risk_too_low_after_router rr=3.00', 2), ('router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0092', 1), ('router_rejected: stop_too_wide_after_rounding risk=0.0200 max=0.0174', 1)]}
+- **report**: 
+--------------------------------------------------
+Ticker: AAPL
+Level: 300.92
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 300.29 - 301.55
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 305.18
+Stop: 304.66
+Target: 306.74
+R:R: 3.0
+Confidence: 0.9
+Position Modifier: 0.5
+
+Reasons:
+- router_accepted
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: AGPU
+Level: 4.68
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 4.59 - 4.97
+
+Decision:
+NO TRADE
+
+Reasons:
+- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0092
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: AIM
+Level: 0.96
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 0.94 - 1.01
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: ALOY
+Level: 8.89
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 8.74 - 8.98
+
+Decision:
+NO TRADE
+
+Reasons:
+- router_rejected: stop_too_wide_after_rounding risk=0.0200 max=0.0174
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: AMAT
+Level: 416.79
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 414.24 - 419.11
+
+Decision:
+NO TRADE
+
+Reasons:
+- router_rejected: reward_risk_too_low_after_router rr=1.68
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: AMH
+Level: 31.91
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 31.72 - 32.01
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 32.16
+Stop: 32.11
+Target: 32.31
+R:R: 3.0
+Confidence: 1.0
+Position Modifier: 0.5
+
+Reasons:
+- router_accepted
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: AMP
+Level: 446.87
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 445.71 - 448.03
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: ASND
+Level: 245.63
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 244.79 - 248.15
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: BAND
+Level: 56.37
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 55.84 - 57.96
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 58.3
+Stop: 58.2
+Target: 58.6
+R:R: 3.0
+Confidence: 1.0
+Position Modifier: 0.5
+
+Reasons:
+- router_accepted
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: BBBY
+Level: 4.67
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 4.6 - 4.69
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 5.6
+Stop: 5.59
+Target: 5.63
+R:R: 3.0
+Confidence: 1.0
+Position Modifier: 0.5
+
+Reasons:
+- router_accepted
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: BIRD
+Level: 13.48
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 13.44 - 13.52
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: BNZI
+Level: 16.85
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 16.6 - 17.11
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: CISS
+Level: 12.11
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 12.06 - 12.16
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: CRAQ
+Level: 10.16
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 10.16 - 10.16
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: DAL
+Level: 68.16
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 67.86 - 68.54
+
+Decision:
+NO TRADE
+
+Reasons:
+- router_rejected: reward_risk_too_low_after_router rr=3.00
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: EUR.USD
+Level: 1.18
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: LOW
+- Zone: 1.18 - 1.18
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: FLD
+Level: 1.24
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 1.22 - 1.27
+
+Decision:
+NO TRADE
+
+Reasons:
+- no continuation uptrend from level
+
+--------------------------------------------------
+Ticker: GCTS
+Level: 2.68
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 2.56 - 2.76
+
+Decision:
+NO TRADE
+
+Reasons:
+- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0062
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: GMM
+Level: 1.18
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 1.15 - 1.25
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: GOSS
+Level: 0.19
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 0.19 - 0.2
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: GOVX
+Level: 1.29
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 1.22 - 1.47
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: GSHD
+Level: 37.37
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 36.55 - 37.67
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: HCAI
+Level: 14.5
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 14.22 - 14.73
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: ICCC
+Level: 10.25
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 10.17 - 10.33
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: IMA
+Level: 6.51
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 6.45 - 6.55
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: ISPC
+Level: 10.8
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 10.73 - 10.85
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: ITIC
+Level: 218.55
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 217.78 - 219.99
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: KMDA
+Level: 7.6
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 7.58 - 7.62
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 7.83
+Stop: 7.82
+Target: 7.86
+R:R: 3.0
+Confidence: 1.0
+Position Modifier: 0.5
+
+Reasons:
+- router_accepted
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: KO
+Level: 80.39
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 80.19 - 80.58
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: KYTX
+Level: 10.71
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 10.61 - 10.82
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: LABT
+Level: 0.81
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 0.74 - 0.93
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: LICN
+Level: 5.11
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 4.36 - 5.48
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: LVO
+Level: 6.25
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 6.2 - 6.3
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 6.62
+Stop: 6.61
+Target: 6.65
+R:R: 3.0
+Confidence: 1.0
+Position Modifier: 0.5
+
+Reasons:
+- router_accepted
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: MDU
+Level: 21.33
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 21.28 - 21.39
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: MRLN
+Level: 6.3
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: LOW
+- Zone: 6.2 - 6.4
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 7.06
+Stop: 7.05
+Target: 8.11
+R:R: 105.0
+Confidence: 1.0
+Position Modifier: 1.0
+
+Reasons:
+- router_accepted
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: MRSH
+Level: 165.7
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 164.48 - 166.11
+
+Decision:
+NO TRADE
+
+Reasons:
+- router_rejected: stop_too_wide_after_rounding risk=0.3300 max=0.2966
+- clean false breakout return
+
+--------------------------------------------------
+Ticker: MSFT
+Level: 432.92
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 431.19 - 435.21
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: NCEW
+Level: 14.0
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 13.88 - 14.12
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: NEOV
+Level: 2.02
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 1.97 - 2.07
+
+Decision:
+NO TRADE
+
+Reasons:
+- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0053
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: OPTX
+Level: 7.19
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 6.83 - 7.39
+
+Decision:
+NO TRADE
+
+Reasons:
+- router_rejected: stop_too_wide_after_rounding risk=0.0200 max=0.0163
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: QUCY
+Level: 3.25
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 3.06 - 3.65
+
+Decision:
+NO TRADE
+
+Reasons:
+- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0078
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: ROLR
+Level: 10.85
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 10.79 - 10.91
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: SANM
+Level: 224.7
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 220.39 - 226.2
+
+Decision:
+NO TRADE
+
+Reasons:
+- router_rejected: reward_risk_too_low_after_router rr=3.00
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: SBFM
+Level: 0.47
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 0.42 - 0.49
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: SDA
+Level: 2.3
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 2.25 - 2.32
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: SEI
+Level: 69.48
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 68.85 - 70.11
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 73.6
+Stop: 73.47
+Target: 73.99
+R:R: 3.0
+Confidence: 1.0
+Position Modifier: 0.5
+
+Reasons:
+- router_accepted
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: SION
+Level: 37.8
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 36.94 - 38.13
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 41.53
+Stop: 41.46
+Target: 43.49
+R:R: 28.0
+Confidence: 1.0
+Position Modifier: 0.5
+
+Reasons:
+- router_accepted
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: SKLZ
+Level: 7.17
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 6.83 - 7.32
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 7.74
+Stop: 7.73
+Target: 7.77
+R:R: 3.0
+Confidence: 1.0
+Position Modifier: 0.5
+
+Reasons:
+- router_accepted
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: SKYQ
+Level: 11.09
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 11.04 - 11.14
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: SMA
+Level: 29.78
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 29.66 - 29.9
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 30.92
+Stop: 30.87
+Target: 32.2
+R:R: 25.6
+Confidence: 1.0
+Position Modifier: 0.5
+
+Reasons:
+- router_accepted
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: SPOT
+Level: 552.87
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 551.04 - 554.7
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: TREX
+Level: 37.54
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 37.32 - 38.25
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 38.91
+Stop: 38.84
+Target: 42.16
+R:R: 46.43
+Confidence: 1.0
+Position Modifier: 0.5
+
+Reasons:
+- router_accepted
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: TSLA
+Level: 403.06
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 400.07 - 405.23
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 417.26
+Stop: 416.55
+Target: 419.39
+R:R: 3.0
+Confidence: 1.0
+Position Modifier: 0.5
+
+Reasons:
+- router_accepted
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: VAL
+Level: 114.12
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 113.4 - 114.84
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: VRAX
+Level: 0.15
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 0.13 - 0.17
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: WGRX
+Level: 0.11
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 0.09 - 0.13
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: WTBA
+Level: 25.42
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 25.35 - 25.57
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: XP
+Level: 16.95
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 16.86 - 17.04
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 18.07
+Stop: 18.04
+Target: 18.74
+R:R: 22.33
+Confidence: 0.9
+Position Modifier: 0.5
+
+Reasons:
+- router_accepted
+- prior false breakdown continuation
+
+--------------------------------------------------
+Ticker: YOOV
+Level: 1.01
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 0.94 - 1.05
+
+Decision:
+NO TRADE
+
+Reasons:
+- no prior false breakdown
+
+--------------------------------------------------
+Ticker: ZTO
+Level: 22.67
+Pattern: FALSE_BREAKOUT_CONTINUATION
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: MEDIUM
+- Zone: 22.59 - 22.75
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 22.91
+Stop: 22.87
+Target: 23.92
+R:R: 25.25
+Confidence: 0.9
+Position Modifier: 0.5
+
+Reasons:
+- router_accepted
+- prior false breakdown continuation
+
+
+## Workflow EOD (2026-05-21T16:10:03)
+- **stage**: EOD
+- **summary**: {'date': '2026-05-21', 'daily_pnl': 0.0, 'daily_pnl_pct': 0.0, 'positions': [], 'account_snapshot': {'account': [{'account': 'DU5454348', 'tag': 'AccountType', 'value': 'INDIVIDUAL', 'currency': ''}, {'account': 'DU5454348', 'tag': 'Cushion', 'value': '1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemaining', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+1', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+2', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+3', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'DayTradesRemainingT+4', 'value': '-1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'LookAheadNextChange', 'value': '0', 'currency': ''}, {'account': 'DU5454348', 'tag': 'AccruedCash', 'value': '120.60', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'AvailableFunds', 'value': '100946.70', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'BuyingPower', 'value': '403786.81', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'EquityWithLoanValue', 'value': '100946.70', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'ExcessLiquidity', 'value': '100946.70', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullAvailableFunds', 'value': '100946.70', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullExcessLiquidity', 'value': '100946.70', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'GrossPositionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'InitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadAvailableFunds', 'value': '100946.70', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadExcessLiquidity', 'value': '100946.70', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadInitMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadMaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'MaintMarginReq', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'NetLiquidation', 'value': '101067.30', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'PreviousDayEquityWithLoanValue', 'value': '100961.17', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTEquity', 'value': '101067.30', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTMargin', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'SMA', 'value': '101098.02', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'TotalCashValue', 'value': '100946.70', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'JPY', 'currency': 'JPY'}, {'account': 'All', 'tag': 'CashBalance', 'value': '3773190.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '3773190.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '3773190.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '0.0062887', 'currency': 'JPY'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'JPY'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'JPY', 'currency': 'JPY'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'Currency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CashBalance', 'value': '800.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '800.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '800.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.162139', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Currency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'CashBalance', 'value': '76282.34', 'currency': 'USD'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '76282.34', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '120.60', 'currency': 'USD'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '76402.94', 'currency': 'USD'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CashBalance', 'value': '100946.7014', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '100946.7014', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '120.60', 'currency': 'BASE'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '101067.3014', 'currency': 'BASE'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'BASE'}], 'positions': [], 'open_orders': []}, 'blocked': False, 'reasons': [], 'decision_summary': {'total_tickers_scanned': 60, 'valid_setups': 15, 'trades_taken': 0, 'skipped': 60, 'top_rejection_reasons': [('no prior false breakdown', 34), ('prior false breakdown continuation', 9), ('router_rejected: reward_risk_too_low_after_router rr=3.00', 2), ('router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0092', 1), ('router_rejected: stop_too_wide_after_rounding risk=0.0200 max=0.0174', 1)], 'open_symbols': [], 'ticker_sections': ['--------------------------------------------------\nTicker: AAPL\nLevel: 300.92\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 300.29 - 301.55\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 305.18\nStop: 304.66\nTarget: 306.74\nR:R: 3.0\nConfidence: 0.9\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: AGPU\nLevel: 4.68\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.59 - 4.97\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0092\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: AIM\nLevel: 0.96\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.94 - 1.01\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: ALOY\nLevel: 8.89\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 8.74 - 8.98\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0200 max=0.0174\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: AMAT\nLevel: 416.79\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 414.24 - 419.11\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: reward_risk_too_low_after_router rr=1.68\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: AMH\nLevel: 31.91\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 31.72 - 32.01\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 32.16\nStop: 32.11\nTarget: 32.31\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: AMP\nLevel: 446.87\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 445.71 - 448.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: ASND\nLevel: 245.63\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 244.79 - 248.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: BAND\nLevel: 56.37\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 55.84 - 57.96\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 58.3\nStop: 58.2\nTarget: 58.6\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: BBBY\nLevel: 4.67\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.6 - 4.69\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 5.6\nStop: 5.59\nTarget: 5.63\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: BIRD\nLevel: 13.48\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 13.44 - 13.52\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: BNZI\nLevel: 16.85\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 16.6 - 17.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: CISS\nLevel: 12.11\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 12.06 - 12.16\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: CRAQ\nLevel: 10.16\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.16 - 10.16\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: DAL\nLevel: 68.16\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 67.86 - 68.54\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: reward_risk_too_low_after_router rr=3.00\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: EUR.USD\nLevel: 1.18\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 1.18 - 1.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: FLD\nLevel: 1.24\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 1.22 - 1.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no continuation uptrend from level\n', '--------------------------------------------------\nTicker: GCTS\nLevel: 2.68\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 2.56 - 2.76\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0062\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: GMM\nLevel: 1.18\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 1.15 - 1.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: GOSS\nLevel: 0.19\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.19 - 0.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: GOVX\nLevel: 1.29\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 1.22 - 1.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: GSHD\nLevel: 37.37\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 36.55 - 37.67\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: HCAI\nLevel: 14.5\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 14.22 - 14.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: ICCC\nLevel: 10.25\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.17 - 10.33\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: IMA\nLevel: 6.51\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 6.45 - 6.55\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: ISPC\nLevel: 10.8\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.73 - 10.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: ITIC\nLevel: 218.55\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 217.78 - 219.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: KMDA\nLevel: 7.6\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 7.58 - 7.62\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 7.83\nStop: 7.82\nTarget: 7.86\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: KO\nLevel: 80.39\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 80.19 - 80.58\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: KYTX\nLevel: 10.71\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.61 - 10.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: LABT\nLevel: 0.81\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.74 - 0.93\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: LICN\nLevel: 5.11\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.36 - 5.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: LVO\nLevel: 6.25\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 6.2 - 6.3\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 6.62\nStop: 6.61\nTarget: 6.65\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: MDU\nLevel: 21.33\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 21.28 - 21.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: MRLN\nLevel: 6.3\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 6.2 - 6.4\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 7.06\nStop: 7.05\nTarget: 8.11\nR:R: 105.0\nConfidence: 1.0\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: MRSH\nLevel: 165.7\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 164.48 - 166.11\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.3300 max=0.2966\n- clean false breakout return\n', '--------------------------------------------------\nTicker: MSFT\nLevel: 432.92\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 431.19 - 435.21\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: NCEW\nLevel: 14.0\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 13.88 - 14.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: NEOV\nLevel: 2.02\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 1.97 - 2.07\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0053\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: OPTX\nLevel: 7.19\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 6.83 - 7.39\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0200 max=0.0163\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: QUCY\nLevel: 3.25\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 3.06 - 3.65\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0078\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: ROLR\nLevel: 10.85\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.79 - 10.91\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: SANM\nLevel: 224.7\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 220.39 - 226.2\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: reward_risk_too_low_after_router rr=3.00\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: SBFM\nLevel: 0.47\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.42 - 0.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: SDA\nLevel: 2.3\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 2.25 - 2.32\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: SEI\nLevel: 69.48\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 68.85 - 70.11\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 73.6\nStop: 73.47\nTarget: 73.99\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: SION\nLevel: 37.8\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 36.94 - 38.13\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 41.53\nStop: 41.46\nTarget: 43.49\nR:R: 28.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: SKLZ\nLevel: 7.17\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 6.83 - 7.32\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 7.74\nStop: 7.73\nTarget: 7.77\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: SKYQ\nLevel: 11.09\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 11.04 - 11.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: SMA\nLevel: 29.78\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 29.66 - 29.9\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 30.92\nStop: 30.87\nTarget: 32.2\nR:R: 25.6\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: SPOT\nLevel: 552.87\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 551.04 - 554.7\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: TREX\nLevel: 37.54\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 37.32 - 38.25\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 38.91\nStop: 38.84\nTarget: 42.16\nR:R: 46.43\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: TSLA\nLevel: 403.06\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 400.07 - 405.23\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 417.26\nStop: 416.55\nTarget: 419.39\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: VAL\nLevel: 114.12\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 113.4 - 114.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: VRAX\nLevel: 0.15\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.13 - 0.17\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: WGRX\nLevel: 0.11\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.09 - 0.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: WTBA\nLevel: 25.42\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 25.35 - 25.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: XP\nLevel: 16.95\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 16.86 - 17.04\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 18.07\nStop: 18.04\nTarget: 18.74\nR:R: 22.33\nConfidence: 0.9\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n', '--------------------------------------------------\nTicker: YOOV\nLevel: 1.01\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.94 - 1.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n', '--------------------------------------------------\nTicker: ZTO\nLevel: 22.67\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 22.59 - 22.75\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 22.91\nStop: 22.87\nTarget: 23.92\nR:R: 25.25\nConfidence: 0.9\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n']}, 'report_text': '--------------------------------------------------\nTicker: AAPL\nLevel: 300.92\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 300.29 - 301.55\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 305.18\nStop: 304.66\nTarget: 306.74\nR:R: 3.0\nConfidence: 0.9\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: AGPU\nLevel: 4.68\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.59 - 4.97\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0092\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: AIM\nLevel: 0.96\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.94 - 1.01\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: ALOY\nLevel: 8.89\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 8.74 - 8.98\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0200 max=0.0174\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: AMAT\nLevel: 416.79\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 414.24 - 419.11\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: reward_risk_too_low_after_router rr=1.68\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: AMH\nLevel: 31.91\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 31.72 - 32.01\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 32.16\nStop: 32.11\nTarget: 32.31\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: AMP\nLevel: 446.87\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 445.71 - 448.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: ASND\nLevel: 245.63\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 244.79 - 248.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: BAND\nLevel: 56.37\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 55.84 - 57.96\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 58.3\nStop: 58.2\nTarget: 58.6\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: BBBY\nLevel: 4.67\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.6 - 4.69\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 5.6\nStop: 5.59\nTarget: 5.63\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: BIRD\nLevel: 13.48\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 13.44 - 13.52\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: BNZI\nLevel: 16.85\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 16.6 - 17.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: CISS\nLevel: 12.11\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 12.06 - 12.16\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: CRAQ\nLevel: 10.16\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.16 - 10.16\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: DAL\nLevel: 68.16\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 67.86 - 68.54\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: reward_risk_too_low_after_router rr=3.00\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: EUR.USD\nLevel: 1.18\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 1.18 - 1.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: FLD\nLevel: 1.24\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 1.22 - 1.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no continuation uptrend from level\n\n--------------------------------------------------\nTicker: GCTS\nLevel: 2.68\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 2.56 - 2.76\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0062\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: GMM\nLevel: 1.18\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 1.15 - 1.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: GOSS\nLevel: 0.19\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.19 - 0.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: GOVX\nLevel: 1.29\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 1.22 - 1.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: GSHD\nLevel: 37.37\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 36.55 - 37.67\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: HCAI\nLevel: 14.5\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 14.22 - 14.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: ICCC\nLevel: 10.25\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.17 - 10.33\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: IMA\nLevel: 6.51\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 6.45 - 6.55\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: ISPC\nLevel: 10.8\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.73 - 10.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: ITIC\nLevel: 218.55\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 217.78 - 219.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: KMDA\nLevel: 7.6\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 7.58 - 7.62\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 7.83\nStop: 7.82\nTarget: 7.86\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: KO\nLevel: 80.39\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 80.19 - 80.58\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: KYTX\nLevel: 10.71\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.61 - 10.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: LABT\nLevel: 0.81\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.74 - 0.93\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: LICN\nLevel: 5.11\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.36 - 5.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: LVO\nLevel: 6.25\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 6.2 - 6.3\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 6.62\nStop: 6.61\nTarget: 6.65\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: MDU\nLevel: 21.33\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 21.28 - 21.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: MRLN\nLevel: 6.3\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 6.2 - 6.4\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 7.06\nStop: 7.05\nTarget: 8.11\nR:R: 105.0\nConfidence: 1.0\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: MRSH\nLevel: 165.7\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 164.48 - 166.11\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.3300 max=0.2966\n- clean false breakout return\n\n--------------------------------------------------\nTicker: MSFT\nLevel: 432.92\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 431.19 - 435.21\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: NCEW\nLevel: 14.0\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 13.88 - 14.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: NEOV\nLevel: 2.02\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 1.97 - 2.07\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0053\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: OPTX\nLevel: 7.19\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 6.83 - 7.39\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0200 max=0.0163\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: QUCY\nLevel: 3.25\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 3.06 - 3.65\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0078\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: ROLR\nLevel: 10.85\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.79 - 10.91\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: SANM\nLevel: 224.7\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 220.39 - 226.2\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: reward_risk_too_low_after_router rr=3.00\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: SBFM\nLevel: 0.47\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.42 - 0.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: SDA\nLevel: 2.3\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 2.25 - 2.32\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: SEI\nLevel: 69.48\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 68.85 - 70.11\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 73.6\nStop: 73.47\nTarget: 73.99\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: SION\nLevel: 37.8\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 36.94 - 38.13\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 41.53\nStop: 41.46\nTarget: 43.49\nR:R: 28.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: SKLZ\nLevel: 7.17\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 6.83 - 7.32\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 7.74\nStop: 7.73\nTarget: 7.77\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: SKYQ\nLevel: 11.09\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 11.04 - 11.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: SMA\nLevel: 29.78\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 29.66 - 29.9\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 30.92\nStop: 30.87\nTarget: 32.2\nR:R: 25.6\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: SPOT\nLevel: 552.87\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 551.04 - 554.7\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: TREX\nLevel: 37.54\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 37.32 - 38.25\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 38.91\nStop: 38.84\nTarget: 42.16\nR:R: 46.43\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: TSLA\nLevel: 403.06\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 400.07 - 405.23\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 417.26\nStop: 416.55\nTarget: 419.39\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: VAL\nLevel: 114.12\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 113.4 - 114.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: VRAX\nLevel: 0.15\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.13 - 0.17\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: WGRX\nLevel: 0.11\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.09 - 0.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: WTBA\nLevel: 25.42\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 25.35 - 25.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: XP\nLevel: 16.95\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 16.86 - 17.04\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 18.07\nStop: 18.04\nTarget: 18.74\nR:R: 22.33\nConfidence: 0.9\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: YOOV\nLevel: 1.01\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.94 - 1.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: ZTO\nLevel: 22.67\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 22.59 - 22.75\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 22.91\nStop: 22.87\nTarget: 23.92\nR:R: 25.25\nConfidence: 0.9\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n'}
+```json
+{
+  "stage": "EOD",
+  "payload": {
+    "summary": {
+      "date": "2026-05-21",
+      "daily_pnl": 0.0,
+      "daily_pnl_pct": 0.0,
+      "positions": [],
+      "account_snapshot": {
+        "account": [
+          {
+            "account": "DU5454348",
+            "tag": "AccountType",
+            "value": "INDIVIDUAL",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "Cushion",
+            "value": "1",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "DayTradesRemaining",
+            "value": "-1",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "DayTradesRemainingT+1",
+            "value": "-1",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "DayTradesRemainingT+2",
+            "value": "-1",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "DayTradesRemainingT+3",
+            "value": "-1",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "DayTradesRemainingT+4",
+            "value": "-1",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadNextChange",
+            "value": "0",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "AccruedCash",
+            "value": "120.60",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "AvailableFunds",
+            "value": "100946.70",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "BuyingPower",
+            "value": "403786.81",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "EquityWithLoanValue",
+            "value": "100946.70",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "ExcessLiquidity",
+            "value": "100946.70",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullAvailableFunds",
+            "value": "100946.70",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullExcessLiquidity",
+            "value": "100946.70",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullInitMarginReq",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullMaintMarginReq",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "GrossPositionValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "InitMarginReq",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadAvailableFunds",
+            "value": "100946.70",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadExcessLiquidity",
+            "value": "100946.70",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadInitMarginReq",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadMaintMarginReq",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "MaintMarginReq",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "NetLiquidation",
+            "value": "101067.30",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "PreviousDayEquityWithLoanValue",
+            "value": "100961.17",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "RegTEquity",
+            "value": "101067.30",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "RegTMargin",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "SMA",
+            "value": "101098.02",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "TotalCashValue",
+            "value": "100946.70",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "Currency",
+            "value": "JPY",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "CashBalance",
+            "value": "3773190.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "TotalCashBalance",
+            "value": "3773190.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "AccruedCash",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "StockMarketValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "OptionMarketValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "FutureOptionValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "FuturesPNL",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "NetLiquidationByCurrency",
+            "value": "3773190.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "UnrealizedPnL",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "RealizedPnL",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "ExchangeRate",
+            "value": "0.0062887",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "FundValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "NetDividend",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "MutualFundValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "MoneyMarketFundValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "CorporateBondValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "TBondValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "TBillValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "WarrantValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "FxCashBalance",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "AccountOrGroup",
+            "value": "All",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "RealCurrency",
+            "value": "JPY",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "IssuerOptionValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "Cryptocurrency",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "Currency",
+            "value": "EUR",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "CashBalance",
+            "value": "800.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "TotalCashBalance",
+            "value": "800.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "AccruedCash",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "StockMarketValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "OptionMarketValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "FutureOptionValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "FuturesPNL",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "NetLiquidationByCurrency",
+            "value": "800.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "UnrealizedPnL",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "RealizedPnL",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "ExchangeRate",
+            "value": "1.162139",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "FundValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "NetDividend",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "MutualFundValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "MoneyMarketFundValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "CorporateBondValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "TBondValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "TBillValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "WarrantValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "FxCashBalance",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "AccountOrGroup",
+            "value": "All",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "RealCurrency",
+            "value": "EUR",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "IssuerOptionValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "Cryptocurrency",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "Currency",
+            "value": "USD",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "CashBalance",
+            "value": "76282.34",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "TotalCashBalance",
+            "value": "76282.34",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "AccruedCash",
+            "value": "120.60",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "StockMarketValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "OptionMarketValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FutureOptionValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FuturesPNL",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "NetLiquidationByCurrency",
+            "value": "76402.94",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "UnrealizedPnL",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "RealizedPnL",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "ExchangeRate",
+            "value": "1.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FundValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "NetDividend",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "MutualFundValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "MoneyMarketFundValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "CorporateBondValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "TBondValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "TBillValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "WarrantValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FxCashBalance",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "AccountOrGroup",
+            "value": "All",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "RealCurrency",
+            "value": "USD",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "IssuerOptionValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "Cryptocurrency",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "Currency",
+            "value": "BASE",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "CashBalance",
+            "value": "100946.7014",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "TotalCashBalance",
+            "value": "100946.7014",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "AccruedCash",
+            "value": "120.60",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "StockMarketValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "OptionMarketValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FutureOptionValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FuturesPNL",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "NetLiquidationByCurrency",
+            "value": "101067.3014",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "UnrealizedPnL",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "RealizedPnL",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "ExchangeRate",
+            "value": "1.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FundValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "NetDividend",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "MutualFundValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "MoneyMarketFundValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "CorporateBondValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "TBondValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "TBillValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "WarrantValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FxCashBalance",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "AccountOrGroup",
+            "value": "All",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "RealCurrency",
+            "value": "BASE",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "IssuerOptionValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "Cryptocurrency",
+            "value": "0.00",
+            "currency": "BASE"
+          }
+        ],
+        "positions": [],
+        "open_orders": []
+      },
+      "blocked": false,
+      "reasons": [],
+      "decision_summary": {
+        "total_tickers_scanned": 60,
+        "valid_setups": 15,
+        "trades_taken": 0,
+        "skipped": 60,
+        "top_rejection_reasons": [
+          [
+            "no prior false breakdown",
+            34
+          ],
+          [
+            "prior false breakdown continuation",
+            9
+          ],
+          [
+            "router_rejected: reward_risk_too_low_after_router rr=3.00",
+            2
+          ],
+          [
+            "router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0092",
+            1
+          ],
+          [
+            "router_rejected: stop_too_wide_after_rounding risk=0.0200 max=0.0174",
+            1
+          ]
+        ],
+        "open_symbols": [],
+        "ticker_sections": [
+          "--------------------------------------------------\nTicker: AAPL\nLevel: 300.92\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 300.29 - 301.55\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 305.18\nStop: 304.66\nTarget: 306.74\nR:R: 3.0\nConfidence: 0.9\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: AGPU\nLevel: 4.68\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.59 - 4.97\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0092\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: AIM\nLevel: 0.96\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.94 - 1.01\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: ALOY\nLevel: 8.89\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 8.74 - 8.98\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0200 max=0.0174\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: AMAT\nLevel: 416.79\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 414.24 - 419.11\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: reward_risk_too_low_after_router rr=1.68\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: AMH\nLevel: 31.91\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 31.72 - 32.01\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 32.16\nStop: 32.11\nTarget: 32.31\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: AMP\nLevel: 446.87\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 445.71 - 448.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: ASND\nLevel: 245.63\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 244.79 - 248.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: BAND\nLevel: 56.37\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 55.84 - 57.96\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 58.3\nStop: 58.2\nTarget: 58.6\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: BBBY\nLevel: 4.67\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.6 - 4.69\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 5.6\nStop: 5.59\nTarget: 5.63\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: BIRD\nLevel: 13.48\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 13.44 - 13.52\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: BNZI\nLevel: 16.85\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 16.6 - 17.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: CISS\nLevel: 12.11\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 12.06 - 12.16\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: CRAQ\nLevel: 10.16\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.16 - 10.16\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: DAL\nLevel: 68.16\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 67.86 - 68.54\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: reward_risk_too_low_after_router rr=3.00\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: EUR.USD\nLevel: 1.18\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 1.18 - 1.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: FLD\nLevel: 1.24\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 1.22 - 1.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no continuation uptrend from level\n",
+          "--------------------------------------------------\nTicker: GCTS\nLevel: 2.68\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 2.56 - 2.76\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0062\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: GMM\nLevel: 1.18\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 1.15 - 1.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: GOSS\nLevel: 0.19\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.19 - 0.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: GOVX\nLevel: 1.29\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 1.22 - 1.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: GSHD\nLevel: 37.37\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 36.55 - 37.67\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: HCAI\nLevel: 14.5\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 14.22 - 14.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: ICCC\nLevel: 10.25\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.17 - 10.33\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: IMA\nLevel: 6.51\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 6.45 - 6.55\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: ISPC\nLevel: 10.8\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.73 - 10.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: ITIC\nLevel: 218.55\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 217.78 - 219.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: KMDA\nLevel: 7.6\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 7.58 - 7.62\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 7.83\nStop: 7.82\nTarget: 7.86\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: KO\nLevel: 80.39\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 80.19 - 80.58\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: KYTX\nLevel: 10.71\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.61 - 10.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: LABT\nLevel: 0.81\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.74 - 0.93\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: LICN\nLevel: 5.11\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.36 - 5.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: LVO\nLevel: 6.25\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 6.2 - 6.3\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 6.62\nStop: 6.61\nTarget: 6.65\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: MDU\nLevel: 21.33\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 21.28 - 21.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: MRLN\nLevel: 6.3\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 6.2 - 6.4\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 7.06\nStop: 7.05\nTarget: 8.11\nR:R: 105.0\nConfidence: 1.0\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: MRSH\nLevel: 165.7\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 164.48 - 166.11\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.3300 max=0.2966\n- clean false breakout return\n",
+          "--------------------------------------------------\nTicker: MSFT\nLevel: 432.92\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 431.19 - 435.21\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: NCEW\nLevel: 14.0\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 13.88 - 14.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: NEOV\nLevel: 2.02\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 1.97 - 2.07\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0053\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: OPTX\nLevel: 7.19\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 6.83 - 7.39\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0200 max=0.0163\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: QUCY\nLevel: 3.25\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 3.06 - 3.65\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0078\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: ROLR\nLevel: 10.85\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.79 - 10.91\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: SANM\nLevel: 224.7\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 220.39 - 226.2\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: reward_risk_too_low_after_router rr=3.00\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: SBFM\nLevel: 0.47\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.42 - 0.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: SDA\nLevel: 2.3\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 2.25 - 2.32\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: SEI\nLevel: 69.48\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 68.85 - 70.11\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 73.6\nStop: 73.47\nTarget: 73.99\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: SION\nLevel: 37.8\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 36.94 - 38.13\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 41.53\nStop: 41.46\nTarget: 43.49\nR:R: 28.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: SKLZ\nLevel: 7.17\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 6.83 - 7.32\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 7.74\nStop: 7.73\nTarget: 7.77\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: SKYQ\nLevel: 11.09\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 11.04 - 11.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: SMA\nLevel: 29.78\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 29.66 - 29.9\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 30.92\nStop: 30.87\nTarget: 32.2\nR:R: 25.6\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: SPOT\nLevel: 552.87\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 551.04 - 554.7\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: TREX\nLevel: 37.54\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 37.32 - 38.25\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 38.91\nStop: 38.84\nTarget: 42.16\nR:R: 46.43\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: TSLA\nLevel: 403.06\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 400.07 - 405.23\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 417.26\nStop: 416.55\nTarget: 419.39\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: VAL\nLevel: 114.12\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 113.4 - 114.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: VRAX\nLevel: 0.15\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.13 - 0.17\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: WGRX\nLevel: 0.11\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.09 - 0.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: WTBA\nLevel: 25.42\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 25.35 - 25.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: XP\nLevel: 16.95\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 16.86 - 17.04\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 18.07\nStop: 18.04\nTarget: 18.74\nR:R: 22.33\nConfidence: 0.9\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n",
+          "--------------------------------------------------\nTicker: YOOV\nLevel: 1.01\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.94 - 1.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n",
+          "--------------------------------------------------\nTicker: ZTO\nLevel: 22.67\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 22.59 - 22.75\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 22.91\nStop: 22.87\nTarget: 23.92\nR:R: 25.25\nConfidence: 0.9\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n"
+        ]
+      },
+      "report_text": "--------------------------------------------------\nTicker: AAPL\nLevel: 300.92\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 300.29 - 301.55\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 305.18\nStop: 304.66\nTarget: 306.74\nR:R: 3.0\nConfidence: 0.9\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: AGPU\nLevel: 4.68\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.59 - 4.97\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0092\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: AIM\nLevel: 0.96\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.94 - 1.01\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: ALOY\nLevel: 8.89\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 8.74 - 8.98\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0200 max=0.0174\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: AMAT\nLevel: 416.79\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 414.24 - 419.11\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: reward_risk_too_low_after_router rr=1.68\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: AMH\nLevel: 31.91\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 31.72 - 32.01\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 32.16\nStop: 32.11\nTarget: 32.31\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: AMP\nLevel: 446.87\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 445.71 - 448.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: ASND\nLevel: 245.63\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 244.79 - 248.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: BAND\nLevel: 56.37\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 55.84 - 57.96\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 58.3\nStop: 58.2\nTarget: 58.6\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: BBBY\nLevel: 4.67\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.6 - 4.69\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 5.6\nStop: 5.59\nTarget: 5.63\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: BIRD\nLevel: 13.48\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 13.44 - 13.52\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: BNZI\nLevel: 16.85\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 16.6 - 17.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: CISS\nLevel: 12.11\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 12.06 - 12.16\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: CRAQ\nLevel: 10.16\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.16 - 10.16\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: DAL\nLevel: 68.16\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 67.86 - 68.54\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: reward_risk_too_low_after_router rr=3.00\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: EUR.USD\nLevel: 1.18\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 1.18 - 1.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: FLD\nLevel: 1.24\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 1.22 - 1.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no continuation uptrend from level\n\n--------------------------------------------------\nTicker: GCTS\nLevel: 2.68\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 2.56 - 2.76\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0062\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: GMM\nLevel: 1.18\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 1.15 - 1.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: GOSS\nLevel: 0.19\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.19 - 0.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: GOVX\nLevel: 1.29\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 1.22 - 1.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: GSHD\nLevel: 37.37\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 36.55 - 37.67\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: HCAI\nLevel: 14.5\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 14.22 - 14.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: ICCC\nLevel: 10.25\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.17 - 10.33\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: IMA\nLevel: 6.51\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 6.45 - 6.55\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: ISPC\nLevel: 10.8\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.73 - 10.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: ITIC\nLevel: 218.55\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 217.78 - 219.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: KMDA\nLevel: 7.6\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 7.58 - 7.62\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 7.83\nStop: 7.82\nTarget: 7.86\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: KO\nLevel: 80.39\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 80.19 - 80.58\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: KYTX\nLevel: 10.71\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.61 - 10.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: LABT\nLevel: 0.81\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.74 - 0.93\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: LICN\nLevel: 5.11\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.36 - 5.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: LVO\nLevel: 6.25\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 6.2 - 6.3\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 6.62\nStop: 6.61\nTarget: 6.65\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: MDU\nLevel: 21.33\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 21.28 - 21.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: MRLN\nLevel: 6.3\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 6.2 - 6.4\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 7.06\nStop: 7.05\nTarget: 8.11\nR:R: 105.0\nConfidence: 1.0\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: MRSH\nLevel: 165.7\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 164.48 - 166.11\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.3300 max=0.2966\n- clean false breakout return\n\n--------------------------------------------------\nTicker: MSFT\nLevel: 432.92\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 431.19 - 435.21\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: NCEW\nLevel: 14.0\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 13.88 - 14.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: NEOV\nLevel: 2.02\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 1.97 - 2.07\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0053\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: OPTX\nLevel: 7.19\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 6.83 - 7.39\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0200 max=0.0163\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: QUCY\nLevel: 3.25\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 3.06 - 3.65\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: stop_too_wide_after_rounding risk=0.0100 max=0.0078\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: ROLR\nLevel: 10.85\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.79 - 10.91\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: SANM\nLevel: 224.7\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 220.39 - 226.2\n\nDecision:\nNO TRADE\n\nReasons:\n- router_rejected: reward_risk_too_low_after_router rr=3.00\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: SBFM\nLevel: 0.47\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.42 - 0.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: SDA\nLevel: 2.3\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 2.25 - 2.32\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: SEI\nLevel: 69.48\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 68.85 - 70.11\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 73.6\nStop: 73.47\nTarget: 73.99\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: SION\nLevel: 37.8\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 36.94 - 38.13\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 41.53\nStop: 41.46\nTarget: 43.49\nR:R: 28.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: SKLZ\nLevel: 7.17\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 6.83 - 7.32\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 7.74\nStop: 7.73\nTarget: 7.77\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: SKYQ\nLevel: 11.09\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 11.04 - 11.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: SMA\nLevel: 29.78\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 29.66 - 29.9\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 30.92\nStop: 30.87\nTarget: 32.2\nR:R: 25.6\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: SPOT\nLevel: 552.87\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 551.04 - 554.7\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: TREX\nLevel: 37.54\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 37.32 - 38.25\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 38.91\nStop: 38.84\nTarget: 42.16\nR:R: 46.43\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: TSLA\nLevel: 403.06\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 400.07 - 405.23\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 417.26\nStop: 416.55\nTarget: 419.39\nR:R: 3.0\nConfidence: 1.0\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: VAL\nLevel: 114.12\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 113.4 - 114.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: VRAX\nLevel: 0.15\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.13 - 0.17\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: WGRX\nLevel: 0.11\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.09 - 0.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: WTBA\nLevel: 25.42\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 25.35 - 25.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: XP\nLevel: 16.95\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 16.86 - 17.04\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 18.07\nStop: 18.04\nTarget: 18.74\nR:R: 22.33\nConfidence: 0.9\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n\n--------------------------------------------------\nTicker: YOOV\nLevel: 1.01\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 0.94 - 1.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no prior false breakdown\n\n--------------------------------------------------\nTicker: ZTO\nLevel: 22.67\nPattern: FALSE_BREAKOUT_CONTINUATION\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: MEDIUM\n- Zone: 22.59 - 22.75\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 22.91\nStop: 22.87\nTarget: 23.92\nR:R: 25.25\nConfidence: 0.9\nPosition Modifier: 0.5\n\nReasons:\n- router_accepted\n- prior false breakdown continuation\n"
+    }
+  }
+}
+```
+
+## Market Open (2026-05-22T09:45:00)
+- **executed**: none
+- **skipped**: [{'symbol': 'BBBY', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'BIRD', 'reason': 'no_signal'}, {'symbol': 'ISPC', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKLZ', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'WGRX', 'reason': 'no_signal'}, {'symbol': 'HCAI', 'reason': 'no_signal'}, {'symbol': 'GOVX', 'reason': 'no_signal'}, {'symbol': 'SBFM', 'reason': 'no_signal'}, {'symbol': 'AIM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'VRAX', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'BAND', 'reason': 'no_signal'}, {'symbol': 'QUCY', 'reason': 'no_signal'}, {'symbol': 'PMI', 'reason': 'no_signal'}, {'symbol': 'CISS', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'atr_travel_exhausted'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'GMM', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'BTM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'LICN', 'reason': 'no_signal'}, {'symbol': 'YOOV', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'LABT', 'reason': 'no_signal'}, {'symbol': 'BNZI', 'reason': 'no_signal'}, {'symbol': 'GOSS', 'reason': 'no_signal'}, {'symbol': 'SDA', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'FLD', 'reason': 'no_signal'}, {'symbol': 'CRAQ', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'IMA', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'PDD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'BBBY', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'AGPU', 'reason': 'missing_live_data'}, {'symbol': 'ALOY', 'reason': 'missing_live_data'}, {'symbol': 'BIRD', 'reason': 'missing_live_data'}, {'symbol': 'ISPC', 'reason': 'missing_live_data'}, {'symbol': 'MRLN', 'reason': 'missing_live_data'}, {'symbol': 'OPTX', 'reason': 'missing_live_data'}, {'symbol': 'ROLR', 'reason': 'missing_live_data'}, {'symbol': 'SKLZ', 'reason': 'missing_live_data'}, {'symbol': 'SKYQ', 'reason': 'missing_live_data'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'WGRX', 'reason': 'missing_live_data'}, {'symbol': 'HCAI', 'reason': 'missing_live_data'}, {'symbol': 'GOVX', 'reason': 'missing_live_data'}, {'symbol': 'SBFM', 'reason': 'missing_live_data'}, {'symbol': 'AIM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'VRAX', 'reason': 'missing_live_data'}, {'symbol': 'GCTS', 'reason': 'missing_live_data'}, {'symbol': 'NCEW', 'reason': 'missing_live_data'}, {'symbol': 'ICCC', 'reason': 'missing_live_data'}, {'symbol': 'VAL', 'reason': 'missing_live_data'}, {'symbol': 'BAND', 'reason': 'missing_live_data'}, {'symbol': 'QUCY', 'reason': 'missing_live_data'}, {'symbol': 'PMI', 'reason': 'missing_live_data'}, {'symbol': 'CISS', 'reason': 'missing_live_data'}, {'symbol': 'AMH', 'reason': 'missing_live_data'}, {'symbol': 'BIDU', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'GSHD', 'reason': 'missing_live_data'}, {'symbol': 'KYTX', 'reason': 'missing_live_data'}, {'symbol': 'SRAD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MDU', 'reason': 'missing_live_data'}, {'symbol': 'SION', 'reason': 'missing_live_data'}, {'symbol': 'MRSH', 'reason': 'missing_live_data'}, {'symbol': 'TREX', 'reason': 'missing_live_data'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'missing_live_data'}, {'symbol': 'MSEX', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'ZTO', 'reason': 'missing_live_data'}, {'symbol': 'SPOT', 'reason': 'missing_live_data'}, {'symbol': 'GMM', 'reason': 'missing_live_data'}, {'symbol': 'WTBA', 'reason': 'missing_live_data'}, {'symbol': 'BTM', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'LICN', 'reason': 'missing_live_data'}, {'symbol': 'YOOV', 'reason': 'missing_live_data'}, {'symbol': 'NEOV', 'reason': 'missing_live_data'}, {'symbol': 'LABT', 'reason': 'no_signal'}, {'symbol': 'BNZI', 'reason': 'missing_live_data'}, {'symbol': 'GOSS', 'reason': 'missing_live_data'}, {'symbol': 'SDA', 'reason': 'missing_live_data'}, {'symbol': 'AMAT', 'reason': 'missing_live_data'}, {'symbol': 'XP', 'reason': 'missing_live_data'}, {'symbol': 'FLD', 'reason': 'missing_live_data'}, {'symbol': 'CRAQ', 'reason': 'missing_live_data'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'IMA', 'reason': 'missing_live_data'}, {'symbol': 'ITIC', 'reason': 'missing_live_data'}, {'symbol': 'DAL', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'PDD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'AMP', 'reason': 'missing_live_data'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}]
+- **manual_candidates**: none
+- **scan_count**: 2
+- **skip_reason_summary**: {'no_signal': 70, 'symbol_news_risk': 16, 'atr_travel_exhausted': 1, 'missing_live_data': 47}

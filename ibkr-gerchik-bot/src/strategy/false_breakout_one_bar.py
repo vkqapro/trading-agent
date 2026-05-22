@@ -12,7 +12,7 @@ from typing import Dict, Iterable, List, Literal, Optional, Sequence
 
 import pandas as pd
 
-from src.config import LOGGER
+from src.config import LOGGER, SETTINGS
 from src.risk.take_profit import reward_risk_ratio
 from src.strategy.candles import (
     body_size,
@@ -35,11 +35,12 @@ PatternName = Literal["ONE_BAR", "TWO_BAR", "COMPLEX", "NONE"]
 DEFAULT_CONFIG: Dict[str, float] = {
     "zone_buffer_pct": 0.0015,
     "minimum_target_atr": 1.0,
-    "exhausted_move_atr_pct": 0.7,
+    "exhausted_move_atr_pct": 0.75,
     "score_threshold": 60.0,
     "confirmation_close_location": 0.55,
     "volatility_spike_atr_multiplier": 1.8,
 }
+STOP_BUFFER_PCT = 0.0005
 
 DAILY_DECISIONS_PATH = Path(__file__).resolve().parents[2] / "memory" / "daily_decisions.json"
 DAILY_DECISIONS_LOCK_PATH = DAILY_DECISIONS_PATH.with_suffix(".json.lock")
@@ -164,13 +165,21 @@ def _confirmations_ok(confirmations: Sequence[pd.Series], direction: Direction, 
 
 def _target_for_direction(level: Level, direction: Direction, entry: float, stop: float) -> Optional[float]:
     next_level = level.nearest_upper_level if direction == "long" else level.nearest_lower_level
-    if isinstance(next_level, float) and reward_risk_ratio(entry, stop, next_level) >= 2.0:
-        return round(next_level, 2)
+    if isinstance(next_level, float):
+        target_is_usable = (direction == "long" and next_level > entry) or (direction == "short" and next_level < entry)
+        if target_is_usable:
+            if reward_risk_ratio(entry, stop, next_level) >= 2.0:
+                return round(next_level, 2)
+            return None
     risk = abs(entry - stop)
     if risk <= 0:
         return None
     fallback_target = entry + (3 * risk if direction == "long" else -3 * risk)
     return round(fallback_target, 2)
+
+
+def _stop_buffer(level: Level) -> float:
+    return max(abs(float(level.price)) * STOP_BUFFER_PCT, 0.01)
 
 
 def _evaluate_atr_status(entry: float, target: float, zone: ZoneContext, atr_value: float, config: Dict[str, float]) -> str:
@@ -186,6 +195,34 @@ def _evaluate_atr_status(entry: float, target: float, zone: ZoneContext, atr_val
 
 def _atr_filters_ok(entry: float, target: float, zone: ZoneContext, atr_value: float, config: Dict[str, float]) -> bool:
     return _evaluate_atr_status(entry, target, zone, atr_value, config) == "OK"
+
+
+def _atr_used_from_zone(entry: float, zone: ZoneContext, atr_value: float) -> Optional[float]:
+    if atr_value <= 0:
+        return None
+    return abs(entry - zone.center) / atr_value
+
+
+def _current_session_candles(candles: pd.DataFrame) -> pd.DataFrame:
+    for column in ("datetime", "date"):
+        if column not in candles.columns:
+            continue
+        parsed = pd.to_datetime(candles[column], errors="coerce")
+        if parsed.notna().any():
+            latest_session = parsed.dropna().iloc[-1].date()
+            session = candles.loc[parsed.dt.date == latest_session]
+            if not session.empty:
+                return session
+    return candles.tail(3)
+
+
+def _atr_used_from_session(entry: float, candles: pd.DataFrame, atr_value: float) -> Optional[float]:
+    if atr_value <= 0 or candles.empty:
+        return None
+    session = _current_session_candles(candles)
+    session_low = float(session["low"].astype(float).min())
+    session_high = float(session["high"].astype(float).max())
+    return max(abs(entry - session_low), abs(session_high - entry)) / atr_value
 
 
 def _is_volatility_spike(candles: Iterable[pd.Series], atr_value: float, config: Dict[str, float]) -> bool:
@@ -230,16 +267,28 @@ def _build_signal_dict(
     score: float,
     reasons: Sequence[str],
     context: Dict[str, object],
+    atr: Optional[float] = None,
+    atr_used: Optional[float] = None,
+    level_strength: Optional[float] = None,
+    metadata: Optional[Dict[str, object]] = None,
 ) -> Dict[str, object]:
+    risk_per_share = abs(float(entry) - float(stop)) if entry is not None and stop is not None else None
+    reward_risk = reward_risk_ratio(float(entry), float(stop), float(target)) if entry is not None and stop is not None and target is not None else None
     return {
         "signal": signal,
         "entry": round(entry, 2) if entry is not None else None,
         "stop": round(stop, 2) if stop is not None else None,
         "target": round(target, 2) if target is not None else None,
+        "risk_per_share": round(risk_per_share, 4) if risk_per_share is not None else None,
+        "reward_risk": round(reward_risk, 2) if reward_risk is not None else None,
+        "atr": round(float(atr), 4) if atr is not None and atr > 0 else None,
+        "atr_used": round(float(atr_used), 4) if atr_used is not None else None,
+        "level_strength": round(float(level_strength), 2) if level_strength is not None else None,
         "position_modifier": _position_modifier(news_risk),
         "confidence": round(min(score, 100.0) / 100.0, 2),
         "reason": _dedupe_reasons(reasons),
         "context": context,
+        "metadata": metadata or {},
     }
 
 
@@ -439,6 +488,12 @@ def _dict_to_trade_signal(symbol: str, level: Level, strategy_name: str, result:
     direction = "long" if result["signal"] == "BUY" else "short"
     context = result.get("context", {})
     reasons = ", ".join(str(reason) for reason in result.get("reason", []))
+    risk_per_share = float(result.get("risk_per_share") or abs(float(result["entry"]) - float(result["stop"])))
+    reward_risk = float(result.get("reward_risk") or reward_risk_ratio(float(result["entry"]), float(result["stop"]), float(result["target"])))
+    confidence = float(result.get("confidence", 0.0) or 0.0)
+    metadata = result.get("metadata", {})
+    if not isinstance(metadata, dict):
+        metadata = {}
     notes = [
         f"reasons={reasons}" if reasons else "reasons=none",
         f"confidence={result.get('confidence', 0.0)}",
@@ -460,6 +515,13 @@ def _dict_to_trade_signal(symbol: str, level: Level, strategy_name: str, result:
         level_type=level.type,
         nearest_upper_level=level.nearest_upper_level,
         nearest_lower_level=level.nearest_lower_level,
+        reward_risk=round(reward_risk, 2),
+        risk_per_share=round(risk_per_share, 4),
+        atr=float(result["atr"]) if result.get("atr") is not None else (float(level.atr_value) if level.atr_value else None),
+        atr_used=float(result["atr_used"]) if result.get("atr_used") is not None else None,
+        confidence=confidence,
+        level_strength=float(result.get("level_strength") or level.strength_score or level.strength or 0.0),
+        metadata=metadata,
         notes=notes,
     )
 
@@ -532,7 +594,7 @@ def detect_false_breakout(
             reasons.append("trend mismatch")
             return _empty_result(reasons, context)
         entry = float(confirmations[-1]["close"])
-        stop = min(float(false_candle["low"]), *(float(candle["low"]) for candle in confirmations))
+        stop = min(float(false_candle["low"]), *(float(candle["low"]) for candle in confirmations)) - _stop_buffer(level)
         target = _target_for_direction(level, "long", entry, stop)
         if target is None:
             reasons.append("ATR too small")
@@ -544,6 +606,11 @@ def detect_false_breakout(
             return _empty_result(reasons, context)
         if context["atr_status"] == "OVEREXTENDED":
             reasons.append("move already extended")
+            return _empty_result(reasons, context)
+        atr_used = _atr_used_from_session(entry, normalized, atr_value)
+        if atr_used is not None and atr_used > SETTINGS.strategy.atr_travel_limit_pct:
+            reasons.append("move already extended")
+            context["atr_status"] = "OVEREXTENDED"
             return _empty_result(reasons, context)
         score = _long_score(false_candle, confirmations, zone, atr_value)
         if score < merged_config["score_threshold"]:
@@ -560,6 +627,15 @@ def detect_false_breakout(
             score=score,
             reasons=reasons,
             context=context,
+            atr=atr_value,
+            atr_used=atr_used,
+            level_strength=float(level.strength_score or level.strength or 0.0),
+            metadata={
+                "level_price": level.price,
+                "zone_low": zone.zone_low,
+                "zone_high": zone.zone_high,
+                "confirmation_type": "bullish_confirmation",
+            },
         )
 
     broke_above = float(false_candle["high"]) > zone.zone_high
@@ -573,7 +649,7 @@ def detect_false_breakout(
             reasons.append("trend mismatch")
             return _empty_result(reasons, context)
         entry = float(confirmations[-1]["close"])
-        stop = max(float(false_candle["high"]), *(float(candle["high"]) for candle in confirmations))
+        stop = max(float(false_candle["high"]), *(float(candle["high"]) for candle in confirmations)) + _stop_buffer(level)
         target = _target_for_direction(level, "short", entry, stop)
         if target is None:
             reasons.append("ATR too small")
@@ -585,6 +661,11 @@ def detect_false_breakout(
             return _empty_result(reasons, context)
         if context["atr_status"] == "OVEREXTENDED":
             reasons.append("move already extended")
+            return _empty_result(reasons, context)
+        atr_used = _atr_used_from_session(entry, normalized, atr_value)
+        if atr_used is not None and atr_used > SETTINGS.strategy.atr_travel_limit_pct:
+            reasons.append("move already extended")
+            context["atr_status"] = "OVEREXTENDED"
             return _empty_result(reasons, context)
         score = _short_score(false_candle, confirmations, zone, atr_value)
         if score < merged_config["score_threshold"]:
@@ -601,6 +682,15 @@ def detect_false_breakout(
             score=score,
             reasons=reasons,
             context=context,
+            atr=atr_value,
+            atr_used=atr_used,
+            level_strength=float(level.strength_score or level.strength or 0.0),
+            metadata={
+                "level_price": level.price,
+                "zone_low": zone.zone_low,
+                "zone_high": zone.zone_high,
+                "confirmation_type": "bearish_confirmation",
+            },
         )
 
     if not broke_below and not broke_above:

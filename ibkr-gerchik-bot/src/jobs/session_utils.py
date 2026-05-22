@@ -12,6 +12,8 @@ from pathlib import Path
 from typing import Callable, Dict, Iterator, List, Optional
 from zoneinfo import ZoneInfo
 
+import pandas as pd
+
 from src.alerts.slack import SlackAlerter
 from src.brokers.ibkr import IBKRClient
 from src.config import LOGGER, SETTINGS, append_markdown_log
@@ -55,6 +57,8 @@ STOP_INTEGRITY_RECHECK_SECONDS = 2.0
 STOP_INTEGRITY_RECHECK_ATTEMPTS = 3
 STOP_GRACE_PERIOD_SECONDS = 30.0
 SESSION_LOCK_STALE_AFTER = timedelta(hours=8)
+STATE_SAVE_RETRY_ATTEMPTS = 8
+STATE_SAVE_RETRY_DELAY_SECONDS = 0.1
 
 
 def session_now() -> datetime:
@@ -210,8 +214,20 @@ def load_runtime_state() -> Dict[str, object]:
 def save_runtime_state(state: Dict[str, object]) -> None:
     """Persist runtime state atomically from within long-running jobs."""
     temp_path = SETTINGS.paths.state_file.with_suffix(".json.tmp")
-    temp_path.write_text(json.dumps(state, indent=2), encoding="utf-8")
-    os.replace(temp_path, SETTINGS.paths.state_file)
+    last_error: Optional[OSError] = None
+    for attempt in range(STATE_SAVE_RETRY_ATTEMPTS):
+        try:
+            temp_path.write_text(json.dumps(state, indent=2), encoding="utf-8")
+            os.replace(temp_path, SETTINGS.paths.state_file)
+            return
+        except OSError as exc:
+            last_error = exc
+            if getattr(exc, "winerror", None) not in {5, 32} or attempt == STATE_SAVE_RETRY_ATTEMPTS - 1:
+                raise
+            time.sleep(STATE_SAVE_RETRY_DELAY_SECONDS * (attempt + 1))
+
+    if last_error is not None:
+        raise last_error
 
 
 def _normalize_skip_reason(reason: object) -> str:
@@ -230,6 +246,20 @@ def _price_value(value: object) -> Optional[float]:
 def _format_reason_number(value: float, *, decimals: int = 4) -> str:
     rounded = f"{value:.{decimals}f}"
     return rounded.rstrip("0").rstrip(".")
+
+
+def _current_session_bars(intraday_bars: pd.DataFrame, session_date: object) -> pd.DataFrame:
+    """Return bars from the active trading session while preserving full-history strategy inputs."""
+    for column in ("datetime", "date"):
+        if column not in intraday_bars.columns:
+            continue
+        parsed = pd.to_datetime(intraday_bars[column], errors="coerce")
+        if parsed.isna().all():
+            continue
+        current_session = intraday_bars[parsed.dt.date == session_date]
+        if not current_session.empty:
+            return current_session.reset_index(drop=True)
+    return intraday_bars
 
 
 def _atr_filter_reason_details(
@@ -597,8 +627,9 @@ def run_entry_scan(
             LOGGER.info("%s skip %s: no_signal", stage_name, symbol)
             continue
 
-        session_low = float(intraday_bars["low"].min())
-        session_high = float(intraday_bars["high"].max())
+        session_bars = _current_session_bars(intraday_bars, current_time.date())
+        session_low = float(session_bars["low"].min())
+        session_high = float(session_bars["high"].max())
         symbol_result_recorded = False
         symbol_reasons: List[str] = []
         for signal in candidate_signals:
@@ -610,7 +641,7 @@ def run_entry_scan(
                 session_low,
                 session_high,
                 daily_atr,
-                False,
+                bool(signal.is_new_extreme),
             )
             if not atr_ok or not trend_ok:
                 atr_summary_reason, atr_detail_reason = _atr_filter_reason_details(

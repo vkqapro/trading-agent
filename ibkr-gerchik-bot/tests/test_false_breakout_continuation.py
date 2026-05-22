@@ -5,6 +5,7 @@ from unittest.mock import patch
 
 import pandas as pd
 
+from src.config import SETTINGS
 from src.strategy.false_breakout_continuation import detect_false_breakout_continuation
 from src.strategy.levels import Level
 from src.strategy.strategy_router import route_strategies
@@ -61,6 +62,7 @@ class FalseBreakoutContinuationTests(unittest.TestCase):
             ]
         )
 
+        original_enabled = SETTINGS.strategy.enabled_strategies
         with (
             patch("src.strategy.strategy_router.detect_rebound", return_value=None),
             patch("src.strategy.strategy_router.detect_breakout", return_value=None),
@@ -70,7 +72,15 @@ class FalseBreakoutContinuationTests(unittest.TestCase):
             patch("src.strategy.false_breakout_continuation._persist_daily_decision"),
             patch("src.strategy.false_breakout_one_bar._persist_daily_decision"),
         ):
-            signals = route_strategies("SEI", bars, [self.level], news_context={"risk_level": "LOW"})
+            object.__setattr__(
+                SETTINGS.strategy,
+                "enabled_strategies",
+                ("rebound", "confirmed_breakout", "false_breakout_one_bar", "false_breakout_continuation"),
+            )
+            try:
+                signals = route_strategies("SEI", bars, [self.level], news_context={"risk_level": "LOW"})
+            finally:
+                object.__setattr__(SETTINGS.strategy, "enabled_strategies", original_enabled)
 
         self.assertTrue(any(signal.strategy == "false_breakout_continuation" for signal in signals))
 

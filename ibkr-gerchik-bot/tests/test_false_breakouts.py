@@ -30,7 +30,7 @@ class FalseBreakoutTests(unittest.TestCase):
             false_breakouts=1,
             strength_score=7.5,
             created_by="swing",
-            nearest_upper_level=104.0,
+            nearest_upper_level=106.0,
             nearest_lower_level=96.0,
             zone_low=99.85,
             zone_high=100.15,
@@ -39,6 +39,7 @@ class FalseBreakoutTests(unittest.TestCase):
         )
 
     def test_one_bar_false_breakout_buy_signal(self) -> None:
+        self.level.atr_value = 2.0
         bars = pd.DataFrame(
             [
                 {"open": 103.4, "high": 103.6, "low": 102.9, "close": 103.0},
@@ -56,8 +57,12 @@ class FalseBreakoutTests(unittest.TestCase):
         self.assertIn("clean false breakout return", result["reason"])
         self.assertEqual(result["context"]["pattern"], "ONE_BAR")
         self.assertEqual(result["position_modifier"], 1.0)
+        self.assertIsNotNone(result["risk_per_share"])
+        self.assertIsNotNone(result["atr_used"])
+        self.assertEqual(result["metadata"]["confirmation_type"], "bullish_confirmation")
         self.assertIsNotNone(signal)
         self.assertEqual(signal.signal, "BUY")
+        self.assertEqual(signal.metadata["confirmation_type"], "bullish_confirmation")
 
     def test_two_bar_false_breakout_medium_news_reduces_position(self) -> None:
         bars = pd.DataFrame(

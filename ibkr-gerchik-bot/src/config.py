@@ -177,6 +177,13 @@ class RiskConfig:
 
 @dataclass(frozen=True)
 class StrategyConfig:
+    enabled_strategies: Tuple[str, ...] = tuple(
+        item.lower()
+        for item in _csv_env(
+            "ENABLED_STRATEGIES",
+            "rebound,confirmed_breakout,false_breakout_one_bar",
+        )
+    )
     min_avg_volume: int = _env_int("MIN_AVG_VOLUME", 500000)
     lookback_bars: int = _env_int("LOOKBACK_BARS", 60)
     premarket_daily_lookback_days: int = _env_int("PREMARKET_DAILY_LOOKBACK_DAYS", 60)
@@ -186,7 +193,7 @@ class StrategyConfig:
     consolidation_window: int = _env_int("CONSOLIDATION_WINDOW", 20)
     abnormal_range_multiplier: float = _env_float("ABNORMAL_RANGE_MULTIPLIER", 2.0)
     compression_range_multiplier: float = _env_float("COMPRESSION_RANGE_MULTIPLIER", 0.6)
-    atr_travel_limit_pct: float = _env_float("ATR_TRAVEL_LIMIT_PCT", 0.8)
+    atr_travel_limit_pct: float = _env_float("ATR_TRAVEL_LIMIT_PCT", 0.75)
     minimum_technical_atr_pct: float = _env_float("MIN_TECHNICAL_ATR_PCT", 0.01)
     level_strength_threshold: float = _env_float("LEVEL_STRENGTH_THRESHOLD", 4.0)
     level_merge_tolerance_pct: float = _env_float("LEVEL_MERGE_TOLERANCE_PCT", 0.0015)

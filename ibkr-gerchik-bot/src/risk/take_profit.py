@@ -7,8 +7,23 @@ from typing import Dict, List, Optional
 from src.config import SETTINGS
 
 
-def calculate_take_profit(entry: float, stop: float, next_level: Optional[float], direction: str) -> Optional[float]:
+def calculate_take_profit(
+    entry: float,
+    stop: float,
+    next_level: Optional[float],
+    direction: str,
+    *,
+    allow_fallback: bool = False,
+) -> Optional[float]:
+    risk = abs(entry - stop)
+    if risk <= 0:
+        return None
     if next_level is None:
+        if not allow_fallback:
+            return None
+        fallback = entry + (SETTINGS.risk.min_reward_risk_ratio * risk if direction == "long" else -SETTINGS.risk.min_reward_risk_ratio * risk)
+        return round(fallback, 2)
+    if not isinstance(next_level, (float, int)):
         return None
     if direction == "long" and next_level <= entry:
         return None

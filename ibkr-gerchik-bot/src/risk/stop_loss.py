@@ -14,11 +14,20 @@ def round_number_guard(price: float, direction: str) -> float:
     return round(price, 2)
 
 
-def calculate_stop_loss(entry_price: float, technical_stop: float, direction: str) -> Optional[float]:
+def calculate_stop_loss(
+    entry_price: float,
+    technical_stop: float,
+    direction: str,
+    *,
+    atr: float | None = None,
+    enforce_max_distance: bool = True,
+) -> Optional[float]:
     calculated_stop_distance = entry_price * SETTINGS.risk.calculated_stop_pct
+    if atr is not None and atr > 0:
+        calculated_stop_distance = max(calculated_stop_distance, atr * 0.2)
     technical_distance = abs(entry_price - technical_stop)
     if technical_distance <= 0:
         return None
-    if technical_distance > calculated_stop_distance * SETTINGS.risk.max_stop_vs_calculated_multiplier:
+    if enforce_max_distance and technical_distance > calculated_stop_distance * SETTINGS.risk.max_stop_vs_calculated_multiplier:
         return None
     return round_number_guard(technical_stop, direction)

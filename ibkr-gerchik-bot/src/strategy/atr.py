@@ -42,7 +42,7 @@ def atr_travel_filter(
     daily_atr: float,
     is_new_extreme: bool,
 ) -> bool:
-    """Reject trend entries if price already traveled 75-80% of ATR unless breaking to a new extreme."""
+    """Reject trend entries if price already traveled 75% of ATR unless breaking to a new extreme."""
     if daily_atr <= 0:
         return True
     distance_traveled = max(abs(entry_price - session_low), abs(session_high - entry_price))

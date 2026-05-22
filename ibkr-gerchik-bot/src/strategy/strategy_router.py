@@ -19,6 +19,8 @@ from src.strategy.levels import Level
 from src.strategy.rebound import detect_rebound
 from src.strategy.signal_models import TradeSignal
 
+PHASE1_TECHNICAL_STOP_STRATEGIES = {"rebound", "confirmed_breakout", "false_breakout_one_bar"}
+
 
 def _target_is_on_correct_side(entry: float, target: Optional[float], direction: str) -> bool:
     if target is None:
@@ -31,6 +33,8 @@ def _target_is_on_correct_side(entry: float, target: Optional[float], direction:
 
 
 def _target_reference(signal: TradeSignal) -> Optional[float]:
+    if signal.strategy in PHASE1_TECHNICAL_STOP_STRATEGIES and _target_is_on_correct_side(signal.entry, signal.target, signal.direction):
+        return signal.target
     next_level = signal.nearest_upper_level if signal.direction == "long" else signal.nearest_lower_level
     if isinstance(next_level, float) and _target_is_on_correct_side(signal.entry, next_level, signal.direction):
         return next_level
@@ -51,6 +55,8 @@ def _note_value(signal: TradeSignal, prefix: str, default: object) -> object:
 
 
 def _signal_confidence(signal: TradeSignal) -> float:
+    if signal.confidence:
+        return float(signal.confidence)
     try:
         return float(_note_value(signal, "confidence=", 0.0))
     except (TypeError, ValueError):
@@ -148,6 +154,33 @@ def _target_rejection_reason(signal: TradeSignal, target_reference: Optional[flo
     return f"router_rejected: reward_risk_too_low_after_router rr={reward_risk:.2f}"
 
 
+def _strategy_enabled(name: str) -> bool:
+    enabled = {str(item).strip().lower() for item in SETTINGS.strategy.enabled_strategies}
+    return name.lower() in enabled
+
+
+def _detect_enabled_candidates(
+    symbol: str,
+    intraday_bars: pd.DataFrame,
+    level: Level,
+    news_context: Optional[Dict[str, object]],
+) -> List[Optional[TradeSignal]]:
+    candidates: List[Optional[TradeSignal]] = []
+    if _strategy_enabled("rebound"):
+        candidates.append(detect_rebound(symbol, intraday_bars, level))
+    if _strategy_enabled("confirmed_breakout"):
+        candidates.append(detect_breakout(symbol, intraday_bars, level))
+    if _strategy_enabled("false_breakout_one_bar"):
+        candidates.append(detect_false_breakout_one_bar(symbol, intraday_bars, level, news_context=news_context))
+    if _strategy_enabled("false_breakout_two_bar"):
+        candidates.append(detect_false_breakout_two_bar(symbol, intraday_bars, level, news_context=news_context))
+    if _strategy_enabled("false_breakout_complex"):
+        candidates.append(detect_false_breakout_complex(symbol, intraday_bars, level, news_context=news_context))
+    if _strategy_enabled("false_breakout_continuation"):
+        candidates.append(detect_false_breakout_continuation(symbol, intraday_bars, level, news_context=news_context))
+    return candidates
+
+
 def route_strategies(
     symbol: str,
     intraday_bars: pd.DataFrame,
@@ -156,25 +189,30 @@ def route_strategies(
 ) -> List[TradeSignal]:
     signals: List[TradeSignal] = []
     for level in levels:
-        candidates = [
-            detect_rebound(symbol, intraday_bars, level),
-            detect_breakout(symbol, intraday_bars, level),
-            detect_false_breakout_one_bar(symbol, intraday_bars, level, news_context=news_context),
-            detect_false_breakout_two_bar(symbol, intraday_bars, level, news_context=news_context),
-            detect_false_breakout_complex(symbol, intraday_bars, level, news_context=news_context),
-            detect_false_breakout_continuation(symbol, intraday_bars, level, news_context=news_context),
-        ]
+        candidates = _detect_enabled_candidates(symbol, intraday_bars, level, news_context)
         for signal in candidates:
             if signal is None:
                 continue
-            adjusted_stop = calculate_stop_loss(signal.entry, signal.stop, signal.direction)
+            adjusted_stop = calculate_stop_loss(
+                signal.entry,
+                signal.stop,
+                signal.direction,
+                atr=signal.atr,
+                enforce_max_distance=signal.strategy not in PHASE1_TECHNICAL_STOP_STRATEGIES,
+            )
             if adjusted_stop is None:
                 reasons = [_stop_rejection_reason(signal), *_signal_original_reasons(signal)]
                 _persist_router_decision(symbol=symbol, level=level, signal=signal, status="rejected", reasons=reasons)
                 LOGGER.info("Router rejected %s %s: %s", symbol, signal.strategy, reasons[0])
                 continue
             target_reference = _target_reference(signal)
-            target = calculate_take_profit(signal.entry, adjusted_stop, target_reference, signal.direction)
+            target = calculate_take_profit(
+                signal.entry,
+                adjusted_stop,
+                target_reference,
+                signal.direction,
+                allow_fallback=signal.strategy in PHASE1_TECHNICAL_STOP_STRATEGIES,
+            )
             if target is None:
                 reasons = [_target_rejection_reason(signal, target_reference, adjusted_stop), *_signal_original_reasons(signal)]
                 _persist_router_decision(
@@ -190,6 +228,7 @@ def route_strategies(
             signal.stop = adjusted_stop
             signal.target = target
             signal.reward_risk = round(reward_risk_ratio(signal.entry, signal.stop, signal.target), 2)
+            signal.risk_per_share = round(abs(signal.entry - signal.stop), 4)
             signal.partial_targets = build_partial_targets(signal.entry, signal.stop, signal.target, signal.direction)
             _persist_router_decision(
                 symbol=symbol,

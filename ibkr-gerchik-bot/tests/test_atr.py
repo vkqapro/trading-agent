@@ -4,7 +4,7 @@ import unittest
 
 import pandas as pd
 
-from src.strategy.atr import calculate_daily_atr, calculate_technical_atr, technical_atr_has_room
+from src.strategy.atr import atr_travel_filter, calculate_daily_atr, calculate_technical_atr, technical_atr_has_room
 
 
 class AtrTests(unittest.TestCase):
@@ -25,3 +25,6 @@ class AtrTests(unittest.TestCase):
         self.assertEqual(calculate_technical_atr(100.0, 95.0, 103.0), 3.0)
         self.assertTrue(technical_atr_has_room(2.0, 100.0))
 
+    def test_atr_travel_filter_uses_75_percent_limit(self) -> None:
+        self.assertFalse(atr_travel_filter(100.0, 98.4, 100.1, 2.0, is_new_extreme=False))
+        self.assertTrue(atr_travel_filter(100.0, 98.4, 100.1, 2.0, is_new_extreme=True))
