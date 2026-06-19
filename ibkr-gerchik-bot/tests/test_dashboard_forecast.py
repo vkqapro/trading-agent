@@ -18,6 +18,8 @@ def scenario(**overrides: float) -> ForecastScenario:
         "max_spread_pct": 0.003,
         "max_open_risk_pct": 0.03,
         "max_position_value": 25_000.0,
+        "min_projected_entry_distance_atr": 1.0,
+        "max_projected_entry_distance_atr": 2.0,
     }
     values.update(overrides)
     return ForecastScenario(**values)
@@ -119,6 +121,126 @@ class DashboardForecastTests(unittest.TestCase):
         candidates = projected_level_candidates(watchlist)
         self.assertEqual(len(candidates), 1)
         self.assertEqual(candidates[0]["signal"], "BUY")
+        self.assertAlmostEqual(candidates[0]["entry_distance_pct"], 0.008, places=3)
+
+    def test_filters_distant_projected_entry_even_with_high_reward_risk(self) -> None:
+        candidate = {
+            "symbol": "CISS",
+            "strategy": "level_retest_forecast",
+            "source": "PROJECTED",
+            "signal": "SELL",
+            "direction": "short",
+            "current_price": 2.21,
+            "entry": 5.63,
+            "stop": 5.77,
+            "target": 3.32,
+            "level": 5.73,
+            "level_type": "gap",
+            "reward_risk": 16.5,
+            "risk_per_share": 0.14,
+            "confidence": 41.27,
+            "entry_distance_pct": 1.5475,
+            "entry_distance_atr": 14.13,
+        }
+        result = run_forecast([candidate], scenario(), [])
+        self.assertEqual(result["summary"]["forecast_trades"], 0)
+        self.assertIn("too far", result["rows"][0]["reason"])
+
+    def test_projected_entry_must_be_inside_configured_atr_range(self) -> None:
+        base = {
+            "strategy": "level_retest_forecast",
+            "source": "PROJECTED",
+            "signal": "BUY",
+            "direction": "long",
+            "current_price": 100.0,
+            "entry": 101.0,
+            "stop": 100.0,
+            "target": 104.0,
+            "level": 101.0,
+            "level_type": "gap",
+            "reward_risk": 3.0,
+            "risk_per_share": 1.0,
+            "confidence": 40.0,
+            "entry_distance_pct": 0.01,
+        }
+        candidates = [
+            {"symbol": "CLOSE", **base, "entry_distance_atr": 0.75},
+            {"symbol": "INSIDE", **base, "entry_distance_atr": 1.50},
+            {"symbol": "FAR", **base, "entry_distance_atr": 2.25},
+        ]
+        result = run_forecast(
+            candidates,
+            scenario(cash_available=200_000.0, max_position_value=200_000.0),
+            [],
+        )
+        self.assertEqual([row["symbol"] for row in result["accepted"]], ["INSIDE"])
+        reasons = {row["symbol"]: row["reason"] for row in result["rows"]}
+        self.assertIn("closer", reasons["CLOSE"])
+        self.assertIn("too far", reasons["FAR"])
+
+    def test_daily_loss_is_a_kill_switch_not_open_risk_budget(self) -> None:
+        candidates = [
+            {
+                "symbol": symbol,
+                "strategy": "test",
+                "source": "ACTIVE REPLAY",
+                "signal": "BUY",
+                "direction": "long",
+                "entry": 10.0,
+                "stop": 9.0,
+                "target": 13.0,
+                "level": 10.0,
+                "level_type": "historical",
+                "reward_risk": 3.0,
+                "risk_per_share": 1.0,
+                "confidence": 80.0,
+            }
+            for symbol in ("AAA", "BBB", "CCC")
+        ]
+        result = run_forecast(
+            candidates,
+            scenario(
+                risk_per_trade=0.01,
+                max_daily_loss_pct=0.02,
+                max_open_risk_pct=0.05,
+                cash_available=200_000.0,
+                max_position_value=200_000.0,
+            ),
+            [],
+        )
+        self.assertEqual(result["summary"]["forecast_trades"], 3)
+
+    def test_summary_reports_open_risk_as_binding_constraint(self) -> None:
+        candidates = [
+            {
+                "symbol": symbol,
+                "strategy": "test",
+                "source": "ACTIVE REPLAY",
+                "signal": "BUY",
+                "direction": "long",
+                "entry": 10.0,
+                "stop": 9.0,
+                "target": 13.0,
+                "level": 10.0,
+                "level_type": "historical",
+                "reward_risk": 3.0,
+                "risk_per_share": 1.0,
+                "confidence": 80.0,
+            }
+            for symbol in ("AAA", "BBB", "CCC")
+        ]
+        result = run_forecast(
+            candidates,
+            scenario(
+                max_open_risk_pct=0.021,
+                cash_available=200_000.0,
+                max_position_value=200_000.0,
+            ),
+            [],
+        )
+        self.assertEqual(result["summary"]["forecast_trades"], 2)
+        self.assertEqual(result["summary"]["open_risk_capacity"], 2)
+        self.assertEqual(result["summary"]["binding_limit"], "maximum open risk")
 
 
 if __name__ == "__main__":

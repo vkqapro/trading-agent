@@ -8,6 +8,8 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
+DASHBOARD_CHARTS_VERSION = 2
+
 # Luminous Obsidian palette (see stitch_trading_bot_dashboard/DESIGN.md)
 UP = "#c3f400"           # secondary-fixed / lime — bullish
 DOWN = "#ff6b81"         # bearish (error family, tuned for contrast)
@@ -16,6 +18,9 @@ RAW_LEVEL = "#849495"    # outline
 ZONE_FILL = "rgba(0, 240, 255, 0.08)"
 PRICE_LINE = "#ffffff"   # last price marker (neutral)
 ATTEMPT_LEVEL = "#ecb2ff"  # tertiary / magenta
+FORECAST_ENTRY = "#ffffff"
+FORECAST_STOP = "#ff6b81"
+FORECAST_TARGET = "#c3f400"
 GRID = "rgba(132, 148, 149, 0.10)"
 PAPER = "#131314"
 PLOT = "#131314"
@@ -214,5 +219,36 @@ def mark_levels(
             yref="y",
             line=dict(color=color, width=1, dash="dash"),
             opacity=0.75,
+        )
+    return fig
+
+
+def mark_forecast_position(
+    fig: go.Figure,
+    *,
+    entry: float,
+    stop: float,
+    target: float,
+) -> go.Figure:
+    """Add labeled forecast entry, stop, and target lines to a price chart."""
+    markers = (
+        ("ENTRY", entry, FORECAST_ENTRY, "dash"),
+        ("STOP", stop, FORECAST_STOP, "dash"),
+        ("TARGET", target, FORECAST_TARGET, "dash"),
+    )
+    for label, raw_price, color, dash in markers:
+        try:
+            price = float(raw_price)
+        except (TypeError, ValueError):
+            continue
+        fig.add_hline(
+            y=price,
+            line=dict(color=color, width=2, dash=dash),
+            annotation_text=f"{label}  ${price:,.2f}",
+            annotation_position="right",
+            annotation_font_color="#ffffff",
+            annotation_font_size=11,
+            row=1,
+            col=1,
         )
     return fig

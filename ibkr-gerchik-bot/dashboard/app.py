@@ -70,12 +70,27 @@ if not all(hasattr(da, name) for name in _DATA_ACCESS_API) or getattr(
 ) < 4:
     da = reload(da)
 
+_FORECAST_API = (
+    "ForecastScenario", "projected_level_candidates",
+    "replay_active_candidates", "run_forecast",
+)
+if (
+    not all(hasattr(fc, name) for name in _FORECAST_API)
+    or getattr(fc, "FORECAST_ENGINE_VERSION", 0) < 4
+):
+    fc = reload(fc)
+
+_CHART_API = ("candles_with_levels", "mark_levels", "mark_forecast_position")
 _CHART_ARGUMENTS = {"show_raw", "show_trade", "show_volume"}
 try:
     _chart_parameters = set(signature(charts.candles_with_levels).parameters)
 except (AttributeError, TypeError, ValueError):
     _chart_parameters = set()
-if not _CHART_ARGUMENTS.issubset(_chart_parameters):
+if (
+    not all(hasattr(charts, name) for name in _CHART_API)
+    or not _CHART_ARGUMENTS.issubset(_chart_parameters)
+    or getattr(charts, "DASHBOARD_CHARTS_VERSION", 0) < 2
+):
     charts = reload(charts)
 
 st.set_page_config(
@@ -619,6 +634,8 @@ def _forecast_defaults() -> dict[str, float | int]:
         "forecast_max_positions": risk.max_positions,
         "forecast_max_spread": risk.max_spread_pct * 100,
         "forecast_open_risk": risk.max_open_risk_pct * 100,
+        "forecast_min_entry_atr": 1.0,
+        "forecast_max_entry_atr": 2.0,
     }
 
 
@@ -633,18 +650,24 @@ def _forecast_result_frame(rows: list[dict[str, Any]]) -> pd.DataFrame:
         return pd.DataFrame()
     frame = pd.DataFrame(rows)
     preferred = [
-        "symbol", "source", "strategy", "signal", "entry", "stop", "target",
+        "symbol", "source", "strategy", "signal", "current_price", "entry",
+        "entry_distance_pct", "entry_distance_atr", "stop", "target",
         "reward_risk", "quantity", "position_value", "risk_amount",
         "potential_reward", "status", "reason",
     ]
     frame = frame[[column for column in preferred if column in frame.columns]]
+    if "entry_distance_pct" in frame:
+        frame["entry_distance_pct"] = frame["entry_distance_pct"] * 100
     return frame.rename(
         columns={
             "symbol": "Symbol",
             "source": "Source",
             "strategy": "Strategy",
             "signal": "Side",
+            "current_price": "Current",
             "entry": "Entry",
+            "entry_distance_pct": "Distance %",
+            "entry_distance_atr": "Distance ATR",
             "stop": "Stop",
             "target": "Target",
             "reward_risk": "R:R",
@@ -656,6 +679,69 @@ def _forecast_result_frame(rows: list[dict[str, Any]]) -> pd.DataFrame:
             "reason": "Decision",
         }
     )
+
+
+def _forecast_trade_identity(row: dict[str, Any]) -> tuple[Any, ...]:
+    return (
+        row.get("symbol"),
+        row.get("strategy"),
+        row.get("signal"),
+        row.get("entry"),
+        row.get("stop"),
+        row.get("target"),
+    )
+
+
+def _render_forecast_position_chart(row: dict[str, Any]) -> None:
+    symbol = str(row.get("symbol", "")).upper()
+    if not symbol:
+        return
+    plan = _as_dict(da.load_watchlist().get(symbol))
+    spacing = _as_dict(plan.get("level_spacing"))
+    bars = da.get_bars(symbol, "daily")
+    timeframe_label = "Daily"
+    if bars.empty:
+        bars = da.get_bars(symbol, "intraday_5m")
+        timeframe_label = "Intraday 5m"
+    if bars.empty:
+        st.info(f"No saved chart data is available for {symbol}.")
+        return
+
+    side = str(row.get("signal", "")).upper()
+    panel_header(
+        f"{symbol} Forecast Position",
+        icon="candlestick_chart",
+        badge=f"{side} · {row.get('source', 'FORECAST')}",
+    )
+    control_a, control_b, control_c = st.columns(3)
+    show_raw = control_a.toggle(
+        "Raw levels", value=False, key=f"forecast_raw_{symbol}"
+    )
+    show_trade = control_b.toggle(
+        "Trade zones", value=True, key=f"forecast_trade_{symbol}"
+    )
+    show_volume = control_c.toggle(
+        "Volume", value=True, key=f"forecast_volume_{symbol}"
+    )
+    with st.container(border=True):
+        fig = charts.candles_with_levels(
+            bars,
+            raw_levels=_as_list(plan.get("raw_levels")),
+            trade_levels=_as_list(plan.get("levels")),
+            current_price=spacing.get("current_price"),
+            title=f"{symbol} · {timeframe_label} forecast position",
+            height=540,
+            show_raw=show_raw,
+            show_trade=show_trade,
+            show_volume=show_volume,
+        )
+        charts.mark_forecast_position(
+            fig,
+            entry=float(row.get("entry", 0) or 0),
+            stop=float(row.get("stop", 0) or 0),
+            target=float(row.get("target", 0) or 0),
+        )
+        st.plotly_chart(fig, width="stretch", config={"displaylogo": False})
 
 
 def render_forecast() -> None:
@@ -720,6 +806,20 @@ def render_forecast() -> None:
             "Maximum open risk (%)", min_value=0.01, max_value=25.0, step=0.10,
             format="%.2f", key="forecast_open_risk",
         )
+
+        distance_a, distance_b = st.columns(2)
+        min_entry_atr = distance_a.number_input(
+            "Minimum entry distance (ATR)",
+            min_value=0.0, max_value=20.0, step=0.25,
+            format="%.2f", key="forecast_min_entry_atr",
+            help="Projected entries closer than this distance are filtered.",
+        )
+        max_entry_atr = distance_b.number_input(
+            "Maximum entry distance (ATR)",
+            min_value=0.0, max_value=20.0, step=0.25,
+            format="%.2f", key="forecast_max_entry_atr",
+            help="Projected entries farther than this distance are filtered.",
+        )
         calculate = st.form_submit_button(
             "Calculate forecast", icon=":material/query_stats:", width="stretch",
         )
@@ -732,6 +832,9 @@ def render_forecast() -> None:
     )
 
     if calculate:
+        if max_entry_atr < min_entry_atr:
+            st.error("Maximum entry distance must be greater than or equal to the minimum.")
+            return
         scenario = fc.ForecastScenario(
             account_equity=float(account_equity),
             cash_available=float(cash_available),
@@ -744,6 +847,8 @@ def render_forecast() -> None:
             max_spread_pct=float(max_spread) / 100,
             max_open_risk_pct=float(max_open_risk) / 100,
             max_position_value=float(SETTINGS.risk.max_position_value),
+            min_projected_entry_distance_atr=float(min_entry_atr),
+            max_projected_entry_distance_atr=float(max_entry_atr),
         )
         live_scenario = fc.ForecastScenario(
             account_equity=float(account_equity),
@@ -757,6 +862,8 @@ def render_forecast() -> None:
             max_spread_pct=SETTINGS.risk.max_spread_pct,
             max_open_risk_pct=SETTINGS.risk.max_open_risk_pct,
             max_position_value=SETTINGS.risk.max_position_value,
+            min_projected_entry_distance_atr=float(min_entry_atr),
+            max_projected_entry_distance_atr=float(max_entry_atr),
         )
         watchlist = da.load_watchlist()
         positions = da.load_tracked_positions()
@@ -799,10 +906,15 @@ def render_forecast() -> None:
     panel_header("Forecast Summary", icon="query_stats", badge=calculated_at)
     metric_grid(
         [
-            {"label": "Possible Signals", "value": summary.get("possible_signals", 0),
-             "sub": f'{summary.get("active_signals", 0)} active · {summary.get("projected_setups", 0)} projected'},
+            {"label": "ATR-Qualified Setups", "value": summary.get("setup_qualified", 0),
+             "sub": f'of {summary.get("possible_signals", 0)} modeled signals'},
             {"label": "Forecast Trades", "value": summary.get("forecast_trades", 0),
-             "accent": "lime", "sub": "eligible under scenario"},
+             "accent": "lime",
+             "sub": (
+                 f'limited by {summary.get("binding_limit")}'
+                 if summary.get("binding_limit")
+                 else "eligible under scenario"
+             )},
             {"label": "Capital Required", "value": f'${summary.get("capital_required", 0):,.0f}',
              "accent": "cyan", "sub": "forecast allocation"},
             {"label": "New Open Risk", "value": f'${summary.get("new_open_risk", 0):,.0f}',
@@ -814,6 +926,16 @@ def render_forecast() -> None:
         ],
         columns=6,
     )
+    if summary.get("binding_limit"):
+        st.info(
+            f"{summary.get('setup_qualified', 0)} setups pass the signal and ATR filters, "
+            f"but the portfolio receives {summary.get('forecast_trades', 0)} trades. "
+            f"Binding constraint: {summary.get('binding_limit')}. "
+            f"Risk budget per trade is ${summary.get('risk_budget_per_trade', 0):,.0f}; "
+            f"the remaining open-risk capacity supports "
+            f"{summary.get('open_risk_capacity', 0)} full-sized position(s), subject to "
+            f"the {summary.get('position_capacity', 0)} available position slot(s)."
+        )
 
     panel_header("Scenario vs Live Settings", icon="compare_arrows")
     comparison = pd.DataFrame(
@@ -862,19 +984,55 @@ def render_forecast() -> None:
         visible = [row for row in rows if row.get("status") == "FILTERED"]
     else:
         visible = rows
-    show_df(
-        _forecast_result_frame(visible),
-        height=520,
-        column_config={
-            "Entry": st.column_config.NumberColumn(format="$%.2f"),
-            "Stop": st.column_config.NumberColumn(format="$%.2f"),
-            "Target": st.column_config.NumberColumn(format="$%.2f"),
-            "Position Value": st.column_config.NumberColumn(format="$%.2f"),
-            "Risk $": st.column_config.NumberColumn(format="$%.2f"),
-            "Potential Reward": st.column_config.NumberColumn(format="$%.2f"),
-            "R:R": st.column_config.NumberColumn(format="%.2f"),
-        },
-    )
+    frame = _forecast_result_frame(visible).reset_index(drop=True)
+    if frame.empty:
+        st.caption("No forecast rows match this view.")
+    else:
+        ledger_event = st.dataframe(
+            frame,
+            hide_index=True,
+            width="stretch",
+            height=211,
+            row_height=35,
+            key=f"forecast_trade_ledger_{str(view).lower().replace(' ', '_')}",
+            on_select="rerun",
+            selection_mode="single-row",
+            column_config={
+                "Symbol": st.column_config.TextColumn(
+                    "Symbol", help="Click a row to load its forecast position chart."
+                ),
+                "Entry": st.column_config.NumberColumn(format="$%.2f"),
+                "Current": st.column_config.NumberColumn(format="$%.2f"),
+                "Distance %": st.column_config.NumberColumn(format="%.1f%%"),
+                "Distance ATR": st.column_config.NumberColumn(format="%.2f"),
+                "Stop": st.column_config.NumberColumn(format="$%.2f"),
+                "Target": st.column_config.NumberColumn(format="$%.2f"),
+                "Position Value": st.column_config.NumberColumn(format="$%.2f"),
+                "Risk $": st.column_config.NumberColumn(format="$%.2f"),
+                "Potential Reward": st.column_config.NumberColumn(format="$%.2f"),
+                "R:R": st.column_config.NumberColumn(format="%.2f"),
+            },
+        )
+        selected_indexes = list(ledger_event.selection.rows)
+        if selected_indexes:
+            selected_row = visible[selected_indexes[0]]
+            st.session_state.forecast_selected_trade = _forecast_trade_identity(selected_row)
+        else:
+            selected_identity = st.session_state.get("forecast_selected_trade")
+            selected_row = next(
+                (
+                    row for row in visible
+                    if _forecast_trade_identity(row) == selected_identity
+                ),
+                visible[0],
+            )
+            st.session_state.forecast_selected_trade = _forecast_trade_identity(selected_row)
+
+        st.caption(
+            "The ledger shows five rows at a time. Scroll for more; click a Symbol row "
+            "to update the chart."
+        )
+        _render_forecast_position_chart(selected_row)
 
     warnings = stored.get("warnings")
     if isinstance(warnings, list) and warnings:

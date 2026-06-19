@@ -13,7 +13,8 @@ from src.strategy.levels import Level
 from src.strategy.strategy_router import route_strategies
 from src.config import LOGGER
 
-FORECAST_ENGINE_VERSION = 1
+FORECAST_ENGINE_VERSION = 4
+MAX_PROJECTED_ENTRY_DISTANCE_PCT = 0.20
 
 
 @dataclass(frozen=True)
@@ -29,6 +30,8 @@ class ForecastScenario:
     max_spread_pct: float
     max_open_risk_pct: float
     max_position_value: float
+    min_projected_entry_distance_atr: float = 1.0
+    max_projected_entry_distance_atr: float = 2.0
 
 
 def _number(value: Any, default: float = 0.0) -> float:
@@ -63,6 +66,8 @@ def _candidate(
     level: float,
     level_type: str,
     confidence: float = 0.0,
+    current_price: float = 0.0,
+    daily_atr: float = 0.0,
 ) -> dict[str, Any] | None:
     risk_per_share = abs(entry - stop)
     reward_per_share = abs(target - entry)
@@ -72,6 +77,9 @@ def _candidate(
         return None
     if direction == "short" and not (target < entry < stop):
         return None
+    entry_distance = abs(entry - current_price) if current_price > 0 else 0.0
+    entry_distance_pct = entry_distance / current_price if current_price > 0 else 0.0
+    entry_distance_atr = entry_distance / daily_atr if daily_atr > 0 else None
     return {
         "symbol": symbol,
         "strategy": strategy,
@@ -86,6 +94,12 @@ def _candidate(
         "reward_risk": round(reward_per_share / risk_per_share, 2),
         "risk_per_share": round(risk_per_share, 4),
         "confidence": round(confidence, 2),
+        "current_price": round(current_price, 4) if current_price > 0 else None,
+        "entry_distance": round(entry_distance, 4),
+        "entry_distance_pct": round(entry_distance_pct, 4),
+        "entry_distance_atr": (
+            round(entry_distance_atr, 2) if entry_distance_atr is not None else None
+        ),
     }
 
 
@@ -131,6 +145,8 @@ def projected_level_candidates(watchlist: dict[str, Any]) -> list[dict[str, Any]
                     level=price,
                     level_type=level_type,
                     confidence=strength,
+                    current_price=current_price,
+                    daily_atr=daily_atr,
                 )
                 if item:
                     candidates.append(item)
@@ -147,6 +163,8 @@ def projected_level_candidates(watchlist: dict[str, Any]) -> list[dict[str, Any]
                     level=price,
                     level_type=level_type,
                     confidence=strength,
+                    current_price=current_price,
+                    daily_atr=daily_atr,
                 )
                 if item:
                     candidates.append(item)
@@ -164,6 +182,8 @@ def projected_level_candidates(watchlist: dict[str, Any]) -> list[dict[str, Any]
                         level=price,
                         level_type=level_type,
                         confidence=strength,
+                        current_price=current_price,
+                        daily_atr=daily_atr,
                     )
                     if item:
                         candidates.append(item)
@@ -180,6 +200,8 @@ def projected_level_candidates(watchlist: dict[str, Any]) -> list[dict[str, Any]
                         level=price,
                         level_type=level_type,
                         confidence=strength,
+                        current_price=current_price,
+                        daily_atr=daily_atr,
                     )
                     if item:
                         candidates.append(item)
@@ -248,6 +270,8 @@ def _reason_label(reasons: list[str]) -> str:
         "reward_risk_too_low": "Reward:risk below minimum",
         "spread_too_wide": "Assumed spread exceeds limit",
         "position_size_zero": "Position size is zero",
+        "entry_too_far_from_market": "Entry is too far from the current market",
+        "entry_too_close_to_market": "Entry is closer than the minimum ATR distance",
     }
     return "; ".join(labels.get(reason, reason.replace("_", " ").title()) for reason in reasons)
 
@@ -274,11 +298,14 @@ def run_forecast(
     cash_remaining = max(0.0, scenario.cash_available)
     accepted_symbols: set[str] = set()
     rows: list[dict[str, Any]] = []
+    reason_counts: dict[str, int] = {}
 
     ordered = sorted(
         candidates,
         key=lambda item: (
             0 if item.get("source") == "ACTIVE REPLAY" else 1,
+            _number(item.get("entry_distance_atr"), 999.0),
+            _number(item.get("entry_distance_pct"), 999.0),
             -_number(item.get("reward_risk")),
             -_number(item.get("confidence")),
             str(item.get("symbol", "")),
@@ -290,6 +317,8 @@ def run_forecast(
         risk_per_share = _number(item.get("risk_per_share"))
         reward_per_share = abs(_number(item.get("target")) - entry)
         reward_risk = _number(item.get("reward_risk"))
+        entry_distance_pct = _number(item.get("entry_distance_pct"))
+        entry_distance_atr = item.get("entry_distance_atr")
         reasons: list[str] = []
         quantity = (
             math.floor((scenario.account_equity * scenario.risk_per_trade) / risk_per_share)
@@ -302,6 +331,25 @@ def run_forecast(
 
         if remaining_daily_loss <= 0:
             reasons.append("daily_loss_limit_reached")
+        if item.get("source") == "PROJECTED":
+            too_far_pct = (
+                entry_distance_atr is None
+                and entry_distance_pct > MAX_PROJECTED_ENTRY_DISTANCE_PCT
+            )
+            too_close_atr = (
+                entry_distance_atr is not None
+                and _number(entry_distance_atr)
+                < scenario.min_projected_entry_distance_atr
+            )
+            too_far_atr = (
+                entry_distance_atr is not None
+                and _number(entry_distance_atr)
+                > scenario.max_projected_entry_distance_atr
+            )
+            if too_close_atr:
+                reasons.append("entry_too_close_to_market")
+            if too_far_pct or too_far_atr:
+                reasons.append("entry_too_far_from_market")
         if symbol in current_symbols or symbol in accepted_symbols:
             reasons.append("duplicate_position")
         if len(positions) + len(accepted_symbols) >= scenario.max_positions:
@@ -319,6 +367,14 @@ def run_forecast(
         if current_open_risk + accepted_risk + risk_amount > max_open_risk:
             reasons.append("open_risk_limit_exceeded")
 
+        setup_reason_codes = {
+            "entry_too_close_to_market",
+            "entry_too_far_from_market",
+            "reward_risk_too_low",
+            "spread_too_wide",
+            "position_size_zero",
+        }
+        setup_qualified = not any(reason in setup_reason_codes for reason in reasons)
         accepted = not reasons
         if accepted:
             accepted_symbols.add(symbol)
@@ -334,12 +390,37 @@ def run_forecast(
                 "position_value": round(notional, 2),
                 "risk_amount": round(risk_amount, 2),
                 "potential_reward": round(potential_reward, 2),
+                "setup_qualified": setup_qualified,
+                "reason_codes": list(reasons),
                 "status": "FORECAST TRADE" if accepted else "FILTERED",
                 "reason": "Eligible under scenario" if accepted else _reason_label(reasons),
             }
         )
+        for reason in reasons:
+            reason_counts[reason] = reason_counts.get(reason, 0) + 1
 
     accepted_rows = [row for row in rows if row["status"] == "FORECAST TRADE"]
+    setup_qualified_count = sum(bool(row.get("setup_qualified")) for row in rows)
+    risk_budget_per_trade = max(0.0, scenario.account_equity * scenario.risk_per_trade)
+    remaining_open_risk = max(0.0, max_open_risk - current_open_risk)
+    open_risk_capacity = (
+        math.floor((remaining_open_risk + 1e-9) / risk_budget_per_trade)
+        if risk_budget_per_trade > 0
+        else 0
+    )
+    position_capacity = max(0, scenario.max_positions - len(positions))
+    binding_limit = ""
+    if remaining_daily_loss <= 0:
+        binding_limit = "daily loss kill switch"
+    elif len(accepted_rows) >= position_capacity and position_capacity <= open_risk_capacity:
+        binding_limit = "maximum positions"
+    elif reason_counts.get("open_risk_limit_exceeded", 0):
+        binding_limit = "maximum open risk"
+    elif reason_counts.get("position_value_invalid", 0):
+        binding_limit = "cash / position value"
+    elif setup_qualified_count == 0:
+        binding_limit = "setup filters"
+
     return {
         "scenario": asdict(scenario),
         "rows": rows,
@@ -348,6 +429,7 @@ def run_forecast(
             "possible_signals": len(candidates),
             "active_signals": sum(item.get("source") == "ACTIVE REPLAY" for item in candidates),
             "projected_setups": sum(item.get("source") == "PROJECTED" for item in candidates),
+            "setup_qualified": setup_qualified_count,
             "forecast_trades": len(accepted_rows),
             "capital_required": round(accepted_notional, 2),
             "new_open_risk": round(accepted_risk, 2),
@@ -357,5 +439,10 @@ def run_forecast(
             "remaining_daily_loss": round(remaining_daily_loss, 2),
             "max_open_risk": round(max_open_risk, 2),
             "cash_remaining": round(cash_remaining, 2),
+            "risk_budget_per_trade": round(risk_budget_per_trade, 2),
+            "open_risk_capacity": open_risk_capacity,
+            "position_capacity": position_capacity,
+            "binding_limit": binding_limit,
+            "reason_counts": reason_counts,
         },
     }
