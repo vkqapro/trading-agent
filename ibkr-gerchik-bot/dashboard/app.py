@@ -37,7 +37,7 @@ _COMPONENT_API = (
 )
 if (
     not all(hasattr(ui, name) for name in _COMPONENT_API)
-    or getattr(ui, "DASHBOARD_COMPONENTS_VERSION", 0) < 2
+    or getattr(ui, "DASHBOARD_COMPONENTS_VERSION", 0) < 5
 ):
     ui = reload(ui)
 
@@ -137,25 +137,6 @@ def _pct(value: float) -> str:
     return f"{value * 100:.2f}%"
 
 
-def _close_news_dialog() -> None:
-    st.session_state.show_news = False
-
-
-@st.dialog("News blocked details", width="large")
-def _show_blocked_news_dialog(news_items: list[dict[str, Any]]) -> None:
-    st.markdown(
-        "**Symbols excluded by the news-risk filter**  \n"
-        "Review matched providers, sources, earnings events, and headlines."
-    )
-    blocked_news_panel(news_items)
-    st.button(
-        "Close",
-        key="news_dialog_close",
-        width="stretch",
-        on_click=_close_news_dialog,
-    )
-
-
 # --------------------------------------------------------------------------- #
 # Header
 # --------------------------------------------------------------------------- #
@@ -247,7 +228,6 @@ def render_dashboard() -> None:
     avg_conf = sum(confidences) / len(confidences) if confidences else 0.0
 
     news_items = da.blocked_news_summary(watchlist)
-    st.session_state.setdefault("show_news", False)
     cards = [
         {"label": "Watchlist", "value": len(watchlist), "icon": "visibility",
          "sub": f"{len(watchlist)} symbols tracked"},
@@ -255,8 +235,7 @@ def render_dashboard() -> None:
          "accent": "lime", "sub": "conditions met"},
         {"label": "News Blocked", "value": blocked, "icon": "gpp_bad",
          "accent": "error" if blocked else "",
-         "sub": "click to view" if blocked else "risk filtered",
-         "clickable": bool(blocked)},
+         "sub": "risk filtered"},
         {"label": "Attempts Today", "value": len(attempts), "icon": "history",
          "sub": str(decisions.get("date", "-"))},
         {"label": "Action Signals", "value": buys + sells, "icon": "bolt",
@@ -268,22 +247,15 @@ def render_dashboard() -> None:
     columns = st.columns(6, gap="small")
     for column, card in zip(columns, cards):
         with column:
-            if card.get("clickable"):
-                # Use a native button as the card. This reliably sends the
-                # click through Streamlit's event channel.
-                with st.container(key="news_metric_native"):
-                    if st.button(
-                        f":material/gpp_bad:  NEWS BLOCKED\n\n{blocked}\n\nClick to view",
-                        key="news_toggle",
-                        width="stretch",
-                    ):
-                        st.session_state.show_news = True
-            else:
-                st.markdown(metric_card_html(card), unsafe_allow_html=True)
+            st.markdown(metric_card_html(card), unsafe_allow_html=True)
 
-    # Modal drill-down: revealed only when the News Blocked card is clicked.
-    if st.session_state.show_news and news_items:
-        _show_blocked_news_dialog(news_items)
+    if blocked:
+        with st.popover(
+            f"News-blocked detail · {blocked} symbols",
+            icon=":material/shield:",
+            help="Review symbols excluded by the news-risk filter",
+        ):
+            blocked_news_panel(news_items)
 
     col_a, col_b, col_c = st.columns(3)
     with col_a:

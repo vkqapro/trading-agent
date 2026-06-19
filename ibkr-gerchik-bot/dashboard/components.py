@@ -18,7 +18,7 @@ import streamlit as st
 if TYPE_CHECKING:
     from dashboard.data_access import SourceHealth
 
-DASHBOARD_COMPONENTS_VERSION = 2
+DASHBOARD_COMPONENTS_VERSION = 5
 
 
 # --------------------------------------------------------------------------- #
@@ -329,39 +329,6 @@ hr {{ border-color: rgba(132,148,149,0.14); }}
     font-family:'Hanken Grotesk' !important;
 }}
 
-/* Native clickable metric card (News Blocked) */
-.lx-card--click {{ cursor:pointer; }}
-.lx-card--click:hover {{ border-color: rgba(255,180,171,0.45) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 0 18px rgba(255,180,171,0.14); }}
-.st-key-news_metric_native [data-testid="stButton"] > button {{
-    width:100%;
-    min-height:132px;
-    padding:16px 20px;
-    justify-content:flex-start;
-    text-align:left;
-    white-space:pre-line;
-    background:rgba(32,31,32,0.40) !important;
-    backdrop-filter:blur(16px);
-    border:1px solid rgba(255,180,171,0.25) !important;
-    border-radius:16px !important;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,0.05) !important;
-    color:{ERROR} !important;
-}}
-.st-key-news_metric_native [data-testid="stButton"] > button:hover {{
-    transform:translateY(-1px);
-    border-color:rgba(255,180,171,0.55) !important;
-    background:rgba(255,180,171,0.08) !important;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),
-        0 0 18px rgba(255,180,171,0.16) !important;
-}}
-.st-key-news_metric_native [data-testid="stButton"] > button p {{
-    white-space:pre-line;
-    font-family:'JetBrains Mono';
-    font-size:11px;
-    line-height:1.45;
-    letter-spacing:.05em;
-}}
-
 /* scrollbar */
 ::-webkit-scrollbar {{ width:7px; height:7px; }}
 ::-webkit-scrollbar-track {{ background:transparent; }}
@@ -478,8 +445,7 @@ def metric_card_html(card: dict[str, Any]) -> str:
 
     Card dict supports: ``label``, ``value``, ``icon``, ``accent``
     (cyan/lime/magenta/error or ""), ``sub`` text, ``sub_dir`` (up/down/""),
-    optional ``progress`` (0..1) with ``progress_label``, and ``clickable``
-    (adds an affordance class for use as a button trigger).
+    and optional ``progress`` (0..1) with ``progress_label``.
     """
     accent = card.get("accent", "")
     icon = card.get("icon")
@@ -500,10 +466,9 @@ def metric_card_html(card: dict[str, Any]) -> str:
         elif direction == "down":
             arrow = '<span class="material-symbols-outlined" style="font-size:13px">arrow_downward</span>'
         sub_html = f'<div class="sub {direction}">{arrow}{_esc(card["sub"])}</div>'
-    extra = " lx-card--click" if card.get("clickable") else ""
     return _clean(
         f"""
-        <div class="lx-card{extra}">
+        <div class="lx-card">
           <div class="head"><span class="label">{_esc(card.get("label",""))}</span>{icon_html}</div>
           <div class="value {accent}">{_esc(card.get("value",""))}</div>
           {sub_html}
