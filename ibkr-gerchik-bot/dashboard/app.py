@@ -24,7 +24,7 @@ if str(ROOT) not in sys.path:
 import pandas as pd
 import streamlit as st
 
-from dashboard import charts, components as ui, data_access as da
+from dashboard import charts, components as ui, data_access as da, forecast as fc
 from src.config import SETTINGS
 
 # Streamlit keeps imported modules alive between reruns. Validate modules before
@@ -37,7 +37,7 @@ _COMPONENT_API = (
 )
 if (
     not all(hasattr(ui, name) for name in _COMPONENT_API)
-    or getattr(ui, "DASHBOARD_COMPONENTS_VERSION", 0) < 5
+    or getattr(ui, "DASHBOARD_COMPONENTS_VERSION", 0) < 6
 ):
     ui = reload(ui)
 
@@ -604,6 +604,290 @@ def render_trades() -> None:
 
 
 # --------------------------------------------------------------------------- #
+# Forecast calculator tab
+# --------------------------------------------------------------------------- #
+def _forecast_defaults() -> dict[str, float | int]:
+    risk = SETTINGS.risk
+    return {
+        "forecast_equity": 100_000.0,
+        "forecast_cash": 100_000.0,
+        "forecast_daily_pnl": 0.0,
+        "forecast_assumed_spread": min(0.15, risk.max_spread_pct * 100),
+        "forecast_risk_trade": risk.risk_per_trade * 100,
+        "forecast_daily_loss": risk.max_daily_loss_pct * 100,
+        "forecast_min_rr": risk.min_reward_risk_ratio,
+        "forecast_max_positions": risk.max_positions,
+        "forecast_max_spread": risk.max_spread_pct * 100,
+        "forecast_open_risk": risk.max_open_risk_pct * 100,
+    }
+
+
+def _reset_forecast_inputs() -> None:
+    for key, value in _forecast_defaults().items():
+        st.session_state[key] = value
+    st.session_state.pop("forecast_result", None)
+
+
+def _forecast_result_frame(rows: list[dict[str, Any]]) -> pd.DataFrame:
+    if not rows:
+        return pd.DataFrame()
+    frame = pd.DataFrame(rows)
+    preferred = [
+        "symbol", "source", "strategy", "signal", "entry", "stop", "target",
+        "reward_risk", "quantity", "position_value", "risk_amount",
+        "potential_reward", "status", "reason",
+    ]
+    frame = frame[[column for column in preferred if column in frame.columns]]
+    return frame.rename(
+        columns={
+            "symbol": "Symbol",
+            "source": "Source",
+            "strategy": "Strategy",
+            "signal": "Side",
+            "entry": "Entry",
+            "stop": "Stop",
+            "target": "Target",
+            "reward_risk": "R:R",
+            "quantity": "Shares",
+            "position_value": "Position Value",
+            "risk_amount": "Risk $",
+            "potential_reward": "Potential Reward",
+            "status": "Status",
+            "reason": "Decision",
+        }
+    )
+
+
+def render_forecast() -> None:
+    for key, value in _forecast_defaults().items():
+        st.session_state.setdefault(key, value)
+
+    panel_header("Risk Forecast Calculator", icon="calculate", badge="SCENARIO ONLY")
+    st.markdown(
+        """
+        <div class="lx-scenario-note">
+          <span class="material-symbols-outlined">shield_lock</span>
+          <span>This calculator replays saved market data and models conditional level setups.
+          It does not change live bot settings, connect to IBKR, or place orders.</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    with st.form("forecast_calculator"):
+        account_a, account_b, account_c, account_d = st.columns(4)
+        account_equity = account_a.number_input(
+            "Account equity ($)", min_value=1_000.0, step=5_000.0,
+            key="forecast_equity",
+        )
+        cash_available = account_b.number_input(
+            "Available cash ($)", min_value=0.0, step=5_000.0,
+            key="forecast_cash",
+        )
+        daily_realized_pnl = account_c.number_input(
+            "Daily realized P&L ($)", step=100.0,
+            key="forecast_daily_pnl",
+        )
+        assumed_spread = account_d.number_input(
+            "Assumed spread (%)", min_value=0.0, max_value=10.0, step=0.01,
+            format="%.2f", key="forecast_assumed_spread",
+        )
+
+        risk_a, risk_b, risk_c = st.columns(3)
+        risk_per_trade = risk_a.number_input(
+            "Risk / trade (%)", min_value=0.01, max_value=10.0, step=0.05,
+            format="%.2f", key="forecast_risk_trade",
+        )
+        max_daily_loss = risk_b.number_input(
+            "Max daily loss (%)", min_value=0.01, max_value=25.0, step=0.10,
+            format="%.2f", key="forecast_daily_loss",
+        )
+        min_reward_risk = risk_c.number_input(
+            "Minimum reward:risk", min_value=0.5, max_value=10.0, step=0.25,
+            format="%.2f", key="forecast_min_rr",
+        )
+
+        limit_a, limit_b, limit_c = st.columns(3)
+        max_positions = limit_a.number_input(
+            "Maximum positions", min_value=1, max_value=50, step=1,
+            key="forecast_max_positions",
+        )
+        max_spread = limit_b.number_input(
+            "Maximum spread (%)", min_value=0.01, max_value=10.0, step=0.01,
+            format="%.2f", key="forecast_max_spread",
+        )
+        max_open_risk = limit_c.number_input(
+            "Maximum open risk (%)", min_value=0.01, max_value=25.0, step=0.10,
+            format="%.2f", key="forecast_open_risk",
+        )
+        calculate = st.form_submit_button(
+            "Calculate forecast", icon=":material/query_stats:", width="stretch",
+        )
+
+    st.button(
+        "Reset to live settings",
+        icon=":material/restart_alt:",
+        on_click=_reset_forecast_inputs,
+        key="forecast_reset",
+    )
+
+    if calculate:
+        scenario = fc.ForecastScenario(
+            account_equity=float(account_equity),
+            cash_available=float(cash_available),
+            daily_realized_pnl=float(daily_realized_pnl),
+            assumed_spread_pct=float(assumed_spread) / 100,
+            risk_per_trade=float(risk_per_trade) / 100,
+            max_daily_loss_pct=float(max_daily_loss) / 100,
+            min_reward_risk_ratio=float(min_reward_risk),
+            max_positions=int(max_positions),
+            max_spread_pct=float(max_spread) / 100,
+            max_open_risk_pct=float(max_open_risk) / 100,
+            max_position_value=float(SETTINGS.risk.max_position_value),
+        )
+        live_scenario = fc.ForecastScenario(
+            account_equity=float(account_equity),
+            cash_available=float(cash_available),
+            daily_realized_pnl=float(daily_realized_pnl),
+            assumed_spread_pct=float(assumed_spread) / 100,
+            risk_per_trade=SETTINGS.risk.risk_per_trade,
+            max_daily_loss_pct=SETTINGS.risk.max_daily_loss_pct,
+            min_reward_risk_ratio=SETTINGS.risk.min_reward_risk_ratio,
+            max_positions=SETTINGS.risk.max_positions,
+            max_spread_pct=SETTINGS.risk.max_spread_pct,
+            max_open_risk_pct=SETTINGS.risk.max_open_risk_pct,
+            max_position_value=SETTINGS.risk.max_position_value,
+        )
+        watchlist = da.load_watchlist()
+        positions = da.load_tracked_positions()
+        with st.spinner("Replaying saved bars and calculating risk allocation..."):
+            active, warnings = fc.replay_active_candidates(watchlist, da.get_bars)
+            projected = fc.projected_level_candidates(watchlist)
+            seen: set[tuple[Any, ...]] = set()
+            candidates: list[dict[str, Any]] = []
+            for candidate in [*active, *projected]:
+                identity = (
+                    candidate.get("symbol"), candidate.get("strategy"),
+                    candidate.get("signal"), candidate.get("entry"),
+                    candidate.get("stop"), candidate.get("target"),
+                )
+                if identity not in seen:
+                    seen.add(identity)
+                    candidates.append(candidate)
+            result = fc.run_forecast(candidates, scenario, positions)
+            baseline = fc.run_forecast(candidates, live_scenario, positions)
+        st.session_state.forecast_result = {
+            "result": result,
+            "baseline": baseline,
+            "warnings": warnings,
+            "calculated_at": datetime.now(
+                ZoneInfo(SETTINGS.trading_hours.timezone)
+            ).isoformat(timespec="seconds"),
+        }
+
+    stored = st.session_state.get("forecast_result")
+    if not isinstance(stored, dict):
+        st.caption("Set the scenario parameters and calculate to generate a forecast.")
+        return
+
+    result = _as_dict(stored.get("result"))
+    baseline = _as_dict(stored.get("baseline"))
+    summary = _as_dict(result.get("summary"))
+    baseline_summary = _as_dict(baseline.get("summary"))
+    calculated_at = str(stored.get("calculated_at", "-")).replace("T", " ")
+
+    panel_header("Forecast Summary", icon="query_stats", badge=calculated_at)
+    metric_grid(
+        [
+            {"label": "Possible Signals", "value": summary.get("possible_signals", 0),
+             "sub": f'{summary.get("active_signals", 0)} active · {summary.get("projected_setups", 0)} projected'},
+            {"label": "Forecast Trades", "value": summary.get("forecast_trades", 0),
+             "accent": "lime", "sub": "eligible under scenario"},
+            {"label": "Capital Required", "value": f'${summary.get("capital_required", 0):,.0f}',
+             "accent": "cyan", "sub": "forecast allocation"},
+            {"label": "New Open Risk", "value": f'${summary.get("new_open_risk", 0):,.0f}',
+             "sub": f'max ${summary.get("max_open_risk", 0):,.0f}'},
+            {"label": "Max Daily Loss", "value": f'${summary.get("max_daily_loss", 0):,.0f}',
+             "accent": "error", "sub": f'${summary.get("remaining_daily_loss", 0):,.0f} remaining'},
+            {"label": "Potential Reward", "value": f'${summary.get("potential_reward", 0):,.0f}',
+             "accent": "lime", "sub": "at modeled targets"},
+        ],
+        columns=6,
+    )
+
+    panel_header("Scenario vs Live Settings", icon="compare_arrows")
+    comparison = pd.DataFrame(
+        [
+            {
+                "Metric": "Forecast trades",
+                "Live settings": baseline_summary.get("forecast_trades", 0),
+                "Scenario": summary.get("forecast_trades", 0),
+                "Change": summary.get("forecast_trades", 0) - baseline_summary.get("forecast_trades", 0),
+            },
+            {
+                "Metric": "Capital required",
+                "Live settings": baseline_summary.get("capital_required", 0),
+                "Scenario": summary.get("capital_required", 0),
+                "Change": summary.get("capital_required", 0) - baseline_summary.get("capital_required", 0),
+            },
+            {
+                "Metric": "New open risk",
+                "Live settings": baseline_summary.get("new_open_risk", 0),
+                "Scenario": summary.get("new_open_risk", 0),
+                "Change": summary.get("new_open_risk", 0) - baseline_summary.get("new_open_risk", 0),
+            },
+            {
+                "Metric": "Potential reward",
+                "Live settings": baseline_summary.get("potential_reward", 0),
+                "Scenario": summary.get("potential_reward", 0),
+                "Change": summary.get("potential_reward", 0) - baseline_summary.get("potential_reward", 0),
+            },
+        ]
+    )
+    show_df(comparison, height=180)
+
+    panel_header("Forecast Trade Ledger", icon="table_view")
+    rows = result.get("rows", [])
+    rows = rows if isinstance(rows, list) else []
+    view = st.segmented_control(
+        "Forecast rows",
+        ["Eligible trades", "All signals", "Filtered only"],
+        default="Eligible trades",
+        label_visibility="collapsed",
+        key="forecast_row_filter",
+    )
+    if view == "Eligible trades":
+        visible = [row for row in rows if row.get("status") == "FORECAST TRADE"]
+    elif view == "Filtered only":
+        visible = [row for row in rows if row.get("status") == "FILTERED"]
+    else:
+        visible = rows
+    show_df(
+        _forecast_result_frame(visible),
+        height=520,
+        column_config={
+            "Entry": st.column_config.NumberColumn(format="$%.2f"),
+            "Stop": st.column_config.NumberColumn(format="$%.2f"),
+            "Target": st.column_config.NumberColumn(format="$%.2f"),
+            "Position Value": st.column_config.NumberColumn(format="$%.2f"),
+            "Risk $": st.column_config.NumberColumn(format="$%.2f"),
+            "Potential Reward": st.column_config.NumberColumn(format="$%.2f"),
+            "R:R": st.column_config.NumberColumn(format="%.2f"),
+        },
+    )
+
+    warnings = stored.get("warnings")
+    if isinstance(warnings, list) and warnings:
+        with st.expander(f"Replay warnings ({len(warnings)})"):
+            st.code("\n".join(map(str, warnings)))
+    st.caption(
+        f"Conditional setups are modeled from saved levels and bars. "
+        f"Maximum position value remains fixed at ${SETTINGS.risk.max_position_value:,.0f}. "
+        "Results are estimates, not orders or guarantees."
+    )
+
+
+# --------------------------------------------------------------------------- #
 # Reports tab
 # --------------------------------------------------------------------------- #
 def render_reports() -> None:
@@ -676,8 +960,8 @@ def render_reports() -> None:
 # Compose
 # --------------------------------------------------------------------------- #
 render_header()
-tab_dash, tab_preopen, tab_intraday, tab_trades, tab_reports = st.tabs(
-    ["📊 Dashboard", "🌅 Pre-Open", "⚡ Intraday", "💼 Trades & Positions", "📑 Reports"]
+tab_dash, tab_preopen, tab_intraday, tab_trades, tab_forecast, tab_reports = st.tabs(
+    ["📊 Dashboard", "🌅 Pre-Open", "⚡ Intraday", "💼 Trades & Positions", "🔮 Forecast", "📑 Reports"]
 )
 with tab_dash:
     _render_guard("Dashboard", render_dashboard)
@@ -687,5 +971,7 @@ with tab_intraday:
     _render_guard("Intraday", render_intraday)
 with tab_trades:
     _render_guard("Trades & Positions", render_trades)
+with tab_forecast:
+    _render_guard("Forecast Calculator", render_forecast)
 with tab_reports:
     _render_guard("Reports", render_reports)

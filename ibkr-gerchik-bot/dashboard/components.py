@@ -18,7 +18,7 @@ import streamlit as st
 if TYPE_CHECKING:
     from dashboard.data_access import SourceHealth
 
-DASHBOARD_COMPONENTS_VERSION = 5
+DASHBOARD_COMPONENTS_VERSION = 6
 
 
 # --------------------------------------------------------------------------- #
@@ -181,6 +181,13 @@ code, kbd, pre, .mono {{ font-family: 'JetBrains Mono', monospace !important; }}
 .lx-badge {{ font-family:'JetBrains Mono'; font-size:10px; padding:3px 9px; border-radius:999px;
     background:rgba(0,240,255,0.10); color:{CYAN}; border:1px solid rgba(125,244,255,0.30);
     letter-spacing:.08em; }}
+.lx-scenario-note {{
+    display:flex; align-items:flex-start; gap:10px; margin:4px 0 14px; padding:11px 14px;
+    border-radius:10px; background:rgba(0,240,255,0.06);
+    border:1px solid rgba(125,244,255,0.22); color:{ON_SURFACE_VARIANT};
+    font-family:'JetBrains Mono'; font-size:11px; line-height:1.55;
+}}
+.lx-scenario-note .material-symbols-outlined {{ color:{CYAN}; font-size:18px; }}
 
 /* Bordered containers act as glass cards */
 [data-testid="stVerticalBlockBorderWrapper"] {{
