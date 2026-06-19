@@ -8,7 +8,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-DASHBOARD_CHARTS_VERSION = 3
+DASHBOARD_CHARTS_VERSION = 4
 
 # Luminous Obsidian palette (see stitch_trading_bot_dashboard/DESIGN.md)
 UP = "#c3f400"           # secondary-fixed / lime — bullish
@@ -357,25 +357,197 @@ def mark_forecast_position(
     stop: float,
     target: float,
 ) -> go.Figure:
-    """Add labeled forecast entry, stop, and target lines to a price chart."""
+    """Shade the risk (entry→stop) and reward (entry→target) zones and label them.
+
+    The risk box is red, the reward box is green, and the entry is a solid white
+    line — an R-multiple view that reads far faster than three loose lines.
+    """
+    try:
+        entry_f, stop_f, target_f = float(entry), float(stop), float(target)
+    except (TypeError, ValueError):
+        return fig
+    risk = abs(entry_f - stop_f)
+    reward = abs(target_f - entry_f)
+    r_multiple = reward / risk if risk > 0 else 0.0
+
+    if risk > 0:
+        fig.add_hrect(
+            y0=min(entry_f, stop_f), y1=max(entry_f, stop_f),
+            fillcolor="rgba(255, 107, 129, 0.14)", line_width=0, layer="below", row=1, col=1,
+        )
+    if reward > 0:
+        fig.add_hrect(
+            y0=min(entry_f, target_f), y1=max(entry_f, target_f),
+            fillcolor="rgba(195, 244, 0, 0.12)", line_width=0, layer="below", row=1, col=1,
+        )
     markers = (
-        ("ENTRY", entry, FORECAST_ENTRY, "dash"),
-        ("STOP", stop, FORECAST_STOP, "dash"),
-        ("TARGET", target, FORECAST_TARGET, "dash"),
+        (f"ENTRY  ${entry_f:,.2f}", entry_f, FORECAST_ENTRY, "solid"),
+        (f"STOP  ${stop_f:,.2f}", stop_f, FORECAST_STOP, "dash"),
+        (f"TARGET  ${target_f:,.2f}  ·  {r_multiple:.1f}R", target_f, FORECAST_TARGET, "dash"),
     )
-    for label, raw_price, color, dash in markers:
-        try:
-            price = float(raw_price)
-        except (TypeError, ValueError):
-            continue
+    for label, price, color, dash in markers:
         fig.add_hline(
             y=price,
             line=dict(color=color, width=2, dash=dash),
-            annotation_text=f"{label}  ${price:,.2f}",
+            annotation_text=label,
             annotation_position="right",
-            annotation_font_color="#ffffff",
+            annotation_font_color=color,
             annotation_font_size=11,
-            row=1,
-            col=1,
+            row=1, col=1,
         )
+    return fig
+
+
+def forecast_rr_scatter(
+    rows: list[Dict[str, Any]],
+    *,
+    min_reward_risk: float,
+    min_entry_atr: float,
+    max_entry_atr: float,
+    height: int = 360,
+) -> go.Figure:
+    """Reward:risk vs entry-distance (ATR) scatter, with qualifying zones shaded.
+
+    Accepted trades are lime, filtered candidates are muted; bubble size encodes
+    position value. The min-R:R line and the [min,max] ATR entry window are drawn
+    so a glance shows which setups qualify and why the rest fall out.
+    """
+    fig = go.Figure()
+    # Shaded ATR entry window (only meaningful where ATR distance is known).
+    if max_entry_atr > min_entry_atr:
+        fig.add_vrect(
+            x0=min_entry_atr, x1=max_entry_atr,
+            fillcolor="rgba(0, 240, 255, 0.07)", line_width=0, layer="below",
+            annotation_text="entry window", annotation_position="top left",
+            annotation_font=dict(color=TRADE_LEVEL, size=10),
+        )
+    fig.add_hline(
+        y=min_reward_risk, line=dict(color=TRADE_LEVEL, width=1, dash="dot"),
+        annotation_text=f"min R:R {min_reward_risk:g}", annotation_position="right",
+        annotation_font=dict(color=TRADE_LEVEL, size=10),
+    )
+
+    def _series(accepted: bool):
+        xs, ys, sizes, texts = [], [], [], []
+        for row in rows:
+            atr = row.get("entry_distance_atr")
+            rr = row.get("reward_risk")
+            if atr is None or rr is None:
+                continue
+            is_acc = row.get("status") == "FORECAST TRADE"
+            if is_acc != accepted:
+                continue
+            xs.append(float(atr))
+            ys.append(float(rr))
+            sizes.append(max(6.0, min(40.0, (float(row.get("position_value") or 0) ** 0.5) / 6)))
+            texts.append(
+                f"{row.get('symbol')} · {row.get('signal')}<br>"
+                f"R:R {float(rr):.2f} · {float(atr):.2f} ATR<br>"
+                f"{row.get('reason', '')}"
+            )
+        return xs, ys, sizes, texts
+
+    for accepted, color, name in ((False, RAW_LEVEL, "Filtered"), (True, UP, "Forecast trade")):
+        xs, ys, sizes, texts = _series(accepted)
+        if not xs:
+            continue
+        fig.add_trace(
+            go.Scatter(
+                x=xs, y=ys, mode="markers", name=name,
+                marker=dict(size=sizes, color=color, opacity=0.85,
+                            line=dict(width=1, color="#0e0e0f")),
+                text=texts, hovertemplate="%{text}<extra></extra>",
+            )
+        )
+    fig.update_layout(
+        height=height, paper_bgcolor=PAPER, plot_bgcolor=PLOT,
+        font=dict(color="#b9cacb", family=FONT, size=11),
+        margin=dict(l=10, r=70, t=30, b=40),
+        legend=dict(orientation="h", yanchor="bottom", y=1.0, x=0),
+        xaxis_title="Entry distance (ATR)", yaxis_title="Reward : Risk",
+        hoverlabel=dict(bgcolor="#201f20", bordercolor="#3b494b", font=dict(family=FONT)),
+    )
+    fig.update_xaxes(showgrid=True, gridcolor=GRID, zeroline=False)
+    fig.update_yaxes(showgrid=True, gridcolor=GRID, zeroline=False)
+    return fig
+
+
+def capital_gauges(summary: Dict[str, Any], height: int = 220) -> go.Figure:
+    """Horizontal utilization bars: open risk, capital, and position slots."""
+    new_risk = float(summary.get("new_open_risk", 0) or 0)
+    total_risk = float(summary.get("total_open_risk", 0) or 0)
+    max_risk = float(summary.get("max_open_risk", 0) or 0)
+    capital = float(summary.get("capital_required", 0) or 0)
+    cash_remaining = float(summary.get("cash_remaining", 0) or 0)
+    cash_total = capital + cash_remaining
+    trades = float(summary.get("forecast_trades", 0) or 0)
+    pos_cap = float(summary.get("position_capacity", 0) or 0)
+    binding = str(summary.get("binding_limit") or "")
+
+    rows = [
+        ("Position slots", trades, max(pos_cap, trades, 1), "maximum positions"),
+        ("Capital", capital, max(cash_total, capital, 1), "cash / position value"),
+        ("Open risk", total_risk, max(max_risk, total_risk, 1e-9), "maximum open risk"),
+    ]
+    fig = go.Figure()
+    for label, used, total, binds in rows:
+        pct = max(0.0, min(1.0, used / total)) * 100 if total else 0.0
+        is_binding = binding == binds
+        fig.add_trace(go.Bar(
+            y=[label], x=[100], orientation="h", marker_color="#201f20",
+            hoverinfo="skip", showlegend=False, width=0.55,
+        ))
+        fig.add_trace(go.Bar(
+            y=[label], x=[pct], orientation="h",
+            marker_color=("#ff6b81" if is_binding else TRADE_LEVEL),
+            base=0, showlegend=False, width=0.55,
+            text=[f"{used:,.0f} / {total:,.0f}"], textposition="inside",
+            insidetextanchor="start", textfont=dict(family=FONT, color="#0e0e0f", size=11),
+            hovertemplate=f"{label}: {pct:.0f}%<extra></extra>",
+        ))
+    fig.update_layout(
+        barmode="overlay", height=height, paper_bgcolor=PAPER, plot_bgcolor=PLOT,
+        font=dict(color="#b9cacb", family=FONT, size=11),
+        margin=dict(l=10, r=20, t=10, b=20),
+    )
+    fig.update_xaxes(range=[0, 100], showgrid=False, ticksuffix="%", zeroline=False)
+    fig.update_yaxes(showgrid=False)
+    return fig
+
+
+def forecast_sensitivity(
+    points: list[Dict[str, Any]], *, live_value: Optional[float] = None, height: int = 320
+) -> go.Figure:
+    """Dual-axis sweep: forecast trades and total open risk vs risk-per-trade (%)."""
+    xs = [float(p.get("risk_pct", 0)) for p in points]
+    trades = [int(p.get("trades", 0)) for p in points]
+    risk = [float(p.get("open_risk", 0)) for p in points]
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+    fig.add_trace(
+        go.Scatter(x=xs, y=trades, mode="lines+markers", name="Forecast trades",
+                   line=dict(color=TRADE_LEVEL, width=2), marker=dict(size=6)),
+        secondary_y=False,
+    )
+    fig.add_trace(
+        go.Scatter(x=xs, y=risk, mode="lines+markers", name="Total open risk $",
+                   line=dict(color=UP, width=2, dash="dot"), marker=dict(size=5)),
+        secondary_y=True,
+    )
+    if live_value is not None:
+        fig.add_vline(
+            x=float(live_value), line=dict(color="#ffffff", width=1, dash="dash"),
+            annotation_text="live", annotation_position="top",
+            annotation_font=dict(color="#ffffff", size=10),
+        )
+    fig.update_layout(
+        height=height, paper_bgcolor=PAPER, plot_bgcolor=PLOT,
+        font=dict(color="#b9cacb", family=FONT, size=11),
+        margin=dict(l=10, r=10, t=30, b=40),
+        legend=dict(orientation="h", yanchor="bottom", y=1.0, x=0),
+        hovermode="x unified",
+        hoverlabel=dict(bgcolor="#201f20", bordercolor="#3b494b", font=dict(family=FONT)),
+    )
+    fig.update_xaxes(title_text="Risk per trade (%)", showgrid=True, gridcolor=GRID, zeroline=False)
+    fig.update_yaxes(title_text="Trades", showgrid=True, gridcolor=GRID, zeroline=False, secondary_y=False)
+    fig.update_yaxes(title_text="Open risk $", showgrid=False, zeroline=False, secondary_y=True)
     return fig

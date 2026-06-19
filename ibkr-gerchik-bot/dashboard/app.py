@@ -10,6 +10,7 @@ from __future__ import annotations
 import html
 import sys
 from collections import Counter
+from dataclasses import replace
 from datetime import datetime
 from importlib import reload
 from inspect import signature
@@ -37,7 +38,7 @@ _COMPONENT_API = (
 )
 if (
     not all(hasattr(ui, name) for name in _COMPONENT_API)
-    or getattr(ui, "DASHBOARD_COMPONENTS_VERSION", 0) < 6
+    or getattr(ui, "DASHBOARD_COMPONENTS_VERSION", 0) < 7
 ):
     ui = reload(ui)
 
@@ -76,11 +77,14 @@ _FORECAST_API = (
 )
 if (
     not all(hasattr(fc, name) for name in _FORECAST_API)
-    or getattr(fc, "FORECAST_ENGINE_VERSION", 0) < 4
+    or getattr(fc, "FORECAST_ENGINE_VERSION", 0) < 5
 ):
     fc = reload(fc)
 
-_CHART_API = ("candles_with_levels", "mark_levels", "mark_forecast_position")
+_CHART_API = (
+    "candles_with_levels", "mark_levels", "mark_forecast_position",
+    "forecast_rr_scatter", "capital_gauges", "forecast_sensitivity",
+)
 _CHART_ARGUMENTS = {"show_raw", "show_trade", "show_volume"}
 try:
     _chart_parameters = set(signature(charts.candles_with_levels).parameters)
@@ -89,7 +93,7 @@ except (AttributeError, TypeError, ValueError):
 if (
     not all(hasattr(charts, name) for name in _CHART_API)
     or not _CHART_ARGUMENTS.issubset(_chart_parameters)
-    or getattr(charts, "DASHBOARD_CHARTS_VERSION", 0) < 3
+    or getattr(charts, "DASHBOARD_CHARTS_VERSION", 0) < 4
 ):
     charts = reload(charts)
 
@@ -264,7 +268,8 @@ def render_dashboard() -> None:
          "accent": "lime", "sub": "conditions met"},
         {"label": "News Blocked", "value": blocked, "icon": "gpp_bad",
          "accent": "error" if blocked else "",
-         "sub": "risk filtered"},
+         "sub": "click to view ▾" if blocked else "risk filtered",
+         "clickable": bool(blocked)},
         {"label": "Attempts Today", "value": len(attempts), "icon": "history",
          "sub": str(decisions.get("date", "-"))},
         {"label": "Action Signals", "value": buys + sells, "icon": "bolt",
@@ -273,17 +278,27 @@ def render_dashboard() -> None:
         {"label": "Execution Rate", "value": f"{fill_rate:.0%}", "icon": "swap_horiz",
          "progress": fill_rate, "progress_label": f"{len(executed)}/{fill_total} filled"},
     ]
+    st.session_state.setdefault("show_news", False)
     columns = st.columns(6, gap="small")
     for column, card in zip(columns, cards):
         with column:
-            st.markdown(metric_card_html(card), unsafe_allow_html=True)
+            if card.get("clickable"):
+                # Invisible button overlaid on the card -> clicking the card
+                # itself toggles the detail panel (see .st-key-news_toggle CSS).
+                with st.container(key="news_metric"):
+                    st.markdown(metric_card_html(card), unsafe_allow_html=True)
+                    if st.button("view news detail", key="news_toggle"):
+                        st.session_state.show_news = not st.session_state.show_news
+            else:
+                st.markdown(metric_card_html(card), unsafe_allow_html=True)
 
-    if blocked:
-        with st.popover(
-            f"News-blocked detail · {blocked} symbols",
-            icon=":material/shield:",
-            help="Review symbols excluded by the news-risk filter",
-        ):
+    if st.session_state.show_news and news_items:
+        with st.container(border=True):
+            head_left, head_right = st.columns([6, 1])
+            head_left.markdown("**🛡 Symbols filtered out by the news-risk filter**")
+            if head_right.button("Close", key="news_close"):
+                st.session_state.show_news = False
+                st.rerun()
             blocked_news_panel(news_items)
 
     col_a, col_b, col_c = st.columns(3)
@@ -648,6 +663,7 @@ def _forecast_defaults() -> dict[str, float | int]:
         "forecast_max_positions": risk.max_positions,
         "forecast_max_spread": risk.max_spread_pct * 100,
         "forecast_open_risk": risk.max_open_risk_pct * 100,
+        "forecast_max_pos_value": float(risk.max_position_value),
         "forecast_min_entry_atr": 1.0,
         "forecast_max_entry_atr": 2.0,
     }
@@ -821,7 +837,12 @@ def render_forecast() -> None:
             format="%.2f", key="forecast_open_risk",
         )
 
-        distance_a, distance_b = st.columns(2)
+        value_col, distance_a, distance_b = st.columns(3)
+        max_pos_value = value_col.number_input(
+            "Max position value ($)", min_value=100.0, step=1_000.0,
+            format="%.2f", key="forecast_max_pos_value",
+            help="Largest notional allowed per position in this scenario.",
+        )
         min_entry_atr = distance_a.number_input(
             "Minimum entry distance (ATR)",
             min_value=0.0, max_value=20.0, step=0.25,
@@ -860,7 +881,7 @@ def render_forecast() -> None:
             max_positions=int(max_positions),
             max_spread_pct=float(max_spread) / 100,
             max_open_risk_pct=float(max_open_risk) / 100,
-            max_position_value=float(SETTINGS.risk.max_position_value),
+            max_position_value=float(max_pos_value),
             min_projected_entry_distance_atr=float(min_entry_atr),
             max_projected_entry_distance_atr=float(max_entry_atr),
         )
@@ -897,10 +918,23 @@ def render_forecast() -> None:
                     candidates.append(candidate)
             result = fc.run_forecast(candidates, scenario, positions)
             baseline = fc.run_forecast(candidates, live_scenario, positions)
+            # Sensitivity sweep: how do trades / open risk respond to risk-per-trade?
+            sweep = []
+            for pct in (0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 2.5, 3.0):
+                swept = fc.run_forecast(
+                    candidates, replace(scenario, risk_per_trade=pct / 100), positions
+                )
+                sweep.append({
+                    "risk_pct": pct,
+                    "trades": swept["summary"]["forecast_trades"],
+                    "open_risk": swept["summary"]["total_open_risk"],
+                })
         st.session_state.forecast_result = {
             "result": result,
             "baseline": baseline,
             "warnings": warnings,
+            "sweep": sweep,
+            "live_risk_pct": float(risk_per_trade),
             "calculated_at": datetime.now(
                 ZoneInfo(SETTINGS.trading_hours.timezone)
             ).isoformat(timespec="seconds"),
@@ -951,6 +985,35 @@ def render_forecast() -> None:
             f"the {summary.get('position_capacity', 0)} available position slot(s)."
         )
 
+    stale_count = int(summary.get("stale_signals", 0) or 0)
+    if stale_count:
+        st.warning(
+            f"{stale_count} active-replay signal(s) were computed on stale saved bars "
+            "(older than 24h). Treat those rows as indicative until fresh bars are captured."
+        )
+
+    all_rows = _as_list(result.get("rows"))
+    scenario_dict = _as_dict(result.get("scenario"))
+    gauge_col, scatter_col = st.columns([1, 1.4])
+    with gauge_col:
+        panel_header("Capital & Risk Utilization", icon="speed")
+        with st.container(border=True):
+            st.plotly_chart(
+                charts.capital_gauges(summary), width="stretch", config=CHART_CONFIG
+            )
+    with scatter_col:
+        panel_header("Setup Qualification Map", icon="scatter_plot")
+        with st.container(border=True):
+            st.plotly_chart(
+                charts.forecast_rr_scatter(
+                    all_rows,
+                    min_reward_risk=float(scenario_dict.get("min_reward_risk_ratio") or 3.0),
+                    min_entry_atr=float(scenario_dict.get("min_projected_entry_distance_atr") or 1.0),
+                    max_entry_atr=float(scenario_dict.get("max_projected_entry_distance_atr") or 2.0),
+                ),
+                width="stretch", config=CHART_CONFIG,
+            )
+
     panel_header("Scenario vs Live Settings", icon="compare_arrows")
     comparison = pd.DataFrame(
         [
@@ -981,6 +1044,15 @@ def render_forecast() -> None:
         ]
     )
     show_df(comparison, height=180)
+
+    sweep = stored.get("sweep")
+    if isinstance(sweep, list) and sweep:
+        panel_header("Risk-per-Trade Sensitivity", icon="ssid_chart")
+        with st.container(border=True):
+            st.plotly_chart(
+                charts.forecast_sensitivity(sweep, live_value=stored.get("live_risk_pct")),
+                width="stretch", config=CHART_CONFIG,
+            )
 
     panel_header("Forecast Trade Ledger", icon="table_view")
     rows = result.get("rows", [])
@@ -1053,9 +1125,9 @@ def render_forecast() -> None:
         with st.expander(f"Replay warnings ({len(warnings)})"):
             st.code("\n".join(map(str, warnings)))
     st.caption(
-        f"Conditional setups are modeled from saved levels and bars. "
-        f"Maximum position value remains fixed at ${SETTINGS.risk.max_position_value:,.0f}. "
-        "Results are estimates, not orders or guarantees."
+        "Conditional setups are modeled from saved levels and bars. Active-replay "
+        "rows use saved intraday bars and are flagged when stale. Results are "
+        "estimates, not orders or guarantees."
     )
 
 

@@ -18,7 +18,7 @@ import streamlit as st
 if TYPE_CHECKING:
     from dashboard.data_access import SourceHealth
 
-DASHBOARD_COMPONENTS_VERSION = 6
+DASHBOARD_COMPONENTS_VERSION = 7
 
 
 # --------------------------------------------------------------------------- #
@@ -291,6 +291,20 @@ li[role="option"][aria-selected="true"], li[aria-selected="true"] {{
 /* calendar / generic popover surface */
 [data-baseweb="popover"] > div {{ background: {SURFACE_LOW} !important; }}
 
+/* Clickable News-Blocked metric card: invisible button overlays the card.
+   The button's element container (.st-key-news_toggle) is the positioned layer
+   that fills the keyed metric container (.st-key-news_metric). */
+.lx-card--click {{ cursor:pointer; }}
+.lx-card--click:hover {{ border-color: rgba(255,180,171,0.45) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 0 18px rgba(255,180,171,0.16); }}
+.st-key-news_metric {{ position: relative; }}
+.st-key-news_toggle {{ position:absolute !important; inset:0 !important; margin:0 !important;
+    z-index:6; height:100% !important; }}
+.st-key-news_toggle [data-testid="stButton"] {{ height:100%; }}
+.st-key-news_toggle button {{ width:100% !important; height:100% !important; min-height:100% !important;
+    opacity:0 !important; border:none !important; background:transparent !important;
+    box-shadow:none !important; cursor:pointer; }}
+
 div[data-testid="stDataFrame"] {{ border:1px solid rgba(132,148,149,0.18); border-radius:12px; }}
 [data-testid="stExpander"] {{ border:1px solid rgba(132,148,149,0.16); border-radius:12px;
     background:rgba(14,14,15,0.4); }}
@@ -452,7 +466,8 @@ def metric_card_html(card: dict[str, Any]) -> str:
 
     Card dict supports: ``label``, ``value``, ``icon``, ``accent``
     (cyan/lime/magenta/error or ""), ``sub`` text, ``sub_dir`` (up/down/""),
-    and optional ``progress`` (0..1) with ``progress_label``.
+    optional ``progress`` (0..1) with ``progress_label``, and ``clickable``
+    (adds an affordance class for use as a button trigger).
     """
     accent = card.get("accent", "")
     icon = card.get("icon")
@@ -473,9 +488,10 @@ def metric_card_html(card: dict[str, Any]) -> str:
         elif direction == "down":
             arrow = '<span class="material-symbols-outlined" style="font-size:13px">arrow_downward</span>'
         sub_html = f'<div class="sub {direction}">{arrow}{_esc(card["sub"])}</div>'
+    extra = " lx-card--click" if card.get("clickable") else ""
     return _clean(
         f"""
-        <div class="lx-card">
+        <div class="lx-card{extra}">
           <div class="head"><span class="label">{_esc(card.get("label",""))}</span>{icon_html}</div>
           <div class="value {accent}">{_esc(card.get("value",""))}</div>
           {sub_html}

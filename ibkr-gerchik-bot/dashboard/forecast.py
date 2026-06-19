@@ -5,6 +5,7 @@ from __future__ import annotations
 import math
 import logging
 from dataclasses import asdict, dataclass
+from datetime import datetime
 from typing import Any, Callable, Iterable
 
 import pandas as pd
@@ -13,8 +14,14 @@ from src.strategy.levels import Level
 from src.strategy.strategy_router import route_strategies
 from src.config import LOGGER
 
-FORECAST_ENGINE_VERSION = 4
+FORECAST_ENGINE_VERSION = 5
 MAX_PROJECTED_ENTRY_DISTANCE_PCT = 0.20
+# When ATR is unavailable we cannot use the ATR distance window, so fall back to
+# a percentage gate on both ends.
+MIN_PROJECTED_ENTRY_DISTANCE_PCT = 0.001
+# Replayed intraday bars older than this are treated as stale (covers an
+# overnight gap; a Monday replay of Friday's bars is conservatively flagged).
+STALE_BARS_AFTER_HOURS = 24.0
 
 
 @dataclass(frozen=True)
@@ -212,52 +219,80 @@ def replay_active_candidates(
     watchlist: dict[str, Any],
     bars_loader: Callable[[str, str], pd.DataFrame],
 ) -> tuple[list[dict[str, Any]], list[str]]:
-    """Replay saved bars through the strategy router without persisting decisions."""
+    """Replay saved bars through the strategy router without persisting decisions.
+
+    Bars are flagged stale when their most recent timestamp is older than
+    ``STALE_BARS_AFTER_HOURS``, so replayed setups computed on a prior session's
+    data are surfaced rather than silently trusted.
+    """
     candidates: list[dict[str, Any]] = []
     warnings: list[str] = []
-    for symbol, raw_plan in sorted(watchlist.items()):
-        if not isinstance(raw_plan, dict) or raw_plan.get("news_blocked"):
-            continue
-        raw_levels = raw_plan.get("levels")
-        if not isinstance(raw_levels, list) or not raw_levels:
-            continue
-        bars = bars_loader(symbol, "intraday_5m")
-        if bars.empty:
-            warnings.append(f"{symbol}: saved intraday bars unavailable")
-            continue
-        previous_level = LOGGER.level
-        try:
-            LOGGER.setLevel(logging.WARNING)
-            levels = [Level(**item) for item in raw_levels if isinstance(item, dict)]
-            signals = route_strategies(
-                symbol,
-                bars,
-                levels,
-                news_context={"risk_level": "LOW"},
-                persist=False,
-            )
-        except (TypeError, ValueError, KeyError) as exc:
-            warnings.append(f"{symbol}: replay unavailable ({exc})")
-            continue
-        finally:
-            LOGGER.setLevel(previous_level)
-        for signal in signals:
-            item = _candidate(
-                symbol=symbol,
-                strategy=signal.strategy,
-                source="ACTIVE REPLAY",
-                signal=signal.signal,
-                direction=signal.direction,
-                entry=_number(signal.entry),
-                stop=_number(signal.stop),
-                target=_number(signal.target),
-                level=_number(signal.level_price),
-                level_type=str(signal.level_type),
-                confidence=_number(signal.confidence),
-            )
-            if item:
-                candidates.append(item)
+    now = datetime.now()
+    # Quiet the bot logger once for the whole replay rather than per symbol.
+    previous_level = LOGGER.level
+    LOGGER.setLevel(logging.WARNING)
+    try:
+        for symbol, raw_plan in sorted(watchlist.items()):
+            if not isinstance(raw_plan, dict) or raw_plan.get("news_blocked"):
+                continue
+            raw_levels = raw_plan.get("levels")
+            if not isinstance(raw_levels, list) or not raw_levels:
+                continue
+            bars = bars_loader(symbol, "intraday_5m")
+            if bars.empty:
+                warnings.append(f"{symbol}: saved intraday bars unavailable")
+                continue
+            bars_last, bars_age_hours, stale = _bars_freshness(bars, now)
+            if stale:
+                warnings.append(
+                    f"{symbol}: replaying stale bars "
+                    f"(last {bars_last or 'unknown'}, {bars_age_hours:.1f}h old)"
+                )
+            try:
+                levels = [Level(**item) for item in raw_levels if isinstance(item, dict)]
+                signals = route_strategies(
+                    symbol, bars, levels, news_context={"risk_level": "LOW"}, persist=False,
+                )
+            except (TypeError, ValueError, KeyError) as exc:
+                warnings.append(f"{symbol}: replay unavailable ({exc})")
+                continue
+            for signal in signals:
+                item = _candidate(
+                    symbol=symbol,
+                    strategy=signal.strategy,
+                    source="ACTIVE REPLAY",
+                    signal=signal.signal,
+                    direction=signal.direction,
+                    entry=_number(signal.entry),
+                    stop=_number(signal.stop),
+                    target=_number(signal.target),
+                    level=_number(signal.level_price),
+                    level_type=str(signal.level_type),
+                    confidence=_number(signal.confidence),
+                )
+                if item:
+                    item["bars_last"] = bars_last
+                    item["bars_age_hours"] = round(bars_age_hours, 1)
+                    item["stale"] = stale
+                    candidates.append(item)
+    finally:
+        LOGGER.setLevel(previous_level)
     return candidates, warnings
+
+
+def _bars_freshness(bars: pd.DataFrame, now: datetime) -> tuple[str | None, float, bool]:
+    """Return (last_bar_iso, age_hours, is_stale) for a bars frame."""
+    if bars is None or bars.empty or "date" not in bars.columns:
+        return None, 0.0, False
+    try:
+        last = pd.to_datetime(bars["date"]).max()
+        if pd.isna(last):
+            return None, 0.0, False
+        last_dt = last.to_pydatetime()
+        age_hours = max(0.0, (now - last_dt).total_seconds() / 3600.0)
+        return last_dt.isoformat(timespec="minutes"), age_hours, age_hours > STALE_BARS_AFTER_HOURS
+    except (ValueError, TypeError, AttributeError):
+        return None, 0.0, False
 
 
 def _reason_label(reasons: list[str]) -> str:
@@ -291,6 +326,8 @@ def run_forecast(
     max_daily_loss = max(0.0, scenario.account_equity * scenario.max_daily_loss_pct)
     daily_loss_used = max(0.0, -scenario.daily_realized_pnl)
     remaining_daily_loss = max(0.0, max_daily_loss - daily_loss_used)
+    # A zero/disabled limit (max_daily_loss == 0) is not a triggered kill switch.
+    daily_loss_tripped = max_daily_loss > 0 and remaining_daily_loss <= 0
     max_open_risk = max(0.0, scenario.account_equity * scenario.max_open_risk_pct)
     accepted_risk = 0.0
     accepted_notional = 0.0
@@ -329,24 +366,16 @@ def run_forecast(
         notional = quantity * entry
         potential_reward = quantity * reward_per_share
 
-        if remaining_daily_loss <= 0:
+        if daily_loss_tripped:
             reasons.append("daily_loss_limit_reached")
         if item.get("source") == "PROJECTED":
-            too_far_pct = (
-                entry_distance_atr is None
-                and entry_distance_pct > MAX_PROJECTED_ENTRY_DISTANCE_PCT
-            )
-            too_close_atr = (
-                entry_distance_atr is not None
-                and _number(entry_distance_atr)
-                < scenario.min_projected_entry_distance_atr
-            )
-            too_far_atr = (
-                entry_distance_atr is not None
-                and _number(entry_distance_atr)
-                > scenario.max_projected_entry_distance_atr
-            )
-            if too_close_atr:
+            has_atr = entry_distance_atr is not None
+            too_far_pct = not has_atr and entry_distance_pct > MAX_PROJECTED_ENTRY_DISTANCE_PCT
+            # When ATR is unavailable, guard "too close" with a percentage floor.
+            too_close_pct = not has_atr and 0 < entry_distance_pct < MIN_PROJECTED_ENTRY_DISTANCE_PCT
+            too_close_atr = has_atr and _number(entry_distance_atr) < scenario.min_projected_entry_distance_atr
+            too_far_atr = has_atr and _number(entry_distance_atr) > scenario.max_projected_entry_distance_atr
+            if too_close_atr or too_close_pct:
                 reasons.append("entry_too_close_to_market")
             if too_far_pct or too_far_atr:
                 reasons.append("entry_too_far_from_market")
@@ -403,14 +432,24 @@ def run_forecast(
     setup_qualified_count = sum(bool(row.get("setup_qualified")) for row in rows)
     risk_budget_per_trade = max(0.0, scenario.account_equity * scenario.risk_per_trade)
     remaining_open_risk = max(0.0, max_open_risk - current_open_risk)
-    open_risk_capacity = (
-        math.floor((remaining_open_risk + 1e-9) / risk_budget_per_trade)
-        if risk_budget_per_trade > 0
-        else 0
-    )
+    # Exact open-risk capacity: greedily fit setup-qualified trades' *actual*
+    # sized risk under the remaining budget (isolates the open-risk lever).
+    open_risk_capacity = 0
+    running_capacity_risk = 0.0
+    for row in rows:
+        if not row.get("setup_qualified"):
+            continue
+        actual_risk = _number(row.get("risk_amount"))
+        if actual_risk <= 0:
+            continue
+        if running_capacity_risk + actual_risk <= remaining_open_risk + 1e-9:
+            running_capacity_risk += actual_risk
+            open_risk_capacity += 1
+        else:
+            break
     position_capacity = max(0, scenario.max_positions - len(positions))
     binding_limit = ""
-    if remaining_daily_loss <= 0:
+    if daily_loss_tripped:
         binding_limit = "daily loss kill switch"
     elif len(accepted_rows) >= position_capacity and position_capacity <= open_risk_capacity:
         binding_limit = "maximum positions"
@@ -429,6 +468,7 @@ def run_forecast(
             "possible_signals": len(candidates),
             "active_signals": sum(item.get("source") == "ACTIVE REPLAY" for item in candidates),
             "projected_setups": sum(item.get("source") == "PROJECTED" for item in candidates),
+            "stale_signals": sum(bool(item.get("stale")) for item in candidates),
             "setup_qualified": setup_qualified_count,
             "forecast_trades": len(accepted_rows),
             "capital_required": round(accepted_notional, 2),

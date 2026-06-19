@@ -64,10 +64,15 @@ class DashboardChartTests(unittest.TestCase):
         labels = [annotation.text for annotation in figure.layout.annotations]
         self.assertIn("ENTRY  $101.00", labels)
         self.assertIn("STOP  $99.00", labels)
-        self.assertIn("TARGET  $107.00", labels)
-        entry_shape = next(
+        # Target label carries the R-multiple (reward 6 / risk 2 = 3.0R).
+        target_label = next(
+            annotation for annotation in figure.layout.annotations
+            if annotation.text.startswith("TARGET  $107.00")
+        )
+        self.assertIn("3.0R", target_label.text)
+        entry_line = next(
             shape for shape in figure.layout.shapes
-            if float(shape.y0) == 101 and float(shape.y1) == 101
+            if shape.type == "line" and float(shape.y0) == 101 and float(shape.y1) == 101
         )
         entry_label = next(
             annotation for annotation in figure.layout.annotations
@@ -77,15 +82,14 @@ class DashboardChartTests(unittest.TestCase):
             annotation for annotation in figure.layout.annotations
             if annotation.text == "STOP  $99.00"
         )
-        target_label = next(
-            annotation for annotation in figure.layout.annotations
-            if annotation.text == "TARGET  $107.00"
-        )
-        self.assertEqual(entry_shape.line.dash, "dash")
-        self.assertEqual(entry_shape.line.color, "#ffffff")
+        self.assertEqual(entry_line.line.dash, "solid")
+        self.assertEqual(entry_line.line.color, "#ffffff")
         self.assertEqual(entry_label.font.color, "#ffffff")
-        self.assertEqual(stop_label.font.color, "#ffffff")
-        self.assertEqual(target_label.font.color, "#ffffff")
+        self.assertEqual(stop_label.font.color, "#ff6b81")
+        self.assertEqual(target_label.font.color, "#c3f400")
+        # Risk (entry->stop) and reward (entry->target) are shaded zones.
+        rectangles = [shape for shape in figure.layout.shapes if shape.type == "rect"]
+        self.assertGreaterEqual(len(rectangles), 2)
 
     def test_chart_limits_trade_level_labels_and_adds_range_controls(self) -> None:
         bars = pd.DataFrame(
