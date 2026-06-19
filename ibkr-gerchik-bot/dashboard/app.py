@@ -24,35 +24,50 @@ if str(ROOT) not in sys.path:
 import pandas as pd
 import streamlit as st
 
-from dashboard import charts, data_access as da
-from dashboard.components import (
-    apply_theme,
-    bias_card,
-    feature_card,
-    fmt,
-    hero,
-    html_table,
-    market_session,
-    metric_grid,
-    minibar,
-    panel_header,
-    show_df,
-    signal_pill,
-    source_health_bar,
-    stat_grid_card,
-    status_pill,
-    topbar,
-)
-from dashboard.components import human_age
+from dashboard import charts, components as ui, data_access as da
 from src.config import SETTINGS
 
-# Streamlit keeps imported modules alive between reruns. If the app is bound to
-# an older data-access / charts module after an upgrade, reload to restore the
-# expected API without requiring a server restart.
-_DATA_ACCESS_API = ("source_health", "clear_caches", "all_decision_attempts", "list_report_info")
+# Streamlit keeps imported modules alive between reruns. Validate modules before
+# binding individual helpers so a stale module cannot fail during ``from import``.
+_COMPONENT_API = (
+    "apply_theme", "bias_card", "blocked_news_panel", "feature_card", "fmt",
+    "hero", "html_table", "human_age", "market_session", "metric_card_html",
+    "metric_grid", "minibar", "panel_header", "show_df", "signal_pill",
+    "source_health_bar", "stat_grid_card", "status_pill", "topbar",
+)
+if (
+    not all(hasattr(ui, name) for name in _COMPONENT_API)
+    or getattr(ui, "DASHBOARD_COMPONENTS_VERSION", 0) < 2
+):
+    ui = reload(ui)
+
+apply_theme = ui.apply_theme
+bias_card = ui.bias_card
+blocked_news_panel = ui.blocked_news_panel
+feature_card = ui.feature_card
+fmt = ui.fmt
+hero = ui.hero
+html_table = ui.html_table
+human_age = ui.human_age
+market_session = ui.market_session
+metric_card_html = ui.metric_card_html
+metric_grid = ui.metric_grid
+minibar = ui.minibar
+panel_header = ui.panel_header
+show_df = ui.show_df
+signal_pill = ui.signal_pill
+source_health_bar = ui.source_health_bar
+stat_grid_card = ui.stat_grid_card
+status_pill = ui.status_pill
+topbar = ui.topbar
+
+_DATA_ACCESS_API = (
+    "source_health", "clear_caches", "all_decision_attempts", "list_report_info",
+    "blocked_news_summary",
+)
 if not all(hasattr(da, name) for name in _DATA_ACCESS_API) or getattr(
     da, "DASHBOARD_DATA_ACCESS_VERSION", 0
-) < 3:
+) < 4:
     da = reload(da)
 
 _CHART_ARGUMENTS = {"show_raw", "show_trade", "show_volume"}
@@ -120,6 +135,25 @@ def _level_frame(levels: list[dict[str, Any]]) -> pd.DataFrame:
 
 def _pct(value: float) -> str:
     return f"{value * 100:.2f}%"
+
+
+def _close_news_dialog() -> None:
+    st.session_state.show_news = False
+
+
+@st.dialog("News blocked details", width="large")
+def _show_blocked_news_dialog(news_items: list[dict[str, Any]]) -> None:
+    st.markdown(
+        "**Symbols excluded by the news-risk filter**  \n"
+        "Review matched providers, sources, earnings events, and headlines."
+    )
+    blocked_news_panel(news_items)
+    st.button(
+        "Close",
+        key="news_dialog_close",
+        width="stretch",
+        on_click=_close_news_dialog,
+    )
 
 
 # --------------------------------------------------------------------------- #
@@ -212,24 +246,44 @@ def render_dashboard() -> None:
     ]
     avg_conf = sum(confidences) / len(confidences) if confidences else 0.0
 
-    metric_grid(
-        [
-            {"label": "Watchlist", "value": len(watchlist), "icon": "visibility",
-             "sub": f"{len(watchlist)} symbols tracked"},
-            {"label": "Trade-Ready", "value": tradable, "icon": "model_training",
-             "accent": "lime", "sub": "conditions met"},
-            {"label": "News Blocked", "value": blocked, "icon": "gpp_bad",
-             "accent": "error" if blocked else "", "sub": "risk filtered"},
-            {"label": "Attempts Today", "value": len(attempts), "icon": "history",
-             "sub": str(decisions.get("date", "-"))},
-            {"label": "Action Signals", "value": buys + sells, "icon": "bolt",
-             "accent": "cyan", "sub": f"{buys} buy / {sells} sell",
-             "sub_dir": "up" if buys >= sells else "down"},
-            {"label": "Execution Rate", "value": f"{fill_rate:.0%}", "icon": "swap_horiz",
-             "progress": fill_rate, "progress_label": f"{len(executed)}/{fill_total} filled"},
-        ],
-        columns=6,
-    )
+    news_items = da.blocked_news_summary(watchlist)
+    st.session_state.setdefault("show_news", False)
+    cards = [
+        {"label": "Watchlist", "value": len(watchlist), "icon": "visibility",
+         "sub": f"{len(watchlist)} symbols tracked"},
+        {"label": "Trade-Ready", "value": tradable, "icon": "model_training",
+         "accent": "lime", "sub": "conditions met"},
+        {"label": "News Blocked", "value": blocked, "icon": "gpp_bad",
+         "accent": "error" if blocked else "",
+         "sub": "click to view" if blocked else "risk filtered",
+         "clickable": bool(blocked)},
+        {"label": "Attempts Today", "value": len(attempts), "icon": "history",
+         "sub": str(decisions.get("date", "-"))},
+        {"label": "Action Signals", "value": buys + sells, "icon": "bolt",
+         "accent": "cyan", "sub": f"{buys} buy / {sells} sell",
+         "sub_dir": "up" if buys >= sells else "down"},
+        {"label": "Execution Rate", "value": f"{fill_rate:.0%}", "icon": "swap_horiz",
+         "progress": fill_rate, "progress_label": f"{len(executed)}/{fill_total} filled"},
+    ]
+    columns = st.columns(6, gap="small")
+    for column, card in zip(columns, cards):
+        with column:
+            if card.get("clickable"):
+                # Use a native button as the card. This reliably sends the
+                # click through Streamlit's event channel.
+                with st.container(key="news_metric_native"):
+                    if st.button(
+                        f":material/gpp_bad:  NEWS BLOCKED\n\n{blocked}\n\nClick to view",
+                        key="news_toggle",
+                        width="stretch",
+                    ):
+                        st.session_state.show_news = True
+            else:
+                st.markdown(metric_card_html(card), unsafe_allow_html=True)
+
+    # Modal drill-down: revealed only when the News Blocked card is clicked.
+    if st.session_state.show_news and news_items:
+        _show_blocked_news_dialog(news_items)
 
     col_a, col_b, col_c = st.columns(3)
     with col_a:

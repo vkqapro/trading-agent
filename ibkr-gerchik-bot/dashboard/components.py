@@ -18,6 +18,8 @@ import streamlit as st
 if TYPE_CHECKING:
     from dashboard.data_access import SourceHealth
 
+DASHBOARD_COMPONENTS_VERSION = 2
+
 
 # --------------------------------------------------------------------------- #
 # Palette (mirrors stitch_trading_bot_dashboard/DESIGN.md — "Luminous Obsidian")
@@ -288,6 +290,78 @@ div[data-testid="stDataFrame"] {{ border:1px solid rgba(132,148,149,0.18); borde
 [data-testid="stExpander"] summary {{ font-family:'JetBrains Mono'; font-size:12px; color:{ON_SURFACE_VARIANT}; }}
 hr {{ border-color: rgba(132,148,149,0.14); }}
 
+/* News-blocked popover trigger (red accent) + summary cards */
+[data-testid="stPopover"] button {{
+    background: rgba(255,180,171,0.08) !important; color:{ERROR} !important;
+    border:1px solid rgba(255,180,171,0.35) !important; border-radius:9px;
+    font-family:'JetBrains Mono'; font-size:12px; letter-spacing:.03em;
+}}
+[data-testid="stPopover"] button:hover {{ background: rgba(255,180,171,0.16) !important;
+    box-shadow:0 0 14px rgba(255,180,171,0.25); }}
+.lx-newscard {{ background:{SURFACE_LOW}; border:1px solid rgba(255,180,171,0.18);
+    border-radius:12px; padding:12px 14px; margin-bottom:10px; }}
+.lx-newshead {{ display:flex; align-items:center; gap:8px; margin-bottom:6px; }}
+.lx-newshead .sym {{ font-family:'Hanken Grotesk'; font-weight:600; font-size:15px; color:{ON_SURFACE}; }}
+.lx-newshead .cnt {{ font-family:'JetBrains Mono'; font-size:10px; color:{OUTLINE}; margin-left:auto; }}
+.lx-newschips {{ display:flex; flex-wrap:wrap; gap:6px; margin:4px 0 8px; }}
+.lx-newschip {{ font-family:'JetBrains Mono'; font-size:10px; padding:2px 8px; border-radius:999px;
+    background:rgba(0,240,255,0.10); color:{CYAN}; border:1px solid rgba(125,244,255,0.25); }}
+.lx-newschip.src {{ background:{SURFACE_VARIANT}; color:{ON_SURFACE_VARIANT};
+    border-color:rgba(132,148,149,0.3); }}
+.lx-newschip.earn {{ background:rgba(236,178,255,0.12); color:{MAGENTA};
+    border-color:rgba(236,178,255,0.3); }}
+.lx-newslist {{ margin:0; padding-left:18px; }}
+.lx-newslist li {{ font-family:'Inter'; font-size:13px; color:{ON_SURFACE_VARIANT};
+    margin-bottom:4px; line-height:1.5; }}
+.lx-newsnone {{ font-family:'JetBrains Mono'; font-size:11px; color:{OUTLINE}; font-style:italic; }}
+
+/* News detail modal */
+[data-testid="stDialog"] > div {{
+    background:
+        radial-gradient(700px 280px at 90% -10%, rgba(255,180,171,0.08), transparent 60%),
+        {SURFACE_LOWEST} !important;
+    border:1px solid rgba(255,180,171,0.24) !important;
+    border-radius:18px !important;
+    box-shadow:0 24px 80px rgba(0,0,0,0.68), 0 0 28px rgba(255,180,171,0.08) !important;
+}}
+[data-testid="stDialog"] h2 {{
+    color:{ERROR} !important;
+    font-family:'Hanken Grotesk' !important;
+}}
+
+/* Native clickable metric card (News Blocked) */
+.lx-card--click {{ cursor:pointer; }}
+.lx-card--click:hover {{ border-color: rgba(255,180,171,0.45) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 0 18px rgba(255,180,171,0.14); }}
+.st-key-news_metric_native [data-testid="stButton"] > button {{
+    width:100%;
+    min-height:132px;
+    padding:16px 20px;
+    justify-content:flex-start;
+    text-align:left;
+    white-space:pre-line;
+    background:rgba(32,31,32,0.40) !important;
+    backdrop-filter:blur(16px);
+    border:1px solid rgba(255,180,171,0.25) !important;
+    border-radius:16px !important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.05) !important;
+    color:{ERROR} !important;
+}}
+.st-key-news_metric_native [data-testid="stButton"] > button:hover {{
+    transform:translateY(-1px);
+    border-color:rgba(255,180,171,0.55) !important;
+    background:rgba(255,180,171,0.08) !important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),
+        0 0 18px rgba(255,180,171,0.16) !important;
+}}
+.st-key-news_metric_native [data-testid="stButton"] > button p {{
+    white-space:pre-line;
+    font-family:'JetBrains Mono';
+    font-size:11px;
+    line-height:1.45;
+    letter-spacing:.05em;
+}}
+
 /* scrollbar */
 ::-webkit-scrollbar {{ width:7px; height:7px; }}
 ::-webkit-scrollbar-track {{ background:transparent; }}
@@ -399,51 +473,49 @@ def hero(title: str, online: bool, status_text: str) -> None:
     )
 
 
-def metric_grid(cards: Sequence[dict[str, Any]], columns: int = 4) -> None:
-    """Render glass metric cards.
+def metric_card_html(card: dict[str, Any]) -> str:
+    """Return the HTML for a single glass metric card.
 
-    Each card dict supports: ``label``, ``value``, ``icon``, ``accent``
+    Card dict supports: ``label``, ``value``, ``icon``, ``accent``
     (cyan/lime/magenta/error or ""), ``sub`` text, ``sub_dir`` (up/down/""),
-    and optional ``progress`` (0..1) with ``progress_label``.
+    optional ``progress`` (0..1) with ``progress_label``, and ``clickable``
+    (adds an affordance class for use as a button trigger).
     """
-    blocks = []
-    for card in cards:
-        accent = card.get("accent", "")
-        icon = card.get("icon")
-        icon_html = (
-            f'<span class="material-symbols-outlined icon">{_esc(icon)}</span>' if icon else ""
+    accent = card.get("accent", "")
+    icon = card.get("icon")
+    icon_html = f'<span class="material-symbols-outlined icon">{_esc(icon)}</span>' if icon else ""
+    sub_html = ""
+    if card.get("progress") is not None:
+        pct = max(0.0, min(1.0, float(card["progress"]))) * 100
+        label = card.get("progress_label", f"{pct:.0f}%")
+        sub_html = (
+            f'<div class="lx-bar"><span style="width:{pct:.0f}%"></span></div>'
+            f'<div class="sub" style="text-align:right">{_esc(label)}</div>'
         )
-        sub_html = ""
-        if card.get("progress") is not None:
-            pct = max(0.0, min(1.0, float(card["progress"]))) * 100
-            label = card.get("progress_label", f"{pct:.0f}%")
-            sub_html = (
-                f'<div class="lx-bar"><span style="width:{pct:.0f}%"></span></div>'
-                f'<div class="sub" style="text-align:right">{_esc(label)}</div>'
-            )
-        elif card.get("sub"):
-            arrow = ""
-            direction = card.get("sub_dir", "")
-            if direction == "up":
-                arrow = '<span class="material-symbols-outlined" style="font-size:13px">arrow_upward</span>'
-            elif direction == "down":
-                arrow = '<span class="material-symbols-outlined" style="font-size:13px">arrow_downward</span>'
-            sub_html = f'<div class="sub {direction}">{arrow}{_esc(card["sub"])}</div>'
-        blocks.append(
-            _clean(
-                f"""
-                <div class="lx-card">
-                  <div class="head"><span class="label">{_esc(card.get("label",""))}</span>{icon_html}</div>
-                  <div class="value {accent}">{_esc(card.get("value",""))}</div>
-                  {sub_html}
-                </div>
-                """
-            )
-        )
-    st.markdown(
-        f'<div class="lx-grid c{columns}">{"".join(blocks)}</div>',
-        unsafe_allow_html=True,
+    elif card.get("sub"):
+        direction = card.get("sub_dir", "")
+        arrow = ""
+        if direction == "up":
+            arrow = '<span class="material-symbols-outlined" style="font-size:13px">arrow_upward</span>'
+        elif direction == "down":
+            arrow = '<span class="material-symbols-outlined" style="font-size:13px">arrow_downward</span>'
+        sub_html = f'<div class="sub {direction}">{arrow}{_esc(card["sub"])}</div>'
+    extra = " lx-card--click" if card.get("clickable") else ""
+    return _clean(
+        f"""
+        <div class="lx-card{extra}">
+          <div class="head"><span class="label">{_esc(card.get("label",""))}</span>{icon_html}</div>
+          <div class="value {accent}">{_esc(card.get("value",""))}</div>
+          {sub_html}
+        </div>
+        """
     )
+
+
+def metric_grid(cards: Sequence[dict[str, Any]], columns: int = 4) -> None:
+    """Render a responsive grid of glass metric cards."""
+    blocks = "".join(metric_card_html(card) for card in cards)
+    st.markdown(f'<div class="lx-grid c{columns}">{blocks}</div>', unsafe_allow_html=True)
 
 
 def panel_header(title: str, icon: str | None = None, badge: str | None = None) -> None:
@@ -509,6 +581,53 @@ def feature_card(title: str, big: str, big_accent: str, caption: str, footer: tu
         f'<span class="sub" style="margin:0 0 6px">{_esc(caption)}</span></div></div>'
         f"{footer_html}</div>"
     )
+
+
+def blocked_news_panel(items: Sequence[dict[str, Any]]) -> None:
+    """Render per-symbol news-block summaries inside a popover/expander."""
+    if not items:
+        st.caption("No symbols are currently blocked by the news filter.")
+        return
+    blocks = []
+    for item in items:
+        chips = []
+        for provider in item.get("providers", []):
+            chips.append(f'<span class="lx-newschip">{_esc(provider)}</span>')
+        for source in item.get("sources", []):
+            chips.append(f'<span class="lx-newschip src">{_esc(source)}</span>')
+        chip_html = f'<div class="lx-newschips">{"".join(chips)}</div>' if chips else ""
+        headlines = item.get("headlines", [])
+        if headlines:
+            heads = "".join(
+                f'<li>{_esc(h)}</li>' for h in headlines
+            )
+            heads_html = f'<ul class="lx-newslist">{heads}</ul>'
+        else:
+            heads_html = (
+                '<div class="lx-newsnone">Blocked by provider / source match — '
+                "no headline text captured.</div>"
+            )
+        earnings = item.get("earnings") or {}
+        earn_html = ""
+        if isinstance(earnings, dict) and earnings:
+            when = earnings.get("date") or earnings.get("when") or earnings.get("event") or "scheduled"
+            earn_html = (
+                f'<div class="lx-newschips"><span class="lx-newschip earn">'
+                f'earnings: {_esc(when)}</span></div>'
+            )
+        blocks.append(
+            _clean(
+                f"""
+                <div class="lx-newscard">
+                  <div class="lx-newshead"><span class="lx-dot" style="background:{ERROR}"></span>
+                    <span class="sym">{_esc(item.get("symbol",""))}</span>
+                    <span class="cnt">{len(headlines)} headline(s)</span></div>
+                  {chip_html}{earn_html}{heads_html}
+                </div>
+                """
+            )
+        )
+    st.markdown("".join(blocks), unsafe_allow_html=True)
 
 
 def signal_pill(signal: Any) -> str:

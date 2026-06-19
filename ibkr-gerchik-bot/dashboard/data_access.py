@@ -21,7 +21,7 @@ STATE_PATH = SETTINGS.paths.state_file
 REPORTS_DIR = SETTINGS.paths.reports_dir
 RESEARCH_LOG_PATH = SETTINGS.paths.research_log
 TRADE_LOG_PATH = SETTINGS.paths.trade_log
-DASHBOARD_DATA_ACCESS_VERSION = 3
+DASHBOARD_DATA_ACCESS_VERSION = 4
 
 _WORKFLOW_HEADER = re.compile(r"(?m)^## Workflow ([^(]+?)(?: \(|$)")
 
@@ -149,6 +149,35 @@ def load_watchlist() -> Dict[str, Any]:
 
 def load_premarket_snapshot() -> Dict[str, Any]:
     return load_workflow_snapshots().get("Premarket", {})
+
+
+def blocked_news_summary(watchlist: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
+    """Per-symbol news-risk summary for every symbol blocked by the news filter.
+
+    Returns one entry per blocked symbol with its matched headlines, the IBKR /
+    provider codes that triggered the block, the source types, and any earnings
+    event — everything needed to explain *why* the symbol was filtered out.
+    """
+    watchlist = watchlist if watchlist is not None else load_watchlist()
+    summary: List[Dict[str, Any]] = []
+    for symbol, plan in sorted(watchlist.items()):
+        if not isinstance(plan, dict) or not plan.get("news_blocked"):
+            continue
+        headlines = [
+            re.sub(r"^\{[^}]*\}\s*", "", str(h).strip())
+            for h in (plan.get("matched_headlines") or [])
+            if str(h).strip()
+        ]
+        summary.append(
+            {
+                "symbol": symbol,
+                "headlines": headlines,
+                "providers": [str(p) for p in (plan.get("news_provider_hits") or [])],
+                "sources": [str(s) for s in (plan.get("news_source_types") or [])],
+                "earnings": plan.get("earnings_event") if isinstance(plan.get("earnings_event"), dict) else {},
+            }
+        )
+    return summary
 
 
 def load_intraday_snapshot() -> Dict[str, Any]:
