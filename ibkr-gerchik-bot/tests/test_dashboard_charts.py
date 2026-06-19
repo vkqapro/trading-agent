@@ -87,6 +87,45 @@ class DashboardChartTests(unittest.TestCase):
         self.assertEqual(stop_label.font.color, "#ffffff")
         self.assertEqual(target_label.font.color, "#ffffff")
 
+    def test_chart_limits_trade_level_labels_and_adds_range_controls(self) -> None:
+        bars = pd.DataFrame(
+            {
+                "date": pd.date_range("2026-01-01", periods=10),
+                "open": [100 + index for index in range(10)],
+                "high": [101 + index for index in range(10)],
+                "low": [99 + index for index in range(10)],
+                "close": [100.5 + index for index in range(10)],
+                "volume": [1000] * 10,
+            }
+        )
+        levels = [
+            {
+                "price": float(price),
+                "zone_low": float(price) - 0.2,
+                "zone_high": float(price) + 0.2,
+                "touches": 3,
+                "strength_score": price,
+            }
+            for price in range(90, 111)
+        ]
+        figure = charts.candles_with_levels(
+            bars,
+            trade_levels=levels,
+            current_price=109.0,
+        )
+
+        level_labels = [
+            annotation.text
+            for annotation in figure.layout.annotations
+            if "T / S" in annotation.text
+        ]
+        self.assertEqual(len(level_labels), charts.MAX_LABELED_TRADE_LEVELS)
+        self.assertEqual(
+            [button.label for button in figure.layout.xaxis.rangeselector.buttons],
+            ["1M", "3M", "6M", "YTD", "1Y", "ALL"],
+        )
+        self.assertEqual(figure.layout.yaxis.side, "right")
+
 
 if __name__ == "__main__":
     unittest.main()

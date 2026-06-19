@@ -89,9 +89,23 @@ except (AttributeError, TypeError, ValueError):
 if (
     not all(hasattr(charts, name) for name in _CHART_API)
     or not _CHART_ARGUMENTS.issubset(_chart_parameters)
-    or getattr(charts, "DASHBOARD_CHARTS_VERSION", 0) < 2
+    or getattr(charts, "DASHBOARD_CHARTS_VERSION", 0) < 3
 ):
     charts = reload(charts)
+
+CHART_CONFIG = {
+    "displaylogo": False,
+    "scrollZoom": True,
+    "doubleClick": "reset+autosize",
+    "modeBarButtonsToRemove": [
+        "select2d", "lasso2d", "autoScale2d", "toggleSpikelines",
+    ],
+    "toImageButtonOptions": {
+        "format": "png",
+        "filename": "trading-chart",
+        "scale": 2,
+    },
+}
 
 st.set_page_config(
     page_title="Gerchik Bot · Luminous Obsidian",
@@ -338,7 +352,7 @@ def render_dashboard() -> None:
                 show_trade=True,
                 show_volume=True,
             )
-            st.plotly_chart(fig, width="stretch", config={"displaylogo": False})
+            st.plotly_chart(fig, width="stretch", config=CHART_CONFIG)
     else:
         st.info("No watchlist available yet. Run the premarket job to populate it.")
 
@@ -455,7 +469,7 @@ def render_preopen() -> None:
                 current_price=current_price, title=f"{selected} · Daily structure",
                 height=520, show_raw=show_raw, show_trade=show_trade, show_volume=show_volume,
             )
-            st.plotly_chart(fig, width="stretch", config={"displaylogo": False})
+            st.plotly_chart(fig, width="stretch", config=CHART_CONFIG)
 
     details_a, details_b, details_c = st.columns([1, 1.4, 1])
     with details_a:
@@ -550,7 +564,7 @@ def render_intraday() -> None:
             charts.mark_levels(
                 fig, [a.get("level") for a in attempts if a.get("level") is not None]
             )
-            st.plotly_chart(fig, width="stretch", config={"displaylogo": False})
+            st.plotly_chart(fig, width="stretch", config=CHART_CONFIG)
     with timeline_col:
         panel_header("Decision Summary")
         summary = (
@@ -741,7 +755,7 @@ def _render_forecast_position_chart(row: dict[str, Any]) -> None:
             stop=float(row.get("stop", 0) or 0),
             target=float(row.get("target", 0) or 0),
         )
-        st.plotly_chart(fig, width="stretch", config={"displaylogo": False})
+        st.plotly_chart(fig, width="stretch", config=CHART_CONFIG)
 
 
 def render_forecast() -> None:

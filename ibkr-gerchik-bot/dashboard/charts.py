@@ -8,7 +8,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-DASHBOARD_CHARTS_VERSION = 2
+DASHBOARD_CHARTS_VERSION = 3
 
 # Luminous Obsidian palette (see stitch_trading_bot_dashboard/DESIGN.md)
 UP = "#c3f400"           # secondary-fixed / lime — bullish
@@ -16,6 +16,7 @@ DOWN = "#ff6b81"         # bearish (error family, tuned for contrast)
 TRADE_LEVEL = "#00f0ff"  # primary-container / cyan
 RAW_LEVEL = "#849495"    # outline
 ZONE_FILL = "rgba(0, 240, 255, 0.08)"
+ZONE_FILL_MUTED = "rgba(0, 240, 255, 0.025)"
 PRICE_LINE = "#ffffff"   # last price marker (neutral)
 ATTEMPT_LEVEL = "#ecb2ff"  # tertiary / magenta
 FORECAST_ENTRY = "#ffffff"
@@ -26,6 +27,7 @@ PAPER = "#131314"
 PLOT = "#131314"
 FONT = "JetBrains Mono, monospace"
 TITLE_FONT = "Hanken Grotesk, sans-serif"
+MAX_LABELED_TRADE_LEVELS = 5
 
 
 def _zone(level: Dict[str, Any]) -> tuple[Optional[float], Optional[float]]:
@@ -36,6 +38,50 @@ def _zone(level: Dict[str, Any]) -> tuple[Optional[float], Optional[float]]:
         return min(low, high), max(low, high)
     except (TypeError, ValueError):
         return None, None
+
+
+def _level_price(level: Dict[str, Any]) -> Optional[float]:
+    try:
+        return float(level.get("price"))
+    except (TypeError, ValueError):
+        low, high = _zone(level)
+        if low is None or high is None:
+            return None
+        return (low + high) / 2
+
+
+def _focus_price(bars: pd.DataFrame, current_price: Optional[float]) -> Optional[float]:
+    try:
+        if current_price is not None:
+            return float(current_price)
+    except (TypeError, ValueError):
+        pass
+    if bars is not None and not bars.empty and "close" in bars:
+        try:
+            return float(bars.iloc[-1]["close"])
+        except (TypeError, ValueError):
+            return None
+    return None
+
+
+def _labeled_trade_level_ids(
+    trade_levels: list[Dict[str, Any]],
+    focus_price: Optional[float],
+) -> set[int]:
+    ranked: list[tuple[float, float, int]] = []
+    for index, level in enumerate(trade_levels):
+        price = _level_price(level)
+        if price is None:
+            continue
+        strength = level.get("strength_score", level.get("strength", 0))
+        try:
+            strength_value = float(strength or 0)
+        except (TypeError, ValueError):
+            strength_value = 0.0
+        distance = abs(price - focus_price) if focus_price is not None else 0.0
+        ranked.append((distance, -strength_value, index))
+    ranked.sort()
+    return {index for _, _, index in ranked[:MAX_LABELED_TRADE_LEVELS]}
 
 
 def candles_with_levels(
@@ -77,6 +123,17 @@ def candles_with_levels(
                 increasing_line_color=UP,
                 decreasing_line_color=DOWN,
                 whiskerwidth=0.35,
+                hovertext=[
+                    (
+                        f"<b>{date:%b %d, %Y}</b><br>"
+                        f"Open&nbsp; ${open_:,.2f}<br>High&nbsp; ${high:,.2f}<br>"
+                        f"Low&nbsp;&nbsp; ${low:,.2f}<br>Close ${close:,.2f}"
+                    )
+                    for date, open_, high, low, close in zip(
+                        bars["date"], bars["open"], bars["high"], bars["low"], bars["close"]
+                    )
+                ],
+                hoverinfo="text",
             ),
             row=1,
             col=1,
@@ -91,7 +148,7 @@ def candles_with_levels(
                     x=bars["date"],
                     y=bars["volume"],
                     marker_color=colors,
-                    opacity=0.35,
+                    opacity=0.22,
                     name="Volume",
                     hovertemplate="%{y:,.0f}<extra>Volume</extra>",
                 ),
@@ -101,6 +158,8 @@ def candles_with_levels(
 
     raw_levels = raw_levels or []
     trade_levels = trade_levels or []
+    focus_price = _focus_price(bars, current_price)
+    labeled_level_ids = _labeled_trade_level_ids(trade_levels, focus_price)
     trade_prices: set[float] = set()
     for level in trade_levels:
         try:
@@ -124,24 +183,26 @@ def candles_with_levels(
                 )
 
     if show_trade:
-        for level in trade_levels:
+        for index, level in enumerate(trade_levels):
             low, high = _zone(level)
             if low is None or high is None:
                 continue
-            try:
-                price = float(level.get("price"))
-            except (TypeError, ValueError):
-                price = (low + high) / 2
+            price = _level_price(level)
+            if price is None:
+                continue
+            is_labeled = index in labeled_level_ids
             if low != high:
                 fig.add_hrect(
                     y0=low,
                     y1=high,
-                    fillcolor=ZONE_FILL,
+                    fillcolor=ZONE_FILL if is_labeled else ZONE_FILL_MUTED,
                     line_width=0,
                     layer="below",
                     row=1,
                     col=1,
                 )
+            if not is_labeled:
+                continue
             details = []
             if level.get("touches") is not None:
                 details.append(f"{level['touches']}T")
@@ -154,11 +215,12 @@ def candles_with_levels(
             label = f"{price:g}" + (f"  {' / '.join(details)}" if details else "")
             fig.add_hline(
                 y=price,
-                line=dict(color=TRADE_LEVEL, width=1.5),
+                line=dict(color=TRADE_LEVEL, width=1.2),
                 annotation_text=label,
                 annotation_position="right",
                 annotation_font_color=TRADE_LEVEL,
                 annotation_font_size=10,
+                opacity=0.82,
                 row=1,
                 col=1,
             )
@@ -179,21 +241,86 @@ def candles_with_levels(
         pass
 
     fig.update_layout(
-        title=dict(text=title, font=dict(size=15, color="#e5e2e3", family=TITLE_FONT)),
+        title=dict(
+            text=title,
+            x=0.015,
+            y=0.97,
+            font=dict(size=16, color="#f5f3f4", family=TITLE_FONT),
+        ),
         height=height,
         xaxis_rangeslider_visible=False,
-        margin=dict(l=8, r=88, t=44, b=8),
+        margin=dict(l=16, r=112, t=78, b=12),
         showlegend=False,
         paper_bgcolor=PAPER,
         plot_bgcolor=PLOT,
         font=dict(color="#b9cacb", family=FONT, size=11),
-        hovermode="x unified",
+        hovermode="x",
+        hoverdistance=40,
+        spikedistance=-1,
+        dragmode="pan",
+        newshape=dict(line_color=TRADE_LEVEL),
+        uirevision="luminous-chart-v3",
         hoverlabel=dict(
-            bgcolor="#201f20", bordercolor="#3b494b", font=dict(family=FONT, color="#e5e2e3")
+            bgcolor="#18191b",
+            bordercolor="#34383c",
+            font=dict(family=FONT, color="#f5f3f4", size=11),
         ),
     )
-    fig.update_xaxes(showgrid=False, rangeslider_visible=False, linecolor=GRID)
-    fig.update_yaxes(showgrid=True, gridcolor=GRID, zeroline=False)
+    range_buttons = [
+        dict(count=1, label="1M", step="month", stepmode="backward"),
+        dict(count=3, label="3M", step="month", stepmode="backward"),
+        dict(count=6, label="6M", step="month", stepmode="backward"),
+        dict(count=1, label="YTD", step="year", stepmode="todate"),
+        dict(count=1, label="1Y", step="year", stepmode="backward"),
+        dict(label="ALL", step="all"),
+    ]
+    fig.update_xaxes(
+        showgrid=False,
+        rangeslider_visible=False,
+        linecolor="rgba(132,148,149,0.14)",
+        tickformat="%b\n%Y",
+        showspikes=True,
+        spikecolor="rgba(255,255,255,0.34)",
+        spikethickness=1,
+        spikedash="dot",
+        spikesnap="cursor",
+        rangeselector=dict(
+            buttons=range_buttons,
+            x=0,
+            y=1.13,
+            xanchor="left",
+            yanchor="top",
+            bgcolor="rgba(32,31,32,0.88)",
+            activecolor="rgba(0,240,255,0.18)",
+            bordercolor="rgba(132,148,149,0.18)",
+            borderwidth=1,
+            font=dict(color="#b9cacb", size=10, family=FONT),
+        ),
+    )
+    fig.update_yaxes(
+        showgrid=True,
+        gridcolor="rgba(132,148,149,0.075)",
+        zeroline=False,
+        side="right",
+        tickprefix="$",
+        tickformat=",.2f",
+        showspikes=True,
+        spikecolor="rgba(255,255,255,0.24)",
+        spikethickness=1,
+        spikedash="dot",
+        fixedrange=False,
+        row=1,
+        col=1,
+    )
+    if has_volume:
+        fig.update_yaxes(
+            showgrid=False,
+            side="right",
+            tickformat="~s",
+            fixedrange=False,
+            row=2,
+            col=1,
+        )
     return fig
 
 
