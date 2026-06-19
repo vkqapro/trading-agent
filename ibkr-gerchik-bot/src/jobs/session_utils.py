@@ -17,6 +17,7 @@ import pandas as pd
 from src.alerts.slack import SlackAlerter
 from src.brokers.ibkr import IBKRClient
 from src.config import LOGGER, SETTINGS, append_markdown_log
+from src.data.bar_store import save_bars
 from src.data.market_data import MarketDataService
 from src.data.news import NewsService
 from src.data.news_filter import NewsRiskFilter
@@ -581,6 +582,8 @@ def run_entry_scan(
             duration=SETTINGS.strategy.intraday_bar_duration,
             bar_size=SETTINGS.strategy.intraday_bar_size,
         )
+        # Persist the live intraday bars for the dashboard (best-effort).
+        save_bars(symbol, "intraday_5m", intraday_bars)
         quote = market_data.get_quote(symbol)
         quote_status = str(quote.get("quote_status", "") or "")
         intraday_reference_price = float(intraday_bars.iloc[-1]["close"]) if not intraday_bars.empty else None

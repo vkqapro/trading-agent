@@ -207,7 +207,8 @@ class NewsService:
             response.raise_for_status()
             return response.json()
         except requests.RequestException:
-            LOGGER.exception("News API request failed for url=%s params=%s", url, params)
+            safe_params = {k: v for k, v in params.items() if k != "apiKey"}
+            LOGGER.exception("News API request failed for url=%s params=%s", url, safe_params)
             return {"articles": {"results": []}}
 
     @staticmethod

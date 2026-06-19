@@ -15,7 +15,7 @@ MERGE_DISTANCE_MULTIPLIER = 0.25
 ULTRA_CLOSE_DISTANCE_MULTIPLIER = 0.08
 MAX_ZONE_WIDTH_ATR_MULTIPLIER = 0.5
 RECENCY_WEIGHT_MAX = 2.0
-MIN_TOUCHES = 2
+MIN_TOUCHES = 2  # Legacy default only; runtime value comes from SETTINGS.strategy.min_trade_level_touches
 
 
 @dataclass
@@ -525,8 +525,9 @@ def filter_weak_levels(levels: List[Level], daily_bars: pd.DataFrame, atr_value:
     kept: List[Level] = []
     for level in sorted(levels, key=lambda item: item.strength_score, reverse=True):
         zone_width = (level.zone_high or level.price) - (level.zone_low or level.price)
-        if level.touches < MIN_TOUCHES:
-            LOGGER.info("Rejected level %s %.2f: touches=%s < %s", level.type, level.price, level.touches, MIN_TOUCHES)
+        min_touches = SETTINGS.strategy.min_trade_level_touches
+        if level.touches < min_touches:
+            LOGGER.info("Rejected level %s %.2f: touches=%s < %s", level.type, level.price, level.touches, min_touches)
             continue
         max_zone_width = atr_value * SETTINGS.strategy.max_level_zone_width_atr_pct
         if atr_value > 0 and zone_width > max_zone_width:

@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Dict, List, Optional, Sequence, Tuple
 
 from src.config import SETTINGS, append_markdown_log
+from src.data.bar_store import save_bars
 from src.data.market_data import MarketDataService
 from src.data.news import NewsService
 from src.data.news_filter import NewsRiskFilter
@@ -139,6 +140,10 @@ def run_premarket(
         intraday_bars = market_data.get_intraday_bars(symbol, duration="2 D", bar_size="15 mins")
         if daily_bars.empty or intraday_bars.empty:
             continue
+        # Persist bars for the dashboard so charts render without a live TWS
+        # connection. Best-effort: failures must never break the scan.
+        save_bars(symbol, "daily", daily_bars)
+        save_bars(symbol, "intraday_15m", intraday_bars)
         detected_levels = detect_levels(symbol, daily_bars, intraday_bars)
         strong_levels = filter_strong_levels(detected_levels)
         if not strong_levels:

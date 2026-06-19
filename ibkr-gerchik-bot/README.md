@@ -135,6 +135,20 @@ Suggested cadence:
 - `eod`: after the close
 - `weekly`: Friday after the close
 
+## Dashboard
+
+An interactive Streamlit dashboard visualizes everything the bot produces
+(watchlist, levels, candle charts, intraday decisions, positions, reports). It
+is read-only and never connects to IBKR.
+
+```powershell
+pip install -r requirements-dashboard.txt
+streamlit run dashboard/app.py   # or double-click run_dashboard.cmd
+```
+
+Candle charts read OHLCV bars persisted by the premarket/intraday jobs under
+`memory/bars/`. See [dashboard/README.md](dashboard/README.md) for details.
+
 ## Tests
 
 ```powershell

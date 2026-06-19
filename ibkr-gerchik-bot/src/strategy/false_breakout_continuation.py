@@ -8,12 +8,12 @@ import pandas as pd
 
 from src.config import LOGGER, SETTINGS
 from src.risk.take_profit import reward_risk_ratio
+from src.strategy import decision_log
 from src.strategy.false_breakout_one_bar import (
     _dict_to_trade_signal,
     _determine_news_risk,
     _empty_result,
     _merged_config,
-    _persist_daily_decision,
     _zone_from_level,
 )
 from src.strategy.levels import Level
@@ -92,41 +92,42 @@ def detect_false_breakout_continuation(
     bars: pd.DataFrame,
     level: Level,
     news_context: Optional[Dict[str, object]] = None,
+    decision_sink: decision_log.DecisionSink = None,
 ) -> Optional[TradeSignal]:
     """Detect a long follow-through after a prior false breakdown at support."""
     if bars.empty or len(bars) < MIN_CURRENT_BARS + 2:
         result = _empty_result("insufficient candles", _context(level, "LOW", "LOW"))
-        _persist_daily_decision(symbol, level, STRATEGY_NAME, result)
+        decision_log.record(decision_sink, symbol, level, STRATEGY_NAME, result)
         return None
 
     news_risk = _determine_news_risk(news_context)
     if news_risk == "HIGH":
         result = _empty_result("news risk high", _context(level, "OK", news_risk))
-        _persist_daily_decision(symbol, level, STRATEGY_NAME, result)
+        decision_log.record(decision_sink, symbol, level, STRATEGY_NAME, result)
         return None
 
     normalized = _normalize_bars(bars)
     previous, current = _split_previous_and_current_session(normalized)
     if not _is_prior_false_breakdown(previous, level):
         result = _empty_result("no prior false breakdown", _context(level, "OK", news_risk))
-        _persist_daily_decision(symbol, level, STRATEGY_NAME, result)
+        decision_log.record(decision_sink, symbol, level, STRATEGY_NAME, result)
         return None
     if not _current_session_uptrend_from_level(current, level):
         result = _empty_result("no continuation uptrend from level", _context(level, "OK", news_risk))
-        _persist_daily_decision(symbol, level, STRATEGY_NAME, result)
+        decision_log.record(decision_sink, symbol, level, STRATEGY_NAME, result)
         return None
 
     entry = round(float(current.iloc[-1]["close"]), 2)
     stop = _continuation_stop(current, entry)
     if stop is None or stop >= entry:
         result = _empty_result("invalid continuation stop", _context(level, "LOW", news_risk))
-        _persist_daily_decision(symbol, level, STRATEGY_NAME, result)
+        decision_log.record(decision_sink, symbol, level, STRATEGY_NAME, result)
         return None
 
     target = _target_for_continuation(level, entry, stop)
     if target is None:
         result = _empty_result("reward risk too low", _context(level, "LOW", news_risk))
-        _persist_daily_decision(symbol, level, STRATEGY_NAME, result)
+        decision_log.record(decision_sink, symbol, level, STRATEGY_NAME, result)
         return None
 
     score = _continuation_score(previous, current, level)
@@ -142,7 +143,7 @@ def detect_false_breakout_continuation(
         "context": context,
     }
     LOGGER.info("Detected false breakout continuation long %s at %.2f level=%.2f", symbol, entry, level.price)
-    _persist_daily_decision(symbol, level, STRATEGY_NAME, result)
+    decision_log.record(decision_sink, symbol, level, STRATEGY_NAME, result)
     return _dict_to_trade_signal(symbol, level, STRATEGY_NAME, result)
 
 

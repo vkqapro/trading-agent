@@ -1,4 +1,12 @@
-"""False breakout detection."""
+"""False breakout detection — base module, intentionally disabled.
+
+This module contains only a two-bar heuristic with no ATR filtering, no zone
+awareness, and no confirmation candle requirement.  It must NOT be called
+directly; use the subclass modules instead:
+  - false_breakout_one_bar.detect_false_breakout_one_bar
+  - false_breakout_two_bar.detect_false_breakout_two_bar
+  - false_breakout_complex.detect_false_breakout_complex
+"""
 
 from __future__ import annotations
 
@@ -8,10 +16,24 @@ import pandas as pd
 
 from src.config import SETTINGS
 
+_DISABLED = True
+
 
 def detect_false_breakout(bars: pd.DataFrame, level: float, direction: str) -> Dict[str, object]:
-    """Detect a level breach followed by immediate rejection."""
-    if len(bars) < 2:
+    """Detect a level breach followed by immediate rejection.
+
+    .. deprecated::
+        This function is disabled.  It uses only two bars with no ATR
+        filtering, no zone awareness, and no confirmation candle — which
+        produces unfiltered entries that violate Gerchik methodology.
+        Call one of the subclass variants instead.
+    """
+    raise NotImplementedError(
+        "detect_false_breakout (base) is disabled.  "
+        "Use detect_false_breakout_one_bar, detect_false_breakout_two_bar, "
+        "or detect_false_breakout_complex instead."
+    )
+    if len(bars) < 2:  # unreachable — kept so callers surface the error
         return {"signal": "NONE", "reason": "not_enough_bars"}
 
     previous = bars.iloc[-2]

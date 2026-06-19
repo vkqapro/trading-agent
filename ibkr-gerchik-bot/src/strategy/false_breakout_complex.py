@@ -7,6 +7,7 @@ from typing import Dict, List, Optional
 import pandas as pd
 
 from src.config import LOGGER
+from src.strategy import decision_log
 from src.strategy.candles import full_range
 from src.strategy.false_breakout_one_bar import (
     _build_context,
@@ -18,8 +19,8 @@ from src.strategy.false_breakout_one_bar import (
     _empty_result,
     _evaluate_atr_status,
     _merged_config,
-    _persist_daily_decision,
     _resolve_atr,
+    _stop_buffer,
     _target_for_direction,
     _trend_context_ok,
     _trend_label,
@@ -121,11 +122,12 @@ def detect_false_breakout(
             reasons.append("trend mismatch")
             return _empty_result(reasons, context)
         entry = float(confirmations[-1]["close"])
-        stop = min(
+        structure_low = min(
             min(float(trap_candles.iloc[idx]["low"]) for idx in range(len(trap_candles))),
             float(return_candle["low"]),
             *(float(candle["low"]) for candle in confirmations),
         )
+        stop = round(structure_low - _stop_buffer(level), 2)
         target = _target_for_direction(level, "long", entry, stop)
         if target is None:
             reasons.append("ATR too small")
@@ -171,11 +173,12 @@ def detect_false_breakout(
             reasons.append("trend mismatch")
             return _empty_result(reasons, context)
         entry = float(confirmations[-1]["close"])
-        stop = max(
+        structure_high = max(
             max(float(trap_candles.iloc[idx]["high"]) for idx in range(len(trap_candles))),
             float(return_candle["high"]),
             *(float(candle["high"]) for candle in confirmations),
         )
+        stop = round(structure_high + _stop_buffer(level), 2)
         target = _target_for_direction(level, "short", entry, stop)
         if target is None:
             reasons.append("ATR too small")
@@ -221,9 +224,10 @@ def detect_false_breakout_complex(
     atr: Optional[float] = None,
     news_context: Optional[Dict[str, object]] = None,
     config: Optional[Dict[str, float]] = None,
+    decision_sink: decision_log.DecisionSink = None,
 ) -> Optional[TradeSignal]:
     """Router-compatible wrapper returning a TradeSignal for complex false breakouts."""
     result = detect_false_breakout(bars, level, atr=atr, news_context=news_context, config=config)
-    _persist_daily_decision(symbol, level, "false_breakout_complex", result)
+    decision_log.record(decision_sink, symbol, level, "false_breakout_complex", result)
     return _dict_to_trade_signal(symbol, level, "false_breakout_complex", result)
 

@@ -133,7 +133,7 @@ class MemoryFlowTests(unittest.TestCase):
             )
 
             with (
-                patch.object(eod_module, "DAILY_DECISIONS_PATH", daily_decisions),
+                patch("src.strategy.decision_log.DAILY_DECISIONS_PATH", daily_decisions),
                 patch.object(eod_module, "RUNTIME_LOG_PATH", runtime_log),
             ):
                 summary = eod_module.run_eod(

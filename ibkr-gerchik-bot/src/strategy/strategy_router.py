@@ -9,7 +9,7 @@ import pandas as pd
 from src.config import LOGGER, SETTINGS
 from src.risk.stop_loss import calculate_stop_loss
 from src.risk.take_profit import build_partial_targets, calculate_take_profit, reward_risk_ratio
-from src.strategy import false_breakout_one_bar as daily_decisions
+from src.strategy import decision_log
 from src.strategy.breakout import detect_breakout
 from src.strategy.false_breakout_complex import detect_false_breakout_complex
 from src.strategy.false_breakout_continuation import detect_false_breakout_continuation
@@ -117,7 +117,8 @@ def _router_result(
     }
 
 
-def _persist_router_decision(
+def _record_router_decision(
+    sink: decision_log.DecisionSink,
     *,
     symbol: str,
     level: Level,
@@ -130,7 +131,7 @@ def _persist_router_decision(
     if not str(signal.strategy).startswith("false_breakout"):
         return
     result = _router_result(signal=signal, level=level, status=status, reasons=reasons, stop=stop, target=target)
-    daily_decisions._persist_daily_decision(symbol, level, signal.strategy, result)
+    decision_log.record(sink, symbol, level, signal.strategy, result)
 
 
 def _stop_rejection_reason(signal: TradeSignal) -> str:
@@ -164,6 +165,7 @@ def _detect_enabled_candidates(
     intraday_bars: pd.DataFrame,
     level: Level,
     news_context: Optional[Dict[str, object]],
+    decision_sink: decision_log.DecisionSink = None,
 ) -> List[Optional[TradeSignal]]:
     candidates: List[Optional[TradeSignal]] = []
     if _strategy_enabled("rebound"):
@@ -171,13 +173,13 @@ def _detect_enabled_candidates(
     if _strategy_enabled("confirmed_breakout"):
         candidates.append(detect_breakout(symbol, intraday_bars, level))
     if _strategy_enabled("false_breakout_one_bar"):
-        candidates.append(detect_false_breakout_one_bar(symbol, intraday_bars, level, news_context=news_context))
+        candidates.append(detect_false_breakout_one_bar(symbol, intraday_bars, level, news_context=news_context, decision_sink=decision_sink))
     if _strategy_enabled("false_breakout_two_bar"):
-        candidates.append(detect_false_breakout_two_bar(symbol, intraday_bars, level, news_context=news_context))
+        candidates.append(detect_false_breakout_two_bar(symbol, intraday_bars, level, news_context=news_context, decision_sink=decision_sink))
     if _strategy_enabled("false_breakout_complex"):
-        candidates.append(detect_false_breakout_complex(symbol, intraday_bars, level, news_context=news_context))
+        candidates.append(detect_false_breakout_complex(symbol, intraday_bars, level, news_context=news_context, decision_sink=decision_sink))
     if _strategy_enabled("false_breakout_continuation"):
-        candidates.append(detect_false_breakout_continuation(symbol, intraday_bars, level, news_context=news_context))
+        candidates.append(detect_false_breakout_continuation(symbol, intraday_bars, level, news_context=news_context, decision_sink=decision_sink))
     return candidates
 
 
@@ -186,10 +188,19 @@ def route_strategies(
     intraday_bars: pd.DataFrame,
     levels: List[Level],
     news_context: Optional[Dict[str, object]] = None,
+    *,
+    persist: bool = True,
 ) -> List[TradeSignal]:
+    """Evaluate enabled strategies across ``levels`` and return accepted signals.
+
+    Every decision (detector-level and router-level) is collected into a local
+    sink and persisted once at the end. Pass ``persist=False`` for validation /
+    replay jobs that must not write to the daily decision journal.
+    """
     signals: List[TradeSignal] = []
+    decision_sink: List[Dict[str, object]] = []
     for level in levels:
-        candidates = _detect_enabled_candidates(symbol, intraday_bars, level, news_context)
+        candidates = _detect_enabled_candidates(symbol, intraday_bars, level, news_context, decision_sink)
         for signal in candidates:
             if signal is None:
                 continue
@@ -202,7 +213,7 @@ def route_strategies(
             )
             if adjusted_stop is None:
                 reasons = [_stop_rejection_reason(signal), *_signal_original_reasons(signal)]
-                _persist_router_decision(symbol=symbol, level=level, signal=signal, status="rejected", reasons=reasons)
+                _record_router_decision(decision_sink, symbol=symbol, level=level, signal=signal, status="rejected", reasons=reasons)
                 LOGGER.info("Router rejected %s %s: %s", symbol, signal.strategy, reasons[0])
                 continue
             target_reference = _target_reference(signal)
@@ -215,7 +226,8 @@ def route_strategies(
             )
             if target is None:
                 reasons = [_target_rejection_reason(signal, target_reference, adjusted_stop), *_signal_original_reasons(signal)]
-                _persist_router_decision(
+                _record_router_decision(
+                    decision_sink,
                     symbol=symbol,
                     level=level,
                     signal=signal,
@@ -230,7 +242,8 @@ def route_strategies(
             signal.reward_risk = round(reward_risk_ratio(signal.entry, signal.stop, signal.target), 2)
             signal.risk_per_share = round(abs(signal.entry - signal.stop), 4)
             signal.partial_targets = build_partial_targets(signal.entry, signal.stop, signal.target, signal.direction)
-            _persist_router_decision(
+            _record_router_decision(
+                decision_sink,
                 symbol=symbol,
                 level=level,
                 signal=signal,
@@ -240,4 +253,6 @@ def route_strategies(
                 target=target,
             )
             signals.append(signal)
+    if persist:
+        decision_log.persist(decision_sink)
     return signals

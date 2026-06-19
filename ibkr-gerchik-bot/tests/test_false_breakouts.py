@@ -21,6 +21,9 @@ from src.strategy.levels import Level
 
 class FalseBreakoutTests(unittest.TestCase):
     def setUp(self) -> None:
+        # Detection is pure (it records into a caller-provided sink, never to
+        # disk), so these tests can call the detectors directly without any
+        # persistence patching.
         self.level = Level(
             symbol="AAPL",
             price=100.0,

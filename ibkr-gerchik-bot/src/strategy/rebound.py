@@ -15,7 +15,6 @@ from src.strategy.signal_models import TradeSignal
 
 ZONE_BUFFER_PCT = 0.0015
 STOP_BUFFER_PCT = 0.0005
-MIN_ACCEPTABLE_REWARD_RISK = 2.0
 MIN_FALLBACK_REWARD_RISK = 3.0
 MIN_ATR_TO_RISK_MULTIPLE = 5.0
 
@@ -170,7 +169,7 @@ def _finalize_signal(
     if target is None:
         return None
     reward_risk = round(reward_risk_ratio(entry, stop, target), 2)
-    if reward_risk < max(float(SETTINGS.risk.min_reward_risk_ratio), MIN_ACCEPTABLE_REWARD_RISK):
+    if reward_risk < float(SETTINGS.risk.min_reward_risk_ratio):
         return None
 
     return TradeSignal(
@@ -262,7 +261,7 @@ def _short_stop(level_price: float, zone_high: float, rejection_candle: pd.Serie
 
 
 def _target(level: Level, entry: float, stop: float, direction: str) -> tuple[Optional[float], Optional[float]]:
-    required_rr = max(float(SETTINGS.risk.min_reward_risk_ratio), MIN_ACCEPTABLE_REWARD_RISK)
+    required_rr = float(SETTINGS.risk.min_reward_risk_ratio)
     risk = abs(entry - stop)
     if risk <= 0:
         return None, None

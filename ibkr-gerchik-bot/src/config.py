@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 import logging
+import logging.handlers
 import os
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -356,7 +357,12 @@ def setup_logging() -> logging.Logger:
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
 
-    file_handler = logging.FileHandler(SETTINGS.paths.runtime_dir / "application.log", encoding="utf-8")
+    file_handler = logging.handlers.RotatingFileHandler(
+        SETTINGS.paths.runtime_dir / "application.log",
+        maxBytes=10 * 1024 * 1024,
+        backupCount=5,
+        encoding="utf-8",
+    )
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
     return logger

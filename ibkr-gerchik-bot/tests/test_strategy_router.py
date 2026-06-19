@@ -43,10 +43,7 @@ class StrategyRouterNewsContextTests(unittest.TestCase):
     def test_router_blocks_false_breakout_on_high_news_risk(self) -> None:
         with (
             patch("src.strategy.strategy_router.calculate_stop_loss", side_effect=lambda entry, stop, direction, **_kwargs: stop),
-            patch("src.strategy.false_breakout_one_bar._persist_daily_decision"),
-            patch("src.strategy.false_breakout_two_bar._persist_daily_decision"),
-            patch("src.strategy.false_breakout_complex._persist_daily_decision"),
-            patch("src.strategy.false_breakout_continuation._persist_daily_decision"),
+            patch("src.strategy.decision_log.persist"),
         ):
             signals = route_strategies("AAPL", self.bars, [self.level], news_context={"risk_level": "HIGH"})
         self.assertFalse(any(signal.strategy.startswith("false_breakout") for signal in signals))
@@ -89,10 +86,7 @@ class StrategyRouterNewsContextTests(unittest.TestCase):
             )
             with (
                 patch("src.strategy.strategy_router.calculate_stop_loss", side_effect=lambda entry, stop, direction, **_kwargs: stop),
-                patch("src.strategy.false_breakout_one_bar._persist_daily_decision"),
-                patch("src.strategy.false_breakout_two_bar._persist_daily_decision"),
-                patch("src.strategy.false_breakout_complex._persist_daily_decision"),
-                patch("src.strategy.false_breakout_continuation._persist_daily_decision"),
+                patch("src.strategy.decision_log.persist"),
             ):
                 signals = route_strategies("AAPL", medium_bars, [level], news_context={"risk_level": "MEDIUM"})
         finally:
@@ -139,7 +133,7 @@ class StrategyRouterNewsContextTests(unittest.TestCase):
                 patch("src.strategy.strategy_router.detect_false_breakout_two_bar", return_value=None),
                 patch("src.strategy.strategy_router.detect_false_breakout_complex", return_value=None),
                 patch("src.strategy.strategy_router.detect_false_breakout_continuation", return_value=raw_signal),
-                patch("src.strategy.false_breakout_one_bar._persist_daily_decision", side_effect=lambda *args: persisted.append(args)),
+                patch("src.strategy.decision_log.persist", side_effect=lambda records: persisted.extend(records)),
             ):
                 signals = route_strategies("AGPU", self.bars, [self.level], news_context={"risk_level": "LOW"})
         finally:
@@ -147,8 +141,9 @@ class StrategyRouterNewsContextTests(unittest.TestCase):
 
         self.assertEqual(signals, [])
         self.assertEqual(len(persisted), 1)
-        _symbol, _level, strategy_name, result = persisted[0]
-        self.assertEqual(strategy_name, "false_breakout_continuation")
+        record = persisted[0]
+        result = record["result"]
+        self.assertEqual(record["strategy"], "false_breakout_continuation")
         self.assertEqual(result["signal"], "NONE")
         self.assertEqual(result["router_status"], "rejected")
         self.assertEqual(result["raw_signal"], "BUY")

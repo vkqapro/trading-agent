@@ -164,8 +164,8 @@ class ValidateWatchlistJobTests(unittest.TestCase):
             )
             _MarketDataServiceStub.requests = []
 
-            def fake_route_strategies(symbol: str, intraday_bars: object, levels: object, news_context: object = None):
-                del intraday_bars, levels, news_context
+            def fake_route_strategies(symbol: str, intraday_bars: object, levels: object, news_context: object = None, *, persist: bool = True):
+                del intraday_bars, levels, news_context, persist
                 if symbol == "AAPL":
                     return [
                         TradeSignal(

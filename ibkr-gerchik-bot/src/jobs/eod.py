@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
@@ -11,26 +10,11 @@ from typing import Dict, List, Optional
 from src.alerts.slack import SlackAlerter
 from src.config import SETTINGS, append_markdown_log
 from src.risk.risk_manager import RiskManager
+from src.strategy import decision_log
 from src.workflow_log import append_workflow_snapshot, read_latest_workflow_snapshot
 
 
-DAILY_DECISIONS_PATH = Path(__file__).resolve().parents[2] / "memory" / "daily_decisions.json"
 RUNTIME_LOG_PATH = Path(__file__).resolve().parents[2] / "memory" / "runtime" / "application.log"
-
-
-def _load_daily_decisions() -> Dict[str, object]:
-    today = datetime.now().date().isoformat()
-    default_payload: Dict[str, object] = {"date": today, "decisions": {}}
-    if not DAILY_DECISIONS_PATH.exists():
-        return default_payload
-    try:
-        with DAILY_DECISIONS_PATH.open("r", encoding="utf-8") as handle:
-            payload = json.load(handle)
-    except (json.JSONDecodeError, OSError):
-        return default_payload
-    if str(payload.get("date")) != today:
-        return default_payload
-    return payload if isinstance(payload, dict) else default_payload
 
 
 def _payload_matches_today(payload: Dict[str, object]) -> bool:
@@ -248,7 +232,7 @@ def run_eod(
 ) -> Dict[str, object]:
     """Persist end-of-day account, positions, and explainable decision summary."""
     risk_manager.update_daily_pnl(daily_pnl)
-    daily_decisions = _load_daily_decisions()
+    daily_decisions = decision_log.load()
     decision_summary = _build_summary(
         daily_decisions.get("decisions", {}) if isinstance(daily_decisions.get("decisions"), dict) else {},
         open_positions,

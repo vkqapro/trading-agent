@@ -9,7 +9,6 @@ import os
 import sys
 import time
 from collections import Counter
-from contextlib import contextmanager
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -215,26 +214,6 @@ def _build_manual_watch_trade_signal(
     )
 
 
-@contextmanager
-def _suppress_daily_decision_persistence():
-    """Prevent validation-only jobs from polluting the daily decision store."""
-    import src.strategy.false_breakout_complex as fb_complex
-    import src.strategy.false_breakout_one_bar as fb_one
-    import src.strategy.false_breakout_two_bar as fb_two
-
-    original_one = fb_one._persist_daily_decision
-    original_two = fb_two._persist_daily_decision
-    original_complex = fb_complex._persist_daily_decision
-    try:
-        fb_one._persist_daily_decision = lambda *args, **kwargs: None
-        fb_two._persist_daily_decision = lambda *args, **kwargs: None
-        fb_complex._persist_daily_decision = lambda *args, **kwargs: None
-        yield
-    finally:
-        fb_one._persist_daily_decision = original_one
-        fb_two._persist_daily_decision = original_two
-        fb_complex._persist_daily_decision = original_complex
-
 
 def _validate_watchlist_once(
     *,
@@ -263,98 +242,97 @@ def _validate_watchlist_once(
     working_positions = [dict(item) for item in current_positions]
     working_open_risk_amount = float(open_risk_amount)
 
-    with _suppress_daily_decision_persistence():
-        for symbol, plan in watchlist.items():
-            symbol_news_context = news_filter.get_symbol_risk_context(symbol)
-            if symbol_news_context.get("risk_level") == "HIGH":
-                summary["symbol_news_blocked"] += 1
-                reason_counts["symbol_news_risk"] += 1
-                continue
+    for symbol, plan in watchlist.items():
+        symbol_news_context = news_filter.get_symbol_risk_context(symbol)
+        if symbol_news_context.get("risk_level") == "HIGH":
+            summary["symbol_news_blocked"] += 1
+            reason_counts["symbol_news_risk"] += 1
+            continue
 
-            intraday_bars = market_data.get_intraday_bars(
-                symbol,
-                duration=SETTINGS.strategy.intraday_bar_duration,
-                bar_size=SETTINGS.strategy.intraday_bar_size,
+        intraday_bars = market_data.get_intraday_bars(
+            symbol,
+            duration=SETTINGS.strategy.intraday_bar_duration,
+            bar_size=SETTINGS.strategy.intraday_bar_size,
+        )
+        quote = market_data.get_quote(symbol)
+        if intraday_bars.empty or float(quote.get("last", 0.0) or 0.0) <= 0:
+            summary["missing_live_data"] += 1
+            reason_counts["missing_live_data"] += 1
+            continue
+
+        levels = [Level(**level) for level in plan.get("levels", [])]
+        candidate_signals = route_strategies(symbol, intraday_bars, levels, news_context=symbol_news_context, persist=False)
+        if not candidate_signals:
+            summary["no_signal"] += 1
+            reason_counts["no_signal"] += 1
+            continue
+
+        summary["symbols_with_signal"] += 1
+        session_low = float(intraday_bars["low"].min())
+        session_high = float(intraday_bars["high"].max())
+        placed_this_symbol = False
+
+        for signal in candidate_signals:
+            atr_ok = technical_atr_has_room(float(plan.get("technical_atr", 0.0)), signal.entry)
+            trend_ok = atr_travel_filter(
+                signal.entry,
+                session_low,
+                session_high,
+                float(plan.get("daily_atr", 0.0)),
+                bool(signal.is_new_extreme),
             )
-            quote = market_data.get_quote(symbol)
-            if intraday_bars.empty or float(quote.get("last", 0.0) or 0.0) <= 0:
-                summary["missing_live_data"] += 1
-                reason_counts["missing_live_data"] += 1
+            if not atr_ok or not trend_ok:
+                summary["atr_filtered"] += 1
+                reason_counts["atr_filter"] += 1
                 continue
 
-            levels = [Level(**level) for level in plan.get("levels", [])]
-            candidate_signals = route_strategies(symbol, intraday_bars, levels, news_context=symbol_news_context)
-            if not candidate_signals:
-                summary["no_signal"] += 1
-                reason_counts["no_signal"] += 1
-                continue
-
-            summary["symbols_with_signal"] += 1
-            session_low = float(intraday_bars["low"].min())
-            session_high = float(intraday_bars["high"].max())
-            placed_this_symbol = False
-
-            for signal in candidate_signals:
-                atr_ok = technical_atr_has_room(float(plan.get("technical_atr", 0.0)), signal.entry)
-                trend_ok = atr_travel_filter(
-                    signal.entry,
-                    session_low,
-                    session_high,
-                    float(plan.get("daily_atr", 0.0)),
-                    bool(signal.is_new_extreme),
+            success, payload = order_manager.execute_trade(
+                signal,
+                account_equity=account_equity,
+                cash_available=cash_available,
+                current_positions=working_positions,
+                open_risk_amount=working_open_risk_amount,
+                allow_after_hours=allow_after_hours,
+                allow_extended_hours_order=allow_after_hours,
+                time_in_force="GTC" if allow_after_hours else None,
+            )
+            if success:
+                placed_this_symbol = True
+                summary["placeable"] += 1
+                placeable.append(
+                    {
+                        "symbol": symbol,
+                        "strategy": payload.get("strategy"),
+                        "direction": payload.get("direction"),
+                        "entry": payload.get("entry"),
+                        "stop_loss": payload.get("stop_loss"),
+                        "target": payload.get("target"),
+                        "quantity": payload.get("quantity"),
+                        "reward_risk": payload.get("reward_risk"),
+                        "simulated": bool(payload.get("dry_run", False)),
+                    }
                 )
-                if not atr_ok or not trend_ok:
-                    summary["atr_filtered"] += 1
-                    reason_counts["atr_filter"] += 1
-                    continue
+                working_positions.append({"symbol": symbol})
+                working_open_risk_amount += abs(float(payload["entry"]) - float(payload["stop_loss"])) * float(payload["quantity"])
+                break
 
-                success, payload = order_manager.execute_trade(
-                    signal,
-                    account_equity=account_equity,
-                    cash_available=cash_available,
-                    current_positions=working_positions,
-                    open_risk_amount=working_open_risk_amount,
-                    allow_after_hours=allow_after_hours,
-                    allow_extended_hours_order=allow_after_hours,
-                    time_in_force="GTC" if allow_after_hours else None,
+            summary["candidate_rejected"] += 1
+            reasons = [str(item) for item in payload.get("reasons", ["rejected"])]
+            for reason in reasons:
+                reason_counts[reason] += 1
+            if len(sample_rejections) < 12:
+                sample_rejections.append(
+                    {
+                        "symbol": symbol,
+                        "strategy": signal.strategy,
+                        "reasons": reasons,
+                        "reward_risk": payload.get("signal", {}).get("reward_risk"),
+                        "quantity": payload.get("signal", {}).get("quantity"),
+                    }
                 )
-                if success:
-                    placed_this_symbol = True
-                    summary["placeable"] += 1
-                    placeable.append(
-                        {
-                            "symbol": symbol,
-                            "strategy": payload.get("strategy"),
-                            "direction": payload.get("direction"),
-                            "entry": payload.get("entry"),
-                            "stop_loss": payload.get("stop_loss"),
-                            "target": payload.get("target"),
-                            "quantity": payload.get("quantity"),
-                            "reward_risk": payload.get("reward_risk"),
-                            "simulated": bool(payload.get("dry_run", False)),
-                        }
-                    )
-                    working_positions.append({"symbol": symbol})
-                    working_open_risk_amount += abs(float(payload["entry"]) - float(payload["stop_loss"])) * float(payload["quantity"])
-                    break
 
-                summary["candidate_rejected"] += 1
-                reasons = [str(item) for item in payload.get("reasons", ["rejected"])]
-                for reason in reasons:
-                    reason_counts[reason] += 1
-                if len(sample_rejections) < 12:
-                    sample_rejections.append(
-                        {
-                            "symbol": symbol,
-                            "strategy": signal.strategy,
-                            "reasons": reasons,
-                            "reward_risk": payload.get("signal", {}).get("reward_risk"),
-                            "quantity": payload.get("signal", {}).get("quantity"),
-                        }
-                    )
-
-            if not placed_this_symbol and candidate_signals:
-                summary["symbols_without_placeable_signal"] += 1
+        if not placed_this_symbol and candidate_signals:
+            summary["symbols_without_placeable_signal"] += 1
 
     return {
         "watchlist_count": int(summary["watchlist_count"]),

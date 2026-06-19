@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from src.strategy import false_breakout_one_bar as fb1b
+from src.strategy import decision_log as fb1b
 from src.strategy.levels import Level
 
 
@@ -59,7 +59,7 @@ class DailyDecisionsPersistenceTests(unittest.TestCase):
         }
 
         with patch.object(fb1b, "_acquire_daily_decisions_lock", side_effect=TimeoutError("busy")):
-            fb1b._persist_daily_decision("KO", level, "false_breakout_one_bar", result)
+            fb1b.persist_decision("KO", level, "false_breakout_one_bar", result)
 
     def test_router_rejected_attempt_ranks_above_raw_unvalidated_signal(self) -> None:
         raw_signal = {"signal": "BUY", "confidence": 1.0}

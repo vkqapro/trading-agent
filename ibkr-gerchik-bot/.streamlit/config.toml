@@ -1,0 +1,10 @@
+# Luminous Obsidian base theme. Setting a dark base ensures portal-rendered
+# BaseWeb widgets (dropdown popovers, inputs, multiselect, report tables) match
+# the dashboard instead of falling back to Streamlit's light defaults.
+[theme]
+base = "dark"
+primaryColor = "#00f0ff"
+backgroundColor = "#131314"
+secondaryBackgroundColor = "#201f20"
+textColor = "#e5e2e3"
+font = "sans serif"
