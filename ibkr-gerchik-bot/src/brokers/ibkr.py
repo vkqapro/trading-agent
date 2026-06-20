@@ -42,6 +42,7 @@ class OrderResult:
     quantity: int
     order_type: str
     status: str
+    detail: str = ""
 
 
 def _safe_market_price(value: object) -> float:
@@ -391,6 +392,48 @@ class IBKRClient:
             status=status,
         )
 
+    @staticmethod
+    def _round_to_tick(price: float | None) -> float | None:
+        """Round a price to a valid US-equity tick (1c at/above $1, else 0.0001).
+
+        TWS rejects orders whose price does not conform to the contract's minimum
+        price variation (error 110), so all order prices must be snapped first.
+        """
+        if price is None:
+            return None
+        value = float(price)
+        return round(value, 2) if abs(value) >= 1.0 else round(value, 4)
+
+    @staticmethod
+    def _order_reject_reason(trade: Any) -> str:
+        """Return the broker's reject/cancel message from a trade's log, if any."""
+        try:
+            for entry in reversed(list(getattr(trade, "log", []) or [])):
+                message = str(getattr(entry, "message", "") or "").strip()
+                if message:
+                    return message
+        except Exception:  # pragma: no cover - defensive
+            return ""
+        return ""
+
+    def _await_order_settled(self, trade: Any, timeout: float = 12.0) -> str:
+        """Wait until an order leaves the transient PendingSubmit state.
+
+        Some broker rejections (precautionary cancels, size/price limits) arrive
+        several seconds after the order is sent, so reading the status immediately
+        would falsely report success. Accepted orders settle to
+        Submitted/PreSubmitted/Filled within a fraction of a second, so this only
+        blocks while an order is genuinely stuck pending.
+        """
+        pending = {"", "pendingsubmit", "apipending"}
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            status = str(getattr(trade.orderStatus, "status", "") or "").strip().lower()
+            if status and status not in pending:
+                break
+            self.ib.sleep(0.5)
+        return trade.orderStatus.status or "Submitted"
+
     def place_market_bracket_order(
         self,
         symbol: str,
@@ -404,6 +447,8 @@ class IBKRClient:
     ) -> tuple[OrderResult, OrderResult, OrderResult | None]:
         self.ensure_connection()
         contract = self.create_stock_contract(symbol)
+        stop_price = self._round_to_tick(stop_price)
+        limit_price = self._round_to_tick(limit_price)
         parent_action = action.upper()
         exit_action = "SELL" if parent_action == "BUY" else "BUY"
 
@@ -440,20 +485,25 @@ class IBKRClient:
         limit_trade: Trade | None = None
         if limit_order is not None:
             limit_trade = self.ib.placeOrder(contract, limit_order)
-        self.ib.sleep(1)
+        # Wait for the parent to leave the transient PendingSubmit state so a fast
+        # broker rejection (e.g. a precautionary cancel) is reported accurately
+        # instead of a premature "submitted".
+        self._await_order_settled(parent_trade)
 
         parent_status = parent_trade.orderStatus.status or "Submitted"
         stop_status = stop_trade.orderStatus.status or "Submitted"
         limit_status = (limit_trade.orderStatus.status if limit_trade is not None else "") or "Submitted"
+        parent_detail = self._order_reject_reason(parent_trade)
 
         LOGGER.info(
-            "Bracket order placed for %s %s x%s parent=%s stop=%s limit=%s",
+            "Bracket order placed for %s %s x%s parent=%s stop=%s limit=%s%s",
             parent_action,
             symbol,
             quantity,
             parent_status,
             stop_status,
             limit_status if limit_order is not None else "n/a",
+            f" reason={parent_detail}" if parent_detail else "",
         )
 
         parent_result = OrderResult(
@@ -463,6 +513,7 @@ class IBKRClient:
             quantity=quantity,
             order_type="MKT",
             status=parent_status,
+            detail=parent_detail,
         )
         stop_result = OrderResult(
             order_id=stop_order.orderId,
@@ -489,6 +540,7 @@ class IBKRClient:
     def place_stop_order(self, symbol: str, action: str, quantity: int, stop_price: float) -> OrderResult:
         self.ensure_connection()
         contract = self.create_stock_contract(symbol)
+        stop_price = self._round_to_tick(stop_price)
         order = StopOrder(action=action.upper(), totalQuantity=quantity, stopPrice=stop_price)
         trade: Trade = self.ib.placeOrder(contract, order)
         self.ib.sleep(1)
@@ -506,6 +558,7 @@ class IBKRClient:
     def place_limit_order(self, symbol: str, action: str, quantity: int, limit_price: float) -> OrderResult:
         self.ensure_connection()
         contract = self.create_stock_contract(symbol)
+        limit_price = self._round_to_tick(limit_price)
         order = LimitOrder(action=action.upper(), totalQuantity=quantity, lmtPrice=limit_price)
         trade: Trade = self.ib.placeOrder(contract, order)
         self.ib.sleep(1)

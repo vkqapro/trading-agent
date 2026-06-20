@@ -27,6 +27,7 @@ import streamlit as st
 
 from dashboard import charts, components as ui, data_access as da, forecast as fc
 from src.config import SETTINGS
+from src.execution import order_requests as oq
 
 # Streamlit keeps imported modules alive between reruns. Validate modules before
 # binding individual helpers so a stale module cannot fail during ``from import``.
@@ -64,11 +65,11 @@ topbar = ui.topbar
 
 _DATA_ACCESS_API = (
     "source_health", "clear_caches", "all_decision_attempts", "list_report_info",
-    "blocked_news_summary",
+    "blocked_news_summary", "load_order_requests",
 )
 if not all(hasattr(da, name) for name in _DATA_ACCESS_API) or getattr(
     da, "DASHBOARD_DATA_ACCESS_VERSION", 0
-) < 4:
+) < 5:
     da = reload(da)
 
 _FORECAST_API = (
@@ -77,7 +78,7 @@ _FORECAST_API = (
 )
 if (
     not all(hasattr(fc, name) for name in _FORECAST_API)
-    or getattr(fc, "FORECAST_ENGINE_VERSION", 0) < 5
+    or getattr(fc, "FORECAST_ENGINE_VERSION", 0) < 6
 ):
     fc = reload(fc)
 
@@ -96,6 +97,15 @@ if (
     or getattr(charts, "DASHBOARD_CHARTS_VERSION", 0) < 4
 ):
     charts = reload(charts)
+
+# Reload a cached order-request module that predates the current schema/API
+# (heartbeat helpers, quantity-carrying requests) so submitted orders match the
+# forecast and the worker-status check works.
+if (
+    not all(hasattr(oq, name) for name in ("worker_age_seconds", "worker_is_alive", "submit_place"))
+    or getattr(oq, "ORDER_REQUESTS_VERSION", 0) < 2
+):
+    oq = reload(oq)
 
 CHART_CONFIG = {
     "displaylogo": False,
@@ -608,24 +618,71 @@ def render_intraday() -> None:
 # --------------------------------------------------------------------------- #
 # Trades & positions tab
 # --------------------------------------------------------------------------- #
+def _order_request_frame(requests: list[dict[str, Any]]) -> pd.DataFrame:
+    rows = []
+    for request in requests:
+        result = request.get("result") if isinstance(request.get("result"), dict) else {}
+        rows.append({
+            "Time": str(request.get("updated_at", "")).replace("T", " "),
+            "Action": str(request.get("action", "")).upper(),
+            "Symbol": request.get("symbol"),
+            "Side": request.get("signal"),
+            "Mode": "LIVE" if request.get("live") else "AUTO",
+            "Status": str(request.get("status", "")).upper(),
+            "Detail": request.get("message"),
+            "Order ID": result.get("market_order_id") or result.get("order_id"),
+        })
+    return pd.DataFrame(rows)
+
+
 def render_trades() -> None:
     positions = da.load_tracked_positions()
     snapshot = da.load_intraday_snapshot()
     executed = _as_list(snapshot.get("executed"))
     skipped = _as_list(snapshot.get("skipped"))
     fill_total = len(executed) + len(skipped)
+    requests = da.load_order_requests()
+    open_requests = sum(1 for r in requests if str(r.get("status")) in {"pending", "processing"})
 
     metric_grid(
         [
             {"label": "Open Tracked Positions", "value": len(positions), "accent": "cyan"},
             {"label": "Executed (latest run)", "value": len(executed), "accent": "lime"},
             {"label": "Skipped (latest run)", "value": len(skipped)},
-            {"label": "Execution Rate", "value": f"{(len(executed) / max(1, fill_total)):.0%}",
-             "progress": len(executed) / max(1, fill_total),
-             "progress_label": f"{len(executed)}/{fill_total} filled"},
+            {"label": "Pending Order Requests", "value": open_requests,
+             "accent": "error" if open_requests else ""},
         ],
         columns=4,
     )
+
+    panel_header("Dashboard Order Requests", icon="send", badge="PAPER" if SETTINGS.paper_trading else "LIVE BLOCKED")
+    worker_age = oq.worker_age_seconds()
+    if oq.worker_is_alive():
+        st.success(f"Execute worker online · last heartbeat {int(worker_age)}s ago.")
+    else:
+        last = f"last heartbeat {int(worker_age)}s ago" if worker_age is not None else "no heartbeat found"
+        st.warning(
+            f"Execute worker offline ({last}). Requests stay PENDING until it runs. "
+            "Start it via run_dashboard.cmd, and make sure only one worker window is open."
+        )
+    if st.button("⟳ Refresh order status", key="orders_refresh"):
+        da.clear_caches()
+        st.rerun()
+    if requests:
+        show_df(
+            _order_request_frame(requests), height=240,
+            empty="No order requests have been submitted from the dashboard.",
+        )
+        st.caption(
+            "Submitted from the Forecast tab. Statuses: PENDING/PROCESSING (worker is "
+            "handling it), DONE (submitted to paper), SIMULATED (DRY_RUN), REJECTED "
+            "(risk checks), ERROR. Run the worker: `python -m src.main --job execute_requests`."
+        )
+    else:
+        st.caption(
+            "No order requests yet. Use Place Order / Close Position on the Forecast "
+            "tab, and run the bot worker: `python -m src.main --job execute_requests`."
+        )
 
     panel_header("Tracked Positions", icon="account_balance_wallet")
     show_df(pd.DataFrame(positions), empty="No tracked positions are present in runtime state.")
@@ -720,6 +777,75 @@ def _forecast_trade_identity(row: dict[str, Any]) -> tuple[Any, ...]:
         row.get("stop"),
         row.get("target"),
     )
+
+
+def _order_mode_notice() -> None:
+    """Surface the bot's safety posture inside an order confirmation dialog."""
+    if not SETTINGS.paper_trading:
+        st.error(
+            "PAPER_TRADING is disabled — the bot will refuse this order. "
+            "Enable paper trading in the bot before submitting."
+        )
+    elif SETTINGS.dry_run_mode:
+        st.info(
+            "DRY_RUN_MODE is on: this records a simulated fill unless you enable "
+            "live submission below."
+        )
+    else:
+        st.info("The bot will submit a live order to the paper account.")
+
+
+@st.dialog("Confirm order placement")
+def _confirm_place_order(setup: dict[str, Any]) -> None:
+    symbol = str(setup.get("symbol", "")).upper()
+    st.markdown(f"### {symbol} · {setup.get('signal')}")
+    show_df(
+        pd.DataFrame([{
+            "Entry": setup.get("entry"), "Stop": setup.get("stop"),
+            "Target": setup.get("target"), "R:R": setup.get("reward_risk"),
+            "Strategy": setup.get("strategy"),
+        }])
+    )
+    _order_mode_notice()
+    live = st.toggle(
+        "Submit live to the paper account",
+        value=False, key="confirm_place_live",
+        help="Off respects DRY_RUN (simulated when DRY_RUN_MODE is on). "
+             "On submits a live order to the paper account.",
+    )
+    send, cancel = st.columns(2)
+    if send.button("Send to bot", type="primary", width="stretch",
+                   disabled=not SETTINGS.paper_trading, key="confirm_place_send"):
+        request_id = oq.submit_place(setup, live=live)
+        st.session_state.order_feedback = (
+            f"Queued place order for {symbol} (request {request_id}). "
+            "The bot worker will execute it; watch Trades & Positions."
+        )
+        st.rerun()
+    if cancel.button("Cancel", width="stretch", key="confirm_place_cancel"):
+        st.rerun()
+
+
+@st.dialog("Confirm close position")
+def _confirm_close_position(symbol: str) -> None:
+    symbol = str(symbol).upper()
+    st.markdown(f"### Close {symbol}")
+    st.write(f"Flatten the open position in **{symbol}** with a market order.")
+    _order_mode_notice()
+    live = st.toggle(
+        "Submit live to the paper account", value=False, key="confirm_close_live",
+        help="Off respects DRY_RUN. On submits a live closing order to the paper account.",
+    )
+    send, cancel = st.columns(2)
+    if send.button("Close position", type="primary", width="stretch",
+                   disabled=not SETTINGS.paper_trading, key="confirm_close_send"):
+        request_id = oq.submit_close(symbol, live=live)
+        st.session_state.order_feedback = (
+            f"Queued close for {symbol} (request {request_id})."
+        )
+        st.rerun()
+    if cancel.button("Cancel", width="stretch", key="confirm_close_cancel"):
+        st.rerun()
 
 
 def _render_forecast_position_chart(row: dict[str, Any]) -> None:
@@ -1119,6 +1245,39 @@ def render_forecast() -> None:
             "to update the chart."
         )
         _render_forecast_position_chart(selected_row)
+
+    panel_header(
+        "Order Actions",
+        icon="bolt",
+        badge="PAPER" if SETTINGS.paper_trading else "LIVE BLOCKED",
+    )
+    feedback = st.session_state.pop("order_feedback", None)
+    if feedback:
+        st.success(feedback)
+    st.caption(
+        "Place Order sends the setup to the bot's execute_requests worker, which "
+        "submits it (paper-only, respecting DRY_RUN). Close Position flattens the "
+        "symbol. Results appear in Trades & Positions."
+    )
+    if not visible:
+        st.caption("No rows to act on in this view.")
+    for index, row in enumerate(visible[:25]):
+        symbol = str(row.get("symbol", "")).upper()
+        is_trade = row.get("status") == "FORECAST TRADE"
+        info_col, place_col, close_col = st.columns([4, 1.2, 1.2])
+        info_col.markdown(
+            f"**{symbol}** · {row.get('signal')} · "
+            f"entry {fmt(row.get('entry'))} / stop {fmt(row.get('stop'))} / "
+            f"target {fmt(row.get('target'))} · {fmt(row.get('reward_risk'))}R"
+        )
+        if place_col.button(
+            "Place Order", key=f"place_{index}_{symbol}",
+            disabled=not is_trade, width="stretch",
+            help=None if is_trade else "Only setups that pass all scenario filters can be placed.",
+        ):
+            _confirm_place_order(row)
+        if close_col.button("Close Position", key=f"close_{index}_{symbol}", width="stretch"):
+            _confirm_close_position(symbol)
 
     warnings = stored.get("warnings")
     if isinstance(warnings, list) and warnings:

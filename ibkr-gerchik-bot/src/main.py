@@ -23,7 +23,9 @@ from src.data.news import NewsService
 from src.data.news_filter import NewsRiskFilter
 from src.execution.order_manager import OrderManager
 from src.git_workflow import maybe_commit_and_push
+from src.execution import order_requests as order_requests_store
 from src.jobs.eod import run_eod
+from src.jobs.execute_requests import run_execute_requests
 from src.jobs.intraday import run_intraday
 from src.jobs.open import run_open
 from src.jobs.premarket import run_premarket
@@ -573,6 +575,14 @@ def run_job_with_context(
         metrics = run_weekly(state.get("weekly_results", []))
         return {"job": job_name, "metrics": metrics, "dry_run": dry_run}
 
+    if job_name == "execute_requests" and order_requests_store.worker_is_alive():
+        # A fresh heartbeat means another worker already owns the IBKR connection.
+        # Refuse instead of starting a second one that would collide and let the
+        # stale instance keep winning.
+        age = order_requests_store.worker_age_seconds()
+        LOGGER.warning("Execute worker already running (heartbeat %.0fs old); not starting another.", age or 0.0)
+        return {"job": job_name, "blocked": True, "reasons": ["worker_already_running"], "dry_run": dry_run}
+
     preconnect_lock_name = None
     if job_name == "open":
         preconnect_lock_name = "open_session"
@@ -794,6 +804,21 @@ def _run_connected_job(
                 raise ValueError("quote_check requires a symbol.")
             return _quote_check_once(symbol, market_data)
 
+        if job_name == "execute_requests":
+            def _account_provider() -> tuple[float, float]:
+                summary = broker.get_account_summary()
+                return _account_equity_from_summary(summary), _cash_from_summary(summary)
+
+            poll_seconds = float((command_context or {}).get("poll_seconds", 5.0) or 5.0)
+            return run_execute_requests(
+                broker,
+                order_manager,
+                state,
+                save_state=lambda payload: _save_state(state_path, payload),
+                account_provider=_account_provider,
+                poll_seconds=poll_seconds,
+            )
+
         raise ValueError(f"Unsupported job '{job_name}'")
     finally:
         broker.disconnect()
@@ -801,7 +826,11 @@ def _run_connected_job(
 
 def _connect_broker_with_startup_retry(job_name: str) -> IBKRClient:
     """Create and connect an IBKR client, waiting through temporary startup contention."""
-    retry_window = SETTINGS.broker.startup_retry_window_seconds if job_name == "intraday" else 0
+    retry_window = (
+        SETTINGS.broker.startup_retry_window_seconds
+        if job_name in {"intraday", "execute_requests"}
+        else 0
+    )
     retry_delay = max(1, SETTINGS.broker.startup_retry_delay_seconds)
     deadline = time.monotonic() + max(0, retry_window)
     attempt = 0
@@ -843,8 +872,9 @@ def _connect_broker_with_startup_retry(job_name: str) -> IBKRClient:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="IBKR Gerchik bot job runner.")
-    parser.add_argument("--job", required=True, choices=["premarket", "open", "intraday", "eod", "weekly", "slack", "manual_watch", "validate_watchlist", "quote_check"])
+    parser.add_argument("--job", required=True, choices=["premarket", "open", "intraday", "eod", "weekly", "slack", "manual_watch", "validate_watchlist", "quote_check", "execute_requests"])
     parser.add_argument("--dry-run", action="store_true", help="Simulate trades without placing broker orders.")
+    parser.add_argument("--client-id", type=int, help="Override IBKR API client id for this process (avoid collisions).")
     parser.add_argument("--symbol", help="Ticker symbol for manual_watch jobs.")
     parser.add_argument("--entry", type=float, help="Entry price for manual_watch jobs.")
     parser.add_argument("--stop", type=float, help="Stop price for manual_watch jobs.")
@@ -874,6 +904,11 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    if getattr(args, "client_id", None) is not None:
+        # Override the broker client id for this process so a long-running worker
+        # never collides with the scanning bot's connection (BrokerConfig is frozen).
+        object.__setattr__(SETTINGS.broker, "client_id", int(args.client_id))
+        LOGGER.info("Using IBKR client id override=%s", args.client_id)
     try:
         if args.job == "manual_watch":
             missing = [

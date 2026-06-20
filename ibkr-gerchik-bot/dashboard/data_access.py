@@ -21,7 +21,8 @@ STATE_PATH = SETTINGS.paths.state_file
 REPORTS_DIR = SETTINGS.paths.reports_dir
 RESEARCH_LOG_PATH = SETTINGS.paths.research_log
 TRADE_LOG_PATH = SETTINGS.paths.trade_log
-DASHBOARD_DATA_ACCESS_VERSION = 4
+ORDER_REQUESTS_PATH = SETTINGS.paths.runtime_dir.parent / "order_requests.json"
+DASHBOARD_DATA_ACCESS_VERSION = 5
 
 _WORKFLOW_HEADER = re.compile(r"(?m)^## Workflow ([^(]+?)(?: \(|$)")
 
@@ -189,6 +190,16 @@ def load_tracked_positions() -> List[Dict[str, Any]]:
     if isinstance(positions, list):
         return [item for item in positions if isinstance(item, dict)]
     return []
+
+
+def load_order_requests(limit: int = 50) -> List[Dict[str, Any]]:
+    """Most-recent-first view of dashboard-submitted order/close requests."""
+    data = _read_json(ORDER_REQUESTS_PATH)
+    requests = data.get("requests", [])
+    if not isinstance(requests, list):
+        return []
+    rows = [item for item in requests if isinstance(item, dict)]
+    return list(reversed(rows))[:limit]
 
 
 @lru_cache(maxsize=256)

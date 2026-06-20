@@ -141,6 +141,106 @@ class OrderManager:
         self.alerter.send_trade_executed(trade_payload)
         return True, trade_payload
 
+    def execute_manual_order(
+        self,
+        signal: TradeSignal,
+        *,
+        account_equity: float,
+        cash_available: float,
+        quantity: int | None = None,
+        allow_extended_hours_order: bool = True,
+        time_in_force: str | None = "GTC",
+    ) -> Tuple[bool, Dict[str, object]]:
+        """Place a human-initiated (dashboard) order.
+
+        This bypasses the *autonomous* signal-quality gates that protect the
+        unattended scanner — spread, news, ATR room, reward:risk, and market-hours
+        checks — because the order is an explicit, confirmed human decision.
+
+        When ``quantity`` is supplied (the size the user reviewed in the forecast
+        ledger) it is used directly; otherwise it is risk-sized from the live
+        config. Either way the size is capped to remain affordable and within the
+        configured maximum position value, and paper-only / DRY_RUN are enforced
+        by the caller.
+        """
+        entry = float(signal.entry or 0.0)
+        stop = float(signal.stop or 0.0)
+        if signal.signal not in {"BUY", "SELL"} or entry <= 0 or stop <= 0:
+            return False, {"status": "rejected", "reasons": ["invalid_setup"], "signal": signal.to_dict()}
+
+        if quantity is not None and int(quantity) > 0:
+            base_quantity = int(quantity)
+        else:
+            base_quantity = calculate_position_size(account_equity, SETTINGS.risk.risk_per_trade, entry, stop)
+        caps = [base_quantity, int(SETTINGS.risk.max_position_value // entry)]
+        if cash_available > 0:
+            caps.append(int(cash_available // entry))
+        quantity = max(0, min(caps))
+        if quantity <= 0:
+            return False, {
+                "status": "rejected",
+                "reasons": ["insufficient_cash_or_position_value"],
+                "signal": signal.to_dict(),
+            }
+
+        enriched = signal.to_dict()
+        enriched["quantity"] = quantity
+        enriched["risk_amount"] = abs(entry - stop) * quantity
+
+        if self.dry_run:
+            payload = self._build_payload(signal, quantity, 0, 0, status="simulated", dry_run=True)
+            payload["manual_override"] = True
+            append_markdown_log(SETTINGS.paths.trade_log, f"Simulated Manual Trade {signal.symbol}", payload)
+            return True, payload
+
+        limit_price = float(signal.target) if signal.target else None
+        entry_order, stop_order, limit_order = self.broker.place_market_bracket_order(
+            signal.symbol,
+            signal.signal,
+            quantity,
+            signal.stop,
+            limit_price=limit_price,
+            outside_rth=allow_extended_hours_order,
+            tif=time_in_force,
+        )
+        broker_statuses = {
+            "market_order": entry_order.status,
+            "stop_order": stop_order.status,
+            "limit_order": None if limit_order is None else limit_order.status,
+        }
+        failure_statuses = {"cancelled", "inactive", "apicancelled"}
+        if any(
+            isinstance(status, str) and status.strip().lower() in failure_statuses
+            for status in broker_statuses.values()
+            if status is not None
+        ):
+            reason = getattr(entry_order, "detail", "") or "broker_cancelled_order"
+            payload = {
+                "status": "broker_rejected",
+                "reasons": [reason],
+                "signal": enriched,
+                "broker_statuses": broker_statuses,
+                "market_order_id": entry_order.order_id,
+                "stop_order_id": stop_order.order_id,
+                "limit_order_id": 0 if limit_order is None else limit_order.order_id,
+            }
+            LOGGER.warning("Broker cancelled manual bracket order: %s", payload)
+            return False, payload
+
+        payload = self._build_payload(
+            signal,
+            quantity,
+            entry_order.order_id,
+            stop_order.order_id,
+            limit_order_id=0 if limit_order is None else limit_order.order_id,
+            status="executed",
+        )
+        payload["manual_override"] = True
+        payload["broker_statuses"] = broker_statuses
+        append_markdown_log(SETTINGS.paths.trade_log, f"Manual Trade {signal.symbol}", payload)
+        self.alerter.send_trade_executed(payload)
+        return True, payload
+
     @staticmethod
     def _spread_pct(quote: Dict[str, float]) -> float:
         bid = OrderManager._finite_or_zero(quote.get("bid", 0.0))

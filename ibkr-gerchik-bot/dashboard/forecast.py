@@ -14,7 +14,7 @@ from src.strategy.levels import Level
 from src.strategy.strategy_router import route_strategies
 from src.config import LOGGER
 
-FORECAST_ENGINE_VERSION = 5
+FORECAST_ENGINE_VERSION = 6
 MAX_PROJECTED_ENTRY_DISTANCE_PCT = 0.20
 # When ATR is unavailable we cannot use the ATR distance window, so fall back to
 # a percentage gate on both ends.
@@ -39,6 +39,15 @@ class ForecastScenario:
     max_position_value: float
     min_projected_entry_distance_atr: float = 1.0
     max_projected_entry_distance_atr: float = 2.0
+
+
+def _tick(price: float) -> float:
+    """Snap a price to a valid US-equity tick (1c at/above $1, else 0.0001).
+
+    Keeps projected entry/stop/target conformant so the broker doesn't reject
+    them for minimum price variation (TWS error 110).
+    """
+    return round(price, 2) if abs(price) >= 1.0 else round(price, 4)
 
 
 def _number(value: Any, default: float = 0.0) -> float:
@@ -93,10 +102,10 @@ def _candidate(
         "source": source,
         "signal": signal,
         "direction": direction,
-        "entry": round(entry, 4),
-        "stop": round(stop, 4),
-        "target": round(target, 4),
-        "level": round(level, 4),
+        "entry": _tick(entry),
+        "stop": _tick(stop),
+        "target": _tick(target),
+        "level": _tick(level),
         "level_type": level_type,
         "reward_risk": round(reward_per_share / risk_per_share, 2),
         "risk_per_share": round(risk_per_share, 4),
