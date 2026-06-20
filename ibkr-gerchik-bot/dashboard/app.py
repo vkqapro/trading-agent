@@ -215,6 +215,12 @@ def render_header() -> dict[str, Any]:
             da.clear_caches()
             st.rerun()
 
+    # Order action feedback (Place/Close from any tab) shown at the top so it is
+    # visible regardless of which tab is active when the action fires.
+    feedback = st.session_state.pop("order_feedback", None)
+    if feedback:
+        st.success(feedback)
+
     source_health_bar(health)
     degraded = [item for item in health if item.status in {"stale", "missing"}]
     if degraded:
@@ -684,8 +690,38 @@ def render_trades() -> None:
             "tab, and run the bot worker: `python -m src.main --job execute_requests`."
         )
 
-    panel_header("Tracked Positions", icon="account_balance_wallet")
-    show_df(pd.DataFrame(positions), empty="No tracked positions are present in runtime state.")
+    panel_header(
+        "Tracked Positions", icon="account_balance_wallet",
+        badge="PAPER" if SETTINGS.paper_trading else "LIVE BLOCKED",
+    )
+    if not positions:
+        st.caption("No tracked positions are present in runtime state.")
+    else:
+        weights = [0.8, 0.6, 0.8, 0.8, 0.8, 0.6, 0.9, 1.4, 1.1]
+        labels = ["Symbol", "Qty", "Entry", "Stop", "Target", "Side", "Source", "Opened", ""]
+        header = st.columns(weights)
+        for col, label in zip(header, labels):
+            if label:
+                col.markdown(f"**:gray[{label}]**")
+        for index, pos in enumerate(positions):
+            symbol = str(pos.get("symbol", "")).upper()
+            side = str(pos.get("side", "")).upper()
+            cols = st.columns(weights)
+            cols[0].markdown(f"**{symbol}**")
+            cols[1].markdown(f"{pos.get('quantity', '-')}")
+            cols[2].markdown(f"${fmt(pos.get('entry'))}")
+            cols[3].markdown(f"${fmt(pos.get('stop_loss'))}")
+            cols[4].markdown(f"${fmt(pos.get('target'))}")
+            cols[5].markdown(
+                f":green[{side}]" if side == "BUY" else (f":red[{side}]" if side == "SELL" else side or "-")
+            )
+            cols[6].markdown(f"{pos.get('source', '-')}")
+            cols[7].markdown(f"{str(pos.get('opened_at', '-')).replace('T', ' ')}")
+            if cols[8].button("Close Position", key=f"closepos_{index}_{symbol}", width="stretch",
+                              help=f"Flatten the open {symbol} position via a market order"):
+                _confirm_close_position(symbol)
+        with st.expander("Full positions table (all columns)"):
+            show_df(pd.DataFrame(positions))
 
     executed_col, skipped_col = st.columns(2)
     with executed_col:
@@ -1180,7 +1216,16 @@ def render_forecast() -> None:
                 width="stretch", config=CHART_CONFIG,
             )
 
-    panel_header("Forecast Trade Ledger", icon="table_view")
+    panel_header(
+        "Forecast Trade Ledger",
+        icon="table_view",
+        badge="PAPER" if SETTINGS.paper_trading else "LIVE BLOCKED",
+    )
+    st.caption(
+        "Each row has Place Order (sends the setup to the execute_requests worker — "
+        "paper-only, respects DRY_RUN) and Close Position (flattens the symbol). "
+        "Results appear in Trades & Positions. Click a symbol to load its chart."
+    )
     rows = result.get("rows", [])
     rows = rows if isinstance(rows, list) else []
     view = st.segmented_control(
@@ -1196,88 +1241,68 @@ def render_forecast() -> None:
         visible = [row for row in rows if row.get("status") == "FILTERED"]
     else:
         visible = rows
-    frame = _forecast_result_frame(visible).reset_index(drop=True)
-    if frame.empty:
+
+    selected_row = None
+    if not visible:
         st.caption("No forecast rows match this view.")
     else:
-        ledger_event = st.dataframe(
-            frame,
-            hide_index=True,
-            width="stretch",
-            height=211,
-            row_height=35,
-            key=f"forecast_trade_ledger_{str(view).lower().replace(' ', '_')}",
-            on_select="rerun",
-            selection_mode="single-row",
-            column_config={
-                "Symbol": st.column_config.TextColumn(
-                    "Symbol", help="Click a row to load its forecast position chart."
-                ),
-                "Entry": st.column_config.NumberColumn(format="$%.2f"),
-                "Current": st.column_config.NumberColumn(format="$%.2f"),
-                "Distance %": st.column_config.NumberColumn(format="%.1f%%"),
-                "Distance ATR": st.column_config.NumberColumn(format="%.2f"),
-                "Stop": st.column_config.NumberColumn(format="$%.2f"),
-                "Target": st.column_config.NumberColumn(format="$%.2f"),
-                "Position Value": st.column_config.NumberColumn(format="$%.2f"),
-                "Risk $": st.column_config.NumberColumn(format="$%.2f"),
-                "Potential Reward": st.column_config.NumberColumn(format="$%.2f"),
-                "R:R": st.column_config.NumberColumn(format="%.2f"),
-            },
+        weights = [0.85, 0.6, 0.75, 0.75, 0.75, 0.55, 0.7, 0.95, 0.85, 0.9]
+        labels = ["Symbol", "Side", "Entry", "Stop", "Target", "R:R", "Shares", "Status", "", ""]
+        header = st.columns(weights)
+        for col, label in zip(header, labels):
+            if label:
+                col.markdown(f"**:gray[{label}]**")
+        for index, row in enumerate(visible[:50]):
+            symbol = str(row.get("symbol", "")).upper()
+            is_trade = row.get("status") == "FORECAST TRADE"
+            side = str(row.get("signal", "")).upper()
+            cols = st.columns(weights)
+            if cols[0].button(symbol, key=f"sym_{index}_{symbol}", width="stretch",
+                              help="Load this symbol's forecast chart below"):
+                st.session_state.forecast_selected_trade = _forecast_trade_identity(row)
+            cols[1].markdown(f":green[{side}]" if side == "BUY" else f":red[{side}]")
+            cols[2].markdown(f"${fmt(row.get('entry'))}")
+            cols[3].markdown(f"${fmt(row.get('stop'))}")
+            cols[4].markdown(f"${fmt(row.get('target'))}")
+            cols[5].markdown(f"{fmt(row.get('reward_risk'))}")
+            cols[6].markdown(f"{row.get('quantity', '-')}")
+            cols[7].markdown(":green[Eligible]" if is_trade else ":gray[Filtered]")
+            if cols[8].button(
+                "Place", key=f"place_{index}_{symbol}", disabled=not is_trade, width="stretch",
+                help=None if is_trade else "Only setups that pass all scenario filters can be placed.",
+            ):
+                _confirm_place_order(row)
+            if cols[9].button("Close", key=f"close_{index}_{symbol}", width="stretch",
+                              help=f"Flatten any open {symbol} position"):
+                _confirm_close_position(symbol)
+
+        selected_identity = st.session_state.get("forecast_selected_trade")
+        selected_row = next(
+            (row for row in visible if _forecast_trade_identity(row) == selected_identity),
+            visible[0],
         )
-        selected_indexes = list(ledger_event.selection.rows)
-        if selected_indexes:
-            selected_row = visible[selected_indexes[0]]
-            st.session_state.forecast_selected_trade = _forecast_trade_identity(selected_row)
-        else:
-            selected_identity = st.session_state.get("forecast_selected_trade")
-            selected_row = next(
-                (
-                    row for row in visible
-                    if _forecast_trade_identity(row) == selected_identity
-                ),
-                visible[0],
+        st.session_state.forecast_selected_trade = _forecast_trade_identity(selected_row)
+
+        with st.expander("Full ledger table (all columns, sortable)"):
+            show_df(
+                _forecast_result_frame(visible),
+                height=300,
+                column_config={
+                    "Entry": st.column_config.NumberColumn(format="$%.2f"),
+                    "Current": st.column_config.NumberColumn(format="$%.2f"),
+                    "Distance %": st.column_config.NumberColumn(format="%.1f%%"),
+                    "Distance ATR": st.column_config.NumberColumn(format="%.2f"),
+                    "Stop": st.column_config.NumberColumn(format="$%.2f"),
+                    "Target": st.column_config.NumberColumn(format="$%.2f"),
+                    "Position Value": st.column_config.NumberColumn(format="$%.2f"),
+                    "Risk $": st.column_config.NumberColumn(format="$%.2f"),
+                    "Potential Reward": st.column_config.NumberColumn(format="$%.2f"),
+                    "R:R": st.column_config.NumberColumn(format="%.2f"),
+                },
             )
-            st.session_state.forecast_selected_trade = _forecast_trade_identity(selected_row)
 
-        st.caption(
-            "The ledger shows five rows at a time. Scroll for more; click a Symbol row "
-            "to update the chart."
-        )
+    if selected_row is not None:
         _render_forecast_position_chart(selected_row)
-
-    panel_header(
-        "Order Actions",
-        icon="bolt",
-        badge="PAPER" if SETTINGS.paper_trading else "LIVE BLOCKED",
-    )
-    feedback = st.session_state.pop("order_feedback", None)
-    if feedback:
-        st.success(feedback)
-    st.caption(
-        "Place Order sends the setup to the bot's execute_requests worker, which "
-        "submits it (paper-only, respecting DRY_RUN). Close Position flattens the "
-        "symbol. Results appear in Trades & Positions."
-    )
-    if not visible:
-        st.caption("No rows to act on in this view.")
-    for index, row in enumerate(visible[:25]):
-        symbol = str(row.get("symbol", "")).upper()
-        is_trade = row.get("status") == "FORECAST TRADE"
-        info_col, place_col, close_col = st.columns([4, 1.2, 1.2])
-        info_col.markdown(
-            f"**{symbol}** · {row.get('signal')} · "
-            f"entry {fmt(row.get('entry'))} / stop {fmt(row.get('stop'))} / "
-            f"target {fmt(row.get('target'))} · {fmt(row.get('reward_risk'))}R"
-        )
-        if place_col.button(
-            "Place Order", key=f"place_{index}_{symbol}",
-            disabled=not is_trade, width="stretch",
-            help=None if is_trade else "Only setups that pass all scenario filters can be placed.",
-        ):
-            _confirm_place_order(row)
-        if close_col.button("Close Position", key=f"close_{index}_{symbol}", width="stretch"):
-            _confirm_close_position(symbol)
 
     warnings = stored.get("warnings")
     if isinstance(warnings, list) and warnings:
