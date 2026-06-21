@@ -60543,3 +60543,23 @@ Reasons:
 - **limit_order_id**: 55
 - **manual_override**: True
 - **broker_statuses**: {'market_order': 'PreSubmitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Manual Trade QUCY (2026-06-21T13:37:00)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: QUCY
+- **strategy**: level_retest_forecast
+- **level_type**: gap
+- **direction**: short
+- **signal**: SELL
+- **entry**: 1.85
+- **stop_loss**: 2.0
+- **target**: 0.44
+- **reward_risk**: 9.4
+- **partial_targets**: []
+- **quantity**: 66
+- **market_order_id**: 64
+- **stop_order_id**: 65
+- **limit_order_id**: 66
+- **manual_override**: True
+- **broker_statuses**: {'market_order': 'PreSubmitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
