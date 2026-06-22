@@ -46,6 +46,11 @@ const R = (hex, a) => {
 };
 const API = 'http://127.0.0.1:8550/api';
 
+// UI timeframe pill → API timeframe string (must match memory/bars filenames)
+const TF_API = {'1H':'intraday_15m', '1D':'daily', '1W':'daily', '1M':'daily'};
+// How many bars to show for each range button (applied client-side on daily data)
+const RANGE_COUNTS = {'1M':22,'3M':64,'6M':128,'YTD':150,'1Y':252,'ALL':9999};
+
 /* ── tiny helpers ─────────────────────────────────────────────────────────── */
 const Icon = ({n, size=18, color, style}) =>
   <span className="mso" style={{fontSize:size, color, lineHeight:1, ...style}}>{n}</span>;
@@ -64,8 +69,8 @@ const PulseDot = ({color=C.lime, size=7, shadow=8}) => (
     animation:'pulse 2s infinite',flexShrink:0}}/>
 );
 
-const GlassCard = ({children, style, hover}) => (
-  <div style={{background:R(C.surf,0.55),backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',
+const GlassCard = ({children, style, hover, onClick}) => (
+  <div onClick={onClick} style={{background:R(C.surf,0.55),backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',
     border:`1px solid ${R(C.outline,0.18)}`,borderRadius:12,
     boxShadow:`inset 0 1px 0 ${R('#fff',0.04)}`,...style}} className={hover?'hover-card':''}>
     {children}
@@ -116,75 +121,352 @@ const Table = ({cols, rows}) => (
 );
 
 /* ── SVG candlestick chart ────────────────────────────────────────────────── */
-function CandleChart({bars, levels=[], lines=[], showVol=true, height=300}) {
-  if (!bars || bars.length === 0)
-    return <div style={{height,display:'flex',alignItems:'center',justifyContent:'center',
-      color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>No bar data</div>;
+function CandleChart({bars, levels=[], lines=[], zones=[], showVol=true, height=300, stale=false, lastDate=null}) {
+  const n = bars?.length || 0;
+  const svgRef = useRef(null);
+  const [visStart, setVisStart] = useState(0);
+  const [visEnd,   setVisEnd]   = useState(n);
+  const [hover,    setHover]    = useState(null);   // {idx, svgX, svgY}
+  const [crosshair,setCrosshair]= useState(false);
+  const [showMA,   setShowMA]   = useState(true);
+  const dragRef = useRef(null);  // {startX, startVisStart, startVisEnd}
 
-  const W=1000, padT=14, padR=120, padL=10;
-  const volH = showVol ? 60 : 0;
-  const gap = showVol ? 14 : 0;
-  const priceH = height - padT - volH - gap - 10;
-  const H = padT + priceH + gap + volH + 10;
+  // reset view when bars change
+  useEffect(()=>{ setVisStart(0); setVisEnd(bars?.length||0); setHover(null); },[bars]);
 
+  if (!n) return <div style={{height,display:'flex',alignItems:'center',justifyContent:'center',
+    color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>No bar data</div>;
+
+  const W=1000, padT=18, padR=116, padL=64, padB=26;
+  const volH = showVol ? 55 : 0;
+  const gap  = showVol ? 12 : 0;
+  const priceH = height - padT - padB - volH - gap;
+  const H = padT + priceH + gap + volH + padB;
+  const plotW = W - padL - padR;
+
+  const vs = Math.max(0, Math.min(visStart, n-2));
+  const ve = Math.max(vs+2, Math.min(visEnd, n));
+  const visBars = bars.slice(vs, ve);
+  const vn = visBars.length;
+
+  // dynamic Y range from visible bars only
   let pmin=Infinity, pmax=-Infinity;
-  bars.forEach(c=>{ pmin=Math.min(pmin,c.low); pmax=Math.max(pmax,c.high); });
+  visBars.forEach(c=>{ pmin=Math.min(pmin,c.low); pmax=Math.max(pmax,c.high); });
   levels.forEach(l=>{ pmin=Math.min(pmin,l.p); pmax=Math.max(pmax,l.p); });
   lines.forEach(l=>{ pmin=Math.min(pmin,l.p); pmax=Math.max(pmax,l.p); });
-  const pd=(pmax-pmin)*0.07; pmin-=pd; pmax+=pd;
-  const yp = p => padT + (pmax-p)/(pmax-pmin)*priceH;
-  const n=bars.length, plotW=W-padL-padR;
-  const step=plotW/n, xi=i=>padL+i*step+step/2, cw=Math.max(2.5,step*0.55);
+  if(!isFinite(pmin)) { pmin=0; pmax=1; }
+  const pd=(pmax-pmin)*0.08; pmin-=pd; pmax+=pd;
 
+  const yp  = p => padT + (pmax-p)/(pmax-pmin)*priceH;
+  const step = plotW/vn;
+  const xi   = i => padL + i*step + step/2;
+  const cw   = Math.max(1.5, step*0.6);
+
+  // SVG coordinate converters (screen → SVG viewBox space)
+  const toSvgX = clientX => {
+    const r = svgRef.current?.getBoundingClientRect();
+    if(!r) return 0;
+    return (clientX - r.left) / r.width * W;
+  };
+  const toSvgY = clientY => {
+    const r = svgRef.current?.getBoundingClientRect();
+    if(!r) return 0;
+    return (clientY - r.top) / r.height * H;
+  };
+  // SVG X → bar index in full bars array
+  const svgXToBarIdx = sx => {
+    const frac = (sx - padL) / plotW;
+    return vs + Math.round(frac * (vn-1));
+  };
+  // SVG Y → price
+  const svgYToPrice = sy => pmax - (sy - padT) / priceH * (pmax - pmin);
+
+  const fmtP = p => !isFinite(p)?'—': Math.abs(p)>=1000?p.toFixed(0): Math.abs(p)>=100?p.toFixed(1): Math.abs(p)>=1?p.toFixed(2):p.toFixed(3);
+  const fmtD = t => {
+    if(!t) return '';
+    const m = String(t).match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/);
+    if(!m) return String(t).slice(0,10);
+    return m[4] ? `${m[2]}/${m[3]} ${m[4]}:${m[5]}` : `${m[1]}-${m[2]}-${m[3]}`;
+  };
+  const fmtVol = v => v>=1e6?`${(v/1e6).toFixed(1)}M`:v>=1e3?`${(v/1e3).toFixed(0)}K`:String(v);
+
+  // ── zoom helpers
+  const clampVis = (s,e) => {
+    const minW = Math.min(10, n);
+    let ns = Math.round(s), ne = Math.round(e);
+    if(ne-ns < minW) { ne = Math.min(n, ns+minW); ns = Math.max(0, ne-minW); }
+    ns = Math.max(0,ns); ne = Math.min(n,ne);
+    return [ns,ne];
+  };
+  // Zoom anchored to the right edge (latest bars stay visible) — only left edge moves.
+  // svgX is used to optionally weight the anchor: if cursor is far left, allow some
+  // leftward drift, but always keep ve pinned to current right edge.
+  const zoomAt = (svgX, factor) => {
+    const span = ve - vs;
+    const newSpan = Math.max(10, Math.min(n, Math.round(span * factor)));
+    // anchor: right edge stays fixed, left edge moves
+    const [ns,ne] = clampVis(ve - newSpan, ve);
+    setVisStart(ns); setVisEnd(ne);
+  };
+  const fitAll = () => { setVisStart(0); setVisEnd(n); setHover(null); };
+
+  // ── mouse event handlers
+  const onWheel = e => {
+    e.preventDefault();
+    zoomAt(toSvgX(e.clientX), e.deltaY>0 ? 1.15 : 0.87);
+  };
+  const onMouseDown = e => {
+    if(e.button!==0) return;
+    dragRef.current = {startX: e.clientX, startVisStart: vs, startVisEnd: ve};
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+  const onMouseMove = e => {
+    const sx = toSvgX(e.clientX), sy = toSvgY(e.clientY);
+    const idx = Math.max(vs, Math.min(ve-1, svgXToBarIdx(sx)));
+    setHover({idx, svgX:sx, svgY:sy});
+    if(dragRef.current){
+      const dx = e.clientX - dragRef.current.startX;
+      const r = svgRef.current?.getBoundingClientRect();
+      const barsPerPx = (dragRef.current.startVisEnd - dragRef.current.startVisStart) / (r?.width||1) * (W/plotW);
+      const shift = Math.round(-dx * barsPerPx);
+      const span = dragRef.current.startVisEnd - dragRef.current.startVisStart;
+      const [ns,ne] = clampVis(dragRef.current.startVisStart+shift, dragRef.current.startVisStart+shift+span);
+      setVisStart(ns); setVisEnd(ne);
+    }
+  };
+  const onMouseUp   = () => { dragRef.current = null; };
+  const onMouseLeave= () => { dragRef.current=null; setHover(null); };
+
+  // ── build SVG elements
   const els=[];
-  for(let g=0;g<=4;g++){
-    const gy=padT+priceH*g/4;
+
+  // Y-axis grid + left labels
+  for(let g=0; g<=5; g++){
+    const pv = pmax - (pmax-pmin)*g/5;
+    const gy = yp(pv);
     els.push(<line key={'g'+g} x1={padL} x2={W-padR} y1={gy} y2={gy} stroke="rgba(132,148,149,0.07)" strokeWidth={1}/>);
+    els.push(<text key={'yl'+g} x={padL-6} y={gy+4} fill="rgba(132,148,149,0.7)" fontSize={10}
+      fontFamily="JetBrains Mono,monospace" textAnchor="end">{fmtP(pv)}</text>);
   }
+  els.push(<line key="yax" x1={padL} x2={padL} y1={padT} y2={padT+priceH} stroke="rgba(132,148,149,0.15)" strokeWidth={1}/>);
+
+  // X-axis date labels
+  const xTick = Math.min(8, vn);
+  const xStp  = Math.max(1, Math.floor(vn/xTick));
+  for(let k=0; k<vn; k+=xStp){
+    const cx = xi(k);
+    els.push(<line key={'xg'+k} x1={cx} x2={cx} y1={padT} y2={padT+priceH} stroke="rgba(132,148,149,0.04)" strokeWidth={1}/>);
+    els.push(<text key={'xl'+k} x={cx} y={H-5} fill="rgba(132,148,149,0.6)" fontSize={10}
+      fontFamily="JetBrains Mono,monospace" textAnchor="middle">{fmtD(visBars[k]?.t)}</text>);
+  }
+  els.push(<line key="xax" x1={padL} x2={W-padR} y1={padT+priceH} y2={padT+priceH} stroke="rgba(132,148,149,0.15)" strokeWidth={1}/>);
+
+  // filled zones between two price levels (e.g. entry → target)
+  zones.forEach((z,i)=>{
+    const y1=yp(Math.max(z.p1,z.p2)), y2=yp(Math.min(z.p1,z.p2));
+    els.push(<rect key={'z'+i} x={padL} y={y1} width={plotW} height={Math.max(1,y2-y1)} fill={R(z.color,z.opacity??0.08)}/>);
+    // subtle diagonal hatch feel via a second lighter rect
+    els.push(<rect key={'zh'+i} x={padL} y={y1} width={plotW} height={Math.max(1,y2-y1)} fill={`url(#hatch${i})`} opacity={0.18}/>);
+    els.push(<defs key={'hd'+i}><pattern id={`hatch${i}`} patternUnits="userSpaceOnUse" width={8} height={8} patternTransform="rotate(45)">
+      <line x1={0} y1={0} x2={0} y2={8} stroke={z.color} strokeWidth={1.5}/>
+    </pattern></defs>);
+  });
+
   // level zones + lines
   levels.forEach((l,i)=>{
     const half=l.zoneHalf??Math.max(Math.abs(l.p)*0.004,(pmax-pmin)*0.004);
     const zT=yp(l.p+half), zB=yp(l.p-half);
-    els.push(<rect key={'lz'+i} x={padL} y={zT} width={plotW} height={Math.max(2,zB-zT)} fill={R(l.color,0.13)}/>);
-    els.push(<line key={'lv'+i} x1={padL} x2={W-padR} y1={yp(l.p)} y2={yp(l.p)} stroke={R(l.color,0.55)} strokeWidth={1.3}/>);
+    els.push(<rect key={'lz'+i} x={padL} y={zT} width={plotW} height={Math.max(2,zB-zT)} fill={R(l.color,0.10)}/>);
+    els.push(<line key={'lv'+i} x1={padL} x2={W-padR} y1={yp(l.p)} y2={yp(l.p)} stroke={R(l.color,0.65)} strokeWidth={1.3}/>);
   });
-  // dashed lines (entry/stop/target)
+  // dashed entry/stop/target lines
   lines.forEach((l,i)=>els.push(
     <line key={'dl'+i} x1={padL} x2={W-padR} y1={yp(l.p)} y2={yp(l.p)} stroke={l.color} strokeWidth={1.4} strokeDasharray="6 4"/>
   ));
   // MA
-  const ma=[]; for(let i=0;i<n;i++){const k=Math.max(0,i-6);let s=0,c2=0;for(let j=k;j<=i;j++){s+=bars[j].close;c2++;}ma.push(s/c2);}
-  let path=''; ma.forEach((m,i)=>{ path+=(i?' L':'M')+xi(i).toFixed(1)+' '+yp(m).toFixed(1); });
-  els.push(<path key="ma" d={path} fill="none" stroke={R(C.cyan,0.55)} strokeWidth={1.7}/>);
+  if(showMA){
+    let path='';
+    visBars.forEach((c,i)=>{
+      const k=Math.max(0,i-6); let s=0,cnt=0;
+      for(let j=k;j<=i;j++){s+=visBars[j].close;cnt++;}
+      path+=(i?' L':'M')+xi(i).toFixed(1)+' '+yp(s/cnt).toFixed(1);
+    });
+    els.push(<path key="ma" d={path} fill="none" stroke={R(C.cyan,0.45)} strokeWidth={1.6}/>);
+  }
   // candles
-  bars.forEach((c,i)=>{
+  visBars.forEach((c,i)=>{
     const up=c.close>=c.open, col=up?C.lime:C.err;
     const bx=xi(i), top=yp(Math.max(c.open,c.close)), bot=yp(Math.min(c.open,c.close));
-    els.push(<line key={'w'+i} x1={bx} x2={bx} y1={yp(c.high)} y2={yp(c.low)} stroke={col} strokeWidth={1} opacity={0.85}/>);
-    els.push(<rect key={'b'+i} x={bx-cw/2} width={cw} y={top} height={Math.max(1.2,bot-top)} fill={col} opacity={0.9}/>);
+    const isHov = hover && (vs+i)===hover.idx;
+    els.push(<line key={'w'+i} x1={bx} x2={bx} y1={yp(c.high)} y2={yp(c.low)} stroke={col} strokeWidth={isHov?2:1} opacity={0.9}/>);
+    els.push(<rect key={'b'+i} x={bx-cw/2} width={cw} y={top} height={Math.max(1.5,bot-top)}
+      fill={col} opacity={isHov?1:0.88} stroke={isHov?'#fff':col} strokeWidth={isHov?0.8:0}/>);
   });
   // volume
   if(showVol){
-    const volTop=padT+priceH+gap, vmax=Math.max(...bars.map(c=>c.volume||0))||1;
-    bars.forEach((c,i)=>{
+    const volTop=padT+priceH+gap, vmax=Math.max(...visBars.map(c=>c.volume||0))||1;
+    visBars.forEach((c,i)=>{
       const up=c.close>=c.open, vh=(c.volume/vmax)*volH;
-      els.push(<rect key={'v'+i} x={xi(i)-cw/2} width={cw} y={volTop+volH-vh} height={Math.max(0.5,vh)} fill={R(up?C.lime:C.err,0.4)}/>);
+      const isHov = hover && (vs+i)===hover.idx;
+      els.push(<rect key={'v'+i} x={xi(i)-cw/2} width={cw} y={volTop+volH-vh} height={Math.max(0.5,vh)}
+        fill={R(up?C.lime:C.err, isHov?0.65:0.32)}/>);
     });
-    els.push(<line key="vb" x1={padL} x2={W-padR} y1={volTop+volH} y2={volTop+volH} stroke="rgba(132,148,149,0.12)" strokeWidth={1}/>);
+    els.push(<line key="vb" x1={padL} x2={W-padR} y1={volTop} y2={volTop} stroke="rgba(132,148,149,0.10)" strokeWidth={1}/>);
+    els.push(<text key="vlbl" x={padL-6} y={volTop+volH/2+4} fill="rgba(132,148,149,0.45)" fontSize={9}
+      fontFamily="JetBrains Mono,monospace" textAnchor="end">VOL</text>);
   }
-  const fmtP = p => '$'+(Math.abs(p)>=1?p.toFixed(2):p.toFixed(3));
-  const allLabels = [...levels,...lines];
+
+  // crosshair
+  if(hover && crosshair){
+    const cx=hover.svgX, cy=hover.svgY;
+    if(cx>=padL && cx<=W-padR){
+      els.push(<line key="chv" x1={cx} x2={cx} y1={padT} y2={padT+priceH} stroke="rgba(125,244,255,0.35)" strokeWidth={1} strokeDasharray="4 3"/>);
+      // price label on Y axis for crosshair
+      const chPrice = svgYToPrice(cy);
+      if(cy>=padT && cy<=padT+priceH){
+        els.push(<line key="chh" x1={padL} x2={W-padR} y1={cy} y2={cy} stroke="rgba(125,244,255,0.25)" strokeWidth={1} strokeDasharray="4 3"/>);
+        els.push(<rect key="chpr" x={W-padR} y={cy-9} width={padR-4} height={18} rx={3} fill="rgba(0,240,255,0.15)" stroke="rgba(125,244,255,0.5)" strokeWidth={1}/>);
+        els.push(<text key="chpt" x={W-padR+4} y={cy+4} fill={C.cyan} fontSize={10} fontFamily="JetBrains Mono,monospace">{fmtP(chPrice)}</text>);
+      }
+    }
+  }
+
+  // last-price label on right axis
+  const lastClose = visBars[vn-1]?.close;
+  if(lastClose!=null){
+    const ly = yp(lastClose);
+    els.push(<rect key="lpr" x={W-padR} y={ly-9} width={padR-4} height={18} rx={3} fill={R(C.lime,0.18)} stroke={R(C.lime,0.55)} strokeWidth={1}/>);
+    els.push(<text key="lpt" x={W-padR+4} y={ly+4} fill={C.lime} fontSize={10} fontFamily="JetBrains Mono,monospace" fontWeight="600">{fmtP(lastClose)}</text>);
+    els.push(<line key="lpl" x1={padL} x2={W-padR} y1={ly} y2={ly} stroke={R(C.lime,0.18)} strokeWidth={1} strokeDasharray="3 4"/>);
+  }
+
+  // hovered candle highlight bar on X axis
+  if(hover){
+    const localIdx = hover.idx - vs;
+    if(localIdx>=0 && localIdx<vn){
+      const cx=xi(localIdx);
+      els.push(<rect key="xhl" x={cx-step/2} y={padT+priceH+2} width={step} height={padB-4} rx={2} fill={R(C.cyan,0.15)}/>);
+    }
+  }
+
+  // ── hovered candle OHLCV tooltip data
+  const hovBar = hover && bars[Math.max(0,Math.min(n-1,hover.idx))];
+  const tooltipRight = hover && hover.svgX > W*0.6;
+
+  const allLabels = [...levels, ...lines];
+
   return (
-    <div style={{position:'relative',width:'100%',height:H}}>
-      <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" width="100%" height="100%" style={{display:'block'}}>{els}</svg>
-      {allLabels.map((l,i)=>(
-        <div key={i} style={{position:'absolute',right:4,top:`calc(${(yp(l.p)/H*100).toFixed(2)}% - 8px)`,
-          fontFamily:"'JetBrains Mono',monospace",fontSize:'9.5px',color:l.color,
-          background:R(C.bg,0.82),padding:'1px 6px',borderRadius:3,
-          border:`1px solid ${R(l.color,0.4)}`,whiteSpace:'nowrap'}}>
-          {l.label??fmtP(l.p)}
+    <div style={{userSelect:'none'}}>
+      {/* Stale data warning */}
+      {stale && (
+        <div style={{display:'flex',alignItems:'center',gap:9,padding:'7px 14px',
+          background:'rgba(236,178,255,0.06)',borderBottom:`1px solid rgba(236,178,255,0.2)`}}>
+          <Icon n="warning" size={15} color={C.magenta}/>
+          <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.magenta}}>
+            Bar data is stale — last bar {lastDate}. Bot has not fetched fresh data yet (runs pre-market).
+          </span>
         </div>
-      ))}
+      )}
+      {/* Toolbar */}
+      <div style={{display:'flex',alignItems:'center',gap:6,padding:'8px 12px',
+        borderBottom:`1px solid ${R(C.outline,0.10)}`,flexWrap:'wrap'}}>
+        {[
+          {icon:'add',    title:'Zoom in',  action:()=>zoomAt(W/2, 0.65)},
+          {icon:'remove', title:'Zoom out', action:()=>zoomAt(W/2, 1.5)},
+          {icon:'fit_screen', title:'Fit all', action:fitAll},
+        ].map(b=>(
+          <button key={b.icon} title={b.title} onClick={b.action}
+            style={{width:30,height:28,borderRadius:6,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',
+              background:'rgba(28,27,28,0.7)',border:`1px solid rgba(132,148,149,0.2)`,color:C.onVar,flexShrink:0}}
+            onMouseEnter={e=>{e.currentTarget.style.borderColor=C.cyan;e.currentTarget.style.color=C.cyan;}}
+            onMouseLeave={e=>{e.currentTarget.style.borderColor='rgba(132,148,149,0.2)';e.currentTarget.style.color=C.onVar;}}>
+            <Icon n={b.icon} size={16} color="inherit"/>
+          </button>
+        ))}
+        <div style={{width:1,height:20,background:'rgba(132,148,149,0.18)',flexShrink:0,margin:'0 2px'}}/>
+        {[
+          {icon:'my_location', title:'Crosshair', on:crosshair, toggle:()=>setCrosshair(v=>!v)},
+          {icon:'show_chart',  title:'MA (7)',     on:showMA,    toggle:()=>setShowMA(v=>!v)},
+        ].map(b=>(
+          <button key={b.icon} title={b.title} onClick={b.toggle}
+            style={{width:30,height:28,borderRadius:6,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,
+              background:b.on?R(C.cyan,0.14):'rgba(28,27,28,0.7)',
+              border:`1px solid ${b.on?R(C.cyan,0.45):'rgba(132,148,149,0.2)'}`,color:b.on?C.cyan:C.onVar}}>
+            <Icon n={b.icon} size={16} color="inherit"/>
+          </button>
+        ))}
+        <div style={{flex:1}}/>
+        <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,whiteSpace:'nowrap'}}>
+          {vs+1}–{ve} / {n} bars
+        </span>
+      </div>
+
+      {/* SVG */}
+      <div style={{position:'relative',width:'100%',height:H}}>
+        <svg ref={svgRef}
+          viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none"
+          width="100%" height="100%"
+          style={{display:'block',cursor:dragRef.current?'grabbing':'crosshair'}}
+          onWheel={onWheel}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseUp={onMouseUp}
+          onMouseLeave={onMouseLeave}
+        >{els}</svg>
+
+        {/* Right-side price labels for levels + lines */}
+        {allLabels.map((l,i)=>(
+          <div key={i} style={{position:'absolute',right:4,top:`calc(${(yp(l.p)/H*100).toFixed(2)}% - 8px)`,
+            fontFamily:"'JetBrains Mono',monospace",fontSize:'9.5px',color:l.color,
+            background:R(C.bg,0.88),padding:'1px 6px',borderRadius:3,
+            border:`1px solid ${R(l.color,0.4)}`,whiteSpace:'nowrap',pointerEvents:'none'}}>
+            {l.label??('$'+fmtP(l.p))}
+          </div>
+        ))}
+
+        {/* OHLCV Tooltip */}
+        {hovBar && (() => {
+          const chg = hovBar.close - hovBar.open;
+          const chgPct = (chg/hovBar.open*100);
+          const up = chg>=0;
+          const col = up?C.lime:C.err;
+          const r = svgRef.current?.getBoundingClientRect();
+          const tooltipW = 210;
+          const leftPct = tooltipRight ? null : `${((hover.svgX+12)/W*100).toFixed(1)}%`;
+          const rightPct = tooltipRight ? `${((W-hover.svgX+12)/W*100).toFixed(1)}%` : null;
+          return (
+            <div style={{position:'absolute',
+              top:`${Math.max(4,(hover.svgY-10)/H*100).toFixed(1)}%`,
+              left:leftPct, right:rightPct,
+              width:tooltipW,
+              background:'rgba(14,14,15,0.96)',border:`1px solid ${R(col,0.35)}`,
+              borderRadius:9,padding:'11px 14px',pointerEvents:'none',zIndex:10,
+              boxShadow:`0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px ${R(col,0.12)}`}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:8}}>
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onSurf,fontWeight:600}}>{fmtD(hovBar.t)}</span>
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:col,fontWeight:600}}>
+                  {up?'+':''}{chg.toFixed(2)} ({up?'+':''}{chgPct.toFixed(2)}%)
+                </span>
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'5px 14px'}}>
+                {[['O',hovBar.open],['H',hovBar.high],['L',hovBar.low],['C',hovBar.close]].map(([lbl,val])=>(
+                  <div key={lbl} style={{display:'flex',justifyContent:'space-between',alignItems:'baseline'}}>
+                    <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>{lbl}</span>
+                    <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:lbl==='C'?col:C.onVar}}>{fmtP(val)}</span>
+                  </div>
+                ))}
+              </div>
+              {hovBar.volume>0 && (
+                <div style={{marginTop:7,paddingTop:7,borderTop:`1px solid rgba(132,148,149,0.12)`,
+                  display:'flex',justifyContent:'space-between',alignItems:'baseline'}}>
+                  <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>VOL</span>
+                  <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar}}>{fmtVol(hovBar.volume)}</span>
+                </div>
+              )}
+            </div>
+          );
+        })()}
+      </div>
     </div>
   );
 }
@@ -239,7 +521,7 @@ function MetricCard({label, value, icon, iconColor, sub, subColor, bar, barColor
   const vc = valueColor||C.onSurf;
   return (
     <GlassCard style={{padding:'18px 18px 16px',display:'flex',flexDirection:'column',gap:14,cursor:onClick?'pointer':undefined}}
-      hover={!!onClick}>
+      hover={!!onClick} onClick={onClick}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
         <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.05em',color:C.onVar}}>{label}</span>
         {icon && <Icon n={icon} size={18} color={iconColor||C.outline}/>}
@@ -330,7 +612,7 @@ function NewsModal({items=[], onClose}) {
 /* ════════════════════════════════════════════════════════════════════════════
    TAB: DASHBOARD
 ═══════════════════════════════════════════════════════════════════════════ */
-function TabDashboard({newsModal, setNewsModal}) {
+function TabDashboard({setNewsModal, setNewsItems}) {
   const [data, setData] = useState(null);
   const [tf, setTf] = useState('1D');
   const [range, setRange] = useState('ALL');
@@ -338,12 +620,15 @@ function TabDashboard({newsModal, setNewsModal}) {
   const [showTrade, setShowTrade] = useState(true);
   const [showVol, setShowVol] = useState(true);
   const [bars, setBars] = useState([]);
-  const [newsItems, setNewsItems] = useState([]);
+  const [barsInfo, setBarsInfo] = useState({stale:false,lastDate:null});
+  const [aaplPlan, setAaplPlan] = useState(null);
 
   useEffect(()=>{ fetch(`${API}/dashboard`).then(r=>r.json()).then(d=>{ setData(d); setNewsItems(d.news_items||[]); }); },[]);
   useEffect(()=>{
     const sym = 'AAPL';
-    fetch(`${API}/bars/${sym}/daily`).then(r=>r.json()).then(d=>setBars(d.bars||[]));
+    const apitf = TF_API[tf]||'daily';
+    fetch(`${API}/bars/${sym}/${apitf}`).then(r=>r.json()).then(d=>{setBars(d.bars||[]);setBarsInfo({stale:d.stale,lastDate:d.last_date});});
+    fetch(`${API}/preopen/${sym}`).then(r=>r.json()).then(setAaplPlan).catch(()=>{});
   },[tf]);
 
   if(!data) return <Spinner/>;
@@ -375,9 +660,7 @@ function TabDashboard({newsModal, setNewsModal}) {
     {k:'Account mode', v:'Paper'},
   ];
 
-  // range to count
-  const rangeCounts = {'1M':22,'3M':64,'6M':128,'YTD':150,'1Y':252,'ALL':9999};
-  const visCount = rangeCounts[range]||9999;
+  const visCount = RANGE_COUNTS[range]||9999;
   const visBars = bars.slice(-visCount);
 
   const fmtP = v => v==null?'—': typeof v==='number'?`$${v.toFixed(2)}`:v;
@@ -386,7 +669,6 @@ function TabDashboard({newsModal, setNewsModal}) {
     <div style={{display:'flex',flexDirection:'column',gap:28}}>
       <MetricGrid items={metricCards}/>
 
-      {newsModal && <NewsModal items={newsItems} onClose={()=>setNewsModal(false)}/>}
 
       <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))',gap:16}}>
         {/* Decision Bias */}
@@ -444,7 +726,7 @@ function TabDashboard({newsModal, setNewsModal}) {
           </div>
         </div>
         <div style={{padding:'18px 20px'}}>
-          <CandleChart bars={visBars} showVol={showVol} height={300}/>
+          <CandleChart bars={visBars} levels={buildChartLevels(aaplPlan?.trade_levels, aaplPlan?.raw_levels, showTrade, showRaw)} showVol={showVol} height={300} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
         </div>
       </GlassCard>
 
@@ -500,6 +782,7 @@ function TabPreOpen() {
   const [allRows, setAllRows] = useState([]);
   const [plan, setPlan] = useState(null);
   const [bars, setBars] = useState([]);
+  const [barsInfo, setBarsInfo] = useState({stale:false,lastDate:null});
   const [tf, setTf] = useState('1D');
   const [allLevelsOpen, setAllLevelsOpen] = useState(false);
   const [showVol, setShowVol] = useState(true);
@@ -520,20 +803,16 @@ function TabPreOpen() {
 
   useEffect(()=>{
     if(!selected) return;
+    const apitf = TF_API[tf]||'daily';
     fetch(`${API}/preopen/${selected}`).then(r=>r.json()).then(setPlan).catch(()=>setPlan(null));
-    fetch(`${API}/bars/${selected}/daily`).then(r=>r.json()).then(d=>setBars(d.bars||[]));
-  },[selected]);
+    fetch(`${API}/bars/${selected}/${apitf}`).then(r=>r.json()).then(d=>{setBars(d.bars||[]);setBarsInfo({stale:d.stale,lastDate:d.last_date});});
+  },[selected, tf]);
 
   const fmtN = v => v!=null ? Number(v).toFixed(2) : '—';
 
-  const chartLevels = useMemo(()=>{
-    if(!plan?.trade_levels) return [];
-    return plan.trade_levels.slice().sort((a,b)=>(b.price||0)-(a.price||0)).map((l,i)=>({
-      p: l.price, zoneHalf: l.zone_high&&l.zone_low ? Math.abs(l.zone_high-l.zone_low)/2 : undefined,
-      color: i===0?C.lime:C.cyan,
-      label: `${l.type==='gap'?'GAP':'LVL'} ${fmtN(l.price)} · ${l.touches??'?'}T`,
-    }));
-  },[plan]);
+  const chartLevels = useMemo(()=>
+    buildChartLevels(plan?.trade_levels, plan?.raw_levels, showTrade, showRaw),
+  [plan, showTrade, showRaw]);
 
   return (
     <div style={{display:'flex',flexDirection:'column',gap:28}}>
@@ -692,7 +971,7 @@ function TabPreOpen() {
             </div>
           </div>
           <div style={{padding:'18px 20px'}}>
-            <CandleChart bars={bars} levels={chartLevels} showVol={showVol} height={300}/>
+            <CandleChart bars={bars} levels={chartLevels} showVol={showVol} height={300} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
           </div>
         </GlassCard>
       )}
@@ -833,9 +1112,9 @@ function TabTrades() {
    TAB: FORECAST
 ═══════════════════════════════════════════════════════════════════════════ */
 const FC_DEFAULTS = {
-  equity:100000, cash:100000, dailyPnl:0, spread:0.05,
+  equity:1000, cash:1000, dailyPnl:0, spread:0.05,
   riskTrade:1.0, maxDailyLoss:2.0, minRR:3.0, maxPositions:5,
-  maxSpread:0.20, maxOpenRisk:6.0, maxPosValue:50000, minEntryAtr:1.0, maxEntryAtr:2.0,
+  maxSpread:0.20, maxOpenRisk:6.0, maxPosValue:1000, minEntryAtr:0.25, maxEntryAtr:2.0,
 };
 
 function TabForecast() {
@@ -846,11 +1125,33 @@ function TabForecast() {
   const [fcFilter, setFcFilter] = useState('eligible');
   const [fcExpanded, setFcExpanded] = useState(false);
   const [fcSel, setFcSel] = useState(null);
-  const [feedback, setFeedback] = useState(null);
+  const [feedback, setFeedback] = useState(null);   // {ok, message, id} or null
+  const [confirm, setConfirm] = useState(null);     // {type:'place'|'close', row} pending user confirmation
+  const [qtyOverrides, setQtyOverrides] = useState({});  // index -> qty string while editing
+  const setQtyOverride = (i, val) => setQtyOverrides(prev => ({...prev, [i]: val}));
+
+  const doPlace = useCallback(async(row) => {
+    setConfirm(null);
+    try {
+      const r = await fetch(`${API}/order/place`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(row)});
+      const d = await r.json();
+      setFeedback({ok:d.ok, message:d.message, id:d.id, dryRun:d.dry_run});
+    } catch(e) { setFeedback({ok:false, message:'Network error: '+e.message}); }
+  },[]);
+
+  const doClose = useCallback(async(symbol) => {
+    setConfirm(null);
+    try {
+      const r = await fetch(`${API}/order/close`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({symbol})});
+      const d = await r.json();
+      setFeedback({ok:d.ok, message:d.message, id:d.id, dryRun:d.dry_run});
+    } catch(e) { setFeedback({ok:false, message:'Network error: '+e.message}); }
+  },[]);
   const [showVol, setShowVol] = useState(true);
   const [showRaw, setShowRaw] = useState(false);
   const [showTrade, setShowTrade] = useState(true);
   const [selBars, setSelBars] = useState([]);
+  const [selBarsInfo, setSelBarsInfo] = useState({stale:false,lastDate:null});
   const [tf, setTf] = useState('1D');
 
   const runCalc = useCallback(async(inputs)=>{
@@ -868,10 +1169,14 @@ function TabForecast() {
 
   useEffect(()=>{ runCalc(FC_DEFAULTS); },[]);
 
+  const [selPlan, setSelPlan] = useState(null);
+
   useEffect(()=>{
     if(!fcSel) return;
-    fetch(`${API}/bars/${fcSel}/daily`).then(r=>r.json()).then(d=>setSelBars(d.bars||[]));
-  },[fcSel]);
+    const apitf = TF_API[tf]||'daily';
+    fetch(`${API}/bars/${fcSel}/${apitf}`).then(r=>r.json()).then(d=>{setSelBars(d.bars||[]);setSelBarsInfo({stale:d.stale,lastDate:d.last_date});});
+    fetch(`${API}/preopen/${fcSel}`).then(r=>r.json()).then(setSelPlan).catch(()=>setSelPlan(null));
+  },[fcSel, tf]);
 
   const money = n => '$'+Math.round(n||0).toLocaleString('en-US');
   const fmtP2 = v => v!=null ? `$${Number(v).toFixed(2)}` : '—';
@@ -1027,14 +1332,23 @@ function TabForecast() {
               })}
             </div>
             {feedback && (
-              <div style={{display:'flex',alignItems:'center',gap:11,marginBottom:16,padding:'12px 16px',borderRadius:10,background:R(C.lime,0.07),border:`1px solid ${R(C.lime,0.25)}`}}>
-                <Icon n="task_alt" size={18} color={C.lime} style={{flexShrink:0}}/>
-                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:'11.5px',lineHeight:1.5,color:'#dbe9b0'}}>{feedback}</span>
+              <div style={{display:'flex',alignItems:'center',gap:11,marginBottom:16,padding:'12px 16px',borderRadius:10,
+                background:feedback.ok?R(C.lime,0.07):R(C.err,0.07),
+                border:`1px solid ${feedback.ok?R(C.lime,0.25):R(C.err,0.25)}`}}>
+                <Icon n={feedback.ok?'task_alt':'error'} size={18} color={feedback.ok?C.lime:C.err} style={{flexShrink:0}}/>
+                <div style={{flex:1}}>
+                  <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:'11.5px',lineHeight:1.5,color:feedback.ok?'#dbe9b0':C.err}}>{feedback.message}</span>
+                  {feedback.id && <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,marginLeft:12}}>ID: {feedback.id}</span>}
+                  {feedback.dryRun && <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.magenta,marginLeft:12}}>DRY_RUN — no real order sent</span>}
+                </div>
+                <button onClick={()=>setFeedback(null)} style={{background:'none',border:'none',cursor:'pointer',color:C.outline,padding:4}}>
+                  <Icon n="close" size={16} color={C.outline}/>
+                </button>
               </div>
             )}
             <div style={{overflowX:'auto'}}>
               <table style={{width:'100%',borderCollapse:'collapse',minWidth:780}}>
-                <thead><tr>{['Symbol','Side','Entry','Stop','Target','R:R','Shares','Status','Actions'].map(c=>(
+                <thead><tr>{['Symbol','Side','Entry','Stop','Target','R:R','Shares','Risk $','Pot. Reward','Status','Reason','Actions'].map(c=>(
                   <th key={c} style={{padding:'11px 16px',textAlign:c==='Actions'?'right':'left',fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',textTransform:'uppercase',color:C.outline,borderBottom:`1px solid ${R(C.outline,0.12)}`,whiteSpace:'nowrap'}}>{c}</th>
                 ))}</tr></thead>
                 <tbody>{ledgerSrc.map((r,i)=>{
@@ -1042,23 +1356,97 @@ function TabForecast() {
                   const rr=Number(r.reward_risk||0);
                   const rrOk=rr>=Number(fc.minRR);
                   const sc=r.signal==='BUY'?C.lime:C.err;
+                  const qtyRaw = i in qtyOverrides ? qtyOverrides[i] : String(r.quantity||0);
+                  const qty=Math.max(0, Math.floor(Number(qtyRaw)||0));
+                  const qtyEdited = qty !== Number(r.quantity||0);
+                  const entry=Number(r.entry||0), stop=Number(r.stop||0), target=Number(r.target||0);
+                  const riskDollar=qty>0&&stop>0 ? qty*Math.abs(entry-stop) : null;
+                  const rewardDollar=qty>0&&target>0 ? qty*Math.abs(target-entry) : null;
                   return (
                     <tr key={i} onMouseEnter={e=>e.currentTarget.style.background=R('#fff',0.025)} onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
                       <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`}}>
                         <button onClick={()=>setFcSel(r.symbol)} style={{display:'inline-flex',alignItems:'center',justifyContent:'center',padding:'7px 15px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:500,color:r.symbol===fcSel?'#001416':C.onSurf,background:r.symbol===fcSel?C.cyan:'rgba(20,20,21,0.7)',border:`1px solid ${r.symbol===fcSel?C.cyan:'rgba(132,148,149,0.22)'}`}}>{r.symbol}</button>
                       </td>
                       <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:sc,fontWeight:500}}>{r.signal}</td>
-                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:C.onVar}}>${Number(r.entry||0).toFixed(2)}</td>
-                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:C.outline}}>${Number(r.stop||0).toFixed(2)}</td>
-                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:C.outline}}>${Number(r.target||0).toFixed(2)}</td>
+                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:C.onVar}}>${entry.toFixed(2)}</td>
+                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:C.outline}}>${stop.toFixed(2)}</td>
+                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:C.outline}}>${target.toFixed(2)}</td>
                       <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:rrOk?C.lime:C.outline}}>{rr.toFixed(2)}</td>
-                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:C.onVar}}>{r.quantity>0?r.quantity:'—'}</td>
+                      <td style={{padding:'8px 16px',borderBottom:`1px solid ${R(C.outline,0.06)}`}}>
+                        <div style={{display:'flex',alignItems:'center',gap:5}}>
+                          <input
+                            type="number" min="0" step="1"
+                            value={qtyRaw}
+                            onChange={e=>setQtyOverride(i, e.target.value)}
+                            onBlur={e=>{ const v=Math.max(0,Math.floor(Number(e.target.value)||0)); setQtyOverride(i,String(v)); }}
+                            style={{width:70,padding:'5px 8px',borderRadius:7,fontFamily:"'JetBrains Mono',monospace",fontSize:12,
+                              color:qtyEdited?C.cyan:C.onVar,
+                              background:qtyEdited?R(C.cyan,0.08):'rgba(28,27,28,0.7)',
+                              border:`1px solid ${qtyEdited?R(C.cyan,0.4):R(C.outline,0.22)}`,
+                              outline:'none',textAlign:'right'}}
+                          />
+                          {qtyEdited&&<button title="Reset to calculated" onClick={()=>setQtyOverride(i,String(r.quantity||0))}
+                            style={{background:'none',border:'none',cursor:'pointer',padding:2,color:C.outline,lineHeight:1}}>
+                            <Icon n="restart_alt" size={14} color={C.outline}/>
+                          </button>}
+                        </div>
+                      </td>
+                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:riskDollar!=null?C.err:C.outline,fontWeight:500}}>{riskDollar!=null?`$${riskDollar.toFixed(2)}`:'—'}</td>
+                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:rewardDollar!=null?C.lime:C.outline,fontWeight:500}}>{rewardDollar!=null?`$${rewardDollar.toFixed(2)}`:'—'}</td>
                       <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:filtered?C.outline:C.lime}}>{filtered?'Filtered':'Eligible'}</td>
+                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,maxWidth:260}}>
+                        {filtered ? (
+                          <div style={{display:'flex',flexWrap:'wrap',gap:4}}>
+                            {(r.reason_codes&&r.reason_codes.length?r.reason_codes:[r.reason||'filtered']).map((code,ci)=>{
+                              const labels={'daily_loss_limit_reached':'Daily loss limit','entry_too_close_to_market':'Entry too close','entry_too_far_from_market':'Entry too far','duplicate_position':'Duplicate position','max_positions_reached':'Max positions','reward_risk_too_low':'R:R too low','spread_too_wide':'Spread too wide','position_size_zero':'Size = 0','position_value_invalid':'Position value','open_risk_limit_exceeded':'Open risk limit'};
+                              const label=labels[code]||(typeof code==='string'?code.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()):String(code));
+                              return <span key={ci} style={{display:'inline-block',padding:'2px 8px',borderRadius:9999,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.err,background:R(C.err,0.10),border:`1px solid ${R(C.err,0.22)}`,whiteSpace:'nowrap'}}>{label}</span>;
+                            })}
+                          </div>
+                        ) : (()=>{
+                          const strategyLabels={
+                            'rebound':'Rebound',
+                            'confirmed_breakout':'Confirmed Breakout',
+                            'false_breakout_one_bar':'False Breakout',
+                            'level_retest_forecast':'Level Retest',
+                            'level_breakout_forecast':'Level Breakout',
+                          };
+                          const sourceLabels={
+                            'ACTIVE REPLAY':'Live signal',
+                            'PROJECTED':'Projected',
+                          };
+                          const stratLabel=strategyLabels[r.strategy]||(r.strategy||'').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())||null;
+                          const srcLabel=sourceLabels[r.source]||r.source||null;
+                          const checks=[];
+                          if(rr>0) checks.push(`R:R ${rr.toFixed(2)} ≥ ${Number(fc.minRR).toFixed(1)}`);
+                          if(r.entry_distance_atr!=null) checks.push(`${Number(r.entry_distance_atr).toFixed(2)} ATR dist`);
+                          if(qty>0&&entry>0) checks.push(`${qty} sh @ $${entry.toFixed(2)}`);
+                          if(rewardDollar!=null) checks.push(`+$${rewardDollar.toFixed(0)} target`);
+                          return (
+                            <div style={{display:'flex',flexDirection:'column',gap:5}}>
+                              {/* strategy + source line */}
+                              <div style={{display:'flex',alignItems:'center',gap:5,flexWrap:'wrap'}}>
+                                {stratLabel&&<span style={{display:'inline-flex',alignItems:'center',gap:4,padding:'2px 9px',borderRadius:9999,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:700,color:C.cyan,background:R(C.cyan,0.1),border:`1px solid ${R(C.cyan,0.28)}`}}>
+                                  <Icon n="strategy" size={11} color={C.cyan}/>{stratLabel}
+                                </span>}
+                                {srcLabel&&<span style={{padding:'2px 8px',borderRadius:9999,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:r.source==='ACTIVE REPLAY'?C.lime:C.onVar,background:r.source==='ACTIVE REPLAY'?R(C.lime,0.08):R(C.outline,0.08),border:`1px solid ${r.source==='ACTIVE REPLAY'?R(C.lime,0.22):R(C.outline,0.18)}`}}>{srcLabel}</span>}
+                              </div>
+                              {/* check pills */}
+                              <div style={{display:'flex',alignItems:'center',gap:4,flexWrap:'wrap'}}>
+                                <Icon n="check_circle" size={11} color={C.lime}/>
+                                {checks.map((c,ci)=>(
+                                  <span key={ci} style={{padding:'1px 7px',borderRadius:9999,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:'#9ecfb0',background:'rgba(100,180,120,0.08)',border:'1px solid rgba(100,180,120,0.18)',whiteSpace:'nowrap'}}>{c}</span>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })()}
+                      </td>
                       <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`}}>
                         <div style={{display:'flex',gap:8,justifyContent:'flex-end'}}>
-                          <button onClick={()=>setFeedback(`Queued place order for ${r.symbol} ${r.signal} ${r.quantity}@$${Number(r.entry).toFixed(2)} — paper-only, respects DRY_RUN.`)}
+                          <button onClick={()=>!filtered&&setConfirm({type:'place',row:{...r,quantity:qty}})}
                             style={{padding:'7px 16px',borderRadius:7,cursor:filtered?'not-allowed':'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:filtered?C.outline:C.cyan,background:filtered?'rgba(28,27,28,0.4)':R(C.cyan,0.1),border:`1px solid ${filtered?'rgba(132,148,149,0.14)':R(C.cyan,0.4)}`,opacity:filtered?0.45:1}}>Place</button>
-                          <button onClick={()=>setFeedback(`Queued close for ${r.symbol} — flattens via a paper market order.`)}
+                          <button onClick={()=>setConfirm({type:'close',row:r})}
                             style={{padding:'7px 16px',borderRadius:7,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar,background:'rgba(28,27,28,0.6)',border:`1px solid rgba(132,148,149,0.22)`}}>Close</button>
                         </div>
                       </td>
@@ -1126,11 +1514,72 @@ function TabForecast() {
               <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
             </div>
             <div style={{padding:'18px 20px'}}>
-              <CandleChart bars={selBars} lines={selLines} showVol={showVol} height={300}/>
+              <CandleChart bars={selBars} levels={buildChartLevels(selPlan?.trade_levels, selPlan?.raw_levels, showTrade, showRaw)} lines={selLines}
+                zones={selRow?.entry!=null && selRow?.target!=null ? [{p1:selRow.entry, p2:selRow.target, color:selRow.signal==='BUY'?C.lime:C.err, opacity:0.07}] : []}
+                showVol={showVol} height={300} stale={selBarsInfo.stale} lastDate={selBarsInfo.lastDate}/>
             </div>
           </GlassCard>
         )}
       </>)}
+
+      {/* ── Order Confirmation Modal ── */}
+      {confirm && (
+        <div onClick={()=>setConfirm(null)} style={{position:'fixed',inset:0,zIndex:70,background:'rgba(8,8,9,0.80)',backdropFilter:'blur(8px)',display:'flex',alignItems:'center',justifyContent:'center',padding:24}}>
+          <div onClick={e=>e.stopPropagation()} style={{width:'100%',maxWidth:460,background:'rgba(20,19,20,0.98)',border:`1px solid ${R(C.outline,0.22)}`,borderRadius:14,boxShadow:'0 30px 80px rgba(0,0,0,0.7)',overflow:'hidden'}}>
+            {/* header */}
+            <div style={{padding:'18px 22px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',alignItems:'center',gap:12}}>
+              <Icon n={confirm.type==='place'?'send':'close'} size={20} color={confirm.type==='place'?C.cyan:C.err}/>
+              <span style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:17,fontWeight:600,color:C.onSurf}}>
+                {confirm.type==='place'?'Confirm Place Order':'Confirm Close Position'}
+              </span>
+            </div>
+            {/* body */}
+            <div style={{padding:'20px 22px',display:'flex',flexDirection:'column',gap:14}}>
+              <div style={{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderRadius:10,background:R(C.magenta,0.06),border:`1px solid ${R(C.magenta,0.22)}`}}>
+                <Icon n="shield_lock" size={18} color={C.magenta} style={{flexShrink:0}}/>
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.magenta,lineHeight:1.5}}>Paper account · respects DRY_RUN · no real money at risk</span>
+              </div>
+              {confirm.type==='place' ? (
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px 18px'}}>
+                  {[
+                    ['Symbol', confirm.row.symbol],
+                    ['Side', confirm.row.signal],
+                    ['Entry', '$'+Number(confirm.row.entry||0).toFixed(2)],
+                    ['Stop', '$'+Number(confirm.row.stop||0).toFixed(2)],
+                    ['Target', '$'+Number(confirm.row.target||0).toFixed(2)],
+                    ['Qty', confirm.row.quantity||'—'],
+                    ['R:R', Number(confirm.row.reward_risk||0).toFixed(2)],
+                    ['Strategy', confirm.row.strategy||'—'],
+                  ].map(([k,v])=>(
+                    <div key={k}>
+                      <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,marginBottom:4}}>{k}</div>
+                      <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:13,color:C.onSurf,fontWeight:500}}>{v}</div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:14,color:C.onSurf,padding:'10px 0'}}>
+                  Close all open positions for <span style={{color:C.err}}>{confirm.row.symbol}</span> via a paper market order.
+                </div>
+              )}
+            </div>
+            {/* footer */}
+            <div style={{padding:'16px 22px',borderTop:`1px solid ${R(C.outline,0.14)}`,display:'flex',gap:10,justifyContent:'flex-end'}}>
+              <button onClick={()=>setConfirm(null)}
+                style={{padding:'10px 20px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onVar,background:'rgba(28,27,28,0.8)',border:`1px solid ${R(C.outline,0.25)}`}}>
+                Cancel
+              </button>
+              <button onClick={()=>confirm.type==='place'?doPlace(confirm.row):doClose(confirm.row.symbol)}
+                style={{padding:'10px 22px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:600,
+                  color:confirm.type==='place'?'#001416':C.onSurf,
+                  background:confirm.type==='place'?C.cyan:C.err,
+                  border:'none'}}>
+                {confirm.type==='place'?'Place Order':'Close Position'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -1159,6 +1608,27 @@ function TabReports() {
       )) : <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:13,color:C.outline,padding:'20px 0'}}>No reports available.</div>}
     </div>
   );
+}
+
+/* ── level data → CandleChart levels prop ────────────────────────────────── */
+function buildChartLevels(tradeLevels, rawLevels, showTrade, showRaw) {
+  const seen = new Set();
+  const out = [];
+  const add = (l, color) => {
+    const key = Number(l.price||0).toFixed(4);
+    if(seen.has(key)) return;
+    seen.add(key);
+    const zh = l.zone_high, zl = l.zone_low;
+    out.push({
+      p: l.price,
+      zoneHalf: zh&&zl ? Math.abs(zh-zl)/2 : undefined,
+      color,
+      label: `${l.type==='gap'?'GAP':l.type==='abnormal_candle'?'ABN':'LVL'} ${Number(l.price).toFixed(2)} · ${l.touches??'?'}T`,
+    });
+  };
+  if(showTrade) (tradeLevels||[]).forEach(l => add(l, C.cyan));
+  if(showRaw)   (rawLevels||[]).forEach(l  => add(l, C.cyan));
+  return out.sort((a,b)=>b.p-a.p);
 }
 
 /* ── spinner ─────────────────────────────────────────────────────────────── */
@@ -1214,6 +1684,7 @@ function App() {
   const [tab, setTab] = useState('dashboard');
   const [meta, setMeta] = useState({clock:'—',session:'—',paper:true,dry_run:false});
   const [newsModal, setNewsModal] = useState(false);
+  const [newsItems, setNewsItems] = useState([]);
 
   useEffect(()=>{
     const refresh = ()=>fetch(`${API}/meta`).then(r=>r.json()).then(setMeta).catch(()=>{});
@@ -1334,7 +1805,7 @@ function App() {
 
             {/* Tab content */}
             <ErrBound key={tab}>
-              {tab==='dashboard' && <TabDashboard newsModal={newsModal} setNewsModal={setNewsModal}/>}
+              {tab==='dashboard' && <TabDashboard setNewsModal={setNewsModal} setNewsItems={setNewsItems}/>}
               {tab==='preopen'   && <TabPreOpen/>}
               {tab==='intraday'  && <TabIntraday/>}
               {tab==='trades'    && <TabTrades/>}
@@ -1344,6 +1815,7 @@ function App() {
           </div>
         </div>
       </main>
+      {newsModal && <NewsModal items={newsItems} onClose={()=>setNewsModal(false)}/>}
     </div>
   );
 }

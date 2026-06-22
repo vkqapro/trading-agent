@@ -187,9 +187,35 @@ def api_preopen_symbol(symbol: str):
 def api_bars(symbol: str, timeframe: str):
     df = _safe(lambda: da.get_bars(symbol.upper(), timeframe), None)
     if df is None or df.empty:
-        return {"bars": []}
+        return {"bars": [], "stale": True, "last_date": None}
     df = df.tail(300)
-    return {"bars": df.rename(columns={"date": "t"}).to_dict(orient="records")}
+    last_date = str(df["date"].iloc[-1]) if "date" in df.columns else None
+    # stale = last bar is genuinely missing sessions.
+    # Count how many weekdays (Mon-Fri) lie between last_bar and today — if more
+    # than 1 then at least one trading session was skipped (we can't know about
+    # holidays without a full calendar, so we allow 1 extra day as holiday buffer).
+    stale = False
+    if last_date:
+        from datetime import date, timedelta
+        try:
+            last_dt = date.fromisoformat(str(last_date)[:10])
+            today = date.today()
+            # count weekdays strictly between last_dt and today (exclusive of both)
+            weekdays_gap = 0
+            d = last_dt + timedelta(days=1)
+            while d < today:
+                if d.weekday() < 5:
+                    weekdays_gap += 1
+                d += timedelta(days=1)
+            # stale if more than 1 weekday gap (1 allowed for holidays)
+            stale = weekdays_gap > 1
+        except Exception:
+            pass
+    return {
+        "bars": df.rename(columns={"date": "t"}).to_dict(orient="records"),
+        "stale": stale,
+        "last_date": last_date,
+    }
 
 
 @app.get("/api/intraday")
@@ -238,6 +264,33 @@ def api_trades():
         "worker_age": worker_age,
         "trade_log": sections,
     }
+
+
+@app.post("/api/order/place")
+async def api_order_place(body: dict):
+    from src.execution import order_requests as oq
+    from src.config import SETTINGS
+    if not body.get("symbol"):
+        raise HTTPException(400, "symbol is required")
+    try:
+        request_id = oq.submit_place(body, live=False)
+        return {"ok": True, "id": request_id, "dry_run": SETTINGS.dry_run_mode, "message": f"Queued place order for {body['symbol']} — paper only, respects DRY_RUN."}
+    except Exception as exc:
+        raise HTTPException(500, str(exc))
+
+
+@app.post("/api/order/close")
+async def api_order_close(body: dict):
+    from src.execution import order_requests as oq
+    from src.config import SETTINGS
+    symbol = str(body.get("symbol", "")).upper()
+    if not symbol:
+        raise HTTPException(400, "symbol is required")
+    try:
+        request_id = oq.submit_close(symbol, live=False)
+        return {"ok": True, "id": request_id, "dry_run": SETTINGS.dry_run_mode, "message": f"Queued close for {symbol} — paper only, respects DRY_RUN."}
+    except Exception as exc:
+        raise HTTPException(500, str(exc))
 
 
 @app.get("/api/reports")
