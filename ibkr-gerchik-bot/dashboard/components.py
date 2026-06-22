@@ -18,7 +18,7 @@ import streamlit as st
 if TYPE_CHECKING:
     from dashboard.data_access import SourceHealth
 
-DASHBOARD_COMPONENTS_VERSION = 7
+DASHBOARD_COMPONENTS_VERSION = 8
 
 
 # --------------------------------------------------------------------------- #
@@ -69,15 +69,89 @@ CSS = f"""
 /* ---- Canvas + ambient glow -------------------------------------------- */
 .stApp {{
     background:
-        radial-gradient(1100px 500px at 88% -8%, rgba(0,240,255,0.07), transparent 60%),
-        radial-gradient(900px 480px at 5% 108%, rgba(195,244,0,0.05), transparent 55%),
+        radial-gradient(900px 460px at 82% -8%, rgba(0,240,255,0.06), transparent 60%),
+        radial-gradient(700px 400px at 8% 110%, rgba(195,244,0,0.04), transparent 60%),
         {BG};
     color: {ON_SURFACE};
     font-family: 'Inter', -apple-system, sans-serif;
 }}
-[data-testid="stHeader"] {{ background: transparent; }}
+[data-testid="stHeader"] {{ background: transparent; height: 0; }}
 [data-testid="stToolbar"] {{ right: 1rem; }}
-.block-container {{ padding-top: 1.6rem; padding-bottom: 3rem; max-width: 1480px; }}
+.block-container {{ padding-top: 0.75rem; padding-bottom: 3rem; max-width: 1440px; margin: 0 auto; }}
+
+/* ---- Persistent operations sidebar ---------------------------------- */
+[data-testid="stSidebar"] {{
+    width: 256px !important; min-width: 256px !important;
+    background: rgba(14,14,15,0.92);
+    border-right: 1px solid rgba(132,148,149,0.16);
+}}
+[data-testid="stSidebar"] > div:first-child {{
+    width: 256px !important; padding: 0 !important;
+}}
+[data-testid="stSidebar"] [data-testid="stSidebarContent"] {{
+    padding: 22px 16px !important;
+}}
+.lx-side-brand {{
+    display:flex; align-items:center; gap:11px; padding:0 6px 22px;
+    border-bottom:1px solid rgba(132,148,149,0.16); margin-bottom:6px;
+}}
+.lx-side-logo {{
+    width:36px; height:36px; flex:none; border-radius:9px;
+    display:flex; align-items:center; justify-content:center;
+    color:#001416; background:linear-gradient(140deg,#00f0ff,#006970);
+    box-shadow:0 0 18px rgba(0,240,255,0.35);
+}}
+.lx-side-logo .material-symbols-outlined {{ font-size:20px; }}
+.lx-side-name {{
+    font-family:'Hanken Grotesk'; color:#dbfcff; font-size:17px;
+    line-height:1.1; font-weight:600;
+}}
+.lx-side-sub {{
+    font-family:'JetBrains Mono'; color:{OUTLINE}; font-size:10px;
+    letter-spacing:.08em; text-transform:uppercase; margin-top:2px;
+}}
+.lx-nav-label {{
+    font-family:'JetBrains Mono'; color:{OUTLINE}; font-size:9px;
+    letter-spacing:.16em; text-transform:uppercase; margin:3px 8px 7px;
+}}
+[data-testid="stSidebar"] div[role="radiogroup"] {{ gap:4px; }}
+[data-testid="stSidebar"] div[role="radiogroup"] > label {{
+    min-height:42px; padding:0 12px !important; border-radius:8px;
+    border:1px solid transparent; transition:all .16s ease;
+    color:{ON_SURFACE_VARIANT};
+}}
+[data-testid="stSidebar"] div[role="radiogroup"] > label:hover {{
+    color:{ON_SURFACE}; background:rgba(53,52,54,0.35);
+}}
+[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {{
+    color:{CYAN}; background:rgba(0,240,255,0.09);
+    border-color:rgba(125,244,255,0.14);
+    box-shadow:inset -3px 0 0 {CYAN};
+}}
+[data-testid="stSidebar"] div[role="radiogroup"] label p {{
+    font-family:'Inter'; font-size:13px; font-weight:500;
+}}
+[data-testid="stSidebar"] div[role="radiogroup"] [data-testid="stRadio"] {{
+    display:none;
+}}
+.lx-readonly {{
+    margin-top:22px; padding:13px; border-radius:10px;
+    background:rgba(0,240,255,0.045); border:1px solid rgba(125,244,255,0.17);
+}}
+.lx-readonly-head {{
+    display:flex; align-items:center; gap:7px; color:{CYAN};
+    font-family:'JetBrains Mono'; font-size:10px; letter-spacing:.08em;
+    text-transform:uppercase;
+}}
+.lx-readonly-copy {{
+    color:{OUTLINE}; font-family:'Inter'; font-size:11px;
+    line-height:1.45; margin-top:7px;
+}}
+
+@media (max-width: 900px) {{
+    [data-testid="stSidebar"] {{ width:230px !important; min-width:230px !important; }}
+    [data-testid="stSidebar"] > div:first-child {{ width:230px !important; }}
+}}
 
 /* ---- Typography ------------------------------------------------------- */
 h1, h2, h3, h4, [data-testid="stHeading"] {{
@@ -94,6 +168,29 @@ code, kbd, pre, .mono {{ font-family: 'JetBrains Mono', monospace !important; }}
 }}
 
 /* ---- Command bar / header -------------------------------------------- */
+.lx-opsbar {{
+    min-height:62px; display:flex; align-items:center; justify-content:space-between;
+    gap:16px; padding:0 26px; margin-bottom:0;
+    border-bottom:1px solid rgba(132,148,149,0.16);
+    background:rgba(19,19,20,0.7); backdrop-filter:blur(12px);
+    height:62px;
+}}
+.lx-crumb {{
+    font-family:'JetBrains Mono'; font-size:12px; color:{OUTLINE};
+    letter-spacing:.06em; text-transform:uppercase;
+}}
+.lx-crumb strong {{ color:{ON_SURFACE_VARIANT}; font-weight:500; }}
+.lx-ops-right {{ display:flex; align-items:center; justify-content:flex-end; gap:12px; flex-wrap:wrap; }}
+.lx-page-hero {{ margin:0 0 26px; }}
+.lx-page-title {{
+    font-family:'Hanken Grotesk'; font-size:32px; font-weight:600;
+    letter-spacing:-.01em; color:{ON_SURFACE}; line-height:1.1;
+}}
+.lx-page-sub {{
+    display:flex; align-items:center; gap:8px; margin-top:7px;
+    color:{OUTLINE}; font-family:'JetBrains Mono'; font-size:12px;
+}}
+.lx-page-sub .lx-pulse {{ width:7px; height:7px; }}
 .lx-topbar {{
     display: flex; justify-content: space-between; align-items: center;
     padding: 12px 20px; margin-bottom: 18px; border-radius: 14px;
@@ -143,23 +240,23 @@ code, kbd, pre, .mono {{ font-family: 'JetBrains Mono', monospace !important; }}
 @media (max-width:1300px) {{ .lx-grid.c6,.lx-grid.c5 {{ grid-template-columns: repeat(3,1fr); }} }}
 @media (max-width:1100px) {{ .lx-grid.c4,.lx-grid.c3 {{ grid-template-columns: repeat(2,1fr); }} }}
 .lx-card {{
-    background: rgba(32,31,32,0.40); backdrop-filter: blur(16px);
-    border:1px solid rgba(132,148,149,0.20); border-radius:16px; padding:18px 20px;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
-    transition: border-color .25s ease, transform .25s ease;
+    background: rgba(32,31,32,0.55); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border:1px solid rgba(132,148,149,0.18); border-radius:12px; padding:18px 20px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    transition: border-color .25s ease;
 }}
-.lx-card:hover {{ border-color: rgba(125,244,255,0.35); transform: translateY(-1px); }}
+.lx-card:hover {{ border-color: rgba(125,244,255,0.3); }}
 .lx-card .head {{ display:flex; justify-content:space-between; align-items:flex-start; }}
-.lx-card .label {{ font-family:'JetBrains Mono'; font-size:11px; color:{ON_SURFACE_VARIANT};
-    letter-spacing:.06em; text-transform:uppercase; }}
-.lx-card .icon {{ color:{OUTLINE}; }}
-.lx-card .value {{ font-family:'Hanken Grotesk'; font-weight:600; font-size:30px;
+.lx-card .label {{ font-family:'JetBrains Mono'; font-size:12px; color:{ON_SURFACE_VARIANT};
+    letter-spacing:.05em; text-transform:uppercase; }}
+.lx-card .icon {{ color:{OUTLINE}; font-size:18px; }}
+.lx-card .value {{ font-family:'Hanken Grotesk'; font-weight:600; font-size:28px;
     color:{ON_SURFACE}; margin-top:12px; line-height:1; }}
-.lx-card .value.cyan {{ color:{CYAN}; text-shadow:0 0 12px rgba(125,244,255,0.45); }}
-.lx-card .value.lime {{ color:{LIME}; text-shadow:0 0 12px rgba(195,244,0,0.40); }}
+.lx-card .value.cyan {{ color:{CYAN}; }}
+.lx-card .value.lime {{ color:{LIME}; }}
 .lx-card .value.magenta {{ color:{MAGENTA}; }}
 .lx-card .value.error {{ color:{ERROR}; }}
-.lx-card .sub {{ font-family:'JetBrains Mono'; font-size:11px; color:{ON_SURFACE_VARIANT}; margin-top:8px; }}
+.lx-card .sub {{ font-family:'JetBrains Mono'; font-size:12px; color:{ON_SURFACE_VARIANT}; margin-top:9px; }}
 .lx-card .sub.up {{ color:{LIME}; }}
 .lx-card .sub.down {{ color:{ERROR}; }}
 
@@ -174,12 +271,12 @@ code, kbd, pre, .mono {{ font-family: 'JetBrains Mono', monospace !important; }}
 
 /* ---- Panels (section titles above native widgets) -------------------- */
 .lx-panel-head {{ display:flex; justify-content:space-between; align-items:center;
-    margin:18px 0 10px; }}
+    margin:28px 0 16px; }}
 .lx-panel-title {{ font-family:'JetBrains Mono'; font-size:12px; color:{ON_SURFACE_VARIANT};
-    letter-spacing:.16em; text-transform:uppercase; display:flex; align-items:center; gap:8px; }}
-.lx-panel-title .material-symbols-outlined {{ font-size:17px; color:{CYAN}; }}
+    letter-spacing:.1em; text-transform:uppercase; display:flex; align-items:center; gap:10px; }}
+.lx-panel-title .material-symbols-outlined {{ font-size:17px; color:{OUTLINE}; }}
 .lx-badge {{ font-family:'JetBrains Mono'; font-size:10px; padding:3px 9px; border-radius:999px;
-    background:rgba(0,240,255,0.10); color:{CYAN}; border:1px solid rgba(125,244,255,0.30);
+    background:rgba(0,240,255,0.1); color:#7df4ff; border:1px solid rgba(0,240,255,0.28);
     letter-spacing:.08em; }}
 .lx-scenario-note {{
     display:flex; align-items:flex-start; gap:10px; margin:4px 0 14px; padding:11px 14px;
@@ -191,8 +288,8 @@ code, kbd, pre, .mono {{ font-family: 'JetBrains Mono', monospace !important; }}
 
 /* Bordered containers act as glass cards */
 [data-testid="stVerticalBlockBorderWrapper"] {{
-    background: rgba(32,31,32,0.34); backdrop-filter: blur(14px);
-    border:1px solid rgba(132,148,149,0.18) !important; border-radius:16px;
+    background: rgba(32,31,32,0.42); backdrop-filter: blur(14px);
+    border:1px solid rgba(132,148,149,0.18) !important; border-radius:12px;
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
 }}
 
@@ -209,17 +306,17 @@ code, kbd, pre, .mono {{ font-family: 'JetBrains Mono', monospace !important; }}
 .lx-risk .rv.cyan {{ color:{CYAN}; }}
 
 /* ---- HTML tables (opportunity queue / attempt log) ------------------- */
-.lx-table-wrap {{ overflow-x:auto; border-radius:14px; border:1px solid rgba(132,148,149,0.18);
-    background: rgba(14,14,15,0.45); }}
+.lx-table-wrap {{ overflow-x:auto; border-radius:12px; border:1px solid rgba(132,148,149,0.18);
+    background: rgba(32,31,32,0.55); }}
 table.lx-table {{ width:100%; border-collapse:collapse; }}
 table.lx-table th {{ font-family:'JetBrains Mono'; font-size:10px; color:{OUTLINE};
-    letter-spacing:.08em; text-transform:uppercase; text-align:left; font-weight:500;
-    padding:12px 16px; background:rgba(19,19,20,0.6); border-bottom:1px solid rgba(132,148,149,0.14); }}
+    letter-spacing:.07em; text-transform:uppercase; text-align:left; font-weight:500;
+    padding:11px 18px; background:transparent; border-bottom:1px solid rgba(132,148,149,0.12); }}
 table.lx-table td {{ font-family:'JetBrains Mono'; font-size:12px; color:{ON_SURFACE};
-    padding:11px 16px; border-bottom:1px solid rgba(132,148,149,0.07); white-space:nowrap; }}
+    padding:11px 18px; border-bottom:1px solid rgba(132,148,149,0.07); white-space:nowrap; }}
 table.lx-table tr:last-child td {{ border-bottom:none; }}
 table.lx-table tbody tr {{ transition: background .15s ease; }}
-table.lx-table tbody tr:hover {{ background: rgba(53,52,54,0.30); }}
+table.lx-table tbody tr:hover {{ background: rgba(255,255,255,0.025); }}
 .lx-pill {{ font-family:'JetBrains Mono'; font-size:10px; padding:3px 9px; border-radius:6px;
     border:1px solid; letter-spacing:.03em; }}
 .lx-pill.buy {{ background:rgba(195,244,0,0.10); color:{LIME}; border-color:rgba(195,244,0,0.25); }}
@@ -250,12 +347,12 @@ button[data-baseweb="tab"][aria-selected="true"] {{ color:{CYAN};
     border-bottom:2px solid {CYAN}; }}
 
 .stButton > button {{
-    background:{SURFACE}; color:{CYAN}; border:1px solid rgba(125,244,255,0.40);
+    background:rgba(28,27,28,0.8); color:{ON_SURFACE_VARIANT}; border:1px solid rgba(132,148,149,0.16);
     border-radius:9px; font-family:'JetBrains Mono'; font-size:12px; letter-spacing:.04em;
     transition: all .2s ease;
 }}
-.stButton > button:hover {{ background:rgba(0,240,255,0.10); border-color:{CYAN};
-    box-shadow:0 0 14px rgba(125,244,255,0.30); color:{CYAN}; }}
+.stButton > button:hover {{ background:rgba(28,27,28,0.8); border-color:rgba(125,244,255,0.3);
+    color:#7df4ff; }}
 .stDownloadButton > button {{ background:{WHITE}; color:#00242a; border:none;
     border-radius:9px; font-family:'JetBrains Mono'; font-weight:500; }}
 .stDownloadButton > button:hover {{ box-shadow:0 0 16px rgba(125,244,255,0.40); color:#00242a; }}
@@ -306,6 +403,13 @@ li[role="option"][aria-selected="true"], li[aria-selected="true"] {{
     box-shadow:none !important; cursor:pointer; }}
 
 div[data-testid="stDataFrame"] {{ border:1px solid rgba(132,148,149,0.18); border-radius:12px; }}
+[data-testid="stPlotlyChart"] {{
+    overflow:hidden; border-radius:11px;
+}}
+[data-testid="stPlotlyChart"] .modebar {{
+    background:rgba(14,14,15,0.72) !important; border-radius:7px;
+    padding:3px !important;
+}}
 [data-testid="stExpander"] {{ border:1px solid rgba(132,148,149,0.16); border-radius:12px;
     background:rgba(14,14,15,0.4); }}
 [data-testid="stExpander"] summary {{ font-family:'JetBrains Mono'; font-size:12px; color:{ON_SURFACE_VARIANT}; }}
@@ -355,6 +459,20 @@ hr {{ border-color: rgba(132,148,149,0.14); }}
 ::-webkit-scrollbar-track {{ background:transparent; }}
 ::-webkit-scrollbar-thumb {{ background:{OUTLINE_VARIANT}; border-radius:4px; }}
 ::-webkit-scrollbar-thumb:hover {{ background:{CYAN}; }}
+
+@media (max-width:760px) {{
+    .lx-opsbar {{ align-items:flex-start; flex-direction:column; padding-bottom:14px; }}
+    .lx-ops-right {{ justify-content:flex-start; }}
+    .lx-page-title {{ font-size:25px; }}
+    .lx-grid.c6,.lx-grid.c5,.lx-grid.c4,.lx-grid.c3,.lx-grid.c2 {{
+        grid-template-columns:1fr 1fr;
+    }}
+}}
+@media (max-width:520px) {{
+    .lx-grid.c6,.lx-grid.c5,.lx-grid.c4,.lx-grid.c3,.lx-grid.c2 {{
+        grid-template-columns:1fr;
+    }}
+}}
 </style>
 """
 
@@ -440,6 +558,90 @@ def topbar(brand_sub: str, chips: Sequence[tuple[str, str, str]]) -> None:
                 </div>
               </div>
               <div class="right">{chip_html}</div>
+            </div>
+            """
+        ),
+        unsafe_allow_html=True,
+    )
+
+
+def sidebar_brand(*, dry_run: bool, paper: bool) -> None:
+    mode = "PAPER" if paper else "LIVE"
+    st.markdown(
+        _clean(
+            f"""
+            <div class="lx-side-brand">
+              <div class="lx-side-logo">
+                <span class="material-symbols-outlined">monitoring</span>
+              </div>
+              <div>
+                <div class="lx-side-name">Gerchik Bot</div>
+                <div class="lx-side-sub">IBKR · {mode}</div>
+              </div>
+            </div>
+            <div class="lx-nav-label">Operations</div>
+            """
+        ),
+        unsafe_allow_html=True,
+    )
+
+
+def sidebar_safety(*, dry_run: bool, paper: bool) -> None:
+    mode = "PAPER" if paper else "LIVE"
+    safety = "DRY-RUN" if dry_run else "EXECUTION"
+    st.markdown(
+        _clean(
+            f"""
+            <div class="lx-readonly">
+              <div class="lx-readonly-head">
+                <span class="material-symbols-outlined" style="font-size:16px">shield_lock</span>
+                Dashboard safety
+              </div>
+              <div class="lx-readonly-copy">
+                Viewer and scenario controls. Order requests remain {mode.lower()}-scoped
+                and respect {safety}.
+              </div>
+            </div>
+            """
+        ),
+        unsafe_allow_html=True,
+    )
+
+
+def operations_header(
+    section: str,
+    *,
+    clock: str,
+    session: str,
+    paper: bool,
+    online: bool,
+    title: str,
+    subtitle: str,
+) -> None:
+    market_variant = "ok" if session == "OPEN" else ""
+    pulse = "lx-pulse" if online else "lx-pulse red"
+    st.markdown(
+        _clean(
+            f"""
+            <div class="lx-opsbar">
+              <div class="lx-crumb">Operations Desk / <strong>{_esc(section)}</strong></div>
+              <div class="lx-ops-right">
+                <span class="lx-chip cyan">
+                  <span class="material-symbols-outlined">schedule</span>{_esc(clock)} ET
+                </span>
+                <span class="lx-chip">
+                  <span class="material-symbols-outlined">visibility</span>
+                  {'PAPER READ-ONLY' if paper else 'LIVE CONTROLLED'}
+                </span>
+                <span class="lx-chip {market_variant}">
+                  <span class="material-symbols-outlined">finance_mode</span>
+                  MARKET {_esc(session)}
+                </span>
+              </div>
+            </div>
+            <div class="lx-page-hero">
+              <div class="lx-page-title">{_esc(title)}</div>
+              <div class="lx-page-sub"><span class="{pulse}"></span>{_esc(subtitle)}</div>
             </div>
             """
         ),
