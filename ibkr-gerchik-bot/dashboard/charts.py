@@ -8,7 +8,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-DASHBOARD_CHARTS_VERSION = 4
+DASHBOARD_CHARTS_VERSION = 5
 
 # Luminous Obsidian palette (see stitch_trading_bot_dashboard/DESIGN.md)
 UP = "#c3f400"           # secondary-fixed / lime — bullish
@@ -23,8 +23,8 @@ FORECAST_ENTRY = "#ffffff"
 FORECAST_STOP = "#ff6b81"
 FORECAST_TARGET = "#c3f400"
 GRID = "rgba(132, 148, 149, 0.10)"
-PAPER = "#131314"
-PLOT = "#131314"
+PAPER = "rgba(0,0,0,0)"
+PLOT = "rgba(0,0,0,0)"
 FONT = "JetBrains Mono, monospace"
 TITLE_FONT = "Hanken Grotesk, sans-serif"
 MAX_LABELED_TRADE_LEVELS = 5
@@ -254,12 +254,12 @@ def candles_with_levels(
         paper_bgcolor=PAPER,
         plot_bgcolor=PLOT,
         font=dict(color="#b9cacb", family=FONT, size=11),
-        hovermode="x",
+        hovermode="x unified",
         hoverdistance=40,
         spikedistance=-1,
         dragmode="pan",
         newshape=dict(line_color=TRADE_LEVEL),
-        uirevision="luminous-chart-v3",
+        uirevision="operations-chart-v4",
         hoverlabel=dict(
             bgcolor="#18191b",
             bordercolor="#34383c",
@@ -290,7 +290,7 @@ def candles_with_levels(
             y=1.13,
             xanchor="left",
             yanchor="top",
-            bgcolor="rgba(32,31,32,0.88)",
+            bgcolor="rgba(14,14,15,0.78)",
             activecolor="rgba(0,240,255,0.18)",
             bordercolor="rgba(132,148,149,0.18)",
             borderwidth=1,
@@ -299,7 +299,7 @@ def candles_with_levels(
     )
     fig.update_yaxes(
         showgrid=True,
-        gridcolor="rgba(132,148,149,0.075)",
+        gridcolor="rgba(132,148,149,0.065)",
         zeroline=False,
         side="right",
         tickprefix="$",
@@ -381,7 +381,7 @@ def mark_forecast_position(
             fillcolor="rgba(195, 244, 0, 0.12)", line_width=0, layer="below", row=1, col=1,
         )
     markers = (
-        (f"ENTRY  ${entry_f:,.2f}", entry_f, FORECAST_ENTRY, "solid"),
+        (f"ENTRY  ${entry_f:,.2f}", entry_f, FORECAST_ENTRY, "dash"),
         (f"STOP  ${stop_f:,.2f}", stop_f, FORECAST_STOP, "dash"),
         (f"TARGET  ${target_f:,.2f}  ·  {r_multiple:.1f}R", target_f, FORECAST_TARGET, "dash"),
     )

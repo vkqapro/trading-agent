@@ -34,12 +34,13 @@ from src.execution import order_requests as oq
 _COMPONENT_API = (
     "apply_theme", "bias_card", "blocked_news_panel", "feature_card", "fmt",
     "hero", "html_table", "human_age", "market_session", "metric_card_html",
-    "metric_grid", "minibar", "panel_header", "show_df", "signal_pill",
-    "source_health_bar", "stat_grid_card", "status_pill", "topbar",
+    "metric_grid", "minibar", "operations_header", "panel_header", "show_df",
+    "sidebar_brand", "sidebar_safety", "signal_pill", "source_health_bar",
+    "stat_grid_card", "status_pill", "topbar",
 )
 if (
     not all(hasattr(ui, name) for name in _COMPONENT_API)
-    or getattr(ui, "DASHBOARD_COMPONENTS_VERSION", 0) < 7
+    or getattr(ui, "DASHBOARD_COMPONENTS_VERSION", 0) < 8
 ):
     ui = reload(ui)
 
@@ -55,8 +56,11 @@ market_session = ui.market_session
 metric_card_html = ui.metric_card_html
 metric_grid = ui.metric_grid
 minibar = ui.minibar
+operations_header = ui.operations_header
 panel_header = ui.panel_header
 show_df = ui.show_df
+sidebar_brand = ui.sidebar_brand
+sidebar_safety = ui.sidebar_safety
 signal_pill = ui.signal_pill
 source_health_bar = ui.source_health_bar
 stat_grid_card = ui.stat_grid_card
@@ -94,7 +98,7 @@ except (AttributeError, TypeError, ValueError):
 if (
     not all(hasattr(charts, name) for name in _CHART_API)
     or not _CHART_ARGUMENTS.issubset(_chart_parameters)
-    or getattr(charts, "DASHBOARD_CHARTS_VERSION", 0) < 4
+    or getattr(charts, "DASHBOARD_CHARTS_VERSION", 0) < 5
 ):
     charts = reload(charts)
 
@@ -125,7 +129,7 @@ st.set_page_config(
     page_title="Gerchik Bot · Luminous Obsidian",
     page_icon="📈",
     layout="wide",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",
 )
 apply_theme()
 
@@ -181,9 +185,42 @@ def _pct(value: float) -> str:
 
 
 # --------------------------------------------------------------------------- #
-# Header
+# Navigation + header
 # --------------------------------------------------------------------------- #
-def render_header() -> dict[str, Any]:
+PAGE_META = {
+    "Dashboard": ("Command Overview", "Systems, portfolio constraints, opportunities, and recent decisions."),
+    "Pre-Open": ("Pre-Open Briefing", "Watchlist quality, mapped levels, news risk, and opening opportunities."),
+    "Intraday": ("Intraday Monitor", "Session decisions, attempted levels, and execution context."),
+    "Trades & Positions": ("Trades & Positions", "Paper-order requests, tracked positions, and the trade journal."),
+    "Forecast": ("Risk Forecast Calculator", "Scenario-only replay of saved market data and conditional setups."),
+    "Reports": ("Reports", "Generated session workbooks and trading records."),
+}
+NAV_LABELS = {
+    "Dashboard": "▦  Dashboard",
+    "Pre-Open": "☀  Pre-Open",
+    "Intraday": "↗  Intraday",
+    "Trades & Positions": "⇄  Trades & Positions",
+    "Forecast": "▧  Forecast",
+    "Reports": "▤  Reports",
+}
+
+
+def render_navigation() -> str:
+    with st.sidebar:
+        sidebar_brand(dry_run=SETTINGS.dry_run_mode, paper=SETTINGS.paper_trading)
+        selected = st.radio(
+            "Operations",
+            list(PAGE_META),
+            format_func=NAV_LABELS.__getitem__,
+            label_visibility="collapsed",
+            key="dashboard_page",
+        )
+        sidebar_safety(dry_run=SETTINGS.dry_run_mode, paper=SETTINGS.paper_trading)
+        st.caption("Gerchik methodology · saved bot state")
+    return selected
+
+
+def render_header(page: str) -> dict[str, Any]:
     now = datetime.now(ZoneInfo(SETTINGS.trading_hours.timezone))
     session, session_detail = market_session(now)
     health = da.source_health()
@@ -191,27 +228,25 @@ def render_header() -> dict[str, Any]:
     data_age = human_age(state_health.age_seconds) if state_health else "unknown"
     online = session in {"OPEN", "PRE-MARKET", "AFTER-HOURS"}
 
-    market_chip = ("check_circle", f"Market {session}", "ok" if session == "OPEN" else "")
-    topbar(
-        f"{'Active' if online else 'Idle'} · Gerchik level engine · "
-        f"{'DRY-RUN' if SETTINGS.dry_run_mode else 'LIVE'}",
-        [
-            ("schedule", f"Data {data_age}", "cyan"),
-            ("dns", f"{len(da.load_watchlist())} symbols", ""),
-            market_chip,
-        ],
-    )
-
-    left, right = st.columns([6, 1])
+    title, subtitle = PAGE_META[page]
+    left, right = st.columns([8, 1])
     with left:
-        hero(
-            "Unified Execution Engine",
-            online,
-            f"{now:%A, %B %d · %H:%M:%S %Z}  ·  {session} ({session_detail})  ·  Read-only view",
+        operations_header(
+            page,
+            clock=now.strftime("%H:%M:%S"),
+            session=session,
+            paper=SETTINGS.paper_trading,
+            online=online,
+            title=title,
+            subtitle=(
+                f"{subtitle} · {session_detail} · data {data_age} · "
+                f"{len(da.load_watchlist())} symbols"
+            ),
         )
     with right:
         st.write("")
-        if st.button("⟳ Refresh", width="stretch"):
+        st.write("")
+        if st.button("Refresh", icon=":material/refresh:", width="stretch"):
             da.clear_caches()
             st.rerun()
 
@@ -1387,19 +1422,15 @@ def render_reports() -> None:
 # --------------------------------------------------------------------------- #
 # Compose
 # --------------------------------------------------------------------------- #
-render_header()
-tab_dash, tab_preopen, tab_intraday, tab_trades, tab_forecast, tab_reports = st.tabs(
-    ["📊 Dashboard", "🌅 Pre-Open", "⚡ Intraday", "💼 Trades & Positions", "🔮 Forecast", "📑 Reports"]
-)
-with tab_dash:
-    _render_guard("Dashboard", render_dashboard)
-with tab_preopen:
-    _render_guard("Pre-Open", render_preopen)
-with tab_intraday:
-    _render_guard("Intraday", render_intraday)
-with tab_trades:
-    _render_guard("Trades & Positions", render_trades)
-with tab_forecast:
-    _render_guard("Forecast Calculator", render_forecast)
-with tab_reports:
-    _render_guard("Reports", render_reports)
+page = render_navigation()
+render_header(page)
+
+RENDERERS: dict[str, Callable[[], None]] = {
+    "Dashboard": render_dashboard,
+    "Pre-Open": render_preopen,
+    "Intraday": render_intraday,
+    "Trades & Positions": render_trades,
+    "Forecast": render_forecast,
+    "Reports": render_reports,
+}
+_render_guard("Forecast Calculator" if page == "Forecast" else page, RENDERERS[page])
