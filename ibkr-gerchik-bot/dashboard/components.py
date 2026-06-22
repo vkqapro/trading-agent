@@ -602,6 +602,16 @@ def sidebar_safety(*, dry_run: bool, paper: bool) -> None:
                 and respect {safety}.
               </div>
             </div>
+            <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(132,148,149,0.14);display:flex;flex-direction:column;gap:2px">
+              <div style="display:flex;align-items:center;gap:11px;padding:8px 14px;border-radius:8px;cursor:pointer;color:#b9cacb" style-hover="color:#e5e2e3">
+                <span class="material-symbols-outlined" style="font-size:18px">help</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:11px">Docs</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:11px;padding:8px 14px;border-radius:8px;cursor:pointer;color:#b9cacb" style-hover="color:#e5e2e3">
+                <span class="material-symbols-outlined" style="font-size:18px">settings</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:11px">Settings</span>
+              </div>
+            </div>
             """
         ),
         unsafe_allow_html=True,

@@ -196,12 +196,12 @@ PAGE_META = {
     "Reports": ("Reports", "Generated session workbooks and trading records."),
 }
 NAV_LABELS = {
-    "Dashboard": "▦  Dashboard",
-    "Pre-Open": "☀  Pre-Open",
-    "Intraday": "↗  Intraday",
-    "Trades & Positions": "⇄  Trades & Positions",
-    "Forecast": "▧  Forecast",
-    "Reports": "▤  Reports",
+    "Dashboard": "Dashboard",
+    "Pre-Open": "Pre-Open",
+    "Intraday": "Intraday",
+    "Trades & Positions": "Trades & Positions",
+    "Forecast": "Forecast",
+    "Reports": "Reports",
 }
 
 
