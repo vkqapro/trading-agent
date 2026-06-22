@@ -89,11 +89,11 @@ CSS = f"""
     width: 256px !important; padding: 0 !important;
 }}
 [data-testid="stSidebar"] [data-testid="stSidebarContent"] {{
-    padding: 22px 16px !important;
+    padding: 16px 12px !important;
 }}
 .lx-side-brand {{
-    display:flex; align-items:center; gap:11px; padding:0 6px 22px;
-    border-bottom:1px solid rgba(132,148,149,0.16); margin-bottom:6px;
+    display:flex; align-items:center; gap:11px; padding:0 0 16px;
+    border-bottom:1px solid rgba(132,148,149,0.12); margin-bottom:12px;
 }}
 .lx-side-logo {{
     width:36px; height:36px; flex:none; border-radius:9px;
@@ -114,22 +114,22 @@ CSS = f"""
     font-family:'JetBrains Mono'; color:{OUTLINE}; font-size:9px;
     letter-spacing:.16em; text-transform:uppercase; margin:3px 8px 7px;
 }}
-[data-testid="stSidebar"] div[role="radiogroup"] {{ gap:4px; }}
+[data-testid="stSidebar"] div[role="radiogroup"] {{ gap:0px; }}
 [data-testid="stSidebar"] div[role="radiogroup"] > label {{
-    min-height:42px; padding:0 12px !important; border-radius:8px;
+    min-height:40px; padding:8px 12px !important; border-radius:8px;
     border:1px solid transparent; transition:all .16s ease;
     color:{ON_SURFACE_VARIANT};
+    margin-bottom:4px;
 }}
 [data-testid="stSidebar"] div[role="radiogroup"] > label:hover {{
-    color:{ON_SURFACE}; background:rgba(53,52,54,0.35);
+    color:{ON_SURFACE}; background:rgba(255,255,255,0.05);
 }}
 [data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {{
-    color:{CYAN}; background:rgba(0,240,255,0.09);
-    border-color:rgba(125,244,255,0.14);
-    box-shadow:inset -3px 0 0 {CYAN};
+    color:{CYAN}; background:rgba(0,240,255,0.10);
+    border-color:rgba(125,244,255,0.25);
 }}
 [data-testid="stSidebar"] div[role="radiogroup"] label p {{
-    font-family:'Inter'; font-size:13px; font-weight:500;
+    font-family:'Inter'; font-size:13px; font-weight:500; margin:0;
 }}
 [data-testid="stSidebar"] div[role="radiogroup"] [data-testid="stRadio"] {{
     display:none;

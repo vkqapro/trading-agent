@@ -195,13 +195,13 @@ PAGE_META = {
     "Forecast": ("Risk Forecast Calculator", "Scenario-only replay of saved market data and conditional setups."),
     "Reports": ("Reports", "Generated session workbooks and trading records."),
 }
-NAV_LABELS = {
-    "Dashboard": "Dashboard",
-    "Pre-Open": "Pre-Open",
-    "Intraday": "Intraday",
-    "Trades & Positions": "Trades & Positions",
-    "Forecast": "Forecast",
-    "Reports": "Reports",
+NAV_ICONS = {
+    "Dashboard": "dashboard",
+    "Pre-Open": "light_mode",
+    "Intraday": "trending_up",
+    "Trades & Positions": "swap_horiz",
+    "Forecast": "query_stats",
+    "Reports": "description",
 }
 
 
@@ -211,7 +211,6 @@ def render_navigation() -> str:
         selected = st.radio(
             "Operations",
             list(PAGE_META),
-            format_func=NAV_LABELS.__getitem__,
             label_visibility="collapsed",
             key="dashboard_page",
         )
@@ -330,18 +329,14 @@ def render_dashboard() -> None:
          "progress": fill_rate, "progress_label": f"{len(executed)}/{fill_total} filled"},
     ]
     st.session_state.setdefault("show_news", False)
-    columns = st.columns(6, gap="small")
-    for column, card in zip(columns, cards):
-        with column:
-            if card.get("clickable"):
-                # Invisible button overlaid on the card -> clicking the card
-                # itself toggles the detail panel (see .st-key-news_toggle CSS).
-                with st.container(key="news_metric"):
-                    st.markdown(metric_card_html(card), unsafe_allow_html=True)
-                    if st.button("view news detail", key="news_toggle"):
-                        st.session_state.show_news = not st.session_state.show_news
-            else:
-                st.markdown(metric_card_html(card), unsafe_allow_html=True)
+    blocks = []
+    for card in cards:
+        blocks.append(metric_card_html(card))
+    st.markdown(f'<div class="lx-grid c4">{"".join(blocks)}</div>', unsafe_allow_html=True)
+
+    if cards[2].get("clickable"):  # News-blocked card
+        if st.button("view news detail", key="news_toggle"):
+            st.session_state.show_news = not st.session_state.show_news
 
     if st.session_state.show_news and news_items:
         with st.container(border=True):
