@@ -92,7 +92,7 @@ CSS = f"""
     padding: 16px 12px !important;
 }}
 .lx-side-brand {{
-    display:flex; align-items:center; gap:11px; padding:0 0 16px;
+    display:flex; align-items:center; gap:11px; padding:0 6px 22px;
     border-bottom:1px solid rgba(132,148,149,0.12); margin-bottom:12px;
 }}
 .lx-side-logo {{
@@ -110,42 +110,49 @@ CSS = f"""
     font-family:'JetBrains Mono'; color:{OUTLINE}; font-size:10px;
     letter-spacing:.08em; text-transform:uppercase; margin-top:2px;
 }}
-.lx-nav-label {{
-    font-family:'JetBrains Mono'; color:{OUTLINE}; font-size:9px;
-    letter-spacing:.16em; text-transform:uppercase; margin:3px 8px 7px;
+.lx-side-footer {{
+    margin-top:14px; padding-top:14px;
+    border-top:1px solid rgba(132,148,149,0.14);
+    display:flex; flex-direction:column; gap:2px;
 }}
+.lx-side-footer-item {{
+    display:flex; align-items:center; gap:11px;
+    padding:8px 14px; border-radius:8px; cursor:pointer;
+    color:{ON_SURFACE_VARIANT}; font-family:'JetBrains Mono'; font-size:11px;
+    transition:color .15s ease;
+}}
+.lx-side-footer-item:hover {{ color:{ON_SURFACE}; }}
 [data-testid="stSidebar"] div[role="radiogroup"] {{ gap:0px; }}
 [data-testid="stSidebar"] div[role="radiogroup"] > label {{
-    min-height:40px; padding:8px 12px !important; border-radius:8px;
-    border:1px solid transparent; transition:all .16s ease;
-    color:{ON_SURFACE_VARIANT};
-    margin-bottom:4px;
+    min-height:44px; padding:11px 14px !important; border-radius:8px;
+    border:1px solid transparent; border-right:3px solid transparent;
+    transition:all .15s ease; color:{ON_SURFACE_VARIANT};
+    margin-bottom:4px; display:flex; align-items:center;
 }}
 [data-testid="stSidebar"] div[role="radiogroup"] > label:hover {{
     color:{ON_SURFACE}; background:rgba(255,255,255,0.05);
 }}
 [data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {{
     color:{CYAN}; background:rgba(0,240,255,0.10);
-    border-color:rgba(125,244,255,0.25);
+    border-right-color:{CYAN};
 }}
 [data-testid="stSidebar"] div[role="radiogroup"] label p {{
-    font-family:'Inter'; font-size:13px; font-weight:500; margin:0;
+    font-family:'JetBrains Mono'; font-size:12px; letter-spacing:.03em; margin:0;
 }}
 [data-testid="stSidebar"] div[role="radiogroup"] [data-testid="stRadio"] {{
     display:none;
 }}
 .lx-readonly {{
-    margin-top:22px; padding:13px; border-radius:10px;
-    background:rgba(0,240,255,0.045); border:1px solid rgba(125,244,255,0.17);
+    margin-top:14px; padding:13px 14px; border-radius:10px;
+    background:rgba(28,27,28,0.7); border:1px solid rgba(132,148,149,0.14);
 }}
 .lx-readonly-head {{
-    display:flex; align-items:center; gap:7px; color:{CYAN};
-    font-family:'JetBrains Mono'; font-size:10px; letter-spacing:.08em;
-    text-transform:uppercase;
+    display:flex; align-items:center; gap:8px; color:{ON_SURFACE};
+    font-family:'JetBrains Mono'; font-size:11px;
 }}
 .lx-readonly-copy {{
-    color:{OUTLINE}; font-family:'Inter'; font-size:11px;
-    line-height:1.45; margin-top:7px;
+    color:{OUTLINE}; font-family:'JetBrains Mono'; font-size:10px;
+    line-height:1.5; margin-top:6px;
 }}
 
 @media (max-width: 900px) {{
@@ -572,14 +579,13 @@ def sidebar_brand(*, dry_run: bool, paper: bool) -> None:
             f"""
             <div class="lx-side-brand">
               <div class="lx-side-logo">
-                <span class="material-symbols-outlined">monitoring</span>
+                <span class="material-symbols-outlined">candlestick_chart</span>
               </div>
               <div>
                 <div class="lx-side-name">Gerchik Bot</div>
                 <div class="lx-side-sub">IBKR · {mode}</div>
               </div>
             </div>
-            <div class="lx-nav-label">Operations</div>
             """
         ),
         unsafe_allow_html=True,
@@ -587,29 +593,27 @@ def sidebar_brand(*, dry_run: bool, paper: bool) -> None:
 
 
 def sidebar_safety(*, dry_run: bool, paper: bool) -> None:
-    mode = "PAPER" if paper else "LIVE"
-    safety = "DRY-RUN" if dry_run else "EXECUTION"
     st.markdown(
         _clean(
             f"""
             <div class="lx-readonly">
               <div class="lx-readonly-head">
-                <span class="material-symbols-outlined" style="font-size:16px">shield_lock</span>
-                Dashboard safety
+                <span class="lx-pulse" style="width:7px;height:7px;margin-right:2px"></span>
+                Read-only mode
               </div>
               <div class="lx-readonly-copy">
-                Viewer and scenario controls. Order requests remain {mode.lower()}-scoped
-                and respect {safety}.
+                Never connects to IBKR.<br/>
+                Views <span style="color:{ON_SURFACE_VARIANT}">memory/</span> only.
               </div>
             </div>
-            <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(132,148,149,0.14);display:flex;flex-direction:column;gap:2px">
-              <div style="display:flex;align-items:center;gap:11px;padding:8px 14px;border-radius:8px;cursor:pointer;color:#b9cacb" style-hover="color:#e5e2e3">
+            <div class="lx-side-footer">
+              <div class="lx-side-footer-item">
                 <span class="material-symbols-outlined" style="font-size:18px">help</span>
-                <span style="font-family:'JetBrains Mono',monospace;font-size:11px">Docs</span>
+                <span>Docs</span>
               </div>
-              <div style="display:flex;align-items:center;gap:11px;padding:8px 14px;border-radius:8px;cursor:pointer;color:#b9cacb" style-hover="color:#e5e2e3">
+              <div class="lx-side-footer-item">
                 <span class="material-symbols-outlined" style="font-size:18px">settings</span>
-                <span style="font-family:'JetBrains Mono',monospace;font-size:11px">Settings</span>
+                <span>Settings</span>
               </div>
             </div>
             """
@@ -628,30 +632,45 @@ def operations_header(
     title: str,
     subtitle: str,
 ) -> None:
-    market_variant = "ok" if session == "OPEN" else ""
-    pulse = "lx-pulse" if online else "lx-pulse red"
+    market_ok = session == "OPEN"
+    market_icon = "check_circle" if market_ok else "schedule"
+    market_color = LIME if market_ok else ON_SURFACE_VARIANT
+    market_border = "rgba(195,244,0,0.28)" if market_ok else "rgba(132,148,149,0.16)"
+    market_bg = "rgba(195,244,0,0.06)" if market_ok else "rgba(28,27,28,0.8)"
+    market_label = f"Market {session.title()}"
+    mode_label = "PAPER · READ-ONLY" if paper else "LIVE"
+    pulse_sub = "lx-pulse" if online else "lx-pulse red"
     st.markdown(
         _clean(
             f"""
             <div class="lx-opsbar">
-              <div class="lx-crumb">Operations Desk / <strong>{_esc(section)}</strong></div>
+              <div class="lx-crumb">OPERATIONS DESK <span style="color:#3b494b;margin:0 4px">/</span>
+                <strong>{_esc(section.upper())}</strong></div>
               <div class="lx-ops-right">
-                <span class="lx-chip cyan">
-                  <span class="material-symbols-outlined">schedule</span>{_esc(clock)} ET
-                </span>
-                <span class="lx-chip">
-                  <span class="material-symbols-outlined">visibility</span>
-                  {'PAPER READ-ONLY' if paper else 'LIVE CONTROLLED'}
-                </span>
-                <span class="lx-chip {market_variant}">
-                  <span class="material-symbols-outlined">finance_mode</span>
-                  MARKET {_esc(session)}
-                </span>
+                <div style="display:flex;align-items:center;gap:7px;padding:6px 11px;
+                  border-radius:8px;background:rgba(28,27,28,0.8);
+                  border:1px solid rgba(132,148,149,0.16)">
+                  <span style="width:6px;height:6px;border-radius:50%;background:{CYAN_BRIGHT};
+                    box-shadow:0 0 7px {CYAN_BRIGHT};animation:lxpulse 1.8s infinite"></span>
+                  <span style="font-family:'JetBrains Mono';font-size:11px;color:{ON_SURFACE_VARIANT}">
+                    SYNCED {_esc(clock)} ET</span>
+                </div>
+                <div style="padding:6px 11px;border-radius:8px;
+                  font-family:'JetBrains Mono';font-size:10px;letter-spacing:.05em;
+                  color:#7df4ff;background:rgba(0,240,255,0.1);
+                  border:1px solid rgba(0,240,255,0.28)">{_esc(mode_label)}</div>
+                <div style="display:flex;align-items:center;gap:7px;padding:6px 11px;
+                  border-radius:8px;background:{market_bg};border:1px solid {market_border}">
+                  <span class="material-symbols-outlined"
+                    style="font-size:15px;color:{market_color}">{market_icon}</span>
+                  <span style="font-family:'JetBrains Mono';font-size:11px;
+                    color:{market_color}">{_esc(market_label)}</span>
+                </div>
               </div>
             </div>
             <div class="lx-page-hero">
               <div class="lx-page-title">{_esc(title)}</div>
-              <div class="lx-page-sub"><span class="{pulse}"></span>{_esc(subtitle)}</div>
+              <div class="lx-page-sub"><span class="{pulse_sub}"></span>{_esc(subtitle)}</div>
             </div>
             """
         ),

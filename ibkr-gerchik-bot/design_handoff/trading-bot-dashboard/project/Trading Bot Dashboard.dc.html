@@ -1,0 +1,1867 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#3b494b;border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:#00dbe9}
+@keyframes ggpulse{0%,100%{opacity:1}50%{opacity:.3}}
+</style>
+</helmet>
+<div style="display:flex;height:100vh;width:100%;overflow:hidden;background:#131314;color:#e5e2e3;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased">
+
+  <aside style="flex:none;width:256px;height:100%;background:rgba(14,14,15,0.92);border-right:1px solid rgba(132,148,149,0.16);display:flex;flex-direction:column;padding:22px 16px">
+    <div style="display:flex;align-items:center;gap:11px;padding:0 6px 22px">
+      <div style="width:36px;height:36px;border-radius:9px;flex:none;background:linear-gradient(140deg,#00f0ff,#006970);display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(0,240,255,0.35)">
+        <span style="font-family:'Material Symbols Outlined';font-size:20px;color:#001416">candlestick_chart</span>
+      </div>
+      <div>
+        <div style="font-family:'Hanken Grotesk',sans-serif;font-size:17px;font-weight:600;color:#dbfcff;line-height:1.1">Gerchik Bot</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#849495;margin-top:2px">IBKR · PAPER</div>
+      </div>
+    </div>
+
+    <div style="flex:1;display:flex;flex-direction:column;gap:4px;margin-top:6px">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
+        <div onClick="{{ n.onClick }}" style="{{ n.style }}" style-hover="background:rgba(255,255,255,0.05)">
+          <span style="{{ n.iconStyle }}">{{ n.icon }}</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.03em">{{ n.label }}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="margin-top:14px;padding:13px 14px;border-radius:10px;background:rgba(28,27,28,0.7);border:1px solid rgba(132,148,149,0.14)">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="width:7px;height:7px;border-radius:50%;background:#c3f400;box-shadow:0 0 8px #c3f400;animation:ggpulse 2s infinite"></span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#e5e2e3">Read-only mode</span>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#849495;margin-top:6px;line-height:1.5">Never connects to IBKR.<br/>Views <span style="color:#b9cacb">memory/</span> only.</div>
+    </div>
+
+    <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(132,148,149,0.14);display:flex;flex-direction:column;gap:2px">
+      <div style="display:flex;align-items:center;gap:11px;padding:8px 14px;border-radius:8px;cursor:pointer;color:#b9cacb" style-hover="color:#e5e2e3">
+        <span style="font-family:'Material Symbols Outlined';font-size:18px">help</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px">Docs</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:11px;padding:8px 14px;border-radius:8px;cursor:pointer;color:#b9cacb" style-hover="color:#e5e2e3">
+        <span style="font-family:'Material Symbols Outlined';font-size:18px">settings</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px">Settings</span>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex:1;min-width:0;display:flex;flex-direction:column;height:100%">
+    <header style="flex:none;height:62px;border-bottom:1px solid rgba(132,148,149,0.16);background:rgba(19,19,20,0.7);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 26px;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.06em;color:#849495">
+        <span>OPERATIONS DESK</span>
+        <span style="color:#3b494b">/</span>
+        <span style="color:#b9cacb;text-transform:uppercase">{{ tabLabel }}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="display:flex;align-items:center;gap:7px;padding:6px 11px;border-radius:8px;background:rgba(28,27,28,0.8);border:1px solid rgba(132,148,149,0.16)">
+          <span style="width:6px;height:6px;border-radius:50%;background:#00f0ff;box-shadow:0 0 7px #00f0ff;animation:ggpulse 1.8s infinite"></span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#b9cacb">SYNCED {{ clock }} ET</span>
+        </div>
+        <div style="padding:6px 11px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.05em;color:#7df4ff;background:rgba(0,240,255,0.1);border:1px solid rgba(0,240,255,0.28)">PAPER · READ-ONLY</div>
+        <div style="display:flex;align-items:center;gap:7px;padding:6px 11px;border-radius:8px;background:rgba(28,27,28,0.8);border:1px solid rgba(132,148,149,0.16)">
+          <span style="font-family:'Material Symbols Outlined';font-size:15px;color:#c3f400">check_circle</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#c3f400">Market Open</span>
+        </div>
+        <div style="width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#b9cacb;background:rgba(28,27,28,0.8);border:1px solid rgba(132,148,149,0.16)" style-hover="color:#7df4ff">
+          <span style="font-family:'Material Symbols Outlined';font-size:18px">refresh</span>
+        </div>
+      </div>
+    </header>
+
+    <div style="flex:1;overflow-y:auto;overflow-x:hidden;padding:28px;background:radial-gradient(900px 460px at 82% -8%, rgba(0,240,255,0.06), transparent 60%), radial-gradient(700px 400px at 8% 110%, rgba(195,244,0,0.04), transparent 60%)">
+      <div style="max-width:1440px;margin:0 auto">
+
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:26px">
+          <div>
+            <h1 style="font-family:'Hanken Grotesk',sans-serif;font-size:32px;font-weight:600;letter-spacing:-0.01em;margin:0;color:#e5e2e3">{{ pageTitle }}</h1>
+            <p style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#849495;margin:7px 0 0;display:flex;align-items:center;gap:8px">
+              <span style="width:7px;height:7px;border-radius:50%;background:#c3f400;box-shadow:0 0 8px #c3f400;animation:ggpulse 2s infinite"></span>
+              {{ pageSubtitle }}
+            </p>
+          </div>
+        </div>
+
+        <!-- ===================== DASHBOARD ===================== -->
+        <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:28px">
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(192px,1fr));gap:16px">
+              <sc-for list="{{ metrics }}" as="m" hint-placeholder-count="6">
+                <div onClick="{{ m.onClick }}" style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);padding:18px 18px 16px;display:flex;flex-direction:column;gap:14px;{{ m.cursor }}" style-hover="border-color:rgba(125,244,255,0.3)">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.05em;color:#b9cacb">{{ m.label }}</span>
+                    <span style="font-family:'Material Symbols Outlined';font-size:18px;color:{{ m.iconColor }}">{{ m.icon }}</span>
+                  </div>
+                  <div>
+                    <div style="{{ m.valueStyle }}">{{ m.value }}</div>
+                    <sc-if value="{{ m.bar }}" hint-placeholder-val="{{ true }}">
+                      <div style="width:100%;height:4px;border-radius:9999px;background:rgba(53,52,54,0.8);overflow:hidden;margin-top:11px">
+                        <div style="{{ m.barStyle }}"></div>
+                      </div>
+                    </sc-if>
+                    <div style="{{ m.subStyle }};margin-top:9px">{{ m.sub }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+              <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);padding:20px">
+                <h3 style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#b9cacb;margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid rgba(132,148,149,0.14)">Decision Bias</h3>
+                <div style="display:flex;flex-direction:column;gap:16px">
+                  <sc-for list="{{ bias }}" as="b" hint-placeholder-count="3">
+                    <div>
+                      <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;margin-bottom:7px">
+                        <span style="{{ b.labelStyle }}">{{ b.label }}</span>
+                        <span style="color:#e5e2e3">{{ b.pctText }}</span>
+                      </div>
+                      <div style="width:100%;height:5px;border-radius:9999px;background:rgba(32,31,32,0.9);overflow:hidden">
+                        <div style="{{ b.barStyle }}"></div>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);padding:20px">
+                <h3 style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#b9cacb;margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid rgba(132,148,149,0.14)">Risk Management</h3>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px 16px">
+                  <sc-for list="{{ risk }}" as="r" hint-placeholder-count="6">
+                    <div>
+                      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;color:#849495;margin-bottom:6px">{{ r.k }}</div>
+                      <div style="{{ r.vStyle }}">{{ r.v }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);padding:20px">
+                <h3 style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#b9cacb;margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid rgba(132,148,149,0.14)">Trade-Ready by Strategy</h3>
+                <div style="display:flex;flex-direction:column;gap:13px">
+                  <sc-for list="{{ strategyMix }}" as="s" hint-placeholder-count="4">
+                    <div style="display:flex;align-items:center;gap:12px">
+                      <span style="flex:none;width:8px;height:8px;border-radius:2px;background:{{ s.color }}"></span>
+                      <span style="flex:1;font-family:'Inter',sans-serif;font-size:12px;color:#b9cacb">{{ s.name }}</span>
+                      <div style="flex:none;width:74px;height:5px;border-radius:9999px;background:rgba(32,31,32,0.9);overflow:hidden">
+                        <div style="{{ s.barStyle }}"></div>
+                      </div>
+                      <span style="flex:none;width:14px;text-align:right;font-family:'JetBrains Mono',monospace;font-size:12px;color:#e5e2e3">{{ s.n }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+
+            <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);overflow:hidden">
+              <div style="padding:18px 20px;border-bottom:1px solid rgba(132,148,149,0.14);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+                <div style="display:flex;align-items:center;gap:11px">
+                  <h3 style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#e5e2e3;margin:0">AAPL · Daily Structure</h3>
+                  <span style="padding:3px 9px;border-radius:9999px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#7df4ff;background:rgba(0,240,255,0.1);border:1px solid rgba(0,240,255,0.28)">GERCHIK LEVELS MAPPED</span>
+                </div>
+                <div style="display:flex;gap:8px">
+                  <sc-for list="{{ tfItems }}" as="t" hint-placeholder-count="4">
+                    <button onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="padding:12px 20px;border-bottom:1px solid rgba(132,148,149,0.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px">
+                <div style="display:flex;gap:22px;flex-wrap:wrap">
+                  <sc-for list="{{ chartToggles }}" as="tg" hint-placeholder-count="3">
+                    <div onClick="{{ tg.onClick }}" style="display:flex;align-items:center;gap:9px;cursor:pointer">
+                      <div style="{{ tg.trackStyle }}"><div style="{{ tg.knobStyle }}"></div></div>
+                      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#b9cacb;text-transform:uppercase">{{ tg.label }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="display:flex;gap:5px;flex-wrap:wrap">
+                  <sc-for list="{{ chartRangePills }}" as="rg" hint-placeholder-count="6">
+                    <button onClick="{{ rg.onClick }}" style="{{ rg.style }}">{{ rg.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="padding:18px 20px">{{ dashChart }}</div>
+            </div>
+
+            <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);overflow:hidden">
+              <div style="padding:16px 20px;border-bottom:1px solid rgba(132,148,149,0.14);background:rgba(14,14,15,0.4);display:flex;align-items:center;gap:10px">
+                <span style="font-family:'Material Symbols Outlined';font-size:17px;color:#849495">playlist_add_check</span>
+                <h3 style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#b9cacb;margin:0">Opportunity Queue</h3>
+              </div>
+              <div style="overflow-x:auto">
+                <table style="width:100%;border-collapse:collapse;min-width:720px">
+                  <thead><tr>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Asset</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Strategy</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">R:R</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Entry Zone</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Stop</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Target</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Status</th>
+                  </tr></thead>
+                  <tbody>
+                    <sc-for list="{{ oppRows }}" as="o" hint-placeholder-count="6">
+                      <tr style-hover="background:rgba(255,255,255,0.025)">
+                        <td style="{{ cellStyle }}"><span style="display:inline-flex;align-items:center;gap:8px;color:{{ o.symColor }};font-weight:500"><span style="width:6px;height:6px;border-radius:50%;background:{{ o.dot }}"></span>{{ o.sym }}</span></td>
+                        <td style="{{ cellStyle }};color:#b9cacb;font-family:'Inter',sans-serif">{{ o.strat }}</td>
+                        <td style="{{ cellStyle }};color:{{ o.rrColor }}">{{ o.rr }}</td>
+                        <td style="{{ cellStyle }};color:{{ o.cellColor }}">{{ o.entry }}</td>
+                        <td style="{{ cellStyle }};color:{{ o.cellColor }}">{{ o.stop }}</td>
+                        <td style="{{ cellStyle }};color:{{ o.cellColor }}">{{ o.target }}</td>
+                        <td style="{{ cellStyle }}"><span style="{{ o.pillStyle }}">{{ o.pill }}</span></td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);overflow:hidden">
+              <div style="padding:16px 20px;border-bottom:1px solid rgba(132,148,149,0.14);background:rgba(14,14,15,0.4);display:flex;align-items:center;gap:10px">
+                <span style="font-family:'Material Symbols Outlined';font-size:17px;color:#849495">history</span>
+                <h3 style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#b9cacb;margin:0">Recent Attempt Log</h3>
+              </div>
+              <div style="overflow-x:auto">
+                <table style="width:100%;border-collapse:collapse;min-width:680px">
+                  <thead><tr>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Time</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Asset</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Strategy</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Decision</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Reason</th>
+                  </tr></thead>
+                  <tbody>
+                    <sc-for list="{{ attemptRows }}" as="a" hint-placeholder-count="6">
+                      <tr style-hover="background:rgba(255,255,255,0.025)">
+                        <td style="{{ cellStyle }};color:#849495">{{ a.time }}</td>
+                        <td style="{{ cellStyle }};color:#e5e2e3;font-weight:500">{{ a.sym }}</td>
+                        <td style="{{ cellStyle }};color:#b9cacb;font-family:'Inter',sans-serif">{{ a.strat }}</td>
+                        <td style="{{ cellStyle }}"><span style="{{ a.pillStyle }}">{{ a.decision }}</span></td>
+                        <td style="{{ cellStyle }};color:#849495;font-family:'Inter',sans-serif">{{ a.reason }}</td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- ===================== PRE-OPEN ===================== -->
+        <sc-if value="{{ isPreOpen }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:28px">
+
+            <div style="display:grid;grid-template-columns:2fr 1.1fr 1.1fr;gap:18px;align-items:end">
+              <label style="display:flex;flex-direction:column;gap:8px">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#849495">FIND TICKER</span>
+                <div style="display:flex;align-items:center;gap:9px;padding:11px 14px;border-radius:9px;background:rgba(14,14,15,0.7);border:1px solid rgba(132,148,149,0.2)" style-focus-within="border-color:rgba(125,244,255,0.5)">
+                  <span style="font-family:'Material Symbols Outlined';font-size:17px;color:#849495">search</span>
+                  <input value="{{ preTicker }}" onInput="{{ onPreTicker }}" placeholder="Symbol" style="flex:1;min-width:0;background:transparent;border:none;outline:none;color:#e5e2e3;font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.04em;text-transform:uppercase"/>
+                </div>
+              </label>
+              <label style="display:flex;flex-direction:column;gap:8px">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#849495">STATUS</span>
+                <div style="position:relative">
+                  <select value="{{ preStatus }}" onChange="{{ onPreStatus }}" style="width:100%;appearance:none;-webkit-appearance:none;padding:11px 38px 11px 14px;border-radius:9px;background:rgba(14,14,15,0.7);border:1px solid rgba(132,148,149,0.2);color:#e5e2e3;font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer;outline:none">
+                    <sc-for list="{{ preStatusOpts }}" as="o" hint-placeholder-count="4">
+                      <option value="{{ o }}">{{ o }}</option>
+                    </sc-for>
+                  </select>
+                  <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:'Material Symbols Outlined';font-size:18px;color:#849495;pointer-events:none">expand_more</span>
+                </div>
+              </label>
+              <label style="display:flex;flex-direction:column;gap:8px">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#849495">MINIMUM TRADE LEVELS</span>
+                <div style="display:flex;align-items:stretch;gap:8px">
+                  <div style="flex:1;display:flex;align-items:center;padding:11px 14px;border-radius:9px;background:rgba(14,14,15,0.7);border:1px solid rgba(132,148,149,0.2)">
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#c3f400">{{ preMinLevels }}</span>
+                  </div>
+                  <button onClick="{{ onMinMinus }}" style="width:46px;border-radius:9px;background:rgba(28,27,28,0.8);border:1px solid rgba(132,148,149,0.2);color:#b9cacb;cursor:pointer;font-family:'Material Symbols Outlined';font-size:18px" style-hover="color:#7df4ff">remove</button>
+                  <button onClick="{{ onMinPlus }}" style="width:46px;border-radius:9px;background:rgba(28,27,28,0.8);border:1px solid rgba(132,148,149,0.2);color:#b9cacb;cursor:pointer;font-family:'Material Symbols Outlined';font-size:18px" style-hover="color:#7df4ff">add</button>
+                </div>
+              </label>
+            </div>
+
+            <sc-if value="{{ preMatch }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:24px">
+              <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px">
+                <sc-for list="{{ preMetrics }}" as="m" hint-placeholder-count="4">
+                  <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);padding:18px;display:flex;flex-direction:column;gap:13px">
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.05em;color:#b9cacb">{{ m.label }}</span>
+                    <div style="{{ m.valueStyle }}">{{ m.value }}</div>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px">
+                <sc-for list="{{ dataQuality }}" as="d" hint-placeholder-count="4">
+                  <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+                    <div style="display:flex;justify-content:space-between;align-items:center">
+                      <span style="font-family:'Inter',sans-serif;font-size:13px;font-weight:500;color:#e5e2e3">{{ d.name }}</span>
+                      <span style="{{ d.statusStyle }}">{{ d.status }}</span>
+                    </div>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#849495">{{ d.detail }}</span>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1.6fr 1fr;gap:16px;align-items:start">
+                <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);overflow:hidden">
+                  <div style="padding:14px 18px;border-bottom:1px solid rgba(132,148,149,0.14);background:rgba(14,14,15,0.4)">
+                    <h3 style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#b9cacb;margin:0">Trade Context</h3>
+                  </div>
+                  <table style="width:100%;border-collapse:collapse">
+                    <thead><tr>
+                      <th style="{{ fcTh }}">Field</th>
+                      <th style="{{ fcTh }}">Value</th>
+                    </tr></thead>
+                    <tbody>
+                      <sc-for list="{{ preContext }}" as="c" hint-placeholder-count="4">
+                        <tr style-hover="background:rgba(255,255,255,0.025)">
+                          <td style="{{ cellStyle }};color:#b9cacb;font-family:'Inter',sans-serif">{{ c.k }}</td>
+                          <td style="{{ cellStyle }};color:#e5e2e3">{{ c.v }}</td>
+                        </tr>
+                      </sc-for>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);overflow:hidden">
+                  <div style="padding:14px 18px;border-bottom:1px solid rgba(132,148,149,0.14);background:rgba(14,14,15,0.4)">
+                    <h3 style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#b9cacb;margin:0">Optimized Trade Levels</h3>
+                  </div>
+                  <div style="overflow-x:auto">
+                    <table style="width:100%;border-collapse:collapse;min-width:560px">
+                      <thead><tr>
+                        <th style="{{ fcTh }};text-align:right">price</th>
+                        <th style="{{ fcTh }};text-align:right">zone_low</th>
+                        <th style="{{ fcTh }};text-align:right">zone_high</th>
+                        <th style="{{ fcTh }}">type</th>
+                        <th style="{{ fcTh }};text-align:right">touches</th>
+                        <th style="{{ fcTh }};text-align:right">false_breakouts</th>
+                        <th style="{{ fcTh }};text-align:right">strength</th>
+                      </tr></thead>
+                      <tbody>
+                        <sc-for list="{{ preLevels }}" as="l" hint-placeholder-count="4">
+                          <tr style-hover="background:rgba(255,255,255,0.025)">
+                            <td style="{{ cellStyle }};color:#e5e2e3;text-align:right">{{ l.price }}</td>
+                            <td style="{{ cellStyle }};color:#849495;text-align:right">{{ l.zoneLow }}</td>
+                            <td style="{{ cellStyle }};color:#849495;text-align:right">{{ l.zoneHigh }}</td>
+                            <td style="{{ cellStyle }}"><span style="{{ l.typeStyle }}">{{ l.type }}</span></td>
+                            <td style="{{ cellStyle }};color:#7df4ff;text-align:right">{{ l.touches }}</td>
+                            <td style="{{ cellStyle }};color:#b9cacb;text-align:right">{{ l.fb }}</td>
+                            <td style="{{ cellStyle }};text-align:right"><span style="{{ l.strengthStyle }}">{{ l.strength }}</span></td>
+                          </tr>
+                        </sc-for>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);overflow:hidden">
+                  <div style="padding:14px 18px;border-bottom:1px solid rgba(132,148,149,0.14);background:rgba(14,14,15,0.4)">
+                    <h3 style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#b9cacb;margin:0">Risk Headlines</h3>
+                  </div>
+                  <div style="padding:16px 18px;display:flex;flex-direction:column;gap:14px">
+                    <sc-if value="{{ preHasRisk }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-direction:column;gap:10px">
+                        <sc-for list="{{ preRisk }}" as="r" hint-placeholder-count="2">
+                          <div style="display:flex;align-items:flex-start;gap:9px">
+                            <span style="font-family:'Material Symbols Outlined';font-size:16px;color:#ffb4ab;flex:none">warning</span>
+                            <span style="font-family:'Inter',sans-serif;font-size:12.5px;line-height:1.5;color:#b9cacb">{{ r }}</span>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ preNoRisk }}" hint-placeholder-val="{{ true }}">
+                      <span style="font-family:'Inter',sans-serif;font-size:13px;color:#849495">No matched risk headlines.</span>
+                    </sc-if>
+                    <div onClick="{{ onToggleAllLevels }}" style="display:flex;align-items:center;gap:9px;padding:12px 14px;border-radius:9px;cursor:pointer;background:rgba(14,14,15,0.5);border:1px solid rgba(132,148,149,0.16)" style-hover="border-color:rgba(125,244,255,0.3)">
+                      <span style="font-family:'Material Symbols Outlined';font-size:17px;color:#849495">{{ preLevelsChevron }}</span>
+                      <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#b9cacb">All detected levels ({{ preRawLevels }})</span>
+                    </div>
+                    <sc-if value="{{ preAllLevelsOpen }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto">
+                        <sc-for list="{{ preAllLevels }}" as="al" hint-placeholder-count="6">
+                          <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 11px;border-radius:7px;background:rgba(14,14,15,0.4)">
+                            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#e5e2e3">{{ al.price }}</span>
+                            <span style="{{ al.typeStyle }}">{{ al.type }}</span>
+                            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#849495">{{ al.touches }}T</span>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{ preNoMatch }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:center;gap:12px;padding:18px 20px;border-radius:12px;background:rgba(32,31,32,0.5);border:1px solid rgba(132,148,149,0.18)">
+                <span style="font-family:'Material Symbols Outlined';font-size:20px;color:#849495">search_off</span>
+                <span style="font-family:'Inter',sans-serif;font-size:13px;color:#b9cacb">No watchlist symbol matches <span style="color:#e5e2e3;font-family:'JetBrains Mono',monospace">{{ preTicker }}</span>. Try AAPL, SANM, NVDA, AMZN, or MSFT.</span>
+              </div>
+            </sc-if>
+
+            <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);overflow:hidden">
+              <div style="padding:16px 20px;border-bottom:1px solid rgba(132,148,149,0.14);background:rgba(14,14,15,0.4);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span style="font-family:'Material Symbols Outlined';font-size:17px;color:#849495">playlist_add_check</span>
+                  <h3 style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#b9cacb;margin:0">Opportunity Queue</h3>
+                </div>
+                <div style="display:flex;align-items:center;gap:9px;padding:7px 12px;border-radius:8px;background:rgba(14,14,15,0.6);border:1px solid rgba(132,148,149,0.18);width:240px;max-width:60vw">
+                  <span style="font-family:'Material Symbols Outlined';font-size:16px;color:#849495">search</span>
+                  <input value="{{ search }}" onInput="{{ onSearch }}" placeholder="Filter symbol / strategy" style="flex:1;min-width:0;background:transparent;border:none;outline:none;color:#e5e2e3;font-family:'JetBrains Mono',monospace;font-size:12px"/>
+                </div>
+              </div>
+              <div style="overflow-x:auto">
+                <table style="width:100%;border-collapse:collapse;min-width:720px">
+                  <thead><tr>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Asset</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Strategy</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">R:R</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Entry Zone</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Stop</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Target</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Status</th>
+                  </tr></thead>
+                  <tbody>
+                    <sc-for list="{{ filteredOpps }}" as="o" hint-placeholder-count="6">
+                      <tr style-hover="background:rgba(255,255,255,0.025)">
+                        <td style="{{ cellStyle }}"><span style="display:inline-flex;align-items:center;gap:8px;color:{{ o.symColor }};font-weight:500"><span style="width:6px;height:6px;border-radius:50%;background:{{ o.dot }}"></span>{{ o.sym }}</span></td>
+                        <td style="{{ cellStyle }};color:#b9cacb;font-family:'Inter',sans-serif">{{ o.strat }}</td>
+                        <td style="{{ cellStyle }};color:{{ o.rrColor }}">{{ o.rr }}</td>
+                        <td style="{{ cellStyle }};color:{{ o.cellColor }}">{{ o.entry }}</td>
+                        <td style="{{ cellStyle }};color:{{ o.cellColor }}">{{ o.stop }}</td>
+                        <td style="{{ cellStyle }};color:{{ o.cellColor }}">{{ o.target }}</td>
+                        <td style="{{ cellStyle }}"><span style="{{ o.pillStyle }}">{{ o.pill }}</span></td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);overflow:hidden">
+              <div style="padding:16px 20px;border-bottom:1px solid rgba(132,148,149,0.14);background:rgba(14,14,15,0.4);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span style="font-family:'Material Symbols Outlined';font-size:17px;color:#849495">candlestick_chart</span>
+                  <h3 style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#b9cacb;margin:0">{{ preChartSymbol }} · Mapped Levels</h3>
+                </div>
+                <div style="display:flex;gap:8px">
+                  <sc-for list="{{ tfItems }}" as="t" hint-placeholder-count="4">
+                    <button onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="padding:12px 20px;border-bottom:1px solid rgba(132,148,149,0.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px">
+                <div style="display:flex;gap:22px;flex-wrap:wrap">
+                  <sc-for list="{{ chartToggles }}" as="tg" hint-placeholder-count="3">
+                    <div onClick="{{ tg.onClick }}" style="display:flex;align-items:center;gap:9px;cursor:pointer">
+                      <div style="{{ tg.trackStyle }}"><div style="{{ tg.knobStyle }}"></div></div>
+                      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#b9cacb;text-transform:uppercase">{{ tg.label }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="display:flex;gap:5px;flex-wrap:wrap">
+                  <sc-for list="{{ chartRangePills }}" as="rg" hint-placeholder-count="6">
+                    <button onClick="{{ rg.onClick }}" style="{{ rg.style }}">{{ rg.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="padding:18px 20px">{{ preChart }}</div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- ===================== INTRADAY ===================== -->
+        <sc-if value="{{ isIntraday }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:28px">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
+              <sc-for list="{{ sessionMetrics }}" as="m" hint-placeholder-count="4">
+                <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);padding:18px;display:flex;flex-direction:column;gap:12px">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.05em;color:#b9cacb">{{ m.label }}</span>
+                    <span style="font-family:'Material Symbols Outlined';font-size:18px;color:#849495">{{ m.icon }}</span>
+                  </div>
+                  <div>
+                    <div style="{{ m.valueStyle }}">{{ m.value }}</div>
+                    <div style="{{ m.subStyle }};margin-top:8px">{{ m.sub }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px">
+              <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);overflow:hidden">
+                <div style="padding:16px 20px;border-bottom:1px solid rgba(132,148,149,0.14);background:rgba(14,14,15,0.4)">
+                  <h3 style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#b9cacb;margin:0">Attempted Levels</h3>
+                </div>
+                <div style="overflow-x:auto">
+                  <table style="width:100%;border-collapse:collapse;min-width:420px">
+                    <thead><tr>
+                      <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Time</th>
+                      <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Sym</th>
+                      <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Level</th>
+                      <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Result</th>
+                    </tr></thead>
+                    <tbody>
+                      <sc-for list="{{ attemptedLevels }}" as="l" hint-placeholder-count="5">
+                        <tr style-hover="background:rgba(255,255,255,0.025)">
+                          <td style="{{ cellStyle }};color:#849495">{{ l.time }}</td>
+                          <td style="{{ cellStyle }};color:#e5e2e3;font-weight:500">{{ l.sym }}</td>
+                          <td style="{{ cellStyle }}"><span style="{{ l.typeStyle }}">{{ l.price }} · {{ l.type }}</span></td>
+                          <td style="{{ cellStyle }};color:#b9cacb;font-family:'Inter',sans-serif">{{ l.result }}</td>
+                        </tr>
+                      </sc-for>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);padding:20px">
+                <h3 style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#b9cacb;margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid rgba(132,148,149,0.14)">Strategy Summary</h3>
+                <div style="display:flex;flex-direction:column;gap:14px">
+                  <sc-for list="{{ strategyMix }}" as="s" hint-placeholder-count="4">
+                    <div style="display:flex;align-items:center;gap:12px">
+                      <span style="flex:none;width:8px;height:8px;border-radius:2px;background:{{ s.color }}"></span>
+                      <span style="flex:1;font-family:'Inter',sans-serif;font-size:13px;color:#b9cacb">{{ s.name }}</span>
+                      <div style="flex:none;width:90px;height:5px;border-radius:9999px;background:rgba(32,31,32,0.9);overflow:hidden">
+                        <div style="{{ s.barStyle }}"></div>
+                      </div>
+                      <span style="flex:none;width:16px;text-align:right;font-family:'JetBrains Mono',monospace;font-size:13px;color:#e5e2e3">{{ s.n }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+
+            <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);overflow:hidden">
+              <div style="padding:16px 20px;border-bottom:1px solid rgba(132,148,149,0.14);background:rgba(14,14,15,0.4);display:flex;align-items:center;gap:10px">
+                <span style="font-family:'Material Symbols Outlined';font-size:17px;color:#849495">receipt_long</span>
+                <h3 style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#b9cacb;margin:0">Decision Log</h3>
+              </div>
+              <div style="overflow-x:auto">
+                <table style="width:100%;border-collapse:collapse;min-width:680px">
+                  <thead><tr>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Time</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Asset</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Strategy</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Decision</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Reason</th>
+                  </tr></thead>
+                  <tbody>
+                    <sc-for list="{{ attemptRows }}" as="a" hint-placeholder-count="6">
+                      <tr style-hover="background:rgba(255,255,255,0.025)">
+                        <td style="{{ cellStyle }};color:#849495">{{ a.time }}</td>
+                        <td style="{{ cellStyle }};color:#e5e2e3;font-weight:500">{{ a.sym }}</td>
+                        <td style="{{ cellStyle }};color:#b9cacb;font-family:'Inter',sans-serif">{{ a.strat }}</td>
+                        <td style="{{ cellStyle }}"><span style="{{ a.pillStyle }}">{{ a.decision }}</span></td>
+                        <td style="{{ cellStyle }};color:#849495;font-family:'Inter',sans-serif">{{ a.reason }}</td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- ===================== TRADES ===================== -->
+        <sc-if value="{{ isTrades }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:28px">
+            <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);overflow:hidden">
+              <div style="padding:16px 20px;border-bottom:1px solid rgba(132,148,149,0.14);background:rgba(14,14,15,0.4);display:flex;align-items:center;gap:10px">
+                <span style="font-family:'Material Symbols Outlined';font-size:17px;color:#849495">swap_horiz</span>
+                <h3 style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#b9cacb;margin:0">Open Paper Positions</h3>
+              </div>
+              <div style="overflow-x:auto">
+                <table style="width:100%;border-collapse:collapse;min-width:760px">
+                  <thead><tr>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Asset</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Side</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Qty</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Entry</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Stop</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Target</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Last</th>
+                    <th style="padding:11px 18px;text-align:right;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Unreal. P&L</th>
+                  </tr></thead>
+                  <tbody>
+                    <sc-for list="{{ positions }}" as="p" hint-placeholder-count="3">
+                      <tr style-hover="background:rgba(255,255,255,0.025)">
+                        <td style="{{ cellStyle }};color:#e5e2e3;font-weight:500">{{ p.sym }}</td>
+                        <td style="{{ cellStyle }}"><span style="{{ p.sideStyle }}">{{ p.side }}</span></td>
+                        <td style="{{ cellStyle }};color:#b9cacb">{{ p.qty }}</td>
+                        <td style="{{ cellStyle }};color:#b9cacb">{{ p.entry }}</td>
+                        <td style="{{ cellStyle }};color:#849495">{{ p.stop }}</td>
+                        <td style="{{ cellStyle }};color:#849495">{{ p.target }}</td>
+                        <td style="{{ cellStyle }};color:#e5e2e3">{{ p.last }}</td>
+                        <td style="{{ cellStyle }};text-align:right;color:{{ p.pnlColor }};font-weight:500">{{ p.pnlText }}</td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+              <sc-for list="{{ tradeStats }}" as="m" hint-placeholder-count="3">
+                <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);padding:18px;display:flex;flex-direction:column;gap:12px">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.05em;color:#b9cacb">{{ m.label }}</span>
+                  <div style="{{ m.valueStyle }}">{{ m.value }}</div>
+                  <div style="{{ m.subStyle }}">{{ m.sub }}</div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);overflow:hidden">
+              <div style="padding:16px 20px;border-bottom:1px solid rgba(132,148,149,0.14);background:rgba(14,14,15,0.4);display:flex;align-items:center;gap:10px">
+                <span style="font-family:'Material Symbols Outlined';font-size:17px;color:#849495">menu_book</span>
+                <h3 style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#b9cacb;margin:0">Trade Journal</h3>
+              </div>
+              <div style="overflow-x:auto">
+                <table style="width:100%;border-collapse:collapse;min-width:640px">
+                  <thead><tr>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Date</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Asset</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Strategy</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Result</th>
+                    <th style="padding:11px 18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">R</th>
+                    <th style="padding:11px 18px;text-align:right;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:#849495;border-bottom:1px solid rgba(132,148,149,0.12)">Net P&L</th>
+                  </tr></thead>
+                  <tbody>
+                    <sc-for list="{{ journal }}" as="j" hint-placeholder-count="4">
+                      <tr style-hover="background:rgba(255,255,255,0.025)">
+                        <td style="{{ cellStyle }};color:#849495">{{ j.time }}</td>
+                        <td style="{{ cellStyle }};color:#e5e2e3;font-weight:500">{{ j.sym }}</td>
+                        <td style="{{ cellStyle }};color:#b9cacb;font-family:'Inter',sans-serif">{{ j.strat }}</td>
+                        <td style="{{ cellStyle }}"><span style="{{ j.resultStyle }}">{{ j.result }}</span></td>
+                        <td style="{{ cellStyle }};color:{{ j.pnlColor }}">{{ j.r }}</td>
+                        <td style="{{ cellStyle }};text-align:right;color:{{ j.pnlColor }};font-weight:500">{{ j.pnlText }}</td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- ===================== FORECAST ===================== -->
+        <sc-if value="{{ isForecast }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:24px">
+
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:14px 18px;border-radius:12px;background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.22)">
+              <span style="font-family:'Material Symbols Outlined';font-size:20px;color:#7df4ff;flex:none">shield_lock</span>
+              <span style="font-family:'Inter',sans-serif;font-size:13px;line-height:1.6;color:#b9cacb">This calculator replays saved market data and models conditional level setups. It does not change live bot settings, connect to IBKR, or place real orders — <span style="color:#7df4ff">scenario only</span>.</span>
+            </div>
+
+            <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);overflow:hidden">
+              <div style="padding:16px 20px;border-bottom:1px solid rgba(132,148,149,0.14);background:rgba(14,14,15,0.4);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span style="font-family:'Material Symbols Outlined';font-size:17px;color:#849495">calculate</span>
+                  <h3 style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#b9cacb;margin:0">Scenario Parameters</h3>
+                </div>
+                <span style="padding:3px 9px;border-radius:9999px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#ecb2ff;background:rgba(236,178,255,0.12);border:1px solid rgba(236,178,255,0.3)">SCENARIO ONLY</span>
+              </div>
+              <div style="padding:22px 20px">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px">
+                  <sc-for list="{{ fcInputs }}" as="f" hint-placeholder-count="13">
+                    <label style="display:flex;flex-direction:column;gap:7px">
+                      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;color:#849495">{{ f.label }}</span>
+                      <div style="display:flex;align-items:center;gap:6px;padding:9px 11px;border-radius:8px;background:rgba(14,14,15,0.65);border:1px solid rgba(132,148,149,0.2)" style-focus-within="border-color:rgba(125,244,255,0.5)">
+                        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#849495">{{ f.prefix }}</span>
+                        <input type="number" value="{{ f.value }}" step="{{ f.step }}" onInput="{{ f.onInput }}" style="flex:1;min-width:0;width:100%;background:transparent;border:none;outline:none;color:#e5e2e3;font-family:'JetBrains Mono',monospace;font-size:13px"/>
+                        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#849495">{{ f.suffix }}</span>
+                      </div>
+                    </label>
+                  </sc-for>
+                </div>
+                <div style="display:flex;gap:12px;margin-top:22px;flex-wrap:wrap">
+                  <button onClick="{{ onCalculate }}" style="display:flex;align-items:center;gap:8px;padding:11px 20px;border-radius:9px;border:1px solid {{ accBorder }};background:{{ accFill }};color:{{ acc }};cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.03em;font-weight:500" style-hover="filter:brightness(1.15)">
+                    <span style="font-family:'Material Symbols Outlined';font-size:17px">query_stats</span>
+                    Calculate Forecast
+                  </button>
+                  <button onClick="{{ onResetForecast }}" style="display:flex;align-items:center;gap:8px;padding:11px 18px;border-radius:9px;border:1px solid rgba(132,148,149,0.25);background:rgba(28,27,28,0.6);color:#b9cacb;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px" style-hover="color:#e5e2e3">
+                    <span style="font-family:'Material Symbols Outlined';font-size:17px">restart_alt</span>
+                    Reset to Live Settings
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+                <span style="font-family:'Material Symbols Outlined';font-size:17px;color:#849495">query_stats</span>
+                <h3 style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#b9cacb;margin:0">Forecast Summary</h3>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#849495;background:rgba(28,27,28,0.7);padding:2px 8px;border-radius:9999px;border:1px solid rgba(132,148,149,0.16)">{{ fcCalcAt }}</span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px">
+                <sc-for list="{{ fcSummary }}" as="m" hint-placeholder-count="6">
+                  <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);padding:18px;display:flex;flex-direction:column;gap:12px">
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#b9cacb">{{ m.label }}</span>
+                    <div style="{{ m.valueStyle }}">{{ m.value }}</div>
+                    <div style="{{ m.subStyle }}">{{ m.sub }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <sc-if value="{{ fcBinding }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex;align-items:flex-start;gap:11px;margin-top:16px;padding:14px 18px;border-radius:11px;background:rgba(195,244,0,0.05);border:1px solid rgba(195,244,0,0.22)">
+                  <span style="font-family:'Material Symbols Outlined';font-size:19px;color:#c3f400;flex:none">info</span>
+                  <span style="font-family:'Inter',sans-serif;font-size:13px;line-height:1.6;color:#b9cacb">{{ fcBindingText }}</span>
+                </div>
+              </sc-if>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+              <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);padding:20px">
+                <h3 style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#b9cacb;margin:0 0 18px;display:flex;align-items:center;gap:9px"><span style="font-family:'Material Symbols Outlined';font-size:16px;color:#849495">speed</span>Capital &amp; Risk Utilization</h3>
+                <div style="display:flex;flex-direction:column;gap:18px">
+                  <sc-for list="{{ fcGauges }}" as="g" hint-placeholder-count="3">
+                    <div>
+                      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+                        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#b9cacb">{{ g.label }}</span>
+                        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#e5e2e3">{{ g.text }}</span>
+                      </div>
+                      <div style="width:100%;height:8px;border-radius:9999px;background:rgba(20,20,21,0.9);overflow:hidden;border:1px solid rgba(132,148,149,0.1)">
+                        <div style="{{ g.barStyle }}"></div>
+                      </div>
+                      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#849495;margin-top:6px">{{ g.sub }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);padding:20px">
+                <h3 style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#b9cacb;margin:0 0 6px;display:flex;align-items:center;gap:9px"><span style="font-family:'Material Symbols Outlined';font-size:16px;color:#849495">scatter_plot</span>Setup Qualification Map</h3>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#849495;margin-bottom:14px">Reward:risk vs entry distance · qualified setups clear both gates</div>
+                {{ fcScatter }}
+              </div>
+            </div>
+
+            <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);overflow:hidden">
+              <div style="padding:16px 20px;border-bottom:1px solid rgba(132,148,149,0.14);background:rgba(14,14,15,0.4);display:flex;justify-content:space-between;align-items:center;gap:10px">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span style="font-family:'Material Symbols Outlined';font-size:17px;color:#849495">table_view</span>
+                  <h3 style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#b9cacb;margin:0">Forecast Trade Ledger</h3>
+                </div>
+                <span style="padding:3px 10px;border-radius:9999px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#7df4ff;background:rgba(0,240,255,0.1);border:1px solid rgba(0,240,255,0.28)">PAPER</span>
+              </div>
+              <div style="padding:18px 20px">
+                <p style="font-family:'Inter',sans-serif;font-size:12px;line-height:1.6;color:#849495;margin:0 0 16px">Each row has <span style="color:#b9cacb">Place Order</span> (sends the setup to the execute_requests worker — paper-only, respects DRY_RUN) and <span style="color:#b9cacb">Close Position</span> (flattens the symbol). Results appear in Trades &amp; Positions. Click a symbol to load its chart.</p>
+                <div style="display:inline-flex;gap:4px;padding:4px;border-radius:9px;background:rgba(14,14,15,0.6);border:1px solid rgba(132,148,149,0.16);margin-bottom:18px;flex-wrap:wrap">
+                  <sc-for list="{{ fcFilters }}" as="f" hint-placeholder-count="3">
+                    <button onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }}</button>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ fcFeedback }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;align-items:center;gap:11px;margin-bottom:16px;padding:12px 16px;border-radius:10px;background:rgba(195,244,0,0.07);border:1px solid rgba(195,244,0,0.25)">
+                    <span style="font-family:'Material Symbols Outlined';font-size:18px;color:#c3f400;flex:none">task_alt</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.5;color:#dbe9b0">{{ fcFeedbackText }}</span>
+                  </div>
+                </sc-if>
+                <div style="overflow-x:auto">
+                  <table style="width:100%;border-collapse:collapse;min-width:780px">
+                    <thead><tr>
+                      <th style="{{ fcTh }}">Symbol</th>
+                      <th style="{{ fcTh }}">Side</th>
+                      <th style="{{ fcTh }}">Entry</th>
+                      <th style="{{ fcTh }}">Stop</th>
+                      <th style="{{ fcTh }}">Target</th>
+                      <th style="{{ fcTh }}">R:R</th>
+                      <th style="{{ fcTh }}">Shares</th>
+                      <th style="{{ fcTh }}">Status</th>
+                      <th style="{{ fcTh }};text-align:right">Actions</th>
+                    </tr></thead>
+                    <tbody>
+                      <sc-for list="{{ fcLedgerRows }}" as="r" hint-placeholder-count="3">
+                        <tr style-hover="background:rgba(255,255,255,0.025)">
+                          <td style="{{ cellStyle }}"><button onClick="{{ r.onSelect }}" style="{{ r.symBtnStyle }}">{{ r.symbol }}</button></td>
+                          <td style="{{ cellStyle }};color:{{ r.sideColor }};font-weight:500">{{ r.side }}</td>
+                          <td style="{{ cellStyle }};color:#b9cacb">{{ r.entry }}</td>
+                          <td style="{{ cellStyle }};color:#849495">{{ r.stop }}</td>
+                          <td style="{{ cellStyle }};color:#849495">{{ r.target }}</td>
+                          <td style="{{ cellStyle }};color:{{ r.rrColor }}">{{ r.rr }}</td>
+                          <td style="{{ cellStyle }};color:#b9cacb">{{ r.shares }}</td>
+                          <td style="{{ cellStyle }};color:{{ r.ledgerStatusColor }}">{{ r.ledgerStatus }}</td>
+                          <td style="{{ cellStyle }}">
+                            <div style="display:flex;gap:8px;justify-content:flex-end">
+                              <button onClick="{{ r.onPlace }}" style="{{ r.placeStyle }}">Place</button>
+                              <button onClick="{{ r.onClose }}" style="{{ r.closeStyle }}">Close</button>
+                            </div>
+                          </td>
+                        </tr>
+                      </sc-for>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div onClick="{{ onToggleExpand }}" style="display:flex;align-items:center;gap:10px;margin-top:16px;padding:13px 16px;border-radius:10px;cursor:pointer;background:rgba(14,14,15,0.5);border:1px solid rgba(132,148,149,0.16)" style-hover="border-color:rgba(125,244,255,0.3)">
+                  <span style="font-family:'Material Symbols Outlined';font-size:18px;color:#849495">{{ fcChevron }}</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#b9cacb">Full ledger table (all columns, sortable)</span>
+                </div>
+                <sc-if value="{{ fcExpanded }}" hint-placeholder-val="{{ false }}">
+                  <div style="overflow-x:auto;margin-top:12px;border:1px solid rgba(132,148,149,0.14);border-radius:10px">
+                    <table style="width:100%;border-collapse:collapse;min-width:1180px">
+                      <thead><tr>
+                        <th style="{{ fcTh }}">Symbol</th>
+                        <th style="{{ fcTh }}">Source</th>
+                        <th style="{{ fcTh }}">Strategy</th>
+                        <th style="{{ fcTh }}">Side</th>
+                        <th style="{{ fcTh }}">Current</th>
+                        <th style="{{ fcTh }}">Entry</th>
+                        <th style="{{ fcTh }}">Dist %</th>
+                        <th style="{{ fcTh }}">Dist ATR</th>
+                        <th style="{{ fcTh }}">Stop</th>
+                        <th style="{{ fcTh }}">Target</th>
+                        <th style="{{ fcTh }}">R:R</th>
+                        <th style="{{ fcTh }}">Shares</th>
+                        <th style="{{ fcTh }}">Position Value</th>
+                        <th style="{{ fcTh }}">Risk $</th>
+                        <th style="{{ fcTh }}">Potential Reward</th>
+                        <th style="{{ fcTh }}">Status</th>
+                      </tr></thead>
+                      <tbody>
+                        <sc-for list="{{ fcFullRows }}" as="r" hint-placeholder-count="8">
+                          <tr style-hover="background:rgba(255,255,255,0.025)">
+                            <td style="{{ cellStyle }};color:#e5e2e3;font-weight:500">{{ r.symbol }}</td>
+                            <td style="{{ cellStyle }}"><span style="{{ r.sourceStyle }}">{{ r.source }}</span></td>
+                            <td style="{{ cellStyle }};color:#b9cacb;font-family:'Inter',sans-serif">{{ r.strategy }}</td>
+                            <td style="{{ cellStyle }};color:{{ r.sideColor }}">{{ r.side }}</td>
+                            <td style="{{ cellStyle }};color:#849495">{{ r.current }}</td>
+                            <td style="{{ cellStyle }};color:#b9cacb">{{ r.entry }}</td>
+                            <td style="{{ cellStyle }};color:#849495">{{ r.distPct }}</td>
+                            <td style="{{ cellStyle }};color:{{ r.distColor }}">{{ r.dist }}</td>
+                            <td style="{{ cellStyle }};color:#849495">{{ r.stop }}</td>
+                            <td style="{{ cellStyle }};color:#849495">{{ r.target }}</td>
+                            <td style="{{ cellStyle }};color:{{ r.rrColor }}">{{ r.rr }}</td>
+                            <td style="{{ cellStyle }};color:#b9cacb">{{ r.shares }}</td>
+                            <td style="{{ cellStyle }};color:#b9cacb">{{ r.posValue }}</td>
+                            <td style="{{ cellStyle }};color:#b9cacb">{{ r.risk }}</td>
+                            <td style="{{ cellStyle }};color:#c3f400">{{ r.potReward }}</td>
+                            <td style="{{ cellStyle }}"><span style="{{ r.statusStyle }}">{{ r.status }}</span></td>
+                          </tr>
+                        </sc-for>
+                      </tbody>
+                    </table>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+
+            <sc-if value="{{ fcHasSelection }}" hint-placeholder-val="{{ true }}">
+              <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);overflow:hidden">
+                <div style="padding:16px 20px;border-bottom:1px solid rgba(132,148,149,0.14);background:rgba(14,14,15,0.4);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <span style="font-family:'Material Symbols Outlined';font-size:17px;color:#849495">candlestick_chart</span>
+                    <h3 style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#b9cacb;margin:0">{{ fcSelSymbol }} Forecast Position</h3>
+                    <span style="padding:3px 10px;border-radius:9999px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#7df4ff;background:rgba(0,240,255,0.1);border:1px solid rgba(0,240,255,0.28)">{{ fcSelBadge }}</span>
+                  </div>
+                  <div style="display:flex;gap:8px">
+                    <sc-for list="{{ tfItems }}" as="t" hint-placeholder-count="4">
+                      <button onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="padding:12px 20px;border-bottom:1px solid rgba(132,148,149,0.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px">
+                  <div style="display:flex;gap:22px;flex-wrap:wrap">
+                    <sc-for list="{{ chartToggles }}" as="tg" hint-placeholder-count="3">
+                      <div onClick="{{ tg.onClick }}" style="display:flex;align-items:center;gap:9px;cursor:pointer">
+                        <div style="{{ tg.trackStyle }}"><div style="{{ tg.knobStyle }}"></div></div>
+                        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#b9cacb;text-transform:uppercase">{{ tg.label }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="display:flex;gap:5px;flex-wrap:wrap">
+                    <sc-for list="{{ chartRangePills }}" as="rg" hint-placeholder-count="6">
+                      <button onClick="{{ rg.onClick }}" style="{{ rg.style }}">{{ rg.label }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="padding:18px 20px">{{ fcChart }}</div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <!-- ===================== REPORTS ===================== -->
+        <sc-if value="{{ isReports }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <sc-for list="{{ reports }}" as="r" hint-placeholder-count="5">
+              <div style="background:rgba(32,31,32,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(132,148,149,0.18);border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);padding:18px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap" style-hover="border-color:rgba(125,244,255,0.3)">
+                <span style="{{ r.typeStyle }}">{{ r.type }}</span>
+                <div style="flex:1;min-width:160px">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#e5e2e3">{{ r.file }}</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#849495;margin-top:4px">Trading date {{ r.date }}</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:8px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;color:#7df4ff;border:1px solid rgba(125,244,255,0.3);background:rgba(0,240,255,0.06)" style-hover="background:rgba(0,240,255,0.14)">
+                  <span style="font-family:'Material Symbols Outlined';font-size:16px">download</span>
+                  Download
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+      </div>
+    </div>
+
+    <sc-if value="{{ newsModal }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ onCloseNews }}" style="position:fixed;inset:0;z-index:60;background:rgba(8,8,9,0.74);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);display:flex;align-items:flex-start;justify-content:center;padding:44px 24px;overflow-y:auto">
+        <div onClick="{{ stopProp }}" style="width:100%;max-width:1060px;background:rgba(24,23,24,0.97);border:1px solid rgba(132,148,149,0.2);border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,0.6)">
+          <div style="padding:20px 24px;border-bottom:1px solid rgba(132,148,149,0.14);display:flex;justify-content:space-between;align-items:center;gap:14px">
+            <div style="display:flex;align-items:center;gap:11px">
+              <span style="font-family:'Material Symbols Outlined';font-size:20px;color:#ffb4ab">gpp_maybe</span>
+              <h3 style="font-family:'Hanken Grotesk',sans-serif;font-size:18px;font-weight:600;color:#e5e2e3;margin:0">Symbols filtered out by the news-risk filter</h3>
+            </div>
+            <button onClick="{{ onCloseNews }}" style="flex:none;padding:8px 18px;border-radius:8px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;color:#7df4ff;background:rgba(0,240,255,0.08);border:1px solid rgba(0,240,255,0.32)" style-hover="background:rgba(0,240,255,0.16)">Close</button>
+          </div>
+          <div style="padding:20px 24px;display:flex;flex-direction:column;gap:14px;max-height:68vh;overflow-y:auto">
+            <sc-for list="{{ newsBlocked }}" as="s" hint-placeholder-count="4">
+              <div style="border:1px solid rgba(132,148,149,0.16);border-radius:11px;padding:17px 20px;background:rgba(14,14,15,0.5)">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <span style="width:8px;height:8px;border-radius:50%;background:#ffb4ab;flex:none;box-shadow:0 0 8px rgba(255,180,171,0.6)"></span>
+                    <span style="font-family:'Hanken Grotesk',sans-serif;font-size:15px;font-weight:600;color:#e5e2e3">{{ s.symbol }}</span>
+                  </div>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#849495;flex:none">{{ s.headCount }}</span>
+                </div>
+                <div style="display:flex;gap:7px;margin:11px 0 0 18px">
+                  <sc-for list="{{ s.sources }}" as="src" hint-placeholder-count="2">
+                    <span style="{{ src.style }}">{{ src.label }}</span>
+                  </sc-for>
+                </div>
+                <ul style="margin:13px 0 0;padding-left:34px;display:flex;flex-direction:column;gap:8px">
+                  <sc-for list="{{ s.heads }}" as="hd" hint-placeholder-count="2">
+                    <li style="font-family:'Inter',sans-serif;font-size:13px;line-height:1.5;color:#b9cacb">{{ hd }}</li>
+                  </sc-for>
+                </ul>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;glow&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;compact&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Cyan&quot;,&quot;options&quot;:[&quot;Cyan&quot;,&quot;Lime&quot;,&quot;Magenta&quot;],&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    this.state = { tab:'dashboard', timeframe:'1D', search:'', clock:'09:43:00',
+      fc: this.fcDefaults(), fcResult:null, fcCalcAt:'—',
+      fcFilter:'eligible', fcExpanded:false, fcSel:null, fcFeedback:null,
+      fcShowRaw:false, fcShowTrade:true, fcShowVolume:true, newsModal:false,
+      chartRange:'ALL', chartRaw:false, chartTrade:true, chartVol:true,
+      preTicker:'AAPL', preStatus:'All', preMinLevels:0, preAllLevelsOpen:false };
+    this._candles = this.genCandles();
+    this.state.fcResult = this.runForecast(this.scenarioFrom(this.state.fc));
+    this.state.fcCalcAt = '2026-06-20 09:41:55';
+    const firstAcc = this.state.fcResult.accepted[0];
+    this.state.fcSel = firstAcc ? firstAcc.symbol : (this.state.fcResult.rows[0] && this.state.fcResult.rows[0].symbol) || null;
+  }
+
+  placeOrder(row){
+    const id = Math.floor(1000+Math.random()*9000);
+    this.setState({ fcFeedback:`Queued place order for ${row.symbol} ${row.signal} ${row.quantity} @ $${row.entry.toFixed(2)} (request #${id}). Paper-only, respects DRY_RUN — results appear in Trades & Positions.` });
+  }
+  closePos(row){
+    const id = Math.floor(1000+Math.random()*9000);
+    this.setState({ fcFeedback:`Queued close for ${row.symbol} (request #${id}). Flattens the symbol via a paper market order.` });
+  }
+
+  genFcCandles(row){
+    let seed=0; for(const ch of row.symbol) seed=(seed*31+ch.charCodeAt(0))%99991; seed=seed||7;
+    const rand=()=>{ seed=(seed*9301+49297)%233280; return seed/233280; };
+    const n=58, center=row.current||row.entry, vol0=Math.max(center*0.012,0.02);
+    let price=center*(row.signal==='SELL'?1.45:0.72);
+    const raw=[];
+    for(let i=0;i<n;i++){
+      const drift=(center-price)*0.06 + (rand()-0.5)*vol0*3;
+      const open=price, close=open+drift;
+      const high=Math.max(open,close)+rand()*vol0*2;
+      const low=Math.min(open,close)-rand()*vol0*2;
+      const volume=(0.45+rand()) * ((i>n-13 && i<n-6) ? (2.4+rand()) : 1);
+      raw.push({open,close,high,low,volume});
+      price=close;
+    }
+    const shift=center-raw[n-1].close;
+    raw.forEach(c=>{ c.open+=shift; c.close+=shift; c.high+=shift; c.low+=shift; });
+    return raw;
+  }
+
+  buildForecastChart(row, acc, glow){
+    const C=this.C, R=(h,a)=>this.rgba(h,a), h=React.createElement;
+    const showRaw=this.state.fcShowRaw, showTrade=this.state.fcShowTrade, showVol=this.state.fcShowVolume;
+    const cs=this.genFcCandles(row), n=cs.length;
+    const entry=row.entry, stop=row.stop, target=row.target;
+    const W=1000, padT=14, padR=104, padL=10;
+    const volH=showVol?64:0, gap=showVol?16:0;
+    const priceH=260, H=padT+priceH+gap+volH+10;
+    let pmin=Infinity, pmax=-Infinity;
+    cs.forEach(c=>{ pmin=Math.min(pmin,c.low); pmax=Math.max(pmax,c.high); });
+    [entry,stop,target].forEach(p=>{ pmin=Math.min(pmin,p); pmax=Math.max(pmax,p); });
+    const pd=(pmax-pmin)*0.08; pmin-=pd; pmax+=pd;
+    const y=p=>padT+(pmax-p)/(pmax-pmin)*priceH;
+    const plotW=W-padL-padR, step=plotW/n, x=i=>padL+i*step+step/2, cw=Math.max(3,step*0.55);
+    const els=[];
+    for(let g=0;g<=4;g++){ const gy=padT+priceH*g/4; els.push(h('line',{key:'g'+g,x1:padL,x2:W-padR,y1:gy,y2:gy,stroke:'rgba(132,148,149,0.07)',strokeWidth:1})); }
+    const highs=cs.map(c=>c.high), lows=cs.map(c=>c.low);
+    const res=Math.max(...highs.slice(0,Math.floor(n*0.82)));
+    const sup=Math.min(...lows.slice(Math.floor(n*0.18)));
+    const slvl=(p,key)=>h('line',{key,x1:padL,x2:W-padR,y1:y(p),y2:y(p),stroke:R(C.cyan,0.5),strokeWidth:1.3});
+    els.push(slvl(res,'res'), slvl(sup,'sup'));
+    if(showRaw){
+      [(res+target)/2,(sup+entry)/2,res*0.92+sup*0.08].forEach((p,i)=>els.push(h('line',{key:'rw'+i,x1:padL,x2:W-padR,y1:y(p),y2:y(p),stroke:R(C.cyan,0.16),strokeWidth:1,strokeDasharray:'2 5'})));
+    }
+    if(showTrade){
+      const zT=Math.min(y(entry),y(target)), zB=Math.max(y(entry),y(target));
+      els.push(h('rect',{key:'tz',x:padL,y:zT,width:plotW,height:zB-zT,fill:R(C.lime,0.06)}));
+      const sT=Math.min(y(entry),y(stop)), sB=Math.max(y(entry),y(stop));
+      els.push(h('rect',{key:'sz',x:padL,y:sT,width:plotW,height:sB-sT,fill:R(C.err,0.07)}));
+    }
+    const dl=(p,color,key)=>h('line',{key,x1:padL,x2:W-padR,y1:y(p),y2:y(p),stroke:color,strokeWidth:1.4,strokeDasharray:'6 4'});
+    els.push(dl(target,C.lime,'t'), dl(entry,C.cyan,'e'), dl(stop,C.err,'s'));
+    cs.forEach((c,i)=>{
+      const up=c.close>=c.open, col=up?C.lime:C.err;
+      const bx=x(i), top=y(Math.max(c.open,c.close)), bot=y(Math.min(c.open,c.close));
+      els.push(h('line',{key:'w'+i,x1:bx,x2:bx,y1:y(c.high),y2:y(c.low),stroke:col,strokeWidth:1,opacity:0.85}));
+      els.push(h('rect',{key:'b'+i,x:bx-cw/2,width:cw,y:top,height:Math.max(1.4,bot-top),fill:col,opacity:0.9}));
+    });
+    if(showVol){
+      const volTop=padT+priceH+gap, vmax=Math.max(...cs.map(c=>c.volume))||1;
+      cs.forEach((c,i)=>{ const up=c.close>=c.open, vh=(c.volume/vmax)*volH; els.push(h('rect',{key:'v'+i,x:x(i)-cw/2,width:cw,y:volTop+volH-vh,height:Math.max(0.5,vh),fill:R(up?C.lime:C.err,0.4)})); });
+      els.push(h('line',{key:'vb',x1:padL,x2:W-padR,y1:volTop+volH,y2:volTop+volH,stroke:'rgba(132,148,149,0.12)',strokeWidth:1}));
+    }
+    const svg=h('svg',{viewBox:`0 0 ${W} ${H}`,preserveAspectRatio:'none',width:'100%',height:'100%',style:{display:'block'}}, els);
+    const fmt=p=>'$'+(p>=1?p.toFixed(2):p.toFixed(3));
+    const lab=(p,text,color)=>h('div',{key:'l'+text,style:{position:'absolute',right:'4px',top:`calc(${(y(p)/H*100).toFixed(2)}% - 8px)`,fontFamily:"'JetBrains Mono',monospace",fontSize:'9.5px',color,background:R(C.bg,0.82),padding:'1px 6px',borderRadius:'3px',border:`1px solid ${R(color,0.4)}`,whiteSpace:'nowrap'}}, text);
+    return h('div',{style:{position:'relative',width:'100%',height:H+'px'}}, svg,
+      lab(target,'TARGET '+fmt(target),C.lime),
+      lab(entry,'ENTRY '+fmt(entry),C.cyan),
+      lab(stop,'STOP '+fmt(stop),C.err));
+  }
+
+  rangeCounts(){ return {'1M':22,'3M':64,'6M':128,'YTD':150,'1Y':252,'ALL':260}; }
+
+  genSeriesV2(seedKey, center, signal){
+    const tf=this.state.timeframe;
+    let seed=0; for(const ch of (seedKey+tf)) seed=(seed*31+ch.charCodeAt(0))%99991; seed=seed||7;
+    const rand=()=>{ seed=(seed*9301+49297)%233280; return seed/233280; };
+    const n=260, tfVol={'1H':0.55,'1D':1,'1W':1.7,'1M':2.6}[tf]||1;
+    const vol0=Math.max(center*0.012,0.02)*tfVol;
+    let price=center*(signal==='SELL'?1.5:0.6);
+    const raw=[];
+    for(let i=0;i<n;i++){
+      const drift=(center-price)*0.045 + (rand()-0.5)*vol0*3;
+      const open=price, close=open+drift;
+      const high=Math.max(open,close)+rand()*vol0*2;
+      const low=Math.min(open,close)-rand()*vol0*2;
+      const volume=(0.45+rand())*((i>n-32&&i<n-12)?(2.2+rand()):1);
+      raw.push({open,close,high,low,volume}); price=close;
+    }
+    const shift=center-raw[n-1].close;
+    raw.forEach(c=>{ c.open+=shift; c.close+=shift; c.high+=shift; c.low+=shift; });
+    return raw;
+  }
+
+  buildChartV2(spec, acc, glow){
+    const C=this.C, R=(h,a)=>this.rgba(h,a), h=React.createElement;
+    const showRaw=this.state.chartRaw, showTrade=this.state.chartTrade, showVol=this.state.chartVol;
+    const fmtP=p=>'$'+(Math.abs(p)>=1?p.toFixed(2):p.toFixed(3));
+    const full=this.genSeriesV2(spec.seedKey, spec.center, spec.signal||'long');
+    const cnt=Math.min(full.length, this.rangeCounts()[this.state.chartRange]||full.length);
+    const cs=full.slice(full.length-cnt), n=cs.length;
+    const lines=spec.lines||[], zones=spec.zones||[];
+    let levels=(spec.levels||[]).slice();
+    if(spec.autoLevels){
+      const hi=Math.max(...cs.slice(0,Math.floor(n*0.82)).map(c=>c.high));
+      const lo=Math.min(...cs.slice(Math.floor(n*0.18)).map(c=>c.low));
+      levels.push({p:hi,color:C.cyan,label:'RES '+fmtP(hi)}, {p:lo,color:C.cyan,label:'SUP '+fmtP(lo)});
+    }
+    const W=1000, padT=14, padR=124, padL=10;
+    const volH=showVol?60:0, gap=showVol?16:0, priceH=270, H=padT+priceH+gap+volH+8;
+    let pmin=Infinity, pmax=-Infinity;
+    cs.forEach(c=>{ pmin=Math.min(pmin,c.low); pmax=Math.max(pmax,c.high); });
+    lines.forEach(l=>{ pmin=Math.min(pmin,l.p); pmax=Math.max(pmax,l.p); });
+    levels.forEach(l=>{ pmin=Math.min(pmin,l.p); pmax=Math.max(pmax,l.p); });
+    zones.forEach(z=>{ pmin=Math.min(pmin,z.low); pmax=Math.max(pmax,z.high); });
+    const pd=(pmax-pmin)*0.07; pmin-=pd; pmax+=pd;
+    const y=p=>padT+(pmax-p)/(pmax-pmin)*priceH;
+    const plotW=W-padL-padR, step=plotW/n, x=i=>padL+i*step+step/2, cw=Math.max(2.5,step*0.55);
+    const els=[];
+    for(let g=0;g<=4;g++){ const gy=padT+priceH*g/4; els.push(h('line',{key:'g'+g,x1:padL,x2:W-padR,y1:gy,y2:gy,stroke:'rgba(132,148,149,0.07)',strokeWidth:1})); }
+    if(showTrade){
+      levels.forEach((l,i)=>{
+        const half = l.zoneHalf != null ? l.zoneHalf : Math.max(Math.abs(l.p)*0.006, (pmax-pmin)*0.006);
+        const zT=y(l.p+half), zB=y(l.p-half);
+        els.push(h('rect',{key:'lz'+i,x:padL,y:zT,width:plotW,height:Math.max(2,zB-zT),fill:R(l.color,0.13)}));
+      });
+    }
+    levels.forEach((l,i)=>els.push(h('line',{key:'lv'+i,x1:padL,x2:W-padR,y1:y(l.p),y2:y(l.p),stroke:R(l.color,0.55),strokeWidth:1.3})));
+    if(showRaw && levels.length){
+      const ps=levels.map(l=>l.p), mn=Math.min(...ps), mx=Math.max(...ps);
+      [0.33,0.66].forEach((f,i)=>{ const p=mn+(mx-mn)*f; els.push(h('line',{key:'rw'+i,x1:padL,x2:W-padR,y1:y(p),y2:y(p),stroke:R(C.cyan,0.16),strokeWidth:1,strokeDasharray:'2 5'})); });
+    }
+    const ma=[]; for(let i=0;i<n;i++){ const k=Math.max(0,i-6); let s=0,c2=0; for(let j=k;j<=i;j++){ s+=cs[j].close; c2++; } ma.push(s/c2); }
+    let path=''; ma.forEach((m,i)=>{ path+=(i?' L':'M')+x(i).toFixed(1)+' '+y(m).toFixed(1); });
+    els.push(h('path',{key:'ma',d:path,fill:'none',stroke:R(acc,0.62),strokeWidth:1.7,vectorEffect:'non-scaling-stroke'}));
+    lines.forEach((l,i)=>els.push(h('line',{key:'dl'+i,x1:padL,x2:W-padR,y1:y(l.p),y2:y(l.p),stroke:l.color,strokeWidth:1.4,strokeDasharray:'6 4'})));
+    cs.forEach((c,i)=>{ const up=c.close>=c.open, col=up?C.lime:C.err; const bx=x(i), top=y(Math.max(c.open,c.close)), bot=y(Math.min(c.open,c.close)); els.push(h('line',{key:'w'+i,x1:bx,x2:bx,y1:y(c.high),y2:y(c.low),stroke:col,strokeWidth:1,opacity:0.85})); els.push(h('rect',{key:'b'+i,x:bx-cw/2,width:cw,y:top,height:Math.max(1.2,bot-top),fill:col,opacity:0.9})); });
+    if(showVol){ const volTop=padT+priceH+gap, vmax=Math.max(...cs.map(c=>c.volume))||1; cs.forEach((c,i)=>{ const up=c.close>=c.open, vh=(c.volume/vmax)*volH; els.push(h('rect',{key:'v'+i,x:x(i)-cw/2,width:cw,y:volTop+volH-vh,height:Math.max(0.5,vh),fill:R(up?C.lime:C.err,0.4)})); }); els.push(h('line',{key:'vb',x1:padL,x2:W-padR,y1:volTop+volH,y2:volTop+volH,stroke:'rgba(132,148,149,0.12)',strokeWidth:1})); }
+    const svg=h('svg',{viewBox:`0 0 ${W} ${H}`,preserveAspectRatio:'none',width:'100%',height:'100%',style:{display:'block'}}, els);
+    const labSrc=[...levels,...lines];
+    const labs=labSrc.map((l,i)=>h('div',{key:'lab'+i,style:{position:'absolute',right:'4px',top:`calc(${(y(l.p)/H*100).toFixed(2)}% - 8px)`,fontFamily:"'JetBrains Mono',monospace",fontSize:'9.5px',color:l.color,background:R(C.bg,0.82),padding:'1px 6px',borderRadius:'3px',border:`1px solid ${R(l.color,0.4)}`,whiteSpace:'nowrap'}}, l.label));
+    return h('div',{style:{position:'relative',width:'100%',height:H+'px'}}, svg, ...labs);
+  }
+
+  fcDefaults(){
+    return { equity:100000, cash:100000, dailyPnl:0, spread:0.05,
+      riskTrade:1.0, maxDailyLoss:2.0, minRR:3.0, maxPositions:5,
+      maxSpread:0.20, maxOpenRisk:6.0, maxPosValue:50000, minEntryAtr:1.0, maxEntryAtr:2.0 };
+  }
+
+  scenarioFrom(f){
+    return { equity:+f.equity, cash:+f.cash, dailyPnl:+f.dailyPnl, spread:+f.spread/100,
+      riskTrade:+f.riskTrade/100, maxDailyLoss:+f.maxDailyLoss/100, minRR:+f.minRR,
+      maxPositions:Math.round(+f.maxPositions), maxSpread:+f.maxSpread/100,
+      maxOpenRisk:+f.maxOpenRisk/100, maxPosValue:+f.maxPosValue,
+      minEntryAtr:+f.minEntryAtr, maxEntryAtr:+f.maxEntryAtr };
+  }
+
+  fcPositions(){
+    return [
+      {symbol:'SANM',entry:242.10,stop:237.97,qty:41},
+      {symbol:'NVDA',entry:118.95,stop:115.40,qty:84},
+      {symbol:'AMZN',entry:184.40,stop:180.60,qty:27},
+    ];
+  }
+
+  fcCandidates(){
+    const mk = (o)=>{
+      const risk = Math.abs(o.entry-o.stop);
+      const reward = Math.abs(o.target-o.entry);
+      const dist = o.current ? Math.abs(o.entry-o.current) : 0;
+      return { ...o, risk_per_share:risk, reward_per_share:reward, reward_risk:reward/risk,
+        entry_distance_pct: o.current ? dist/o.current : 0,
+        entry_distance_atr: (o.current && o.atr) ? dist/o.atr : null };
+    };
+    return [
+      mk({symbol:'CRWD',source:'ACTIVE REPLAY',strategy:'Two-bar false breakout',signal:'BUY',dir:'long',entry:362.00,stop:354.00,target:388.00,confidence:0.68}),
+      mk({symbol:'PLTR',source:'ACTIVE REPLAY',strategy:'Rebound from level',signal:'BUY',dir:'long',entry:41.20,stop:39.40,target:47.00,confidence:0.81}),
+      mk({symbol:'AVGO',source:'ACTIVE REPLAY',strategy:'Breakout',signal:'BUY',dir:'long',entry:178.50,stop:172.00,target:199.00,confidence:0.76}),
+      mk({symbol:'GOOGL',source:'PROJECTED',strategy:'Level breakout forecast',signal:'BUY',dir:'long',entry:183.50,stop:179.80,target:196.00,current:178.00,atr:3.2,confidence:0.65}),
+      mk({symbol:'MSFT',source:'PROJECTED',strategy:'Level retest forecast',signal:'BUY',dir:'long',entry:427.50,stop:421.00,target:447.00,current:418.00,atr:6.0,confidence:0.70}),
+      mk({symbol:'COST',source:'PROJECTED',strategy:'Level retest forecast',signal:'BUY',dir:'long',entry:930.00,stop:916.00,target:980.00,current:905.00,atr:12.0,confidence:0.72}),
+      mk({symbol:'AMD',source:'PROJECTED',strategy:'Level breakout forecast',signal:'SELL',dir:'short',entry:134.00,stop:138.50,target:121.00,current:138.50,atr:4.0,confidence:0.60}),
+      mk({symbol:'TSLA',source:'PROJECTED',strategy:'Level retest forecast',signal:'BUY',dir:'long',entry:200.00,stop:194.00,target:210.00,current:192.00,atr:6.5,confidence:0.55}),
+    ];
+  }
+
+  reasonLabel(codes){
+    const m = {
+      daily_loss_limit_reached:'Daily loss limit reached',
+      duplicate_position:'Position already open',
+      max_positions_reached:'Maximum positions reached',
+      open_risk_limit_exceeded:'Maximum open risk exceeded',
+      position_value_invalid:'Position value or cash limit exceeded',
+      reward_risk_too_low:'Reward:risk below minimum',
+      spread_too_wide:'Assumed spread exceeds limit',
+      position_size_zero:'Position size is zero',
+      entry_too_far_from_market:'Entry is too far from the current market',
+      entry_too_close_to_market:'Entry is closer than the minimum ATR distance',
+    };
+    return codes.map(c=>m[c]||c).join('; ');
+  }
+
+  runForecast(sc){
+    const positions = this.fcPositions();
+    const currentSymbols = new Set(positions.map(p=>p.symbol.toUpperCase()));
+    const currentOpenRisk = positions.reduce((t,p)=>t + Math.abs(p.entry-p.stop)*p.qty, 0);
+    const maxDailyLoss = Math.max(0, sc.equity*sc.maxDailyLoss);
+    const dailyLossUsed = Math.max(0, -sc.dailyPnl);
+    const remainingDailyLoss = Math.max(0, maxDailyLoss-dailyLossUsed);
+    const dailyLossTripped = maxDailyLoss>0 && remainingDailyLoss<=0;
+    const maxOpenRisk = Math.max(0, sc.equity*sc.maxOpenRisk);
+    let acceptedRisk=0, acceptedNotional=0, acceptedReward=0;
+    let cashRemaining = Math.max(0, sc.cash);
+    const acceptedSymbols = new Set();
+    const rows=[]; const reasonCounts={};
+
+    const ordered = this.fcCandidates().slice().sort((a,b)=>{
+      const sa = a.source==='ACTIVE REPLAY'?0:1, sb = b.source==='ACTIVE REPLAY'?0:1;
+      if(sa!==sb) return sa-sb;
+      const da = a.entry_distance_atr==null?999:a.entry_distance_atr, db = b.entry_distance_atr==null?999:b.entry_distance_atr;
+      if(da!==db) return da-db;
+      if(b.reward_risk!==a.reward_risk) return b.reward_risk-a.reward_risk;
+      return b.confidence-a.confidence;
+    });
+
+    for(const it of ordered){
+      const symbol = it.symbol.toUpperCase();
+      const risk_per_share = it.risk_per_share;
+      const reward_per_share = it.reward_per_share;
+      const reasons=[];
+      const quantity = (sc.equity>0 && risk_per_share>0) ? Math.floor((sc.equity*sc.riskTrade)/risk_per_share) : 0;
+      const risk_amount = quantity*risk_per_share;
+      const notional = quantity*it.entry;
+      const potential_reward = quantity*reward_per_share;
+
+      if(dailyLossTripped) reasons.push('daily_loss_limit_reached');
+      if(it.source==='PROJECTED'){
+        const hasAtr = it.entry_distance_atr!=null;
+        if(hasAtr && it.entry_distance_atr < sc.minEntryAtr) reasons.push('entry_too_close_to_market');
+        if(hasAtr && it.entry_distance_atr > sc.maxEntryAtr) reasons.push('entry_too_far_from_market');
+      }
+      if(currentSymbols.has(symbol) || acceptedSymbols.has(symbol)) reasons.push('duplicate_position');
+      if(positions.length + acceptedSymbols.size >= sc.maxPositions) reasons.push('max_positions_reached');
+      if(it.reward_risk < sc.minRR) reasons.push('reward_risk_too_low');
+      if(sc.spread > sc.maxSpread) reasons.push('spread_too_wide');
+      if(quantity<=0) reasons.push('position_size_zero');
+      if(quantity>0 && (notional>sc.maxPosValue || notional>cashRemaining)) reasons.push('position_value_invalid');
+      if(currentOpenRisk + acceptedRisk + risk_amount > maxOpenRisk) reasons.push('open_risk_limit_exceeded');
+
+      const setupCodes = new Set(['entry_too_close_to_market','entry_too_far_from_market','reward_risk_too_low','spread_too_wide','position_size_zero']);
+      const setupQualified = !reasons.some(r=>setupCodes.has(r));
+      const accepted = reasons.length===0;
+      if(accepted){ acceptedSymbols.add(symbol); acceptedRisk+=risk_amount; acceptedNotional+=notional; acceptedReward+=potential_reward; cashRemaining-=notional; }
+
+      rows.push({ ...it, quantity, position_value:notional, risk_amount, potential_reward,
+        setup_qualified:setupQualified, reason_codes:reasons,
+        status: accepted?'FORECAST TRADE':'FILTERED',
+        reason: accepted?'Eligible under scenario':this.reasonLabel(reasons) });
+      reasons.forEach(r=>reasonCounts[r]=(reasonCounts[r]||0)+1);
+    }
+
+    const acceptedRows = rows.filter(r=>r.status==='FORECAST TRADE');
+    const setupQualifiedCount = rows.filter(r=>r.setup_qualified).length;
+    const riskBudgetPerTrade = Math.max(0, sc.equity*sc.riskTrade);
+    const remainingOpenRisk = Math.max(0, maxOpenRisk-currentOpenRisk);
+    let openRiskCapacity=0, runCap=0;
+    for(const r of rows){ if(!r.setup_qualified) continue; const ar=r.risk_amount; if(ar<=0) continue; if(runCap+ar<=remainingOpenRisk+1e-9){ runCap+=ar; openRiskCapacity++; } else break; }
+    const positionCapacity = Math.max(0, sc.maxPositions-positions.length);
+    let binding='';
+    if(dailyLossTripped) binding='daily loss kill switch';
+    else if(acceptedRows.length>=positionCapacity && positionCapacity<=openRiskCapacity) binding='maximum positions';
+    else if(reasonCounts['open_risk_limit_exceeded']) binding='maximum open risk';
+    else if(reasonCounts['position_value_invalid']) binding='cash / position value';
+    else if(setupQualifiedCount===0) binding='setup filters';
+
+    return { rows, accepted:acceptedRows, scenario:sc, summary:{
+      possible_signals:rows.length,
+      active_signals:rows.filter(r=>r.source==='ACTIVE REPLAY').length,
+      projected_setups:rows.filter(r=>r.source==='PROJECTED').length,
+      setup_qualified:setupQualifiedCount, forecast_trades:acceptedRows.length,
+      capital_required:acceptedNotional, new_open_risk:acceptedRisk,
+      total_open_risk:currentOpenRisk+acceptedRisk, potential_reward:acceptedReward,
+      max_daily_loss:maxDailyLoss, remaining_daily_loss:remainingDailyLoss,
+      max_open_risk:maxOpenRisk, current_open_risk:currentOpenRisk, cash_remaining:cashRemaining,
+      capital_used:acceptedNotional,
+      risk_budget_per_trade:riskBudgetPerTrade, open_risk_capacity:openRiskCapacity,
+      position_capacity:positionCapacity, binding_limit:binding } };
+  }
+
+  setFc(key, val){ this.setState(s=>({ fc:{ ...s.fc, [key]:val } })); }
+  onCalculate(){
+    const r = this.runForecast(this.scenarioFrom(this.state.fc));
+    const now = new Date();
+    const p = n => String(n).padStart(2,'0');
+    this.setState({ fcResult:r, fcCalcAt:`2026-06-20 ${p(now.getHours())}:${p(now.getMinutes())}:${p(now.getSeconds())}` });
+  }
+  onResetForecast(){
+    const fc = this.fcDefaults();
+    this.setState({ fc, fcResult:this.runForecast(this.scenarioFrom(fc)), fcCalcAt:'2026-06-20 09:41:55' });
+  }
+
+  fcScatter(sc, summary){
+    const C=this.C, R=(h,a)=>this.rgba(h,a), h=React.createElement;
+    const rows = this.state.fcResult ? this.state.fcResult.rows : [];
+    const W=420, H=210, padL=44, padR=14, padT=14, padB=34;
+    const plotW=W-padL-padR, plotH=H-padT-padB;
+    const xMax=3.0, yMax=5.0; // distance ATR (0-3), rr (0-5)
+    const x = v => padL + Math.min(v,xMax)/xMax*plotW;
+    const y = v => padT + (1-Math.min(v,yMax)/yMax)*plotH;
+    const minRR=sc.minRR, minA=sc.minEntryAtr, maxA=sc.maxEntryAtr;
+    const els=[];
+    els.push(h('rect',{key:'qz',x:x(minA),y:padT,width:Math.max(0,x(maxA)-x(minA)),height:plotH,fill:R(C.lime,0.06)}));
+    els.push(h('line',{key:'rr',x1:padL,x2:W-padR,y1:y(minRR),y2:y(minRR),stroke:R(C.lime,0.5),strokeWidth:1,strokeDasharray:'4 4'}));
+    els.push(h('line',{key:'mn',x1:x(minA),x2:x(minA),y1:padT,y2:padT+plotH,stroke:R(C.cyan,0.4),strokeWidth:1,strokeDasharray:'4 4'}));
+    els.push(h('line',{key:'mx',x1:x(maxA),x2:x(maxA),y1:padT,y2:padT+plotH,stroke:R(C.cyan,0.4),strokeWidth:1,strokeDasharray:'4 4'}));
+    [0,1,2,3].forEach(t=>els.push(h('text',{key:'xt'+t,x:x(t),y:H-padB+16,fill:C.outline,fontSize:9,fontFamily:'JetBrains Mono',textAnchor:'middle'},t)));
+    [0,1,2,3,4,5].forEach(t=>els.push(h('text',{key:'yt'+t,x:padL-8,y:y(t)+3,fill:C.outline,fontSize:9,fontFamily:'JetBrains Mono',textAnchor:'end'},t)));
+    els.push(h('text',{key:'xl',x:padL+plotW/2,y:H-4,fill:C.onVar,fontSize:9,fontFamily:'JetBrains Mono',textAnchor:'middle'},'ENTRY DISTANCE (ATR)'));
+    els.push(h('text',{key:'yl',x:12,y:padT+plotH/2,fill:C.onVar,fontSize:9,fontFamily:'JetBrains Mono',textAnchor:'middle',transform:`rotate(-90 12 ${padT+plotH/2})`},'REWARD : RISK'));
+    rows.forEach((r,i)=>{
+      const ax = r.entry_distance_atr==null ? 0.12 : r.entry_distance_atr;
+      const acc = r.status==='FORECAST TRADE' ? C.lime : (r.setup_qualified ? C.cyan : C.outline);
+      const cx=x(ax), cy=y(r.reward_risk);
+      els.push(h('circle',{key:'c'+i,cx,cy,r:5.5,fill:R(acc,0.85),stroke:acc,strokeWidth:1.2}));
+      els.push(h('text',{key:'cl'+i,x:cx,y:cy-9,fill:acc,fontSize:8.5,fontFamily:'JetBrains Mono',textAnchor:'middle'},r.symbol));
+    });
+    return h('svg',{viewBox:`0 0 ${W} ${H}`,width:'100%',style:{display:'block',height:'auto'}}, els);
+  }
+
+  componentDidMount(){
+    let s = 0;
+    this._iv = setInterval(()=>{
+      s += 1;
+      const base = 9*3600 + 43*60 + s;
+      const hh = String(Math.floor(base/3600)).padStart(2,'0');
+      const mm = String(Math.floor((base%3600)/60)).padStart(2,'0');
+      const ss = String(base%60).padStart(2,'0');
+      this.setState({ clock: `${hh}:${mm}:${ss}` });
+    }, 1000);
+  }
+  componentWillUnmount(){ if(this._iv) clearInterval(this._iv); }
+
+  rgba(hex,a){
+    const h = hex.replace('#','');
+    const r = parseInt(h.slice(0,2),16), g = parseInt(h.slice(2,4),16), b = parseInt(h.slice(4,6),16);
+    return `rgba(${r},${g},${b},${a})`;
+  }
+
+  genCandles(){
+    const n = 48; let price = 233; let seed = 11;
+    const rand = ()=>{ seed = (seed*9301+49297)%233280; return seed/233280; };
+    const arr = [];
+    for(let i=0;i<n;i++){
+      let drift;
+      if(i<26){ drift = (rand()-0.5)*2.6; }
+      else if(i<32){ drift = (rand()-0.62)*2.4; }
+      else { drift = (i-31)*0.42 + (rand()-0.45)*2.6; }
+      const open = price;
+      const close = open + drift;
+      const high = Math.max(open,close) + rand()*1.7;
+      const low = Math.min(open,close) - rand()*1.7;
+      arr.push({open,close,high,low});
+      price = close;
+    }
+    return arr;
+  }
+
+  buildChart(acc, glow){
+    const C = this.C, R = (h,a)=>this.rgba(h,a), h = React.createElement;
+    const cs = this._candles, n = cs.length;
+    const W=1000, H=320, padT=16, padB=16, padR=80, padL=8;
+    const plotH = H-padT-padB, plotW = W-padL-padR;
+    const support=237.0, resistance=255.2, eLow=241.6, eHigh=242.6;
+    let pmin=Infinity, pmax=-Infinity;
+    cs.forEach(c=>{ pmin=Math.min(pmin,c.low); pmax=Math.max(pmax,c.high); });
+    pmin=Math.min(pmin,support)-2; pmax=Math.max(pmax,resistance)+2;
+    const y = p => padT + (pmax-p)/(pmax-pmin)*plotH;
+    const step = plotW/n, x = i => padL + i*step + step/2, cw = Math.max(4, step*0.5);
+    const els = [];
+    for(let g=0; g<=4; g++){ const gy = padT + plotH*g/4; els.push(h('line',{key:'g'+g,x1:padL,x2:W-padR,y1:gy,y2:gy,stroke:'rgba(132,148,149,0.08)',strokeWidth:1,vectorEffect:'non-scaling-stroke'})); }
+    els.push(h('rect',{key:'zone',x:padL,width:W-padR-padL,y:y(eHigh),height:Math.max(2,y(eLow)-y(eHigh)),fill:R(C.magenta,0.10)}));
+    const lvl=(p,color,key)=>h('line',{key,x1:padL,x2:W-padR,y1:y(p),y2:y(p),stroke:color,strokeWidth:1.25,strokeDasharray:'5 4',vectorEffect:'non-scaling-stroke',opacity:0.85});
+    els.push(lvl(resistance,C.lime,'res'), lvl(support,acc,'sup'));
+    const ma=[]; for(let i=0;i<n;i++){ const k=Math.max(0,i-4); let s=0,c2=0; for(let j=k;j<=i;j++){ s+=cs[j].close; c2++; } ma.push(s/c2); }
+    let path=''; ma.forEach((m,i)=>{ path += (i?' L':'M') + x(i).toFixed(1) + ' ' + y(m).toFixed(1); });
+    els.push(h('path',{key:'ma',d:path,fill:'none',stroke:R(acc,0.55),strokeWidth:1.6,vectorEffect:'non-scaling-stroke'}));
+    cs.forEach((c,i)=>{
+      const last = i===n-1;
+      const up = c.close>=c.open;
+      const col = last ? acc : (up ? C.lime : C.err);
+      const bx = x(i), top = y(Math.max(c.open,c.close)), bot = y(Math.min(c.open,c.close));
+      els.push(h('line',{key:'w'+i,x1:bx,x2:bx,y1:y(c.high),y2:y(c.low),stroke:col,strokeWidth:1,vectorEffect:'non-scaling-stroke',opacity:0.9}));
+      els.push(h('rect',{key:'b'+i,x:bx-cw/2,width:cw,y:top,height:Math.max(1.6,bot-top),fill:col,opacity:last?1:0.92,style: (last&&glow)?{filter:`drop-shadow(0 0 5px ${col})`}:undefined}));
+    });
+    const svg = h('svg',{viewBox:`0 0 ${W} ${H}`,preserveAspectRatio:'none',width:'100%',height:'100%',style:{display:'block'}}, els);
+    const lab=(p,text,color)=>h('div',{key:'lab'+text,style:{position:'absolute',right:'6px',top:`calc(${(y(p)/H*100).toFixed(2)}% - 9px)`,fontFamily:"'JetBrains Mono',monospace",fontSize:'10px',color,background:R(C.bg,0.78),padding:'1px 6px',borderRadius:'3px',border:`1px solid ${R(color,0.35)}`,whiteSpace:'nowrap'}}, text);
+    return h('div',{style:{position:'relative',width:'100%',height:'320px'}}, svg,
+      lab(resistance,'RES 255.20',C.lime),
+      lab(support,'SUP 237.00',acc),
+      lab((eLow+eHigh)/2,'ENTRY 241.6\u2013242.6',C.magenta));
+  }
+
+  preTickers(){
+    return {
+      AAPL:{ last:297.89, dailyAtr:6.55, techAtr:2.98, cleanRoom:'clean_room_between_levels', news:'Clear', secType:'STK', rawLevels:15, center:246.0,
+        levels:[
+          {price:270.71, low:269.92, high:273.13, type:'gap', touches:9, fb:6, strength:0.71},
+          {price:294.91, low:293.97, high:295.70, type:'historical', touches:13, fb:2, strength:0.88},
+          {price:258.86, low:257.61, high:259.65, type:'gap', touches:7, fb:4, strength:0.62},
+          {price:313.26, low:312.47, high:314.05, type:'historical', touches:8, fb:1, strength:0.79},
+        ], risk:[] },
+      SANM:{ last:242.40, dailyAtr:5.12, techAtr:2.41, cleanRoom:'clean_room_between_levels', news:'Clear', secType:'STK', rawLevels:11, center:242.4,
+        levels:[
+          {price:237.09, low:236.40, high:237.80, type:'historical', touches:11, fb:2, strength:0.83},
+          {price:242.20, low:241.97, high:242.40, type:'gap', touches:8, fb:3, strength:0.70},
+          {price:255.22, low:254.60, high:255.90, type:'historical', touches:6, fb:1, strength:0.74},
+        ], risk:[] },
+      NVDA:{ last:119.30, dailyAtr:4.02, techAtr:1.88, cleanRoom:'clean_room_between_levels', news:'Clear', secType:'STK', rawLevels:13, center:119.0,
+        levels:[
+          {price:119.00, low:118.50, high:119.20, type:'gap', touches:10, fb:3, strength:0.76},
+          {price:131.50, low:130.90, high:132.10, type:'historical', touches:7, fb:2, strength:0.68},
+          {price:112.40, low:111.80, high:112.90, type:'historical', touches:9, fb:4, strength:0.71},
+        ], risk:[] },
+      AMZN:{ last:184.10, dailyAtr:3.74, techAtr:1.62, cleanRoom:'inside_level_zone', news:'Clear', secType:'STK', rawLevels:12, center:184.0,
+        levels:[
+          {price:184.40, low:184.10, high:184.60, type:'gap', touches:8, fb:5, strength:0.59},
+          {price:196.00, low:195.40, high:196.70, type:'historical', touches:6, fb:1, strength:0.72},
+          {price:178.20, low:177.60, high:178.80, type:'gap', touches:5, fb:3, strength:0.55},
+        ], risk:[] },
+      META:{ last:512.40, dailyAtr:11.20, techAtr:5.04, cleanRoom:'clean_room_between_levels', news:'High-risk', secType:'STK', rawLevels:14, center:512.0,
+        levels:[
+          {price:498.00, low:496.50, high:499.20, type:'historical', touches:10, fb:2, strength:0.81},
+          {price:525.50, low:524.20, high:526.80, type:'gap', touches:7, fb:3, strength:0.66},
+        ], risk:['EU opens formal antitrust review into Meta ad-tech bundling — Reuters','Meta to report Q2 2026 results after market close'] },
+    };
+  }
+
+  get C(){ return { bg:'#131314', surf:'#201f20', surfLow:'#1c1b1c', surfHigh:'#2a2a2b', onSurf:'#e5e2e3', onVar:'#b9cacb', outline:'#849495', cyan:'#7df4ff', cyanDim:'#00dbe9', lime:'#c3f400', magenta:'#ecb2ff', err:'#ffb4ab' }; }
+
+  renderVals(){
+    const C = this.C, R = (h,a)=>this.rgba(h,a);
+    const { tab, timeframe, search } = this.state;
+    const glow = this.props.glow ?? true;
+    const compact = this.props.compact ?? false;
+    const accName = this.props.accent ?? 'Cyan';
+    const acc = { Cyan:C.cyan, Lime:C.lime, Magenta:C.magenta }[accName] || C.cyan;
+    const cellStyle = `padding:${compact?'8px 16px':'13px 16px'};font-family:'JetBrains Mono',monospace;font-size:12px;border-bottom:1px solid rgba(132,148,149,0.06)`;
+    const pill = c => `display:inline-block;padding:3px 9px;border-radius:9999px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.03em;background:${R(c,0.12)};color:${c};border:1px solid ${R(c,0.3)};white-space:nowrap`;
+
+    const navRaw = [
+      {id:'dashboard',label:'Dashboard',icon:'space_dashboard'},
+      {id:'preopen',label:'Pre-Open',icon:'wb_twilight'},
+      {id:'intraday',label:'Intraday',icon:'monitoring'},
+      {id:'trades',label:'Trades & Positions',icon:'swap_horiz'},
+      {id:'forecast',label:'Forecast',icon:'calculate'},
+      {id:'reports',label:'Reports',icon:'description'},
+    ];
+    const navItems = navRaw.map(nv=>{
+      const a = nv.id===tab;
+      return { ...nv, onClick:()=>this.setState({tab:nv.id}),
+        style:`display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:8px;cursor:pointer;transition:all .15s;border-right:3px solid ${a?acc:'transparent'};background:${a?R(acc,0.10):'transparent'};color:${a?acc:C.onVar}`,
+        iconStyle:`font-family:'Material Symbols Outlined';font-size:20px;font-variation-settings:'FILL' ${a?1:0}` };
+    });
+
+    const tfItems = ['1H','1D','1W','1M'].map(t=>{
+      const a = t===timeframe;
+      return { label:t, onClick:()=>this.setState({timeframe:t}),
+        style:`padding:5px 12px;border-radius:6px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;border:1px solid ${a?R(acc,0.4):'transparent'};background:${a?R(acc,0.15):'rgba(42,42,43,0.6)'};color:${a?acc:C.onVar}` };
+    });
+
+    const chartRangePills = ['1M','3M','6M','YTD','1Y','ALL'].map(rg=>{
+      const a = rg===this.state.chartRange;
+      return { label:rg, onClick:()=>this.setState({chartRange:rg}),
+        style:`padding:5px 11px;border-radius:6px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;border:1px solid ${a?R(acc,0.4):'rgba(132,148,149,0.18)'};background:${a?R(acc,0.16):'rgba(20,20,21,0.6)'};color:${a?acc:C.onVar}` };
+    });
+
+    const togC = (on,label,key)=>({ label, onClick:()=>this.setState(s=>({[key]:!s[key]})),
+      trackStyle:`width:34px;height:18px;border-radius:9999px;background:${on?R(acc,0.55):'rgba(132,148,149,0.25)'};position:relative;flex:none`,
+      knobStyle:`position:absolute;top:2px;left:${on?'18px':'2px'};width:14px;height:14px;border-radius:50%;background:${on?acc:'#849495'}` });
+    const chartToggles = [
+      togC(this.state.chartRaw,'Raw levels','chartRaw'),
+      togC(this.state.chartTrade,'Trade zones','chartTrade'),
+      togC(this.state.chartVol,'Volume','chartVol'),
+    ];
+    const dashChart = this.buildChartV2({
+      seedKey:'AAPL', center:246.0, signal:'long',
+      levels:[{p:255.20,color:C.lime,label:'RES 255.20 · 4T / S22'},{p:242.10,color:acc,label:'MID 242.10 · 6T / S18'},{p:237.00,color:acc,label:'SUP 237.00 · 7T / S17'}],
+    }, acc, glow);
+    // ---- Pre-Open per-ticker analyzer ----
+    const allTickers = this.preTickers();
+    const preTickerUC = (this.state.preTicker||'').trim().toUpperCase();
+    const preTk = allTickers[preTickerUC];
+    const preMatch = !!preTk;
+    const preNoMatch = !preMatch && preTickerUC.length>0;
+    const preStatusOpts = ['All','Gap','Historical'];
+    const preMinLevels = this.state.preMinLevels;
+
+    let preMetrics=[], preContext=[], preLevels=[], preRisk=[], preAllLevels=[];
+    let preRawLevels=0, preTradeLevels=0, preHasRisk=false, preNoRisk=true;
+    let preChartSpec={ seedKey:'SANM', center:242.4, signal:'long',
+      levels:[{p:255.22,color:C.lime,label:'RES 255.22'},{p:237.09,color:acc,label:'SUP 237.09'}] };
+    let preChartSymbol='SANM';
+
+    if(preTk){
+      preChartSymbol = preTickerUC;
+      preRawLevels = preTk.rawLevels;
+      const statusFilter = this.state.preStatus.toLowerCase();
+      const visLevels = preTk.levels.filter(l=>{
+        const okStatus = statusFilter==='all' || l.type===statusFilter;
+        const okTouches = l.touches >= preMinLevels;
+        return okStatus && okTouches;
+      });
+      preTradeLevels = visLevels.length;
+      const mv = (label,value,color)=>({ label, value,
+        valueStyle:`font-family:'Hanken Grotesk',sans-serif;font-size:32px;font-weight:600;line-height:1;color:${color||C.onSurf}${(color&&glow)?`;text-shadow:0 0 16px ${R(color,0.4)}`:''}` });
+      preMetrics = [
+        mv('Last Price', preTk.last.toFixed(2), acc),
+        mv('Daily ATR', preTk.dailyAtr.toFixed(2), null),
+        mv('Technical ATR', preTk.techAtr.toFixed(2), null),
+        mv('Trade Levels', String(preTradeLevels), preTradeLevels>0?C.lime:C.outline),
+      ];
+      preContext = [
+        {k:'Clean room', v:preTk.cleanRoom},
+        {k:'News status', v:preTk.news},
+        {k:'Security type', v:preTk.secType},
+        {k:'Raw levels', v:String(preTk.rawLevels)},
+      ];
+      const typePill = t => pill(t==='gap'?acc:C.magenta);
+      const strPill = s => { const c = s>=0.75?C.lime : s>=0.6?acc : C.outline; return `display:inline-block;padding:2px 8px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:11px;color:${c};background:${R(c,0.12)};border:1px solid ${R(c,0.3)}`; };
+      preLevels = visLevels.map(l=>({
+        price:l.price.toFixed(2), zoneLow:l.low.toFixed(2), zoneHigh:l.high.toFixed(2),
+        type:l.type, touches:String(l.touches), fb:String(l.fb), strength:l.strength.toFixed(2),
+        typeStyle:typePill(l.type), strengthStyle:strPill(l.strength) }));
+      preHasRisk = preTk.risk.length>0;
+      preNoRisk = !preHasRisk;
+      preRisk = preTk.risk;
+      // synthesize the full detected-levels list
+      let seed=preTk.rawLevels*7+preTk.center; const rnd=()=>{ seed=(seed*9301+49297)%233280; return seed/233280; };
+      const base=preTk.levels.map(l=>({price:l.price,type:l.type,touches:l.touches}));
+      const extra=[];
+      for(let i=base.length;i<preTk.rawLevels;i++){
+        const p=preTk.center*(0.85+rnd()*0.3);
+        extra.push({price:p, type:rnd()>0.5?'gap':'historical', touches:2+Math.floor(rnd()*9)});
+      }
+      preAllLevels = base.concat(extra).sort((a,b)=>b.price-a.price).map(l=>({
+        price:l.price.toFixed(2), type:l.type, touches:String(l.touches), typeStyle:typePill(l.type) }));
+      // chart levels from this ticker
+      const sorted=preTk.levels.slice().sort((a,b)=>b.price-a.price);
+      preChartSpec = { seedKey:preTickerUC, center:preTk.center, signal:'long',
+        levels: sorted.map((l,i)=>({ p:l.price, zoneHalf:Math.max((l.high-l.low)/2,0.05),
+          color: i===0?C.lime:acc, label:`${l.type==='gap'?'GAP':'LVL'} ${l.price.toFixed(2)} · ${l.touches}T` })) };
+    }
+    const preChart = this.buildChartV2(preChartSpec, acc, glow);
+    const preLevelsChevron = this.state.preAllLevelsOpen ? 'expand_more' : 'chevron_right';
+
+    const decMetric = m => ({
+      label:m.label, icon:m.icon, value:m.value, sub:m.sub, bar:m.bar,
+      onClick:m.onClick, cursor:m.cursor||'', iconColor:m.iconColor||'#849495',
+      valueStyle:`font-family:'Hanken Grotesk',sans-serif;font-size:34px;font-weight:600;line-height:1;color:${m.color}${(m.glow&&glow)?`;text-shadow:0 0 16px ${R(m.color,0.45)}`:''}`,
+      subStyle:`font-family:'JetBrains Mono',monospace;font-size:11px;color:${m.subColor}`,
+      barStyle:m.bar?`width:${m.bar}%;height:100%;border-radius:9999px;background:${m.barColor}${glow?`;box-shadow:0 0 8px ${R(m.barColor,0.6)}`:''}`:'' });
+
+    const metrics = [
+      {label:'Watchlist',icon:'visibility',value:'124',sub:'scanned pre-market',subColor:C.onVar,color:C.onSurf},
+      {label:'Trade-Ready',icon:'verified',value:'9',sub:'all conditions met',subColor:C.lime,color:C.lime,glow:true},
+      {label:'News-Blocked',icon:'newspaper',value:'4',sub:'click to view →',subColor:acc,color:C.onSurf,iconColor:C.err,cursor:'cursor:pointer',onClick:()=>this.setState({newsModal:true})},
+      {label:'Attempts',icon:'replay',value:'18',sub:'today',subColor:C.onVar,color:C.onSurf},
+      {label:'Action Signals',icon:'bolt',value:'6',sub:'BUY · SELL inferred',subColor:acc,color:acc,glow:true},
+      {label:'Execution Rate',icon:'percent',value:'33%',sub:'6 of 18 submitted',subColor:C.onVar,color:C.onSurf,bar:33,barColor:acc},
+    ].map(decMetric);
+
+    const sessionMetrics = [
+      {label:'Attempts',icon:'replay',value:'18',sub:'levels evaluated',subColor:C.onVar,color:C.onSurf},
+      {label:'Submitted',icon:'check_circle',value:'6',sub:'paper orders',subColor:C.lime,color:C.lime,glow:true},
+      {label:'Skipped',icon:'block',value:'8',sub:'filters not met',subColor:C.onVar,color:C.onSurf},
+      {label:'Blocked',icon:'newspaper',value:'4',sub:'news / risk guard',subColor:C.err,color:C.onSurf},
+    ].map(decMetric);
+
+    const tradeStats = [
+      {label:'Open Positions',value:'3 / 5',sub:'within max-open cap',subColor:C.onVar,color:C.onSurf},
+      {label:'Unrealized P&L',value:'+$273.00',sub:'across open positions',subColor:C.lime,color:C.lime,glow:true},
+      {label:'Realized (today)',value:'+$1,209.80',sub:'4 trades closed',subColor:C.lime,color:C.onSurf},
+    ].map(decMetric);
+
+    const bias = [
+      {label:'Long bias',color:C.lime,pct:44},
+      {label:'Short bias',color:C.err,pct:28},
+      {label:'Wait / neutral',color:C.outline,pct:28},
+    ].map(b=>({ label:b.label, pctText:b.pct+'%',
+      labelStyle:`color:${b.color}`,
+      barStyle:`width:${b.pct}%;height:100%;border-radius:9999px;background:${b.color}` }));
+
+    const risk = [
+      {k:'Daily P&L vs cap',v:'-0.6% / -2.0%',color:C.onSurf},
+      {k:'Risk / trade',v:'1.0%',color:C.onSurf},
+      {k:'Open positions',v:'3 / 5',color:C.onSurf},
+      {k:'Win rate (30d)',v:'61.2%',color:C.lime},
+      {k:'Avg reward:risk',v:'1 : 3.2',color:acc},
+      {k:'Account mode',v:'Paper',color:C.onSurf},
+    ].map(r=>({ k:r.k, v:r.v, vStyle:`font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:500;color:${r.color}` }));
+
+    const strategyMix = [
+      {name:'Rebound from level',n:4,color:acc},
+      {name:'Breakout',n:3,color:C.lime},
+      {name:'One-bar false breakout',n:1,color:C.magenta},
+      {name:'Two-bar false breakout',n:1,color:'#f4ccff'},
+    ].map(s=>({ ...s, barStyle:`width:${s.n/4*100}%;height:100%;border-radius:9999px;background:${s.color}` }));
+
+    const oppRaw = [
+      {sym:'SANM',strat:'Rebound from level',rr:'3.2 : 1',entry:'241.97–242.40',stop:'237.09',target:'255.22',pill:'TRADE-READY',pc:C.lime},
+      {sym:'NVDA',strat:'Breakout',rr:'4.1 : 1',entry:'118.50–119.20',stop:'115.00',target:'131.50',pill:'TRADE-READY',pc:C.lime},
+      {sym:'AMZN',strat:'Two-bar false breakout',rr:'3.0 : 1',entry:'184.10–184.60',stop:'180.20',target:'196.00',pill:'WATCH',pc:acc},
+      {sym:'TSLA',strat:'Complex false breakout',rr:'2.6 : 1',entry:'—',stop:'—',target:'—',pill:'SKIP · RR<3',pc:C.outline,dim:true},
+      {sym:'META',strat:'Breakout',rr:'—',entry:'—',stop:'—',target:'—',pill:'BLOCKED · NEWS',pc:C.err,dim:true},
+      {sym:'AMD',strat:'Rebound from level',rr:'—',entry:'—',stop:'—',target:'—',pill:'WAIT · WEAK LVL',pc:C.outline,dim:true},
+    ];
+    const oppRows = oppRaw.map(o=>({ ...o, pillStyle:pill(o.pc), dot:o.pc,
+      cellColor:o.dim?C.outline:C.onVar, symColor:o.dim?C.onVar:C.onSurf,
+      rrColor: o.pill.startsWith('TRADE')?C.lime : (o.pill==='WATCH'?acc : C.outline) }));
+    const q = search.trim().toLowerCase();
+    const filteredOpps = q ? oppRows.filter(o=>(o.sym+' '+o.strat).toLowerCase().includes(q)) : oppRows;
+
+    const attemptRaw = [
+      {time:'09:42:15',sym:'SANM',strat:'Rebound',decision:'SUBMITTED',dc:C.lime,reason:'level reclaim confirmed · paper order placed'},
+      {time:'09:31:08',sym:'NVDA',strat:'Breakout',decision:'SUBMITTED',dc:C.lime,reason:'close through resistance · ATR room ok'},
+      {time:'09:18:44',sym:'AMZN',strat:'Two-bar FB',decision:'WATCH',dc:acc,reason:'awaiting recovery candle'},
+      {time:'09:05:20',sym:'TSLA',strat:'Complex FB',decision:'SKIPPED',dc:C.outline,reason:'reward:risk 2.6 < 3.0 minimum'},
+      {time:'08:58:02',sym:'META',strat:'Breakout',decision:'BLOCKED',dc:C.err,reason:'high-risk news within 30m window'},
+      {time:'08:50:11',sym:'AMD',strat:'Rebound',decision:'SKIPPED',dc:C.outline,reason:'level strength below threshold'},
+    ];
+    const attemptRows = attemptRaw.map(a=>({ ...a, pillStyle:pill(a.dc) }));
+
+    const attemptedLevels = [
+      {time:'09:42',sym:'SANM',price:'241.95',type:'Support',c:acc,result:'Reclaimed → entry'},
+      {time:'09:31',sym:'NVDA',price:'119.00',type:'Resistance',c:C.lime,result:'Broke → entry'},
+      {time:'09:18',sym:'AMZN',price:'184.20',type:'Support',c:acc,result:'False break → watch'},
+      {time:'09:05',sym:'TSLA',price:'192.00',type:'Resistance',c:C.lime,result:'Rejected → skip'},
+      {time:'08:58',sym:'AMD',price:'138.50',type:'Support',c:acc,result:'Weak touch'},
+    ].map(l=>({ ...l, typeStyle:pill(l.c) }));
+
+    const positions = [
+      {sym:'SANM',side:'LONG',qty:'41',entry:'242.10',stop:'237.09',target:'255.22',last:'244.80',pnl:110.70},
+      {sym:'NVDA',side:'LONG',qty:'84',entry:'118.95',stop:'115.00',target:'131.50',last:'121.30',pnl:197.40},
+      {sym:'AMZN',side:'LONG',qty:'27',entry:'184.40',stop:'180.20',target:'196.00',last:'183.10',pnl:-35.10},
+    ].map(p=>({ ...p,
+      sideStyle:pill(p.side==='LONG'?C.lime:C.err),
+      pnlColor:p.pnl>=0?C.lime:C.err,
+      pnlText:(p.pnl>=0?'+$':'-$')+Math.abs(p.pnl).toFixed(2) }));
+
+    const journal = [
+      {time:'Jun 19',sym:'AAPL',strat:'One-bar false breakout',r:'+3.0R',pnl:612.30,result:'TARGET'},
+      {time:'Jun 19',sym:'MSFT',strat:'Rebound from level',r:'+2.1R',pnl:450.00,result:'WIN'},
+      {time:'Jun 18',sym:'SANM',strat:'Two-bar false breakout',r:'+1.4R',pnl:268.00,result:'WIN'},
+      {time:'Jun 18',sym:'GOOGL',strat:'Breakout',r:'-1.0R',pnl:-120.50,result:'STOPPED'},
+    ].map(j=>({ ...j,
+      pnlColor:j.pnl>=0?C.lime:C.err,
+      pnlText:(j.pnl>=0?'+$':'-$')+Math.abs(j.pnl).toFixed(2),
+      resultStyle:pill(j.result==='STOPPED'?C.err:C.lime) }));
+
+    const dataQuality = [
+      {name:'OHLCV bars',detail:'memory/bars · 124 symbols',status:'FRESH',c:C.lime},
+      {name:'Levels log',detail:'mapped 06:32 ET',status:'FRESH',c:C.lime},
+      {name:'News filter',detail:'NewsAPI.ai · 4 flags',status:'ACTIVE',c:acc},
+      {name:'IBKR socket',detail:'read-only viewer',status:'N/A',c:C.outline},
+    ].map(d=>({ ...d, statusStyle:pill(d.c) }));
+
+    const reports = [
+      {type:'Pre-market scan',date:'2026-06-20',file:'premarket_scan_0620.xlsx',c:acc},
+      {type:'Opening decisions',date:'2026-06-20',file:'open_decisions_0620.xlsx',c:C.lime},
+      {type:'Intraday log',date:'2026-06-20',file:'intraday_log_0620.xlsx',c:acc},
+      {type:'End-of-day report',date:'2026-06-19',file:'eod_report_0619.xlsx',c:C.magenta},
+      {type:'Weekly review',date:'2026-06-14',file:'weekly_review_0614.xlsx',c:C.lime},
+    ].map(r=>({ ...r, typeStyle:pill(r.c) }));
+
+    const meta = {
+      dashboard:{t:'Command Overview',s:'All systems nominal · scan cycle 5m · paper account',l:'Dashboard'},
+      preopen:{t:'Pre-Open Briefing',s:'Watchlist scanned · levels mapped · awaiting the open',l:'Pre-Open'},
+      intraday:{t:'Intraday Monitor',s:'Live decision loop · paper execution',l:'Intraday'},
+      trades:{t:'Trades & Positions',s:'Open paper positions and trade journal',l:'Trades'},
+      forecast:{t:'Risk Forecast Calculator',s:'Scenario-only · replays saved data · no live orders',l:'Forecast'},
+      reports:{t:'Reports',s:'Generated session workbooks',l:'Reports'},
+    }[tab];
+
+    // ---- News-blocked modal ----
+    const newsBlockedRaw = [
+      {symbol:'META', heads:[
+        'EU opens formal antitrust review into Meta ad-tech bundling — Reuters',
+        'Press Release: Meta to Report Second-Quarter 2026 Results After Market Close',
+      ]},
+      {symbol:'BAND', heads:[
+        '* Bandwidth Prices Offering of $275 Million 0% Convertible Senior Notes Due 2032 >BAND',
+        'Press Release: Bandwidth Announces Pricing of $275 Million Convertible Senior Notes Offering',
+        'Bandwidth Shares Slip on Planned $275M Convertible Notes Offering',
+      ]},
+      {symbol:'MSEX', heads:[
+        'Press Release: Middlesex Water Company Reports First-Quarter 2026 Earnings',
+      ]},
+      {symbol:'DOW', heads:[
+        'Dow Inc. Confirms Restructuring of European Polyurethanes Unit — Dow Jones',
+        'Analyst Cuts Dow to Neutral Ahead of Earnings, Cites Margin Pressure',
+      ]},
+    ];
+    const newsBlocked = newsBlockedRaw.map(s=>({
+      symbol:s.symbol, heads:s.heads,
+      headCount: `${s.heads.length} headline(s)`,
+      sources: [{label:'DJ-N',c:acc},{label:'ibkr',c:C.outline}].map(x=>({ label:x.label, style:pill(x.c) })),
+    }));
+
+    // ---- Forecast view ----
+    const sc = this.scenarioFrom(this.state.fc);
+    const fcr = this.state.fcResult || this.runForecast(sc);
+    const sum = fcr.summary;
+    const money = n => '$' + Math.round(n).toLocaleString('en-US');
+    const fcDefs = [
+      {key:'equity',label:'Account equity',prefix:'$',suffix:'',step:5000},
+      {key:'cash',label:'Available cash',prefix:'$',suffix:'',step:5000},
+      {key:'dailyPnl',label:'Daily realized P&L',prefix:'$',suffix:'',step:100},
+      {key:'spread',label:'Assumed spread',prefix:'',suffix:'%',step:0.01},
+      {key:'riskTrade',label:'Risk / trade',prefix:'',suffix:'%',step:0.05},
+      {key:'maxDailyLoss',label:'Max daily loss',prefix:'',suffix:'%',step:0.1},
+      {key:'minRR',label:'Min reward:risk',prefix:'',suffix:':1',step:0.25},
+      {key:'maxPositions',label:'Max positions',prefix:'',suffix:'',step:1},
+      {key:'maxSpread',label:'Max spread',prefix:'',suffix:'%',step:0.01},
+      {key:'maxOpenRisk',label:'Max open risk',prefix:'',suffix:'%',step:0.1},
+      {key:'maxPosValue',label:'Max position value',prefix:'$',suffix:'',step:1000},
+      {key:'minEntryAtr',label:'Min entry dist',prefix:'',suffix:'ATR',step:0.25},
+      {key:'maxEntryAtr',label:'Max entry dist',prefix:'',suffix:'ATR',step:0.25},
+    ];
+    const fcInputs = fcDefs.map(d=>({ label:d.label, prefix:d.prefix, suffix:d.suffix, step:d.step,
+      value:this.state.fc[d.key],
+      onInput: e => this.setFc(d.key, e.target.value) }));
+
+    const sm = (label,value,accent,sub)=>({ label, value, sub,
+      valueStyle:`font-family:'Hanken Grotesk',sans-serif;font-size:30px;font-weight:600;line-height:1;color:${accent||C.onSurf}${(accent&&glow)?`;text-shadow:0 0 16px ${R(accent,0.4)}`:''}`,
+      subStyle:`font-family:'JetBrains Mono',monospace;font-size:11px;color:${accent||C.onVar}` });
+    const fcSummary = [
+      sm('ATR-Qualified Setups', String(sum.setup_qualified), null, `of ${sum.possible_signals} modeled signals`),
+      sm('Forecast Trades', String(sum.forecast_trades), C.lime, sum.binding_limit?`limited by ${sum.binding_limit}`:'eligible under scenario'),
+      sm('Capital Required', money(sum.capital_required), acc, 'forecast allocation'),
+      sm('New Open Risk', money(sum.new_open_risk), null, `max ${money(sum.max_open_risk)}`),
+      sm('Max Daily Loss', money(sum.max_daily_loss), C.err, `${money(sum.remaining_daily_loss)} remaining`),
+      sm('Potential Reward', money(sum.potential_reward), C.lime, 'at modeled targets'),
+    ];
+
+    const fcBinding = !!sum.binding_limit;
+    const fcBindingText = sum.binding_limit
+      ? `${sum.setup_qualified} setups pass the signal and ATR filters, but the portfolio receives ${sum.forecast_trades} trade(s). Binding constraint: ${sum.binding_limit}. Risk budget per trade is ${money(sum.risk_budget_per_trade)}; remaining open-risk capacity supports ${sum.open_risk_capacity} full-sized position(s), across ${sum.position_capacity} available slot(s).`
+      : '';
+
+    const gauge = (label,used,cap,color,sub)=>{
+      const pct = cap>0 ? Math.min(100, used/cap*100) : 0;
+      return { label, text:`${money(used)} / ${money(cap)}`, sub,
+        barStyle:`width:${pct.toFixed(1)}%;height:100%;border-radius:9999px;background:${color}${glow?`;box-shadow:0 0 8px ${R(color,0.6)}`:''}` };
+    };
+    const fcGauges = [
+      gauge('Capital deployed', sum.capital_required, sc.cash, acc, `${money(sc.cash-sum.capital_required)} cash free`),
+      gauge('Open risk', sum.total_open_risk, sum.max_open_risk, C.lime, `incl. ${money(sum.current_open_risk)} from open positions`),
+      gauge('Daily loss budget', Math.max(0,-sc.dailyPnl), sum.max_daily_loss, C.err, `${money(sum.remaining_daily_loss)} remaining before kill switch`),
+    ];
+
+    const fcTh = `padding:11px 16px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:${C.outline};border-bottom:1px solid rgba(132,148,149,0.12);white-space:nowrap`;
+    const fmtP = v => v.toFixed(2);
+    const accBorderC = R(acc,0.4);
+    const selSym = this.state.fcSel;
+    const enrich = r => {
+      const filtered = r.status==='FILTERED';
+      return {
+        raw:r, symbol:r.symbol, source:r.source, strategy:r.strategy, side:r.signal,
+        current: r.current!=null ? '$'+fmtP(r.current) : '—',
+        entry:'$'+fmtP(r.entry), stop:'$'+fmtP(r.stop), target:'$'+fmtP(r.target),
+        distPct: r.entry_distance_pct ? (r.entry_distance_pct*100).toFixed(1)+'%' : '—',
+        dist: r.entry_distance_atr==null ? '—' : r.entry_distance_atr.toFixed(2),
+        rr: r.reward_risk.toFixed(2),
+        shares: r.quantity>0 ? String(r.quantity) : '—',
+        posValue: r.quantity>0 ? money(r.position_value) : '—',
+        risk: r.quantity>0 ? money(r.risk_amount) : '—',
+        potReward: r.quantity>0 ? money(r.potential_reward) : '—',
+        status:r.status, decision:r.reason, filtered,
+        sourceStyle: pill(r.source==='ACTIVE REPLAY'?acc:C.magenta),
+        statusStyle: pill(filtered?C.outline:C.lime),
+        sideColor: r.signal==='BUY'?C.lime:C.err,
+        rrColor: r.reward_risk>=sc.minRR?C.lime:C.outline,
+        distColor: (r.entry_distance_atr!=null && (r.entry_distance_atr<sc.minEntryAtr||r.entry_distance_atr>sc.maxEntryAtr))?C.err:C.onVar
+      };
+    };
+    const fcFullRows = fcr.rows.map(enrich);
+
+    const filt = this.state.fcFilter;
+    const fcFilters = [
+      {id:'eligible',label:'Eligible trades'},
+      {id:'all',label:'All signals'},
+      {id:'filtered',label:'Filtered only'},
+    ].map(f=>({ label:f.label, onClick:()=>this.setState({fcFilter:f.id}),
+      style:`padding:7px 14px;border-radius:7px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;border:1px solid ${filt===f.id?accBorderC:'transparent'};background:${filt===f.id?R(acc,0.14):'transparent'};color:${filt===f.id?acc:C.onVar}` }));
+
+    const ledgerSrc = filt==='eligible' ? fcFullRows.filter(r=>!r.filtered)
+      : filt==='filtered' ? fcFullRows.filter(r=>r.filtered) : fcFullRows;
+    const fcLedgerRows = ledgerSrc.map(r=>({
+      raw:r.raw, symbol:r.symbol, side:r.side, sideColor:r.sideColor,
+      entry:r.entry, stop:r.stop, target:r.target, rr:r.rr, rrColor:r.rrColor, shares:r.shares,
+      ledgerStatus: r.filtered?'Filtered':'Eligible',
+      ledgerStatusColor: r.filtered?C.outline:C.lime,
+      symBtnStyle:`display:inline-flex;align-items:center;justify-content:center;padding:7px 15px;border-radius:8px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:${r.symbol===selSym?'#001416':C.onSurf};background:${r.symbol===selSym?acc:'rgba(20,20,21,0.7)'};border:1px solid ${r.symbol===selSym?acc:'rgba(132,148,149,0.22)'}`,
+      onSelect:()=>this.setState({fcSel:r.symbol}),
+      onPlace:()=>{ if(!r.filtered) this.placeOrder(r.raw); },
+      onClose:()=>this.closePos(r.raw),
+      placeStyle:`padding:7px 16px;border-radius:7px;cursor:${r.filtered?'not-allowed':'pointer'};font-family:'JetBrains Mono',monospace;font-size:11px;color:${r.filtered?C.outline:acc};background:${r.filtered?'rgba(28,27,28,0.4)':R(acc,0.1)};border:1px solid ${r.filtered?'rgba(132,148,149,0.14)':accBorderC};opacity:${r.filtered?0.45:1}`,
+      closeStyle:`padding:7px 16px;border-radius:7px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;color:#b9cacb;background:rgba(28,27,28,0.6);border:1px solid rgba(132,148,149,0.22)`,
+    }));
+
+    const fcFeedback = !!this.state.fcFeedback;
+    const fcFeedbackText = this.state.fcFeedback || '';
+    const selRow = fcFullRows.find(r=>r.symbol===selSym) || fcFullRows[0];
+    const fcHasSelection = !!selRow;
+    const fcSelSymbol = selRow ? selRow.symbol : '';
+    const fcSelBadge = selRow ? `${selRow.side} · ${selRow.source}` : '';
+    const tog = (on,label,fn)=>({ label, onClick:fn,
+      trackStyle:`width:34px;height:18px;border-radius:9999px;background:${on?R(acc,0.55):'rgba(132,148,149,0.25)'};position:relative;flex:none`,
+      knobStyle:`position:absolute;top:2px;left:${on?'18px':'2px'};width:14px;height:14px;border-radius:50%;background:${on?acc:'#849495'}` });
+    const fcToggles = [
+      tog(this.state.fcShowRaw,'Raw levels',()=>this.setState(s=>({fcShowRaw:!s.fcShowRaw}))),
+      tog(this.state.fcShowTrade,'Trade zones',()=>this.setState(s=>({fcShowTrade:!s.fcShowTrade}))),
+      tog(this.state.fcShowVolume,'Volume',()=>this.setState(s=>({fcShowVolume:!s.fcShowVolume}))),
+    ];
+    const fcChart = selRow ? this.buildChartV2({
+      seedKey:selRow.raw.symbol, center:(selRow.raw.current||selRow.raw.entry), signal:selRow.raw.signal,
+      autoLevels:true, rrZones:true,
+      lines:[
+        {p:selRow.raw.target,kind:'target',color:C.lime,label:'TARGET $'+selRow.raw.target.toFixed(2)},
+        {p:selRow.raw.entry,kind:'entry',color:C.cyan,label:'ENTRY $'+selRow.raw.entry.toFixed(2)},
+        {p:selRow.raw.stop,kind:'stop',color:C.err,label:'STOP $'+selRow.raw.stop.toFixed(2)},
+      ],
+    }, acc, glow) : null;
+    const fcExpanded = this.state.fcExpanded;
+    const fcChevron = fcExpanded ? 'expand_more' : 'chevron_right';
+
+    return {
+      navItems, tfItems, chartRangePills, chartToggles, clock:this.state.clock, search,
+      onSearch: e => this.setState({ search: e.target.value }),
+      cellStyle,
+      pageTitle: meta.t, pageSubtitle: meta.s, tabLabel: meta.l,
+      isDashboard: tab==='dashboard', isPreOpen: tab==='preopen',
+      isIntraday: tab==='intraday', isTrades: tab==='trades', isReports: tab==='reports', isForecast: tab==='forecast',
+      fcInputs, fcSummary, fcGauges, fcTh, fcCalcAt:this.state.fcCalcAt,
+      fcBinding, fcBindingText, fcScatter: this.fcScatter(sc, sum),
+      fcFilters, fcLedgerRows, fcFullRows,
+      fcFeedback, fcFeedbackText, fcHasSelection, fcSelSymbol, fcSelBadge,
+      fcToggles, fcChart, fcExpanded, fcChevron,
+      onToggleExpand: ()=>this.setState(s=>({fcExpanded:!s.fcExpanded})),
+      onCalculate: ()=>this.onCalculate(), onResetForecast: ()=>this.onResetForecast(),
+      newsModal: this.state.newsModal, newsBlocked,
+      onCloseNews: ()=>this.setState({newsModal:false}),
+      stopProp: (e)=>e.stopPropagation(),
+      accBorder: R(acc,0.4), accFill: R(acc,0.14),
+      metrics, sessionMetrics, tradeStats, bias, risk, strategyMix,
+      oppRows, filteredOpps, attemptRows, attemptedLevels, positions, journal, dataQuality, reports,
+      dashChart, preChart, preChartSymbol,
+      preTicker:this.state.preTicker, preStatus:this.state.preStatus, preStatusOpts, preMinLevels,
+      preMatch, preNoMatch, preMetrics, preContext, preLevels, preRawLevels,
+      preHasRisk, preNoRisk, preRisk, preAllLevels, preLevelsChevron,
+      preAllLevelsOpen:this.state.preAllLevelsOpen,
+      onPreTicker:(e)=>this.setState({preTicker:e.target.value, preAllLevelsOpen:false}),
+      onPreStatus:(e)=>this.setState({preStatus:e.target.value}),
+      onMinMinus:()=>this.setState(s=>({preMinLevels:Math.max(0,s.preMinLevels-1)})),
+      onMinPlus:()=>this.setState(s=>({preMinLevels:Math.min(20,s.preMinLevels+1)})),
+      onToggleAllLevels:()=>this.setState(s=>({preAllLevelsOpen:!s.preAllLevelsOpen})),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -195,12 +195,12 @@ PAGE_META = {
     "Forecast": ("Risk Forecast Calculator", "Scenario-only replay of saved market data and conditional setups."),
     "Reports": ("Reports", "Generated session workbooks and trading records."),
 }
-NAV_ICONS = {
-    "Dashboard": "dashboard",
-    "Pre-Open": "light_mode",
-    "Intraday": "trending_up",
+_NAV_ICONS = {
+    "Dashboard": "space_dashboard",
+    "Pre-Open": "wb_twilight",
+    "Intraday": "monitoring",
     "Trades & Positions": "swap_horiz",
-    "Forecast": "query_stats",
+    "Forecast": "calculate",
     "Reports": "description",
 }
 
@@ -208,14 +208,20 @@ NAV_ICONS = {
 def render_navigation() -> str:
     with st.sidebar:
         sidebar_brand(dry_run=SETTINGS.dry_run_mode, paper=SETTINGS.paper_trading)
-        selected = st.radio(
+        pages = list(PAGE_META)
+        labels = [
+            f":material/{_NAV_ICONS.get(p, 'circle')}: {p}"
+            for p in pages
+        ]
+        idx = st.radio(
             "Operations",
-            list(PAGE_META),
+            range(len(pages)),
+            format_func=lambda i: labels[i],
             label_visibility="collapsed",
             key="dashboard_page",
         )
+        selected = pages[idx]
         sidebar_safety(dry_run=SETTINGS.dry_run_mode, paper=SETTINGS.paper_trading)
-        st.caption("Gerchik methodology · saved bot state")
     return selected
 
 
