@@ -27,6 +27,7 @@ from src.execution import order_requests as order_requests_store
 from src.jobs.eod import run_eod
 from src.jobs.execute_requests import run_execute_requests
 from src.jobs.intraday import run_intraday
+from src.jobs.market_data_collector import run_market_data_collector
 from src.jobs.open import run_open
 from src.jobs.premarket import run_premarket
 from src.jobs.session_utils import (
@@ -583,6 +584,24 @@ def run_job_with_context(
         LOGGER.warning("Execute worker already running (heartbeat %.0fs old); not starting another.", age or 0.0)
         return {"job": job_name, "blocked": True, "reasons": ["worker_already_running"], "dry_run": dry_run}
 
+    if job_name == "market_data":
+        with job_loop_lock("market_data_collector") as acquired:
+            if not acquired:
+                LOGGER.info("Skipping market_data because the collector is already active.")
+                return {
+                    "job": job_name,
+                    "blocked": True,
+                    "reasons": ["collector_already_running"],
+                    "dry_run": True,
+                }
+            return _run_connected_job(
+                job_name,
+                state_path,
+                state,
+                True,
+                command_context=command_context,
+            )
+
     preconnect_lock_name = None
     if job_name == "open":
         preconnect_lock_name = "open_session"
@@ -639,9 +658,21 @@ def _run_connected_job(
     alerter = SlackAlerter()
     broker = _connect_broker_with_startup_retry(job_name)
     try:
+        market_data = MarketDataService(broker)
+        if job_name == "market_data":
+            watchlist = state.get("watchlist", {})
+            if not isinstance(watchlist, dict) or not watchlist:
+                watchlist = {symbol: {} for symbol in SETTINGS.symbols}
+            collector = run_market_data_collector(
+                market_data,
+                watchlist,
+                interval_seconds=int((command_context or {}).get("interval_seconds", 300) or 300),
+                once=bool((command_context or {}).get("once", False)),
+            )
+            return {"job": job_name, **collector, "dry_run": True}
+
         news_service = NewsService(broker=broker)
         news_filter = NewsRiskFilter(news_service)
-        market_data = MarketDataService(broker)
         order_manager = OrderManager(
             broker,
             market_data,
@@ -675,9 +706,16 @@ def _run_connected_job(
             internal_positions=internal_positions,
             macro_risk=news_filter.is_macro_risk(),
         )
-        if kill_switch and job_name in {"open", "intraday"}:
+        initial_intraday_halt_reasons: List[str] = []
+        if kill_switch and job_name == "open":
             alerter.send_error(f"Kill switch engaged: {', '.join(reasons)}")
             return {"job": job_name, "blocked": True, "reasons": reasons, "dry_run": dry_run}
+        if kill_switch and job_name == "intraday":
+            initial_intraday_halt_reasons = [str(reason) for reason in reasons] or ["kill_switch"]
+            alerter.send_error(
+                "Kill switch engaged; trading disabled while market-data collection continues: "
+                + ", ".join(initial_intraday_halt_reasons)
+            )
 
         if job_name == "premarket":
             premarket_summary = run_premarket(
@@ -745,6 +783,11 @@ def _run_connected_job(
 
         if job_name == "intraday":
             tracked_positions = state.get("tracked_positions", [])
+            intraday_options = (
+                {"initial_trading_halt_reasons": initial_intraday_halt_reasons}
+                if initial_intraday_halt_reasons
+                else {}
+            )
             actions = run_intraday(
                 broker,
                 alerter,
@@ -752,6 +795,7 @@ def _run_connected_job(
                 tracked_positions,
                 account_equity=account_equity,
                 dry_run=dry_run,
+                **intraday_options,
             )
             state["tracked_positions"] = tracked_positions
             _save_state(state_path, state)
@@ -828,7 +872,7 @@ def _connect_broker_with_startup_retry(job_name: str) -> IBKRClient:
     """Create and connect an IBKR client, waiting through temporary startup contention."""
     retry_window = (
         SETTINGS.broker.startup_retry_window_seconds
-        if job_name in {"intraday", "execute_requests"}
+        if job_name in {"intraday", "execute_requests", "market_data"}
         else 0
     )
     retry_delay = max(1, SETTINGS.broker.startup_retry_delay_seconds)
@@ -872,7 +916,7 @@ def _connect_broker_with_startup_retry(job_name: str) -> IBKRClient:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="IBKR Gerchik bot job runner.")
-    parser.add_argument("--job", required=True, choices=["premarket", "open", "intraday", "eod", "weekly", "slack", "manual_watch", "validate_watchlist", "quote_check", "execute_requests"])
+    parser.add_argument("--job", required=True, choices=["premarket", "open", "intraday", "market_data", "eod", "weekly", "slack", "manual_watch", "validate_watchlist", "quote_check", "execute_requests"])
     parser.add_argument("--dry-run", action="store_true", help="Simulate trades without placing broker orders.")
     parser.add_argument("--client-id", type=int, help="Override IBKR API client id for this process (avoid collisions).")
     parser.add_argument("--symbol", help="Ticker symbol for manual_watch jobs.")
@@ -898,6 +942,13 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=0,
         help="For manual_watch only: cancel submitted bracket orders after the given number of seconds.",
+    )
+    parser.add_argument("--once", action="store_true", help="For market_data: collect one cycle and exit.")
+    parser.add_argument(
+        "--interval-seconds",
+        type=int,
+        default=300,
+        help="For market_data: collection cadence while the market is open.",
     )
     return parser.parse_args()
 
@@ -943,6 +994,15 @@ def main() -> int:
                 "quote_check",
                 dry_run_override=False,
                 command_context={"symbol": str(args.symbol)},
+            )
+        elif args.job == "market_data":
+            result = run_job_with_context(
+                "market_data",
+                dry_run_override=True,
+                command_context={
+                    "once": bool(args.once),
+                    "interval_seconds": max(60, int(args.interval_seconds)),
+                },
             )
         else:
             result = run_job(args.job, dry_run_override=True if args.dry_run else None)

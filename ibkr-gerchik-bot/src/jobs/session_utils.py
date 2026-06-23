@@ -523,6 +523,7 @@ def run_entry_scan(
     current_positions: List[Dict[str, object]],
     open_risk_amount: float,
     scan_time: Optional[datetime] = None,
+    intraday_bars_by_symbol: Optional[Dict[str, pd.DataFrame]] = None,
 ) -> Dict[str, object]:
     """Run one deterministic entry scan over the prepared watchlist."""
     current_time = scan_time or session_now()
@@ -557,6 +558,20 @@ def run_entry_scan(
 
     for symbol, plan in watchlist.items():
         scanned_symbols += 1
+        intraday_bars = (
+            intraday_bars_by_symbol.get(symbol, pd.DataFrame())
+            if intraday_bars_by_symbol is not None
+            else market_data.get_intraday_bars(
+                symbol,
+                duration=SETTINGS.strategy.intraday_bar_duration,
+                bar_size=SETTINGS.strategy.intraday_bar_size,
+            )
+        )
+        # Data collection is independent of news/trading eligibility. A symbol
+        # may be blocked from orders and still needs complete chart history.
+        if intraday_bars_by_symbol is None:
+            save_bars(symbol, "intraday_5m", intraday_bars)
+
         symbol_news_context = news_filter.get_symbol_risk_context(symbol)
         if symbol_news_context.get("risk_level") == "HIGH":
             reason = {
@@ -577,13 +592,6 @@ def run_entry_scan(
             LOGGER.info("%s skip %s: %s", stage_name, symbol, reason)
             continue
 
-        intraday_bars = market_data.get_intraday_bars(
-            symbol,
-            duration=SETTINGS.strategy.intraday_bar_duration,
-            bar_size=SETTINGS.strategy.intraday_bar_size,
-        )
-        # Persist the live intraday bars for the dashboard (best-effort).
-        save_bars(symbol, "intraday_5m", intraday_bars)
         quote = market_data.get_quote(symbol)
         quote_status = str(quote.get("quote_status", "") or "")
         intraday_reference_price = float(intraday_bars.iloc[-1]["close"]) if not intraday_bars.empty else None
@@ -786,6 +794,40 @@ def run_entry_scan(
         "signals_detected": signals_detected,
         "symbols_scanned": scanned_symbols,
         "macro_risk": macro_context,
+    }
+
+
+def collect_watchlist_intraday_bars(
+    market_data: MarketDataService,
+    watchlist: Dict[str, object],
+) -> Dict[str, object]:
+    """Fetch and persist bars without evaluating signals or account state."""
+    bars_by_symbol: Dict[str, pd.DataFrame] = {}
+    failed: List[Dict[str, str]] = []
+    persisted = 0
+
+    for symbol in watchlist:
+        try:
+            bars = market_data.get_intraday_bars(
+                symbol,
+                duration=SETTINGS.strategy.intraday_bar_duration,
+                bar_size=SETTINGS.strategy.intraday_bar_size,
+            )
+            bars_by_symbol[symbol] = bars
+            if save_bars(symbol, "intraday_5m", bars) is not None:
+                persisted += 1
+            elif bars is None or bars.empty:
+                failed.append({"symbol": symbol, "reason": "empty_bars"})
+        except Exception as exc:
+            LOGGER.warning("Market-data collection failed for %s: %s", symbol, exc)
+            bars_by_symbol[symbol] = pd.DataFrame()
+            failed.append({"symbol": symbol, "reason": str(exc)})
+
+    return {
+        "bars_by_symbol": bars_by_symbol,
+        "symbols_requested": len(watchlist),
+        "symbols_persisted": persisted,
+        "failed": failed,
     }
 
 

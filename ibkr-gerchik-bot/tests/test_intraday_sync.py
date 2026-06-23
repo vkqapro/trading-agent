@@ -97,3 +97,61 @@ class IntradaySyncTests(TestCase):
         self.assertEqual(actions, [])
         self.assertEqual(captured_symbols, ["SEI"])
         self.assertEqual(captured_stop_ids, [456])
+
+    def test_intraday_kill_switch_mode_continues_collecting_without_trading(self) -> None:
+        class BrokerStub:
+            def get_positions(self):
+                raise AssertionError("Data-only mode must not synchronize positions.")
+
+            def get_open_orders(self):
+                raise AssertionError("Data-only mode must not inspect orders.")
+
+        class MarketDataStub:
+            def __init__(self) -> None:
+                self.calls = 0
+
+            def market_is_open(self, _moment):
+                self.calls += 1
+                return self.calls <= 2
+
+        class AlerterStub:
+            def send_intraday_heartbeat(self, _payload):
+                return True
+
+        class NewsFilterStub:
+            def is_macro_risk(self):
+                return False
+
+        collection_calls = []
+        market_data = MarketDataStub()
+        with (
+            patch("src.jobs.intraday.build_job_dependencies", return_value=(market_data, object())),
+            patch("src.jobs.intraday.load_runtime_state", return_value={"watchlist": {"AAPL": {}}, "tracked_positions": []}),
+            patch(
+                "src.jobs.intraday.collect_watchlist_intraday_bars",
+                side_effect=lambda _market_data, watchlist: collection_calls.append(list(watchlist)) or {
+                    "bars_by_symbol": {},
+                    "symbols_requested": 1,
+                    "symbols_persisted": 1,
+                    "failed": [],
+                },
+            ),
+            patch("src.jobs.intraday.manage_positions", side_effect=AssertionError("Trading management must remain disabled.")),
+            patch("src.jobs.intraday.append_workflow_snapshot", return_value=None),
+            patch("src.jobs.intraday.append_markdown_log", return_value=None),
+            patch("src.jobs.intraday.sleep_until", return_value=None),
+        ):
+            actions = run_intraday(
+                BrokerStub(),
+                AlerterStub(),
+                NewsFilterStub(),
+                [],
+                account_equity=100_000.0,
+                dry_run=True,
+                now_provider=lambda: datetime(2026, 6, 22, 11, 0, tzinfo=TZ),
+                sleep_provider=lambda _seconds: None,
+                initial_trading_halt_reasons=["account_not_synced"],
+            )
+
+        self.assertEqual(actions, [])
+        self.assertEqual(collection_calls, [["AAPL"]])

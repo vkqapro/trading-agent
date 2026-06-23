@@ -16,8 +16,9 @@ from dataclasses import asdict
 from datetime import datetime
 from typing import Any
 
+import pandas as pd
 import uvicorn
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -33,6 +34,16 @@ app.add_middleware(
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def disable_dashboard_cache(request: Request, call_next):
+    response = await call_next(request)
+    if request.url.path == "/" or request.url.path.startswith("/api/"):
+        response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+    return response
 
 HERE = Path(__file__).parent
 app.mount("/static", StaticFiles(directory=HERE), name="static")
@@ -185,7 +196,51 @@ def api_preopen_symbol(symbol: str):
 
 @app.get("/api/bars/{symbol}/{timeframe}")
 def api_bars(symbol: str, timeframe: str):
-    df = _safe(lambda: da.get_bars(symbol.upper(), timeframe), None)
+    symbol = symbol.upper()
+
+    def _hourly_bars() -> pd.DataFrame:
+        intraday = da.get_bars(symbol, "intraday_5m")
+        if intraday.empty:
+            return intraday
+        frame = intraday.set_index("date").sort_index()
+        return (
+            frame.resample("60min", origin="start_day", offset="30min")
+            .agg({"open": "first", "high": "max", "low": "min", "close": "last", "volume": "sum"})
+            .dropna(subset=["open", "high", "low", "close"])
+            .reset_index()
+        )
+
+    def _live_daily_bars() -> pd.DataFrame:
+        daily = da.get_bars(symbol, "daily")
+        intraday = da.get_bars(symbol, "intraday_5m")
+        if intraday.empty:
+            return daily
+
+        local_dates = intraday["date"].dt.tz_convert(ET).dt.date
+        today = datetime.now(ET).date()
+        live = intraday.loc[local_dates == today]
+        if live.empty:
+            return daily
+
+        current = pd.DataFrame([{
+            "date": pd.Timestamp(today),
+            "open": float(live.iloc[0]["open"]),
+            "high": float(live["high"].max()),
+            "low": float(live["low"].min()),
+            "close": float(live.iloc[-1]["close"]),
+            "volume": float(live["volume"].fillna(0).sum()) if "volume" in live else 0.0,
+        }])
+        if daily.empty:
+            return current
+        historical = daily[pd.to_datetime(daily["date"]).dt.date != today]
+        return pd.concat([historical, current], ignore_index=True).sort_values("date")
+
+    if timeframe == "intraday_1h":
+        df = _safe(_hourly_bars, None)
+    elif timeframe == "daily_live":
+        df = _safe(_live_daily_bars, None)
+    else:
+        df = _safe(lambda: da.get_bars(symbol, timeframe), None)
     if df is None or df.empty:
         return {"bars": [], "stale": True, "last_date": None}
     df = df.tail(300)
@@ -199,7 +254,7 @@ def api_bars(symbol: str, timeframe: str):
         from datetime import date, timedelta
         try:
             last_dt = date.fromisoformat(str(last_date)[:10])
-            today = date.today()
+            today = datetime.now(ET).date()
             # count weekdays strictly between last_dt and today (exclusive of both)
             weekdays_gap = 0
             d = last_dt + timedelta(days=1)

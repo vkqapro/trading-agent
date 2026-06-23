@@ -11,9 +11,11 @@ never interrupt the trading jobs that call them.
 from __future__ import annotations
 
 import json
+import os
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Optional
+from uuid import uuid4
 
 import pandas as pd
 
@@ -48,10 +50,38 @@ def _read_index() -> Dict[str, Dict[str, object]]:
 
 
 def _write_index(index: Dict[str, Dict[str, object]]) -> None:
+    temp_path = INDEX_PATH.with_name(f"{INDEX_PATH.name}.{os.getpid()}.{uuid4().hex}.tmp")
     try:
-        INDEX_PATH.write_text(json.dumps(index, indent=2), encoding="utf-8")
+        temp_path.write_text(json.dumps(index, indent=2), encoding="utf-8")
+        os.replace(temp_path, INDEX_PATH)
     except OSError as exc:  # pragma: no cover - best effort
         LOGGER.warning("Failed to write bar index: %s", exc)
+    finally:
+        try:
+            temp_path.unlink(missing_ok=True)
+        except OSError:
+            pass
+
+
+def _normalize_frame(bars: pd.DataFrame) -> pd.DataFrame:
+    if bars is None or bars.empty or "date" not in bars.columns:
+        return pd.DataFrame(columns=_COLUMNS)
+    frame = bars.copy()
+    available = [column for column in _COLUMNS if column in frame.columns]
+    frame = frame[available]
+    frame["date"] = pd.to_datetime(frame["date"], errors="coerce")
+    for column in ("open", "high", "low", "close", "volume"):
+        if column in frame:
+            frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    frame = frame.dropna(subset=["date", "open", "high", "low", "close"])
+    if "volume" not in frame:
+        frame["volume"] = 0.0
+    return (
+        frame[_COLUMNS]
+        .sort_values("date")
+        .drop_duplicates(subset=["date"], keep="last")
+        .reset_index(drop=True)
+    )
 
 
 def save_bars(symbol: str, timeframe: str, bars: pd.DataFrame) -> Optional[Path]:
@@ -65,13 +95,19 @@ def save_bars(symbol: str, timeframe: str, bars: pd.DataFrame) -> Optional[Path]
         return None
     try:
         _ensure_dir()
-        frame = bars.copy()
-        available = [col for col in _COLUMNS if col in frame.columns]
-        if "date" not in available:
+        incoming = _normalize_frame(bars)
+        if incoming.empty:
             return None
-        frame = frame[available]
         path = bar_path(symbol, timeframe)
-        frame.to_csv(path, index=False)
+        existing = load_bars(symbol, timeframe) if path.exists() else pd.DataFrame(columns=_COLUMNS)
+        frame = (
+            incoming
+            if existing.empty
+            else _normalize_frame(pd.concat([existing, incoming], ignore_index=True))
+        )
+        temp_path = path.with_name(f"{path.name}.{os.getpid()}.{uuid4().hex}.tmp")
+        frame.to_csv(temp_path, index=False)
+        os.replace(temp_path, path)
 
         index = _read_index()
         index.setdefault(symbol.upper(), {})[timeframe] = {
@@ -85,6 +121,12 @@ def save_bars(symbol: str, timeframe: str, bars: pd.DataFrame) -> Optional[Path]
     except Exception as exc:  # pragma: no cover - defensive, never break trading
         LOGGER.warning("Failed to persist %s %s bars: %s", symbol, timeframe, exc)
         return None
+    finally:
+        if "temp_path" in locals():
+            try:
+                temp_path.unlink(missing_ok=True)
+            except OSError:
+                pass
 
 
 def load_bars(symbol: str, timeframe: str) -> pd.DataFrame:
@@ -93,11 +135,7 @@ def load_bars(symbol: str, timeframe: str) -> pd.DataFrame:
     if not path.exists():
         return pd.DataFrame(columns=_COLUMNS)
     try:
-        frame = pd.read_csv(path)
-        if "date" in frame.columns:
-            frame["date"] = pd.to_datetime(frame["date"], errors="coerce")
-            frame = frame.dropna(subset=["date"]).sort_values("date").reset_index(drop=True)
-        return frame
+        return _normalize_frame(pd.read_csv(path))
     except Exception as exc:  # pragma: no cover - defensive
         LOGGER.warning("Failed to load %s %s bars: %s", symbol, timeframe, exc)
         return pd.DataFrame(columns=_COLUMNS)

@@ -14,6 +14,7 @@ from src.jobs.session_utils import (
     build_job_dependencies,
     calculate_open_risk_amount,
     can_scan_for_new_entries,
+    collect_watchlist_intraday_bars,
     get_scan_interval,
     intraday_session_active,
     load_runtime_state,
@@ -42,6 +43,7 @@ def run_intraday(
     *,
     now_provider: Callable[[], datetime] | None = None,
     sleep_provider: Callable[[float], None] | None = None,
+    initial_trading_halt_reasons: List[str] | None = None,
 ) -> List[Dict[str, object]]:
     """Continue scanning for new entries and manage any open positions."""
     now_fn = now_provider or session_now
@@ -76,6 +78,12 @@ def run_intraday(
     manual_candidates_total: List[Dict[str, object]] = []
     actions_total: List[Dict[str, object]] = []
     scans: List[Dict[str, object]] = []
+    trading_halted_reasons: List[str] = list(initial_trading_halt_reasons or [])
+    if trading_halted_reasons:
+        LOGGER.error(
+            "Intraday started in data-only mode because trading is halted: %s",
+            ", ".join(trading_halted_reasons),
+        )
 
     while True:
         loop_time = now_fn()
@@ -85,16 +93,32 @@ def run_intraday(
             LOGGER.info("Intraday session ended at %s", loop_time.isoformat())
             break
 
-        broker_positions = broker.get_positions()
-        open_orders = broker.get_open_orders()
-        tracked_positions[:] = sync_tracked_positions_with_broker(
-            tracked_positions,
-            broker_positions,
-            open_orders,
-        )
-
         interval = get_scan_interval(loop_time)
         LOGGER.info("Intraday loop tick at %s interval=%ss", loop_time.isoformat(), interval)
+        collection = collect_watchlist_intraday_bars(market_data, watchlist) if watchlist else {
+            "bars_by_symbol": {},
+            "symbols_requested": 0,
+            "symbols_persisted": 0,
+            "failed": [],
+        }
+        bars_by_symbol = collection.get("bars_by_symbol", {})
+        LOGGER.info(
+            "Intraday data collection: requested=%s persisted=%s failed=%s trading_halted=%s",
+            collection.get("symbols_requested", 0),
+            collection.get("symbols_persisted", 0),
+            len(collection.get("failed", [])),
+            bool(trading_halted_reasons),
+        )
+
+        if not trading_halted_reasons:
+            broker_positions = broker.get_positions()
+            open_orders = broker.get_open_orders()
+            tracked_positions[:] = sync_tracked_positions_with_broker(
+                tracked_positions,
+                broker_positions,
+                open_orders,
+            )
+
         iteration_executed: List[Dict[str, object]] = []
         iteration_skipped: List[Dict[str, object]] = []
         iteration_manual_candidates: List[Dict[str, object]] = []
@@ -102,7 +126,7 @@ def run_intraday(
         iteration_signal_details: List[Dict[str, object]] = []
         symbols_scanned = 0
         signals_detected = 0
-        entries_enabled = can_scan_for_new_entries(loop_time)
+        entries_enabled = can_scan_for_new_entries(loop_time) and not trading_halted_reasons
         LOGGER.info(
             "Intraday loop state: entries_enabled=%s watchlist_symbols=%s tracked_positions=%s",
             entries_enabled,
@@ -122,6 +146,7 @@ def run_intraday(
                 current_positions=tracked_positions,
                 open_risk_amount=calculate_open_risk_amount(tracked_positions),
                 scan_time=loop_time,
+                intraday_bars_by_symbol=bars_by_symbol if isinstance(bars_by_symbol, dict) else None,
             )
             executed = scan_result["executed"]
             skipped = scan_result["skipped"]
@@ -154,24 +179,49 @@ def run_intraday(
                 }
             )
         elif not entries_enabled:
-            LOGGER.info(
-                "Intraday entries disabled at %s; managing positions only until next loop.",
-                loop_time.isoformat(),
-            )
+            if trading_halted_reasons:
+                LOGGER.warning(
+                    "Trading remains halted at %s; collecting bars only. reasons=%s",
+                    loop_time.isoformat(),
+                    trading_halted_reasons,
+                )
+            else:
+                LOGGER.info(
+                    "Intraday entries disabled at %s; managing positions only until next loop.",
+                    loop_time.isoformat(),
+                )
         else:
             LOGGER.info("Intraday watchlist is empty; managing positions only until next loop.")
 
-        management = manage_positions(
-            broker=broker,
-            news_filter=news_filter,
-            tracked_positions=tracked_positions,
-            account_equity=account_equity,
-            daily_realized_pnl=daily_realized_pnl,
-            dry_run=dry_run,
+        management = (
+            manage_positions(
+                broker=broker,
+                news_filter=news_filter,
+                tracked_positions=tracked_positions,
+                account_equity=account_equity,
+                daily_realized_pnl=daily_realized_pnl,
+                dry_run=dry_run,
+            )
+            if not trading_halted_reasons
+            else {
+                "actions": [],
+                "macro_risk": False,
+                "kill_switch": True,
+                "reasons": trading_halted_reasons,
+            }
         )
         actions = management["actions"]
         actions_total.extend(actions)
-        persist_tracked_positions(tracked_positions)
+        if not trading_halted_reasons:
+            persist_tracked_positions(tracked_positions)
+        if management.get("kill_switch") and not trading_halted_reasons:
+            trading_halted_reasons = [
+                str(reason) for reason in management.get("reasons", [])
+            ] or ["kill_switch"]
+            LOGGER.error(
+                "Trading halted by kill switch (%s); market-data collection will continue.",
+                ", ".join(trading_halted_reasons) or "unspecified",
+            )
         alerter.send_intraday_heartbeat(
             {
                 "timestamp": loop_time.isoformat(),
@@ -179,6 +229,10 @@ def run_intraday(
                 "actions": actions,
                 "macro_risk": news_filter.is_macro_risk(),
                 "entries_enabled": entries_enabled,
+                "trading_halted": bool(trading_halted_reasons),
+                "trading_halted_reasons": trading_halted_reasons,
+                "bars_persisted": collection.get("symbols_persisted", 0),
+                "bar_collection_failures": collection.get("failed", []),
                 "interval_seconds": interval,
                 "symbols_scanned": symbols_scanned,
                 "signals_detected": signals_detected,
@@ -205,9 +259,6 @@ def run_intraday(
                 ),
             )
 
-        if management.get("kill_switch"):
-            break
-
         if interval <= 0:
             break
 
@@ -224,6 +275,7 @@ def run_intraday(
             "executed": executed_total or "none",
             "skipped": skipped_total or "none",
             "manual_candidates": manual_candidates_total or "none",
+            "trading_halted_reasons": trading_halted_reasons or "none",
             "scan_count": len(scans),
             "skip_reason_summary": summarize_skip_reasons(skipped_total) or "none",
         },
@@ -238,6 +290,7 @@ def run_intraday(
             "manual_candidates": manual_candidates_total,
             "tracked_positions": tracked_positions,
             "scans": serialize_scan_results(scans),
+            "trading_halted_reasons": trading_halted_reasons,
         },
     )
     return actions_total

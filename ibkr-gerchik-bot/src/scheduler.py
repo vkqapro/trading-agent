@@ -10,6 +10,7 @@ JOB_MODULES: Dict[str, str] = {
     "premarket": "src.main --job premarket",
     "open": "src.main --job open",
     "intraday": "src.main --job intraday",
+    "market_data": "src.main --job market_data --client-id 17",
     "eod": "src.main --job eod",
     "weekly": "src.main --job weekly",
 }

@@ -28,6 +28,13 @@ echo  [OK] Starting server on http://127.0.0.1:8550 ...
 echo  [OK] Press Ctrl+C to stop.
 echo.
 
+REM Start the independent data-only collector. Its lock prevents duplicates.
+start "Gerchik Market Data Collector" /min cmd /c "%~dp0run_market_data_collector.cmd"
+
+REM Start the paper order-execution worker in its own window.
+REM The launcher performs a clean restart and uses dedicated client id 11.
+start "Gerchik Execute Worker" cmd /k "%~dp0run_execute_worker.cmd"
+
 REM Give the server 2 seconds then open browser
 start "" /min cmd /c "timeout /t 2 /nobreak >nul && start http://127.0.0.1:8550"
 
