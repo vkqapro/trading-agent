@@ -1,0 +1,1923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Gerchik Bot · Operations Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body,#root{height:100%;width:100%;overflow:hidden}
+::-webkit-scrollbar{width:7px;height:7px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#3b494b;border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:#7df4ff}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.mso{font-family:'Material Symbols Outlined';font-weight:normal;font-style:normal;
+  line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;
+  white-space:nowrap;word-wrap:normal;direction:ltr;-webkit-font-feature-settings:'liga';
+  font-feature-settings:'liga';-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.4/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const {useState, useEffect, useCallback, useRef, useMemo} = React;
+
+/* ── palette ─────────────────────────────────────────────────────────────── */
+const C = {
+  bg:'#131314', surf:'#201f20', surfLow:'#1c1b1c', surfLowest:'#0e0e0f',
+  surfHigh:'#2a2a2b', onSurf:'#e5e2e3', onVar:'#b9cacb',
+  outline:'#849495', outlineVar:'#3b494b',
+  cyan:'#7df4ff', cyanBright:'#00f0ff', cyanDim:'#00dbe9',
+  lime:'#c3f400', limeDim:'#abd600',
+  magenta:'#ecb2ff', err:'#ffb4ab',
+};
+const R = (hex, a) => {
+  const h = hex.replace('#','');
+  const r=parseInt(h.slice(0,2),16), g=parseInt(h.slice(2,4),16), b=parseInt(h.slice(4,6),16);
+  return `rgba(${r},${g},${b},${a})`;
+};
+const API = 'http://127.0.0.1:8550/api';
+
+// UI timeframe pill → API timeframe string (must match memory/bars filenames)
+const TF_API = {
+  '5Min':'intraday_5m',
+  '1H':'intraday_1h',
+  '1D':'daily_live',
+  '1W':'daily',
+  '1M':'daily',
+};
+const TF_LABEL = {'5Min':'5-Minute','1H':'Hourly','1D':'Daily','1W':'Weekly','1M':'Monthly'};
+// How many bars to show for each range button (applied client-side on daily data)
+const RANGE_COUNTS = {'1M':22,'3M':64,'6M':128,'YTD':150,'1Y':252,'ALL':9999};
+
+/* ── tiny helpers ─────────────────────────────────────────────────────────── */
+const Icon = ({n, size=18, color, style}) =>
+  <span className="mso" style={{fontSize:size, color, lineHeight:1, ...style}}>{n}</span>;
+
+const Pill = ({text, color}) => (
+  <span style={{display:'inline-block',padding:'3px 9px',borderRadius:9999,
+    fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.03em',
+    background:R(color,0.12),color,border:`1px solid ${R(color,0.3)}`,whiteSpace:'nowrap'}}>
+    {text}
+  </span>
+);
+
+const PulseDot = ({color=C.lime, size=7, shadow=8}) => (
+  <span style={{display:'inline-block',width:size,height:size,borderRadius:'50%',
+    background:color,boxShadow:`0 0 ${shadow}px ${color}`,
+    animation:'pulse 2s infinite',flexShrink:0}}/>
+);
+
+const GlassCard = ({children, style, hover, onClick}) => (
+  <div onClick={onClick} style={{background:R(C.surf,0.55),backdropFilter:'blur(16px)',WebkitBackdropFilter:'blur(16px)',
+    border:`1px solid ${R(C.outline,0.18)}`,borderRadius:12,
+    boxShadow:`inset 0 1px 0 ${R('#fff',0.04)}`,...style}} className={hover?'hover-card':''}>
+    {children}
+  </div>
+);
+
+const PanelHeader = ({icon, title, badge}) => (
+  <div style={{padding:'16px 20px',borderBottom:`1px solid ${R(C.outline,0.14)}`,
+    background:R(C.surfLowest,0.4),display:'flex',alignItems:'center',gap:10}}>
+    {icon && <Icon n={icon} size={17} color={C.outline}/>}
+    <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',
+      textTransform:'uppercase',color:C.onVar}}>{title}</span>
+    {badge && <span style={{marginLeft:'auto',padding:'3px 9px',borderRadius:9999,
+      fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.cyan,
+      background:R(C.cyan,0.1),border:`1px solid ${R(C.cyan,0.28)}`}}>{badge}</span>}
+  </div>
+);
+
+const SectionTitle = ({title}) => (
+  <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.12em',
+    textTransform:'uppercase',color:C.onVar,marginBottom:16,paddingBottom:12,
+    borderBottom:`1px solid ${R(C.outline,0.14)}`}}>{title}</div>
+);
+
+/* ── table ────────────────────────────────────────────────────────────────── */
+const Table = ({cols, rows}) => (
+  <div style={{overflowX:'auto'}}>
+    <table style={{width:'100%',borderCollapse:'collapse',minWidth:cols.length*100}}>
+      <thead><tr>{cols.map(c=>(
+        <th key={c} style={{padding:'11px 18px',textAlign:'left',fontFamily:"'JetBrains Mono',monospace",
+          fontSize:10,letterSpacing:'0.07em',textTransform:'uppercase',color:C.outline,
+          borderBottom:`1px solid ${R(C.outline,0.12)}`}}>{c}</th>
+      ))}</tr></thead>
+      <tbody>{rows.map((r,i)=>(
+        <tr key={i} style={{}} onMouseEnter={e=>e.currentTarget.style.background=R('#fff',0.025)}
+          onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+          {r.map((cell,j)=>(
+            <td key={j} style={{padding:'11px 18px',fontFamily:"'JetBrains Mono',monospace",
+              fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:C.onVar,
+              whiteSpace:'nowrap'}}>
+              {cell}
+            </td>
+          ))}
+        </tr>
+      ))}</tbody>
+    </table>
+  </div>
+);
+
+/* ── SVG candlestick chart ────────────────────────────────────────────────── */
+function CandleChart({bars, levels=[], lines=[], zones=[], showVol=true, height=300, stale=false, lastDate=null}) {
+  const n = bars?.length || 0;
+  const chartRef = useRef(null);
+  const svgRef = useRef(null);
+  const [visStart, setVisStart] = useState(0);
+  const [visEnd,   setVisEnd]   = useState(n);
+  const [hover,    setHover]    = useState(null);   // {idx, svgX, svgY}
+  const [crosshair,setCrosshair]= useState(false);
+  const [showMA,   setShowMA]   = useState(true);
+  const [isFullscreen,setIsFullscreen] = useState(false);
+  const dragRef = useRef(null);  // {startX, startVisStart, startVisEnd}
+
+  // reset view when bars change
+  useEffect(()=>{ setVisStart(0); setVisEnd(bars?.length||0); setHover(null); },[bars]);
+  useEffect(()=>{
+    const onFullscreenChange = ()=>setIsFullscreen(document.fullscreenElement===chartRef.current);
+    document.addEventListener('fullscreenchange',onFullscreenChange);
+    return ()=>document.removeEventListener('fullscreenchange',onFullscreenChange);
+  },[]);
+
+  const renderedHeight = isFullscreen ? Math.max(520,window.innerHeight-110) : height;
+
+  if (!n) return <div style={{height:renderedHeight,display:'flex',alignItems:'center',justifyContent:'center',
+    color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>No bar data</div>;
+
+  const W=1000, padT=18, padR=116, padL=64, padB=26;
+  const volH = showVol ? 55 : 0;
+  const gap  = showVol ? 12 : 0;
+  const priceH = renderedHeight - padT - padB - volH - gap;
+  const H = padT + priceH + gap + volH + padB;
+  const plotW = W - padL - padR;
+
+  const vs = Math.max(0, Math.min(visStart, n-2));
+  const ve = Math.max(vs+2, Math.min(visEnd, n));
+  const visBars = bars.slice(vs, ve);
+  const vn = visBars.length;
+
+  // dynamic Y range from visible bars only
+  let pmin=Infinity, pmax=-Infinity;
+  visBars.forEach(c=>{ pmin=Math.min(pmin,c.low); pmax=Math.max(pmax,c.high); });
+  levels.forEach(l=>{
+    pmin=Math.min(pmin,l.zoneLow??l.p);
+    pmax=Math.max(pmax,l.zoneHigh??l.p);
+  });
+  lines.forEach(l=>{ pmin=Math.min(pmin,l.p); pmax=Math.max(pmax,l.p); });
+  zones.forEach(z=>{
+    pmin=Math.min(pmin,z.p1,z.p2);
+    pmax=Math.max(pmax,z.p1,z.p2);
+  });
+  if(!isFinite(pmin)) { pmin=0; pmax=1; }
+  const pd=(pmax-pmin)*0.08; pmin-=pd; pmax+=pd;
+
+  const yp  = p => padT + (pmax-p)/(pmax-pmin)*priceH;
+  const step = plotW/vn;
+  const xi   = i => padL + i*step + step/2;
+  const cw   = Math.max(1.5, step*0.6);
+
+  // SVG coordinate converters (screen → SVG viewBox space)
+  const toSvgX = clientX => {
+    const r = svgRef.current?.getBoundingClientRect();
+    if(!r) return 0;
+    return (clientX - r.left) / r.width * W;
+  };
+  const toSvgY = clientY => {
+    const r = svgRef.current?.getBoundingClientRect();
+    if(!r) return 0;
+    return (clientY - r.top) / r.height * H;
+  };
+  // SVG X → bar index in full bars array
+  const svgXToBarIdx = sx => {
+    const frac = (sx - padL) / plotW;
+    return vs + Math.round(frac * (vn-1));
+  };
+  // SVG Y → price
+  const svgYToPrice = sy => pmax - (sy - padT) / priceH * (pmax - pmin);
+
+  const fmtP = p => !isFinite(p)?'—': Math.abs(p)>=1000?p.toFixed(0): Math.abs(p)>=100?p.toFixed(1): Math.abs(p)>=1?p.toFixed(2):p.toFixed(3);
+  const fmtD = t => {
+    if(!t) return '';
+    const m = String(t).match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/);
+    if(!m) return String(t).slice(0,10);
+    return m[4] ? `${m[2]}/${m[3]} ${m[4]}:${m[5]}` : `${m[1]}-${m[2]}-${m[3]}`;
+  };
+  const fmtVol = v => v>=1e6?`${(v/1e6).toFixed(1)}M`:v>=1e3?`${(v/1e3).toFixed(0)}K`:String(v);
+
+  // ── zoom helpers
+  const clampVis = (s,e) => {
+    const minW = Math.min(10, n);
+    let ns = Math.round(s), ne = Math.round(e);
+    if(ne-ns < minW) { ne = Math.min(n, ns+minW); ns = Math.max(0, ne-minW); }
+    ns = Math.max(0,ns); ne = Math.min(n,ne);
+    return [ns,ne];
+  };
+  // Zoom anchored to the right edge (latest bars stay visible) — only left edge moves.
+  // svgX is used to optionally weight the anchor: if cursor is far left, allow some
+  // leftward drift, but always keep ve pinned to current right edge.
+  const zoomAt = (svgX, factor) => {
+    const span = ve - vs;
+    const newSpan = Math.max(10, Math.min(n, Math.round(span * factor)));
+    // anchor: right edge stays fixed, left edge moves
+    const [ns,ne] = clampVis(ve - newSpan, ve);
+    setVisStart(ns); setVisEnd(ne);
+  };
+  const fitAll = () => { setVisStart(0); setVisEnd(n); setHover(null); };
+  const toggleFullscreen = async() => {
+    try {
+      if(document.fullscreenElement) await document.exitFullscreen();
+      else await chartRef.current?.requestFullscreen();
+    } catch(e) {
+      console.warn('Fullscreen unavailable:',e);
+    }
+  };
+
+  // ── mouse event handlers
+  const onWheel = e => {
+    e.preventDefault();
+    zoomAt(toSvgX(e.clientX), e.deltaY>0 ? 1.15 : 0.87);
+  };
+  const onMouseDown = e => {
+    if(e.button!==0) return;
+    dragRef.current = {startX: e.clientX, startVisStart: vs, startVisEnd: ve};
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+  const onMouseMove = e => {
+    const sx = toSvgX(e.clientX), sy = toSvgY(e.clientY);
+    const idx = Math.max(vs, Math.min(ve-1, svgXToBarIdx(sx)));
+    setHover({idx, svgX:sx, svgY:sy});
+    if(dragRef.current){
+      const dx = e.clientX - dragRef.current.startX;
+      const r = svgRef.current?.getBoundingClientRect();
+      const barsPerPx = (dragRef.current.startVisEnd - dragRef.current.startVisStart) / (r?.width||1) * (W/plotW);
+      const shift = Math.round(-dx * barsPerPx);
+      const span = dragRef.current.startVisEnd - dragRef.current.startVisStart;
+      const [ns,ne] = clampVis(dragRef.current.startVisStart+shift, dragRef.current.startVisStart+shift+span);
+      setVisStart(ns); setVisEnd(ne);
+    }
+  };
+  const onMouseUp   = () => { dragRef.current = null; };
+  const onMouseLeave= () => { dragRef.current=null; setHover(null); };
+
+  // ── build SVG elements
+  const els=[];
+
+  // Y-axis grid + left labels
+  for(let g=0; g<=5; g++){
+    const pv = pmax - (pmax-pmin)*g/5;
+    const gy = yp(pv);
+    els.push(<line key={'g'+g} x1={padL} x2={W-padR} y1={gy} y2={gy} stroke="rgba(132,148,149,0.07)" strokeWidth={1}/>);
+    els.push(<text key={'yl'+g} x={padL-6} y={gy+4} fill="rgba(132,148,149,0.7)" fontSize={10}
+      fontFamily="JetBrains Mono,monospace" textAnchor="end">{fmtP(pv)}</text>);
+  }
+  els.push(<line key="yax" x1={padL} x2={padL} y1={padT} y2={padT+priceH} stroke="rgba(132,148,149,0.15)" strokeWidth={1}/>);
+
+  // X-axis date labels
+  const xTick = Math.min(8, vn);
+  const xStp  = Math.max(1, Math.floor(vn/xTick));
+  for(let k=0; k<vn; k+=xStp){
+    const cx = xi(k);
+    els.push(<line key={'xg'+k} x1={cx} x2={cx} y1={padT} y2={padT+priceH} stroke="rgba(132,148,149,0.04)" strokeWidth={1}/>);
+    els.push(<text key={'xl'+k} x={cx} y={H-5} fill="rgba(132,148,149,0.6)" fontSize={10}
+      fontFamily="JetBrains Mono,monospace" textAnchor="middle">{fmtD(visBars[k]?.t)}</text>);
+  }
+  els.push(<line key="xax" x1={padL} x2={W-padR} y1={padT+priceH} y2={padT+priceH} stroke="rgba(132,148,149,0.15)" strokeWidth={1}/>);
+
+  // filled zones between two price levels (e.g. entry → target)
+  zones.forEach((z,i)=>{
+    const y1=yp(Math.max(z.p1,z.p2)), y2=yp(Math.min(z.p1,z.p2));
+    els.push(<rect key={'z'+i} x={padL} y={y1} width={plotW} height={Math.max(1,y2-y1)} fill={R(z.color,z.opacity??0.08)}/>);
+    // subtle diagonal hatch feel via a second lighter rect
+    els.push(<rect key={'zh'+i} x={padL} y={y1} width={plotW} height={Math.max(1,y2-y1)} fill={`url(#hatch${i})`} opacity={0.18}/>);
+    els.push(<defs key={'hd'+i}><pattern id={`hatch${i}`} patternUnits="userSpaceOnUse" width={8} height={8} patternTransform="rotate(45)">
+      <line x1={0} y1={0} x2={0} y2={8} stroke={z.color} strokeWidth={1.5}/>
+    </pattern></defs>);
+  });
+
+  // level zones + lines
+  levels.forEach((l,i)=>{
+    const fallbackHalf=Math.max(Math.abs(l.p)*0.004,(pmax-pmin)*0.004);
+    const zoneLow=l.zoneLow??(l.p-fallbackHalf);
+    const zoneHigh=l.zoneHigh??(l.p+fallbackHalf);
+    const zT=yp(Math.max(zoneLow,zoneHigh)), zB=yp(Math.min(zoneLow,zoneHigh));
+    if(l.showZone!==false){
+      els.push(<rect key={'lz'+i} x={padL} y={zT} width={plotW} height={Math.max(4,zB-zT)}
+        fill={R(l.color,0.16)} stroke={R(l.color,0.30)} strokeWidth={0.7}/>);
+    }
+    els.push(<line key={'lv'+i} x1={padL} x2={W-padR} y1={yp(l.p)} y2={yp(l.p)}
+      stroke={R(l.color,l.showZone===false?0.42:0.65)} strokeWidth={l.showZone===false?1:1.3}
+      strokeDasharray={l.showZone===false?'2 5':undefined}/>);
+  });
+  // dashed entry/stop/target lines
+  lines.forEach((l,i)=>els.push(
+    <line key={'dl'+i} x1={padL} x2={W-padR} y1={yp(l.p)} y2={yp(l.p)} stroke={l.color} strokeWidth={1.4} strokeDasharray="6 4"/>
+  ));
+  // MA
+  if(showMA){
+    let path='';
+    visBars.forEach((c,i)=>{
+      const k=Math.max(0,i-6); let s=0,cnt=0;
+      for(let j=k;j<=i;j++){s+=visBars[j].close;cnt++;}
+      path+=(i?' L':'M')+xi(i).toFixed(1)+' '+yp(s/cnt).toFixed(1);
+    });
+    els.push(<path key="ma" d={path} fill="none" stroke={R(C.cyan,0.45)} strokeWidth={1.6}/>);
+  }
+  // candles
+  visBars.forEach((c,i)=>{
+    const up=c.close>=c.open, col=up?C.lime:C.err;
+    const bx=xi(i), top=yp(Math.max(c.open,c.close)), bot=yp(Math.min(c.open,c.close));
+    const isHov = hover && (vs+i)===hover.idx;
+    els.push(<line key={'w'+i} x1={bx} x2={bx} y1={yp(c.high)} y2={yp(c.low)} stroke={col} strokeWidth={isHov?2:1} opacity={0.9}/>);
+    els.push(<rect key={'b'+i} x={bx-cw/2} width={cw} y={top} height={Math.max(1.5,bot-top)}
+      fill={col} opacity={isHov?1:0.88} stroke={isHov?'#fff':col} strokeWidth={isHov?0.8:0}/>);
+  });
+  // volume
+  if(showVol){
+    const volTop=padT+priceH+gap, vmax=Math.max(...visBars.map(c=>c.volume||0))||1;
+    visBars.forEach((c,i)=>{
+      const up=c.close>=c.open, vh=(c.volume/vmax)*volH;
+      const isHov = hover && (vs+i)===hover.idx;
+      els.push(<rect key={'v'+i} x={xi(i)-cw/2} width={cw} y={volTop+volH-vh} height={Math.max(0.5,vh)}
+        fill={R(up?C.lime:C.err, isHov?0.65:0.32)}/>);
+    });
+    els.push(<line key="vb" x1={padL} x2={W-padR} y1={volTop} y2={volTop} stroke="rgba(132,148,149,0.10)" strokeWidth={1}/>);
+    els.push(<text key="vlbl" x={padL-6} y={volTop+volH/2+4} fill="rgba(132,148,149,0.45)" fontSize={9}
+      fontFamily="JetBrains Mono,monospace" textAnchor="end">VOL</text>);
+  }
+
+  // crosshair
+  if(hover && crosshair){
+    const cx=hover.svgX, cy=hover.svgY;
+    if(cx>=padL && cx<=W-padR){
+      els.push(<line key="chv" x1={cx} x2={cx} y1={padT} y2={padT+priceH} stroke="rgba(125,244,255,0.35)" strokeWidth={1} strokeDasharray="4 3"/>);
+      // price label on Y axis for crosshair
+      const chPrice = svgYToPrice(cy);
+      if(cy>=padT && cy<=padT+priceH){
+        els.push(<line key="chh" x1={padL} x2={W-padR} y1={cy} y2={cy} stroke="rgba(125,244,255,0.25)" strokeWidth={1} strokeDasharray="4 3"/>);
+        els.push(<rect key="chpr" x={W-padR} y={cy-9} width={padR-4} height={18} rx={3} fill="rgba(0,240,255,0.15)" stroke="rgba(125,244,255,0.5)" strokeWidth={1}/>);
+        els.push(<text key="chpt" x={W-padR+4} y={cy+4} fill={C.cyan} fontSize={10} fontFamily="JetBrains Mono,monospace">{fmtP(chPrice)}</text>);
+      }
+    }
+  }
+
+  // last-price label on right axis
+  const lastClose = visBars[vn-1]?.close;
+  if(lastClose!=null){
+    const ly = yp(lastClose);
+    els.push(<rect key="lpr" x={W-padR} y={ly-9} width={padR-4} height={18} rx={3} fill={R(C.lime,0.18)} stroke={R(C.lime,0.55)} strokeWidth={1}/>);
+    els.push(<text key="lpt" x={W-padR+4} y={ly+4} fill={C.lime} fontSize={10} fontFamily="JetBrains Mono,monospace" fontWeight="600">{fmtP(lastClose)}</text>);
+    els.push(<line key="lpl" x1={padL} x2={W-padR} y1={ly} y2={ly} stroke={R(C.lime,0.18)} strokeWidth={1} strokeDasharray="3 4"/>);
+  }
+
+  // hovered candle highlight bar on X axis
+  if(hover){
+    const localIdx = hover.idx - vs;
+    if(localIdx>=0 && localIdx<vn){
+      const cx=xi(localIdx);
+      els.push(<rect key="xhl" x={cx-step/2} y={padT+priceH+2} width={step} height={padB-4} rx={2} fill={R(C.cyan,0.15)}/>);
+    }
+  }
+
+  // ── hovered candle OHLCV tooltip data
+  const hovBar = hover && bars[Math.max(0,Math.min(n-1,hover.idx))];
+  const tooltipRight = hover && hover.svgX > W*0.6;
+
+  const allLabels = [...levels, ...lines];
+
+  return (
+    <div ref={chartRef} style={{userSelect:'none',background:C.bg,
+      ...(isFullscreen?{width:'100vw',height:'100vh',padding:18,overflow:'auto'}:{})}}>
+      {/* Stale data warning */}
+      {stale && (
+        <div style={{display:'flex',alignItems:'center',gap:9,padding:'7px 14px',
+          background:'rgba(236,178,255,0.06)',borderBottom:`1px solid rgba(236,178,255,0.2)`}}>
+          <Icon n="warning" size={15} color={C.magenta}/>
+          <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.magenta}}>
+            Bar data is stale — last bar {lastDate}. Bot has not fetched fresh data yet (runs pre-market).
+          </span>
+        </div>
+      )}
+      {/* Toolbar */}
+      <div style={{display:'flex',alignItems:'center',gap:6,padding:'8px 12px',
+        borderBottom:`1px solid ${R(C.outline,0.10)}`,flexWrap:'wrap'}}>
+        {[
+          {icon:'add',    title:'Zoom in',  action:()=>zoomAt(W/2, 0.65)},
+          {icon:'remove', title:'Zoom out', action:()=>zoomAt(W/2, 1.5)},
+          {icon:'fit_screen', title:'Fit all', action:fitAll},
+          {icon:isFullscreen?'fullscreen_exit':'fullscreen', title:isFullscreen?'Exit full screen':'Full screen', action:toggleFullscreen},
+        ].map(b=>(
+          <button key={b.icon} title={b.title} onClick={b.action}
+            style={{width:30,height:28,borderRadius:6,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',
+              background:'rgba(28,27,28,0.7)',border:`1px solid rgba(132,148,149,0.2)`,color:C.onVar,flexShrink:0}}
+            onMouseEnter={e=>{e.currentTarget.style.borderColor=C.cyan;e.currentTarget.style.color=C.cyan;}}
+            onMouseLeave={e=>{e.currentTarget.style.borderColor='rgba(132,148,149,0.2)';e.currentTarget.style.color=C.onVar;}}>
+            <Icon n={b.icon} size={16} color="inherit"/>
+          </button>
+        ))}
+        <div style={{width:1,height:20,background:'rgba(132,148,149,0.18)',flexShrink:0,margin:'0 2px'}}/>
+        {[
+          {icon:'my_location', title:'Crosshair', on:crosshair, toggle:()=>setCrosshair(v=>!v)},
+          {icon:'show_chart',  title:'MA (7)',     on:showMA,    toggle:()=>setShowMA(v=>!v)},
+        ].map(b=>(
+          <button key={b.icon} title={b.title} onClick={b.toggle}
+            style={{width:30,height:28,borderRadius:6,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,
+              background:b.on?R(C.cyan,0.14):'rgba(28,27,28,0.7)',
+              border:`1px solid ${b.on?R(C.cyan,0.45):'rgba(132,148,149,0.2)'}`,color:b.on?C.cyan:C.onVar}}>
+            <Icon n={b.icon} size={16} color="inherit"/>
+          </button>
+        ))}
+        <div style={{flex:1}}/>
+        <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,whiteSpace:'nowrap'}}>
+          {vs+1}–{ve} / {n} bars
+        </span>
+      </div>
+
+      {/* SVG */}
+      <div style={{position:'relative',width:'100%',height:H}}>
+        <svg ref={svgRef}
+          viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none"
+          width="100%" height="100%"
+          style={{display:'block',cursor:dragRef.current?'grabbing':'crosshair'}}
+          onWheel={onWheel}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseUp={onMouseUp}
+          onMouseLeave={onMouseLeave}
+        >{els}</svg>
+
+        {/* Right-side price labels for levels + lines */}
+        {allLabels.map((l,i)=>(
+          <div key={i} style={{position:'absolute',right:4,top:`calc(${(yp(l.p)/H*100).toFixed(2)}% - 8px)`,
+            fontFamily:"'JetBrains Mono',monospace",fontSize:'9.5px',color:l.color,
+            background:R(C.bg,0.88),padding:'1px 6px',borderRadius:3,
+            border:`1px solid ${R(l.color,0.4)}`,whiteSpace:'nowrap',pointerEvents:'none'}}>
+            {l.label??('$'+fmtP(l.p))}
+          </div>
+        ))}
+
+        {/* OHLCV Tooltip */}
+        {hovBar && (() => {
+          const chg = hovBar.close - hovBar.open;
+          const chgPct = (chg/hovBar.open*100);
+          const up = chg>=0;
+          const col = up?C.lime:C.err;
+          const r = svgRef.current?.getBoundingClientRect();
+          const tooltipW = 210;
+          const leftPct = tooltipRight ? null : `${((hover.svgX+12)/W*100).toFixed(1)}%`;
+          const rightPct = tooltipRight ? `${((W-hover.svgX+12)/W*100).toFixed(1)}%` : null;
+          return (
+            <div style={{position:'absolute',
+              top:`${Math.max(4,(hover.svgY-10)/H*100).toFixed(1)}%`,
+              left:leftPct, right:rightPct,
+              width:tooltipW,
+              background:'rgba(14,14,15,0.96)',border:`1px solid ${R(col,0.35)}`,
+              borderRadius:9,padding:'11px 14px',pointerEvents:'none',zIndex:10,
+              boxShadow:`0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px ${R(col,0.12)}`}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:8}}>
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onSurf,fontWeight:600}}>{fmtD(hovBar.t)}</span>
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:col,fontWeight:600}}>
+                  {up?'+':''}{chg.toFixed(2)} ({up?'+':''}{chgPct.toFixed(2)}%)
+                </span>
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'5px 14px'}}>
+                {[['O',hovBar.open],['H',hovBar.high],['L',hovBar.low],['C',hovBar.close]].map(([lbl,val])=>(
+                  <div key={lbl} style={{display:'flex',justifyContent:'space-between',alignItems:'baseline'}}>
+                    <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>{lbl}</span>
+                    <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:lbl==='C'?col:C.onVar}}>{fmtP(val)}</span>
+                  </div>
+                ))}
+              </div>
+              {hovBar.volume>0 && (
+                <div style={{marginTop:7,paddingTop:7,borderTop:`1px solid rgba(132,148,149,0.12)`,
+                  display:'flex',justifyContent:'space-between',alignItems:'baseline'}}>
+                  <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>VOL</span>
+                  <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar}}>{fmtVol(hovBar.volume)}</span>
+                </div>
+              )}
+            </div>
+          );
+        })()}
+      </div>
+    </div>
+  );
+}
+
+/* ── forecast scatter ──────────────────────────────────────────────────────── */
+function FcScatter({rows=[], sc={}}) {
+  const W=420,H=210,padL=44,padR=14,padT=14,padB=34;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const xMax=3.0, yMax=5.0;
+  const xv=v=>padL+Math.min(v,xMax)/xMax*plotW;
+  const yv=v=>padT+(1-Math.min(v,yMax)/yMax)*plotH;
+  const minRR=sc.minRR??3, minA=sc.minEntryAtr??1, maxA=sc.maxEntryAtr??2;
+  const els=[];
+  els.push(<rect key="qz" x={xv(minA)} y={padT} width={Math.max(0,xv(maxA)-xv(minA))} height={plotH} fill={R(C.lime,0.06)}/>);
+  els.push(<line key="rrl" x1={padL} x2={W-padR} y1={yv(minRR)} y2={yv(minRR)} stroke={R(C.lime,0.5)} strokeWidth={1} strokeDasharray="4 4"/>);
+  els.push(<line key="mn" x1={xv(minA)} x2={xv(minA)} y1={padT} y2={padT+plotH} stroke={R(C.cyan,0.4)} strokeWidth={1} strokeDasharray="4 4"/>);
+  els.push(<line key="mx" x1={xv(maxA)} x2={xv(maxA)} y1={padT} y2={padT+plotH} stroke={R(C.cyan,0.4)} strokeWidth={1} strokeDasharray="4 4"/>);
+  [0,1,2,3].forEach(t=>els.push(<text key={'xt'+t} x={xv(t)} y={H-padB+16} fill={C.outline} fontSize={9} fontFamily="JetBrains Mono" textAnchor="middle">{t}</text>));
+  [0,1,2,3,4,5].forEach(t=>els.push(<text key={'yt'+t} x={padL-8} y={yv(t)+3} fill={C.outline} fontSize={9} fontFamily="JetBrains Mono" textAnchor="end">{t}</text>));
+  els.push(<text key="xl" x={padL+plotW/2} y={H-4} fill={C.onVar} fontSize={9} fontFamily="JetBrains Mono" textAnchor="middle">ENTRY DISTANCE (ATR)</text>);
+  els.push(<text key="yl" x={12} y={padT+plotH/2} fill={C.onVar} fontSize={9} fontFamily="JetBrains Mono" textAnchor="middle" transform={`rotate(-90 12 ${padT+plotH/2})`}>REWARD : RISK</text>);
+  rows.forEach((r,i)=>{
+    const ax=r.entry_distance_atr??0.12;
+    const acc=r.status==='FORECAST TRADE'?C.lime:(r.setup_qualified?C.cyan:C.outline);
+    const cx=xv(ax), cy=yv(r.reward_risk??0);
+    els.push(<circle key={'c'+i} cx={cx} cy={cy} r={5.5} fill={R(acc,0.85)} stroke={acc} strokeWidth={1.2}/>);
+    els.push(<text key={'cl'+i} x={cx} y={cy-9} fill={acc} fontSize={8.5} fontFamily="JetBrains Mono" textAnchor="middle">{r.symbol}</text>);
+  });
+  return <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{display:'block',height:'auto'}}>{els}</svg>;
+}
+
+/* ── gauge bar ────────────────────────────────────────────────────────────── */
+function Gauge({label, used, cap, color, sub}) {
+  const pct = cap>0 ? Math.min(100, used/cap*100) : 0;
+  const money = n => '$'+Math.round(n||0).toLocaleString('en-US');
+  return (
+    <div>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:8}}>
+        <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar}}>{label}</span>
+        <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onSurf}}>{money(used)} / {money(cap)}</span>
+      </div>
+      <div style={{width:'100%',height:8,borderRadius:9999,background:R(C.surfLowest,0.9),overflow:'hidden',border:`1px solid ${R(C.outline,0.1)}`}}>
+        <div style={{width:`${pct.toFixed(1)}%`,height:'100%',borderRadius:9999,background:color,boxShadow:`0 0 8px ${R(color,0.6)}`}}/>
+      </div>
+      <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,marginTop:6}}>{sub}</div>
+    </div>
+  );
+}
+
+/* ── metric card ──────────────────────────────────────────────────────────── */
+function MetricCard({label, value, icon, iconColor, sub, subColor, bar, barColor, valueColor, onClick}) {
+  const vc = valueColor||C.onSurf;
+  return (
+    <GlassCard style={{padding:'18px 18px 16px',display:'flex',flexDirection:'column',gap:14,cursor:onClick?'pointer':undefined}}
+      hover={!!onClick} onClick={onClick}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+        <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.05em',color:C.onVar}}>{label}</span>
+        {icon && <Icon n={icon} size={18} color={iconColor||C.outline}/>}
+      </div>
+      <div>
+        <div style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:34,fontWeight:600,lineHeight:1,color:vc}}>{value}</div>
+        {bar!=null && (
+          <div style={{width:'100%',height:4,borderRadius:9999,background:R(C.surfHigh,0.8),overflow:'hidden',marginTop:11}}>
+            <div style={{width:`${bar}%`,height:'100%',borderRadius:9999,background:barColor||C.cyan}}/>
+          </div>
+        )}
+        {sub && <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:subColor||C.onVar,marginTop:9}}>{sub}</div>}
+      </div>
+    </GlassCard>
+  );
+}
+
+function MetricGrid({items}) {
+  return (
+    <div style={{display:'grid',gridTemplateColumns:`repeat(auto-fit,minmax(192px,1fr))`,gap:16}}>
+      {items.map((m,i)=><MetricCard key={i} {...m}/>)}
+    </div>
+  );
+}
+
+/* ── toggle switch ────────────────────────────────────────────────────────── */
+function Toggle({on, label, onChange}) {
+  return (
+    <div onClick={()=>onChange(!on)} style={{display:'flex',alignItems:'center',gap:9,cursor:'pointer'}}>
+      <div style={{width:34,height:18,borderRadius:9999,background:on?R(C.cyan,0.55):'rgba(132,148,149,0.25)',position:'relative',flexShrink:0,transition:'background .15s'}}>
+        <div style={{position:'absolute',top:2,left:on?18:2,width:14,height:14,borderRadius:'50%',background:on?C.cyan:C.outline,transition:'left .15s'}}/>
+      </div>
+      <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,letterSpacing:'0.04em',color:C.onVar,textTransform:'uppercase'}}>{label}</span>
+    </div>
+  );
+}
+
+/* ── timeframe pill row ───────────────────────────────────────────────────── */
+function TfPills({value, onChange}) {
+  return (
+    <div style={{display:'flex',gap:8}}>
+      {['5Min','1H','1D','1W','1M'].map(t=>{
+        const a=t===value;
+        return <button key={t} onClick={()=>onChange(t)} style={{padding:'5px 12px',borderRadius:6,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,border:`1px solid ${a?R(C.cyan,0.4):'transparent'}`,background:a?R(C.cyan,0.15):'rgba(42,42,43,0.6)',color:a?C.cyan:C.onVar}}>{t}</button>;
+      })}
+    </div>
+  );
+}
+
+/* ── news modal ───────────────────────────────────────────────────────────── */
+function NewsModal({items=[], onClose}) {
+  return (
+    <div onClick={onClose} style={{position:'fixed',inset:0,zIndex:60,background:'rgba(8,8,9,0.74)',backdropFilter:'blur(7px)',display:'flex',alignItems:'flex-start',justifyContent:'center',padding:'44px 24px',overflowY:'auto'}}>
+      <div onClick={e=>e.stopPropagation()} style={{width:'100%',maxWidth:1060,background:'rgba(24,23,24,0.97)',border:`1px solid ${R(C.outline,0.2)}`,borderRadius:14,boxShadow:'0 30px 80px rgba(0,0,0,0.6)'}}>
+        <div style={{padding:'20px 24px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',justifyContent:'space-between',alignItems:'center',gap:14}}>
+          <div style={{display:'flex',alignItems:'center',gap:11}}>
+            <Icon n="gpp_maybe" size={20} color={C.err}/>
+            <h3 style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:18,fontWeight:600,color:C.onSurf}}>Symbols filtered out by the news-risk filter</h3>
+          </div>
+          <button onClick={onClose} style={{padding:'8px 18px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.cyan,background:R(C.cyan,0.08),border:`1px solid ${R(C.cyan,0.32)}`}}>Close</button>
+        </div>
+        <div style={{padding:'20px 24px',display:'flex',flexDirection:'column',gap:14,maxHeight:'68vh',overflowY:'auto'}}>
+          {items.map((s,i)=>(
+            <div key={i} style={{border:`1px solid ${R(C.outline,0.16)}`,borderRadius:11,padding:'17px 20px',background:R(C.surfLowest,0.5)}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:12,marginBottom:8}}>
+                <div style={{display:'flex',alignItems:'center',gap:10}}>
+                  <span style={{width:8,height:8,borderRadius:'50%',background:C.err,boxShadow:`0 0 8px ${R(C.err,0.6)}`,display:'inline-block',flexShrink:0}}/>
+                  <span style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:15,fontWeight:600,color:C.onSurf}}>{s.symbol}</span>
+                </div>
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>{s.headlines?.length} headline(s)</span>
+              </div>
+              <div style={{display:'flex',gap:7,marginBottom:10,flexWrap:'wrap'}}>
+                {(s.providers||[]).map((p,j)=><Pill key={j} text={p} color={C.cyan}/>)}
+              </div>
+              <ul style={{margin:0,paddingLeft:20,display:'flex',flexDirection:'column',gap:8}}>
+                {(s.headlines||[]).map((h,j)=>(
+                  <li key={j} style={{fontFamily:"'Inter',sans-serif",fontSize:13,lineHeight:1.5,color:C.onVar}}>{h}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   TAB: DASHBOARD
+═══════════════════════════════════════════════════════════════════════════ */
+function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
+  const [data, setData] = useState(null);
+  const [chartSymbol, setChartSymbol] = useState('AAPL');
+  const [tickerQuery, setTickerQuery] = useState('AAPL');
+  const [tf, setTf] = useState('1H');
+  const [range, setRange] = useState('ALL');
+  const [showRaw, setShowRaw] = useState(false);
+  const [showTrade, setShowTrade] = useState(true);
+  const [showVol, setShowVol] = useState(true);
+  const [bars, setBars] = useState([]);
+  const [barsInfo, setBarsInfo] = useState({stale:false,lastDate:null});
+  const [chartPlan, setChartPlan] = useState(null);
+
+  useEffect(()=>{ fetch(`${API}/dashboard`).then(r=>r.json()).then(d=>{
+    setData(d);
+    setNewsItems(d.news_items||[]);
+    if(!(d.symbols||[]).includes(chartSymbol) && d.symbols?.length){
+      setChartSymbol(d.symbols[0]);
+      setTickerQuery(d.symbols[0]);
+    }
+  }); },[refreshKey]);
+  useEffect(()=>{
+    const apitf = TF_API[tf]||'daily';
+    fetch(`${API}/bars/${chartSymbol}/${apitf}`).then(r=>r.json()).then(d=>{setBars(d.bars||[]);setBarsInfo({stale:d.stale,lastDate:d.last_date});});
+    fetch(`${API}/preopen/${chartSymbol}`).then(r=>r.json()).then(setChartPlan).catch(()=>setChartPlan(null));
+  },[chartSymbol, tf, refreshKey]);
+
+  if(!data) return <Spinner/>;
+  const {metrics:m, risk, opp_rows, attempt_log, symbols=[]} = data;
+  const selectTicker = value => {
+    const symbol = String(value||'').trim().toUpperCase();
+    if(symbols.includes(symbol)){
+      setTickerQuery(symbol);
+      setChartSymbol(symbol);
+    } else {
+      setTickerQuery(chartSymbol);
+    }
+  };
+
+  const metricCards = [
+    {label:'Watchlist', icon:'visibility', value:m.watchlist, sub:'scanned pre-market'},
+    {label:'Trade-Ready', icon:'verified', value:m.trade_ready, sub:'all conditions met', subColor:C.lime, valueColor:C.lime},
+    {label:'News-Blocked', icon:'newspaper', value:m.news_blocked, sub:'click to view →', subColor:C.cyan, iconColor:C.err, onClick:()=>setNewsModal(true)},
+    {label:'Attempts', icon:'replay', value:m.attempts, sub:'today'},
+    {label:'Action Signals', icon:'bolt', value:m.action_signals, sub:`${m.buys} BUY · ${m.sells} SELL`, subColor:C.cyan, valueColor:C.cyan},
+    {label:'Execution Rate', icon:'percent', value:`${Math.round((m.fill_rate||0)*100)}%`, sub:`${m.fill_executed}/${m.fill_total} submitted`, bar:(m.fill_rate||0)*100, barColor:C.cyan},
+  ];
+
+  // bias
+  const total = Math.max(1, m.buys + m.sells + (m.attempts - m.action_signals));
+  const bias = [
+    {label:'Long bias', pct: m.buys/total*100, color:C.lime},
+    {label:'Short bias', pct: m.sells/total*100, color:C.err},
+    {label:'Wait / neutral', pct: Math.max(0, 100 - m.buys/total*100 - m.sells/total*100), color:C.outline},
+  ];
+
+  const riskItems = [
+    {k:'Daily P&L vs cap', v:`0.0% / ${((risk?.max_daily_loss_pct||0.02)*100).toFixed(1)}%`},
+    {k:'Risk / trade', v:`${((risk?.risk_per_trade||0.01)*100).toFixed(1)}%`},
+    {k:'Open positions', v:`— / ${risk?.max_positions||5}`},
+    {k:'Win rate (30d)', v:'—', color:C.onSurf},
+    {k:'Avg reward:risk', v:`1 : ${(risk?.min_reward_risk_ratio||3).toFixed(1)}`, color:C.cyan},
+    {k:'Account mode', v:'Paper'},
+  ];
+
+  const visCount = RANGE_COUNTS[range]||9999;
+  const visBars = bars.slice(-visCount);
+
+  const fmtP = v => v==null?'—': typeof v==='number'?`$${v.toFixed(2)}`:v;
+
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:28}}>
+      <MetricGrid items={metricCards}/>
+
+
+      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))',gap:16}}>
+        {/* Decision Bias */}
+        <GlassCard style={{padding:20}}>
+          <SectionTitle title="Decision Bias"/>
+          <div style={{display:'flex',flexDirection:'column',gap:16}}>
+            {bias.map((b,i)=>(
+              <div key={i}>
+                <div style={{display:'flex',justifyContent:'space-between',fontFamily:"'JetBrains Mono',monospace",fontSize:11,marginBottom:7}}>
+                  <span style={{color:b.color}}>{b.label}</span>
+                  <span style={{color:C.onSurf}}>{b.pct.toFixed(0)}%</span>
+                </div>
+                <div style={{width:'100%',height:5,borderRadius:9999,background:R(C.surf,0.9),overflow:'hidden'}}>
+                  <div style={{width:`${b.pct}%`,height:'100%',borderRadius:9999,background:b.color}}/>
+                </div>
+              </div>
+            ))}
+          </div>
+        </GlassCard>
+
+        {/* Risk Management */}
+        <GlassCard style={{padding:20}}>
+          <SectionTitle title="Risk Management"/>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'18px 16px'}}>
+            {riskItems.map((r,i)=>(
+              <div key={i}>
+                <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.04em',color:C.outline,marginBottom:6}}>{r.k}</div>
+                <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:15,fontWeight:500,color:r.color||C.onSurf}}>{r.v}</div>
+              </div>
+            ))}
+          </div>
+        </GlassCard>
+      </div>
+
+      {/* Chart ticker */}
+      <label style={{display:'flex',flexDirection:'column',gap:8,maxWidth:360}}>
+        <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.08em',color:C.outline}}>FIND TICKER</span>
+        <div style={{display:'flex',alignItems:'center',gap:9,padding:'11px 14px',borderRadius:9,background:R(C.surfLowest,0.7),border:`1px solid ${R(C.outline,0.2)}`}}>
+          <Icon n="search" size={17} color={C.outline}/>
+          <input value={tickerQuery} list="dashboard-symbols"
+            onChange={e=>{
+              const value=e.target.value.toUpperCase();
+              setTickerQuery(value);
+              if(symbols.includes(value)) setChartSymbol(value);
+            }}
+            onKeyDown={e=>{if(e.key==='Enter') selectTicker(e.currentTarget.value);}}
+            onBlur={e=>selectTicker(e.currentTarget.value)}
+            placeholder="Symbol"
+            style={{flex:1,minWidth:0,background:'transparent',border:'none',outline:'none',color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:14,letterSpacing:'0.04em',textTransform:'uppercase'}}/>
+          <datalist id="dashboard-symbols">
+            {symbols.map(symbol=><option key={symbol} value={symbol}/>)}
+          </datalist>
+        </div>
+      </label>
+
+      {/* Chart */}
+      <GlassCard style={{overflow:'hidden'}}>
+        <div style={{padding:'18px 20px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:10}}>
+          <div style={{display:'flex',alignItems:'center',gap:11}}>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onSurf}}>{chartSymbol} · {TF_LABEL[tf]} Structure</span>
+            <span style={{padding:'3px 9px',borderRadius:9999,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.cyan,background:R(C.cyan,0.1),border:`1px solid ${R(C.cyan,0.28)}`}}>GERCHIK LEVELS MAPPED</span>
+          </div>
+          <TfPills value={tf} onChange={setTf}/>
+        </div>
+        <div style={{padding:'12px 20px',borderBottom:`1px solid ${R(C.outline,0.1)}`,display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:14}}>
+          <div style={{display:'flex',gap:22,flexWrap:'wrap'}}>
+            <Toggle on={showRaw} label="Raw levels" onChange={setShowRaw}/>
+            <Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/>
+            <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
+          </div>
+          <div style={{display:'flex',gap:5,flexWrap:'wrap'}}>
+            {['1M','3M','6M','YTD','1Y','ALL'].map(rg=>{
+              const a=rg===range;
+              return <button key={rg} onClick={()=>setRange(rg)} style={{padding:'5px 11px',borderRadius:6,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,border:`1px solid ${a?R(C.cyan,0.4):'rgba(132,148,149,0.18)'}`,background:a?R(C.cyan,0.16):'rgba(20,20,21,0.6)',color:a?C.cyan:C.onVar}}>{rg}</button>;
+            })}
+          </div>
+        </div>
+        <div style={{padding:'18px 20px'}}>
+          <CandleChart bars={visBars} levels={buildChartLevels(chartPlan?.trade_levels, chartPlan?.raw_levels, showTrade, showRaw)} showVol={showVol} height={300} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
+        </div>
+      </GlassCard>
+
+      {/* Opportunity Queue */}
+      <GlassCard style={{overflow:'hidden'}}>
+        <PanelHeader icon="playlist_add_check" title="Opportunity Queue"/>
+        <Table
+          cols={['Asset','Status','Trade Levels','Room','Daily ATR','Last Price']}
+          rows={(opp_rows||[]).map(o=>[
+            <span style={{display:'inline-flex',alignItems:'center',gap:8,color:o.status==='READY'?C.onSurf:C.onVar,fontWeight:500}}>
+              <span style={{width:6,height:6,borderRadius:'50%',background:o.status==='READY'?C.lime:o.status==='BLOCKED'?C.err:C.outline,display:'inline-block',flexShrink:0}}/>
+              {o.sym}
+            </span>,
+            <Pill text={o.status} color={o.status==='READY'?C.lime:o.status==='BLOCKED'?C.err:C.outline}/>,
+            o.trade_levels,
+            <span style={{color:C.outline}}>{o.room||'—'}</span>,
+            o.daily_atr?.toFixed(2)||'—',
+            fmtP(o.price),
+          ])}
+        />
+      </GlassCard>
+
+      {/* Attempt Log */}
+      <GlassCard style={{overflow:'hidden'}}>
+        <PanelHeader icon="history" title="Recent Attempt Log"/>
+        <Table
+          cols={['Time','Asset','Strategy','Signal','Level','Reason']}
+          rows={(attempt_log||[]).map(a=>{
+            const sig = String(a.signal||'').toUpperCase();
+            const sc = sig==='BUY'?C.lime:sig==='SELL'?C.err:C.outline;
+            return [
+              <span style={{color:C.outline}}>{String(a.timestamp||'—').replace('T',' ')}</span>,
+              <span style={{color:C.onSurf,fontWeight:500}}>{a.symbol||'—'}</span>,
+              <span style={{fontFamily:"'Inter',sans-serif",color:C.onVar}}>{a.strategy||'—'}</span>,
+              sig ? <Pill text={sig} color={sc}/> : '—',
+              a.level ? `$${Number(a.level).toFixed(2)}` : '—',
+              <span style={{color:C.outline,fontFamily:"'Inter',sans-serif"}}>{Array.isArray(a.reason)?a.reason.join('; '):String(a.reason||'—')}</span>,
+            ];
+          })}
+        />
+      </GlassCard>
+    </div>
+  );
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   TAB: PRE-OPEN
+═══════════════════════════════════════════════════════════════════════════ */
+function TabPreOpen({refreshKey=0}) {
+  const [ticker, setTicker] = useState('AAPL');
+  const [status, setStatus] = useState('All');
+  const [minLevels, setMinLevels] = useState(0);
+  const [allRows, setAllRows] = useState([]);
+  const [plan, setPlan] = useState(null);
+  const [bars, setBars] = useState([]);
+  const [barsInfo, setBarsInfo] = useState({stale:false,lastDate:null});
+  const [tf, setTf] = useState('1H');
+  const [allLevelsOpen, setAllLevelsOpen] = useState(false);
+  const [showVol, setShowVol] = useState(true);
+  const [showRaw, setShowRaw] = useState(false);
+  const [showTrade, setShowTrade] = useState(true);
+
+  useEffect(()=>{ fetch(`${API}/preopen`).then(r=>r.json()).then(d=>setAllRows(d.rows||[])); },[refreshKey]);
+
+  const filtered = useMemo(()=>{
+    let rows = allRows;
+    if(ticker.trim()) rows=rows.filter(r=>r.symbol.includes(ticker.trim().toUpperCase()));
+    if(status!=='All') rows=rows.filter(r=>r.status===status.toUpperCase().replace(' ','_'));
+    rows=rows.filter(r=>(r.trade_levels||0)>=minLevels);
+    return rows;
+  },[allRows, ticker, status, minLevels]);
+
+  const selected = filtered[0]?.symbol || null;
+
+  useEffect(()=>{
+    if(!selected) return;
+    const apitf = TF_API[tf]||'daily';
+    fetch(`${API}/preopen/${selected}`).then(r=>r.json()).then(setPlan).catch(()=>setPlan(null));
+    fetch(`${API}/bars/${selected}/${apitf}`).then(r=>r.json()).then(d=>{setBars(d.bars||[]);setBarsInfo({stale:d.stale,lastDate:d.last_date});});
+  },[selected, tf, refreshKey]);
+
+  const fmtN = v => v!=null ? Number(v).toFixed(2) : '—';
+
+  const chartLevels = useMemo(()=>
+    buildChartLevels(plan?.trade_levels, plan?.raw_levels, showTrade, showRaw),
+  [plan, showTrade, showRaw]);
+
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:28}}>
+      {/* filters */}
+      <div style={{display:'grid',gridTemplateColumns:'2fr 1.1fr 1.1fr',gap:18,alignItems:'end'}}>
+        <label style={{display:'flex',flexDirection:'column',gap:8}}>
+          <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.08em',color:C.outline}}>FIND TICKER</span>
+          <div style={{display:'flex',alignItems:'center',gap:9,padding:'11px 14px',borderRadius:9,background:R(C.surfLowest,0.7),border:`1px solid ${R(C.outline,0.2)}`}}>
+            <Icon n="search" size={17} color={C.outline}/>
+            <input value={ticker} onChange={e=>setTicker(e.target.value)} placeholder="Symbol"
+              style={{flex:1,minWidth:0,background:'transparent',border:'none',outline:'none',color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:14,letterSpacing:'0.04em',textTransform:'uppercase'}}/>
+          </div>
+        </label>
+        <label style={{display:'flex',flexDirection:'column',gap:8}}>
+          <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.08em',color:C.outline}}>STATUS</span>
+          <div style={{position:'relative'}}>
+            <select value={status} onChange={e=>setStatus(e.target.value)}
+              style={{width:'100%',appearance:'none',WebkitAppearance:'none',padding:'11px 38px 11px 14px',borderRadius:9,background:R(C.surfLowest,0.7),border:`1px solid ${R(C.outline,0.2)}`,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:13,cursor:'pointer',outline:'none'}}>
+              {['All','READY','BLOCKED','NO LEVELS'].map(o=><option key={o} value={o}>{o}</option>)}
+            </select>
+            <Icon n="expand_more" size={18} color={C.outline} style={{position:'absolute',right:12,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}}/>
+          </div>
+        </label>
+        <label style={{display:'flex',flexDirection:'column',gap:8}}>
+          <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.08em',color:C.outline}}>MINIMUM TRADE LEVELS</span>
+          <div style={{display:'flex',alignItems:'stretch',gap:8}}>
+            <div style={{flex:1,display:'flex',alignItems:'center',padding:'11px 14px',borderRadius:9,background:R(C.surfLowest,0.7),border:`1px solid ${R(C.outline,0.2)}`}}>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:14,color:C.lime}}>{minLevels}</span>
+            </div>
+            <button onClick={()=>setMinLevels(m=>Math.max(0,m-1))} style={{width:46,borderRadius:9,background:'rgba(28,27,28,0.8)',border:`1px solid ${R(C.outline,0.2)}`,color:C.onVar,cursor:'pointer',fontFamily:"'Material Symbols Outlined'",fontSize:18}}>remove</button>
+            <button onClick={()=>setMinLevels(m=>Math.min(20,m+1))} style={{width:46,borderRadius:9,background:'rgba(28,27,28,0.8)',border:`1px solid ${R(C.outline,0.2)}`,color:C.onVar,cursor:'pointer',fontFamily:"'Material Symbols Outlined'",fontSize:18}}>add</button>
+          </div>
+        </label>
+      </div>
+
+      {selected && plan && (
+        <>
+          {/* Metrics */}
+          <div style={{display:'grid',gridTemplateColumns:'repeat(4,minmax(0,1fr))',gap:16}}>
+            {[
+              {label:'Last Price', value:fmtN(plan.price), valueColor:C.cyan},
+              {label:'Daily ATR', value:fmtN(plan.daily_atr)},
+              {label:'Technical ATR', value:fmtN(plan.technical_atr)},
+              {label:'Trade Levels', value:plan.trade_levels?.length??0, valueColor:(plan.trade_levels?.length>0?C.lime:C.outline)},
+            ].map((m,i)=>(
+              <GlassCard key={i} style={{padding:18,display:'flex',flexDirection:'column',gap:13}}>
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,letterSpacing:'0.05em',color:C.onVar}}>{m.label}</span>
+                <div style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:32,fontWeight:600,lineHeight:1,color:m.valueColor||C.onSurf}}>{m.value}</div>
+              </GlassCard>
+            ))}
+          </div>
+
+          {/* Details row */}
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1.6fr 1fr',gap:16,alignItems:'start'}}>
+            {/* Trade Context */}
+            <GlassCard style={{overflow:'hidden'}}>
+              <PanelHeader title="Trade Context"/>
+              <Table cols={['Field','Value']} rows={[
+                ['Clean room', plan.room||'—'],
+                ['News status', plan.news||'—'],
+                ['Security type', plan.security_type||'—'],
+                ['Raw levels', plan.raw_levels?.length??'—'],
+              ]}/>
+            </GlassCard>
+
+            {/* Optimized Trade Levels */}
+            <GlassCard style={{overflow:'hidden'}}>
+              <PanelHeader title="Optimized Trade Levels"/>
+              <Table
+                cols={['price','zone_low','zone_high','type','touches','false_breakouts','strength']}
+                rows={(plan.trade_levels||[]).map(l=>[
+                  <span style={{color:C.onSurf}}>{fmtN(l.price)}</span>,
+                  <span style={{color:C.outline}}>{fmtN(l.zone_low)}</span>,
+                  <span style={{color:C.outline}}>{fmtN(l.zone_high)}</span>,
+                  <Pill text={l.type||'—'} color={l.type==='gap'?C.cyan:C.magenta}/>,
+                  <span style={{color:C.cyan}}>{l.touches??'—'}</span>,
+                  l.false_breakouts??'—',
+                  <span style={{color:(l.strength_score>=0.75?C.lime:l.strength_score>=0.6?C.cyan:C.outline)}}>{l.strength_score?.toFixed(2)??'—'}</span>,
+                ])}
+              />
+            </GlassCard>
+
+            {/* Risk Headlines */}
+            <GlassCard style={{overflow:'hidden'}}>
+              <PanelHeader title="Risk Headlines"/>
+              <div style={{padding:'16px 18px',display:'flex',flexDirection:'column',gap:14}}>
+                {plan.headlines?.length>0 ? plan.headlines.map((h,i)=>(
+                  <div key={i} style={{display:'flex',alignItems:'flex-start',gap:9}}>
+                    <Icon n="warning" size={16} color={C.err} style={{flexShrink:0}}/>
+                    <span style={{fontFamily:"'Inter',sans-serif",fontSize:'12.5px',lineHeight:1.5,color:C.onVar}}>{h}</span>
+                  </div>
+                )) : <span style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:C.outline}}>No matched risk headlines.</span>}
+                <div onClick={()=>setAllLevelsOpen(o=>!o)}
+                  style={{display:'flex',alignItems:'center',gap:9,padding:'12px 14px',borderRadius:9,cursor:'pointer',background:R(C.surfLowest,0.5),border:`1px solid ${R(C.outline,0.16)}`}}>
+                  <Icon n={allLevelsOpen?'expand_more':'chevron_right'} size={17} color={C.outline}/>
+                  <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onVar}}>All detected levels ({plan.raw_levels?.length??0})</span>
+                </div>
+                {allLevelsOpen && (
+                  <div style={{display:'flex',flexDirection:'column',gap:6,maxHeight:220,overflowY:'auto'}}>
+                    {(plan.raw_levels||[]).slice().sort((a,b)=>(b.price||0)-(a.price||0)).map((l,i)=>(
+                      <div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'7px 11px',borderRadius:7,background:R(C.surfLowest,0.4)}}>
+                        <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onSurf}}>{fmtN(l.price)}</span>
+                        <Pill text={l.type||'—'} color={l.type==='gap'?C.cyan:C.magenta}/>
+                        <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>{l.touches??'?'}T</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </GlassCard>
+          </div>
+        </>
+      )}
+
+      {!selected && ticker && (
+        <div style={{display:'flex',alignItems:'center',gap:12,padding:'18px 20px',borderRadius:12,background:R(C.surf,0.5),border:`1px solid ${R(C.outline,0.18)}`}}>
+          <Icon n="search_off" size={20} color={C.outline}/>
+          <span style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:C.onVar}}>No watchlist symbol matches <span style={{color:C.onSurf,fontFamily:"'JetBrains Mono',monospace"}}>{ticker.toUpperCase()}</span>.</span>
+        </div>
+      )}
+
+      {/* Opportunity Queue */}
+      <GlassCard style={{overflow:'hidden'}}>
+        <PanelHeader icon="playlist_add_check" title="Opportunity Queue"/>
+        <Table
+          cols={['Asset','Status','Trade Levels','Room','Daily ATR','Price']}
+          rows={filtered.map(o=>[
+            <span style={{display:'inline-flex',alignItems:'center',gap:8,color:C.onSurf,fontWeight:500}}>
+              <span style={{width:6,height:6,borderRadius:'50%',background:o.status==='READY'?C.lime:o.status==='BLOCKED'?C.err:C.outline,display:'inline-block',flexShrink:0}}/>
+              {o.symbol}
+            </span>,
+            <Pill text={o.status} color={o.status==='READY'?C.lime:o.status==='BLOCKED'?C.err:C.outline}/>,
+            o.trade_levels,
+            <span style={{color:C.outline}}>{o.room||'—'}</span>,
+            o.daily_atr?.toFixed(2)||'—',
+            o.price ? `$${Number(o.price).toFixed(2)}` : '—',
+          ])}
+        />
+      </GlassCard>
+
+      {/* Chart */}
+      {selected && (
+        <GlassCard style={{overflow:'hidden'}}>
+          <div style={{padding:'16px 20px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:10}}>
+            <div style={{display:'flex',alignItems:'center',gap:10}}>
+              <Icon n="candlestick_chart" size={17} color={C.outline}/>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar}}>{selected} · {TF_LABEL[tf]} Levels</span>
+            </div>
+            <TfPills value={tf} onChange={setTf}/>
+          </div>
+          <div style={{padding:'12px 20px',borderBottom:`1px solid ${R(C.outline,0.1)}`,display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:14}}>
+            <div style={{display:'flex',gap:22,flexWrap:'wrap'}}>
+              <Toggle on={showRaw} label="Raw levels" onChange={setShowRaw}/>
+              <Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/>
+              <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
+            </div>
+          </div>
+          <div style={{padding:'18px 20px'}}>
+            <CandleChart bars={bars} levels={chartLevels} showVol={showVol} height={300} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
+          </div>
+        </GlassCard>
+      )}
+    </div>
+  );
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   TAB: INTRADAY
+═══════════════════════════════════════════════════════════════════════════ */
+function TabIntraday({refreshKey=0}) {
+  const [data, setData] = useState(null);
+  useEffect(()=>{ fetch(`${API}/intraday`).then(r=>r.json()).then(setData); },[refreshKey]);
+  if(!data) return <Spinner/>;
+  const {metrics:m, attempts} = data;
+  const sessionCards = [
+    {label:'Attempts', icon:'replay', value:m.attempts, sub:'levels evaluated'},
+    {label:'Submitted', icon:'check_circle', value:m.buys+m.sells, sub:'action signals', subColor:C.lime, valueColor:C.lime},
+    {label:'Date', icon:'calendar_today', value:m.date||'—'},
+    {label:'Symbols Evaluated', icon:'bar_chart', value:m.symbols_evaluated},
+  ];
+
+  const recent = [...(attempts||[])].sort((a,b)=>String(b.timestamp||'').localeCompare(String(a.timestamp||''))).slice(0,20);
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:28}}>
+      <MetricGrid items={sessionCards}/>
+      <GlassCard style={{overflow:'hidden'}}>
+        <PanelHeader icon="receipt_long" title="Decision Log"/>
+        <Table
+          cols={['Time','Asset','Strategy','Decision','Reason']}
+          rows={recent.map(a=>{
+            const sig=String(a.signal||'').toUpperCase();
+            const sc=sig==='BUY'?C.lime:sig==='SELL'?C.err:C.outline;
+            return [
+              <span style={{color:C.outline}}>{String(a.timestamp||'—').replace('T',' ')}</span>,
+              <span style={{color:C.onSurf,fontWeight:500}}>{a.symbol||'—'}</span>,
+              <span style={{fontFamily:"'Inter',sans-serif",color:C.onVar}}>{a.strategy||'—'}</span>,
+              sig?<Pill text={sig} color={sc}/>:'—',
+              <span style={{color:C.outline,fontFamily:"'Inter',sans-serif"}}>{Array.isArray(a.reason)?a.reason.join('; '):String(a.reason||'—')}</span>,
+            ];
+          })}
+        />
+      </GlassCard>
+    </div>
+  );
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   TAB: TRADES
+═══════════════════════════════════════════════════════════════════════════ */
+function TabTrades({refreshKey=0}) {
+  const [data, setData] = useState(null);
+  useEffect(()=>{ fetch(`${API}/trades`).then(r=>r.json()).then(setData); },[refreshKey]);
+  if(!data) return <Spinner/>;
+  const {positions, executed, skipped, order_requests, open_requests, worker_alive, worker_age, trade_log} = data;
+  const fmtP = v => v!=null ? `$${Number(v).toFixed(2)}` : '—';
+
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:28}}>
+      <MetricGrid items={[
+        {label:'Open Positions', icon:'account_balance_wallet', value:positions?.length??0, sub:`/ 5 max`, valueColor:C.cyan},
+        {label:'Executed (latest)', icon:'task_alt', value:executed?.length??0, sub:'paper orders', subColor:C.lime, valueColor:C.lime},
+        {label:'Skipped (latest)', icon:'block', value:skipped?.length??0},
+        {label:'Pending Requests', icon:'pending', value:open_requests??0, valueColor:open_requests>0?C.err:C.onSurf},
+      ]}/>
+
+      {/* Worker status */}
+      <div style={{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderRadius:10,
+        background:worker_alive?R(C.lime,0.06):R(C.err,0.06),
+        border:`1px solid ${worker_alive?R(C.lime,0.22):R(C.err,0.22)}`}}>
+        <Icon n={worker_alive?'check_circle':'warning'} size={18} color={worker_alive?C.lime:C.err}/>
+        <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:worker_alive?C.lime:C.err}}>
+          {worker_alive ? `Execute worker online · last heartbeat ${Math.round(worker_age||0)}s ago` : `Execute worker offline${worker_age!=null?` · last heartbeat ${Math.round(worker_age)}s ago`:''}`}
+        </span>
+      </div>
+
+      {/* Open Positions */}
+      <GlassCard style={{overflow:'hidden'}}>
+        <PanelHeader icon="swap_horiz" title="Open Paper Positions" badge="PAPER"/>
+        {positions?.length>0 ? (
+          <Table
+            cols={['Asset','Side','Qty','Entry','Stop','Target','Unrealized P&L']}
+            rows={positions.map(p=>{
+              const side=String(p.side||p.signal||'—').toUpperCase();
+              return [
+                <span style={{color:C.onSurf,fontWeight:500}}>{p.symbol}</span>,
+                <Pill text={side} color={side==='BUY'?C.lime:side==='SELL'?C.err:C.outline}/>,
+                p.quantity??'—',
+                fmtP(p.entry||p.avg_cost),
+                fmtP(p.stop_loss||p.stop),
+                fmtP(p.target),
+                '—',
+              ];
+            })}
+          />
+        ) : <div style={{padding:'20px 18px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.outline}}>No tracked positions.</div>}
+      </GlassCard>
+
+      {/* Order Requests */}
+      <GlassCard style={{overflow:'hidden'}}>
+        <PanelHeader icon="send" title="Order Requests" badge="PAPER"/>
+        {order_requests?.length>0 ? (
+          <Table
+            cols={['Time','Action','Symbol','Side','Status','Detail']}
+            rows={order_requests.slice(0,20).map(r=>{
+              const st=String(r.status||'').toUpperCase();
+              const stc=st==='DONE'?C.lime:st==='ERROR'||st==='REJECTED'?C.err:C.cyan;
+              return [
+                <span style={{color:C.outline}}>{String(r.updated_at||'—').replace('T',' ')}</span>,
+                String(r.action||'—').toUpperCase(),
+                <span style={{color:C.onSurf,fontWeight:500}}>{r.symbol||'—'}</span>,
+                r.signal||'—',
+                <Pill text={st||'—'} color={stc}/>,
+                <span style={{color:C.outline,fontFamily:"'Inter',sans-serif"}}>{r.message||'—'}</span>,
+              ];
+            })}
+          />
+        ) : <div style={{padding:'20px 18px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.outline}}>No order requests yet.</div>}
+      </GlassCard>
+
+      {/* Trade Journal */}
+      <GlassCard style={{overflow:'hidden'}}>
+        <PanelHeader icon="menu_book" title="Recent Trade Journal"/>
+        <div style={{padding:'16px 20px',display:'flex',flexDirection:'column',gap:10}}>
+          {trade_log?.length>0 ? trade_log.map((s,i)=>(
+            <details key={i} style={{borderRadius:8,border:`1px solid ${R(C.outline,0.14)}`,overflow:'hidden'}}>
+              <summary style={{padding:'10px 14px',cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onVar,background:R(C.surfLowest,0.4)}}>{s.heading}</summary>
+              <pre style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline,overflowX:'auto',whiteSpace:'pre-wrap',margin:0}}>{s.body||'(empty)'}</pre>
+            </details>
+          )) : <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.outline}}>No trade log sections available.</span>}
+        </div>
+      </GlassCard>
+    </div>
+  );
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   TAB: FORECAST
+═══════════════════════════════════════════════════════════════════════════ */
+const FC_DEFAULTS = {
+  equity:1000, cash:1000, dailyPnl:0, spread:0.05,
+  riskTrade:1.0, maxDailyLoss:2.0, minRR:3.0, maxPositions:5,
+  maxSpread:0.20, maxOpenRisk:6.0, maxPosValue:1000, minEntryAtr:0.25, maxEntryAtr:2.0,
+};
+
+function TabForecast({refreshKey=0}) {
+  const [fc, setFc] = useState(FC_DEFAULTS);
+  const [result, setResult] = useState(null);
+  const [calcAt, setCalcAt] = useState('—');
+  const [loading, setLoading] = useState(false);
+  const [fcFilter, setFcFilter] = useState('eligible');
+  const [fcExpanded, setFcExpanded] = useState(false);
+  const [fcSel, setFcSel] = useState(null);
+  const [feedback, setFeedback] = useState(null);   // {ok, message, id} or null
+  const [confirm, setConfirm] = useState(null);     // {type:'place'|'close', row} pending user confirmation
+  const [qtyOverrides, setQtyOverrides] = useState({});  // index -> qty string while editing
+  const setQtyOverride = (i, val) => setQtyOverrides(prev => ({...prev, [i]: val}));
+
+  const doPlace = useCallback(async(row) => {
+    setConfirm(null);
+    try {
+      const r = await fetch(`${API}/order/place`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(row)});
+      const d = await r.json();
+      setFeedback({ok:d.ok, message:d.message, id:d.id, dryRun:d.dry_run});
+    } catch(e) { setFeedback({ok:false, message:'Network error: '+e.message}); }
+  },[]);
+
+  const doClose = useCallback(async(symbol) => {
+    setConfirm(null);
+    try {
+      const r = await fetch(`${API}/order/close`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({symbol})});
+      const d = await r.json();
+      setFeedback({ok:d.ok, message:d.message, id:d.id, dryRun:d.dry_run});
+    } catch(e) { setFeedback({ok:false, message:'Network error: '+e.message}); }
+  },[]);
+  const [showVol, setShowVol] = useState(true);
+  const [showRaw, setShowRaw] = useState(false);
+  const [showTrade, setShowTrade] = useState(true);
+  const [selBars, setSelBars] = useState([]);
+  const [selBarsInfo, setSelBarsInfo] = useState({stale:false,lastDate:null});
+  const [tf, setTf] = useState('1D');
+
+  const runCalc = useCallback(async(inputs)=>{
+    setLoading(true);
+    try {
+      const r = await fetch(`${API}/forecast/run`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(inputs)});
+      const d = await r.json();
+      setResult(d);
+      const now=new Date(); const p=n=>String(n).padStart(2,'0');
+      setCalcAt(`${now.getFullYear()}-${p(now.getMonth()+1)}-${p(now.getDate())} ${p(now.getHours())}:${p(now.getMinutes())}:${p(now.getSeconds())}`);
+      const firstAcc = d.accepted?.[0]?.symbol || d.rows?.[0]?.symbol || null;
+      setFcSel(s=>s||firstAcc);
+    } finally { setLoading(false); }
+  },[]);
+
+  useEffect(()=>{ runCalc(FC_DEFAULTS); },[]);
+
+  const [selPlan, setSelPlan] = useState(null);
+
+  useEffect(()=>{
+    if(!fcSel) return;
+    const apitf = TF_API[tf]||'daily';
+    fetch(`${API}/bars/${fcSel}/${apitf}`).then(r=>r.json()).then(d=>{setSelBars(d.bars||[]);setSelBarsInfo({stale:d.stale,lastDate:d.last_date});});
+    fetch(`${API}/preopen/${fcSel}`).then(r=>r.json()).then(setSelPlan).catch(()=>setSelPlan(null));
+  },[fcSel, tf, refreshKey]);
+
+  const money = n => '$'+Math.round(n||0).toLocaleString('en-US');
+  const fmtP2 = v => v!=null ? `$${Number(v).toFixed(2)}` : '—';
+  const sum = result?.summary||{};
+  const rows = result?.rows||[];
+
+  const ledgerSrc = fcFilter==='eligible'?rows.filter(r=>r.status==='FORECAST TRADE')
+    :fcFilter==='filtered'?rows.filter(r=>r.status!=='FORECAST TRADE'):rows;
+
+  const selRow = rows.find(r=>r.symbol===fcSel)||rows[0]||null;
+
+  const fcInputDefs = [
+    {key:'equity',label:'Account equity',prefix:'$',suffix:'',step:5000},
+    {key:'cash',label:'Available cash',prefix:'$',suffix:'',step:5000},
+    {key:'dailyPnl',label:'Daily realized P&L',prefix:'$',suffix:'',step:100},
+    {key:'spread',label:'Assumed spread',prefix:'',suffix:'%',step:0.01},
+    {key:'riskTrade',label:'Risk / trade',prefix:'',suffix:'%',step:0.05},
+    {key:'maxDailyLoss',label:'Max daily loss',prefix:'',suffix:'%',step:0.1},
+    {key:'minRR',label:'Min reward:risk',prefix:'',suffix:':1',step:0.25},
+    {key:'maxPositions',label:'Max positions',prefix:'',suffix:'',step:1},
+    {key:'maxSpread',label:'Max spread',prefix:'',suffix:'%',step:0.01},
+    {key:'maxOpenRisk',label:'Max open risk',prefix:'',suffix:'%',step:0.1},
+    {key:'maxPosValue',label:'Max position value',prefix:'$',suffix:'',step:1000},
+    {key:'minEntryAtr',label:'Min entry dist',prefix:'',suffix:'ATR',step:0.25},
+    {key:'maxEntryAtr',label:'Max entry dist',prefix:'',suffix:'ATR',step:0.25},
+  ];
+
+  const selLines = selRow ? [
+    selRow.target!=null && {p:selRow.target,color:C.lime,label:`TARGET ${fmtP2(selRow.target)}`},
+    selRow.entry!=null  && {p:selRow.entry, color:C.cyan,label:`ENTRY ${fmtP2(selRow.entry)}`},
+    selRow.stop!=null   && {p:selRow.stop,  color:C.err, label:`STOP ${fmtP2(selRow.stop)}`},
+  ].filter(Boolean) : [];
+
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:24}}>
+      {/* info banner */}
+      <div style={{display:'flex',alignItems:'flex-start',gap:12,padding:'14px 18px',borderRadius:12,background:R(C.cyan,0.06),border:`1px solid ${R(C.cyan,0.22)}`}}>
+        <Icon n="shield_lock" size={20} color={C.cyan} style={{flexShrink:0}}/>
+        <span style={{fontFamily:"'Inter',sans-serif",fontSize:13,lineHeight:1.6,color:C.onVar}}>
+          This calculator replays saved market data and models conditional level setups. It does not change live bot settings, connect to IBKR, or place real orders — <span style={{color:C.cyan}}>scenario only</span>.
+        </span>
+      </div>
+
+      {/* Scenario Parameters */}
+      <GlassCard style={{overflow:'hidden'}}>
+        <div style={{padding:'16px 20px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:10}}>
+          <div style={{display:'flex',alignItems:'center',gap:10}}>
+            <Icon n="calculate" size={17} color={C.outline}/>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar}}>Scenario Parameters</span>
+          </div>
+          <span style={{padding:'3px 9px',borderRadius:9999,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.magenta,background:R(C.magenta,0.12),border:`1px solid ${R(C.magenta,0.3)}`}}>SCENARIO ONLY</span>
+        </div>
+        <div style={{padding:'22px 20px'}}>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(150px,1fr))',gap:16}}>
+            {fcInputDefs.map(d=>(
+              <label key={d.key} style={{display:'flex',flexDirection:'column',gap:7}}>
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.04em',color:C.outline}}>{d.label}</span>
+                <div style={{display:'flex',alignItems:'center',gap:6,padding:'9px 11px',borderRadius:8,background:R(C.surfLowest,0.65),border:`1px solid ${R(C.outline,0.2)}`}}>
+                  {d.prefix && <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.outline}}>{d.prefix}</span>}
+                  <input type="number" value={fc[d.key]} step={d.step}
+                    onChange={e=>setFc(f=>({...f,[d.key]:e.target.value}))}
+                    style={{flex:1,minWidth:0,background:'transparent',border:'none',outline:'none',color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:13}}/>
+                  {d.suffix && <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline}}>{d.suffix}</span>}
+                </div>
+              </label>
+            ))}
+          </div>
+          <div style={{display:'flex',gap:12,marginTop:22,flexWrap:'wrap'}}>
+            <button onClick={()=>runCalc(fc)} disabled={loading}
+              style={{display:'flex',alignItems:'center',gap:8,padding:'11px 20px',borderRadius:9,border:`1px solid ${R(C.cyan,0.4)}`,background:R(C.cyan,0.14),color:C.cyan,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:500}}>
+              <Icon n="query_stats" size={17} color={C.cyan}/>{loading?'Calculating…':'Calculate Forecast'}
+            </button>
+            <button onClick={()=>{setFc(FC_DEFAULTS);runCalc(FC_DEFAULTS);}}
+              style={{display:'flex',alignItems:'center',gap:8,padding:'11px 18px',borderRadius:9,border:`1px solid ${R(C.outline,0.25)}`,background:'rgba(28,27,28,0.6)',color:C.onVar,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
+              <Icon n="restart_alt" size={17} color={C.onVar}/>Reset to Live Settings
+            </button>
+          </div>
+        </div>
+      </GlassCard>
+
+      {result && (<>
+        {/* Forecast Summary */}
+        <div>
+          <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:14}}>
+            <Icon n="query_stats" size={17} color={C.outline}/>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar}}>Forecast Summary</span>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,background:'rgba(28,27,28,0.7)',padding:'2px 8px',borderRadius:9999,border:`1px solid ${R(C.outline,0.16)}`}}>{calcAt}</span>
+          </div>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:16}}>
+            {[
+              {label:'ATR-Qualified Setups', value:String(sum.setup_qualified??0), sub:`of ${sum.possible_signals??0} modeled signals`},
+              {label:'Forecast Trades', value:String(sum.forecast_trades??0), valueColor:C.lime, sub:sum.binding_limit?`limited by ${sum.binding_limit}`:'eligible under scenario', subColor:C.lime},
+              {label:'Capital Required', value:money(sum.capital_required), valueColor:C.cyan, sub:'forecast allocation', subColor:C.cyan},
+              {label:'New Open Risk', value:money(sum.new_open_risk), sub:`max ${money(sum.max_open_risk)}`},
+              {label:'Max Daily Loss', value:money(sum.max_daily_loss), valueColor:C.err, sub:`${money(sum.remaining_daily_loss)} remaining`, subColor:C.err},
+              {label:'Potential Reward', value:money(sum.potential_reward), valueColor:C.lime, sub:'at modeled targets', subColor:C.lime},
+            ].map((m,i)=>(
+              <GlassCard key={i} style={{padding:18,display:'flex',flexDirection:'column',gap:12}}>
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,letterSpacing:'0.04em',color:C.onVar}}>{m.label}</span>
+                <div style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:30,fontWeight:600,lineHeight:1,color:m.valueColor||C.onSurf}}>{m.value}</div>
+                <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:m.subColor||C.onVar}}>{m.sub}</div>
+              </GlassCard>
+            ))}
+          </div>
+          {sum.binding_limit && (
+            <div style={{display:'flex',alignItems:'flex-start',gap:11,marginTop:16,padding:'14px 18px',borderRadius:11,background:R(C.lime,0.05),border:`1px solid ${R(C.lime,0.22)}`}}>
+              <Icon n="info" size={19} color={C.lime} style={{flexShrink:0}}/>
+              <span style={{fontFamily:"'Inter',sans-serif",fontSize:13,lineHeight:1.6,color:C.onVar}}>
+                {sum.setup_qualified} setups pass the signal and ATR filters, but the portfolio receives {sum.forecast_trades} trade(s). Binding constraint: <strong style={{color:C.onSurf}}>{sum.binding_limit}</strong>. Risk budget per trade is {money(sum.risk_budget_per_trade)}; remaining open-risk capacity supports {sum.open_risk_capacity} full-sized position(s), across {sum.position_capacity} available slot(s).
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Gauges + Scatter */}
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))',gap:16}}>
+          <GlassCard style={{padding:20}}>
+            <h3 style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar,marginBottom:18,display:'flex',alignItems:'center',gap:9}}>
+              <Icon n="speed" size={16} color={C.outline}/>Capital &amp; Risk Utilization
+            </h3>
+            <div style={{display:'flex',flexDirection:'column',gap:18}}>
+              <Gauge label="Capital deployed" used={sum.capital_required||0} cap={Number(fc.cash)} color={C.cyan} sub={`${money((Number(fc.cash))-(sum.capital_required||0))} cash free`}/>
+              <Gauge label="Open risk" used={sum.total_open_risk||0} cap={sum.max_open_risk||1} color={C.lime} sub={`incl. ${money(sum.current_open_risk)} from open positions`}/>
+              <Gauge label="Daily loss budget" used={Math.max(0,-(Number(fc.dailyPnl)||0))} cap={sum.max_daily_loss||1} color={C.err} sub={`${money(sum.remaining_daily_loss)} remaining before kill switch`}/>
+            </div>
+          </GlassCard>
+          <GlassCard style={{padding:20}}>
+            <h3 style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar,marginBottom:6,display:'flex',alignItems:'center',gap:9}}>
+              <Icon n="scatter_plot" size={16} color={C.outline}/>Setup Qualification Map
+            </h3>
+            <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,marginBottom:14}}>Reward:risk vs entry distance · qualified setups clear both gates</div>
+            <FcScatter rows={rows} sc={{minRR:Number(fc.minRR),minEntryAtr:Number(fc.minEntryAtr),maxEntryAtr:Number(fc.maxEntryAtr)}}/>
+          </GlassCard>
+        </div>
+
+        {/* Forecast Ledger */}
+        <GlassCard style={{overflow:'hidden'}}>
+          <div style={{padding:'16px 20px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',justifyContent:'space-between',alignItems:'center',gap:10}}>
+            <div style={{display:'flex',alignItems:'center',gap:10}}>
+              <Icon n="table_view" size={17} color={C.outline}/>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar}}>Forecast Trade Ledger</span>
+            </div>
+            <span style={{padding:'3px 10px',borderRadius:9999,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.cyan,background:R(C.cyan,0.1),border:`1px solid ${R(C.cyan,0.28)}`}}>PAPER</span>
+          </div>
+          <div style={{padding:'18px 20px'}}>
+            <p style={{fontFamily:"'Inter',sans-serif",fontSize:12,lineHeight:1.6,color:C.outline,marginBottom:16}}>
+              Each row has <span style={{color:C.onVar}}>Place Order</span> (sends the setup to the execute_requests worker — paper-only, respects DRY_RUN) and <span style={{color:C.onVar}}>Close Position</span> (flattens the symbol).
+            </p>
+            <div style={{display:'inline-flex',gap:4,padding:4,borderRadius:9,background:R(C.surfLowest,0.6),border:`1px solid ${R(C.outline,0.16)}`,marginBottom:18,flexWrap:'wrap'}}>
+              {[{id:'eligible',label:'Eligible trades'},{id:'all',label:'All signals'},{id:'filtered',label:'Filtered only'}].map(f=>{
+                const a=f.id===fcFilter;
+                return <button key={f.id} onClick={()=>setFcFilter(f.id)} style={{padding:'7px 14px',borderRadius:7,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,border:`1px solid ${a?R(C.cyan,0.4):'transparent'}`,background:a?R(C.cyan,0.14):'transparent',color:a?C.cyan:C.onVar}}>{f.label}</button>;
+              })}
+            </div>
+            {feedback && (
+              <div style={{display:'flex',alignItems:'center',gap:11,marginBottom:16,padding:'12px 16px',borderRadius:10,
+                background:feedback.ok?R(C.lime,0.07):R(C.err,0.07),
+                border:`1px solid ${feedback.ok?R(C.lime,0.25):R(C.err,0.25)}`}}>
+                <Icon n={feedback.ok?'task_alt':'error'} size={18} color={feedback.ok?C.lime:C.err} style={{flexShrink:0}}/>
+                <div style={{flex:1}}>
+                  <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:'11.5px',lineHeight:1.5,color:feedback.ok?'#dbe9b0':C.err}}>{feedback.message}</span>
+                  {feedback.id && <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,marginLeft:12}}>ID: {feedback.id}</span>}
+                  {feedback.dryRun && <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.magenta,marginLeft:12}}>DRY_RUN — no real order sent</span>}
+                </div>
+                <button onClick={()=>setFeedback(null)} style={{background:'none',border:'none',cursor:'pointer',color:C.outline,padding:4}}>
+                  <Icon n="close" size={16} color={C.outline}/>
+                </button>
+              </div>
+            )}
+            <div style={{overflowX:'auto'}}>
+              <table style={{width:'100%',borderCollapse:'collapse',minWidth:780}}>
+                <thead><tr>{['Symbol','Side','Entry','Stop','Target','R:R','Shares','Risk $','Pot. Reward','Status','Reason','Actions'].map(c=>(
+                  <th key={c} style={{padding:'11px 16px',textAlign:c==='Actions'?'right':'left',fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',textTransform:'uppercase',color:C.outline,borderBottom:`1px solid ${R(C.outline,0.12)}`,whiteSpace:'nowrap'}}>{c}</th>
+                ))}</tr></thead>
+                <tbody>{ledgerSrc.map((r,i)=>{
+                  const filtered=r.status!=='FORECAST TRADE';
+                  const rr=Number(r.reward_risk||0);
+                  const rrOk=rr>=Number(fc.minRR);
+                  const sc=r.signal==='BUY'?C.lime:C.err;
+                  const qtyRaw = i in qtyOverrides ? qtyOverrides[i] : String(r.quantity||0);
+                  const qty=Math.max(0, Math.floor(Number(qtyRaw)||0));
+                  const qtyEdited = qty !== Number(r.quantity||0);
+                  const entry=Number(r.entry||0), stop=Number(r.stop||0), target=Number(r.target||0);
+                  const riskDollar=qty>0&&stop>0 ? qty*Math.abs(entry-stop) : null;
+                  const rewardDollar=qty>0&&target>0 ? qty*Math.abs(target-entry) : null;
+                  return (
+                    <tr key={i} onMouseEnter={e=>e.currentTarget.style.background=R('#fff',0.025)} onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`}}>
+                        <button onClick={()=>setFcSel(r.symbol)} style={{display:'inline-flex',alignItems:'center',justifyContent:'center',padding:'7px 15px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:500,color:r.symbol===fcSel?'#001416':C.onSurf,background:r.symbol===fcSel?C.cyan:'rgba(20,20,21,0.7)',border:`1px solid ${r.symbol===fcSel?C.cyan:'rgba(132,148,149,0.22)'}`}}>{r.symbol}</button>
+                      </td>
+                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:sc,fontWeight:500}}>{r.signal}</td>
+                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:C.onVar}}>${entry.toFixed(2)}</td>
+                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:C.outline}}>${stop.toFixed(2)}</td>
+                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:C.outline}}>${target.toFixed(2)}</td>
+                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:rrOk?C.lime:C.outline}}>{rr.toFixed(2)}</td>
+                      <td style={{padding:'8px 16px',borderBottom:`1px solid ${R(C.outline,0.06)}`}}>
+                        <div style={{display:'flex',alignItems:'center',gap:5}}>
+                          <input
+                            type="number" min="0" step="1"
+                            value={qtyRaw}
+                            onChange={e=>setQtyOverride(i, e.target.value)}
+                            onBlur={e=>{ const v=Math.max(0,Math.floor(Number(e.target.value)||0)); setQtyOverride(i,String(v)); }}
+                            style={{width:70,padding:'5px 8px',borderRadius:7,fontFamily:"'JetBrains Mono',monospace",fontSize:12,
+                              color:qtyEdited?C.cyan:C.onVar,
+                              background:qtyEdited?R(C.cyan,0.08):'rgba(28,27,28,0.7)',
+                              border:`1px solid ${qtyEdited?R(C.cyan,0.4):R(C.outline,0.22)}`,
+                              outline:'none',textAlign:'right'}}
+                          />
+                          {qtyEdited&&<button title="Reset to calculated" onClick={()=>setQtyOverride(i,String(r.quantity||0))}
+                            style={{background:'none',border:'none',cursor:'pointer',padding:2,color:C.outline,lineHeight:1}}>
+                            <Icon n="restart_alt" size={14} color={C.outline}/>
+                          </button>}
+                        </div>
+                      </td>
+                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:riskDollar!=null?C.err:C.outline,fontWeight:500}}>{riskDollar!=null?`$${riskDollar.toFixed(2)}`:'—'}</td>
+                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:rewardDollar!=null?C.lime:C.outline,fontWeight:500}}>{rewardDollar!=null?`$${rewardDollar.toFixed(2)}`:'—'}</td>
+                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:filtered?C.outline:C.lime}}>{filtered?'Filtered':'Eligible'}</td>
+                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,maxWidth:260}}>
+                        {filtered ? (
+                          <div style={{display:'flex',flexWrap:'wrap',gap:4}}>
+                            {(r.reason_codes&&r.reason_codes.length?r.reason_codes:[r.reason||'filtered']).map((code,ci)=>{
+                              const labels={'daily_loss_limit_reached':'Daily loss limit','entry_too_close_to_market':'Entry too close','entry_too_far_from_market':'Entry too far','duplicate_position':'Duplicate position','max_positions_reached':'Max positions','reward_risk_too_low':'R:R too low','spread_too_wide':'Spread too wide','position_size_zero':'Size = 0','position_value_invalid':'Position value','open_risk_limit_exceeded':'Open risk limit'};
+                              const label=labels[code]||(typeof code==='string'?code.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()):String(code));
+                              return <span key={ci} style={{display:'inline-block',padding:'2px 8px',borderRadius:9999,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.err,background:R(C.err,0.10),border:`1px solid ${R(C.err,0.22)}`,whiteSpace:'nowrap'}}>{label}</span>;
+                            })}
+                          </div>
+                        ) : (()=>{
+                          const strategyLabels={
+                            'rebound':'Rebound',
+                            'confirmed_breakout':'Confirmed Breakout',
+                            'false_breakout_one_bar':'False Breakout',
+                            'level_retest_forecast':'Level Retest',
+                            'level_breakout_forecast':'Level Breakout',
+                          };
+                          const sourceLabels={
+                            'ACTIVE REPLAY':'Live signal',
+                            'PROJECTED':'Projected',
+                          };
+                          const stratLabel=strategyLabels[r.strategy]||(r.strategy||'').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())||null;
+                          const srcLabel=sourceLabels[r.source]||r.source||null;
+                          const checks=[];
+                          if(rr>0) checks.push(`R:R ${rr.toFixed(2)} ≥ ${Number(fc.minRR).toFixed(1)}`);
+                          if(r.entry_distance_atr!=null) checks.push(`${Number(r.entry_distance_atr).toFixed(2)} ATR dist`);
+                          if(qty>0&&entry>0) checks.push(`${qty} sh @ $${entry.toFixed(2)}`);
+                          if(rewardDollar!=null) checks.push(`+$${rewardDollar.toFixed(0)} target`);
+                          return (
+                            <div style={{display:'flex',flexDirection:'column',gap:5}}>
+                              {/* strategy + source line */}
+                              <div style={{display:'flex',alignItems:'center',gap:5,flexWrap:'wrap'}}>
+                                {stratLabel&&<span style={{display:'inline-flex',alignItems:'center',gap:4,padding:'2px 9px',borderRadius:9999,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:700,color:C.cyan,background:R(C.cyan,0.1),border:`1px solid ${R(C.cyan,0.28)}`}}>
+                                  <Icon n="strategy" size={11} color={C.cyan}/>{stratLabel}
+                                </span>}
+                                {srcLabel&&<span style={{padding:'2px 8px',borderRadius:9999,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:r.source==='ACTIVE REPLAY'?C.lime:C.onVar,background:r.source==='ACTIVE REPLAY'?R(C.lime,0.08):R(C.outline,0.08),border:`1px solid ${r.source==='ACTIVE REPLAY'?R(C.lime,0.22):R(C.outline,0.18)}`}}>{srcLabel}</span>}
+                              </div>
+                              {/* check pills */}
+                              <div style={{display:'flex',alignItems:'center',gap:4,flexWrap:'wrap'}}>
+                                <Icon n="check_circle" size={11} color={C.lime}/>
+                                {checks.map((c,ci)=>(
+                                  <span key={ci} style={{padding:'1px 7px',borderRadius:9999,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:'#9ecfb0',background:'rgba(100,180,120,0.08)',border:'1px solid rgba(100,180,120,0.18)',whiteSpace:'nowrap'}}>{c}</span>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })()}
+                      </td>
+                      <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`}}>
+                        <div style={{display:'flex',gap:8,justifyContent:'flex-end'}}>
+                          <button onClick={()=>!filtered&&setConfirm({type:'place',row:{...r,quantity:qty}})}
+                            style={{padding:'7px 16px',borderRadius:7,cursor:filtered?'not-allowed':'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:filtered?C.outline:C.cyan,background:filtered?'rgba(28,27,28,0.4)':R(C.cyan,0.1),border:`1px solid ${filtered?'rgba(132,148,149,0.14)':R(C.cyan,0.4)}`,opacity:filtered?0.45:1}}>Place</button>
+                          <button onClick={()=>setConfirm({type:'close',row:r})}
+                            style={{padding:'7px 16px',borderRadius:7,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar,background:'rgba(28,27,28,0.6)',border:`1px solid rgba(132,148,149,0.22)`}}>Close</button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}</tbody>
+              </table>
+            </div>
+
+            {/* Expanded full table toggle */}
+            <div onClick={()=>setFcExpanded(e=>!e)} style={{display:'flex',alignItems:'center',gap:10,marginTop:16,padding:'13px 16px',borderRadius:10,cursor:'pointer',background:R(C.surfLowest,0.5),border:`1px solid ${R(C.outline,0.16)}`}}>
+              <Icon n={fcExpanded?'expand_more':'chevron_right'} size={18} color={C.outline}/>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onVar}}>Full ledger table (all columns, sortable)</span>
+            </div>
+            {fcExpanded && (
+              <div style={{overflowX:'auto',marginTop:12,border:`1px solid ${R(C.outline,0.14)}`,borderRadius:10}}>
+                <table style={{width:'100%',borderCollapse:'collapse',minWidth:1180}}>
+                  <thead><tr>{['Symbol','Source','Strategy','Side','Current','Entry','Dist %','Dist ATR','Stop','Target','R:R','Shares','Pos Value','Risk $','Pot Reward','Status'].map(c=>(
+                    <th key={c} style={{padding:'11px 16px',textAlign:'left',fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',textTransform:'uppercase',color:C.outline,borderBottom:`1px solid ${R(C.outline,0.12)}`,whiteSpace:'nowrap'}}>{c}</th>
+                  ))}</tr></thead>
+                  <tbody>{rows.map((r,i)=>(
+                    <tr key={i} onMouseEnter={e=>e.currentTarget.style.background=R('#fff',0.025)} onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+                      {[
+                        <span style={{color:C.onSurf,fontWeight:500}}>{r.symbol}</span>,
+                        <Pill text={r.source||'—'} color={r.source==='ACTIVE REPLAY'?C.cyan:C.magenta}/>,
+                        <span style={{fontFamily:"'Inter',sans-serif",color:C.onVar}}>{r.strategy}</span>,
+                        <span style={{color:r.signal==='BUY'?C.lime:C.err}}>{r.signal}</span>,
+                        r.current_price?`$${Number(r.current_price).toFixed(2)}`:'—',
+                        `$${Number(r.entry||0).toFixed(2)}`,
+                        r.entry_distance_pct!=null?`${(r.entry_distance_pct*100).toFixed(1)}%`:'—',
+                        r.entry_distance_atr!=null?Number(r.entry_distance_atr).toFixed(2):'—',
+                        `$${Number(r.stop||0).toFixed(2)}`,
+                        `$${Number(r.target||0).toFixed(2)}`,
+                        <span style={{color:Number(r.reward_risk||0)>=Number(fc.minRR)?C.lime:C.outline}}>{Number(r.reward_risk||0).toFixed(2)}</span>,
+                        r.quantity>0?r.quantity:'—',
+                        r.quantity>0?`$${Math.round(r.position_value||0).toLocaleString()}`:'—',
+                        r.quantity>0?`$${Math.round(r.risk_amount||0).toLocaleString()}`:'—',
+                        <span style={{color:C.lime}}>{r.quantity>0?`$${Math.round(r.potential_reward||0).toLocaleString()}`:'—'}</span>,
+                        <Pill text={r.status==='FORECAST TRADE'?'ELIGIBLE':'FILTERED'} color={r.status==='FORECAST TRADE'?C.lime:C.outline}/>,
+                      ].map((cell,j)=>(
+                        <td key={j} style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:11,borderBottom:`1px solid ${R(C.outline,0.06)}`,whiteSpace:'nowrap',color:C.onVar}}>{cell}</td>
+                      ))}
+                    </tr>
+                  ))}</tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </GlassCard>
+
+        {/* Selected symbol chart */}
+        {selRow && (
+          <GlassCard style={{overflow:'hidden'}}>
+            <div style={{padding:'16px 20px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:10}}>
+              <div style={{display:'flex',alignItems:'center',gap:10}}>
+                <Icon n="candlestick_chart" size={17} color={C.outline}/>
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar}}>{selRow.symbol} · {TF_LABEL[tf]} Forecast Position</span>
+                <Pill text={`${selRow.signal} · ${selRow.source}`} color={C.cyan}/>
+              </div>
+              <TfPills value={tf} onChange={setTf}/>
+            </div>
+            <div style={{padding:'12px 20px',borderBottom:`1px solid ${R(C.outline,0.1)}`,display:'flex',alignItems:'center',gap:22,flexWrap:'wrap'}}>
+              <Toggle on={showRaw} label="Raw levels" onChange={setShowRaw}/>
+              <Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/>
+              <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
+            </div>
+            <div style={{padding:'18px 20px'}}>
+              <CandleChart bars={selBars} levels={buildChartLevels(selPlan?.trade_levels, selPlan?.raw_levels, showTrade, showRaw)} lines={selLines}
+                zones={[
+                  ...(selRow?.entry!=null && selRow?.target!=null ? [{p1:selRow.entry,p2:selRow.target,color:C.lime,opacity:0.07}] : []),
+                  ...(selRow?.entry!=null && selRow?.stop!=null ? [{p1:selRow.entry,p2:selRow.stop,color:C.err,opacity:0.08}] : []),
+                ]}
+                showVol={showVol} height={300} stale={selBarsInfo.stale} lastDate={selBarsInfo.lastDate}/>
+            </div>
+          </GlassCard>
+        )}
+      </>)}
+
+      {/* ── Order Confirmation Modal ── */}
+      {confirm && (
+        <div onClick={()=>setConfirm(null)} style={{position:'fixed',inset:0,zIndex:70,background:'rgba(8,8,9,0.80)',backdropFilter:'blur(8px)',display:'flex',alignItems:'center',justifyContent:'center',padding:24}}>
+          <div onClick={e=>e.stopPropagation()} style={{width:'100%',maxWidth:460,background:'rgba(20,19,20,0.98)',border:`1px solid ${R(C.outline,0.22)}`,borderRadius:14,boxShadow:'0 30px 80px rgba(0,0,0,0.7)',overflow:'hidden'}}>
+            {/* header */}
+            <div style={{padding:'18px 22px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',alignItems:'center',gap:12}}>
+              <Icon n={confirm.type==='place'?'send':'close'} size={20} color={confirm.type==='place'?C.cyan:C.err}/>
+              <span style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:17,fontWeight:600,color:C.onSurf}}>
+                {confirm.type==='place'?'Confirm Place Order':'Confirm Close Position'}
+              </span>
+            </div>
+            {/* body */}
+            <div style={{padding:'20px 22px',display:'flex',flexDirection:'column',gap:14}}>
+              <div style={{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderRadius:10,background:R(C.magenta,0.06),border:`1px solid ${R(C.magenta,0.22)}`}}>
+                <Icon n="shield_lock" size={18} color={C.magenta} style={{flexShrink:0}}/>
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.magenta,lineHeight:1.5}}>Paper account · respects DRY_RUN · no real money at risk</span>
+              </div>
+              {confirm.type==='place' ? (
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px 18px'}}>
+                  {[
+                    ['Symbol', confirm.row.symbol],
+                    ['Side', confirm.row.signal],
+                    ['Entry', '$'+Number(confirm.row.entry||0).toFixed(2)],
+                    ['Stop', '$'+Number(confirm.row.stop||0).toFixed(2)],
+                    ['Target', '$'+Number(confirm.row.target||0).toFixed(2)],
+                    ['Qty', confirm.row.quantity||'—'],
+                    ['R:R', Number(confirm.row.reward_risk||0).toFixed(2)],
+                    ['Strategy', confirm.row.strategy||'—'],
+                  ].map(([k,v])=>(
+                    <div key={k}>
+                      <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,marginBottom:4}}>{k}</div>
+                      <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:13,color:C.onSurf,fontWeight:500}}>{v}</div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:14,color:C.onSurf,padding:'10px 0'}}>
+                  Close all open positions for <span style={{color:C.err}}>{confirm.row.symbol}</span> via a paper market order.
+                </div>
+              )}
+            </div>
+            {/* footer */}
+            <div style={{padding:'16px 22px',borderTop:`1px solid ${R(C.outline,0.14)}`,display:'flex',gap:10,justifyContent:'flex-end'}}>
+              <button onClick={()=>setConfirm(null)}
+                style={{padding:'10px 20px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onVar,background:'rgba(28,27,28,0.8)',border:`1px solid ${R(C.outline,0.25)}`}}>
+                Cancel
+              </button>
+              <button onClick={()=>confirm.type==='place'?doPlace(confirm.row):doClose(confirm.row.symbol)}
+                style={{padding:'10px 22px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:600,
+                  color:confirm.type==='place'?'#001416':C.onSurf,
+                  background:confirm.type==='place'?C.cyan:C.err,
+                  border:'none'}}>
+                {confirm.type==='place'?'Place Order':'Close Position'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   TAB: REPORTS
+═══════════════════════════════════════════════════════════════════════════ */
+function TabReports({refreshKey=0}) {
+  const [data, setData] = useState(null);
+  useEffect(()=>{ fetch(`${API}/reports`).then(r=>r.json()).then(setData); },[refreshKey]);
+  if(!data) return <Spinner/>;
+  const kindColor = k => k?.includes('eod')||k?.includes('weekly')?C.magenta:k?.includes('open')||k?.includes('intraday')?C.cyan:C.lime;
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:14}}>
+      {data.reports?.length>0 ? data.reports.map((r,i)=>(
+        <GlassCard key={i} style={{padding:'18px 20px',display:'flex',alignItems:'center',gap:18,flexWrap:'wrap'}}>
+          <Pill text={r.kind?.toUpperCase()||'REPORT'} color={kindColor(r.kind)}/>
+          <div style={{flex:1,minWidth:160}}>
+            <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:13,color:C.onSurf}}>{r.file}</div>
+            <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline,marginTop:4}}>Trading date {r.date}</div>
+          </div>
+          <div style={{display:'flex',alignItems:'center',gap:8,padding:'8px 14px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,border:`1px solid ${R(C.cyan,0.3)}`,background:R(C.cyan,0.06)}}>
+            <Icon n="download" size={16} color={C.cyan}/>Download
+          </div>
+        </GlassCard>
+      )) : <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:13,color:C.outline,padding:'20px 0'}}>No reports available.</div>}
+    </div>
+  );
+}
+
+/* ── level data → CandleChart levels prop ────────────────────────────────── */
+function buildChartLevels(tradeLevels, rawLevels, showTrade, showRaw) {
+  const seen = new Set();
+  const out = [];
+  const add = (l, color, showZone) => {
+    const price = Number(l.price);
+    if(!Number.isFinite(price)) return;
+    const key = price.toFixed(4);
+    if(seen.has(key)) return;
+    seen.add(key);
+    const zoneLow = Number(l.zone_low), zoneHigh = Number(l.zone_high);
+    const hasZone = l.zone_low!=null && l.zone_high!=null
+      && Number.isFinite(zoneLow) && Number.isFinite(zoneHigh);
+    out.push({
+      p: price,
+      zoneLow: hasZone ? Math.min(zoneLow,zoneHigh) : undefined,
+      zoneHigh: hasZone ? Math.max(zoneLow,zoneHigh) : undefined,
+      showZone,
+      color,
+      label: `${l.type==='gap'?'GAP':l.type==='abnormal_candle'?'ABN':'LVL'} ${Number(l.price).toFixed(2)} · ${l.touches??'?'}T`,
+    });
+  };
+  if(showTrade) (tradeLevels||[]).forEach(l => add(l, C.cyan, true));
+  if(showRaw)   (rawLevels||[]).forEach(l  => add(l, C.outline, false));
+  return out.sort((a,b)=>b.p-a.p);
+}
+
+/* ── spinner ─────────────────────────────────────────────────────────────── */
+function Spinner() {
+  return (
+    <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:200,gap:12,color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
+      <Icon n="hourglass_top" size={20} color={C.outline}/>Loading…
+    </div>
+  );
+}
+
+/* ── error boundary ──────────────────────────────────────────────────────── */
+class ErrBound extends React.Component {
+  constructor(p){super(p);this.state={err:null};}
+  static getDerivedStateFromError(e){return {err:e};}
+  componentDidCatch(e,i){console.error('Tab render error:',e,i);}
+  render(){
+    if(this.state.err) return (
+      <div style={{padding:28,display:'flex',flexDirection:'column',gap:14}}>
+        <div style={{display:'flex',alignItems:'center',gap:12,padding:'14px 18px',borderRadius:12,background:'rgba(255,180,171,0.07)',border:'1px solid rgba(255,180,171,0.28)'}}>
+          <span className="mso" style={{fontSize:20,color:'#ffb4ab'}}>error</span>
+          <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:'#ffb4ab'}}>Tab render error — check the browser console for details.</span>
+        </div>
+        <pre style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:'#849495',whiteSpace:'pre-wrap',padding:'14px 18px',borderRadius:10,background:'rgba(14,14,15,0.5)',border:'1px solid rgba(132,148,149,0.16)',maxHeight:300,overflowY:'auto'}}>{String(this.state.err)}</pre>
+        <button onClick={()=>this.setState({err:null})} style={{alignSelf:'flex-start',padding:'9px 20px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:'#7df4ff',background:'rgba(125,244,255,0.08)',border:'1px solid rgba(125,244,255,0.3)'}}>Retry</button>
+      </div>
+    );
+    return this.props.children;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   ROOT APP
+═══════════════════════════════════════════════════════════════════════════ */
+const NAV = [
+  {id:'dashboard',  label:'Dashboard',          icon:'space_dashboard'},
+  {id:'preopen',    label:'Pre-Open',            icon:'wb_twilight'},
+  {id:'intraday',   label:'Intraday',            icon:'monitoring'},
+  {id:'trades',     label:'Trades & Positions',  icon:'swap_horiz'},
+  {id:'forecast',   label:'Forecast',            icon:'calculate'},
+  {id:'reports',    label:'Reports',             icon:'description'},
+];
+const PAGE_META = {
+  dashboard: {title:'Command Overview',       sub:'All systems nominal · scan cycle 5m · paper account', crumb:'Dashboard'},
+  preopen:   {title:'Pre-Open Briefing',      sub:'Watchlist scanned · levels mapped · awaiting the open', crumb:'Pre-Open'},
+  intraday:  {title:'Intraday Monitor',       sub:'Live decision loop · paper execution', crumb:'Intraday'},
+  trades:    {title:'Trades & Positions',     sub:'Open paper positions and trade journal', crumb:'Trades'},
+  forecast:  {title:'Risk Forecast Calculator',sub:'Scenario-only · replays saved data · no live orders', crumb:'Forecast'},
+  reports:   {title:'Reports',               sub:'Generated session workbooks', crumb:'Reports'},
+};
+
+function App() {
+  const [tab, setTab] = useState('dashboard');
+  const [meta, setMeta] = useState({clock:'—',session:'—',paper:true,dry_run:false});
+  const [newsModal, setNewsModal] = useState(false);
+  const [newsItems, setNewsItems] = useState([]);
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  useEffect(()=>{
+    const refresh = ()=>fetch(`${API}/meta`).then(r=>r.json()).then(setMeta).catch(()=>{});
+    refresh();
+    const iv = setInterval(refresh, 5000);
+    return ()=>clearInterval(iv);
+  },[]);
+  useEffect(()=>{
+    const iv = setInterval(()=>setRefreshKey(key=>key+1), 30000);
+    return ()=>clearInterval(iv);
+  },[]);
+
+  const refreshDashboard = ()=>{
+    fetch(`${API}/meta`).then(r=>r.json()).then(setMeta).catch(()=>{});
+    setRefreshKey(key=>key+1);
+  };
+
+  const pm = PAGE_META[tab];
+  const marketOk = meta.session==='OPEN';
+
+  return (
+    <div style={{display:'flex',height:'100vh',width:'100%',overflow:'hidden',
+      background:`radial-gradient(900px 460px at 82% -8%, ${R(C.cyanBright,0.06)}, transparent 60%), radial-gradient(700px 400px at 8% 110%, ${R(C.lime,0.04)}, transparent 60%), ${C.bg}`,
+      color:C.onSurf, fontFamily:"'Inter',sans-serif", WebkitFontSmoothing:'antialiased'}}>
+
+      {/* ── Sidebar ─────────────────────────────────────────────────────── */}
+      <aside style={{flexShrink:0,width:256,height:'100%',background:'rgba(14,14,15,0.92)',borderRight:`1px solid ${R(C.outline,0.16)}`,display:'flex',flexDirection:'column',padding:'22px 16px',overflowY:'auto'}}>
+        {/* Brand */}
+        <div style={{display:'flex',alignItems:'center',gap:11,padding:'0 6px 22px',borderBottom:`1px solid ${R(C.outline,0.12)}`,marginBottom:18}}>
+          <div style={{width:36,height:36,borderRadius:9,flexShrink:0,background:'linear-gradient(140deg,#00f0ff,#006970)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 0 18px rgba(0,240,255,0.35)'}}>
+            <Icon n="candlestick_chart" size={20} color="#001416"/>
+          </div>
+          <div>
+            <div style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:17,fontWeight:600,color:'#dbfcff',lineHeight:1.1}}>Gerchik Bot</div>
+            <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.08em',color:C.outline,marginTop:2}}>IBKR · {meta.paper?'PAPER':'LIVE'}</div>
+          </div>
+        </div>
+
+        {/* Nav */}
+        <div style={{flex:1,display:'flex',flexDirection:'column',gap:4}}>
+          {NAV.map(n=>{
+            const a=n.id===tab;
+            return (
+              <div key={n.id} onClick={()=>setTab(n.id)}
+                style={{display:'flex',alignItems:'center',gap:12,padding:'11px 14px',borderRadius:8,cursor:'pointer',transition:'all .15s',
+                  borderRight:`3px solid ${a?C.cyan:'transparent'}`,
+                  background:a?R(C.cyan,0.10):'transparent',
+                  color:a?C.cyan:C.onVar}}
+                onMouseEnter={e=>{if(!a)e.currentTarget.style.background='rgba(255,255,255,0.05)'}}
+                onMouseLeave={e=>{if(!a)e.currentTarget.style.background='transparent'}}>
+                <Icon n={n.icon} size={20} color={a?C.cyan:C.onVar} style={{fontVariationSettings:a?`'FILL' 1`:`'FILL' 0`}}/>
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.03em'}}>{n.label}</span>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Safety box */}
+        <div style={{marginTop:14,padding:'13px 14px',borderRadius:10,background:'rgba(28,27,28,0.7)',border:`1px solid ${R(C.outline,0.14)}`}}>
+          <div style={{display:'flex',alignItems:'center',gap:8}}>
+            <PulseDot color={C.lime} size={7} shadow={8}/>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onSurf}}>Read-only mode</span>
+          </div>
+          <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,marginTop:6,lineHeight:1.5}}>Never connects to IBKR.<br/>Views <span style={{color:C.onVar}}>memory/</span> only.</div>
+        </div>
+
+        {/* Footer */}
+        <div style={{marginTop:14,paddingTop:14,borderTop:`1px solid ${R(C.outline,0.14)}`,display:'flex',flexDirection:'column',gap:2}}>
+          {[{icon:'help',label:'Docs'},{icon:'settings',label:'Settings'}].map(f=>(
+            <div key={f.label} style={{display:'flex',alignItems:'center',gap:11,padding:'8px 14px',borderRadius:8,cursor:'pointer',color:C.onVar,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}
+              onMouseEnter={e=>e.currentTarget.style.color=C.onSurf}
+              onMouseLeave={e=>e.currentTarget.style.color=C.onVar}>
+              <Icon n={f.icon} size={18} color="inherit"/>
+              {f.label}
+            </div>
+          ))}
+        </div>
+      </aside>
+
+      {/* ── Main ────────────────────────────────────────────────────────── */}
+      <main style={{flex:1,minWidth:0,display:'flex',flexDirection:'column',height:'100%'}}>
+        {/* Header */}
+        <header style={{flexShrink:0,height:62,borderBottom:`1px solid ${R(C.outline,0.16)}`,background:'rgba(19,19,20,0.7)',backdropFilter:'blur(12px)',display:'flex',alignItems:'center',justifyContent:'space-between',gap:16,padding:'0 26px',overflow:'hidden'}}>
+          <div style={{display:'flex',alignItems:'center',gap:12,fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.06em',color:C.outline}}>
+            <span>OPERATIONS DESK</span>
+            <span style={{color:C.outlineVar}}>/</span>
+            <span style={{color:C.onVar,textTransform:'uppercase'}}>{pm.crumb}</span>
+          </div>
+          <div style={{display:'flex',alignItems:'center',gap:12}}>
+            {/* SYNCED clock */}
+            <div style={{display:'flex',alignItems:'center',gap:7,padding:'6px 11px',borderRadius:8,background:'rgba(28,27,28,0.8)',border:`1px solid ${R(C.outline,0.16)}`}}>
+              <span style={{width:6,height:6,borderRadius:'50%',background:C.cyanBright,boxShadow:`0 0 7px ${C.cyanBright}`,animation:'pulse 1.8s infinite',display:'inline-block'}}/>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar}}>SYNCED {meta.clock} ET</span>
+            </div>
+            {/* PAPER badge */}
+            <div style={{padding:'6px 11px',borderRadius:8,fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.05em',color:'#7df4ff',background:R(C.cyan,0.1),border:`1px solid ${R(C.cyan,0.28)}`}}>
+              {meta.paper?'PAPER · READ-ONLY':'LIVE'}
+            </div>
+            {/* Market status */}
+            <div style={{display:'flex',alignItems:'center',gap:7,padding:'6px 11px',borderRadius:8,background:marketOk?R(C.lime,0.06):'rgba(28,27,28,0.8)',border:`1px solid ${marketOk?R(C.lime,0.28):R(C.outline,0.16)}`}}>
+              <Icon n={marketOk?'check_circle':'schedule'} size={15} color={marketOk?C.lime:C.onVar}/>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:marketOk?C.lime:C.onVar}}>Market {meta.session}</span>
+            </div>
+            {/* Refresh */}
+            <div onClick={refreshDashboard}
+              style={{width:34,height:34,borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',color:C.onVar,background:'rgba(28,27,28,0.8)',border:`1px solid ${R(C.outline,0.16)}`}}
+              onMouseEnter={e=>e.currentTarget.style.color=C.cyan}
+              onMouseLeave={e=>e.currentTarget.style.color=C.onVar}>
+              <Icon n="refresh" size={18} color="inherit"/>
+            </div>
+          </div>
+        </header>
+
+        {/* Scrollable content */}
+        <div style={{flex:1,overflowY:'auto',overflowX:'hidden',padding:28}}>
+          <div style={{maxWidth:1440,margin:'0 auto'}}>
+            {/* Page hero */}
+            <div style={{display:'flex',flexWrap:'wrap',justifyContent:'space-between',alignItems:'flex-end',gap:14,marginBottom:26}}>
+              <div>
+                <h1 style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:32,fontWeight:600,letterSpacing:'-0.01em',color:C.onSurf}}>{pm.title}</h1>
+                <p style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.outline,marginTop:7,display:'flex',alignItems:'center',gap:8}}>
+                  <PulseDot color={C.lime} size={7}/>
+                  {pm.sub}
+                </p>
+              </div>
+            </div>
+
+            {/* Tab content */}
+            <ErrBound key={tab}>
+              {tab==='dashboard' && <TabDashboard setNewsModal={setNewsModal} setNewsItems={setNewsItems} refreshKey={refreshKey}/>}
+              {tab==='preopen'   && <TabPreOpen refreshKey={refreshKey}/>}
+              {tab==='intraday'  && <TabIntraday refreshKey={refreshKey}/>}
+              {tab==='trades'    && <TabTrades refreshKey={refreshKey}/>}
+              {tab==='forecast'  && <TabForecast refreshKey={refreshKey}/>}
+              {tab==='reports'   && <TabReports refreshKey={refreshKey}/>}
+            </ErrBound>
+          </div>
+        </div>
+      </main>
+      {newsModal && <NewsModal items={newsItems} onClose={()=>setNewsModal(false)}/>}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

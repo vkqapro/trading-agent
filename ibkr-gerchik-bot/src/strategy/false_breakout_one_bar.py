@@ -1,0 +1,564 @@
+"""Gerchik-style one-bar false breakout detection helpers with explainability."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Dict, Iterable, List, Literal, Optional, Sequence
+
+import pandas as pd
+
+from src.config import LOGGER, SETTINGS
+from src.risk.take_profit import reward_risk_ratio
+from src.strategy import decision_log
+from src.strategy.candles import (
+    body_size,
+    close_location,
+    full_range,
+    is_bearish,
+    is_bullish,
+    lower_wick,
+    upper_wick,
+)
+from src.strategy.levels import Level
+from src.strategy.signal_models import TradeSignal
+from src.strategy.trend import detect_trend
+
+
+SignalSide = Literal["BUY", "SELL", "NONE"]
+Direction = Literal["long", "short"]
+PatternName = Literal["ONE_BAR", "TWO_BAR", "COMPLEX", "NONE"]
+
+DEFAULT_CONFIG: Dict[str, float] = {
+    "zone_buffer_pct": 0.0015,
+    "minimum_target_atr": 1.0,
+    "exhausted_move_atr_pct": 0.75,
+    "score_threshold": 60.0,
+    "confirmation_close_location": 0.55,
+    "volatility_spike_atr_multiplier": 1.8,
+}
+STOP_BUFFER_PCT = 0.0005
+
+
+@dataclass(frozen=True)
+class ZoneContext:
+    level_price: float
+    zone_low: float
+    zone_high: float
+    center: float
+
+
+def _merged_config(config: Optional[Dict[str, float]]) -> Dict[str, float]:
+    merged = dict(DEFAULT_CONFIG)
+    if config:
+        merged.update(config)
+    return merged
+
+
+def _normalize_candles(candles: pd.DataFrame) -> pd.DataFrame:
+    normalized = candles.copy()
+    if "datetime" in normalized.columns and not normalized["datetime"].isna().all():
+        normalized = normalized.sort_values("datetime").reset_index(drop=True)
+    return normalized.reset_index(drop=True)
+
+
+def _zone_from_level(level: Level, config: Dict[str, float]) -> ZoneContext:
+    if level.zone_low is not None and level.zone_high is not None:
+        zone_low = float(level.zone_low)
+        zone_high = float(level.zone_high)
+    else:
+        buffer = max(abs(level.price) * config["zone_buffer_pct"], 0.01)
+        zone_low = float(level.price) - buffer
+        zone_high = float(level.price) + buffer
+    center = float(level.center) if level.center is not None else (zone_low + zone_high) / 2.0
+    return ZoneContext(level_price=float(level.price), zone_low=zone_low, zone_high=zone_high, center=center)
+
+
+def _calculate_atr_from_intraday(candles: pd.DataFrame, period: int = 6) -> float:
+    if candles.empty:
+        return 0.0
+    sample = candles.tail(max(period, 3)).copy()
+    sample["range"] = sample["high"].astype(float) - sample["low"].astype(float)
+    average_range = float(sample["range"].mean())
+    if average_range <= 0:
+        return 0.0
+    filtered = sample[(sample["range"] < average_range * 2.0) & (sample["range"] > average_range / 3.0)]
+    if filtered.empty:
+        filtered = sample
+    return round(float(filtered["range"].mean()), 4)
+
+
+def _resolve_atr(candles: pd.DataFrame, level: Level, atr: Optional[float]) -> float:
+    if atr is not None and atr > 0:
+        return float(atr)
+    if level.atr_value > 0:
+        return float(level.atr_value)
+    return _calculate_atr_from_intraday(candles)
+
+
+def _determine_news_risk(news_context: Optional[Dict[str, object]]) -> str:
+    if not news_context:
+        return "LOW"
+    risk_level = str(news_context.get("risk_level", "")).upper()
+    if risk_level in {"LOW", "MEDIUM", "HIGH"}:
+        return risk_level
+    if bool(news_context.get("blocked")):
+        return "HIGH"
+    if news_context.get("matched_headlines"):
+        return "MEDIUM"
+    return "LOW"
+
+
+def _confirmation_count(news_risk: str) -> int:
+    return 2 if news_risk == "MEDIUM" else 1
+
+
+def _position_modifier(news_risk: str) -> float:
+    return 0.5 if news_risk == "MEDIUM" else 1.0
+
+
+def _trend_label(candles: pd.DataFrame) -> str:
+    trend = detect_trend(candles, lookback=min(len(candles), 6)) if len(candles) >= 4 else "range"
+    if trend == "uptrend":
+        return "UP"
+    if trend == "downtrend":
+        return "DOWN"
+    return "RANGE"
+
+
+def _trend_context_ok(candles: pd.DataFrame, direction: Direction, atr_value: float) -> bool:
+    if len(candles) < 4:
+        return False
+    trend = detect_trend(candles, lookback=min(len(candles), 6))
+    closes = candles["close"].astype(float).tolist()
+    move = closes[-1] - closes[0]
+    minimum_directional_move = atr_value * 0.2 if atr_value > 0 else 0.2
+    if abs(move) < minimum_directional_move:
+        LOGGER.info("Rejected false breakout: flat/noisy market move=%.4f atr=%.4f", move, atr_value)
+        return False
+    if direction == "long":
+        return trend in {"downtrend", "trend_break"} or move < 0
+    return trend in {"uptrend", "trend_break"} or move > 0
+
+
+def _confirmation_is_strong(candle: pd.Series, direction: Direction, minimum_close_location: float) -> bool:
+    if full_range(candle) <= 0:
+        return False
+    if direction == "long":
+        return is_bullish(candle) and close_location(candle) >= minimum_close_location
+    return is_bearish(candle) and close_location(candle) <= (1.0 - minimum_close_location)
+
+
+def _confirmations_ok(confirmations: Sequence[pd.Series], direction: Direction, minimum_close_location: float) -> bool:
+    return all(_confirmation_is_strong(candle, direction, minimum_close_location) for candle in confirmations)
+
+
+def _target_for_direction(level: Level, direction: Direction, entry: float, stop: float) -> Optional[float]:
+    next_level = level.nearest_upper_level if direction == "long" else level.nearest_lower_level
+    if isinstance(next_level, float):
+        target_is_usable = (direction == "long" and next_level > entry) or (direction == "short" and next_level < entry)
+        if target_is_usable:
+            if reward_risk_ratio(entry, stop, next_level) >= 2.0:
+                return round(next_level, 2)
+            return None
+    risk = abs(entry - stop)
+    if risk <= 0:
+        return None
+    fallback_target = entry + (3 * risk if direction == "long" else -3 * risk)
+    return round(fallback_target, 2)
+
+
+def _stop_buffer(level: Level) -> float:
+    return max(abs(float(level.price)) * STOP_BUFFER_PCT, 0.01)
+
+
+def _evaluate_atr_status(entry: float, target: float, zone: ZoneContext, atr_value: float, config: Dict[str, float]) -> str:
+    if atr_value <= 0:
+        return "LOW"
+    target_distance = abs(target - entry)
+    if target_distance < atr_value * config["minimum_target_atr"]:
+        return "LOW"
+    if abs(entry - zone.center) > atr_value * config["exhausted_move_atr_pct"]:
+        return "OVEREXTENDED"
+    return "OK"
+
+
+def _atr_filters_ok(entry: float, target: float, zone: ZoneContext, atr_value: float, config: Dict[str, float]) -> bool:
+    return _evaluate_atr_status(entry, target, zone, atr_value, config) == "OK"
+
+
+def _atr_used_from_zone(entry: float, zone: ZoneContext, atr_value: float) -> Optional[float]:
+    if atr_value <= 0:
+        return None
+    return abs(entry - zone.center) / atr_value
+
+
+def _current_session_candles(candles: pd.DataFrame) -> pd.DataFrame:
+    for column in ("datetime", "date"):
+        if column not in candles.columns:
+            continue
+        parsed = pd.to_datetime(candles[column], errors="coerce")
+        if parsed.notna().any():
+            latest_session = parsed.dropna().iloc[-1].date()
+            session = candles.loc[parsed.dt.date == latest_session]
+            if not session.empty:
+                return session
+    return candles.tail(3)
+
+
+def _atr_used_from_session(entry: float, candles: pd.DataFrame, atr_value: float) -> Optional[float]:
+    if atr_value <= 0 or candles.empty:
+        return None
+    session = _current_session_candles(candles)
+    session_low = float(session["low"].astype(float).min())
+    session_high = float(session["high"].astype(float).max())
+    return max(abs(entry - session_low), abs(session_high - entry)) / atr_value
+
+
+def _is_volatility_spike(candles: Iterable[pd.Series], atr_value: float, config: Dict[str, float]) -> bool:
+    if atr_value <= 0:
+        return False
+    return any(full_range(candle) > atr_value * config["volatility_spike_atr_multiplier"] for candle in candles)
+
+
+def _build_context(
+    *,
+    trend: str,
+    atr_status: str,
+    news_risk: str,
+    zone: ZoneContext,
+    pattern: PatternName,
+) -> Dict[str, object]:
+    return {
+        "trend": trend,
+        "atr_status": atr_status,
+        "news_risk": news_risk,
+        "zone": [round(zone.zone_low, 2), round(zone.zone_high, 2)],
+        "pattern": pattern,
+    }
+
+
+def _dedupe_reasons(reasons: Sequence[str]) -> List[str]:
+    deduped: List[str] = []
+    for reason in reasons:
+        normalized = reason.strip()
+        if normalized and normalized not in deduped:
+            deduped.append(normalized)
+    return deduped
+
+
+def _build_signal_dict(
+    *,
+    signal: SignalSide,
+    entry: Optional[float],
+    stop: Optional[float],
+    target: Optional[float],
+    news_risk: str,
+    score: float,
+    reasons: Sequence[str],
+    context: Dict[str, object],
+    atr: Optional[float] = None,
+    atr_used: Optional[float] = None,
+    level_strength: Optional[float] = None,
+    metadata: Optional[Dict[str, object]] = None,
+) -> Dict[str, object]:
+    risk_per_share = abs(float(entry) - float(stop)) if entry is not None and stop is not None else None
+    reward_risk = reward_risk_ratio(float(entry), float(stop), float(target)) if entry is not None and stop is not None and target is not None else None
+    return {
+        "signal": signal,
+        "entry": round(entry, 2) if entry is not None else None,
+        "stop": round(stop, 2) if stop is not None else None,
+        "target": round(target, 2) if target is not None else None,
+        "risk_per_share": round(risk_per_share, 4) if risk_per_share is not None else None,
+        "reward_risk": round(reward_risk, 2) if reward_risk is not None else None,
+        "atr": round(float(atr), 4) if atr is not None and atr > 0 else None,
+        "atr_used": round(float(atr_used), 4) if atr_used is not None else None,
+        "level_strength": round(float(level_strength), 2) if level_strength is not None else None,
+        "position_modifier": _position_modifier(news_risk),
+        "confidence": round(min(score, 100.0) / 100.0, 2),
+        "reason": _dedupe_reasons(reasons),
+        "context": context,
+        "metadata": metadata or {},
+    }
+
+
+def _empty_result(reasons: Sequence[str] | str, context: Optional[Dict[str, object]] = None) -> Dict[str, object]:
+    reason_list = [reasons] if isinstance(reasons, str) else list(reasons)
+    return {
+        "signal": "NONE",
+        "entry": None,
+        "stop": None,
+        "target": None,
+        "position_modifier": 1.0,
+        "confidence": 0.0,
+        "reason": _dedupe_reasons(reason_list),
+        "context": context or {
+            "trend": "RANGE",
+            "atr_status": "LOW",
+            "news_risk": "LOW",
+            "zone": [0.0, 0.0],
+            "pattern": "NONE",
+        },
+    }
+
+
+def _long_score(false_candle: pd.Series, confirmations: Sequence[pd.Series], zone: ZoneContext, atr_value: float) -> float:
+    wick_ratio = lower_wick(false_candle) / max(body_size(false_candle), 0.01)
+    score = 35.0
+    score += min(20.0, wick_ratio * 8.0)
+    score += 10.0 if float(false_candle["close"]) > zone.zone_low else 0.0
+    score += 10.0 if all(float(candle["close"]) >= zone.zone_low for candle in confirmations) else 0.0
+    score += 10.0 if float(confirmations[-1]["close"]) > float(confirmations[0]["close"]) else 0.0
+    if atr_value > 0 and abs(float(confirmations[-1]["close"]) - zone.center) <= atr_value * 0.5:
+        score += 10.0
+    return score
+
+
+def _short_score(false_candle: pd.Series, confirmations: Sequence[pd.Series], zone: ZoneContext, atr_value: float) -> float:
+    wick_ratio = upper_wick(false_candle) / max(body_size(false_candle), 0.01)
+    score = 35.0
+    score += min(20.0, wick_ratio * 8.0)
+    score += 10.0 if float(false_candle["close"]) < zone.zone_high else 0.0
+    score += 10.0 if all(float(candle["close"]) <= zone.zone_high for candle in confirmations) else 0.0
+    score += 10.0 if float(confirmations[-1]["close"]) < float(confirmations[0]["close"]) else 0.0
+    if atr_value > 0 and abs(float(confirmations[-1]["close"]) - zone.center) <= atr_value * 0.5:
+        score += 10.0
+    return score
+
+
+def _dict_to_trade_signal(symbol: str, level: Level, strategy_name: str, result: Dict[str, object]) -> Optional[TradeSignal]:
+    if result.get("signal") not in {"BUY", "SELL"}:
+        return None
+    if result.get("entry") is None or result.get("stop") is None or result.get("target") is None:
+        return None
+    direction = "long" if result["signal"] == "BUY" else "short"
+    context = result.get("context", {})
+    reasons = ", ".join(str(reason) for reason in result.get("reason", []))
+    risk_per_share = float(result.get("risk_per_share") or abs(float(result["entry"]) - float(result["stop"])))
+    reward_risk = float(result.get("reward_risk") or reward_risk_ratio(float(result["entry"]), float(result["stop"]), float(result["target"])))
+    confidence = float(result.get("confidence", 0.0) or 0.0)
+    metadata = result.get("metadata", {})
+    if not isinstance(metadata, dict):
+        metadata = {}
+    notes = [
+        f"reasons={reasons}" if reasons else "reasons=none",
+        f"confidence={result.get('confidence', 0.0)}",
+        f"position_modifier={result.get('position_modifier', 1.0)}",
+        (
+            f"context trend={context.get('trend')} atr={context.get('atr_status')} "
+            f"news={context.get('news_risk')} pattern={context.get('pattern')}"
+        ),
+    ]
+    return TradeSignal(
+        symbol=symbol,
+        strategy=strategy_name,
+        signal=str(result["signal"]),
+        direction=direction,
+        entry=float(result["entry"]),
+        stop=float(result["stop"]),
+        target=float(result["target"]),
+        level_price=level.price,
+        level_type=level.type,
+        nearest_upper_level=level.nearest_upper_level,
+        nearest_lower_level=level.nearest_lower_level,
+        reward_risk=round(reward_risk, 2),
+        risk_per_share=round(risk_per_share, 4),
+        atr=float(result["atr"]) if result.get("atr") is not None else (float(level.atr_value) if level.atr_value else None),
+        atr_used=float(result["atr_used"]) if result.get("atr_used") is not None else None,
+        confidence=confidence,
+        level_strength=float(result.get("level_strength") or level.strength_score or level.strength or 0.0),
+        metadata=metadata,
+        notes=notes,
+    )
+
+
+def detect_false_breakout(
+    candles: pd.DataFrame,
+    level: Level,
+    atr: Optional[float] = None,
+    news_context: Optional[Dict[str, object]] = None,
+    config: Optional[Dict[str, float]] = None,
+) -> Dict[str, object]:
+    """Detect a one-bar false breakout using a zone-aware, ATR-filtered workflow."""
+    merged_config = _merged_config(config)
+    normalized = _normalize_candles(candles)
+    news_risk = _determine_news_risk(news_context)
+    zone = _zone_from_level(level, merged_config)
+
+    if len(normalized) < 3:
+        context = _build_context(trend="RANGE", atr_status="LOW", news_risk=news_risk, zone=zone, pattern="ONE_BAR")
+        return _empty_result(["insufficient candles"], context)
+
+    confirmation_count = _confirmation_count(news_risk)
+    if len(normalized) < confirmation_count + 2:
+        context = _build_context(trend="RANGE", atr_status="LOW", news_risk=news_risk, zone=zone, pattern="ONE_BAR")
+        return _empty_result(["insufficient candles"], context)
+
+    false_candle = normalized.iloc[-(confirmation_count + 1)]
+    confirmations = [normalized.iloc[-idx] for idx in range(confirmation_count, 0, -1)]
+    prior_context = normalized.iloc[: -(confirmation_count + 1)]
+    if len(prior_context) < 4:
+        prior_context = normalized.iloc[: -(confirmation_count)]
+
+    atr_value = _resolve_atr(normalized, level, atr)
+    trend_label = _trend_label(prior_context if len(prior_context) >= 4 else normalized.head(len(normalized) - confirmation_count))
+    context = _build_context(
+        trend=trend_label,
+        atr_status="OK" if atr_value > 0 else "LOW",
+        news_risk=news_risk,
+        zone=zone,
+        pattern="ONE_BAR",
+    )
+    LOGGER.info(
+        "One-bar false breakout level=%.2f zone=(%.2f, %.2f) atr=%.4f news_risk=%s",
+        zone.level_price,
+        zone.zone_low,
+        zone.zone_high,
+        atr_value,
+        news_risk,
+    )
+
+    reasons: List[str] = []
+    if news_risk == "HIGH":
+        reasons.append("news risk high")
+        return _empty_result(reasons, context)
+
+    if _is_volatility_spike([false_candle, *confirmations], atr_value, merged_config):
+        reasons.append("abnormal volatility spike")
+        return _empty_result(reasons, context)
+
+    min_close_location = merged_config["confirmation_close_location"]
+
+    broke_below = float(false_candle["low"]) < zone.zone_low
+    returned_above = float(false_candle["close"]) > zone.zone_low
+    strong_lower_rejection = lower_wick(false_candle) > body_size(false_candle)
+    if broke_below and returned_above and strong_lower_rejection:
+        if not _confirmations_ok(confirmations, "long", min_close_location):
+            reasons.append("no confirmation candle")
+            return _empty_result(reasons, context)
+        if not _trend_context_ok(prior_context if len(prior_context) >= 4 else normalized.head(len(normalized) - confirmation_count), "long", atr_value):
+            reasons.append("trend mismatch")
+            return _empty_result(reasons, context)
+        entry = float(confirmations[-1]["close"])
+        stop = min(float(false_candle["low"]), *(float(candle["low"]) for candle in confirmations)) - _stop_buffer(level)
+        target = _target_for_direction(level, "long", entry, stop)
+        if target is None:
+            reasons.append("ATR too small")
+            context["atr_status"] = "LOW"
+            return _empty_result(reasons, context)
+        context["atr_status"] = _evaluate_atr_status(entry, target, zone, atr_value, merged_config)
+        if context["atr_status"] == "LOW":
+            reasons.append("ATR too small")
+            return _empty_result(reasons, context)
+        if context["atr_status"] == "OVEREXTENDED":
+            reasons.append("move already extended")
+            return _empty_result(reasons, context)
+        atr_used = _atr_used_from_session(entry, normalized, atr_value)
+        if atr_used is not None and atr_used > SETTINGS.strategy.atr_travel_limit_pct:
+            reasons.append("move already extended")
+            context["atr_status"] = "OVEREXTENDED"
+            return _empty_result(reasons, context)
+        score = _long_score(false_candle, confirmations, zone, atr_value)
+        if score < merged_config["score_threshold"]:
+            reasons.append("weak setup score")
+            return _empty_result(reasons, context)
+        reasons.append("clean false breakout return")
+        LOGGER.info("Detected one-bar long false breakout at %.2f score=%.2f", entry, score)
+        return _build_signal_dict(
+            signal="BUY",
+            entry=entry,
+            stop=stop,
+            target=target,
+            news_risk=news_risk,
+            score=score,
+            reasons=reasons,
+            context=context,
+            atr=atr_value,
+            atr_used=atr_used,
+            level_strength=float(level.strength_score or level.strength or 0.0),
+            metadata={
+                "level_price": level.price,
+                "zone_low": zone.zone_low,
+                "zone_high": zone.zone_high,
+                "confirmation_type": "bullish_confirmation",
+            },
+        )
+
+    broke_above = float(false_candle["high"]) > zone.zone_high
+    returned_below = float(false_candle["close"]) < zone.zone_high
+    strong_upper_rejection = upper_wick(false_candle) > body_size(false_candle)
+    if broke_above and returned_below and strong_upper_rejection:
+        if not _confirmations_ok(confirmations, "short", min_close_location):
+            reasons.append("no confirmation candle")
+            return _empty_result(reasons, context)
+        if not _trend_context_ok(prior_context if len(prior_context) >= 4 else normalized.head(len(normalized) - confirmation_count), "short", atr_value):
+            reasons.append("trend mismatch")
+            return _empty_result(reasons, context)
+        entry = float(confirmations[-1]["close"])
+        stop = max(float(false_candle["high"]), *(float(candle["high"]) for candle in confirmations)) + _stop_buffer(level)
+        target = _target_for_direction(level, "short", entry, stop)
+        if target is None:
+            reasons.append("ATR too small")
+            context["atr_status"] = "LOW"
+            return _empty_result(reasons, context)
+        context["atr_status"] = _evaluate_atr_status(entry, target, zone, atr_value, merged_config)
+        if context["atr_status"] == "LOW":
+            reasons.append("ATR too small")
+            return _empty_result(reasons, context)
+        if context["atr_status"] == "OVEREXTENDED":
+            reasons.append("move already extended")
+            return _empty_result(reasons, context)
+        atr_used = _atr_used_from_session(entry, normalized, atr_value)
+        if atr_used is not None and atr_used > SETTINGS.strategy.atr_travel_limit_pct:
+            reasons.append("move already extended")
+            context["atr_status"] = "OVEREXTENDED"
+            return _empty_result(reasons, context)
+        score = _short_score(false_candle, confirmations, zone, atr_value)
+        if score < merged_config["score_threshold"]:
+            reasons.append("weak setup score")
+            return _empty_result(reasons, context)
+        reasons.append("clean false breakout return")
+        LOGGER.info("Detected one-bar short false breakout at %.2f score=%.2f", entry, score)
+        return _build_signal_dict(
+            signal="SELL",
+            entry=entry,
+            stop=stop,
+            target=target,
+            news_risk=news_risk,
+            score=score,
+            reasons=reasons,
+            context=context,
+            atr=atr_value,
+            atr_used=atr_used,
+            level_strength=float(level.strength_score or level.strength or 0.0),
+            metadata={
+                "level_price": level.price,
+                "zone_low": zone.zone_low,
+                "zone_high": zone.zone_high,
+                "confirmation_type": "bearish_confirmation",
+            },
+        )
+
+    if not broke_below and not broke_above:
+        reasons.append("no breakout")
+    elif broke_below and not returned_above:
+        reasons.append("no return inside zone")
+    elif broke_above and not returned_below:
+        reasons.append("no return inside zone")
+    else:
+        reasons.append("weak rejection wick")
+    return _empty_result(reasons, context)
+
+
+def detect_false_breakout_one_bar(
+    symbol: str,
+    bars: pd.DataFrame,
+    level: Level,
+    atr: Optional[float] = None,
+    news_context: Optional[Dict[str, object]] = None,
+    config: Optional[Dict[str, float]] = None,
+    decision_sink: decision_log.DecisionSink = None,
+) -> Optional[TradeSignal]:
+    """Router-compatible wrapper returning a TradeSignal for one-bar false breakouts."""
+    result = detect_false_breakout(bars, level, atr=atr, news_context=news_context, config=config)
+    decision_log.record(decision_sink, symbol, level, "false_breakout_one_bar", result)
+    return _dict_to_trade_signal(symbol, level, "false_breakout_one_bar", result)

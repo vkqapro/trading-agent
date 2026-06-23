@@ -13,3 +13,12 @@ def calculate_position_size(account_equity: float, risk_pct: float, entry_price:
     total_risk_budget = account_equity * risk_pct
     shares = math.floor(total_risk_budget / risk_per_share)
     return max(shares, 0)
+
+
+def position_value_ok(quantity: int, entry_price: float, max_position_value: float, cash_available: float | None = None) -> bool:
+    notional = quantity * entry_price
+    if quantity < 1 or notional > max_position_value:
+        return False
+    if cash_available is not None and notional > cash_available:
+        return False
+    return True
