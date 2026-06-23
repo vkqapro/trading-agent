@@ -654,6 +654,8 @@ function NewsModal({items=[], onClose}) {
 ═══════════════════════════════════════════════════════════════════════════ */
 function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
   const [data, setData] = useState(null);
+  const [chartSymbol, setChartSymbol] = useState('AAPL');
+  const [tickerQuery, setTickerQuery] = useState('AAPL');
   const [tf, setTf] = useState('1H');
   const [range, setRange] = useState('ALL');
   const [showRaw, setShowRaw] = useState(false);
@@ -661,18 +663,33 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
   const [showVol, setShowVol] = useState(true);
   const [bars, setBars] = useState([]);
   const [barsInfo, setBarsInfo] = useState({stale:false,lastDate:null});
-  const [aaplPlan, setAaplPlan] = useState(null);
+  const [chartPlan, setChartPlan] = useState(null);
 
-  useEffect(()=>{ fetch(`${API}/dashboard`).then(r=>r.json()).then(d=>{ setData(d); setNewsItems(d.news_items||[]); }); },[refreshKey]);
+  useEffect(()=>{ fetch(`${API}/dashboard`).then(r=>r.json()).then(d=>{
+    setData(d);
+    setNewsItems(d.news_items||[]);
+    if(!(d.symbols||[]).includes(chartSymbol) && d.symbols?.length){
+      setChartSymbol(d.symbols[0]);
+      setTickerQuery(d.symbols[0]);
+    }
+  }); },[refreshKey]);
   useEffect(()=>{
-    const sym = 'AAPL';
     const apitf = TF_API[tf]||'daily';
-    fetch(`${API}/bars/${sym}/${apitf}`).then(r=>r.json()).then(d=>{setBars(d.bars||[]);setBarsInfo({stale:d.stale,lastDate:d.last_date});});
-    fetch(`${API}/preopen/${sym}`).then(r=>r.json()).then(setAaplPlan).catch(()=>{});
-  },[tf, refreshKey]);
+    fetch(`${API}/bars/${chartSymbol}/${apitf}`).then(r=>r.json()).then(d=>{setBars(d.bars||[]);setBarsInfo({stale:d.stale,lastDate:d.last_date});});
+    fetch(`${API}/preopen/${chartSymbol}`).then(r=>r.json()).then(setChartPlan).catch(()=>setChartPlan(null));
+  },[chartSymbol, tf, refreshKey]);
 
   if(!data) return <Spinner/>;
-  const {metrics:m, risk, opp_rows, attempt_log} = data;
+  const {metrics:m, risk, opp_rows, attempt_log, symbols=[]} = data;
+  const selectTicker = value => {
+    const symbol = String(value||'').trim().toUpperCase();
+    if(symbols.includes(symbol)){
+      setTickerQuery(symbol);
+      setChartSymbol(symbol);
+    } else {
+      setTickerQuery(chartSymbol);
+    }
+  };
 
   const metricCards = [
     {label:'Watchlist', icon:'visibility', value:m.watchlist, sub:'scanned pre-market'},
@@ -743,11 +760,32 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
         </GlassCard>
       </div>
 
+      {/* Chart ticker */}
+      <label style={{display:'flex',flexDirection:'column',gap:8,maxWidth:360}}>
+        <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.08em',color:C.outline}}>FIND TICKER</span>
+        <div style={{display:'flex',alignItems:'center',gap:9,padding:'11px 14px',borderRadius:9,background:R(C.surfLowest,0.7),border:`1px solid ${R(C.outline,0.2)}`}}>
+          <Icon n="search" size={17} color={C.outline}/>
+          <input value={tickerQuery} list="dashboard-symbols"
+            onChange={e=>{
+              const value=e.target.value.toUpperCase();
+              setTickerQuery(value);
+              if(symbols.includes(value)) setChartSymbol(value);
+            }}
+            onKeyDown={e=>{if(e.key==='Enter') selectTicker(e.currentTarget.value);}}
+            onBlur={e=>selectTicker(e.currentTarget.value)}
+            placeholder="Symbol"
+            style={{flex:1,minWidth:0,background:'transparent',border:'none',outline:'none',color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:14,letterSpacing:'0.04em',textTransform:'uppercase'}}/>
+          <datalist id="dashboard-symbols">
+            {symbols.map(symbol=><option key={symbol} value={symbol}/>)}
+          </datalist>
+        </div>
+      </label>
+
       {/* Chart */}
       <GlassCard style={{overflow:'hidden'}}>
         <div style={{padding:'18px 20px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:10}}>
           <div style={{display:'flex',alignItems:'center',gap:11}}>
-            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onSurf}}>AAPL · {TF_LABEL[tf]} Structure</span>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onSurf}}>{chartSymbol} · {TF_LABEL[tf]} Structure</span>
             <span style={{padding:'3px 9px',borderRadius:9999,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.cyan,background:R(C.cyan,0.1),border:`1px solid ${R(C.cyan,0.28)}`}}>GERCHIK LEVELS MAPPED</span>
           </div>
           <TfPills value={tf} onChange={setTf}/>
@@ -766,7 +804,7 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
           </div>
         </div>
         <div style={{padding:'18px 20px'}}>
-          <CandleChart bars={visBars} levels={buildChartLevels(aaplPlan?.trade_levels, aaplPlan?.raw_levels, showTrade, showRaw)} showVol={showVol} height={300} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
+          <CandleChart bars={visBars} levels={buildChartLevels(chartPlan?.trade_levels, chartPlan?.raw_levels, showTrade, showRaw)} showVol={showVol} height={300} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
         </div>
       </GlassCard>
 

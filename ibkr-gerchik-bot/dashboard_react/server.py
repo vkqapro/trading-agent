@@ -135,6 +135,7 @@ def api_dashboard():
             "fill_total": fill_total,
         },
         "news_items": news_items,
+        "symbols": sorted((watchlist or {}).keys()),
         "opp_rows": opp_rows[:25],
         "attempt_log": recent_attempts,
         "risk": {
