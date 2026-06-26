@@ -17,6 +17,19 @@ class MarketDataService:
 
     def __init__(self, broker: IBKRClient) -> None:
         self.broker = broker
+        self._delayed_fallback_enabled = False
+
+    def enable_delayed_fallback(self) -> None:
+        """Allow delayed data when the account lacks a live subscription."""
+        self.broker.request_market_data_type(3)
+        self._delayed_fallback_enabled = True
+
+    def reconnect(self) -> None:
+        """Refresh the broker session and restore the collector data mode."""
+        self.broker.disconnect()
+        self.broker.connect()
+        if self._delayed_fallback_enabled:
+            self.broker.request_market_data_type(3)
 
     @staticmethod
     def _normalize_bars_frame(bars: pd.DataFrame) -> pd.DataFrame:
@@ -25,16 +38,40 @@ class MarketDataService:
 
         normalized = bars[["date", "open", "high", "low", "close", "volume"]].copy()
         normalized["date"] = pd.to_datetime(normalized["date"], errors="coerce")
-        normalized = normalized.dropna(subset=["date"]).sort_values("date").reset_index(drop=True)
+        normalized = (
+            normalized.dropna(subset=["date"])
+            .sort_values("date")
+            .drop_duplicates(subset=["date"], keep="last")
+            .reset_index(drop=True)
+        )
         return normalized
 
-    def get_intraday_bars(self, symbol: str, duration: str = "5 D", bar_size: str = "5 mins") -> pd.DataFrame:
+    def get_intraday_bars(
+        self,
+        symbol: str,
+        duration: str = "5 D",
+        bar_size: str = "5 mins",
+        *,
+        include_current_session: bool = False,
+    ) -> pd.DataFrame:
         bars = self.broker.get_historical_bars(symbol=symbol, duration=duration, bar_size=bar_size)
-        if bars is None:
+        frames = [bars] if bars is not None and not bars.empty else []
+
+        # IBKR treats multi-day duration strings as completed trading sessions.
+        # During market hours that response can omit the entire current partial
+        # session, so stitch in a separate one-day request.
+        if include_current_session and duration.strip().upper() != "1 D":
+            current_session = self.broker.get_historical_bars(
+                symbol=symbol,
+                duration="1 D",
+                bar_size=bar_size,
+            )
+            if current_session is not None and not current_session.empty:
+                frames.append(current_session)
+
+        if not frames:
             return pd.DataFrame(columns=["date", "open", "high", "low", "close", "volume"])
-        if bars.empty:
-            return pd.DataFrame(columns=["date", "open", "high", "low", "close", "volume"])
-        return self._normalize_bars_frame(bars)
+        return self._normalize_bars_frame(pd.concat(frames, ignore_index=True))
 
     def get_daily_bars(self, symbol: str, duration: str | None = None) -> pd.DataFrame:
         resolved_duration = duration or f"{SETTINGS.strategy.premarket_daily_lookback_days} D"
@@ -42,6 +79,20 @@ class MarketDataService:
         if bars is None:
             return pd.DataFrame(columns=["date", "open", "high", "low", "close", "volume"])
         if bars.empty:
+            return pd.DataFrame(columns=["date", "open", "high", "low", "close", "volume"])
+        return self._normalize_bars_frame(bars)
+
+    def get_weekly_bars(self, symbol: str, duration: str | None = None) -> pd.DataFrame:
+        resolved_duration = duration or SETTINGS.strategy.chart_weekly_duration
+        bars = self.broker.get_historical_bars(symbol=symbol, duration=resolved_duration, bar_size="1 week")
+        if bars is None or bars.empty:
+            return pd.DataFrame(columns=["date", "open", "high", "low", "close", "volume"])
+        return self._normalize_bars_frame(bars)
+
+    def get_4h_bars(self, symbol: str, duration: str | None = None) -> pd.DataFrame:
+        resolved_duration = duration or SETTINGS.strategy.chart_4h_duration
+        bars = self.broker.get_historical_bars(symbol=symbol, duration=resolved_duration, bar_size="4 hours")
+        if bars is None or bars.empty:
             return pd.DataFrame(columns=["date", "open", "high", "low", "close", "volume"])
         return self._normalize_bars_frame(bars)
 

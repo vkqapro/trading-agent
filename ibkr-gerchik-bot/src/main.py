@@ -660,6 +660,7 @@ def _run_connected_job(
     try:
         market_data = MarketDataService(broker)
         if job_name == "market_data":
+            market_data.enable_delayed_fallback()
             watchlist = state.get("watchlist", {})
             if not isinstance(watchlist, dict) or not watchlist:
                 watchlist = {symbol: {} for symbol in SETTINGS.symbols}

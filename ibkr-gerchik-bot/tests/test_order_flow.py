@@ -16,6 +16,10 @@ from src.jobs.session_utils import calculate_open_risk_amount, run_entry_scan
 from src.strategy.signal_models import TradeSignal
 
 
+def _chart_history_ready() -> dict:
+    return {"ready": True, "missing": []}
+
+
 def _sanm_signal() -> TradeSignal:
     return TradeSignal(
         symbol="SANM",
@@ -309,6 +313,7 @@ class OrderFlowTests(unittest.TestCase):
                 "SANM": {
                     "daily_atr": 30.0,
                     "technical_atr": 3.0,
+                    "chart_history": _chart_history_ready(),
                     "levels": [
                         {
                             "symbol": "SANM",
@@ -380,6 +385,7 @@ class OrderFlowTests(unittest.TestCase):
                 "SANM": {
                     "daily_atr": 30.0,
                     "technical_atr": 1.0,
+                    "chart_history": _chart_history_ready(),
                     "levels": [
                         {
                             "symbol": "SANM",
@@ -439,6 +445,7 @@ class OrderFlowTests(unittest.TestCase):
             "KO": {
                 "daily_atr": 40.0,
                 "technical_atr": 10.0,
+                "chart_history": _chart_history_ready(),
                 "levels": [],
             }
         }
@@ -492,6 +499,7 @@ class OrderFlowTests(unittest.TestCase):
                 "SANM": {
                     "daily_atr": 5.0,
                     "technical_atr": 10.0,
+                    "chart_history": _chart_history_ready(),
                     "levels": [
                         {
                             "symbol": "SANM",

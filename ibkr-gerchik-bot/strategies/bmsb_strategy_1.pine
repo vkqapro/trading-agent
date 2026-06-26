@@ -1,0 +1,50 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// Converted from Bull Market Support Band by zkdev
+
+//@version=6
+strategy("BMSB Strategy 1", overlay=true,
+     initial_capital=1000,
+     default_qty_type=strategy.percent_of_equity,
+     default_qty_value=100,
+     commission_type=strategy.commission.percent,
+     commission_value=0.1,
+     slippage=0,
+     margin_long=0,
+     margin_short=0,
+     use_bar_magnifier=false,
+     calc_on_order_fills=false,
+     calc_on_every_tick=false,
+     fill_orders_on_standard_ohlc=true)
+
+// Inputs
+i_start = input.time(timestamp("2018-01-01"), "Start Date",
+     tooltip="First candle date included in the strategy trading window. Match this to the Python backtest start date.")
+i_end = input.time(timestamp("2026-04-16"), "End Date",
+     tooltip="Last candle date included in the strategy trading window. Match this to the Python backtest end date.")
+i_sma_length = input.int(20, "Weekly SMA Length", minval=1,
+     tooltip="Length of the weekly simple moving average used for the Bull Market Support Band.")
+i_ema_length = input.int(21, "Weekly EMA Length", minval=1,
+     tooltip="Length of the weekly exponential moving average used for the Bull Market Support Band.")
+
+// Weekly Bull Market Support Band values, requested without lookahead.
+out_sma = request.security(syminfo.tickerid, "W", ta.sma(close, i_sma_length),
+     gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+out_ema = request.security(syminfo.tickerid, "W", ta.ema(close, i_ema_length),
+     gaps=barmerge.gaps_off, lookahead=barmerge.lookahead_off)
+
+// Stateful crossover calls are hoisted for Pine v6.
+long_entry_signal = ta.crossover(out_ema, out_sma)
+long_exit_signal = ta.crossunder(out_ema, out_sma)
+
+in_range = time >= i_start and time <= i_end
+
+if in_range and long_entry_signal
+    strategy.entry("Long", strategy.long)
+
+if in_range and long_exit_signal
+    strategy.close("Long")
+
+sma_plot = plot(out_sma, color=color.new(color.red, 0), title="20w SMA")
+ema_plot = plot(out_ema, color=color.new(color.green, 0), title="21w EMA")
+
+fill(sma_plot, ema_plot, color=color.new(color.orange, 75), fillgaps=true)

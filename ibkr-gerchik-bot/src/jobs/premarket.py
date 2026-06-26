@@ -5,7 +5,8 @@ from __future__ import annotations
 from typing import Dict, List, Optional, Sequence, Tuple
 
 from src.config import SETTINGS, append_markdown_log
-from src.data.bar_store import save_bars
+from src.data.bar_store import load_bars, save_bars
+from src.data.chart_history import ensure_required_chart_history
 from src.data.market_data import MarketDataService
 from src.data.news import NewsService
 from src.data.news_filter import NewsRiskFilter
@@ -131,12 +132,20 @@ def run_premarket(
     watchlist: Dict[str, object] = {}
     levels_log: Dict[str, object] = {}
     ideas: List[Dict[str, object]] = []
+    chart_history_blocked: Dict[str, object] = {}
     macro_risk = news_filter.get_macro_risk_context()
     earnings = news_service.fetch_earnings_calendar(symbols)
     earnings_by_symbol = {str(item.get("symbol", "")): item for item in earnings}
 
     for symbol in symbols:
-        daily_bars = market_data.get_daily_bars(symbol)
+        chart_history = ensure_required_chart_history(market_data, symbol)
+        if not chart_history.get("ready"):
+            chart_history_blocked[symbol] = chart_history
+            continue
+
+        daily_bars = load_bars(symbol, "daily")
+        if daily_bars.empty:
+            daily_bars = market_data.get_daily_bars(symbol, duration=SETTINGS.strategy.chart_daily_duration)
         intraday_bars = market_data.get_intraday_bars(symbol, duration="2 D", bar_size="15 mins")
         if daily_bars.empty or intraday_bars.empty:
             continue
@@ -168,6 +177,7 @@ def run_premarket(
             "news_provider_hits": symbol_news.get("provider_hits", []),
             "news_source_types": symbol_news.get("source_types", []),
             "earnings_event": earnings_by_symbol.get(symbol, {}),
+            "chart_history": chart_history,
             "level_spacing": spacing,
             "raw_levels": raw_level_dicts,
             "levels": [level.to_dict() for level in optimized_levels],
@@ -200,6 +210,7 @@ def run_premarket(
             "macro_risk": macro_risk["blocked"],
             "macro_news_sources": macro_risk.get("provider_hits", []),
             "macro_news_source_types": macro_risk.get("source_types", []),
+            "chart_history_blocked": chart_history_blocked or "none",
             "actionable_ideas": ideas or "none",
             "trade_decision": "HOLD" if macro_risk["blocked"] else "READY_FOR_OPEN_VALIDATION",
         },
@@ -217,6 +228,7 @@ def run_premarket(
             "macro_risk": macro_risk,
             "ideas": ideas,
             "research_symbols": list(symbols),
+            "chart_history_blocked": chart_history_blocked,
         },
     )
     report_path = export_premarket_levels_report(watchlist)

@@ -12,9 +12,11 @@ from __future__ import annotations
 
 import json
 import os
+import time
+from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict, Iterator, Optional
 from uuid import uuid4
 
 import pandas as pd
@@ -23,12 +25,55 @@ from src.config import LOGGER, MEMORY_DIR
 
 BARS_DIR = MEMORY_DIR / "bars"
 INDEX_PATH = BARS_DIR / "index.json"
+STORE_LOCK_PATH = BARS_DIR / ".bar_store.lock"
 
 _COLUMNS = ["date", "open", "high", "low", "close", "volume"]
+_STORE_LOCK_TIMEOUT_SECONDS = 30.0
+_STORE_LOCK_STALE_SECONDS = 120.0
 
 
 def _ensure_dir() -> None:
     BARS_DIR.mkdir(parents=True, exist_ok=True)
+
+
+@contextmanager
+def _bar_store_lock() -> Iterator[bool]:
+    """Serialize read/merge/replace across collector and trading processes."""
+    _ensure_dir()
+    lock_path = BARS_DIR / STORE_LOCK_PATH.name
+    token = f"{os.getpid()}|{uuid4().hex}"
+    deadline = time.monotonic() + _STORE_LOCK_TIMEOUT_SECONDS
+    acquired = False
+
+    while time.monotonic() < deadline:
+        try:
+            handle = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            try:
+                os.write(handle, token.encode("utf-8"))
+            finally:
+                os.close(handle)
+            acquired = True
+            break
+        except FileExistsError:
+            try:
+                age_seconds = time.time() - lock_path.stat().st_mtime
+                if age_seconds > _STORE_LOCK_STALE_SECONDS:
+                    lock_path.unlink(missing_ok=True)
+                    LOGGER.warning("Recovered stale bar-store lock: %s", lock_path.name)
+                    continue
+            except OSError:
+                pass
+            time.sleep(0.05)
+
+    try:
+        yield acquired
+    finally:
+        if acquired:
+            try:
+                if lock_path.read_text(encoding="utf-8") == token:
+                    lock_path.unlink(missing_ok=True)
+            except OSError:
+                pass
 
 
 def _safe_symbol(symbol: str) -> str:
@@ -69,7 +114,22 @@ def _normalize_frame(bars: pd.DataFrame) -> pd.DataFrame:
     frame = bars.copy()
     available = [column for column in _COLUMNS if column in frame.columns]
     frame = frame[available]
-    frame["date"] = pd.to_datetime(frame["date"], errors="coerce")
+    raw_dates = frame["date"]
+    parsed_samples = []
+    for value in raw_dates:
+        try:
+            parsed_samples.append(pd.Timestamp(value))
+        except (TypeError, ValueError):
+            continue
+    if any(value.tzinfo is not None for value in parsed_samples):
+        # CSV reloads use a fixed UTC-04:00 offset while IBKR uses
+        # US/Eastern. Parsing those together without utc=True silently turns
+        # the named-timezone rows into NaT.
+        frame["date"] = pd.to_datetime(raw_dates, errors="coerce", utc=True).dt.tz_convert(
+            "America/New_York"
+        )
+    else:
+        frame["date"] = pd.to_datetime(raw_dates, errors="coerce")
     for column in ("open", "high", "low", "close", "volume"):
         if column in frame:
             frame[column] = pd.to_numeric(frame[column], errors="coerce")
@@ -98,26 +158,30 @@ def save_bars(symbol: str, timeframe: str, bars: pd.DataFrame) -> Optional[Path]
         incoming = _normalize_frame(bars)
         if incoming.empty:
             return None
-        path = bar_path(symbol, timeframe)
-        existing = load_bars(symbol, timeframe) if path.exists() else pd.DataFrame(columns=_COLUMNS)
-        frame = (
-            incoming
-            if existing.empty
-            else _normalize_frame(pd.concat([existing, incoming], ignore_index=True))
-        )
-        temp_path = path.with_name(f"{path.name}.{os.getpid()}.{uuid4().hex}.tmp")
-        frame.to_csv(temp_path, index=False)
-        os.replace(temp_path, path)
+        with _bar_store_lock() as acquired:
+            if not acquired:
+                LOGGER.warning("Timed out waiting for bar-store lock: %s %s", symbol, timeframe)
+                return None
+            path = bar_path(symbol, timeframe)
+            existing = load_bars(symbol, timeframe) if path.exists() else pd.DataFrame(columns=_COLUMNS)
+            frame = (
+                incoming
+                if existing.empty
+                else _normalize_frame(pd.concat([existing, incoming], ignore_index=True))
+            )
+            temp_path = path.with_name(f"{path.name}.{os.getpid()}.{uuid4().hex}.tmp")
+            frame.to_csv(temp_path, index=False)
+            os.replace(temp_path, path)
 
-        index = _read_index()
-        index.setdefault(symbol.upper(), {})[timeframe] = {
-            "path": path.name,
-            "rows": int(len(frame)),
-            "updated_at": datetime.now().isoformat(timespec="seconds"),
-            "last_bar": str(frame["date"].iloc[-1]),
-        }
-        _write_index(index)
-        return path
+            index = _read_index()
+            index.setdefault(symbol.upper(), {})[timeframe] = {
+                "path": path.name,
+                "rows": int(len(frame)),
+                "updated_at": datetime.now().isoformat(timespec="seconds"),
+                "last_bar": str(frame["date"].iloc[-1]),
+            }
+            _write_index(index)
+            return path
     except Exception as exc:  # pragma: no cover - defensive, never break trading
         LOGGER.warning("Failed to persist %s %s bars: %s", symbol, timeframe, exc)
         return None

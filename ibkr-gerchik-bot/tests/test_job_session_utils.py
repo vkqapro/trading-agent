@@ -115,12 +115,26 @@ class JobSessionUtilsTests(TestCase):
             self.assertFalse(lock_path.exists())
         object.__setattr__(SETTINGS.paths, "runtime_dir", original_runtime_dir)
 
+    def test_job_loop_lock_recovers_recent_lock_for_dead_process(self) -> None:
+        original_runtime_dir = SETTINGS.paths.runtime_dir
+        with tempfile.TemporaryDirectory() as temp_dir:
+            object.__setattr__(SETTINGS.paths, "runtime_dir", original_runtime_dir.__class__(temp_dir))
+            lock_path = SETTINGS.paths.runtime_dir / "dead_process_session.lock"
+            lock_path.write_text("999999|recent\n", encoding="utf-8")
+
+            with job_loop_lock("dead_process_session") as acquired:
+                self.assertTrue(acquired)
+                self.assertTrue(lock_path.exists())
+
+            self.assertFalse(lock_path.exists())
+        object.__setattr__(SETTINGS.paths, "runtime_dir", original_runtime_dir)
+
     def test_job_loop_lock_waits_for_active_lock_to_clear(self) -> None:
         original_runtime_dir = SETTINGS.paths.runtime_dir
         with tempfile.TemporaryDirectory() as temp_dir:
             object.__setattr__(SETTINGS.paths, "runtime_dir", original_runtime_dir.__class__(temp_dir))
             lock_path = SETTINGS.paths.runtime_dir / "market_session.lock"
-            lock_path.write_text("123|active\n", encoding="utf-8")
+            lock_path.write_text(f"{os.getpid()}|active\n", encoding="utf-8")
             slept: list[float] = []
 
             def release_lock_after_sleep(seconds: float) -> None:

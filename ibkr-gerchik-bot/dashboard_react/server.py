@@ -13,7 +13,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from dataclasses import asdict
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any
 
 import pandas as pd
@@ -26,6 +26,7 @@ from zoneinfo import ZoneInfo
 
 from dashboard import data_access as da, forecast as fc
 from src.config import SETTINGS
+from src.data.chart_history import daily_bars_from_intraday
 
 app = FastAPI(title="Gerchik Bot Dashboard API", docs_url=None, redoc_url=None)
 app.add_middleware(
@@ -49,6 +50,8 @@ HERE = Path(__file__).parent
 app.mount("/static", StaticFiles(directory=HERE), name="static")
 
 ET = ZoneInfo(SETTINGS.trading_hours.timezone)
+BMSB_NEAR_CROSS_THRESHOLD_PCT = 0.75
+BMSB_RECENT_CROSS_DAYS = 2
 
 def _safe(fn, default=None):
     try:
@@ -65,6 +68,106 @@ def _market_session(now: datetime) -> tuple[str, str]:
     if m < 960:   return "OPEN", "Regular session"
     if m < 1200:  return "AFTER-HOURS", "After 16:00"
     return "CLOSED", "Overnight"
+
+
+def _daily_live_frame(symbol: str) -> pd.DataFrame:
+    daily = da.get_bars(symbol, "daily")
+    intraday = da.get_bars(symbol, "intraday_5m")
+    if intraday.empty:
+        return daily
+
+    derived_daily = daily_bars_from_intraday(intraday)
+    if derived_daily.empty:
+        return daily
+    if daily.empty:
+        return derived_daily
+
+    derived_dates = pd.to_datetime(derived_daily["date"], errors="coerce").dt.date
+    historical_dates = set(pd.to_datetime(daily["date"], errors="coerce").dropna().dt.date)
+    missing_or_live = derived_daily.loc[~derived_dates.isin(historical_dates)]
+    if missing_or_live.empty:
+        return daily
+    return pd.concat([daily, missing_or_live], ignore_index=True).sort_values("date")
+
+
+def _weekly_live_frame(symbol: str) -> pd.DataFrame:
+    """Return weekly OHLCV with current-week daily/live data stitched in."""
+    daily = _daily_live_frame(symbol)
+    if daily.empty:
+        return da.get_bars(symbol, "weekly")
+    frame = daily.set_index("date").sort_index()
+    return (
+        frame.resample("W-FRI")
+        .agg({"open": "first", "high": "max", "low": "min", "close": "last", "volume": "sum"})
+        .dropna(subset=["open", "high", "low", "close"])
+        .reset_index()
+    )
+
+
+def _bmsb_scan_symbol(symbol: str, today) -> dict | None:
+    weekly = _weekly_live_frame(symbol)
+    if weekly.empty or len(weekly) < 21:
+        return None
+
+    weekly = weekly.sort_values("date").tail(260).reset_index(drop=True)
+    close = pd.to_numeric(weekly["close"], errors="coerce")
+    weekly["sma20"] = close.rolling(20).mean()
+    weekly["ema21"] = close.ewm(span=21, adjust=False).mean()
+    ready = weekly.dropna(subset=["sma20", "ema21", "close"])
+    if len(ready) < 2:
+        return None
+
+    prev = ready.iloc[-2]
+    curr = ready.iloc[-1]
+    prev_diff = float(prev["ema21"] - prev["sma20"])
+    curr_diff = float(curr["ema21"] - curr["sma20"])
+    close_price = float(curr["close"])
+    if close_price <= 0:
+        return None
+
+    current_gap_pct = abs(curr_diff) / close_price * 100.0
+    prev_gap_pct = abs(prev_diff) / float(prev["close"]) * 100.0 if float(prev["close"]) > 0 else None
+    latest_daily = _daily_live_frame(symbol)
+    latest_session = None
+    if not latest_daily.empty:
+        latest_session = pd.to_datetime(latest_daily["date"], errors="coerce").max()
+    latest_session_date = latest_session.date() if pd.notna(latest_session) else today
+    recent_cutoff = today - timedelta(days=BMSB_RECENT_CROSS_DAYS)
+
+    signal = None
+    side = None
+    urgency = None
+    if prev_diff <= 0 < curr_diff and latest_session_date >= recent_cutoff:
+        signal = "CROSSED_LONG"
+        side = "LONG"
+        urgency = "crossed"
+    elif prev_diff >= 0 > curr_diff and latest_session_date >= recent_cutoff:
+        signal = "CROSSED_EXIT"
+        side = "EXIT"
+        urgency = "crossed"
+    elif current_gap_pct <= BMSB_NEAR_CROSS_THRESHOLD_PCT:
+        signal = "NEAR_LONG" if curr_diff <= 0 else "NEAR_EXIT"
+        side = "LONG" if curr_diff <= 0 else "EXIT"
+        urgency = "near"
+
+    if not signal:
+        return None
+
+    return {
+        "symbol": symbol,
+        "signal": signal,
+        "side": side,
+        "urgency": urgency,
+        "last_price": round(close_price, 4),
+        "ema21": round(float(curr["ema21"]), 4),
+        "sma20": round(float(curr["sma20"]), 4),
+        "gap": round(curr_diff, 4),
+        "gap_pct": round(current_gap_pct, 4),
+        "previous_gap_pct": round(prev_gap_pct, 4) if prev_gap_pct is not None else None,
+        "cross_date": str(latest_session_date),
+        "weekly_bar": str(pd.to_datetime(curr["date"]).date()),
+        "threshold_pct": BMSB_NEAR_CROSS_THRESHOLD_PCT,
+    }
 
 
 @app.get("/")
@@ -149,6 +252,39 @@ def api_dashboard():
     }
 
 
+@app.get("/api/strategy")
+def api_strategy():
+    index = _safe(da.bars_index, {})
+    symbols = sorted(
+        symbol for symbol, frames in (index or {}).items()
+        if isinstance(frames, dict) and ("daily" in frames or "weekly" in frames)
+    )
+    today = datetime.now(ET).date()
+    rows = [
+        row for symbol in symbols
+        if (row := _safe(lambda s=symbol: _bmsb_scan_symbol(s, today), None)) is not None
+    ]
+    urgency_rank = {"crossed": 0, "near": 1}
+    side_rank = {"LONG": 0, "EXIT": 1}
+    rows.sort(key=lambda r: (
+        urgency_rank.get(str(r.get("urgency")), 9),
+        side_rank.get(str(r.get("side")), 9),
+        float(r.get("gap_pct", 999.0)),
+        str(r.get("symbol", "")),
+    ))
+    return {
+        "strategy": "BMSB Strategy 1",
+        "description": "Weekly 21 EMA / 20 SMA cross monitor. Near-cross means EMA/SMA gap is within the configured threshold.",
+        "threshold_pct": BMSB_NEAR_CROSS_THRESHOLD_PCT,
+        "recent_days": BMSB_RECENT_CROSS_DAYS,
+        "symbols_scanned": len(symbols),
+        "matches": len(rows),
+        "crossed": sum(1 for row in rows if row.get("urgency") == "crossed"),
+        "near": sum(1 for row in rows if row.get("urgency") == "near"),
+        "rows": rows,
+    }
+
+
 @app.get("/api/preopen")
 def api_preopen():
     watchlist = _safe(da.load_watchlist, {})
@@ -211,40 +347,76 @@ def api_bars(symbol: str, timeframe: str):
             .reset_index()
         )
 
+    def _four_hour_bars() -> pd.DataFrame:
+        stored = da.get_bars(symbol, "intraday_4h")
+        if not stored.empty:
+            return stored
+        intraday = da.get_bars(symbol, "intraday_5m")
+        if intraday.empty:
+            return intraday
+        frame = intraday.set_index("date").sort_index()
+        return (
+            frame.resample("240min", origin="start_day", offset="30min")
+            .agg({"open": "first", "high": "max", "low": "min", "close": "last", "volume": "sum"})
+            .dropna(subset=["open", "high", "low", "close"])
+            .reset_index()
+        )
+
+    def _weekly_bars() -> pd.DataFrame:
+        stored = da.get_bars(symbol, "weekly")
+        if not stored.empty:
+            return stored
+        daily = da.get_bars(symbol, "daily")
+        if daily.empty:
+            return daily
+        frame = daily.set_index("date").sort_index()
+        return (
+            frame.resample("W-FRI")
+            .agg({"open": "first", "high": "max", "low": "min", "close": "last", "volume": "sum"})
+            .dropna(subset=["open", "high", "low", "close"])
+            .reset_index()
+        )
+
     def _live_daily_bars() -> pd.DataFrame:
         daily = da.get_bars(symbol, "daily")
         intraday = da.get_bars(symbol, "intraday_5m")
         if intraday.empty:
             return daily
 
-        local_dates = intraday["date"].dt.tz_convert(ET).dt.date
-        today = datetime.now(ET).date()
-        live = intraday.loc[local_dates == today]
-        if live.empty:
+        derived_daily = daily_bars_from_intraday(intraday)
+        if derived_daily.empty:
             return daily
-
-        current = pd.DataFrame([{
-            "date": pd.Timestamp(today),
-            "open": float(live.iloc[0]["open"]),
-            "high": float(live["high"].max()),
-            "low": float(live["low"].min()),
-            "close": float(live.iloc[-1]["close"]),
-            "volume": float(live["volume"].fillna(0).sum()) if "volume" in live else 0.0,
-        }])
         if daily.empty:
-            return current
-        historical = daily[pd.to_datetime(daily["date"]).dt.date != today]
-        return pd.concat([historical, current], ignore_index=True).sort_values("date")
+            return derived_daily
+
+        derived_dates = pd.to_datetime(derived_daily["date"], errors="coerce").dt.date
+        historical_dates = set(pd.to_datetime(daily["date"], errors="coerce").dropna().dt.date)
+        missing_or_live = derived_daily.loc[~derived_dates.isin(historical_dates)]
+        if missing_or_live.empty:
+            return daily
+        return pd.concat([daily, missing_or_live], ignore_index=True).sort_values("date")
 
     if timeframe == "intraday_1h":
         df = _safe(_hourly_bars, None)
+    elif timeframe == "intraday_4h":
+        df = _safe(_four_hour_bars, None)
     elif timeframe == "daily_live":
         df = _safe(_live_daily_bars, None)
+    elif timeframe == "weekly":
+        df = _safe(_weekly_bars, None)
     else:
         df = _safe(lambda: da.get_bars(symbol, timeframe), None)
     if df is None or df.empty:
         return {"bars": [], "stale": True, "last_date": None}
-    df = df.tail(300)
+    chart_limits = {
+        "intraday_5m": 500,
+        "intraday_1h": 500,
+        "intraday_4h": 500,
+        "daily_live": 600,
+        "daily": 600,
+        "weekly": 260,
+    }
+    df = df.tail(chart_limits.get(timeframe, 300))
     last_date = str(df["date"].iloc[-1]) if "date" in df.columns else None
     # stale = last bar is genuinely missing sessions.
     # Count how many weekdays (Mon-Fri) lie between last_bar and today — if more
@@ -263,8 +435,8 @@ def api_bars(symbol: str, timeframe: str):
                 if d.weekday() < 5:
                     weekdays_gap += 1
                 d += timedelta(days=1)
-            # stale if more than 1 weekday gap (1 allowed for holidays)
-            stale = weekdays_gap > 1
+            # Weekly bars naturally lag within the current week.
+            stale = weekdays_gap > (7 if timeframe == "weekly" else 1)
         except Exception:
             pass
     return {

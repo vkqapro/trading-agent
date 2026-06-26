@@ -176,6 +176,12 @@ class IBKRClient:
             self.ib.disconnect()
             LOGGER.info("Disconnected from IBKR.")
 
+    def request_market_data_type(self, market_data_type: int) -> None:
+        """Select live/frozen/delayed market data for this IBKR connection."""
+        self.ensure_connection()
+        self.ib.reqMarketDataType(int(market_data_type))
+        LOGGER.info("Requested IBKR market data type=%s", market_data_type)
+
     def ensure_connection(self) -> None:
         """Reconnect if the live connection is not healthy."""
         if not self.ib.isConnected():

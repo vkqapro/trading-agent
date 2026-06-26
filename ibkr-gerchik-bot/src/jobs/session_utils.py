@@ -17,7 +17,8 @@ import pandas as pd
 from src.alerts.slack import SlackAlerter
 from src.brokers.ibkr import IBKRClient
 from src.config import LOGGER, SETTINGS, append_markdown_log
-from src.data.bar_store import save_bars
+from src.data.bar_store import load_bars, save_bars
+from src.data.chart_history import ensure_required_chart_history
 from src.data.market_data import MarketDataService
 from src.data.news import NewsService
 from src.data.news_filter import NewsRiskFilter
@@ -129,6 +130,17 @@ def sleep_until(next_run: datetime, now_provider: NowProvider, sleep_provider: S
 
 
 def _lock_is_stale(lock_path: Path) -> bool:
+    try:
+        owner_text = lock_path.read_text(encoding="utf-8").split("|", 1)[0].strip()
+        owner_pid = int(owner_text)
+        try:
+            os.kill(owner_pid, 0)
+        except PermissionError:
+            return False
+        except OSError:
+            return True
+    except (OSError, TypeError, ValueError):
+        pass
     try:
         modified_at = datetime.fromtimestamp(lock_path.stat().st_mtime)
     except OSError:
@@ -558,6 +570,31 @@ def run_entry_scan(
 
     for symbol, plan in watchlist.items():
         scanned_symbols += 1
+        chart_history = plan.get("chart_history") if isinstance(plan, dict) else None
+        if not isinstance(chart_history, dict) or not chart_history.get("ready"):
+            chart_history = ensure_required_chart_history(market_data, symbol)
+        if not chart_history.get("ready"):
+            skipped.append({
+                "symbol": symbol,
+                "reason": "missing_required_chart_history",
+                "missing": chart_history.get("missing", []),
+            })
+            report_rows.append(
+                _symbol_report_row(
+                    symbol=symbol,
+                    plan=plan,
+                    quote=None,
+                    reason="missing_required_chart_history",
+                )
+            )
+            LOGGER.info(
+                "%s skip %s: missing_required_chart_history missing=%s",
+                stage_name,
+                symbol,
+                chart_history.get("missing", []),
+            )
+            continue
+
         intraday_bars = (
             intraday_bars_by_symbol.get(symbol, pd.DataFrame())
             if intraday_bars_by_symbol is not None
@@ -800,24 +837,90 @@ def run_entry_scan(
 def collect_watchlist_intraday_bars(
     market_data: MarketDataService,
     watchlist: Dict[str, object],
+    *,
+    current_time: datetime | None = None,
 ) -> Dict[str, object]:
     """Fetch and persist bars without evaluating signals or account state."""
     bars_by_symbol: Dict[str, pd.DataFrame] = {}
     failed: List[Dict[str, str]] = []
+    stale: List[Dict[str, str]] = []
+    chart_history_blocked: List[Dict[str, object]] = []
     persisted = 0
+    advanced = 0
+    now = current_time or session_now()
+    market_open = now.replace(
+        hour=SETTINGS.trading_hours.market_open_hour,
+        minute=SETTINGS.trading_hours.market_open_minute,
+        second=0,
+        microsecond=0,
+    )
+    completed_intraday_bar_expected = now >= market_open + timedelta(minutes=5)
 
     for symbol in watchlist:
         try:
+            chart_history = ensure_required_chart_history(market_data, symbol)
+            if not chart_history.get("ready"):
+                bars_by_symbol[symbol] = load_bars(symbol, "intraday_5m")
+                chart_history_blocked.append({
+                    "symbol": symbol,
+                    "missing": chart_history.get("missing", []),
+                })
+                failed.append({
+                    "symbol": symbol,
+                    "reason": "missing_required_chart_history",
+                })
+                continue
+
+            existing = load_bars(symbol, "intraday_5m")
+            existing_latest = (
+                pd.to_datetime(existing["date"], errors="coerce").max()
+                if existing is not None and not existing.empty
+                else pd.NaT
+            )
+            request_duration = (
+                SETTINGS.strategy.intraday_bar_duration
+                if existing is None or existing.empty
+                else "1 D"
+            )
             bars = market_data.get_intraday_bars(
                 symbol,
-                duration=SETTINGS.strategy.intraday_bar_duration,
+                duration=request_duration,
                 bar_size=SETTINGS.strategy.intraday_bar_size,
+                include_current_session=existing is None or existing.empty,
             )
-            bars_by_symbol[symbol] = bars
+            incoming_latest = (
+                pd.to_datetime(bars["date"], errors="coerce").max()
+                if bars is not None and not bars.empty and "date" in bars
+                else pd.NaT
+            )
             if save_bars(symbol, "intraday_5m", bars) is not None:
                 persisted += 1
+                stored = load_bars(symbol, "intraday_5m")
+                stored_latest = (
+                    pd.to_datetime(stored["date"], errors="coerce").max()
+                    if stored is not None and not stored.empty
+                    else pd.NaT
+                )
+                bars_by_symbol[symbol] = stored
+                if pd.notna(stored_latest) and (
+                    pd.isna(existing_latest) or stored_latest > existing_latest
+                ):
+                    advanced += 1
+                latest_date = stored_latest.date() if pd.notna(stored_latest) else None
+                if completed_intraday_bar_expected and latest_date != now.date():
+                    stale.append({
+                        "symbol": symbol,
+                        "reason": f"latest_bar={stored_latest}",
+                    })
             elif bars is None or bars.empty:
+                bars_by_symbol[symbol] = existing
                 failed.append({"symbol": symbol, "reason": "empty_bars"})
+            elif pd.isna(incoming_latest):
+                bars_by_symbol[symbol] = existing
+                failed.append({"symbol": symbol, "reason": "invalid_bar_timestamps"})
+            else:
+                bars_by_symbol[symbol] = existing
+                failed.append({"symbol": symbol, "reason": "persist_failed"})
         except Exception as exc:
             LOGGER.warning("Market-data collection failed for %s: %s", symbol, exc)
             bars_by_symbol[symbol] = pd.DataFrame()
@@ -827,6 +930,11 @@ def collect_watchlist_intraday_bars(
         "bars_by_symbol": bars_by_symbol,
         "symbols_requested": len(watchlist),
         "symbols_persisted": persisted,
+        "symbols_advanced": advanced,
+        "symbols_stale": len(stale),
+        "symbols_chart_history_blocked": len(chart_history_blocked),
+        "chart_history_blocked": chart_history_blocked,
+        "stale": stale,
         "failed": failed,
     }
 

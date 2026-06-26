@@ -49,12 +49,13 @@ const API = 'http://127.0.0.1:8550/api';
 // UI timeframe pill → API timeframe string (must match memory/bars filenames)
 const TF_API = {
   '5Min':'intraday_5m',
+  '4H':'intraday_4h',
   '1H':'intraday_1h',
   '1D':'daily_live',
-  '1W':'daily',
+  '1W':'weekly',
   '1M':'daily',
 };
-const TF_LABEL = {'5Min':'5-Minute','1H':'Hourly','1D':'Daily','1W':'Weekly','1M':'Monthly'};
+const TF_LABEL = {'5Min':'5-Minute','4H':'4-Hour','1H':'Hourly','1D':'Daily','1W':'Weekly','1M':'Monthly'};
 // How many bars to show for each range button (applied client-side on daily data)
 const RANGE_COUNTS = {'1M':22,'3M':64,'6M':128,'YTD':150,'1Y':252,'ALL':9999};
 
@@ -128,7 +129,7 @@ const Table = ({cols, rows}) => (
 );
 
 /* ── SVG candlestick chart ────────────────────────────────────────────────── */
-function CandleChart({bars, levels=[], lines=[], zones=[], showVol=true, height=300, stale=false, lastDate=null}) {
+function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null, showVol=true, height=300, stale=false, lastDate=null}) {
   const n = bars?.length || 0;
   const chartRef = useRef(null);
   const svgRef = useRef(null);
@@ -176,6 +177,11 @@ function CandleChart({bars, levels=[], lines=[], zones=[], showVol=true, height=
   zones.forEach(z=>{
     pmin=Math.min(pmin,z.p1,z.p2);
     pmax=Math.max(pmax,z.p1,z.p2);
+  });
+  const overlayPoints = strategyOverlay?.points?.slice(vs, ve) || [];
+  overlayPoints.forEach(p=>{
+    if(Number.isFinite(p.sma)){ pmin=Math.min(pmin,p.sma); pmax=Math.max(pmax,p.sma); }
+    if(Number.isFinite(p.ema)){ pmin=Math.min(pmin,p.ema); pmax=Math.max(pmax,p.ema); }
   });
   if(!isFinite(pmin)) { pmin=0; pmax=1; }
   const pd=(pmax-pmin)*0.08; pmin-=pd; pmax+=pd;
@@ -321,6 +327,59 @@ function CandleChart({bars, levels=[], lines=[], zones=[], showVol=true, height=
   lines.forEach((l,i)=>els.push(
     <line key={'dl'+i} x1={padL} x2={W-padR} y1={yp(l.p)} y2={yp(l.p)} stroke={l.color} strokeWidth={1.4} strokeDasharray="6 4"/>
   ));
+  // strategy overlay: BMSB weekly 20 SMA / 21 EMA band
+  if(strategyOverlay && overlayPoints.some(p=>Number.isFinite(p.sma)||Number.isFinite(p.ema))){
+    const smaColor = strategyOverlay.smaColor || C.err;
+    const emaColor = strategyOverlay.emaColor || C.lime;
+    const bandColor = strategyOverlay.bandColor || '#ffb35c';
+    const linePath = key => {
+      let path='', started=false;
+      overlayPoints.forEach((p,i)=>{
+        const v = p[key];
+        if(!Number.isFinite(v)){ started=false; return; }
+        path += (started?' L':'M') + xi(i).toFixed(1) + ' ' + yp(v).toFixed(1);
+        started=true;
+      });
+      return path;
+    };
+    let fillTop='', fillBottom=[];
+    overlayPoints.forEach((p,i)=>{
+      if(!Number.isFinite(p.sma)||!Number.isFinite(p.ema)) return;
+      const upper=Math.max(p.sma,p.ema), lower=Math.min(p.sma,p.ema);
+      fillTop += (fillTop?' L':'M') + xi(i).toFixed(1) + ' ' + yp(upper).toFixed(1);
+      fillBottom.push(xi(i).toFixed(1) + ' ' + yp(lower).toFixed(1));
+    });
+    if(fillTop && fillBottom.length>1){
+      els.push(<path key="strategy-band-fill" d={`${fillTop} L${fillBottom.reverse().join(' L')} Z`} fill={R(bandColor,0.13)} stroke="none"/>);
+    }
+    const smaPath=linePath('sma'), emaPath=linePath('ema');
+    if(smaPath) els.push(<path key="strategy-sma" d={smaPath} fill="none" stroke={R(smaColor,0.78)} strokeWidth={1.6}/>);
+    if(emaPath) els.push(<path key="strategy-ema" d={emaPath} fill="none" stroke={R(emaColor,0.78)} strokeWidth={1.6}/>);
+    overlayPoints.forEach((p,i)=>{
+      if(!p.signal) return;
+      const x=xi(i), y=yp(p.close);
+      const isEntry=p.signal==='entry';
+      const col=isEntry
+        ? (strategyOverlay.entryColor || '#1f8bff')
+        : (strategyOverlay.exitColor || '#ff1744');
+      const d=isEntry
+        ? `M ${x.toFixed(1)} ${(y-9).toFixed(1)} L ${(x-6).toFixed(1)} ${(y+4).toFixed(1)} L ${(x+6).toFixed(1)} ${(y+4).toFixed(1)} Z`
+        : `M ${x.toFixed(1)} ${(y+9).toFixed(1)} L ${(x-6).toFixed(1)} ${(y-4).toFixed(1)} L ${(x+6).toFixed(1)} ${(y-4).toFixed(1)} Z`;
+      els.push(<circle key={'strategy-sig-glow'+i} cx={x} cy={isEntry?y+1:y-1} r={9} fill={R(col,0.14)} stroke="none"/>);
+      els.push(<path key={'strategy-sig'+i} d={d} fill={R(col,0.96)} stroke={R('#ffffff',0.85)} strokeWidth={0.9}/>);
+    });
+    const lastOverlay = [...overlayPoints].reverse().find(p=>Number.isFinite(p.sma)||Number.isFinite(p.ema));
+    if(lastOverlay){
+      if(Number.isFinite(lastOverlay.sma)){
+        const y=yp(lastOverlay.sma);
+        els.push(<text key="strategy-sma-label" x={W-padR+4} y={y-4} fill={R(smaColor,0.9)} fontSize={9} fontFamily="JetBrains Mono,monospace">{strategyOverlay.smaLabel||'20W SMA'} {fmtP(lastOverlay.sma)}</text>);
+      }
+      if(Number.isFinite(lastOverlay.ema)){
+        const y=yp(lastOverlay.ema);
+        els.push(<text key="strategy-ema-label" x={W-padR+4} y={y+10} fill={R(emaColor,0.9)} fontSize={9} fontFamily="JetBrains Mono,monospace">{strategyOverlay.emaLabel||'21W EMA'} {fmtP(lastOverlay.ema)}</text>);
+      }
+    }
+  }
   // MA
   if(showMA){
     let path='';
@@ -603,7 +662,7 @@ function Toggle({on, label, onChange}) {
 function TfPills({value, onChange}) {
   return (
     <div style={{display:'flex',gap:8}}>
-      {['5Min','1H','1D','1W','1M'].map(t=>{
+      {['5Min','4H','1H','1D','1W','1M'].map(t=>{
         const a=t===value;
         return <button key={t} onClick={()=>onChange(t)} style={{padding:'5px 12px',borderRadius:6,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,border:`1px solid ${a?R(C.cyan,0.4):'transparent'}`,background:a?R(C.cyan,0.15):'rgba(42,42,43,0.6)',color:a?C.cyan:C.onVar}}>{t}</button>;
       })}
@@ -661,6 +720,7 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
   const [showRaw, setShowRaw] = useState(false);
   const [showTrade, setShowTrade] = useState(true);
   const [showVol, setShowVol] = useState(true);
+  const [showStrategy, setShowStrategy] = useState(false);
   const [bars, setBars] = useState([]);
   const [barsInfo, setBarsInfo] = useState({stale:false,lastDate:null});
   const [chartPlan, setChartPlan] = useState(null);
@@ -678,6 +738,11 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
     fetch(`${API}/bars/${chartSymbol}/${apitf}`).then(r=>r.json()).then(d=>{setBars(d.bars||[]);setBarsInfo({stale:d.stale,lastDate:d.last_date});});
     fetch(`${API}/preopen/${chartSymbol}`).then(r=>r.json()).then(setChartPlan).catch(()=>setChartPlan(null));
   },[chartSymbol, tf, refreshKey]);
+
+  const strategyOverlay = useMemo(
+    ()=>showStrategy ? buildBmsbStrategyOverlay(bars.slice(-(RANGE_COUNTS[range]||9999))) : null,
+    [showStrategy, bars, range]
+  );
 
   if(!data) return <Spinner/>;
   const {metrics:m, risk, opp_rows, attempt_log, symbols=[]} = data;
@@ -795,6 +860,7 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
             <Toggle on={showRaw} label="Raw levels" onChange={setShowRaw}/>
             <Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/>
             <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
+            <Toggle on={showStrategy} label="BMSB strategy" onChange={setShowStrategy}/>
           </div>
           <div style={{display:'flex',gap:5,flexWrap:'wrap'}}>
             {['1M','3M','6M','YTD','1Y','ALL'].map(rg=>{
@@ -804,7 +870,7 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
           </div>
         </div>
         <div style={{padding:'18px 20px'}}>
-          <CandleChart bars={visBars} levels={buildChartLevels(chartPlan?.trade_levels, chartPlan?.raw_levels, showTrade, showRaw)} showVol={showVol} height={300} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
+          <CandleChart bars={visBars} levels={buildChartLevels(chartPlan?.trade_levels, chartPlan?.raw_levels, showTrade, showRaw)} strategyOverlay={strategyOverlay} showVol={showVol} height={300} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
         </div>
       </GlassCard>
 
@@ -1100,6 +1166,173 @@ function TabIntraday({refreshKey=0}) {
 /* ════════════════════════════════════════════════════════════════════════════
    TAB: TRADES
 ═══════════════════════════════════════════════════════════════════════════ */
+function TabStrategy({refreshKey=0}) {
+  const [data, setData] = useState(null);
+  const [filter, setFilter] = useState('ALL');
+  const [selectedSymbol, setSelectedSymbol] = useState(null);
+  const [tf, setTf] = useState('1W');
+  const [range, setRange] = useState('ALL');
+  const [showRaw, setShowRaw] = useState(false);
+  const [showTrade, setShowTrade] = useState(true);
+  const [showVol, setShowVol] = useState(true);
+  const [showStrategy, setShowStrategy] = useState(true);
+  const [bars, setBars] = useState([]);
+  const [barsInfo, setBarsInfo] = useState({stale:false,lastDate:null});
+  const [chartPlan, setChartPlan] = useState(null);
+  useEffect(()=>{ fetch(`${API}/strategy`).then(r=>r.json()).then(setData); },[refreshKey]);
+  useEffect(()=>{
+    const first = data?.rows?.[0]?.symbol;
+    if(first && !selectedSymbol) setSelectedSymbol(first);
+  },[data, selectedSymbol]);
+  useEffect(()=>{
+    if(!selectedSymbol) return;
+    const apitf = TF_API[tf]||'weekly';
+    fetch(`${API}/bars/${selectedSymbol}/${apitf}`)
+      .then(r=>r.json())
+      .then(d=>{setBars(d.bars||[]);setBarsInfo({stale:d.stale,lastDate:d.last_date});})
+      .catch(()=>{setBars([]);setBarsInfo({stale:false,lastDate:null});});
+    fetch(`${API}/preopen/${selectedSymbol}`)
+      .then(r=>r.json())
+      .then(setChartPlan)
+      .catch(()=>setChartPlan(null));
+  },[selectedSymbol, tf, refreshKey]);
+  const visibleBars = bars.slice(-(RANGE_COUNTS[range]||9999));
+  const strategyOverlay = useMemo(
+    ()=>showStrategy ? buildBmsbStrategyOverlay(visibleBars) : null,
+    [showStrategy, visibleBars]
+  );
+  const chartLevels = useMemo(
+    ()=>buildChartLevels(chartPlan?.trade_levels, chartPlan?.raw_levels, showTrade, showRaw),
+    [chartPlan, showTrade, showRaw]
+  );
+  if(!data) return <Spinner/>;
+
+  const rows = (data.rows||[]).filter(r=>{
+    if(filter==='ALL') return true;
+    if(filter==='CROSSED') return r.urgency==='crossed';
+    if(filter==='NEAR') return r.urgency==='near';
+    return r.side===filter;
+  });
+  const selectedRow = (data.rows||[]).find(r=>r.symbol===selectedSymbol) || rows[0] || data.rows?.[0] || null;
+  const chartSymbolLabel = selectedSymbol || selectedRow?.symbol || 'SELECT SYMBOL';
+  const signalColor = signal => {
+    if(String(signal).includes('LONG')) return '#1f8bff';
+    if(String(signal).includes('EXIT')) return '#ff1744';
+    return C.outline;
+  };
+  const fmtNum = (v, d=2) => v==null || !Number.isFinite(Number(v)) ? '—' : Number(v).toFixed(d);
+
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:28}}>
+      <MetricGrid items={[
+        {label:'Symbols Scanned', icon:'radar', value:data.symbols_scanned??0, sub:'with stored chart data'},
+        {label:'BMSB Matches', icon:'candlestick_chart', value:data.matches??0, valueColor:C.cyan, sub:'crossed or near cross', subColor:C.cyan},
+        {label:'Recent Crosses', icon:'swap_vert', value:data.crossed??0, valueColor:data.crossed?C.lime:C.onSurf, sub:`last ${data.recent_days??2} days`},
+        {label:'Near Cross', icon:'near_me', value:data.near??0, valueColor:data.near?C.magenta:C.onSurf, sub:`≤ ${fmtNum(data.threshold_pct,2)}% EMA/SMA gap`},
+      ]}/>
+
+      <GlassCard style={{overflow:'hidden'}}>
+        <div style={{padding:'16px 20px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:10}}>
+          <div style={{display:'flex',alignItems:'center',gap:10,flexWrap:'wrap'}}>
+            <Icon n="candlestick_chart" size={17} color={C.outline}/>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar}}>
+              {chartSymbolLabel} - {TF_LABEL[tf]} Advanced Strategy Chart
+            </span>
+            {selectedRow && <Pill text={String(selectedRow.signal||'BMSB').replace('_',' ')} color={signalColor(selectedRow.signal)}/>}
+            {selectedRow && <Pill text={`${fmtNum(selectedRow.gap_pct,3)}% GAP`} color={Number(selectedRow.gap_pct)<=Number(data.threshold_pct)?C.cyan:C.outline}/>}
+          </div>
+          <TfPills value={tf} onChange={setTf}/>
+        </div>
+        <div style={{padding:'12px 20px',borderBottom:`1px solid ${R(C.outline,0.1)}`,display:'flex',justifyContent:'space-between',alignItems:'center',gap:14,flexWrap:'wrap'}}>
+          <div style={{display:'flex',gap:22,flexWrap:'wrap'}}>
+            <Toggle on={showRaw} label="Raw levels" onChange={setShowRaw}/>
+            <Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/>
+            <Toggle on={showStrategy} label="BMSB strategy" onChange={setShowStrategy}/>
+            <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
+          </div>
+          <div style={{display:'flex',gap:5,flexWrap:'wrap'}}>
+            {['1M','3M','6M','YTD','1Y','ALL'].map(rg=>{
+              const a=rg===range;
+              return <button key={rg} onClick={()=>setRange(rg)} style={{padding:'5px 11px',borderRadius:6,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,border:`1px solid ${a?R(C.cyan,0.4):'rgba(132,148,149,0.18)'}`,background:a?R(C.cyan,0.16):'rgba(20,20,21,0.6)',color:a?C.cyan:C.onVar}}>{rg}</button>;
+            })}
+          </div>
+        </div>
+        <div style={{padding:'12px 20px',borderBottom:`1px solid ${R(C.outline,0.08)}`,display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
+          <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.08em',color:C.outline,textTransform:'uppercase'}}>Chart Symbol</span>
+          <div style={{display:'flex',alignItems:'center',gap:8,minWidth:220,padding:'8px 11px',borderRadius:8,background:R(C.surfLowest,0.65),border:`1px solid ${R(C.outline,0.18)}`}}>
+            <Icon n="search" size={15} color={C.outline}/>
+            <input value={selectedSymbol||''} list="strategy-symbols"
+              onChange={e=>setSelectedSymbol(e.target.value.trim().toUpperCase())}
+              placeholder="Symbol"
+              style={{flex:1,minWidth:0,background:'transparent',border:'none',outline:'none',color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:13,letterSpacing:'0.04em',textTransform:'uppercase'}}/>
+            <datalist id="strategy-symbols">
+              {(data.rows||[]).map(r=><option key={r.symbol} value={r.symbol}/>)}
+            </datalist>
+          </div>
+          <span style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:C.outline}}>
+            Click any Symbol in the monitor table to update the chart. Mouse wheel zooms, drag pans, double-click resets, and the chart toolbar has fullscreen.
+          </span>
+        </div>
+        <div style={{padding:'18px 20px'}}>
+          <CandleChart
+            bars={visibleBars}
+            levels={chartLevels}
+            strategyOverlay={strategyOverlay}
+            showVol={showVol}
+            height={420}
+            stale={barsInfo.stale}
+            lastDate={barsInfo.lastDate}
+          />
+        </div>
+      </GlassCard>
+
+      <GlassCard style={{overflow:'hidden'}}>
+        <PanelHeader icon="insights" title="BMSB Strategy Monitor" badge="21W EMA / 20W SMA"/>
+        <div style={{padding:'14px 18px',borderBottom:`1px solid ${R(C.outline,0.12)}`,display:'flex',justifyContent:'space-between',alignItems:'center',gap:14,flexWrap:'wrap'}}>
+          <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline,lineHeight:1.6}}>
+            Shows symbols where the weekly 21 EMA crossed the weekly 20 SMA within {data.recent_days??2} days, or where the live weekly gap is within {fmtNum(data.threshold_pct,2)}%.
+          </div>
+          <div style={{display:'flex',gap:7,flexWrap:'wrap'}}>
+            {['ALL','CROSSED','NEAR','LONG','EXIT'].map(f=>{
+              const a=f===filter;
+              return <button key={f} onClick={()=>setFilter(f)}
+                style={{padding:'6px 11px',borderRadius:7,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,border:`1px solid ${a?R(C.cyan,0.4):R(C.outline,0.18)}`,background:a?R(C.cyan,0.14):R(C.surfLowest,0.45),color:a?C.cyan:C.onVar}}>
+                {f}
+              </button>;
+            })}
+          </div>
+        </div>
+        <Table
+          cols={['Symbol','Signal','Side','Last Price','21W EMA','20W SMA','Gap %','Signal Date','Weekly Bar']}
+          rows={rows.map(r=>[
+            <button onClick={()=>setSelectedSymbol(r.symbol)}
+              style={{display:'inline-flex',alignItems:'center',gap:8,cursor:'pointer',background:selectedSymbol===r.symbol?R(C.cyan,0.14):'transparent',border:`1px solid ${selectedSymbol===r.symbol?R(C.cyan,0.32):'transparent'}`,borderRadius:7,padding:'4px 8px',color:selectedSymbol===r.symbol?C.cyan:C.onSurf,fontWeight:600,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
+              <Icon n={selectedSymbol===r.symbol?'radio_button_checked':'radio_button_unchecked'} size={14} color={selectedSymbol===r.symbol?C.cyan:C.outline}/>
+              {r.symbol}
+            </button>,
+            <Pill text={String(r.signal||'—').replace('_',' ')} color={signalColor(r.signal)}/>,
+            <span style={{display:'inline-flex',alignItems:'center',gap:7,color:signalColor(r.signal),fontFamily:"'JetBrains Mono',monospace",fontWeight:600}}>
+              <span style={{width:0,height:0,borderLeft:'5px solid transparent',borderRight:'5px solid transparent',...(r.side==='LONG'?{borderBottom:`9px solid ${signalColor(r.signal)}`}:{borderTop:`9px solid ${signalColor(r.signal)}`})}}/>
+              {r.side}
+            </span>,
+            `$${fmtNum(r.last_price,2)}`,
+            fmtNum(r.ema21,2),
+            fmtNum(r.sma20,2),
+            <span style={{color:Number(r.gap_pct)<=Number(data.threshold_pct)?C.cyan:C.onVar}}>{fmtNum(r.gap_pct,3)}%</span>,
+            <span style={{color:C.outline}}>{r.cross_date||'—'}</span>,
+            <span style={{color:C.outline}}>{r.weekly_bar||'—'}</span>,
+          ])}
+        />
+        {!rows.length && (
+          <div style={{padding:'20px 18px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.outline}}>
+            No BMSB symbols match this filter right now.
+          </div>
+        )}
+      </GlassCard>
+    </div>
+  );
+}
+
 function TabTrades({refreshKey=0}) {
   const [data, setData] = useState(null);
   useEffect(()=>{ fetch(`${API}/trades`).then(r=>r.json()).then(setData); },[refreshKey]);
@@ -1228,6 +1461,7 @@ function TabForecast({refreshKey=0}) {
   const [showVol, setShowVol] = useState(true);
   const [showRaw, setShowRaw] = useState(false);
   const [showTrade, setShowTrade] = useState(true);
+  const [showStrategy, setShowStrategy] = useState(false);
   const [selBars, setSelBars] = useState([]);
   const [selBarsInfo, setSelBarsInfo] = useState({stale:false,lastDate:null});
   const [tf, setTf] = useState('1D');
@@ -1287,6 +1521,10 @@ function TabForecast({refreshKey=0}) {
     selRow.entry!=null  && {p:selRow.entry, color:C.cyan,label:`ENTRY ${fmtP2(selRow.entry)}`},
     selRow.stop!=null   && {p:selRow.stop,  color:C.err, label:`STOP ${fmtP2(selRow.stop)}`},
   ].filter(Boolean) : [];
+  const strategyOverlay = useMemo(
+    ()=>showStrategy ? buildBmsbStrategyOverlay(selBars) : null,
+    [showStrategy, selBars]
+  );
 
   return (
     <div style={{display:'flex',flexDirection:'column',gap:24}}>
@@ -1590,6 +1828,7 @@ function TabForecast({refreshKey=0}) {
               <Toggle on={showRaw} label="Raw levels" onChange={setShowRaw}/>
               <Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/>
               <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
+              <Toggle on={showStrategy} label="BMSB strategy" onChange={setShowStrategy}/>
             </div>
             <div style={{padding:'18px 20px'}}>
               <CandleChart bars={selBars} levels={buildChartLevels(selPlan?.trade_levels, selPlan?.raw_levels, showTrade, showRaw)} lines={selLines}
@@ -1597,6 +1836,7 @@ function TabForecast({refreshKey=0}) {
                   ...(selRow?.entry!=null && selRow?.target!=null ? [{p1:selRow.entry,p2:selRow.target,color:C.lime,opacity:0.07}] : []),
                   ...(selRow?.entry!=null && selRow?.stop!=null ? [{p1:selRow.entry,p2:selRow.stop,color:C.err,opacity:0.08}] : []),
                 ]}
+                strategyOverlay={strategyOverlay}
                 showVol={showVol} height={300} stale={selBarsInfo.stale} lastDate={selBarsInfo.lastDate}/>
             </div>
           </GlassCard>
@@ -1718,6 +1958,117 @@ function buildChartLevels(tradeLevels, rawLevels, showTrade, showRaw) {
   return out.sort((a,b)=>b.p-a.p);
 }
 
+/* ── strategies/bmsb_strategy_1 → Forecast chart overlay ─────────────────── */
+function buildBmsbStrategyOverlay(bars) {
+  const rows = (bars||[])
+    .map((b,i)=>({
+      i,
+      t:b.t,
+      d:new Date(b.t),
+      close:Number(b.close),
+    }))
+    .filter(r=>r.t && !Number.isNaN(r.d.getTime()) && Number.isFinite(r.close));
+  if(rows.length < 21) return null;
+
+  const smaLen = 20, emaLen = 21;
+  const calcPointsFromSeries = (series, mapToBarIndex, labels) => {
+    const alpha = 2 / (emaLen + 1);
+    let ema = null;
+    const values = [];
+    series.forEach((row,i)=>{
+      ema = ema == null ? row.close : (row.close - ema) * alpha + ema;
+      let sma = null;
+      if(i >= smaLen - 1){
+        let sum = 0;
+        for(let j=i-smaLen+1;j<=i;j++) sum += series[j].close;
+        sma = sum / smaLen;
+      }
+      const prev = i > 0 ? values[i-1] : null;
+      const signal = i > 0 && Number.isFinite(sma) && Number.isFinite(ema)
+        && Number.isFinite(prev?.sma) && Number.isFinite(prev?.ema)
+          ? (prev.ema <= prev.sma && ema > sma ? 'entry'
+            : prev.ema >= prev.sma && ema < sma ? 'exit'
+            : null)
+          : null;
+      values.push({...row, sma, ema, signal});
+    });
+
+    const mapped = new Map();
+    values.forEach(v=>mapped.set(mapToBarIndex(v), v));
+    const points = (bars||[]).map((b,i)=>{
+      const v = mapped.get(i);
+      return {
+        sma: v?.sma ?? null,
+        ema: v?.ema ?? null,
+        close: Number(b.close),
+        signal: v?.signal || null,
+      };
+    });
+    return {
+      name:'BMSB Strategy 1',
+      smaColor:C.err,
+      emaColor:C.lime,
+      bandColor:'#ffb35c',
+      entryColor:'#1f8bff',
+      exitColor:'#ff1744',
+      smaLabel:labels.sma,
+      emaLabel:labels.ema,
+      points,
+    };
+  };
+
+  const fridayKey = d => {
+    const x = new Date(d.getTime());
+    const day = x.getDay(); // 0 Sun ... 5 Fri
+    const add = day === 0 ? -2 : day === 6 ? -1 : 5 - day;
+    x.setDate(x.getDate() + add);
+    return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;
+  };
+
+  const weekly = [];
+  const weekIndex = new Map();
+  rows.forEach(r=>{
+    const key = fridayKey(r.d);
+    if(!weekIndex.has(key)){
+      weekIndex.set(key, weekly.length);
+      weekly.push({key, close:r.close, lastRow:r.i});
+    } else {
+      const w = weekly[weekIndex.get(key)];
+      w.close = r.close;
+      w.lastRow = r.i;
+    }
+  });
+
+  if(weekly.length < 21) {
+    return calcPointsFromSeries(rows, r=>r.i, {sma:'20 SMA', ema:'21 EMA'});
+  }
+
+  const weeklyOverlay = calcPointsFromSeries(weekly, w=>w.lastRow, {sma:'20W SMA', ema:'21W EMA'});
+  const byWeek = new Map();
+  weeklyOverlay.points.forEach((p,i)=>{
+    const bar = bars?.[i];
+    if(!bar?.t) return;
+    const d = new Date(bar.t);
+    if(Number.isNaN(d.getTime())) return;
+    const key = fridayKey(d);
+    const w = weekly.find(item=>item.key===key);
+    if(w) byWeek.set(key, weeklyOverlay.points[w.lastRow]);
+  });
+
+  const points = (bars||[]).map((b,i)=>{
+    const d = new Date(b.t);
+    const p = !Number.isNaN(d.getTime()) ? byWeek.get(fridayKey(d)) : null;
+    return {
+      sma: p?.sma ?? null,
+      ema: p?.ema ?? null,
+      close: Number(b.close),
+      signal: p?.signal && weekly.some(w=>w.lastRow===i) ? p.signal : null,
+    };
+  });
+
+  return {...weeklyOverlay, points};
+}
+
 /* ── spinner ─────────────────────────────────────────────────────────────── */
 function Spinner() {
   return (
@@ -1754,6 +2105,7 @@ const NAV = [
   {id:'dashboard',  label:'Dashboard',          icon:'space_dashboard'},
   {id:'preopen',    label:'Pre-Open',            icon:'wb_twilight'},
   {id:'intraday',   label:'Intraday',            icon:'monitoring'},
+  {id:'strategy',   label:'Strategy',            icon:'insights'},
   {id:'trades',     label:'Trades & Positions',  icon:'swap_horiz'},
   {id:'forecast',   label:'Forecast',            icon:'calculate'},
   {id:'reports',    label:'Reports',             icon:'description'},
@@ -1762,6 +2114,7 @@ const PAGE_META = {
   dashboard: {title:'Command Overview',       sub:'All systems nominal · scan cycle 5m · paper account', crumb:'Dashboard'},
   preopen:   {title:'Pre-Open Briefing',      sub:'Watchlist scanned · levels mapped · awaiting the open', crumb:'Pre-Open'},
   intraday:  {title:'Intraday Monitor',       sub:'Live decision loop · paper execution', crumb:'Intraday'},
+  strategy:  {title:'Strategy Monitor',       sub:'BMSB 21W EMA / 20W SMA cross scanner', crumb:'Strategy'},
   trades:    {title:'Trades & Positions',     sub:'Open paper positions and trade journal', crumb:'Trades'},
   forecast:  {title:'Risk Forecast Calculator',sub:'Scenario-only · replays saved data · no live orders', crumb:'Forecast'},
   reports:   {title:'Reports',               sub:'Generated session workbooks', crumb:'Reports'},
@@ -1905,6 +2258,7 @@ function App() {
               {tab==='dashboard' && <TabDashboard setNewsModal={setNewsModal} setNewsItems={setNewsItems} refreshKey={refreshKey}/>}
               {tab==='preopen'   && <TabPreOpen refreshKey={refreshKey}/>}
               {tab==='intraday'  && <TabIntraday refreshKey={refreshKey}/>}
+              {tab==='strategy'  && <TabStrategy refreshKey={refreshKey}/>}
               {tab==='trades'    && <TabTrades refreshKey={refreshKey}/>}
               {tab==='forecast'  && <TabForecast refreshKey={refreshKey}/>}
               {tab==='reports'   && <TabReports refreshKey={refreshKey}/>}
