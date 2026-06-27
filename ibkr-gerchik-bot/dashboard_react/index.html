@@ -277,15 +277,40 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
   // ── build SVG elements
   const els=[];
 
-  // Y-axis grid + left labels
-  for(let g=0; g<=5; g++){
-    const pv = pmax - (pmax-pmin)*g/5;
-    const gy = yp(pv);
-    els.push(<line key={'g'+g} x1={padL} x2={W-padR} y1={gy} y2={gy} stroke="rgba(132,148,149,0.07)" strokeWidth={1}/>);
-    els.push(<text key={'yl'+g} x={padL-6} y={gy+4} fill="rgba(132,148,149,0.7)" fontSize={10}
-      fontFamily="JetBrains Mono,monospace" textAnchor="end">{fmtP(pv)}</text>);
+  // ── 1.2: smart round-number Y grid
+  // Snap grid lines to "nice" price increments instead of 5 evenly-spaced raw values.
+  const rawRange = pmax - pmin;
+  const niceStep = (() => {
+    const candidates = [0.01,0.02,0.05,0.1,0.2,0.25,0.5,1,2,2.5,5,10,20,25,50,100,200,250,500];
+    const target = rawRange / 6;
+    return candidates.reduce((best,c) => Math.abs(c-target) < Math.abs(best-target) ? c : best);
+  })();
+  const gridStart = Math.ceil(pmin / niceStep) * niceStep;
+  const gridPrices = [];
+  for(let gv = gridStart; gv <= pmax + niceStep*0.01; gv = Math.round((gv+niceStep)*1e8)/1e8){
+    if(gv >= pmin && gv <= pmax) gridPrices.push(gv);
   }
+  gridPrices.forEach((pv,g) => {
+    const gy = yp(pv);
+    // Emphasize round numbers (multiples of 5× the step) with slightly brighter line
+    const isRound = Math.abs(Math.round(pv/(niceStep*5))*(niceStep*5) - pv) < niceStep*0.01;
+    els.push(<line key={'g'+g} x1={padL} x2={W-padR} y1={gy} y2={gy}
+      stroke={isRound ? 'rgba(132,148,149,0.12)' : 'rgba(132,148,149,0.06)'} strokeWidth={1}/>);
+    els.push(<text key={'yl'+g} x={padL-6} y={gy+4} fill={isRound ? 'rgba(132,148,149,0.85)' : 'rgba(132,148,149,0.55)'}
+      fontSize={10} fontFamily="JetBrains Mono,monospace" textAnchor="end" fontWeight={isRound?'600':'400'}>{fmtP(pv)}</text>);
+  });
   els.push(<line key="yax" x1={padL} x2={padL} y1={padT} y2={padT+priceH} stroke="rgba(132,148,149,0.15)" strokeWidth={1}/>);
+
+  // ── 1.2: detect session open times for separators (9:30 NY = 13:30 UTC → look for HH:MM change to 09:30)
+  const isIntradayTf = visBars.length > 0 && String(visBars[0]?.t||'').includes('T');
+  const sessionOpenIdxs = [];
+  if(isIntradayTf){
+    visBars.forEach((c,i)=>{
+      const t = String(c.t||'');
+      // Match 09:30 in time string (handles "2026-06-23T09:30" or "09:30" formats)
+      if(t.includes('T09:30') || t.endsWith('09:30')) sessionOpenIdxs.push(i);
+    });
+  }
 
   // X-axis date labels
   const xTick = Math.min(8, vn);
@@ -297,6 +322,15 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
       fontFamily="JetBrains Mono,monospace" textAnchor="middle">{fmtD(visBars[k]?.t)}</text>);
   }
   els.push(<line key="xax" x1={padL} x2={W-padR} y1={padT+priceH} y2={padT+priceH} stroke="rgba(132,148,149,0.15)" strokeWidth={1}/>);
+
+  // ── 1.2: session open separator lines
+  sessionOpenIdxs.forEach((i,si) => {
+    const cx = xi(i);
+    els.push(<line key={'sess'+si} x1={cx} x2={cx} y1={padT} y2={padT+priceH}
+      stroke="rgba(125,244,255,0.22)" strokeWidth={1} strokeDasharray="2 4"/>);
+    els.push(<text key={'sessl'+si} x={cx+3} y={padT+10} fill="rgba(125,244,255,0.45)"
+      fontSize={8.5} fontFamily="JetBrains Mono,monospace">09:30</text>);
+  });
 
   // filled zones between two price levels (e.g. entry → target)
   zones.forEach((z,i)=>{
@@ -390,24 +424,92 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
     });
     els.push(<path key="ma" d={path} fill="none" stroke={R(C.cyan,0.45)} strokeWidth={1.6}/>);
   }
-  // candles
+  // ── 1.1 + 1.2: candle rendering with doji detection, body stroke, after-hours dimming
+  // SVG gradient defs for candle bodies (one per color direction, defined once)
+  els.push(
+    <defs key="candle-grads">
+      <linearGradient id="gradUp" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor={C.lime} stopOpacity="1"/>
+        <stop offset="100%" stopColor={C.limeDim} stopOpacity="0.85"/>
+      </linearGradient>
+      <linearGradient id="gradDown" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor={C.err} stopOpacity="0.75"/>
+        <stop offset="100%" stopColor={C.err} stopOpacity="1"/>
+      </linearGradient>
+    </defs>
+  );
+
   visBars.forEach((c,i)=>{
     const up=c.close>=c.open, col=up?C.lime:C.err;
     const bx=xi(i), top=yp(Math.max(c.open,c.close)), bot=yp(Math.min(c.open,c.close));
     const isHov = hover && (vs+i)===hover.idx;
-    els.push(<line key={'w'+i} x1={bx} x2={bx} y1={yp(c.high)} y2={yp(c.low)} stroke={col} strokeWidth={isHov?2:1} opacity={0.9}/>);
-    els.push(<rect key={'b'+i} x={bx-cw/2} width={cw} y={top} height={Math.max(1.5,bot-top)}
-      fill={col} opacity={isHov?1:0.88} stroke={isHov?'#fff':col} strokeWidth={isHov?0.8:0}/>);
+
+    // ── 1.2: after-hours dimming — bars outside 09:30–16:00 on intraday TFs
+    let afterHoursDim = false;
+    if(isIntradayTf){
+      const t = String(c.t||'');
+      const m = t.match(/T(\d{2}):(\d{2})/);
+      if(m){
+        const hhmm = parseInt(m[1])*100 + parseInt(m[2]);
+        afterHoursDim = hhmm < 930 || hhmm >= 1600;
+      }
+    }
+    const baseOpacity = afterHoursDim ? 0.35 : (isHov ? 1 : 0.88);
+
+    // ── 1.1: doji detection — body height < 15% of candle range
+    const bodyH = Math.max(1.5, bot - top);
+    const candleRange = yp(c.low) - yp(c.high);
+    const isDoji = candleRange > 0 && bodyH / candleRange < 0.15;
+
+    if(isDoji){
+      // Render doji as a horizontal cross: wide wick + thin body bar
+      els.push(<line key={'w'+i} x1={bx} x2={bx} y1={yp(c.high)} y2={yp(c.low)}
+        stroke={col} strokeWidth={isHov?2:1} opacity={baseOpacity*0.9}/>);
+      els.push(<line key={'b'+i} x1={bx-cw*0.7} x2={bx+cw*0.7} y1={(top+bot)/2} y2={(top+bot)/2}
+        stroke={col} strokeWidth={isHov?2.5:1.8} opacity={baseOpacity}/>);
+    } else {
+      // Normal candle: gradient fill + thin body border for depth
+      els.push(<line key={'w'+i} x1={bx} x2={bx} y1={yp(c.high)} y2={yp(c.low)}
+        stroke={col} strokeWidth={isHov?2:1} opacity={baseOpacity*0.9}/>);
+      els.push(<rect key={'b'+i} x={bx-cw/2} width={cw} y={top} height={bodyH}
+        fill={isHov ? col : `url(#grad${up?'Up':'Down'})`}
+        opacity={baseOpacity}
+        stroke={isHov ? '#fff' : R(up?C.lime:C.err, 0.55)}
+        strokeWidth={isHov ? 0.9 : 0.6}
+        rx={cw>4 ? 0.8 : 0}/>);
+    }
   });
-  // volume
+  // ── 1.3: volume with intensity scaling + 20-bar MA line
   if(showVol){
-    const volTop=padT+priceH+gap, vmax=Math.max(...visBars.map(c=>c.volume||0))||1;
+    const volTop=padT+priceH+gap;
+    const volNums = visBars.map(c=>c.volume||0);
+    const vmax = Math.max(...volNums) || 1;
+    // 20-bar rolling average for volume MA
+    const volMa20 = volNums.map((_, i) => {
+      const slice = volNums.slice(Math.max(0, i-19), i+1);
+      return slice.reduce((s,v)=>s+v, 0) / slice.length;
+    });
+    const vAvg = volMa20[volMa20.length-1] || (vmax * 0.4);
+
     visBars.forEach((c,i)=>{
       const up=c.close>=c.open, vh=(c.volume/vmax)*volH;
       const isHov = hover && (vs+i)===hover.idx;
+      // Intensity: bars >2× average get full color, normal bars get scaled opacity
+      const intensity = Math.min(1, (c.volume||0) / (vAvg * 2));
+      const baseAlpha = isHov ? 0.72 : (0.22 + intensity * 0.38);
       els.push(<rect key={'v'+i} x={xi(i)-cw/2} width={cw} y={volTop+volH-vh} height={Math.max(0.5,vh)}
-        fill={R(up?C.lime:C.err, isHov?0.65:0.32)}/>);
+        fill={R(up?C.lime:C.err, baseAlpha)}/>);
     });
+
+    // Volume MA line
+    let volMaPath = '';
+    volMa20.forEach((ma, i) => {
+      const vy = volTop + volH - (ma/vmax)*volH;
+      volMaPath += (i===0 ? 'M' : ' L') + xi(i).toFixed(1) + ' ' + vy.toFixed(1);
+    });
+    if(volMaPath) els.push(<path key="volma" d={volMaPath} fill="none"
+      stroke="rgba(125,244,255,0.55)" strokeWidth={1.2} strokeDasharray="none"/>);
+
     els.push(<line key="vb" x1={padL} x2={W-padR} y1={volTop} y2={volTop} stroke="rgba(132,148,149,0.10)" strokeWidth={1}/>);
     els.push(<text key="vlbl" x={padL-6} y={volTop+volH/2+4} fill="rgba(132,148,149,0.45)" fontSize={9}
       fontFamily="JetBrains Mono,monospace" textAnchor="end">VOL</text>);

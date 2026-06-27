@@ -28,7 +28,8 @@ echo  [OK] Starting server on http://127.0.0.1:8550 ...
 echo  [OK] Press Ctrl+C to stop.
 echo.
 
-REM Start the independent data-only collector. Its lock prevents duplicates.
+REM Start the independent data-only collector. The launcher performs a clean restart
+REM and uses dedicated client id 17.
 start "Gerchik Market Data Collector" /min cmd /c "%~dp0run_market_data_collector.cmd"
 
 REM Start the paper order-execution worker in its own window.

@@ -1,3 +1,3 @@
 @echo off
 cd /d C:\Users\Vitos\Documents\GitHub\trading-agent\ibkr-gerchik-bot
-C:\Users\Vitos\Documents\GitHub\trading-agent\.venv\Scripts\python.exe -m src.main --job open
+C:\Users\Vitos\Documents\GitHub\trading-agent\.venv\Scripts\python.exe -m src.main --job open --client-id 41

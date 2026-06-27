@@ -7,12 +7,12 @@ from typing import Dict
 
 
 JOB_MODULES: Dict[str, str] = {
-    "premarket": "src.main --job premarket",
-    "open": "src.main --job open",
-    "intraday": "src.main --job intraday",
+    "premarket": "src.main --job premarket --client-id 31",
+    "open": "src.main --job open --client-id 41",
+    "intraday": "src.main --job intraday --client-id 21",
     "market_data": "src.main --job market_data --client-id 17",
-    "eod": "src.main --job eod",
-    "weekly": "src.main --job weekly",
+    "eod": "src.main --job eod --client-id 51",
+    "weekly": "src.main --job weekly --client-id 61",
 }
 
 
