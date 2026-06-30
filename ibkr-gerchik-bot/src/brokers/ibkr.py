@@ -543,6 +543,109 @@ class IBKRClient:
         )
         return parent_result, stop_result, limit_result
 
+    def place_limit_bracket_order(
+        self,
+        symbol: str,
+        action: str,
+        quantity: int,
+        entry_price: float,
+        stop_price: float,
+        limit_price: float | None = None,
+        *,
+        outside_rth: bool = False,
+        tif: str | None = None,
+    ) -> tuple[OrderResult, OrderResult, OrderResult | None]:
+        self.ensure_connection()
+        contract = self.create_stock_contract(symbol)
+        entry_price = self._round_to_tick(entry_price)
+        stop_price = self._round_to_tick(stop_price)
+        limit_price = self._round_to_tick(limit_price)
+        parent_action = action.upper()
+        exit_action = "SELL" if parent_action == "BUY" else "BUY"
+
+        parent_order = LimitOrder(action=parent_action, totalQuantity=quantity, lmtPrice=entry_price)
+        parent_order.orderId = self.ib.client.getReqId()
+        parent_order.transmit = False
+        if tif:
+            parent_order.tif = tif
+        if outside_rth:
+            parent_order.outsideRth = True
+
+        stop_order = StopOrder(action=exit_action, totalQuantity=quantity, stopPrice=stop_price)
+        stop_order.orderId = self.ib.client.getReqId()
+        stop_order.parentId = parent_order.orderId
+        stop_order.transmit = limit_price is None
+        if tif:
+            stop_order.tif = tif
+        if outside_rth:
+            stop_order.outsideRth = True
+
+        take_profit_order: LimitOrder | None = None
+        if limit_price is not None:
+            take_profit_order = LimitOrder(action=exit_action, totalQuantity=quantity, lmtPrice=limit_price)
+            take_profit_order.orderId = self.ib.client.getReqId()
+            take_profit_order.parentId = parent_order.orderId
+            take_profit_order.transmit = True
+            if tif:
+                take_profit_order.tif = tif
+            if outside_rth:
+                take_profit_order.outsideRth = True
+
+        parent_trade: Trade = self.ib.placeOrder(contract, parent_order)
+        stop_trade: Trade = self.ib.placeOrder(contract, stop_order)
+        limit_trade: Trade | None = None
+        if take_profit_order is not None:
+            limit_trade = self.ib.placeOrder(contract, take_profit_order)
+        self._await_order_settled(parent_trade)
+
+        parent_status = parent_trade.orderStatus.status or "Submitted"
+        stop_status = stop_trade.orderStatus.status or "Submitted"
+        limit_status = (limit_trade.orderStatus.status if limit_trade is not None else "") or "Submitted"
+        parent_detail = self._order_reject_reason(parent_trade)
+
+        LOGGER.info(
+            "Limit bracket order placed for %s %s x%s entry=%s parent=%s stop=%s limit=%s%s",
+            parent_action,
+            symbol,
+            quantity,
+            entry_price,
+            parent_status,
+            stop_status,
+            limit_status if take_profit_order is not None else "n/a",
+            f" reason={parent_detail}" if parent_detail else "",
+        )
+
+        parent_result = OrderResult(
+            order_id=parent_order.orderId,
+            symbol=symbol,
+            action=parent_action,
+            quantity=quantity,
+            order_type="LMT",
+            status=parent_status,
+            detail=parent_detail,
+        )
+        stop_result = OrderResult(
+            order_id=stop_order.orderId,
+            symbol=symbol,
+            action=exit_action,
+            quantity=quantity,
+            order_type="STP",
+            status=stop_status,
+        )
+        limit_result = (
+            OrderResult(
+                order_id=take_profit_order.orderId,
+                symbol=symbol,
+                action=exit_action,
+                quantity=quantity,
+                order_type="LMT",
+                status=limit_status,
+            )
+            if take_profit_order is not None
+            else None
+        )
+        return parent_result, stop_result, limit_result
+
     def place_stop_order(self, symbol: str, action: str, quantity: int, stop_price: float) -> OrderResult:
         self.ensure_connection()
         contract = self.create_stock_contract(symbol)

@@ -27,6 +27,8 @@ from zoneinfo import ZoneInfo
 from dashboard import data_access as da, forecast as fc
 from src.config import SETTINGS
 from src.data.chart_history import daily_bars_from_intraday
+from src.crypto.analysis import run_crypto_analysis
+from src.crypto.symbols import normalize_okx_instrument
 
 app = FastAPI(title="Gerchik Bot Dashboard API", docs_url=None, redoc_url=None)
 app.add_middleware(
@@ -278,6 +280,7 @@ def api_strategy():
         "threshold_pct": BMSB_NEAR_CROSS_THRESHOLD_PCT,
         "recent_days": BMSB_RECENT_CROSS_DAYS,
         "symbols_scanned": len(symbols),
+        "symbols": symbols,
         "matches": len(rows),
         "crossed": sum(1 for row in rows if row.get("urgency") == "crossed"),
         "near": sum(1 for row in rows if row.get("urgency") == "near"),
@@ -444,6 +447,105 @@ def api_bars(symbol: str, timeframe: str):
         "stale": stale,
         "last_date": last_date,
     }
+
+
+@app.get("/api/crypto")
+def api_crypto():
+    state = _safe(da.load_crypto_dashboard_state, {})
+    configured = _safe(da.load_crypto_symbols, [])
+    watchlist = state.get("watchlist", {}) if isinstance(state, dict) else {}
+    index = _safe(da.crypto_bars_index, {})
+    rows = []
+    configured_by_inst = {row.get("inst_id"): row for row in configured if isinstance(row, dict)}
+    symbols = sorted(set(configured_by_inst) | set(watchlist or {}) | set(index or {}))
+    for symbol in symbols:
+        plan = watchlist.get(symbol, {}) if isinstance(watchlist, dict) else {}
+        frames = index.get(symbol, {}) if isinstance(index, dict) else {}
+        trade_levels = plan.get("trade_levels", []) if isinstance(plan, dict) else []
+        raw_levels = plan.get("raw_levels", []) if isinstance(plan, dict) else []
+        latest = None
+        for tf in ("intraday_5m", "intraday_1h", "intraday_4h", "daily"):
+            latest = (frames.get(tf, {}) or {}).get("last_bar") if isinstance(frames.get(tf, {}), dict) else latest
+            if latest:
+                break
+        rows.append({
+            "symbol": symbol,
+            "raw": configured_by_inst.get(symbol, {}).get("raw"),
+            "inst_type": configured_by_inst.get(symbol, {}).get("inst_type"),
+            "ready": bool(plan.get("ready")) if isinstance(plan, dict) else False,
+            "price": plan.get("price") if isinstance(plan, dict) else None,
+            "daily_atr": plan.get("daily_atr") if isinstance(plan, dict) else None,
+            "trade_levels": len(trade_levels),
+            "raw_levels": len(raw_levels),
+            "last_bar": latest,
+            "bars": plan.get("bars", {}) if isinstance(plan, dict) else {},
+            "reason": plan.get("reason") if isinstance(plan, dict) else None,
+        })
+    ready = sum(1 for row in rows if row.get("ready"))
+    return {
+        "updated_at": state.get("updated_at") if isinstance(state, dict) else None,
+        "symbols": symbols,
+        "rows": rows,
+        "errors": state.get("errors", []) if isinstance(state, dict) else [],
+        "metrics": {
+            "configured": len(configured),
+            "tracked": len(rows),
+            "ready": ready,
+            "with_trade_levels": sum(1 for row in rows if int(row.get("trade_levels") or 0) > 0),
+        },
+    }
+
+
+@app.get("/api/crypto/{symbol}")
+def api_crypto_symbol(symbol: str):
+    inst_id = normalize_okx_instrument(symbol)
+    state = _safe(da.load_crypto_dashboard_state, {})
+    watchlist = state.get("watchlist", {}) if isinstance(state, dict) else {}
+    plan = watchlist.get(inst_id)
+    if not isinstance(plan, dict):
+        raise HTTPException(404, f"{inst_id} is not analyzed yet")
+    return plan
+
+
+@app.get("/api/crypto/bars/{symbol}/{timeframe}")
+def api_crypto_bars(symbol: str, timeframe: str):
+    inst_id = normalize_okx_instrument(symbol)
+    tf = {
+        "daily_live": "daily",
+        "intraday_4h": "intraday_4h",
+        "intraday_1h": "intraday_1h",
+        "intraday_5m": "intraday_5m",
+        "daily": "daily",
+    }.get(timeframe, timeframe)
+    df = _safe(lambda: da.get_crypto_bars(inst_id, tf), None)
+    if df is None or df.empty:
+        return {"bars": [], "stale": True, "last_date": None}
+    limits = {"intraday_5m": 500, "intraday_1h": 500, "intraday_4h": 500, "daily": 600, "daily_live": 600}
+    df = df.tail(limits.get(tf, 300))
+    last_date = str(df["date"].iloc[-1]) if "date" in df.columns else None
+    return {
+        "bars": df.rename(columns={"date": "t"}).to_dict(orient="records"),
+        "stale": False,
+        "last_date": last_date,
+    }
+
+
+@app.post("/api/crypto/analyze")
+async def api_crypto_analyze(body: dict | None = None):
+    try:
+        symbols = None
+        if body and body.get("symbols"):
+            raw = body.get("symbols")
+            symbols = raw if isinstance(raw, list) else [raw]
+        result = run_crypto_analysis(symbols)
+        return {
+            "ok": True,
+            "updated_at": result.get("updated_at"),
+            "symbols": result.get("symbols", []),
+            "errors": result.get("errors", []),
+        }
+    except Exception as exc:
+        raise HTTPException(500, str(exc))
 
 
 @app.get("/api/intraday")

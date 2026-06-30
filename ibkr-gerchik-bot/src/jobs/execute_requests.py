@@ -109,6 +109,7 @@ def _process_place(
         quantity=requested_qty,
         allow_extended_hours_order=True,
         time_in_force="GTC",
+        entry_order_type=str(request.get("entry_order_type") or "MARKET"),
     )
     payload = payload if isinstance(payload, dict) else {"status": "unknown"}
     payload_status = str(payload.get("status", "")).lower()

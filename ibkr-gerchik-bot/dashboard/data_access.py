@@ -15,6 +15,8 @@ import pandas as pd
 
 from src.config import SETTINGS
 from src.data.bar_store import bar_path
+from src.crypto.analysis import configured_crypto_symbols, load_crypto_state
+from src.crypto.bar_store import crypto_bar_path, crypto_index_snapshot
 
 DAILY_DECISIONS_PATH = SETTINGS.paths.runtime_dir.parent / "daily_decisions.json"
 STATE_PATH = SETTINGS.paths.state_file
@@ -230,6 +232,25 @@ def get_bars(symbol: str, timeframe: str) -> pd.DataFrame:
 def bars_index() -> Dict[str, Dict[str, Any]]:
     index_path = bar_path("_", "_").parent / "index.json"
     return _read_json(index_path)
+
+
+def get_crypto_bars(symbol: str, timeframe: str) -> pd.DataFrame:
+    path = crypto_bar_path(symbol, timeframe)
+    if not path.exists():
+        return pd.DataFrame(columns=["date", "open", "high", "low", "close", "volume"])
+    return _read_bars_cached(*_signature(path)).copy()
+
+
+def crypto_bars_index() -> Dict[str, Dict[str, Any]]:
+    return crypto_index_snapshot()
+
+
+def load_crypto_dashboard_state() -> Dict[str, Any]:
+    return load_crypto_state()
+
+
+def load_crypto_symbols() -> List[Dict[str, str]]:
+    return configured_crypto_symbols()
 
 
 def load_daily_decisions() -> Dict[str, Any]:

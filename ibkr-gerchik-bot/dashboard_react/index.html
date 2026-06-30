@@ -36,6 +36,7 @@ const C = {
   surfHigh:'#2a2a2b', onSurf:'#e5e2e3', onVar:'#b9cacb',
   outline:'#849495', outlineVar:'#3b494b',
   cyan:'#7df4ff', cyanBright:'#00f0ff', cyanDim:'#00dbe9',
+  ocean:'#0077be',
   lime:'#c3f400', limeDim:'#abd600',
   magenta:'#ecb2ff', err:'#ffb4ab',
 };
@@ -406,11 +407,11 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
     if(lastOverlay){
       if(Number.isFinite(lastOverlay.sma)){
         const y=yp(lastOverlay.sma);
-        els.push(<text key="strategy-sma-label" x={W-padR+4} y={y-4} fill={R(smaColor,0.9)} fontSize={9} fontFamily="JetBrains Mono,monospace">{strategyOverlay.smaLabel||'20W SMA'} {fmtP(lastOverlay.sma)}</text>);
+        els.push(<text key="strategy-sma-label" x={padL+6} y={y-4} fill={R(smaColor,0.9)} fontSize={9} fontFamily="JetBrains Mono,monospace">{strategyOverlay.smaLabel||'20W SMA'} {fmtP(lastOverlay.sma)}</text>);
       }
       if(Number.isFinite(lastOverlay.ema)){
         const y=yp(lastOverlay.ema);
-        els.push(<text key="strategy-ema-label" x={W-padR+4} y={y+10} fill={R(emaColor,0.9)} fontSize={9} fontFamily="JetBrains Mono,monospace">{strategyOverlay.emaLabel||'21W EMA'} {fmtP(lastOverlay.ema)}</text>);
+        els.push(<text key="strategy-ema-label" x={padL+6} y={y+10} fill={R(emaColor,0.9)} fontSize={9} fontFamily="JetBrains Mono,monospace">{strategyOverlay.emaLabel||'21W EMA'} {fmtP(lastOverlay.ema)}</text>);
       }
     }
   }
@@ -972,7 +973,7 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
           </div>
         </div>
         <div style={{padding:'18px 20px'}}>
-          <CandleChart bars={visBars} levels={buildChartLevels(chartPlan?.trade_levels, chartPlan?.raw_levels, showTrade, showRaw)} strategyOverlay={strategyOverlay} showVol={showVol} height={300} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
+          <CandleChart bars={visBars} levels={buildChartLevels(chartPlan?.trade_levels, chartPlan?.raw_levels, showTrade, showRaw)} strategyOverlay={strategyOverlay} showVol={showVol} height={600} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
         </div>
       </GlassCard>
 
@@ -1217,7 +1218,7 @@ function TabPreOpen({refreshKey=0}) {
             </div>
           </div>
           <div style={{padding:'18px 20px'}}>
-            <CandleChart bars={bars} levels={chartLevels} showVol={showVol} height={300} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
+            <CandleChart bars={bars} levels={chartLevels} showVol={showVol} height={600} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
           </div>
         </GlassCard>
       )}
@@ -1278,12 +1279,18 @@ function TabStrategy({refreshKey=0}) {
   const [showTrade, setShowTrade] = useState(true);
   const [showVol, setShowVol] = useState(true);
   const [showStrategy, setShowStrategy] = useState(true);
+  const [manualEntry, setManualEntry] = useState('');
+  const [manualSide, setManualSide] = useState('LONG');
+  const [manualCash, setManualCash] = useState('1000');
+  const [manualMaxOpenRisk, setManualMaxOpenRisk] = useState('5');
+  const [strategyFeedback, setStrategyFeedback] = useState(null);
+  const [strategyConfirm, setStrategyConfirm] = useState(null);
   const [bars, setBars] = useState([]);
   const [barsInfo, setBarsInfo] = useState({stale:false,lastDate:null});
   const [chartPlan, setChartPlan] = useState(null);
   useEffect(()=>{ fetch(`${API}/strategy`).then(r=>r.json()).then(setData); },[refreshKey]);
   useEffect(()=>{
-    const first = data?.rows?.[0]?.symbol;
+    const first = data?.rows?.[0]?.symbol || data?.symbols?.[0];
     if(first && !selectedSymbol) setSelectedSymbol(first);
   },[data, selectedSymbol]);
   useEffect(()=>{
@@ -1307,6 +1314,100 @@ function TabStrategy({refreshKey=0}) {
     ()=>buildChartLevels(chartPlan?.trade_levels, chartPlan?.raw_levels, showTrade, showRaw),
     [chartPlan, showTrade, showRaw]
   );
+  const manualSetup = useMemo(()=>{
+    const entry = Number(manualEntry);
+    if(!Number.isFinite(entry) || entry<=0) return null;
+    const sourceLevels = (chartPlan?.trade_levels?.length ? chartPlan.trade_levels : chartPlan?.raw_levels) || [];
+    const atr = Number(chartPlan?.daily_atr || chartPlan?.technical_atr || 0);
+    const buffer = Math.max(entry*0.001, atr*0.05, entry>=1?0.01:0.0001);
+    const norm = (l) => {
+      const price = Number(l.price ?? l.center);
+      const zl = Number(l.zone_low), zh = Number(l.zone_high);
+      const hasZone = Number.isFinite(zl) && Number.isFinite(zh);
+      return Number.isFinite(price) && price>0 ? {
+        price,
+        low: hasZone ? Math.min(zl, zh) : price,
+        high: hasZone ? Math.max(zl, zh) : price,
+        type: l.type || 'level',
+      } : null;
+    };
+    const levels = sourceLevels.map(norm).filter(Boolean).sort((a,b)=>a.price-b.price);
+    const lower = [...levels].reverse().find(l=>l.high < entry || l.price < entry);
+    const upper = levels.find(l=>l.low > entry || l.price > entry);
+    const side = manualSide === 'SHORT' ? 'SHORT' : 'LONG';
+    let stop, target, method;
+    if(side === 'LONG'){
+      stop = lower ? lower.low - buffer : entry - Math.max(atr || 0, entry*0.02);
+      target = upper ? upper.low : entry + Math.abs(entry-stop)*3;
+      method = `${lower?'nearest lower level':'ATR fallback'} / ${upper?'nearest upper level':'3R fallback'}`;
+    } else {
+      stop = upper ? upper.high + buffer : entry + Math.max(atr || 0, entry*0.02);
+      target = lower ? lower.high : entry - Math.abs(stop-entry)*3;
+      method = `${upper?'nearest upper level':'ATR fallback'} / ${lower?'nearest lower level':'3R fallback'}`;
+    }
+    const risk = Math.abs(entry-stop);
+    const reward = Math.abs(target-entry);
+    if(risk<=0 || reward<=0 || stop<=0 || target<=0) return null;
+    return {
+      side, entry, stop, target,
+      rr: reward/risk,
+      method,
+    };
+  },[manualEntry, manualSide, chartPlan]);
+  const manualOrderPlan = useMemo(()=>{
+    if(!manualSetup || !selectedSymbol) return null;
+    const cash = Number(manualCash);
+    const maxOpenRiskPct = Number(manualMaxOpenRisk);
+    if(!Number.isFinite(cash) || cash<=0 || !Number.isFinite(maxOpenRiskPct) || maxOpenRiskPct<=0) return null;
+    const riskPerShare = Math.abs(manualSetup.entry-manualSetup.stop);
+    const rewardPerShare = Math.abs(manualSetup.target-manualSetup.entry);
+    if(riskPerShare<=0 || rewardPerShare<=0) return null;
+    const maxRiskAmount = cash * (maxOpenRiskPct/100);
+    const riskQty = Math.floor(maxRiskAmount / riskPerShare);
+    const cashQty = Math.floor(cash / manualSetup.entry);
+    const quantity = Math.max(0, Math.min(riskQty, cashQty));
+    const riskAmount = quantity * riskPerShare;
+    const potentialProfit = quantity * rewardPerShare;
+    const positionValue = quantity * manualSetup.entry;
+    return {
+      symbol:selectedSymbol,
+      signal:manualSetup.side==='SHORT'?'SELL':'BUY',
+      direction:manualSetup.side.toLowerCase(),
+      entry:manualSetup.entry,
+      stop:manualSetup.stop,
+      target:manualSetup.target,
+      reward_risk:manualSetup.rr,
+      quantity,
+      risk_amount:riskAmount,
+      potential_reward:potentialProfit,
+      position_value:positionValue,
+      max_risk_amount:maxRiskAmount,
+      available_cash:cash,
+      max_open_risk_pct:maxOpenRiskPct,
+      entry_order_type:'LIMIT',
+      strategy:'strategy_manual_setup',
+      source:'STRATEGY_MANUAL',
+      level_type:'dashboard_manual',
+      confidence:1,
+    };
+  },[manualSetup, selectedSymbol, manualCash, manualMaxOpenRisk]);
+  const doStrategyPlace = useCallback(async(row) => {
+    setStrategyConfirm(null);
+    try {
+      const r = await fetch(`${API}/order/place`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(row)});
+      const d = await r.json();
+      setStrategyFeedback({ok:d.ok, message:d.message, id:d.id, dryRun:d.dry_run});
+    } catch(e) { setStrategyFeedback({ok:false, message:'Network error: '+e.message}); }
+  },[]);
+  const manualSetupLines = manualSetup ? [
+    {p:manualSetup.target,color:C.lime,label:`TARGET $${manualSetup.target.toFixed(2)}`},
+    {p:manualSetup.entry,color:C.ocean,label:`ENTRY $${manualSetup.entry.toFixed(2)}`},
+    {p:manualSetup.stop,color:C.err,label:`STOP $${manualSetup.stop.toFixed(2)}`},
+  ] : [];
+  const manualSetupZones = manualSetup ? [
+    {p1:manualSetup.entry,p2:manualSetup.target,color:C.lime,opacity:0.07},
+    {p1:manualSetup.entry,p2:manualSetup.stop,color:C.err,opacity:0.08},
+  ] : [];
   if(!data) return <Spinner/>;
 
   const rows = (data.rows||[]).filter(r=>{
@@ -1315,6 +1416,9 @@ function TabStrategy({refreshKey=0}) {
     if(filter==='NEAR') return r.urgency==='near';
     return r.side===filter;
   });
+  const allStockSymbols = data.symbols?.length
+    ? data.symbols
+    : [...new Set((data.rows||[]).map(r=>r.symbol).filter(Boolean))].sort();
   const selectedRow = (data.rows||[]).find(r=>r.symbol===selectedSymbol) || rows[0] || data.rows?.[0] || null;
   const chartSymbolLabel = selectedSymbol || selectedRow?.symbol || 'SELECT SYMBOL';
   const signalColor = signal => {
@@ -1361,32 +1465,139 @@ function TabStrategy({refreshKey=0}) {
         </div>
         <div style={{padding:'12px 20px',borderBottom:`1px solid ${R(C.outline,0.08)}`,display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
           <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.08em',color:C.outline,textTransform:'uppercase'}}>Chart Symbol</span>
-          <div style={{display:'flex',alignItems:'center',gap:8,minWidth:220,padding:'8px 11px',borderRadius:8,background:R(C.surfLowest,0.65),border:`1px solid ${R(C.outline,0.18)}`}}>
-            <Icon n="search" size={15} color={C.outline}/>
-            <input value={selectedSymbol||''} list="strategy-symbols"
-              onChange={e=>setSelectedSymbol(e.target.value.trim().toUpperCase())}
-              placeholder="Symbol"
-              style={{flex:1,minWidth:0,background:'transparent',border:'none',outline:'none',color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:13,letterSpacing:'0.04em',textTransform:'uppercase'}}/>
-            <datalist id="strategy-symbols">
-              {(data.rows||[]).map(r=><option key={r.symbol} value={r.symbol}/>)}
-            </datalist>
-          </div>
+          <select value={selectedSymbol||''} onChange={e=>setSelectedSymbol(e.target.value)}
+            style={{minWidth:220,background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.04em'}}>
+            {!selectedSymbol && <option value="">Select stock</option>}
+            {allStockSymbols.map(symbol=><option key={symbol} value={symbol}>{symbol}</option>)}
+          </select>
+          {selectedSymbol && !(data.rows||[]).some(r=>r.symbol===selectedSymbol) && (
+            <Pill text="NO CURRENT BMSB MATCH" color={C.outline}/>
+          )}
           <span style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:C.outline}}>
             Click any Symbol in the monitor table to update the chart. Mouse wheel zooms, drag pans, double-click resets, and the chart toolbar has fullscreen.
           </span>
         </div>
+        <div style={{padding:'12px 20px',borderBottom:`1px solid ${R(C.outline,0.08)}`,display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
+          <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.08em',color:C.outline,textTransform:'uppercase'}}>Manual Setup</span>
+          <input type="number" min="0" step="0.01" value={manualEntry}
+            onChange={e=>setManualEntry(e.target.value)}
+            placeholder="Entry price"
+            style={{width:130,background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
+          <select value={manualSide} onChange={e=>setManualSide(e.target.value)}
+            style={{background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
+            <option value="LONG">Long</option>
+            <option value="SHORT">Short</option>
+          </select>
+          <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Cash $</span>
+          <input type="number" min="0" step="100" value={manualCash}
+            onChange={e=>setManualCash(e.target.value)}
+            title="Available cash used to cap position size"
+            placeholder="Available cash"
+            style={{width:145,background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
+          <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Max risk %</span>
+          <input type="number" min="0" step="0.25" value={manualMaxOpenRisk}
+            onChange={e=>setManualMaxOpenRisk(e.target.value)}
+            title="Maximum open risk as percent of available cash"
+            placeholder="Max risk %"
+            style={{width:115,background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
+          {bars?.length>0 && (
+            <button onClick={()=>setManualEntry(String(Number(bars[bars.length-1]?.close||0).toFixed(2)))}
+              style={{padding:'8px 11px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,background:R(C.cyan,0.08),border:`1px solid ${R(C.cyan,0.28)}`}}>
+              Use last close
+            </button>
+          )}
+          {manualSetup ? (
+            <>
+              <Pill text={`STOP $${manualSetup.stop.toFixed(2)}`} color={C.err}/>
+              <Pill text={`TARGET $${manualSetup.target.toFixed(2)}`} color={C.lime}/>
+              <Pill text={`R:R ${manualSetup.rr.toFixed(2)}`} color={manualSetup.rr>=3?C.lime:C.outline}/>
+              {manualOrderPlan && <Pill text={`${manualOrderPlan.quantity} SH`} color={manualOrderPlan.quantity>0?C.cyan:C.err}/>}
+              {manualOrderPlan && <Pill text={`RISK $${manualOrderPlan.risk_amount.toFixed(2)}`} color={manualOrderPlan.quantity>0?C.err:C.outline}/>}
+              {manualOrderPlan && <Pill text={`PROFIT $${manualOrderPlan.potential_reward.toFixed(2)}`} color={manualOrderPlan.quantity>0?C.lime:C.outline}/>}
+              <span style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:C.outline}}>Based on {manualSetup.method}</span>
+              <button disabled={!manualOrderPlan || manualOrderPlan.quantity<=0}
+                onClick={()=>setStrategyConfirm({row:manualOrderPlan})}
+                style={{padding:'8px 15px',borderRadius:8,cursor:manualOrderPlan&&manualOrderPlan.quantity>0?'pointer':'not-allowed',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:700,color:manualOrderPlan&&manualOrderPlan.quantity>0?'#001416':C.outline,background:manualOrderPlan&&manualOrderPlan.quantity>0?C.cyan:R(C.outline,0.08),border:`1px solid ${manualOrderPlan&&manualOrderPlan.quantity>0?R(C.cyan,0.35):R(C.outline,0.14)}`,opacity:manualOrderPlan&&manualOrderPlan.quantity>0?1:0.6}}>
+                Place
+              </button>
+            </>
+          ) : (
+            <span style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:C.outline}}>Enter price to draw entry, stop, and target.</span>
+          )}
+        </div>
+        {strategyFeedback && (
+          <div style={{margin:'12px 20px 0',display:'flex',alignItems:'center',gap:10,padding:'11px 14px',borderRadius:10,
+            background:strategyFeedback.ok?R(C.lime,0.07):R(C.err,0.07),
+            border:`1px solid ${strategyFeedback.ok?R(C.lime,0.25):R(C.err,0.25)}`}}>
+            <Icon n={strategyFeedback.ok?'task_alt':'error'} size={17} color={strategyFeedback.ok?C.lime:C.err}/>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:strategyFeedback.ok?'#dbe9b0':C.err}}>{strategyFeedback.message}</span>
+            {strategyFeedback.id && <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>ID: {strategyFeedback.id}</span>}
+            {strategyFeedback.dryRun && <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.magenta}}>DRY_RUN</span>}
+          </div>
+        )}
         <div style={{padding:'18px 20px'}}>
           <CandleChart
             bars={visibleBars}
             levels={chartLevels}
+            lines={manualSetupLines}
+            zones={manualSetupZones}
             strategyOverlay={strategyOverlay}
             showVol={showVol}
-            height={420}
+            height={840}
             stale={barsInfo.stale}
             lastDate={barsInfo.lastDate}
           />
         </div>
       </GlassCard>
+
+      {strategyConfirm && (
+        <div onClick={()=>setStrategyConfirm(null)} style={{position:'fixed',inset:0,zIndex:70,background:'rgba(8,8,9,0.80)',backdropFilter:'blur(8px)',display:'flex',alignItems:'center',justifyContent:'center',padding:24}}>
+          <div onClick={e=>e.stopPropagation()} style={{width:'100%',maxWidth:480,background:'rgba(20,19,20,0.98)',border:`1px solid ${R(C.outline,0.22)}`,borderRadius:14,boxShadow:'0 30px 80px rgba(0,0,0,0.7)',overflow:'hidden'}}>
+            <div style={{padding:'18px 22px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',alignItems:'center',gap:12}}>
+              <Icon n="send" size={20} color={C.cyan}/>
+              <span style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:17,fontWeight:600,color:C.onSurf}}>Confirm Strategy Manual Order</span>
+            </div>
+            <div style={{padding:'20px 22px',display:'flex',flexDirection:'column',gap:14}}>
+              <div style={{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderRadius:10,background:R(C.magenta,0.06),border:`1px solid ${R(C.magenta,0.22)}`}}>
+                <Icon n="shield_lock" size={18} color={C.magenta} style={{flexShrink:0}}/>
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.magenta,lineHeight:1.5}}>Queues to execute_requests · paper account · respects DRY_RUN</span>
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px 18px'}}>
+                {[
+                  ['Symbol', strategyConfirm.row.symbol],
+                  ['Side', strategyConfirm.row.signal],
+                  ['Entry Order', strategyConfirm.row.entry_order_type || 'LIMIT'],
+                  ['Entry', '$'+Number(strategyConfirm.row.entry||0).toFixed(2)],
+                  ['Stop', '$'+Number(strategyConfirm.row.stop||0).toFixed(2)],
+                  ['Target', '$'+Number(strategyConfirm.row.target||0).toFixed(2)],
+                  ['Shares', strategyConfirm.row.quantity],
+                  ['Position Value', '$'+Number(strategyConfirm.row.position_value||0).toFixed(2)],
+                  ['Risk', '$'+Number(strategyConfirm.row.risk_amount||0).toFixed(2)],
+                  ['Potential Profit', '$'+Number(strategyConfirm.row.potential_reward||0).toFixed(2)],
+                  ['Max Open Risk', '$'+Number(strategyConfirm.row.max_risk_amount||0).toFixed(2)],
+                  ['R:R', Number(strategyConfirm.row.reward_risk||0).toFixed(2)],
+                  ['Strategy', strategyConfirm.row.strategy],
+                ].map(([k,v])=>(
+                  <div key={k}>
+                    <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,marginBottom:4}}>{k}</div>
+                    <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:13,color:C.onSurf,fontWeight:500}}>{v}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={{padding:'16px 22px',borderTop:`1px solid ${R(C.outline,0.14)}`,display:'flex',gap:10,justifyContent:'flex-end'}}>
+              <button onClick={()=>setStrategyConfirm(null)}
+                style={{padding:'10px 20px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onVar,background:'rgba(28,27,28,0.8)',border:`1px solid ${R(C.outline,0.25)}`}}>
+                Cancel
+              </button>
+              <button onClick={()=>doStrategyPlace(strategyConfirm.row)}
+                style={{padding:'10px 22px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:600,color:'#001416',background:C.cyan,border:'none'}}>
+                Place
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <GlassCard style={{overflow:'hidden'}}>
         <PanelHeader icon="insights" title="BMSB Strategy Monitor" badge="21W EMA / 20W SMA"/>
@@ -1536,6 +1747,7 @@ function TabForecast({refreshKey=0}) {
   const [calcAt, setCalcAt] = useState('—');
   const [loading, setLoading] = useState(false);
   const [fcFilter, setFcFilter] = useState('eligible');
+  const [fcLedgerSymbol, setFcLedgerSymbol] = useState('');
   const [fcExpanded, setFcExpanded] = useState(false);
   const [fcSel, setFcSel] = useState(null);
   const [feedback, setFeedback] = useState(null);   // {ok, message, id} or null
@@ -1567,6 +1779,7 @@ function TabForecast({refreshKey=0}) {
   const [selBars, setSelBars] = useState([]);
   const [selBarsInfo, setSelBarsInfo] = useState({stale:false,lastDate:null});
   const [tf, setTf] = useState('1D');
+  const [fcChartRange, setFcChartRange] = useState('ALL');
 
   const runCalc = useCallback(async(inputs)=>{
     setLoading(true);
@@ -1597,9 +1810,12 @@ function TabForecast({refreshKey=0}) {
   const sum = result?.summary||{};
   const rows = result?.rows||[];
 
-  const ledgerSrc = fcFilter==='eligible'?rows.filter(r=>r.status==='FORECAST TRADE')
+  const forecastSymbols = [...new Set(rows.map(r=>r.symbol).filter(Boolean))].sort();
+  const ledgerBase = fcFilter==='eligible'?rows.filter(r=>r.status==='FORECAST TRADE')
     :fcFilter==='filtered'?rows.filter(r=>r.status!=='FORECAST TRADE'):rows;
-
+  const ledgerSrc = fcFilter==='all' && fcLedgerSymbol
+    ? ledgerBase.filter(r=>r.symbol===fcLedgerSymbol)
+    : ledgerBase;
   const selRow = rows.find(r=>r.symbol===fcSel)||rows[0]||null;
 
   const fcInputDefs = [
@@ -1620,13 +1836,14 @@ function TabForecast({refreshKey=0}) {
 
   const selLines = selRow ? [
     selRow.target!=null && {p:selRow.target,color:C.lime,label:`TARGET ${fmtP2(selRow.target)}`},
-    selRow.entry!=null  && {p:selRow.entry, color:C.cyan,label:`ENTRY ${fmtP2(selRow.entry)}`},
+    selRow.entry!=null  && {p:selRow.entry, color:C.ocean,label:`ENTRY ${fmtP2(selRow.entry)}`},
     selRow.stop!=null   && {p:selRow.stop,  color:C.err, label:`STOP ${fmtP2(selRow.stop)}`},
   ].filter(Boolean) : [];
   const strategyOverlay = useMemo(
-    ()=>showStrategy ? buildBmsbStrategyOverlay(selBars) : null,
-    [showStrategy, selBars]
+    ()=>showStrategy ? buildBmsbStrategyOverlay(selBars.slice(-(RANGE_COUNTS[fcChartRange]||9999))) : null,
+    [showStrategy, selBars, fcChartRange]
   );
+  const visibleSelBars = selBars.slice(-(RANGE_COUNTS[fcChartRange]||9999));
 
   return (
     <div style={{display:'flex',flexDirection:'column',gap:24}}>
@@ -1743,11 +1960,24 @@ function TabForecast({refreshKey=0}) {
             <p style={{fontFamily:"'Inter',sans-serif",fontSize:12,lineHeight:1.6,color:C.outline,marginBottom:16}}>
               Each row has <span style={{color:C.onVar}}>Place Order</span> (sends the setup to the execute_requests worker — paper-only, respects DRY_RUN) and <span style={{color:C.onVar}}>Close Position</span> (flattens the symbol).
             </p>
-            <div style={{display:'inline-flex',gap:4,padding:4,borderRadius:9,background:R(C.surfLowest,0.6),border:`1px solid ${R(C.outline,0.16)}`,marginBottom:18,flexWrap:'wrap'}}>
-              {[{id:'eligible',label:'Eligible trades'},{id:'all',label:'All signals'},{id:'filtered',label:'Filtered only'}].map(f=>{
-                const a=f.id===fcFilter;
-                return <button key={f.id} onClick={()=>setFcFilter(f.id)} style={{padding:'7px 14px',borderRadius:7,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,border:`1px solid ${a?R(C.cyan,0.4):'transparent'}`,background:a?R(C.cyan,0.14):'transparent',color:a?C.cyan:C.onVar}}>{f.label}</button>;
-              })}
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',gap:12,marginBottom:18,flexWrap:'wrap'}}>
+              <div style={{display:'inline-flex',gap:4,padding:4,borderRadius:9,background:R(C.surfLowest,0.6),border:`1px solid ${R(C.outline,0.16)}`,flexWrap:'wrap'}}>
+                {[{id:'eligible',label:'Eligible trades'},{id:'all',label:'All signals'},{id:'filtered',label:'Filtered only'}].map(f=>{
+                  const a=f.id===fcFilter;
+                  return <button key={f.id} onClick={()=>setFcFilter(f.id)} style={{padding:'7px 14px',borderRadius:7,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,border:`1px solid ${a?R(C.cyan,0.4):'transparent'}`,background:a?R(C.cyan,0.14):'transparent',color:a?C.cyan:C.onVar}}>{f.label}</button>;
+                })}
+              </div>
+              {fcFilter==='all' && (
+                <div style={{display:'flex',alignItems:'center',gap:10,flexWrap:'wrap'}}>
+                  <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.08em',color:C.outline,textTransform:'uppercase'}}>Ledger Symbol</span>
+                  <select value={fcLedgerSymbol} onChange={e=>{setFcLedgerSymbol(e.target.value); if(e.target.value) setFcSel(e.target.value);}}
+                    style={{minWidth:180,background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.04em'}}>
+                    <option value="">All symbols</option>
+                    {forecastSymbols.map(symbol=><option key={symbol} value={symbol}>{symbol}</option>)}
+                  </select>
+                  {fcLedgerSymbol && <Pill text={`FILTER: ${fcLedgerSymbol}`} color={C.cyan}/>}
+                </div>
+              )}
             </div>
             {feedback && (
               <div style={{display:'flex',alignItems:'center',gap:11,marginBottom:16,padding:'12px 16px',borderRadius:10,
@@ -1926,20 +2156,28 @@ function TabForecast({refreshKey=0}) {
               </div>
               <TfPills value={tf} onChange={setTf}/>
             </div>
-            <div style={{padding:'12px 20px',borderBottom:`1px solid ${R(C.outline,0.1)}`,display:'flex',alignItems:'center',gap:22,flexWrap:'wrap'}}>
-              <Toggle on={showRaw} label="Raw levels" onChange={setShowRaw}/>
-              <Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/>
-              <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
-              <Toggle on={showStrategy} label="BMSB strategy" onChange={setShowStrategy}/>
+            <div style={{padding:'12px 20px',borderBottom:`1px solid ${R(C.outline,0.1)}`,display:'flex',justifyContent:'space-between',alignItems:'center',gap:14,flexWrap:'wrap'}}>
+              <div style={{display:'flex',alignItems:'center',gap:22,flexWrap:'wrap'}}>
+                <Toggle on={showRaw} label="Raw levels" onChange={setShowRaw}/>
+                <Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/>
+                <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
+                <Toggle on={showStrategy} label="BMSB strategy" onChange={setShowStrategy}/>
+              </div>
+              <div style={{display:'flex',gap:5,flexWrap:'wrap'}}>
+                {['1M','3M','6M','YTD','1Y','ALL'].map(rg=>{
+                  const a=rg===fcChartRange;
+                  return <button key={rg} onClick={()=>setFcChartRange(rg)} style={{padding:'5px 11px',borderRadius:6,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,border:`1px solid ${a?R(C.cyan,0.4):'rgba(132,148,149,0.18)'}`,background:a?R(C.cyan,0.16):'rgba(20,20,21,0.6)',color:a?C.cyan:C.onVar}}>{rg}</button>;
+                })}
+              </div>
             </div>
             <div style={{padding:'18px 20px'}}>
-              <CandleChart bars={selBars} levels={buildChartLevels(selPlan?.trade_levels, selPlan?.raw_levels, showTrade, showRaw)} lines={selLines}
+              <CandleChart bars={visibleSelBars} levels={buildChartLevels(selPlan?.trade_levels, selPlan?.raw_levels, showTrade, showRaw)} lines={selLines}
                 zones={[
                   ...(selRow?.entry!=null && selRow?.target!=null ? [{p1:selRow.entry,p2:selRow.target,color:C.lime,opacity:0.07}] : []),
                   ...(selRow?.entry!=null && selRow?.stop!=null ? [{p1:selRow.entry,p2:selRow.stop,color:C.err,opacity:0.08}] : []),
                 ]}
                 strategyOverlay={strategyOverlay}
-                showVol={showVol} height={300} stale={selBarsInfo.stale} lastDate={selBarsInfo.lastDate}/>
+                showVol={showVol} height={600} stale={selBarsInfo.stale} lastDate={selBarsInfo.lastDate}/>
             </div>
           </GlassCard>
         )}
@@ -2010,6 +2248,137 @@ function TabForecast({refreshKey=0}) {
 /* ════════════════════════════════════════════════════════════════════════════
    TAB: REPORTS
 ═══════════════════════════════════════════════════════════════════════════ */
+function TabCrypto({refreshKey=0}) {
+  const [data, setData] = useState(null);
+  const [selected, setSelected] = useState('');
+  const [tf, setTf] = useState('1D');
+  const [range, setRange] = useState('6M');
+  const [showRaw, setShowRaw] = useState(false);
+  const [showTrade, setShowTrade] = useState(true);
+  const [showVol, setShowVol] = useState(true);
+  const [showStrategy, setShowStrategy] = useState(false);
+  const [bars, setBars] = useState([]);
+  const [barsInfo, setBarsInfo] = useState({stale:false,lastDate:null});
+  const [plan, setPlan] = useState(null);
+  const [analyzing, setAnalyzing] = useState(false);
+
+  useEffect(()=>{ fetch(`${API}/crypto`).then(r=>r.json()).then(setData).catch(()=>setData({rows:[],metrics:{}})); },[refreshKey]);
+  useEffect(()=>{
+    const first = data?.rows?.find(r=>r.ready)?.symbol || data?.rows?.[0]?.symbol;
+    if(first && !selected) setSelected(first);
+  },[data, selected]);
+  useEffect(()=>{
+    if(!selected) return;
+    const apitf = TF_API[tf] || 'daily';
+    fetch(`${API}/crypto/bars/${selected}/${apitf}`)
+      .then(r=>r.json())
+      .then(d=>{setBars(d.bars||[]);setBarsInfo({stale:d.stale,lastDate:d.last_date});})
+      .catch(()=>{setBars([]);setBarsInfo({stale:false,lastDate:null});});
+    fetch(`${API}/crypto/${selected}`)
+      .then(r=>r.ok?r.json():null)
+      .then(d=>setPlan(d||null))
+      .catch(()=>setPlan(null));
+  },[selected, tf, refreshKey]);
+
+  const runAnalyze = async() => {
+    setAnalyzing(true);
+    try {
+      await fetch(`${API}/crypto/analyze`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({})});
+      const d = await fetch(`${API}/crypto`).then(r=>r.json());
+      setData(d);
+    } finally {
+      setAnalyzing(false);
+    }
+  };
+
+  const strategyOverlay = useMemo(
+    ()=>showStrategy ? buildBmsbStrategyOverlay(bars.slice(-(RANGE_COUNTS[range]||9999))) : null,
+    [showStrategy, bars, range]
+  );
+
+  if(!data) return <Spinner/>;
+  const rows = data.rows || [];
+  const m = data.metrics || {};
+  const selectedRow = rows.find(r=>r.symbol===selected) || rows[0] || {};
+  const visibleBars = bars.slice(-(RANGE_COUNTS[range]||9999));
+  const chartLevels = buildChartLevels(plan?.trade_levels, plan?.raw_levels, showTrade, showRaw);
+  const money = v => v!=null && Number.isFinite(Number(v)) ? `$${Number(v).toFixed(Number(v)>=10?2:4)}` : '—';
+
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:18}}>
+      <div style={{display:'grid',gridTemplateColumns:'repeat(4,minmax(0,1fr))',gap:14}}>
+        {[
+          {label:'Configured', value:m.configured??0, sub:'OKX symbol inputs', color:C.onSurf},
+          {label:'Analyzed', value:m.ready??0, sub:`${m.tracked??0} tracked`, color:C.lime},
+          {label:'With Zones', value:m.with_trade_levels??0, sub:'trade levels ready', color:C.cyan},
+          {label:'Last Update', value:data.updated_at?String(data.updated_at).slice(5,16).replace('T',' '):'—', sub:'UTC state time', color:C.onSurf},
+        ].map((card,i)=>(
+          <MetricCard key={i} label={card.label} value={String(card.value)} valueColor={card.color} sub={card.sub}/>
+        ))}
+      </div>
+
+      <GlassCard style={{overflow:'hidden'}}>
+        <PanelHeader icon="currency_bitcoin" title={`${selected || 'Crypto'} Gerchik Trade-Zone Chart`} badge={selectedRow?.inst_type || 'OKX'}/>
+        <div style={{padding:'14px 18px',display:'flex',justifyContent:'space-between',alignItems:'center',gap:14,flexWrap:'wrap',borderBottom:`1px solid ${R(C.outline,0.12)}`}}>
+          <div style={{display:'flex',gap:12,alignItems:'center',flexWrap:'wrap'}}>
+            <Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/>
+            <Toggle on={showRaw} label="Raw levels" onChange={setShowRaw}/>
+            <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
+            <Toggle on={showStrategy} label="BMSB strategy" onChange={setShowStrategy}/>
+          </div>
+          <div style={{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}>
+            <select value={selected} onChange={e=>setSelected(e.target.value)}
+              style={{background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'7px 10px',fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
+              {rows.map(r=><option key={r.symbol} value={r.symbol}>{r.symbol}</option>)}
+            </select>
+            {['5Min','1H','4H','1D'].map(t=>{
+              const a=t===tf;
+              return <button key={t} onClick={()=>setTf(t)} style={{padding:'6px 11px',borderRadius:7,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,border:`1px solid ${a?R(C.cyan,0.4):R(C.outline,0.18)}`,background:a?R(C.cyan,0.14):R(C.surfLowest,0.45),color:a?C.cyan:C.onVar}}>{t}</button>;
+            })}
+            {['1M','3M','6M','1Y','ALL'].map(rg=>{
+              const a=rg===range;
+              return <button key={rg} onClick={()=>setRange(rg)} style={{padding:'6px 11px',borderRadius:7,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,border:`1px solid ${a?R(C.lime,0.4):R(C.outline,0.18)}`,background:a?R(C.lime,0.12):R(C.surfLowest,0.45),color:a?C.lime:C.onVar}}>{rg}</button>;
+            })}
+          </div>
+        </div>
+        <div style={{padding:'18px 20px'}}>
+          <CandleChart bars={visibleBars} levels={chartLevels} strategyOverlay={strategyOverlay} showVol={showVol} height={840} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
+        </div>
+      </GlassCard>
+
+      <GlassCard style={{overflow:'hidden'}}>
+        <div style={{padding:'16px 20px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',alignItems:'center',justifyContent:'space-between',gap:10}}>
+          <div style={{display:'flex',alignItems:'center',gap:10}}>
+            <Icon n="database" size={17} color={C.cyan}/>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar}}>Crypto Trade Levels</span>
+          </div>
+          <button onClick={runAnalyze} disabled={analyzing} style={{padding:'8px 13px',borderRadius:8,cursor:analyzing?'wait':'pointer',border:`1px solid ${R(C.cyan,0.35)}`,background:R(C.cyan,0.10),color:C.cyan,fontFamily:"'Inter',sans-serif",fontWeight:700}}>
+            {analyzing?'Analyzing…':'Analyze saved candles'}
+          </button>
+        </div>
+        <Table
+          cols={['Symbol','Status','Price','ATR','Trade Zones','Raw Levels','Last Bar','Source']}
+          rows={rows.map(r=>[
+            <button onClick={()=>setSelected(r.symbol)} style={{background:'transparent',border:0,color:r.symbol===selected?C.cyan:C.onSurf,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontWeight:800}}>{r.symbol}</button>,
+            <Pill text={r.ready?'READY':'NO DATA'} color={r.ready?C.lime:C.outline}/>,
+            money(r.price),
+            r.daily_atr!=null?Number(r.daily_atr).toFixed(4):'—',
+            String(r.trade_levels??0),
+            String(r.raw_levels??0),
+            r.last_bar?String(r.last_bar).slice(0,16).replace('T',' '):'—',
+            r.raw || r.inst_type || 'OKX',
+          ])}
+        />
+        {(data.errors||[]).length>0 && (
+          <div style={{padding:'12px 18px',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.err,borderTop:`1px solid ${R(C.outline,0.1)}`}}>
+            Errors: {(data.errors||[]).slice(0,4).map(e=>`${e.symbol}: ${e.reason}`).join(' · ')}
+          </div>
+        )}
+      </GlassCard>
+    </div>
+  );
+}
+
 function TabReports({refreshKey=0}) {
   const [data, setData] = useState(null);
   useEffect(()=>{ fetch(`${API}/reports`).then(r=>r.json()).then(setData); },[refreshKey]);
@@ -2208,6 +2577,7 @@ const NAV = [
   {id:'preopen',    label:'Pre-Open',            icon:'wb_twilight'},
   {id:'intraday',   label:'Intraday',            icon:'monitoring'},
   {id:'strategy',   label:'Strategy',            icon:'insights'},
+  {id:'crypto',     label:'Crypto',              icon:'currency_bitcoin'},
   {id:'trades',     label:'Trades & Positions',  icon:'swap_horiz'},
   {id:'forecast',   label:'Forecast',            icon:'calculate'},
   {id:'reports',    label:'Reports',             icon:'description'},
@@ -2217,6 +2587,7 @@ const PAGE_META = {
   preopen:   {title:'Pre-Open Briefing',      sub:'Watchlist scanned · levels mapped · awaiting the open', crumb:'Pre-Open'},
   intraday:  {title:'Intraday Monitor',       sub:'Live decision loop · paper execution', crumb:'Intraday'},
   strategy:  {title:'Strategy Monitor',       sub:'BMSB 21W EMA / 20W SMA cross scanner', crumb:'Strategy'},
+  crypto:    {title:'Crypto Trade Levels',    sub:'OKX candles · Gerchik zones · separate crypto bot', crumb:'Crypto'},
   trades:    {title:'Trades & Positions',     sub:'Open paper positions and trade journal', crumb:'Trades'},
   forecast:  {title:'Risk Forecast Calculator',sub:'Scenario-only · replays saved data · no live orders', crumb:'Forecast'},
   reports:   {title:'Reports',               sub:'Generated session workbooks', crumb:'Reports'},
@@ -2361,6 +2732,7 @@ function App() {
               {tab==='preopen'   && <TabPreOpen refreshKey={refreshKey}/>}
               {tab==='intraday'  && <TabIntraday refreshKey={refreshKey}/>}
               {tab==='strategy'  && <TabStrategy refreshKey={refreshKey}/>}
+              {tab==='crypto'    && <TabCrypto refreshKey={refreshKey}/>}
               {tab==='trades'    && <TabTrades refreshKey={refreshKey}/>}
               {tab==='forecast'  && <TabForecast refreshKey={refreshKey}/>}
               {tab==='reports'   && <TabReports refreshKey={refreshKey}/>}

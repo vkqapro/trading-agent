@@ -150,6 +150,7 @@ class OrderManager:
         quantity: int | None = None,
         allow_extended_hours_order: bool = True,
         time_in_force: str | None = "GTC",
+        entry_order_type: str = "MARKET",
     ) -> Tuple[bool, Dict[str, object]]:
         """Place a human-initiated (dashboard) order.
 
@@ -186,23 +187,37 @@ class OrderManager:
         enriched = signal.to_dict()
         enriched["quantity"] = quantity
         enriched["risk_amount"] = abs(entry - stop) * quantity
+        entry_order_type = str(entry_order_type or "MARKET").strip().upper()
 
         if self.dry_run:
             payload = self._build_payload(signal, quantity, 0, 0, status="simulated", dry_run=True)
             payload["manual_override"] = True
+            payload["entry_order_type"] = entry_order_type
             append_markdown_log(SETTINGS.paths.trade_log, f"Simulated Manual Trade {signal.symbol}", payload)
             return True, payload
 
         limit_price = float(signal.target) if signal.target else None
-        entry_order, stop_order, limit_order = self.broker.place_market_bracket_order(
-            signal.symbol,
-            signal.signal,
-            quantity,
-            signal.stop,
-            limit_price=limit_price,
-            outside_rth=allow_extended_hours_order,
-            tif=time_in_force,
-        )
+        if entry_order_type == "LIMIT":
+            entry_order, stop_order, limit_order = self.broker.place_limit_bracket_order(
+                signal.symbol,
+                signal.signal,
+                quantity,
+                signal.entry,
+                signal.stop,
+                limit_price=limit_price,
+                outside_rth=allow_extended_hours_order,
+                tif=time_in_force,
+            )
+        else:
+            entry_order, stop_order, limit_order = self.broker.place_market_bracket_order(
+                signal.symbol,
+                signal.signal,
+                quantity,
+                signal.stop,
+                limit_price=limit_price,
+                outside_rth=allow_extended_hours_order,
+                tif=time_in_force,
+            )
         broker_statuses = {
             "market_order": entry_order.status,
             "stop_order": stop_order.status,
@@ -219,6 +234,7 @@ class OrderManager:
                 "status": "broker_rejected",
                 "reasons": [reason],
                 "signal": enriched,
+                "entry_order_type": entry_order_type,
                 "broker_statuses": broker_statuses,
                 "market_order_id": entry_order.order_id,
                 "stop_order_id": stop_order.order_id,
@@ -236,6 +252,7 @@ class OrderManager:
             status="executed",
         )
         payload["manual_override"] = True
+        payload["entry_order_type"] = entry_order_type
         payload["broker_statuses"] = broker_statuses
         append_markdown_log(SETTINGS.paths.trade_log, f"Manual Trade {signal.symbol}", payload)
         self.alerter.send_trade_executed(payload)

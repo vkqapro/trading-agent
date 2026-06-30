@@ -36,6 +36,10 @@ REM Start the paper order-execution worker in its own window.
 REM The launcher performs a clean restart and uses dedicated client id 11.
 start "Gerchik Execute Worker" cmd /k "%~dp0run_execute_worker.cmd"
 
+REM Start the 24/7 OKX crypto candle collector + analyzer.
+REM This uses public OKX market-data endpoints for candles.
+start "Gerchik Crypto Worker" /min cmd /k "%~dp0run_crypto_worker.cmd"
+
 REM Give the server 2 seconds then open browser
 start "" /min cmd /c "timeout /t 2 /nobreak >nul && start http://127.0.0.1:8550"
 
