@@ -139,8 +139,13 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
   const [hover,    setHover]    = useState(null);   // {idx, svgX, svgY}
   const [crosshair,setCrosshair]= useState(false);
   const [showMA,   setShowMA]   = useState(false);
+  const [measureMode, setMeasureMode] = useState(false);
+  const [measure, setMeasure]   = useState(null); // {ax,ay,bx,by} in SVG coords, locked after mouseup
+  const [isDragging, setIsDragging] = useState(false);
   const [isFullscreen,setIsFullscreen] = useState(false);
   const dragRef = useRef(null);  // {startX, startVisStart, startVisEnd}
+  const measureRef = useRef(null); // {svgX, svgY, barIdx, price} anchor while dragging
+  const measureModeRef = useRef(false); // mirror of measureMode for use inside event handlers
 
   // reset view when bars change
   useEffect(()=>{ setVisStart(0); setVisEnd(bars?.length||0); setHover(null); },[bars]);
@@ -148,6 +153,12 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
     const onFullscreenChange = ()=>setIsFullscreen(document.fullscreenElement===chartRef.current);
     document.addEventListener('fullscreenchange',onFullscreenChange);
     return ()=>document.removeEventListener('fullscreenchange',onFullscreenChange);
+  },[]);
+  // clear measure on Escape — must be before any early return
+  useEffect(()=>{
+    const onKey = e => { if(e.key==='Escape') { setMeasure(null); measureRef.current=null; } };
+    window.addEventListener('keydown', onKey);
+    return ()=>window.removeEventListener('keydown', onKey);
   },[]);
 
   const renderedHeight = isFullscreen ? Math.max(520,window.innerHeight-110) : height;
@@ -248,20 +259,44 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
     }
   };
 
+  // keep ref in sync with state so handlers always see the current value
+  measureModeRef.current = measureMode;
+
   // ── mouse event handlers
   const onWheel = e => {
     e.preventDefault();
-    zoomAt(toSvgX(e.clientX), e.deltaY>0 ? 1.15 : 0.87);
+    if(!measureModeRef.current) zoomAt(toSvgX(e.clientX), e.deltaY>0 ? 1.15 : 0.87);
   };
   const onMouseDown = e => {
     if(e.button!==0) return;
-    dragRef.current = {startX: e.clientX, startVisStart: vs, startVisEnd: ve};
-    e.currentTarget.setPointerCapture(e.pointerId);
+    if(measureModeRef.current){
+      const sx = toSvgX(e.clientX), sy = toSvgY(e.clientY);
+      const idx = Math.max(vs, Math.min(ve-1, svgXToBarIdx(sx)));
+      measureRef.current = {svgX:sx, svgY:sy, barIdx:idx, price:svgYToPrice(sy)};
+      setMeasure(null);
+      setIsDragging(true);
+    } else {
+      dragRef.current = {startX: e.clientX, startVisStart: vs, startVisEnd: ve};
+      e.currentTarget.setPointerCapture(e.pointerId);
+      setIsDragging(true);
+    }
   };
   const onMouseMove = e => {
     const sx = toSvgX(e.clientX), sy = toSvgY(e.clientY);
     const idx = Math.max(vs, Math.min(ve-1, svgXToBarIdx(sx)));
     setHover({idx, svgX:sx, svgY:sy});
+    if(measureModeRef.current){
+      if(measureRef.current){
+        setMeasure({
+          ax: measureRef.current.svgX, ay: measureRef.current.svgY,
+          bx: sx, by: sy,
+          aBarIdx: measureRef.current.barIdx, bBarIdx: idx,
+          aPrice: measureRef.current.price, bPrice: svgYToPrice(sy),
+          live: true,
+        });
+      }
+      return;
+    }
     if(dragRef.current){
       const dx = e.clientX - dragRef.current.startX;
       const r = svgRef.current?.getBoundingClientRect();
@@ -272,8 +307,16 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
       setVisStart(ns); setVisEnd(ne);
     }
   };
-  const onMouseUp   = () => { dragRef.current = null; };
-  const onMouseLeave= () => { dragRef.current=null; setHover(null); };
+  const onMouseUp = () => {
+    setIsDragging(false);
+    if(measureModeRef.current){
+      measureRef.current = null; // lock: leave measure state as-is (live→still visible)
+      setMeasure(m => m ? {...m, live:false} : null);
+      return;
+    }
+    dragRef.current = null;
+  };
+  const onMouseLeave = () => { dragRef.current=null; setIsDragging(false); setHover(null); };
 
   // ── build SVG elements
   const els=[];
@@ -516,6 +559,48 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
       fontFamily="JetBrains Mono,monospace" textAnchor="end">VOL</text>);
   }
 
+  // ── measure tool overlay
+  if(measure){
+    const mx1 = Math.min(measure.ax, measure.bx);
+    const mx2 = Math.max(measure.ax, measure.bx);
+    const my1 = Math.min(measure.ay, measure.by);
+    const my2 = Math.max(measure.ay, measure.by);
+    // clamp to price area
+    const rx1 = Math.max(padL, mx1), rx2 = Math.min(W-padR, mx2);
+    const ry1 = Math.max(padT, my1), ry2 = Math.min(padT+priceH, my2);
+    const rw = Math.max(1, rx2-rx1), rh = Math.max(1, ry2-ry1);
+    const dPrice = measure.bPrice - measure.aPrice;
+    const pctChg = measure.aPrice ? (dPrice/measure.aPrice*100) : 0;
+    const barCount = Math.abs(measure.bBarIdx - measure.aBarIdx) + 1;
+    const up = dPrice >= 0;
+    const mCol = up ? C.lime : C.err;
+    els.push(
+      <rect key="meas-fill" x={rx1} y={ry1} width={rw} height={rh}
+        fill={R(mCol, 0.08)} stroke={R(mCol, 0.55)} strokeWidth={1} strokeDasharray="4 3"/>,
+      // corner ticks
+      <line key="meas-tl" x1={rx1} x2={rx1} y1={ry1} y2={ry1+6} stroke={R(mCol,0.9)} strokeWidth={1.5}/>,
+      <line key="meas-tr" x1={rx2} x2={rx2} y1={ry1} y2={ry1+6} stroke={R(mCol,0.9)} strokeWidth={1.5}/>,
+      <line key="meas-bl" x1={rx1} x2={rx1} y1={ry2-6} y2={ry2} stroke={R(mCol,0.9)} strokeWidth={1.5}/>,
+      <line key="meas-br" x1={rx2} x2={rx2} y1={ry2-6} y2={ry2} stroke={R(mCol,0.9)} strokeWidth={1.5}/>,
+      // price delta lines on Y axis
+      <line key="meas-ya" x1={rx1-4} x2={rx1+4} y1={measure.ay} y2={measure.ay} stroke={R(mCol,0.7)} strokeWidth={1}/>,
+      <line key="meas-yb" x1={rx1-4} x2={rx1+4} y1={measure.by} y2={measure.by} stroke={R(mCol,0.7)} strokeWidth={1}/>,
+    );
+    // label: center of box or near top if box is small
+    const lblX = Math.min(rx1 + rw/2, W-padR-10);
+    const lblY = ry1 + rh/2;
+    const sign = up ? '+' : '';
+    const labelText = `${sign}${fmtP(dPrice)}  ${sign}${pctChg.toFixed(2)}%  ·  ${barCount}b`;
+    const lblW = labelText.length * 6.5 + 16;
+    const lblH = 20;
+    els.push(
+      <rect key="meas-lbg" x={lblX-lblW/2} y={lblY-lblH/2} width={lblW} height={lblH} rx={4}
+        fill="rgba(14,14,15,0.92)" stroke={R(mCol,0.5)} strokeWidth={1}/>,
+      <text key="meas-lbt" x={lblX} y={lblY+4.5} textAnchor="middle"
+        fill={mCol} fontSize={10.5} fontFamily="JetBrains Mono,monospace" fontWeight="600">{labelText}</text>
+    );
+  }
+
   // crosshair
   if(hover && crosshair){
     const cx=hover.svgX, cy=hover.svgY;
@@ -589,6 +674,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
         {[
           {icon:'my_location', title:'Crosshair', on:crosshair, toggle:()=>setCrosshair(v=>!v)},
           {icon:'show_chart',  title:'MA (7)',     on:showMA,    toggle:()=>setShowMA(v=>!v)},
+          {icon:'straighten',  title:'Measure — drag to measure price & bars · Esc to clear', on:measureMode, toggle:()=>{ setMeasureMode(v=>!v); setMeasure(null); measureRef.current=null; setIsDragging(false); }},
         ].map(b=>(
           <button key={b.icon} title={b.title} onClick={b.toggle}
             style={{width:30,height:28,borderRadius:6,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,
@@ -608,7 +694,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
         <svg ref={svgRef}
           viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none"
           width="100%" height="100%"
-          style={{display:'block',cursor:dragRef.current?'grabbing':'crosshair'}}
+          style={{display:'block',cursor:measureMode?'crosshair':isDragging?'grabbing':'grab'}}
           onWheel={onWheel}
           onMouseDown={onMouseDown}
           onMouseMove={onMouseMove}
