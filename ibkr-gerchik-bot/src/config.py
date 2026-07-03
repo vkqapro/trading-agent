@@ -339,6 +339,27 @@ class Settings:
 SETTINGS = Settings()
 
 
+class SafeRotatingFileHandler(logging.handlers.RotatingFileHandler):
+    """Rotating file handler that tolerates Windows multi-process log locks."""
+
+    def doRollover(self) -> None:  # noqa: N802 - logging API method name
+        try:
+            super().doRollover()
+        except PermissionError:
+            # Another bot/dashboard process can briefly hold application.log on
+            # Windows while this process decides it is time to rotate. Avoid
+            # flooding stderr with logging tracebacks by switching this process
+            # to its own overflow log instead of retrying the locked rollover on
+            # every subsequent INFO line.
+            if self.stream:
+                self.stream.close()
+                self.stream = None
+            original = Path(self.baseFilename)
+            self.baseFilename = str(original.with_name(f"{original.stem}.{os.getpid()}.log"))
+            if not self.delay:
+                self.stream = self._open()
+
+
 def ensure_directories() -> None:
     """Create runtime and memory directories expected by the application."""
     SETTINGS.paths.runtime_dir.mkdir(parents=True, exist_ok=True)
@@ -362,7 +383,7 @@ def setup_logging() -> logging.Logger:
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
 
-    file_handler = logging.handlers.RotatingFileHandler(
+    file_handler = SafeRotatingFileHandler(
         SETTINGS.paths.runtime_dir / "application.log",
         maxBytes=10 * 1024 * 1024,
         backupCount=5,

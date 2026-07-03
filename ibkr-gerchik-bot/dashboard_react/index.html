@@ -108,8 +108,8 @@ const SectionTitle = ({title}) => (
 const Table = ({cols, rows}) => (
   <div style={{overflowX:'auto'}}>
     <table style={{width:'100%',borderCollapse:'collapse',minWidth:cols.length*100}}>
-      <thead><tr>{cols.map(c=>(
-        <th key={c} style={{padding:'11px 18px',textAlign:'left',fontFamily:"'JetBrains Mono',monospace",
+      <thead><tr>{cols.map((c,i)=>(
+        <th key={i} style={{padding:'11px 18px',textAlign:'left',fontFamily:"'JetBrains Mono',monospace",
           fontSize:10,letterSpacing:'0.07em',textTransform:'uppercase',color:C.outline,
           borderBottom:`1px solid ${R(C.outline,0.12)}`}}>{c}</th>
       ))}</tr></thead>
@@ -179,6 +179,12 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
   const ve = Math.max(vs+2, Math.min(visEnd, n));
   const visBars = bars.slice(vs, ve);
   const vn = visBars.length;
+  const strategyOverlays = (Array.isArray(strategyOverlay) ? strategyOverlay : [strategyOverlay]).filter(Boolean);
+  const strategyOverlaySlices = strategyOverlays.map((overlay, idx)=>({
+    overlay,
+    idx,
+    points: overlay?.points?.slice(vs, ve) || [],
+  }));
 
   // dynamic Y range from visible bars only
   let pmin=Infinity, pmax=-Infinity;
@@ -192,11 +198,11 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
     pmin=Math.min(pmin,z.p1,z.p2);
     pmax=Math.max(pmax,z.p1,z.p2);
   });
-  const overlayPoints = strategyOverlay?.points?.slice(vs, ve) || [];
-  overlayPoints.forEach(p=>{
-    if(Number.isFinite(p.sma)){ pmin=Math.min(pmin,p.sma); pmax=Math.max(pmax,p.sma); }
-    if(Number.isFinite(p.ema)){ pmin=Math.min(pmin,p.ema); pmax=Math.max(pmax,p.ema); }
-  });
+  strategyOverlaySlices.forEach(({points})=>points.forEach(p=>{
+    ['sma','ema','entryLevel','exitLevel'].forEach(key=>{
+      if(Number.isFinite(p[key])){ pmin=Math.min(pmin,p[key]); pmax=Math.max(pmax,p[key]); }
+    });
+  }));
   const gaussianPoints = gaussianOverlay?.points?.slice(vs, ve) || [];
   if(gaussianOverlay?.showChannel !== false) gaussianPoints.forEach(p=>{
     if(Number.isFinite(p.upper)){ pmin=Math.min(pmin,p.upper); pmax=Math.max(pmax,p.upper); }
@@ -470,11 +476,15 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
   lines.forEach((l,i)=>els.push(
     <line key={'dl'+i} x1={padL} x2={W-padR} y1={yp(l.p)} y2={yp(l.p)} stroke={l.color} strokeWidth={1.4} strokeDasharray="6 4"/>
   ));
-  // strategy overlay: BMSB weekly 20 SMA / 21 EMA band
-  if(strategyOverlay && overlayPoints.some(p=>Number.isFinite(p.sma)||Number.isFinite(p.ema))){
-    const smaColor = strategyOverlay.smaColor || C.err;
-    const emaColor = strategyOverlay.emaColor || C.lime;
-    const bandColor = strategyOverlay.bandColor || '#ffb35c';
+  // strategy overlays: BMSB weekly band + optional strategy-specific trigger lines
+  strategyOverlaySlices.forEach(({overlay, points:overlayPoints, idx:overlayIdx})=>{
+    if(!overlay || !overlayPoints.some(p=>Number.isFinite(p.sma)||Number.isFinite(p.ema)||Number.isFinite(p.entryLevel)||Number.isFinite(p.exitLevel))) return;
+    const keyPrefix = `strategy-${overlay.id||overlay.name||overlayIdx}-${overlayIdx}`;
+    const smaColor = overlay.smaColor || C.err;
+    const emaColor = overlay.emaColor || C.lime;
+    const bandColor = overlay.bandColor || '#ffb35c';
+    const entryLevelColor = overlay.entryLevelColor || overlay.entryColor || '#1f8bff';
+    const exitLevelColor = overlay.exitLevelColor || overlay.exitColor || '#bb6bff';
     const linePath = key => {
       let path='', started=false;
       overlayPoints.forEach((p,i)=>{
@@ -493,36 +503,48 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
       fillBottom.push(xi(i).toFixed(1) + ' ' + yp(lower).toFixed(1));
     });
     if(fillTop && fillBottom.length>1){
-      els.push(<path key="strategy-band-fill" d={`${fillTop} L${fillBottom.reverse().join(' L')} Z`} fill={R(bandColor,0.13)} stroke="none"/>);
+      els.push(<path key={`${keyPrefix}-band-fill`} d={`${fillTop} L${fillBottom.reverse().join(' L')} Z`} fill={R(bandColor,overlay.bandOpacity??0.13)} stroke="none"/>);
     }
-    const smaPath=linePath('sma'), emaPath=linePath('ema');
-    if(smaPath) els.push(<path key="strategy-sma" d={smaPath} fill="none" stroke={R(smaColor,0.78)} strokeWidth={1.6}/>);
-    if(emaPath) els.push(<path key="strategy-ema" d={emaPath} fill="none" stroke={R(emaColor,0.78)} strokeWidth={1.6}/>);
+    const smaPath=linePath('sma'), emaPath=linePath('ema'), entryLevelPath=linePath('entryLevel'), exitLevelPath=linePath('exitLevel');
+    if(smaPath) els.push(<path key={`${keyPrefix}-sma`} d={smaPath} fill="none" stroke={R(smaColor,overlay.lineOpacity??0.78)} strokeWidth={overlay.lineWidth||1.6}/>);
+    if(emaPath) els.push(<path key={`${keyPrefix}-ema`} d={emaPath} fill="none" stroke={R(emaColor,overlay.lineOpacity??0.78)} strokeWidth={overlay.lineWidth||1.6}/>);
+    if(entryLevelPath) els.push(<path key={`${keyPrefix}-entry-level`} d={entryLevelPath} fill="none" stroke={R(entryLevelColor,0.82)} strokeWidth={1.25} strokeDasharray="6 4"/>);
+    if(exitLevelPath) els.push(<path key={`${keyPrefix}-exit-level`} d={exitLevelPath} fill="none" stroke={R(exitLevelColor,0.78)} strokeWidth={1.25} strokeDasharray="6 4"/>);
     overlayPoints.forEach((p,i)=>{
       if(!p.signal) return;
       const x=xi(i), y=yp(p.close);
       const isEntry=p.signal==='entry';
       const col=isEntry
-        ? (strategyOverlay.entryColor || '#1f8bff')
-        : (strategyOverlay.exitColor || '#ff1744');
+        ? (overlay.entryColor || '#1f8bff')
+        : (overlay.exitColor || '#ff1744');
       const d=isEntry
         ? `M ${x.toFixed(1)} ${(y-9).toFixed(1)} L ${(x-6).toFixed(1)} ${(y+4).toFixed(1)} L ${(x+6).toFixed(1)} ${(y+4).toFixed(1)} Z`
         : `M ${x.toFixed(1)} ${(y+9).toFixed(1)} L ${(x-6).toFixed(1)} ${(y-4).toFixed(1)} L ${(x+6).toFixed(1)} ${(y-4).toFixed(1)} Z`;
-      els.push(<circle key={'strategy-sig-glow'+i} cx={x} cy={isEntry?y+1:y-1} r={9} fill={R(col,0.14)} stroke="none"/>);
-      els.push(<path key={'strategy-sig'+i} d={d} fill={R(col,0.96)} stroke={R('#ffffff',0.85)} strokeWidth={0.9}/>);
+      els.push(<circle key={`${keyPrefix}-sig-glow-${i}`} cx={x} cy={isEntry?y+1:y-1} r={9} fill={R(col,0.14)} stroke="none"/>);
+      els.push(<path key={`${keyPrefix}-sig-${i}`} d={d} fill={R(col,0.96)} stroke={R('#ffffff',0.85)} strokeWidth={0.9}/>);
     });
-    const lastOverlay = [...overlayPoints].reverse().find(p=>Number.isFinite(p.sma)||Number.isFinite(p.ema));
+    const lastOverlay = [...overlayPoints].reverse().find(p=>Number.isFinite(p.sma)||Number.isFinite(p.ema)||Number.isFinite(p.entryLevel)||Number.isFinite(p.exitLevel));
     if(lastOverlay){
+      const labelX = padL + 6;
+      const labelShift = overlayIdx * 38;
       if(Number.isFinite(lastOverlay.sma)){
         const y=yp(lastOverlay.sma);
-        els.push(<text key="strategy-sma-label" x={padL+6} y={y-4} fill={R(smaColor,0.9)} fontSize={9} fontFamily="JetBrains Mono,monospace">{strategyOverlay.smaLabel||'20W SMA'} {fmtP(lastOverlay.sma)}</text>);
+        els.push(<text key={`${keyPrefix}-sma-label`} x={labelX} y={y-4-labelShift} fill={R(smaColor,0.9)} fontSize={9} fontFamily="JetBrains Mono,monospace">{overlay.smaLabel||'20W SMA'} {fmtP(lastOverlay.sma)}</text>);
       }
       if(Number.isFinite(lastOverlay.ema)){
         const y=yp(lastOverlay.ema);
-        els.push(<text key="strategy-ema-label" x={padL+6} y={y+10} fill={R(emaColor,0.9)} fontSize={9} fontFamily="JetBrains Mono,monospace">{strategyOverlay.emaLabel||'21W EMA'} {fmtP(lastOverlay.ema)}</text>);
+        els.push(<text key={`${keyPrefix}-ema-label`} x={labelX} y={y+10-labelShift} fill={R(emaColor,0.9)} fontSize={9} fontFamily="JetBrains Mono,monospace">{overlay.emaLabel||'21W EMA'} {fmtP(lastOverlay.ema)}</text>);
+      }
+      if(Number.isFinite(lastOverlay.entryLevel)){
+        const y=yp(lastOverlay.entryLevel);
+        els.push(<text key={`${keyPrefix}-entry-level-label`} x={labelX} y={y+24-labelShift} fill={R(entryLevelColor,0.9)} fontSize={9} fontFamily="JetBrains Mono,monospace">{overlay.entryLevelLabel||'ENTRY LEVEL'} {fmtP(lastOverlay.entryLevel)}</text>);
+      }
+      if(Number.isFinite(lastOverlay.exitLevel)){
+        const y=yp(lastOverlay.exitLevel);
+        els.push(<text key={`${keyPrefix}-exit-level-label`} x={labelX} y={y+38-labelShift} fill={R(exitLevelColor,0.9)} fontSize={9} fontFamily="JetBrains Mono,monospace">{overlay.exitLevelLabel||'EXIT LEVEL'} {fmtP(lastOverlay.exitLevel)}</text>);
       }
     }
-  }
+  });
   // MA
   if(showMA){
     let path='';
@@ -975,6 +997,7 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
   const [showTrade, setShowTrade] = useState(true);
   const [showVol, setShowVol] = useState(true);
   const [showStrategy, setShowStrategy] = useState(false);
+  const [showStrategy2, setShowStrategy2] = useState(false);
   const [showGaussian, setShowGaussian] = useState(false);
   const [showGaussianSignals, setShowGaussianSignals] = useState(false);
   const [bars, setBars] = useState([]);
@@ -997,11 +1020,14 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
 
   const strategyOverlay = useMemo(
     ()=>{
-      if(!showStrategy) return null;
       const count = RANGE_COUNTS[range]||9999;
-      return sliceOverlayPoints(buildBmsbStrategyOverlay(bars), count);
+      const overlays = [
+        showStrategy ? sliceOverlayPoints(buildBmsbStrategyOverlay(bars), count) : null,
+        showStrategy2 ? sliceOverlayPoints(buildBmsbStrategy2Overlay(bars), count) : null,
+      ].filter(Boolean);
+      return overlays.length ? overlays : null;
     },
-    [showStrategy, bars, range]
+    [showStrategy, showStrategy2, bars, range]
   );
   const gaussianOverlay = useMemo(()=>{
     if(!showGaussian && !showGaussianSignals) return null;
@@ -1126,6 +1152,7 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
             <Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/>
             <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
             <Toggle on={showStrategy} label="BMSB strategy" onChange={setShowStrategy}/>
+            <Toggle on={showStrategy2} label="BMSB strategy 2" onChange={setShowStrategy2}/>
             <Toggle on={showGaussian} label="Gaussian channel" onChange={v=>{setShowGaussian(v); if(v) setShowGaussianSignals(true);}}/>
             <Toggle on={showGaussianSignals} label="Gaussian signals" onChange={setShowGaussianSignals}/>
           </div>
@@ -1186,6 +1213,198 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
 /* ════════════════════════════════════════════════════════════════════════════
    TAB: PRE-OPEN
 ═══════════════════════════════════════════════════════════════════════════ */
+/* TAB: WATCHLIST */
+function TabWatchlist({refreshKey=0}) {
+  const [data, setData] = useState(null);
+  const [query, setQuery] = useState('');
+  const [status, setStatus] = useState('ALL');
+  const [sortKey, setSortKey] = useState('symbol');
+  const [sortDir, setSortDir] = useState('asc');
+  const [addOpen, setAddOpen] = useState(false);
+  const [newSymbol, setNewSymbol] = useState('');
+  const [addBusy, setAddBusy] = useState(false);
+  const [addFeedback, setAddFeedback] = useState(null);
+
+  const loadWatchlist = useCallback(()=>{
+    fetch(`${API}/watchlist`)
+      .then(r=>r.json())
+      .then(setData)
+      .catch(()=>setData({rows:[],metrics:{}}));
+  },[]);
+
+  useEffect(()=>{
+    loadWatchlist();
+  },[refreshKey, loadWatchlist]);
+
+  const submitSymbol = useCallback(async()=>{
+    const symbol = newSymbol.trim().toUpperCase();
+    if(!symbol) return;
+    setAddBusy(true);
+    setAddFeedback(null);
+    try {
+      const r = await fetch(`${API}/watchlist/add`, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({symbol}),
+      });
+      const d = await r.json();
+      if(!r.ok || !d.ok) throw new Error(d.detail || d.message || 'Failed to submit symbol');
+      setAddFeedback({ok:true, message:d.message, log:d.log});
+      setNewSymbol('');
+      setAddOpen(false);
+      loadWatchlist();
+    } catch(e) {
+      setAddFeedback({ok:false, message:String(e.message||e)});
+    } finally {
+      setAddBusy(false);
+    }
+  },[newSymbol, loadWatchlist]);
+
+  const rows = useMemo(()=>{
+    let out = [...(data?.rows||[])];
+    const q = query.trim().toUpperCase();
+    if(q) out = out.filter(r=>String(r.symbol||'').includes(q));
+    if(status !== 'ALL') out = out.filter(r=>String(r.status||'') === status);
+    out.sort((a,b)=>{
+      const av = a?.[sortKey], bv = b?.[sortKey];
+      const an = Number(av), bn = Number(bv);
+      let cmp;
+      if(Number.isFinite(an) && Number.isFinite(bn)) cmp = an - bn;
+      else cmp = String(av ?? '').localeCompare(String(bv ?? ''));
+      return sortDir === 'asc' ? cmp : -cmp;
+    });
+    return out;
+  },[data, query, status, sortKey, sortDir]);
+
+  const m = data?.metrics || {};
+  const money = v => v!=null && Number.isFinite(Number(v)) ? `$${Number(v).toFixed(Number(v)>=10?2:4)}` : '—';
+  const fmt = (v, d=2) => v!=null && Number.isFinite(Number(v)) ? Number(v).toFixed(d) : '—';
+  const vol = v => v!=null && Number.isFinite(Number(v)) ? Number(v).toLocaleString('en-US') : '—';
+  const changeColor = v => Number(v)>0 ? C.lime : Number(v)<0 ? C.err : C.outline;
+  const changeText = v => {
+    if(v==null || !Number.isFinite(Number(v))) return '—';
+    const n = Number(v);
+    return `${n>0?'+':''}${n.toFixed(2)}`;
+  };
+  const pctText = v => {
+    if(v==null || !Number.isFinite(Number(v))) return '—';
+    const n = Number(v);
+    return `${n>0?'+':''}${n.toFixed(2)}%`;
+  };
+  const setSort = key => {
+    if(sortKey === key) setSortDir(d=>d==='asc'?'desc':'asc');
+    else { setSortKey(key); setSortDir(key==='symbol'?'asc':'desc'); }
+  };
+  const sortable = (label, key) => (
+    <button onClick={()=>setSort(key)} style={{background:'transparent',border:0,padding:0,cursor:'pointer',color:sortKey===key?C.cyan:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',textTransform:'uppercase'}}>
+      {label}{sortKey===key ? (sortDir==='asc'?' ↑':' ↓') : ''}
+    </button>
+  );
+
+  if(!data) return <Spinner/>;
+
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:18}}>
+      <MetricGrid items={[
+        {label:'Symbols', icon:'format_list_bulleted', value:m.symbols??0, sub:'current stock watchlist'},
+        {label:'Trade-Ready', icon:'verified', value:m.ready??0, valueColor:C.lime, sub:'levels + clear news'},
+        {label:'Pending', icon:'pending_actions', value:m.pending??0, valueColor:C.cyan, sub:'onboarding / not scanned yet'},
+        {label:'Gainers', icon:'trending_up', value:m.gainers??0, valueColor:C.lime, sub:'positive daily change'},
+        {label:'Losers', icon:'trending_down', value:m.losers??0, valueColor:C.err, sub:'negative daily change'},
+      ]}/>
+
+      <GlassCard style={{overflow:'hidden'}}>
+        <PanelHeader icon="visibility" title="Stock Watchlist" badge={`${rows.length} shown`}/>
+        <div style={{padding:'14px 18px',display:'flex',justifyContent:'space-between',alignItems:'center',gap:14,flexWrap:'wrap',borderBottom:`1px solid ${R(C.outline,0.12)}`}}>
+          <div style={{display:'flex',alignItems:'center',gap:10,padding:'10px 13px',borderRadius:9,background:R(C.surfLowest,0.72),border:`1px solid ${R(C.outline,0.2)}`,minWidth:260}}>
+            <Icon n="search" size={17} color={C.outline}/>
+            <input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Find ticker"
+              style={{flex:1,minWidth:0,background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:13,letterSpacing:'0.04em',textTransform:'uppercase'}}/>
+          </div>
+          <div style={{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}>
+            <button onClick={()=>{setAddOpen(v=>!v);setAddFeedback(null);}}
+              style={{padding:'8px 13px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:700,border:`1px solid ${R(C.lime,0.35)}`,background:R(C.lime,0.10),color:C.lime,display:'inline-flex',alignItems:'center',gap:6}}>
+              <Icon n="add" size={15} color={C.lime}/> Add
+            </button>
+            {['ALL','READY','PENDING','BLOCKED','NO LEVELS'].map(s=>{
+              const a = s===status;
+              return <button key={s} onClick={()=>setStatus(s)}
+                style={{padding:'8px 12px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,border:`1px solid ${a?R(C.cyan,0.4):R(C.outline,0.18)}`,background:a?R(C.cyan,0.14):R(C.surfLowest,0.45),color:a?C.cyan:C.onVar}}>
+                {s}
+              </button>;
+            })}
+          </div>
+        </div>
+        {(addOpen || addFeedback) && (
+          <div style={{padding:'14px 18px',display:'flex',alignItems:'center',gap:12,flexWrap:'wrap',borderBottom:`1px solid ${R(C.outline,0.10)}`,background:R(C.surfLowest,0.28)}}>
+            {addOpen && (
+              <>
+                <div style={{display:'flex',alignItems:'center',gap:10,padding:'10px 13px',borderRadius:9,background:R('#000',0.55),border:`1px solid ${R(C.cyan,0.25)}`,minWidth:220}}>
+                  <Icon n="candlestick_chart" size={17} color={C.cyan}/>
+                  <input value={newSymbol} onChange={e=>setNewSymbol(e.target.value.toUpperCase())} onKeyDown={e=>{if(e.key==='Enter') submitSymbol();}} placeholder="NVDA"
+                    style={{flex:1,minWidth:0,background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:14,letterSpacing:'0.06em',textTransform:'uppercase'}}/>
+                </div>
+                <button onClick={submitSymbol} disabled={addBusy || !newSymbol.trim()}
+                  style={{padding:'10px 18px',borderRadius:9,cursor:addBusy?'wait':'pointer',fontFamily:"'Inter',sans-serif",fontSize:13,fontWeight:800,border:`1px solid ${R(C.cyan,0.4)}`,background:addBusy?R(C.outline,0.10):R(C.cyan,0.14),color:addBusy?C.outline:C.cyan}}>
+                  {addBusy?'Submitting…':'Submit'}
+                </button>
+              </>
+            )}
+            {addFeedback && (
+              <div style={{display:'flex',alignItems:'center',gap:8,fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:addFeedback.ok?C.lime:C.err}}>
+                <Icon n={addFeedback.ok?'task_alt':'error'} size={16} color={addFeedback.ok?C.lime:C.err}/>
+                <span>{addFeedback.message}</span>
+              </div>
+            )}
+          </div>
+        )}
+        <Table
+          cols={[
+            sortable('Symbol','symbol'),
+            'Status',
+            sortable('Last','last_price'),
+            sortable('Change','change'),
+            sortable('Change %','change_pct'),
+            'Open',
+            'Day Range',
+            sortable('Volume','volume'),
+            'ATR',
+            'Levels',
+            'News',
+            'Last Bar',
+          ]}
+          rows={rows.map(r=>{
+            const chColor = changeColor(r.change);
+            return [
+              <span style={{display:'inline-flex',alignItems:'center',gap:8,color:C.onSurf,fontWeight:800}}>
+                <span style={{width:6,height:6,borderRadius:'50%',background:r.status==='READY'?C.lime:r.status==='BLOCKED'?C.err:r.status==='PENDING'?C.cyan:C.outline,display:'inline-block'}}/>
+                {r.symbol}
+              </span>,
+              <Pill text={r.status||'—'} color={r.status==='READY'?C.lime:r.status==='BLOCKED'?C.err:r.status==='PENDING'?C.cyan:C.outline}/>,
+              <span style={{color:C.onSurf,fontWeight:700}}>{money(r.last_price)}</span>,
+              <span style={{color:chColor,fontWeight:800}}>{changeText(r.change)}</span>,
+              <span style={{color:chColor,fontWeight:800}}>{pctText(r.change_pct)}</span>,
+              money(r.day_open),
+              <span style={{color:C.onVar}}>{money(r.day_low)} / {money(r.day_high)}</span>,
+              vol(r.volume),
+              fmt(r.daily_atr,2),
+              <span style={{color:Number(r.trade_levels)>0?C.cyan:C.outline}}>{r.trade_levels ?? 0}</span>,
+              <Pill text={r.news||'—'} color={r.news==='CLEAR'?C.lime:C.err}/>,
+              <span style={{color:C.outline}}>{r.last_bar ? String(r.last_bar).slice(0,16).replace('T',' ') : '—'}</span>,
+            ];
+          })}
+        />
+        {!rows.length && (
+          <div style={{padding:'24px 20px',display:'flex',alignItems:'center',gap:10,color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
+            <Icon n="search_off" size={18} color={C.outline}/>
+            No watchlist symbols match the current filters.
+          </div>
+        )}
+      </GlassCard>
+    </div>
+  );
+}
+
 function TabPreOpen({refreshKey=0}) {
   const [ticker, setTicker] = useState('AAPL');
   const [status, setStatus] = useState('All');
@@ -1452,6 +1671,7 @@ function TabStrategy({refreshKey=0}) {
   const [showTrade, setShowTrade] = useState(true);
   const [showVol, setShowVol] = useState(true);
   const [showStrategy, setShowStrategy] = useState(true);
+  const [showStrategy2, setShowStrategy2] = useState(false);
   const [showManualSetup, setShowManualSetup] = useState(false);
   const [showGaussian, setShowGaussian] = useState(false);
   const [showGaussianSignals, setShowGaussianSignals] = useState(false);
@@ -1484,8 +1704,14 @@ function TabStrategy({refreshKey=0}) {
   const rangeCount = RANGE_COUNTS[range]||9999;
   const visibleBars = bars.slice(-rangeCount);
   const strategyOverlay = useMemo(
-    ()=>showStrategy ? sliceOverlayPoints(buildBmsbStrategyOverlay(bars), rangeCount) : null,
-    [showStrategy, bars, rangeCount]
+    ()=>{
+      const overlays = [
+        showStrategy ? sliceOverlayPoints(buildBmsbStrategyOverlay(bars), rangeCount) : null,
+        showStrategy2 ? sliceOverlayPoints(buildBmsbStrategy2Overlay(bars), rangeCount) : null,
+      ].filter(Boolean);
+      return overlays.length ? overlays : null;
+    },
+    [showStrategy, showStrategy2, bars, rangeCount]
   );
   const gaussianOverlay = useMemo(()=>{
     if(!showGaussian && !showGaussianSignals) return null;
@@ -1636,6 +1862,7 @@ function TabStrategy({refreshKey=0}) {
             <Toggle on={showRaw} label="Raw levels" onChange={setShowRaw}/>
             <Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/>
             <Toggle on={showStrategy} label="BMSB strategy" onChange={setShowStrategy}/>
+            <Toggle on={showStrategy2} label="BMSB strategy 2" onChange={setShowStrategy2}/>
             <Toggle on={showGaussian} label="Gaussian channel" onChange={v=>{setShowGaussian(v); if(v) setShowGaussianSignals(true);}}/>
             <Toggle on={showGaussianSignals} label="Gaussian signals" onChange={setShowGaussianSignals}/>
             <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
@@ -1962,6 +2189,7 @@ function TabForecast({refreshKey=0}) {
   const [showRaw, setShowRaw] = useState(false);
   const [showTrade, setShowTrade] = useState(true);
   const [showStrategy, setShowStrategy] = useState(false);
+  const [showStrategy2, setShowStrategy2] = useState(false);
   const [showGaussian, setShowGaussian] = useState(false);
   const [showGaussianSignals, setShowGaussianSignals] = useState(false);
   const [selBars, setSelBars] = useState([]);
@@ -2029,11 +2257,14 @@ function TabForecast({refreshKey=0}) {
   ].filter(Boolean) : [];
   const strategyOverlay = useMemo(
     ()=>{
-      if(!showStrategy) return null;
       const count = RANGE_COUNTS[fcChartRange]||9999;
-      return sliceOverlayPoints(buildBmsbStrategyOverlay(selBars), count);
+      const overlays = [
+        showStrategy ? sliceOverlayPoints(buildBmsbStrategyOverlay(selBars), count) : null,
+        showStrategy2 ? sliceOverlayPoints(buildBmsbStrategy2Overlay(selBars), count) : null,
+      ].filter(Boolean);
+      return overlays.length ? overlays : null;
     },
-    [showStrategy, selBars, fcChartRange]
+    [showStrategy, showStrategy2, selBars, fcChartRange]
   );
   const gaussianOverlay = useMemo(()=>{
     if(!showGaussian && !showGaussianSignals) return null;
@@ -2359,6 +2590,7 @@ function TabForecast({refreshKey=0}) {
                 <Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/>
                 <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
                 <Toggle on={showStrategy} label="BMSB strategy" onChange={setShowStrategy}/>
+                <Toggle on={showStrategy2} label="BMSB strategy 2" onChange={setShowStrategy2}/>
                 <Toggle on={showGaussian} label="Gaussian channel" onChange={v=>{setShowGaussian(v); if(v) setShowGaussianSignals(true);}}/>
                 <Toggle on={showGaussianSignals} label="Gaussian signals" onChange={setShowGaussianSignals}/>
               </div>
@@ -2457,6 +2689,7 @@ function TabCrypto({refreshKey=0}) {
   const [showTrade, setShowTrade] = useState(true);
   const [showVol, setShowVol] = useState(true);
   const [showStrategy, setShowStrategy] = useState(false);
+  const [showStrategy2, setShowStrategy2] = useState(false);
   const [showGaussian, setShowGaussian] = useState(false);
   const [showGaussianSignals, setShowGaussianSignals] = useState(false);
   const [bars, setBars] = useState([]);
@@ -2495,11 +2728,14 @@ function TabCrypto({refreshKey=0}) {
 
   const strategyOverlay = useMemo(
     ()=>{
-      if(!showStrategy) return null;
       const count = RANGE_COUNTS[range]||9999;
-      return sliceOverlayPoints(buildBmsbStrategyOverlay(bars), count);
+      const overlays = [
+        showStrategy ? sliceOverlayPoints(buildBmsbStrategyOverlay(bars), count) : null,
+        showStrategy2 ? sliceOverlayPoints(buildBmsbStrategy2Overlay(bars), count) : null,
+      ].filter(Boolean);
+      return overlays.length ? overlays : null;
     },
-    [showStrategy, bars, range]
+    [showStrategy, showStrategy2, bars, range]
   );
   const gaussianOverlay = useMemo(()=>{
     if(!showGaussian && !showGaussianSignals) return null;
@@ -2536,6 +2772,7 @@ function TabCrypto({refreshKey=0}) {
             <Toggle on={showRaw} label="Raw levels" onChange={setShowRaw}/>
             <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
             <Toggle on={showStrategy} label="BMSB strategy" onChange={setShowStrategy}/>
+            <Toggle on={showStrategy2} label="BMSB strategy 2" onChange={setShowStrategy2}/>
             <Toggle on={showGaussian} label="Gaussian channel" onChange={v=>{setShowGaussian(v); if(v) setShowGaussianSignals(true);}}/>
             <Toggle on={showGaussianSignals} label="Gaussian signals" onChange={setShowGaussianSignals}/>
           </div>
@@ -2759,6 +2996,139 @@ function buildBmsbStrategyOverlay(bars) {
   return {...weeklyOverlay, points};
 }
 
+/* ── BMSB Strategy 2: band reclaim / band loss with tolerance ─────────────── */
+function buildBmsbStrategy2Overlay(bars, opts={}) {
+  const rows = (bars||[])
+    .map((b,i)=>({
+      i,
+      t:b.t,
+      d:new Date(b.t),
+      close:Number(b.close),
+    }))
+    .filter(r=>r.t && !Number.isNaN(r.d.getTime()) && Number.isFinite(r.close));
+  if(rows.length < 21) return null;
+
+  const smaLen = opts.smaLen || 20;
+  const emaLen = opts.emaLen || 21;
+  const tolerancePct = Number.isFinite(Number(opts.reclaimTolerancePct))
+    ? Number(opts.reclaimTolerancePct)
+    : 0.5;
+  const toleranceMult = tolerancePct / 100;
+  const startDate = opts.startDate ? new Date(opts.startDate) : new Date('2018-01-01T00:00:00');
+  const endDate = opts.endDate ? new Date(opts.endDate) : new Date('2026-04-16T23:59:59');
+
+  const fridayKey = d => {
+    const x = new Date(d.getTime());
+    const day = x.getDay();
+    const add = day === 0 ? -2 : day === 6 ? -1 : 5 - day;
+    x.setDate(x.getDate() + add);
+    return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;
+  };
+
+  const weekly = [];
+  const weekIndex = new Map();
+  rows.forEach(r=>{
+    const key = fridayKey(r.d);
+    if(!weekIndex.has(key)){
+      weekIndex.set(key, weekly.length);
+      weekly.push({key, close:r.close, lastRow:r.i});
+    } else {
+      const w = weekly[weekIndex.get(key)];
+      w.close = r.close;
+      w.lastRow = r.i;
+    }
+  });
+  const series = weekly.length >= 21 ? weekly : rows.map(r=>({...r, key:String(r.i), lastRow:r.i}));
+  if(series.length < 21) return null;
+
+  const alpha = 2 / (emaLen + 1);
+  let ema = null;
+  const weeklyValues = [];
+  series.forEach((row,i)=>{
+    ema = ema == null ? row.close : (row.close - ema) * alpha + ema;
+    let sma = null;
+    if(i >= smaLen - 1){
+      let sum = 0;
+      for(let j=i-smaLen+1;j<=i;j++) sum += series[j].close;
+      sma = sum / smaLen;
+    }
+    const bandUpper = Number.isFinite(sma) && Number.isFinite(ema) ? Math.max(sma, ema) : null;
+    const bandLower = Number.isFinite(sma) && Number.isFinite(ema) ? Math.min(sma, ema) : null;
+    const entryLevel = Number.isFinite(bandUpper) ? bandUpper * (1 - toleranceMult) : null;
+    const exitLevel = Number.isFinite(bandLower) ? bandLower * (1 + toleranceMult) : null;
+    weeklyValues.push({...row, sma, ema, bandUpper, bandLower, entryLevel, exitLevel});
+  });
+
+  const mapped = new Map();
+  if(weekly.length >= 21){
+    const byWeek = new Map();
+    weeklyValues.forEach(v=>byWeek.set(v.key, v));
+    rows.forEach(r=>{
+      const w = byWeek.get(fridayKey(r.d));
+      if(w) mapped.set(r.i, w);
+    });
+  } else {
+    weeklyValues.forEach(v=>mapped.set(v.i, v));
+  }
+
+  const points = rows.map((r, rowIdx)=>{
+    const v = mapped.get(r.i);
+    const prevRow = rows[rowIdx-1];
+    const prev = prevRow ? mapped.get(prevRow.i) : null;
+    const inRange = r.d >= startDate && r.d <= endDate;
+    const entrySignal = inRange
+      && Number.isFinite(prev?.entryLevel)
+      && Number.isFinite(v?.entryLevel)
+      && Number.isFinite(prevRow?.close)
+      && prevRow.close <= prev.entryLevel
+      && r.close > v.entryLevel;
+    const exitSignal = inRange
+      && Number.isFinite(prev?.exitLevel)
+      && Number.isFinite(v?.exitLevel)
+      && Number.isFinite(prevRow?.close)
+      && prevRow.close >= prev.exitLevel
+      && r.close < v.exitLevel;
+    return {
+      sma: v?.sma ?? null,
+      ema: v?.ema ?? null,
+      entryLevel: v?.entryLevel ?? null,
+      exitLevel: v?.exitLevel ?? null,
+      close: r.close,
+      signal: entrySignal ? 'entry' : exitSignal ? 'exit' : null,
+    };
+  });
+
+  const byIndex = new Map(rows.map((r,i)=>[r.i, points[i]]));
+  const expandedPoints = (bars||[]).map((b,i)=>byIndex.get(i) || {
+    sma:null,
+    ema:null,
+    entryLevel:null,
+    exitLevel:null,
+    close:Number(b.close),
+    signal:null,
+  });
+
+  return {
+    id:'bmsb-strategy-2',
+    name:'BMSB Strategy 2',
+    smaColor:C.err,
+    emaColor:C.lime,
+    bandColor:'#ffb35c',
+    bandOpacity:0.09,
+    lineOpacity:0.58,
+    lineWidth:1.2,
+    entryColor:'#1f8bff',
+    exitColor:'#ff1744',
+    entryLevelColor:'#1f8bff',
+    exitLevelColor:'#bb6bff',
+    smaLabel:'S2 20W SMA',
+    emaLabel:'S2 21W EMA',
+    entryLevelLabel:`S2 ENTRY -${tolerancePct}%`,
+    exitLevelLabel:`S2 EXIT +${tolerancePct}%`,
+    points: expandedPoints,
+  };
+}
+
 /* ── GaussianChannel Strategy Vitaly v1.0 → Strategy chart overlay ───────── */
 function buildGaussianChannelOverlay(bars, opts={}) {
   const rows = (bars||[]).map((b,i)=>({
@@ -2914,6 +3284,7 @@ class ErrBound extends React.Component {
 ═══════════════════════════════════════════════════════════════════════════ */
 const NAV = [
   {id:'dashboard',  label:'Dashboard',          icon:'space_dashboard'},
+  {id:'watchlist',  label:'Watchlist',          icon:'visibility'},
   {id:'preopen',    label:'Pre-Open',            icon:'wb_twilight'},
   {id:'intraday',   label:'Intraday',            icon:'monitoring'},
   {id:'strategy',   label:'Strategy',            icon:'insights'},
@@ -2924,6 +3295,7 @@ const NAV = [
 ];
 const PAGE_META = {
   dashboard: {title:'Command Overview',       sub:'All systems nominal · scan cycle 5m · paper account', crumb:'Dashboard'},
+  watchlist: {title:'Watchlist',              sub:'Current stock symbols · live-saved candles · daily change map', crumb:'Watchlist'},
   preopen:   {title:'Pre-Open Briefing',      sub:'Watchlist scanned · levels mapped · awaiting the open', crumb:'Pre-Open'},
   intraday:  {title:'Intraday Monitor',       sub:'Live decision loop · paper execution', crumb:'Intraday'},
   strategy:  {title:'Strategy Monitor',       sub:'BMSB 21W EMA / 20W SMA cross scanner', crumb:'Strategy'},
@@ -3069,6 +3441,7 @@ function App() {
             {/* Tab content */}
             <ErrBound key={tab}>
               {tab==='dashboard' && <TabDashboard setNewsModal={setNewsModal} setNewsItems={setNewsItems} refreshKey={refreshKey}/>}
+              {tab==='watchlist' && <TabWatchlist refreshKey={refreshKey}/>}
               {tab==='preopen'   && <TabPreOpen refreshKey={refreshKey}/>}
               {tab==='intraday'  && <TabIntraday refreshKey={refreshKey}/>}
               {tab==='strategy'  && <TabStrategy refreshKey={refreshKey}/>}

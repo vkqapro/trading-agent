@@ -1,10 +1,13 @@
 """Lightweight FastAPI backend for the React dashboard.
 
-Serves memory/ data as JSON. Read-only; never connects to IBKR.
+Serves memory/ data as JSON. The dashboard never connects to IBKR directly;
+mutating workflows are handed off to bot jobs.
 Run:  python dashboard_react/server.py
 """
 from __future__ import annotations
 
+import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -52,6 +55,15 @@ HERE = Path(__file__).parent
 app.mount("/static", StaticFiles(directory=HERE), name="static")
 
 ET = ZoneInfo(SETTINGS.trading_hours.timezone)
+
+
+def _onboard_client_id(symbol: str) -> str:
+    configured = os.environ.get("ONBOARD_SYMBOL_CLIENT_ID", "").strip()
+    if configured:
+        return configured
+    seed = sum((index + 1) * ord(char) for index, char in enumerate(symbol.upper()))
+    timestamp = int(datetime.now(ET).timestamp())
+    return str(1000 + ((timestamp + seed) % 8000))
 BMSB_NEAR_CROSS_THRESHOLD_PCT = 0.75
 BMSB_RECENT_CROSS_DAYS = 2
 
@@ -252,6 +264,144 @@ def api_dashboard():
             "max_open_risk_pct": SETTINGS.risk.max_open_risk_pct,
         },
     }
+
+
+@app.get("/api/watchlist")
+def api_watchlist():
+    from src.symbol_universe import load_stock_symbols
+
+    watchlist = _safe(da.load_watchlist, {})
+    configured_symbols = _safe(load_stock_symbols, [])
+    rows = []
+
+    def _num(value):
+        try:
+            result = float(value)
+            return result if pd.notna(result) else None
+        except (TypeError, ValueError):
+            return None
+
+    symbols = sorted(set(configured_symbols or []) | set((watchlist or {}).keys()))
+    for symbol in symbols:
+        plan = (watchlist or {}).get(symbol, {})
+        has_plan = isinstance(plan, dict) and bool(plan)
+        if not isinstance(plan, dict):
+            plan = {}
+
+        spacing = plan.get("level_spacing", {}) or {}
+        levels = plan.get("levels", []) or []
+        blocked = bool(plan.get("news_blocked"))
+        status = "PENDING" if not has_plan else ("BLOCKED" if blocked else ("READY" if levels else "NO LEVELS"))
+
+        daily = _safe(lambda s=symbol: _daily_live_frame(s), pd.DataFrame())
+        last_price = _num(spacing.get("current_price"))
+        prev_close = None
+        change = None
+        change_pct = None
+        day_open = day_high = day_low = volume = None
+        last_bar = None
+
+        if daily is not None and not daily.empty:
+            daily = daily.sort_values("date").dropna(subset=["close"])
+            if not daily.empty:
+                last = daily.iloc[-1]
+                last_price = _num(last.get("close")) or last_price
+                day_open = _num(last.get("open"))
+                day_high = _num(last.get("high"))
+                day_low = _num(last.get("low"))
+                volume = _num(last.get("volume"))
+                last_bar = str(last.get("date")) if last.get("date") is not None else None
+                if len(daily) >= 2:
+                    prev_close = _num(daily.iloc[-2].get("close"))
+                    if last_price is not None and prev_close not in (None, 0):
+                        change = last_price - prev_close
+                        change_pct = change / prev_close * 100.0
+
+        rows.append({
+            "symbol": symbol,
+            "status": status,
+            "last_price": round(last_price, 4) if last_price is not None else None,
+            "prev_close": round(prev_close, 4) if prev_close is not None else None,
+            "change": round(change, 4) if change is not None else None,
+            "change_pct": round(change_pct, 4) if change_pct is not None else None,
+            "day_open": round(day_open, 4) if day_open is not None else None,
+            "day_high": round(day_high, 4) if day_high is not None else None,
+            "day_low": round(day_low, 4) if day_low is not None else None,
+            "volume": int(volume) if volume is not None else None,
+            "daily_atr": round(_num(plan.get("daily_atr")), 4) if _num(plan.get("daily_atr")) is not None else None,
+            "technical_atr": round(_num(plan.get("technical_atr")), 4) if _num(plan.get("technical_atr")) is not None else None,
+            "trade_levels": len(levels),
+            "raw_levels": len(plan.get("raw_levels", []) or []),
+            "news": "BLOCKED" if blocked else "CLEAR",
+            "last_bar": last_bar,
+            "security_type": plan.get("security_type", "-"),
+            "room": spacing.get("reason", "-"),
+        })
+
+    gainers = sum(1 for row in rows if (row.get("change") or 0) > 0)
+    losers = sum(1 for row in rows if (row.get("change") or 0) < 0)
+    unchanged = len(rows) - gainers - losers
+    ready = sum(1 for row in rows if row.get("status") == "READY")
+    pending = sum(1 for row in rows if row.get("status") == "PENDING")
+
+    return {
+        "rows": rows,
+        "metrics": {
+            "symbols": len(rows),
+            "ready": ready,
+            "pending": pending,
+            "gainers": gainers,
+            "losers": losers,
+            "unchanged": unchanged,
+        },
+        "updated_at": datetime.now(ET).isoformat(),
+    }
+
+
+@app.post("/api/watchlist/add")
+async def api_watchlist_add(body: dict):
+    from src.symbol_universe import add_stock_symbol, normalize_stock_symbol
+
+    try:
+        symbol = normalize_stock_symbol(str(body.get("symbol", "")))
+    except ValueError as exc:
+        raise HTTPException(400, str(exc))
+
+    try:
+        add_result = add_stock_symbol(symbol)
+        SETTINGS.paths.runtime_dir.mkdir(parents=True, exist_ok=True)
+        log_path = SETTINGS.paths.runtime_dir / f"onboard_symbol_{symbol}.log"
+        client_id = _onboard_client_id(symbol)
+        cmd = [
+            sys.executable,
+            "-m",
+            "src.main",
+            "--job",
+            "onboard_symbol",
+            "--symbol",
+            symbol,
+            "--client-id",
+            client_id,
+        ]
+        with log_path.open("a", encoding="utf-8") as log:
+            log.write(f"\n--- {datetime.now(ET).isoformat()} queued {' '.join(cmd)} ---\n")
+            process = subprocess.Popen(
+                cmd,
+                cwd=str(ROOT),
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+            )
+        return {
+            "ok": True,
+            "symbol": symbol,
+            "added": bool(add_result.get("added")),
+            "pid": process.pid,
+            "log": str(log_path),
+            "message": f"Queued onboarding for {symbol}. The bot will fetch bars, calculate levels/zones, and refresh the working watchlist.",
+        }
+    except Exception as exc:
+        raise HTTPException(500, str(exc))
 
 
 @app.get("/api/strategy")

@@ -39,6 +39,7 @@ from src.jobs.session_utils import (
     session_now,
     sync_tracked_positions_with_broker,
 )
+from src.jobs.symbol_onboarding import run_symbol_onboarding, run_symbol_onboarding_from_saved_bars
 from src.jobs.weekly import run_weekly
 from src.risk.kill_switch import should_trigger_kill_switch
 from src.risk.risk_manager import RiskManager
@@ -125,6 +126,24 @@ def _save_state(state_path: Path, payload: Dict[str, object]) -> None:
 
     if last_error is not None:
         raise last_error
+
+
+def _merge_onboarded_watchlist(
+    state: Dict[str, object],
+    onboarding: Dict[str, object],
+    latest_state: Optional[Dict[str, object]] = None,
+) -> Dict[str, object]:
+    if isinstance(latest_state, dict) and latest_state:
+        state.clear()
+        state.update(latest_state)
+    existing_watchlist = state.get("watchlist", {})
+    if not isinstance(existing_watchlist, dict):
+        existing_watchlist = {}
+    onboarded_watchlist = onboarding.get("watchlist", {})
+    if isinstance(onboarded_watchlist, dict):
+        existing_watchlist.update(onboarded_watchlist)
+    state["watchlist"] = existing_watchlist
+    return existing_watchlist
 
 
 def _hydrate_from_logs(state: Dict[str, object]) -> Dict[str, object]:
@@ -576,6 +595,35 @@ def run_job_with_context(
         metrics = run_weekly(state.get("weekly_results", []))
         return {"job": job_name, "metrics": metrics, "dry_run": dry_run}
 
+    if job_name == "onboard_symbol":
+        symbol = str((command_context or {}).get("symbol", "") or "").strip().upper()
+        if not symbol:
+            raise ValueError("onboard_symbol requires: symbol")
+        saved_onboarding = run_symbol_onboarding_from_saved_bars(symbol=symbol)
+        if saved_onboarding.get("watchlist"):
+            existing_watchlist = _merge_onboarded_watchlist(
+                state,
+                saved_onboarding,
+                latest_state=_load_state(state_path),
+            )
+            _save_state(state_path, state)
+            return {
+                "job": job_name,
+                "symbol": saved_onboarding.get("symbol", symbol),
+                "ready": saved_onboarding.get("ready"),
+                "reason": saved_onboarding.get("reason"),
+                "levels": saved_onboarding.get("levels"),
+                "raw_levels": saved_onboarding.get("raw_levels"),
+                "watchlist_count": len(existing_watchlist),
+                "chart_history": saved_onboarding.get("chart_history"),
+                "dry_run": dry_run,
+            }
+        LOGGER.info(
+            "Saved bars are not sufficient for %s onboarding; falling back to IBKR fetch. reason=%s",
+            symbol,
+            saved_onboarding.get("reason"),
+        )
+
     if job_name == "execute_requests" and order_requests_store.worker_is_alive():
         # A fresh heartbeat means another worker already owns the IBKR connection.
         # Refuse instead of starting a second one that would collide and let the
@@ -697,6 +745,32 @@ def _run_connected_job(
         repo_root = SETTINGS.paths.trade_log.parents[1]
         account_snapshot = {"account": account_summary, "positions": positions, "open_orders": open_orders}
         _save_state(state_path, state)
+
+        if job_name == "onboard_symbol":
+            symbol = str((command_context or {}).get("symbol", "") or "").strip().upper()
+            if not symbol:
+                raise ValueError("onboard_symbol requires: symbol")
+            onboarding = run_symbol_onboarding(
+                symbol=symbol,
+                market_data=market_data,
+                news_service=news_service,
+                news_filter=news_filter,
+                account_snapshot=account_snapshot,
+            )
+            existing_watchlist = _merge_onboarded_watchlist(
+                state,
+                onboarding,
+                latest_state=_load_state(state_path),
+            )
+            _save_state(state_path, state)
+            return {
+                "job": job_name,
+                "symbol": onboarding.get("symbol", symbol),
+                "ready": onboarding.get("ready"),
+                "watchlist_count": len(existing_watchlist),
+                "chart_history": onboarding.get("chart_history"),
+                "dry_run": dry_run,
+            }
 
         internal_positions = state.get("tracked_positions", [])
         kill_switch, reasons = should_trigger_kill_switch(
@@ -917,7 +991,7 @@ def _connect_broker_with_startup_retry(job_name: str) -> IBKRClient:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="IBKR Gerchik bot job runner.")
-    parser.add_argument("--job", required=True, choices=["premarket", "open", "intraday", "market_data", "eod", "weekly", "slack", "manual_watch", "validate_watchlist", "quote_check", "execute_requests"])
+    parser.add_argument("--job", required=True, choices=["premarket", "open", "intraday", "market_data", "eod", "weekly", "slack", "manual_watch", "validate_watchlist", "quote_check", "execute_requests", "onboard_symbol"])
     parser.add_argument("--dry-run", action="store_true", help="Simulate trades without placing broker orders.")
     parser.add_argument("--client-id", type=int, help="Override IBKR API client id for this process (avoid collisions).")
     parser.add_argument("--symbol", help="Ticker symbol for manual_watch jobs.")
@@ -994,6 +1068,14 @@ def main() -> int:
             result = run_job_with_context(
                 "quote_check",
                 dry_run_override=False,
+                command_context={"symbol": str(args.symbol)},
+            )
+        elif args.job == "onboard_symbol":
+            if not args.symbol:
+                raise ValueError("onboard_symbol requires: symbol")
+            result = run_job_with_context(
+                "onboard_symbol",
+                dry_run_override=True,
                 command_context={"symbol": str(args.symbol)},
             )
         elif args.job == "market_data":

@@ -143,11 +143,16 @@ def load_state() -> Dict[str, Any]:
 
 def load_watchlist() -> Dict[str, Any]:
     snapshot = load_workflow_snapshots().get("Premarket", {})
-    watchlist = snapshot.get("watchlist") if isinstance(snapshot, dict) else None
-    if isinstance(watchlist, dict) and watchlist:
-        return watchlist
     state_watchlist = load_state().get("watchlist", {})
-    return state_watchlist if isinstance(state_watchlist, dict) else {}
+    snapshot_watchlist = snapshot.get("watchlist") if isinstance(snapshot, dict) else None
+    merged: Dict[str, Any] = {}
+    if isinstance(snapshot_watchlist, dict):
+        merged.update(snapshot_watchlist)
+    if isinstance(state_watchlist, dict):
+        # Runtime state is fresher for symbols added through the Watchlist Add
+        # flow; do not hide those symbols behind the last full premarket snapshot.
+        merged.update(state_watchlist)
+    return merged
 
 
 def load_premarket_snapshot() -> Dict[str, Any]:

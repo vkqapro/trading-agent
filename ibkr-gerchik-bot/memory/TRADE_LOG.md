@@ -77903,3 +77903,24 @@ Reasons:
   }
 }
 ```
+
+## Manual Trade NVDA (2026-07-03T10:54:32)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: NVDA
+- **strategy**: strategy_manual_setup
+- **level_type**: dashboard_manual
+- **direction**: long
+- **signal**: BUY
+- **entry**: 194.83
+- **stop_loss**: 179.3972
+- **target**: 193.22
+- **reward_risk**: 0.10432325955108679
+- **partial_targets**: []
+- **quantity**: 3
+- **market_order_id**: 261
+- **stop_order_id**: 262
+- **limit_order_id**: 263
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'PendingSubmit', 'stop_order': 'PendingSubmit', 'limit_order': 'PendingSubmit'}
