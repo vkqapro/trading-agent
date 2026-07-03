@@ -187,7 +187,7 @@ def _bmsb_scan_symbol(symbol: str, today) -> dict | None:
     }
 
 
-def _bmsb_strategy2_scan_symbol(symbol: str, today) -> dict | None:
+def _bmsb_strategy2_scan_symbol(symbol: str, today, include_neutral: bool = False) -> dict | None:
     weekly = _weekly_live_frame(symbol)
     if weekly.empty or len(weekly) < 21:
         return None
@@ -256,6 +256,10 @@ def _bmsb_strategy2_scan_symbol(symbol: str, today) -> dict | None:
         trigger_level = exit_level
         trigger_gap_pct = 0.0
     else:
+        neutral_candidates = [
+            ("BMSB2_NEAR_ENTRY", "LONG", entry_level, abs(entry_level - close_price) / close_price * 100.0),
+            ("BMSB2_NEAR_EXIT", "EXIT", exit_level, abs(close_price - exit_level) / close_price * 100.0),
+        ]
         candidates = []
         if close_price <= entry_level:
             distance = (entry_level - close_price) / close_price * 100.0
@@ -268,12 +272,19 @@ def _bmsb_strategy2_scan_symbol(symbol: str, today) -> dict | None:
             signal, side, trigger_level, trigger_gap_pct = min(candidates, key=lambda item: item[3])
             urgency = "near"
 
-    if not signal:
-        return None
-
     ema21 = float(curr["ema21"])
     sma20 = float(curr["sma20"])
     band_gap_pct = abs(ema21 - sma20) / close_price * 100.0
+
+    if not signal:
+        if not include_neutral:
+            return None
+        _, nearest_side, nearest_level, nearest_gap_pct = min(neutral_candidates, key=lambda item: item[3])
+        signal = "NO_SIGNAL"
+        side = "NONE"
+        urgency = "none"
+        trigger_level = nearest_level
+        trigger_gap_pct = nearest_gap_pct
 
     return {
         "symbol": symbol,
@@ -289,6 +300,7 @@ def _bmsb_strategy2_scan_symbol(symbol: str, today) -> dict | None:
         "exit_level": round(exit_level, 4),
         "trigger_level": round(float(trigger_level), 4) if trigger_level is not None else None,
         "trigger_gap_pct": round(float(trigger_gap_pct), 4) if trigger_gap_pct is not None else None,
+        "nearest_side": nearest_side if signal == "NO_SIGNAL" else side,
         "cross_date": str(latest_session_date),
         "weekly_bar": str(pd.to_datetime(curr["date"]).date()),
         "threshold_pct": BMSB2_NEAR_TRIGGER_THRESHOLD_PCT,
@@ -481,6 +493,16 @@ async def api_watchlist_add(body: dict):
 
     try:
         add_result = add_stock_symbol(symbol)
+        if not add_result.get("added"):
+            return {
+                "ok": True,
+                "symbol": symbol,
+                "added": False,
+                "duplicate": True,
+                "pid": None,
+                "log": None,
+                "message": f"{symbol} is already in the stock universe. Onboarding was not queued again.",
+            }
         SETTINGS.paths.runtime_dir.mkdir(parents=True, exist_ok=True)
         log_path = SETTINGS.paths.runtime_dir / f"onboard_symbol_{symbol}.log"
         client_id = _onboard_client_id(symbol)
@@ -561,27 +583,52 @@ def api_strategy():
     index = _safe(da.bars_index, {})
     configured_symbols = _safe(load_stock_symbols, [])
     if stock_symbols_file().exists():
-        symbols = sorted(
-            symbol for symbol in configured_symbols
-            if isinstance((index or {}).get(symbol), dict)
-            and ("daily" in (index or {}).get(symbol, {}) or "weekly" in (index or {}).get(symbol, {}))
-        )
+        symbols = sorted(configured_symbols or [])
     else:
         symbols = sorted(
             symbol for symbol, frames in (index or {}).items()
             if isinstance(frames, dict) and ("daily" in frames or "weekly" in frames)
         )
     today = datetime.now(ET).date()
-    rows = [
-        row for symbol in symbols
-        if (row := _safe(lambda s=symbol: _bmsb_strategy2_scan_symbol(s, today), None)) is not None
-    ]
+    rows = []
+    for symbol in symbols:
+        row = _safe(lambda s=symbol: _bmsb_strategy2_scan_symbol(s, today, include_neutral=True), None)
+        if row is None:
+            row = {
+                "symbol": symbol,
+                "signal": "NO_DATA",
+                "side": "NONE",
+                "urgency": "none",
+                "last_price": None,
+                "ema21": None,
+                "sma20": None,
+                "gap": None,
+                "gap_pct": None,
+                "entry_level": None,
+                "exit_level": None,
+                "trigger_level": None,
+                "trigger_gap_pct": None,
+                "cross_date": None,
+                "weekly_bar": None,
+                "threshold_pct": BMSB2_NEAR_TRIGGER_THRESHOLD_PCT,
+                "tolerance_pct": BMSB2_RECLAIM_TOLERANCE_PCT,
+            }
+        rows.append(row)
+    matched_rows = [row for row in rows if row.get("urgency") in {"crossed", "near"}]
     urgency_rank = {"crossed": 0, "near": 1}
-    side_rank = {"LONG": 0, "EXIT": 1}
+    side_rank = {"LONG": 0, "EXIT": 1, "NONE": 2}
+    def _sort_gap(row: dict) -> float:
+        value = row.get("trigger_gap_pct")
+        if value is None:
+            value = row.get("gap_pct")
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return 999.0
     rows.sort(key=lambda r: (
         urgency_rank.get(str(r.get("urgency")), 9),
         side_rank.get(str(r.get("side")), 9),
-        float(r.get("trigger_gap_pct", r.get("gap_pct", 999.0))),
+        _sort_gap(r),
         str(r.get("symbol", "")),
     ))
     return {
@@ -592,9 +639,9 @@ def api_strategy():
         "recent_days": BMSB_RECENT_CROSS_DAYS,
         "symbols_scanned": len(symbols),
         "symbols": symbols,
-        "matches": len(rows),
-        "crossed": sum(1 for row in rows if row.get("urgency") == "crossed"),
-        "near": sum(1 for row in rows if row.get("urgency") == "near"),
+        "matches": len(matched_rows),
+        "crossed": sum(1 for row in matched_rows if row.get("urgency") == "crossed"),
+        "near": sum(1 for row in matched_rows if row.get("urgency") == "near"),
         "rows": rows,
     }
 

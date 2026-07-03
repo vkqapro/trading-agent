@@ -78727,3 +78727,24 @@ No ticker decisions recorded today.
   }
 }
 ```
+
+## Manual Trade BAND (2026-07-03T18:33:35)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: BAND
+- **strategy**: strategy_manual_setup
+- **level_type**: dashboard_manual
+- **direction**: long
+- **signal**: BUY
+- **entry**: 61.58
+- **stop_loss**: 59.19
+- **target**: 68.86
+- **reward_risk**: 3.0460251046025104
+- **partial_targets**: []
+- **quantity**: 1
+- **market_order_id**: 272
+- **stop_order_id**: 273
+- **limit_order_id**: 274
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}

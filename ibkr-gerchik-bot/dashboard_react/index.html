@@ -1738,7 +1738,7 @@ function TabStrategy({refreshKey=0}) {
   const [data, setData] = useState(null);
   const [filter, setFilter] = useState('ALL');
   const [selectedSymbol, setSelectedSymbol] = useState(null);
-  const [tf, setTf] = useState('1W');
+  const [tf, setTf] = useState('1D');
   const [range, setRange] = useState('ALL');
   const [showRaw, setShowRaw] = useState(false);
   const [showTrade, setShowTrade] = useState(true);
@@ -1751,6 +1751,7 @@ function TabStrategy({refreshKey=0}) {
   const [manualEntry, setManualEntry] = useState('');
   const [manualStop, setManualStop] = useState('');
   const [manualTarget, setManualTarget] = useState('');
+  const [manualRR, setManualRR] = useState('');
   const [manualSide, setManualSide] = useState('LONG');
   const [manualCash, setManualCash] = useState('1000');
   const [manualMaxOpenRisk, setManualMaxOpenRisk] = useState('5');
@@ -1761,6 +1762,14 @@ function TabStrategy({refreshKey=0}) {
   const [strategySymbolBusy, setStrategySymbolBusy] = useState(false);
   const [strategySymbolFeedback, setStrategySymbolFeedback] = useState(null);
   const [strategyRemoveConfirm, setStrategyRemoveConfirm] = useState(null);
+  const [strategyWatchSymbols, setStrategyWatchSymbols] = useState(()=>{
+    try {
+      const saved = JSON.parse(localStorage.getItem('strategyWatchSymbols') || '[]');
+      return Array.isArray(saved) ? saved.map(s=>String(s).toUpperCase()).filter(Boolean) : [];
+    } catch {
+      return [];
+    }
+  });
   const [bars, setBars] = useState([]);
   const [barsInfo, setBarsInfo] = useState({stale:false,lastDate:null});
   const [chartPlan, setChartPlan] = useState(null);
@@ -1798,7 +1807,21 @@ function TabStrategy({refreshKey=0}) {
   useEffect(()=>{
     setManualStop('');
     setManualTarget('');
+    setManualRR('');
   },[selectedSymbol, manualSide]);
+  useEffect(()=>{
+    try { localStorage.setItem('strategyWatchSymbols', JSON.stringify(strategyWatchSymbols)); } catch {}
+  },[strategyWatchSymbols]);
+  const toggleStrategyWatch = useCallback((symbol)=>{
+    const normalized = String(symbol || '').trim().toUpperCase();
+    if(!normalized) return;
+    setStrategyWatchSymbols(prev=>{
+      const current = new Set(prev.map(s=>String(s).toUpperCase()));
+      if(current.has(normalized)) current.delete(normalized);
+      else current.add(normalized);
+      return [...current].sort();
+    });
+  },[]);
   const submitStrategySymbolAdd = useCallback(async()=>{
     const symbol = strategyNewSymbol.trim().toUpperCase();
     if(!symbol) return;
@@ -1839,6 +1862,7 @@ function TabStrategy({refreshKey=0}) {
       setStrategySymbolFeedback({ok:true, message:d.message});
       setStrategyRemoveConfirm(null);
       if(selectedSymbol === symbol) setSelectedSymbol(null);
+      setStrategyWatchSymbols(prev=>prev.filter(s=>String(s).toUpperCase()!==symbol));
       loadStrategy();
     } catch(e) {
       setStrategySymbolFeedback({ok:false, message:String(e.message||e)});
@@ -1900,8 +1924,14 @@ function TabStrategy({refreshKey=0}) {
     }
     const stopOverride = Number(manualStop);
     const targetOverride = Number(manualTarget);
+    const rrOverride = Number(manualRR);
     const stop = Number.isFinite(stopOverride) && stopOverride > 0 ? stopOverride : autoStop;
-    const target = Number.isFinite(targetOverride) && targetOverride > 0 ? targetOverride : autoTarget;
+    const rrControlsTarget = Number.isFinite(rrOverride) && rrOverride > 0;
+    const target = rrControlsTarget
+      ? (side === 'LONG'
+          ? entry + Math.abs(entry-stop) * rrOverride
+          : entry - Math.abs(entry-stop) * rrOverride)
+      : (Number.isFinite(targetOverride) && targetOverride > 0 ? targetOverride : autoTarget);
     const validDirection = side === 'LONG'
       ? stop < entry && target > entry
       : stop > entry && target < entry;
@@ -1914,10 +1944,11 @@ function TabStrategy({refreshKey=0}) {
       autoStop, autoTarget,
       stopOverridden:Number.isFinite(stopOverride) && stopOverride > 0,
       targetOverridden:Number.isFinite(targetOverride) && targetOverride > 0,
+      rrOverridden:rrControlsTarget,
       rr: reward/risk,
       method,
     };
-  },[manualEntry, manualStop, manualTarget, manualSide, chartPlan]);
+  },[manualEntry, manualStop, manualTarget, manualRR, manualSide, chartPlan]);
   const manualOrderPlan = useMemo(()=>{
     if(!manualSetup || !selectedSymbol) return null;
     const cash = Number(manualCash);
@@ -1974,10 +2005,13 @@ function TabStrategy({refreshKey=0}) {
   ] : [];
   if(!data) return <Spinner/>;
 
+  const strategyWatchSet = new Set(strategyWatchSymbols.map(s=>String(s).toUpperCase()));
+  const selectedIsWatched = selectedSymbol ? strategyWatchSet.has(String(selectedSymbol).toUpperCase()) : false;
   const rows = (data.rows||[]).filter(r=>{
     if(filter==='ALL') return true;
     if(filter==='CROSSED') return r.urgency==='crossed';
     if(filter==='NEAR') return r.urgency==='near';
+    if(filter==='WATCH') return strategyWatchSet.has(String(r.symbol||'').toUpperCase());
     return r.side===filter;
   });
   const allStockSymbols = data.symbols?.length
@@ -2040,6 +2074,11 @@ function TabStrategy({refreshKey=0}) {
             {!selectedSymbol && <option value="">Select stock</option>}
             {allStockSymbols.map(symbol=><option key={symbol} value={symbol}>{symbol}</option>)}
           </select>
+          <button disabled={!selectedSymbol} onClick={()=>toggleStrategyWatch(selectedSymbol)}
+            style={{padding:'8px 12px',borderRadius:8,cursor:selectedSymbol?'pointer':'not-allowed',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:800,color:selectedIsWatched?C.cyan:C.onVar,background:selectedIsWatched?R(C.cyan,0.12):R(C.outline,0.07),border:`1px solid ${selectedIsWatched?R(C.cyan,0.34):R(C.outline,0.22)}`,display:'inline-flex',alignItems:'center',gap:6,opacity:selectedSymbol?1:0.55}}>
+            <Icon n={selectedIsWatched?'check_box':'check_box_outline_blank'} size={15} color={selectedIsWatched?C.cyan:C.outline}/>
+            Watch
+          </button>
           <button onClick={()=>{setStrategySymbolAddOpen(v=>!v);setStrategySymbolFeedback(null);}}
             style={{padding:'8px 12px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:800,color:C.lime,background:R(C.lime,0.09),border:`1px solid ${R(C.lime,0.32)}`,display:'inline-flex',alignItems:'center',gap:6}}>
             <Icon n="add" size={15} color={C.lime}/> Add
@@ -2094,13 +2133,21 @@ function TabStrategy({refreshKey=0}) {
             style={{width:115,background:R(C.surfLowest,0.8),color:C.err,border:`1px solid ${R(manualSetup?.stopOverridden?C.err:C.outline,manualSetup?.stopOverridden?0.38:0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none',opacity:manualEntryReady?1:0.55}}/>
           <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Target</span>
           <input type="number" min="0" step="0.01" value={manualTarget}
-            onChange={e=>setManualTarget(e.target.value)}
+            onChange={e=>{setManualTarget(e.target.value); if(e.target.value) setManualRR('');}}
             disabled={!manualEntryReady}
-            title="Optional manual target override. Leave blank to use the calculated target."
-            placeholder={manualSetup ? `Auto ${manualSetup.autoTarget.toFixed(2)}` : 'Target'}
-            style={{width:115,background:R(C.surfLowest,0.8),color:C.lime,border:`1px solid ${R(manualSetup?.targetOverridden?C.lime:C.outline,manualSetup?.targetOverridden?0.38:0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none',opacity:manualEntryReady?1:0.55}}/>
-          {(manualStop || manualTarget) && (
-            <button onClick={()=>{setManualStop('');setManualTarget('');}}
+            readOnly={Boolean(manualRR)}
+            title={manualRR ? "Target is calculated from Entry, Stop, and R:R. Clear R:R to edit target manually." : "Optional manual target override. Leave blank to use the calculated target."}
+            placeholder={manualSetup ? `${manualRR ? 'RR' : 'Auto'} ${manualSetup.target.toFixed(2)}` : 'Target'}
+            style={{width:115,background:R(C.surfLowest,0.8),color:C.lime,border:`1px solid ${R((manualSetup?.targetOverridden||manualSetup?.rrOverridden)?C.lime:C.outline,(manualSetup?.targetOverridden||manualSetup?.rrOverridden)?0.38:0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none',opacity:manualEntryReady?1:0.55}}/>
+          <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>R:R</span>
+          <input type="number" min="0" step="0.25" value={manualRR}
+            onChange={e=>{setManualRR(e.target.value); if(e.target.value) setManualTarget('');}}
+            disabled={!manualEntryReady}
+            title="Optional R:R override. When set, target is calculated from Entry and Stop."
+            placeholder="Auto"
+            style={{width:85,background:R(C.surfLowest,0.8),color:C.cyan,border:`1px solid ${R(manualSetup?.rrOverridden?C.cyan:C.outline,manualSetup?.rrOverridden?0.38:0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none',opacity:manualEntryReady?1:0.55}}/>
+          {(manualStop || manualTarget || manualRR) && (
+            <button onClick={()=>{setManualStop('');setManualTarget('');setManualRR('');}}
               style={{padding:'8px 11px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar,background:R(C.outline,0.08),border:`1px solid ${R(C.outline,0.22)}`}}>
               Auto
             </button>
@@ -2118,7 +2165,7 @@ function TabStrategy({refreshKey=0}) {
             placeholder="Max risk %"
             style={{width:115,background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
           {bars?.length>0 && (
-            <button onClick={()=>{setManualEntry(String(Number(bars[bars.length-1]?.close||0).toFixed(2)));setManualStop('');setManualTarget('');}}
+            <button onClick={()=>{setManualEntry(String(Number(bars[bars.length-1]?.close||0).toFixed(2)));setManualStop('');setManualTarget('');setManualRR('');}}
               style={{padding:'8px 11px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,background:R(C.cyan,0.08),border:`1px solid ${R(C.cyan,0.28)}`}}>
               Use last close
             </button>
@@ -2132,7 +2179,7 @@ function TabStrategy({refreshKey=0}) {
               {manualOrderPlan && <Pill text={`RISK $${manualOrderPlan.risk_amount.toFixed(2)}`} color={manualOrderPlan.quantity>0?C.err:C.outline}/>}
               {manualOrderPlan && <Pill text={`PROFIT $${manualOrderPlan.potential_reward.toFixed(2)}`} color={manualOrderPlan.quantity>0?C.lime:C.outline}/>}
               <span style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:C.outline}}>
-                Based on {manualSetup.method}{(manualSetup.stopOverridden||manualSetup.targetOverridden) ? ' + manual override' : ''}
+                Based on {manualSetup.method}{manualSetup.rrOverridden ? ' + R:R target' : (manualSetup.stopOverridden||manualSetup.targetOverridden) ? ' + manual override' : ''}
               </span>
               <button disabled={!manualOrderPlan || manualOrderPlan.quantity<=0}
                 onClick={()=>setStrategyConfirm({row:manualOrderPlan})}
@@ -2261,7 +2308,7 @@ function TabStrategy({refreshKey=0}) {
             Shows BMSB Strategy 2 weekly band reclaims/losses within {data.recent_days??2} days, or symbols within {fmtNum(data.threshold_pct,2)}% of the S2 trigger level. Tolerance: {fmtNum(data.tolerance_pct,2)}%.
           </div>
           <div style={{display:'flex',gap:7,flexWrap:'wrap'}}>
-            {['ALL','CROSSED','NEAR','LONG','EXIT'].map(f=>{
+            {['ALL','CROSSED','NEAR','LONG','EXIT','WATCH'].map(f=>{
               const a=f===filter;
               return <button key={f} onClick={()=>setFilter(f)}
                 style={{padding:'6px 11px',borderRadius:7,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,border:`1px solid ${a?R(C.cyan,0.4):R(C.outline,0.18)}`,background:a?R(C.cyan,0.14):R(C.surfLowest,0.45),color:a?C.cyan:C.onVar}}>
@@ -2271,16 +2318,21 @@ function TabStrategy({refreshKey=0}) {
           </div>
         </div>
         <Table
-          cols={['Symbol','Signal','Side','Last Price','Entry Level','Exit Level','Trigger Gap','21W EMA','20W SMA','Signal Date','Weekly Bar']}
+          cols={['Symbol','Watch','Signal','Side','Last Price','Entry Level','Exit Level','Trigger Gap','21W EMA','20W SMA','Signal Date','Weekly Bar']}
           rows={rows.map(r=>[
             <button onClick={()=>setSelectedSymbol(r.symbol)}
               style={{display:'inline-flex',alignItems:'center',gap:8,cursor:'pointer',background:selectedSymbol===r.symbol?R(C.cyan,0.14):'transparent',border:`1px solid ${selectedSymbol===r.symbol?R(C.cyan,0.32):'transparent'}`,borderRadius:7,padding:'4px 8px',color:selectedSymbol===r.symbol?C.cyan:C.onSurf,fontWeight:600,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
               <Icon n={selectedSymbol===r.symbol?'radio_button_checked':'radio_button_unchecked'} size={14} color={selectedSymbol===r.symbol?C.cyan:C.outline}/>
               {r.symbol}
             </button>,
+            <button onClick={()=>toggleStrategyWatch(r.symbol)}
+              title={strategyWatchSet.has(String(r.symbol||'').toUpperCase())?'Remove from Watch':'Add to Watch'}
+              style={{padding:'3px 6px',borderRadius:6,cursor:'pointer',background:strategyWatchSet.has(String(r.symbol||'').toUpperCase())?R(C.cyan,0.12):'transparent',border:`1px solid ${strategyWatchSet.has(String(r.symbol||'').toUpperCase())?R(C.cyan,0.3):R(C.outline,0.14)}`,display:'inline-flex',alignItems:'center',justifyContent:'center'}}>
+              <Icon n={strategyWatchSet.has(String(r.symbol||'').toUpperCase())?'check_box':'check_box_outline_blank'} size={16} color={strategyWatchSet.has(String(r.symbol||'').toUpperCase())?C.cyan:C.outline}/>
+            </button>,
             <Pill text={String(r.signal||'—').replace('_',' ')} color={signalColor(r.signal)}/>,
             <span style={{display:'inline-flex',alignItems:'center',gap:7,color:signalColor(r.signal),fontFamily:"'JetBrains Mono',monospace",fontWeight:600}}>
-              <span style={{width:0,height:0,borderLeft:'5px solid transparent',borderRight:'5px solid transparent',...(r.side==='LONG'?{borderBottom:`9px solid ${signalColor(r.signal)}`}:{borderTop:`9px solid ${signalColor(r.signal)}`})}}/>
+              {['LONG','EXIT'].includes(r.side) && <span style={{width:0,height:0,borderLeft:'5px solid transparent',borderRight:'5px solid transparent',...(r.side==='LONG'?{borderBottom:`9px solid ${signalColor(r.signal)}`}:{borderTop:`9px solid ${signalColor(r.signal)}`})}}/>}
               {r.side}
             </span>,
             `$${fmtNum(r.last_price,2)}`,
