@@ -67,6 +67,8 @@ def _onboard_client_id(symbol: str) -> str:
     return str(1000 + ((timestamp + seed) % 8000))
 BMSB_NEAR_CROSS_THRESHOLD_PCT = 0.75
 BMSB_RECENT_CROSS_DAYS = 2
+BMSB2_RECLAIM_TOLERANCE_PCT = 0.5
+BMSB2_NEAR_TRIGGER_THRESHOLD_PCT = 0.75
 
 def _safe(fn, default=None):
     try:
@@ -182,6 +184,115 @@ def _bmsb_scan_symbol(symbol: str, today) -> dict | None:
         "cross_date": str(latest_session_date),
         "weekly_bar": str(pd.to_datetime(curr["date"]).date()),
         "threshold_pct": BMSB_NEAR_CROSS_THRESHOLD_PCT,
+    }
+
+
+def _bmsb_strategy2_scan_symbol(symbol: str, today) -> dict | None:
+    weekly = _weekly_live_frame(symbol)
+    if weekly.empty or len(weekly) < 21:
+        return None
+
+    weekly = weekly.sort_values("date").tail(260).reset_index(drop=True)
+    close = pd.to_numeric(weekly["close"], errors="coerce")
+    weekly["sma20"] = close.rolling(20).mean()
+    weekly["ema21"] = close.ewm(span=21, adjust=False).mean()
+    ready = weekly.dropna(subset=["sma20", "ema21", "close"])
+    if len(ready) < 2:
+        return None
+
+    tolerance_mult = BMSB2_RECLAIM_TOLERANCE_PCT / 100.0
+    ready = ready.copy()
+    ready["band_upper"] = ready[["sma20", "ema21"]].max(axis=1)
+    ready["band_lower"] = ready[["sma20", "ema21"]].min(axis=1)
+    ready["entry_level"] = ready["band_upper"] * (1.0 - tolerance_mult)
+    ready["exit_level"] = ready["band_lower"] * (1.0 + tolerance_mult)
+
+    prev = ready.iloc[-2]
+    curr = ready.iloc[-1]
+    close_price = float(curr["close"])
+    if close_price <= 0:
+        return None
+
+    latest_daily = _daily_live_frame(symbol)
+    latest_session = None
+    if not latest_daily.empty:
+        latest_session = pd.to_datetime(latest_daily["date"], errors="coerce").max()
+    latest_session_date = latest_session.date() if pd.notna(latest_session) else today
+    recent_cutoff = today - timedelta(days=BMSB_RECENT_CROSS_DAYS)
+
+    entry_level = float(curr["entry_level"])
+    exit_level = float(curr["exit_level"])
+    prev_entry_level = float(prev["entry_level"])
+    prev_exit_level = float(prev["exit_level"])
+    prev_close = float(prev["close"])
+
+    long_entry = (
+        prev_close <= prev_entry_level
+        and close_price > entry_level
+        and latest_session_date >= recent_cutoff
+    )
+    long_exit = (
+        prev_close >= prev_exit_level
+        and close_price < exit_level
+        and latest_session_date >= recent_cutoff
+    )
+
+    signal = None
+    side = None
+    urgency = None
+    trigger_level = None
+    trigger_gap_pct = None
+
+    if long_entry:
+        signal = "BMSB2_LONG_ENTRY"
+        side = "LONG"
+        urgency = "crossed"
+        trigger_level = entry_level
+        trigger_gap_pct = 0.0
+    elif long_exit:
+        signal = "BMSB2_EXIT"
+        side = "EXIT"
+        urgency = "crossed"
+        trigger_level = exit_level
+        trigger_gap_pct = 0.0
+    else:
+        candidates = []
+        if close_price <= entry_level:
+            distance = (entry_level - close_price) / close_price * 100.0
+            candidates.append(("BMSB2_NEAR_ENTRY", "LONG", entry_level, distance))
+        if close_price >= exit_level:
+            distance = (close_price - exit_level) / close_price * 100.0
+            candidates.append(("BMSB2_NEAR_EXIT", "EXIT", exit_level, distance))
+        candidates = [item for item in candidates if item[3] <= BMSB2_NEAR_TRIGGER_THRESHOLD_PCT]
+        if candidates:
+            signal, side, trigger_level, trigger_gap_pct = min(candidates, key=lambda item: item[3])
+            urgency = "near"
+
+    if not signal:
+        return None
+
+    ema21 = float(curr["ema21"])
+    sma20 = float(curr["sma20"])
+    band_gap_pct = abs(ema21 - sma20) / close_price * 100.0
+
+    return {
+        "symbol": symbol,
+        "signal": signal,
+        "side": side,
+        "urgency": urgency,
+        "last_price": round(close_price, 4),
+        "ema21": round(ema21, 4),
+        "sma20": round(sma20, 4),
+        "gap": round(ema21 - sma20, 4),
+        "gap_pct": round(band_gap_pct, 4),
+        "entry_level": round(entry_level, 4),
+        "exit_level": round(exit_level, 4),
+        "trigger_level": round(float(trigger_level), 4) if trigger_level is not None else None,
+        "trigger_gap_pct": round(float(trigger_gap_pct), 4) if trigger_gap_pct is not None else None,
+        "cross_date": str(latest_session_date),
+        "weekly_bar": str(pd.to_datetime(curr["date"]).date()),
+        "threshold_pct": BMSB2_NEAR_TRIGGER_THRESHOLD_PCT,
+        "tolerance_pct": BMSB2_RECLAIM_TOLERANCE_PCT,
     }
 
 
@@ -463,20 +574,21 @@ def api_strategy():
     today = datetime.now(ET).date()
     rows = [
         row for symbol in symbols
-        if (row := _safe(lambda s=symbol: _bmsb_scan_symbol(s, today), None)) is not None
+        if (row := _safe(lambda s=symbol: _bmsb_strategy2_scan_symbol(s, today), None)) is not None
     ]
     urgency_rank = {"crossed": 0, "near": 1}
     side_rank = {"LONG": 0, "EXIT": 1}
     rows.sort(key=lambda r: (
         urgency_rank.get(str(r.get("urgency")), 9),
         side_rank.get(str(r.get("side")), 9),
-        float(r.get("gap_pct", 999.0)),
+        float(r.get("trigger_gap_pct", r.get("gap_pct", 999.0))),
         str(r.get("symbol", "")),
     ))
     return {
-        "strategy": "BMSB Strategy 1",
-        "description": "Weekly 21 EMA / 20 SMA cross monitor. Near-cross means EMA/SMA gap is within the configured threshold.",
-        "threshold_pct": BMSB_NEAR_CROSS_THRESHOLD_PCT,
+        "strategy": "BMSB Strategy 2",
+        "description": "Weekly BMSB Strategy 2 monitor. Long entry is a reclaim of the tolerance-adjusted upper band; exit is a loss of the tolerance-adjusted lower band.",
+        "threshold_pct": BMSB2_NEAR_TRIGGER_THRESHOLD_PCT,
+        "tolerance_pct": BMSB2_RECLAIM_TOLERANCE_PCT,
         "recent_days": BMSB_RECENT_CROSS_DAYS,
         "symbols_scanned": len(symbols),
         "symbols": symbols,

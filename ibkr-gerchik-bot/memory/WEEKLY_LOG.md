@@ -79,3 +79,9 @@ Weekly performance metrics are appended here.
 - **strategy_counts**: {}
 - **strategy_pnl**: {}
 - **context_loaded**: True
+
+## Weekly Review (2026-07-03T16:26:37)
+- **metrics**: {'trade_count': 0, 'win_rate': 0.0, 'average_r': 0.0, 'expectancy': 0.0, 'best_trade': 0.0, 'worst_trade': 0.0, 'best_strategy': 'none', 'worst_strategy': 'none', 'sp500_week_return_pct': 0.0}
+- **strategy_counts**: {}
+- **strategy_pnl**: {}
+- **context_loaded**: True

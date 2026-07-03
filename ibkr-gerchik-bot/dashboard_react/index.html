@@ -1743,12 +1743,14 @@ function TabStrategy({refreshKey=0}) {
   const [showRaw, setShowRaw] = useState(false);
   const [showTrade, setShowTrade] = useState(true);
   const [showVol, setShowVol] = useState(true);
-  const [showStrategy, setShowStrategy] = useState(true);
-  const [showStrategy2, setShowStrategy2] = useState(false);
+  const [showStrategy, setShowStrategy] = useState(false);
+  const [showStrategy2, setShowStrategy2] = useState(true);
   const [showManualSetup, setShowManualSetup] = useState(false);
   const [showGaussian, setShowGaussian] = useState(false);
   const [showGaussianSignals, setShowGaussianSignals] = useState(false);
   const [manualEntry, setManualEntry] = useState('');
+  const [manualStop, setManualStop] = useState('');
+  const [manualTarget, setManualTarget] = useState('');
   const [manualSide, setManualSide] = useState('LONG');
   const [manualCash, setManualCash] = useState('1000');
   const [manualMaxOpenRisk, setManualMaxOpenRisk] = useState('5');
@@ -1793,6 +1795,10 @@ function TabStrategy({refreshKey=0}) {
       .then(setChartPlan)
       .catch(()=>setChartPlan(null));
   },[selectedSymbol, tf, refreshKey]);
+  useEffect(()=>{
+    setManualStop('');
+    setManualTarget('');
+  },[selectedSymbol, manualSide]);
   const submitStrategySymbolAdd = useCallback(async()=>{
     const symbol = strategyNewSymbol.trim().toUpperCase();
     if(!symbol) return;
@@ -1882,25 +1888,36 @@ function TabStrategy({refreshKey=0}) {
     const lower = [...levels].reverse().find(l=>l.high < entry || l.price < entry);
     const upper = levels.find(l=>l.low > entry || l.price > entry);
     const side = manualSide === 'SHORT' ? 'SHORT' : 'LONG';
-    let stop, target, method;
+    let autoStop, autoTarget, method;
     if(side === 'LONG'){
-      stop = lower ? lower.low - buffer : entry - Math.max(atr || 0, entry*0.02);
-      target = upper ? upper.low : entry + Math.abs(entry-stop)*3;
+      autoStop = lower ? lower.low - buffer : entry - Math.max(atr || 0, entry*0.02);
+      autoTarget = upper ? upper.low : entry + Math.abs(entry-autoStop)*3;
       method = `${lower?'nearest lower level':'ATR fallback'} / ${upper?'nearest upper level':'3R fallback'}`;
     } else {
-      stop = upper ? upper.high + buffer : entry + Math.max(atr || 0, entry*0.02);
-      target = lower ? lower.high : entry - Math.abs(stop-entry)*3;
+      autoStop = upper ? upper.high + buffer : entry + Math.max(atr || 0, entry*0.02);
+      autoTarget = lower ? lower.high : entry - Math.abs(autoStop-entry)*3;
       method = `${upper?'nearest upper level':'ATR fallback'} / ${lower?'nearest lower level':'3R fallback'}`;
     }
+    const stopOverride = Number(manualStop);
+    const targetOverride = Number(manualTarget);
+    const stop = Number.isFinite(stopOverride) && stopOverride > 0 ? stopOverride : autoStop;
+    const target = Number.isFinite(targetOverride) && targetOverride > 0 ? targetOverride : autoTarget;
+    const validDirection = side === 'LONG'
+      ? stop < entry && target > entry
+      : stop > entry && target < entry;
+    if(!validDirection) return null;
     const risk = Math.abs(entry-stop);
     const reward = Math.abs(target-entry);
     if(risk<=0 || reward<=0 || stop<=0 || target<=0) return null;
     return {
       side, entry, stop, target,
+      autoStop, autoTarget,
+      stopOverridden:Number.isFinite(stopOverride) && stopOverride > 0,
+      targetOverridden:Number.isFinite(targetOverride) && targetOverride > 0,
       rr: reward/risk,
       method,
     };
-  },[manualEntry, manualSide, chartPlan]);
+  },[manualEntry, manualStop, manualTarget, manualSide, chartPlan]);
   const manualOrderPlan = useMemo(()=>{
     if(!manualSetup || !selectedSymbol) return null;
     const cash = Number(manualCash);
@@ -1974,14 +1991,15 @@ function TabStrategy({refreshKey=0}) {
     return C.outline;
   };
   const fmtNum = (v, d=2) => v==null || !Number.isFinite(Number(v)) ? '—' : Number(v).toFixed(d);
+  const manualEntryReady = Number.isFinite(Number(manualEntry)) && Number(manualEntry) > 0;
 
   return (
     <div style={{display:'flex',flexDirection:'column',gap:28}}>
       <MetricGrid items={[
         {label:'Symbols Scanned', icon:'radar', value:data.symbols_scanned??0, sub:'with stored chart data'},
-        {label:'BMSB Matches', icon:'candlestick_chart', value:data.matches??0, valueColor:C.cyan, sub:'crossed or near cross', subColor:C.cyan},
-        {label:'Recent Crosses', icon:'swap_vert', value:data.crossed??0, valueColor:data.crossed?C.lime:C.onSurf, sub:`last ${data.recent_days??2} days`},
-        {label:'Near Cross', icon:'near_me', value:data.near??0, valueColor:data.near?C.magenta:C.onSurf, sub:`≤ ${fmtNum(data.threshold_pct,2)}% EMA/SMA gap`},
+        {label:'BMSB S2 Matches', icon:'candlestick_chart', value:data.matches??0, valueColor:C.cyan, sub:'entry/exit or near trigger', subColor:C.cyan},
+        {label:'Recent Triggers', icon:'swap_vert', value:data.crossed??0, valueColor:data.crossed?C.lime:C.onSurf, sub:`last ${data.recent_days??2} days`},
+        {label:'Near Trigger', icon:'near_me', value:data.near??0, valueColor:data.near?C.magenta:C.onSurf, sub:`≤ ${fmtNum(data.threshold_pct,2)}% to S2 level`},
       ]}/>
 
       <div ref={strategyChartFullscreenRef} className="strategy-chart-fullscreen-shell">
@@ -1993,7 +2011,7 @@ function TabStrategy({refreshKey=0}) {
               {chartSymbolLabel} - {TF_LABEL[tf]} Advanced Strategy Chart
             </span>
             {selectedRow && <Pill text={String(selectedRow.signal||'BMSB').replace('_',' ')} color={signalColor(selectedRow.signal)}/>}
-            {selectedRow && <Pill text={`${fmtNum(selectedRow.gap_pct,3)}% GAP`} color={Number(selectedRow.gap_pct)<=Number(data.threshold_pct)?C.cyan:C.outline}/>}
+            {selectedRow && <Pill text={`${fmtNum(selectedRow.trigger_gap_pct ?? selectedRow.gap_pct,3)}% TRIGGER`} color={Number(selectedRow.trigger_gap_pct ?? selectedRow.gap_pct)<=Number(data.threshold_pct)?C.cyan:C.outline}/>}
           </div>
           <TfPills value={tf} onChange={setTf}/>
         </div>
@@ -2044,7 +2062,7 @@ function TabStrategy({refreshKey=0}) {
             Remove
           </button>
           {selectedSymbol && !(data.rows||[]).some(r=>r.symbol===selectedSymbol) && (
-            <Pill text="NO CURRENT BMSB MATCH" color={C.outline}/>
+            <Pill text="NO CURRENT S2 MATCH" color={C.outline}/>
           )}
           {strategySymbolFeedback && (
             <span style={{display:'inline-flex',alignItems:'center',gap:7,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:strategySymbolFeedback.ok?C.lime:C.err}}>
@@ -2067,6 +2085,26 @@ function TabStrategy({refreshKey=0}) {
             <option value="LONG">Long</option>
             <option value="SHORT">Short</option>
           </select>
+          <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Stop</span>
+          <input type="number" min="0" step="0.01" value={manualStop}
+            onChange={e=>setManualStop(e.target.value)}
+            disabled={!manualEntryReady}
+            title="Optional manual stop override. Leave blank to use the calculated stop."
+            placeholder={manualSetup ? `Auto ${manualSetup.autoStop.toFixed(2)}` : 'Stop'}
+            style={{width:115,background:R(C.surfLowest,0.8),color:C.err,border:`1px solid ${R(manualSetup?.stopOverridden?C.err:C.outline,manualSetup?.stopOverridden?0.38:0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none',opacity:manualEntryReady?1:0.55}}/>
+          <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Target</span>
+          <input type="number" min="0" step="0.01" value={manualTarget}
+            onChange={e=>setManualTarget(e.target.value)}
+            disabled={!manualEntryReady}
+            title="Optional manual target override. Leave blank to use the calculated target."
+            placeholder={manualSetup ? `Auto ${manualSetup.autoTarget.toFixed(2)}` : 'Target'}
+            style={{width:115,background:R(C.surfLowest,0.8),color:C.lime,border:`1px solid ${R(manualSetup?.targetOverridden?C.lime:C.outline,manualSetup?.targetOverridden?0.38:0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none',opacity:manualEntryReady?1:0.55}}/>
+          {(manualStop || manualTarget) && (
+            <button onClick={()=>{setManualStop('');setManualTarget('');}}
+              style={{padding:'8px 11px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar,background:R(C.outline,0.08),border:`1px solid ${R(C.outline,0.22)}`}}>
+              Auto
+            </button>
+          )}
           <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Cash $</span>
           <input type="number" min="0" step="100" value={manualCash}
             onChange={e=>setManualCash(e.target.value)}
@@ -2080,7 +2118,7 @@ function TabStrategy({refreshKey=0}) {
             placeholder="Max risk %"
             style={{width:115,background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
           {bars?.length>0 && (
-            <button onClick={()=>setManualEntry(String(Number(bars[bars.length-1]?.close||0).toFixed(2)))}
+            <button onClick={()=>{setManualEntry(String(Number(bars[bars.length-1]?.close||0).toFixed(2)));setManualStop('');setManualTarget('');}}
               style={{padding:'8px 11px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,background:R(C.cyan,0.08),border:`1px solid ${R(C.cyan,0.28)}`}}>
               Use last close
             </button>
@@ -2093,7 +2131,9 @@ function TabStrategy({refreshKey=0}) {
               {manualOrderPlan && <Pill text={`${manualOrderPlan.quantity} SH`} color={manualOrderPlan.quantity>0?C.cyan:C.err}/>}
               {manualOrderPlan && <Pill text={`RISK $${manualOrderPlan.risk_amount.toFixed(2)}`} color={manualOrderPlan.quantity>0?C.err:C.outline}/>}
               {manualOrderPlan && <Pill text={`PROFIT $${manualOrderPlan.potential_reward.toFixed(2)}`} color={manualOrderPlan.quantity>0?C.lime:C.outline}/>}
-              <span style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:C.outline}}>Based on {manualSetup.method}</span>
+              <span style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:C.outline}}>
+                Based on {manualSetup.method}{(manualSetup.stopOverridden||manualSetup.targetOverridden) ? ' + manual override' : ''}
+              </span>
               <button disabled={!manualOrderPlan || manualOrderPlan.quantity<=0}
                 onClick={()=>setStrategyConfirm({row:manualOrderPlan})}
                 style={{padding:'8px 15px',borderRadius:8,cursor:manualOrderPlan&&manualOrderPlan.quantity>0?'pointer':'not-allowed',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:700,color:manualOrderPlan&&manualOrderPlan.quantity>0?'#001416':C.outline,background:manualOrderPlan&&manualOrderPlan.quantity>0?C.cyan:R(C.outline,0.08),border:`1px solid ${manualOrderPlan&&manualOrderPlan.quantity>0?R(C.cyan,0.35):R(C.outline,0.14)}`,opacity:manualOrderPlan&&manualOrderPlan.quantity>0?1:0.6}}>
@@ -2101,7 +2141,7 @@ function TabStrategy({refreshKey=0}) {
               </button>
             </>
           ) : (
-            <span style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:C.outline}}>Enter price to draw entry, stop, and target.</span>
+            <span style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:C.outline}}>Enter a valid entry, stop, and target to draw the setup.</span>
           )}
         </div>}
         {showManualSetup && strategyFeedback && (
@@ -2215,10 +2255,10 @@ function TabStrategy({refreshKey=0}) {
       )}
 
       <GlassCard style={{overflow:'hidden'}}>
-        <PanelHeader icon="insights" title="BMSB Strategy Monitor" badge="21W EMA / 20W SMA"/>
+        <PanelHeader icon="insights" title="BMSB Strategy Monitor" badge="BMSB Strategy 2"/>
         <div style={{padding:'14px 18px',borderBottom:`1px solid ${R(C.outline,0.12)}`,display:'flex',justifyContent:'space-between',alignItems:'center',gap:14,flexWrap:'wrap'}}>
           <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline,lineHeight:1.6}}>
-            Shows symbols where the weekly 21 EMA crossed the weekly 20 SMA within {data.recent_days??2} days, or where the live weekly gap is within {fmtNum(data.threshold_pct,2)}%.
+            Shows BMSB Strategy 2 weekly band reclaims/losses within {data.recent_days??2} days, or symbols within {fmtNum(data.threshold_pct,2)}% of the S2 trigger level. Tolerance: {fmtNum(data.tolerance_pct,2)}%.
           </div>
           <div style={{display:'flex',gap:7,flexWrap:'wrap'}}>
             {['ALL','CROSSED','NEAR','LONG','EXIT'].map(f=>{
@@ -2231,7 +2271,7 @@ function TabStrategy({refreshKey=0}) {
           </div>
         </div>
         <Table
-          cols={['Symbol','Signal','Side','Last Price','21W EMA','20W SMA','Gap %','Signal Date','Weekly Bar']}
+          cols={['Symbol','Signal','Side','Last Price','Entry Level','Exit Level','Trigger Gap','21W EMA','20W SMA','Signal Date','Weekly Bar']}
           rows={rows.map(r=>[
             <button onClick={()=>setSelectedSymbol(r.symbol)}
               style={{display:'inline-flex',alignItems:'center',gap:8,cursor:'pointer',background:selectedSymbol===r.symbol?R(C.cyan,0.14):'transparent',border:`1px solid ${selectedSymbol===r.symbol?R(C.cyan,0.32):'transparent'}`,borderRadius:7,padding:'4px 8px',color:selectedSymbol===r.symbol?C.cyan:C.onSurf,fontWeight:600,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
@@ -2244,16 +2284,18 @@ function TabStrategy({refreshKey=0}) {
               {r.side}
             </span>,
             `$${fmtNum(r.last_price,2)}`,
+            `$${fmtNum(r.entry_level,2)}`,
+            `$${fmtNum(r.exit_level,2)}`,
+            <span style={{color:Number(r.trigger_gap_pct ?? r.gap_pct)<=Number(data.threshold_pct)?C.cyan:C.onVar}}>{fmtNum(r.trigger_gap_pct ?? r.gap_pct,3)}%</span>,
             fmtNum(r.ema21,2),
             fmtNum(r.sma20,2),
-            <span style={{color:Number(r.gap_pct)<=Number(data.threshold_pct)?C.cyan:C.onVar}}>{fmtNum(r.gap_pct,3)}%</span>,
             <span style={{color:C.outline}}>{r.cross_date||'—'}</span>,
             <span style={{color:C.outline}}>{r.weekly_bar||'—'}</span>,
           ])}
         />
         {!rows.length && (
           <div style={{padding:'20px 18px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.outline}}>
-            No BMSB symbols match this filter right now.
+            No BMSB Strategy 2 symbols match this filter right now.
           </div>
         )}
       </GlassCard>
@@ -3500,7 +3542,7 @@ const PAGE_META = {
   watchlist: {title:'Watchlist',              sub:'Current stock symbols · live-saved candles · daily change map', crumb:'Watchlist'},
   preopen:   {title:'Pre-Open Briefing',      sub:'Watchlist scanned · levels mapped · awaiting the open', crumb:'Pre-Open'},
   intraday:  {title:'Intraday Monitor',       sub:'Live decision loop · paper execution', crumb:'Intraday'},
-  strategy:  {title:'Strategy Monitor',       sub:'BMSB 21W EMA / 20W SMA cross scanner', crumb:'Strategy'},
+  strategy:  {title:'Strategy Monitor',       sub:'BMSB Strategy 2 band reclaim / loss scanner', crumb:'Strategy'},
   crypto:    {title:'Crypto Trade Levels',    sub:'OKX candles · Gerchik zones · separate crypto bot', crumb:'Crypto'},
   trades:    {title:'Trades & Positions',     sub:'Open paper positions and trade journal', crumb:'Trades'},
   forecast:  {title:'Risk Forecast Calculator',sub:'Scenario-only · replays saved data · no live orders', crumb:'Forecast'},
