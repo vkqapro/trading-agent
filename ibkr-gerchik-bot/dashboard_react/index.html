@@ -130,7 +130,7 @@ const Table = ({cols, rows}) => (
 );
 
 /* ── SVG candlestick chart ────────────────────────────────────────────────── */
-function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null, showVol=true, height=300, stale=false, lastDate=null}) {
+function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null, gaussianOverlay=null, showVol=true, height=300, stale=false, lastDate=null}) {
   const n = bars?.length || 0;
   const chartRef = useRef(null);
   const svgRef = useRef(null);
@@ -147,8 +147,10 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
   const measureRef = useRef(null); // {svgX, svgY, barIdx, price} anchor while dragging
   const measureModeRef = useRef(false); // mirror of measureMode for use inside event handlers
 
-  // reset view when bars change
-  useEffect(()=>{ setVisStart(0); setVisEnd(bars?.length||0); setHover(null); },[bars]);
+  // reset view only when the dataset itself changes (different length or different last bar),
+  // not on every parent re-render that passes a new array reference with the same data.
+  const barsKey = (bars?.length||0) + '|' + (bars?.[bars.length-1]?.t||'');
+  useEffect(()=>{ setVisStart(0); setVisEnd(bars?.length||0); setHover(null); },[barsKey]);
   useEffect(()=>{
     const onFullscreenChange = ()=>setIsFullscreen(document.fullscreenElement===chartRef.current);
     document.addEventListener('fullscreenchange',onFullscreenChange);
@@ -194,6 +196,12 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
   overlayPoints.forEach(p=>{
     if(Number.isFinite(p.sma)){ pmin=Math.min(pmin,p.sma); pmax=Math.max(pmax,p.sma); }
     if(Number.isFinite(p.ema)){ pmin=Math.min(pmin,p.ema); pmax=Math.max(pmax,p.ema); }
+  });
+  const gaussianPoints = gaussianOverlay?.points?.slice(vs, ve) || [];
+  if(gaussianOverlay?.showChannel !== false) gaussianPoints.forEach(p=>{
+    if(Number.isFinite(p.upper)){ pmin=Math.min(pmin,p.upper); pmax=Math.max(pmax,p.upper); }
+    if(Number.isFinite(p.lower)){ pmin=Math.min(pmin,p.lower); pmax=Math.max(pmax,p.lower); }
+    if(Number.isFinite(p.mid)){ pmin=Math.min(pmin,p.mid); pmax=Math.max(pmax,p.mid); }
   });
   if(!isFinite(pmin)) { pmin=0; pmax=1; }
   const pd=(pmax-pmin)*0.08; pmin-=pd; pmax+=pd;
@@ -386,6 +394,63 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
       <line x1={0} y1={0} x2={0} y2={8} stroke={z.color} strokeWidth={1.5}/>
     </pattern></defs>);
   });
+
+  // Gaussian Channel Strategy Vitaly v1.0 overlay
+  if(gaussianOverlay && gaussianPoints.some(p=>Number.isFinite(p.mid)||Number.isFinite(p.upper)||Number.isFinite(p.lower))){
+    const showGaussianChannel = gaussianOverlay.showChannel !== false;
+    const upColor = gaussianOverlay.upColor || '#00e5ff';
+    const downColor = gaussianOverlay.downColor || '#ff5252';
+    const pathFor = key => {
+      let path='', started=false;
+      gaussianPoints.forEach((p,i)=>{
+        const v = p[key];
+        if(!Number.isFinite(v)){ started=false; return; }
+        path += (started?' L':'M') + xi(i).toFixed(1) + ' ' + yp(v).toFixed(1);
+        started=true;
+      });
+      return path;
+    };
+    if(showGaussianChannel){
+      let fillTop='', fillBottom=[];
+      gaussianPoints.forEach((p,i)=>{
+        if(!Number.isFinite(p.upper)||!Number.isFinite(p.lower)) return;
+        fillTop += (fillTop?' L':'M') + xi(i).toFixed(1) + ' ' + yp(p.upper).toFixed(1);
+        fillBottom.push(xi(i).toFixed(1) + ' ' + yp(p.lower).toFixed(1));
+      });
+      if(fillTop && fillBottom.length>1){
+        const lastBull = [...gaussianPoints].reverse().find(p=>p.bullish!=null)?.bullish;
+        els.push(<path key="gaussian-fill" d={`${fillTop} L${fillBottom.reverse().join(' L')} Z`}
+          fill={R(lastBull?upColor:downColor,0.10)} stroke="none"/>);
+      }
+      const upperPath=pathFor('upper'), lowerPath=pathFor('lower'), midPath=pathFor('mid');
+      if(upperPath) els.push(<path key="gaussian-upper" d={upperPath} fill="none" stroke={R(upColor,0.55)} strokeWidth={1.15}/>);
+      if(lowerPath) els.push(<path key="gaussian-lower" d={lowerPath} fill="none" stroke={R(downColor,0.50)} strokeWidth={1.15}/>);
+      if(midPath) els.push(<path key="gaussian-mid" d={midPath} fill="none" stroke={R(upColor,0.82)} strokeWidth={1.9}/>);
+    }
+    if(gaussianOverlay.showSignals) gaussianPoints.forEach((p,i)=>{
+      if(!p.signal) return;
+      const x=xi(i), y=yp(p.close);
+      const isLongEntry=p.signal==='long_entry';
+      const isShortEntry=p.signal==='short_entry';
+      const isEntry=isLongEntry||isShortEntry;
+      const col=isLongEntry||p.signal==='short_exit' ? C.lime : downColor;
+      const txt=isLongEntry?'BUY':isShortEntry?'SELL':p.signal==='long_exit'?'SELL':'BUY';
+      const ty=isLongEntry||p.signal==='short_exit' ? y+18 : y-13;
+      const d=isEntry && !isShortEntry
+        ? `M ${x.toFixed(1)} ${(y-9).toFixed(1)} L ${(x-6).toFixed(1)} ${(y+4).toFixed(1)} L ${(x+6).toFixed(1)} ${(y+4).toFixed(1)} Z`
+        : `M ${x.toFixed(1)} ${(y+9).toFixed(1)} L ${(x-6).toFixed(1)} ${(y-4).toFixed(1)} L ${(x+6).toFixed(1)} ${(y-4).toFixed(1)} Z`;
+      els.push(<circle key={'gaussian-sig-glow'+i} cx={x} cy={y} r={8.5} fill={R(col,0.16)} stroke="none"/>);
+      els.push(<path key={'gaussian-sig'+i} d={d} fill={R(col,0.96)} stroke={R('#ffffff',0.78)} strokeWidth={0.8}/>);
+      els.push(<text key={'gaussian-sig-label'+i} x={x} y={ty} textAnchor="middle"
+        fill={R(col,0.95)} fontSize={8.5} fontFamily="JetBrains Mono,monospace" fontWeight="700">{txt}</text>);
+    });
+    const lastGaussian = showGaussianChannel ? [...gaussianPoints].reverse().find(p=>Number.isFinite(p.mid)) : null;
+    if(lastGaussian){
+      const y=yp(lastGaussian.mid);
+      els.push(<text key="gaussian-label" x={padL+6} y={y-12} fill={R(lastGaussian.bullish?upColor:downColor,0.92)}
+        fontSize={9} fontFamily="JetBrains Mono,monospace">GAUSSIAN {fmtP(lastGaussian.mid)}</text>);
+    }
+  }
 
   // level zones + lines
   levels.forEach((l,i)=>{
@@ -910,6 +975,8 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
   const [showTrade, setShowTrade] = useState(true);
   const [showVol, setShowVol] = useState(true);
   const [showStrategy, setShowStrategy] = useState(false);
+  const [showGaussian, setShowGaussian] = useState(false);
+  const [showGaussianSignals, setShowGaussianSignals] = useState(false);
   const [bars, setBars] = useState([]);
   const [barsInfo, setBarsInfo] = useState({stale:false,lastDate:null});
   const [chartPlan, setChartPlan] = useState(null);
@@ -929,9 +996,18 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
   },[chartSymbol, tf, refreshKey]);
 
   const strategyOverlay = useMemo(
-    ()=>showStrategy ? buildBmsbStrategyOverlay(bars.slice(-(RANGE_COUNTS[range]||9999))) : null,
+    ()=>{
+      if(!showStrategy) return null;
+      const count = RANGE_COUNTS[range]||9999;
+      return sliceOverlayPoints(buildBmsbStrategyOverlay(bars), count);
+    },
     [showStrategy, bars, range]
   );
+  const gaussianOverlay = useMemo(()=>{
+    if(!showGaussian && !showGaussianSignals) return null;
+    const full = buildGaussianChannelOverlay(bars);
+    return full ? {...full, showChannel:showGaussian, showSignals:showGaussianSignals, points: full.points.slice(-(RANGE_COUNTS[range]||9999))} : null;
+  },[showGaussian, showGaussianSignals, bars, range]);
 
   if(!data) return <Spinner/>;
   const {metrics:m, risk, opp_rows, attempt_log, symbols=[]} = data;
@@ -1050,6 +1126,8 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
             <Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/>
             <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
             <Toggle on={showStrategy} label="BMSB strategy" onChange={setShowStrategy}/>
+            <Toggle on={showGaussian} label="Gaussian channel" onChange={v=>{setShowGaussian(v); if(v) setShowGaussianSignals(true);}}/>
+            <Toggle on={showGaussianSignals} label="Gaussian signals" onChange={setShowGaussianSignals}/>
           </div>
           <div style={{display:'flex',gap:5,flexWrap:'wrap'}}>
             {['1M','3M','6M','YTD','1Y','ALL'].map(rg=>{
@@ -1059,7 +1137,7 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
           </div>
         </div>
         <div style={{padding:'18px 20px'}}>
-          <CandleChart bars={visBars} levels={buildChartLevels(chartPlan?.trade_levels, chartPlan?.raw_levels, showTrade, showRaw)} strategyOverlay={strategyOverlay} showVol={showVol} height={600} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
+          <CandleChart bars={visBars} levels={buildChartLevels(chartPlan?.trade_levels, chartPlan?.raw_levels, showTrade, showRaw)} strategyOverlay={strategyOverlay} gaussianOverlay={gaussianOverlay} showVol={showVol} height={600} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
         </div>
       </GlassCard>
 
@@ -1121,6 +1199,8 @@ function TabPreOpen({refreshKey=0}) {
   const [showVol, setShowVol] = useState(true);
   const [showRaw, setShowRaw] = useState(false);
   const [showTrade, setShowTrade] = useState(true);
+  const [showGaussian, setShowGaussian] = useState(false);
+  const [showGaussianSignals, setShowGaussianSignals] = useState(false);
 
   useEffect(()=>{ fetch(`${API}/preopen`).then(r=>r.json()).then(d=>setAllRows(d.rows||[])); },[refreshKey]);
 
@@ -1146,6 +1226,11 @@ function TabPreOpen({refreshKey=0}) {
   const chartLevels = useMemo(()=>
     buildChartLevels(plan?.trade_levels, plan?.raw_levels, showTrade, showRaw),
   [plan, showTrade, showRaw]);
+  const gaussianOverlay = useMemo(()=>{
+    if(!showGaussian && !showGaussianSignals) return null;
+    const full = buildGaussianChannelOverlay(bars);
+    return full ? {...full, showChannel:showGaussian, showSignals:showGaussianSignals} : null;
+  },[showGaussian, showGaussianSignals, bars]);
 
   return (
     <div style={{display:'flex',flexDirection:'column',gap:28}}>
@@ -1301,10 +1386,12 @@ function TabPreOpen({refreshKey=0}) {
               <Toggle on={showRaw} label="Raw levels" onChange={setShowRaw}/>
               <Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/>
               <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
+              <Toggle on={showGaussian} label="Gaussian channel" onChange={v=>{setShowGaussian(v); if(v) setShowGaussianSignals(true);}}/>
+              <Toggle on={showGaussianSignals} label="Gaussian signals" onChange={setShowGaussianSignals}/>
             </div>
           </div>
           <div style={{padding:'18px 20px'}}>
-            <CandleChart bars={bars} levels={chartLevels} showVol={showVol} height={600} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
+            <CandleChart bars={bars} levels={chartLevels} gaussianOverlay={gaussianOverlay} showVol={showVol} height={600} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
           </div>
         </GlassCard>
       )}
@@ -1366,6 +1453,8 @@ function TabStrategy({refreshKey=0}) {
   const [showVol, setShowVol] = useState(true);
   const [showStrategy, setShowStrategy] = useState(true);
   const [showManualSetup, setShowManualSetup] = useState(false);
+  const [showGaussian, setShowGaussian] = useState(false);
+  const [showGaussianSignals, setShowGaussianSignals] = useState(false);
   const [manualEntry, setManualEntry] = useState('');
   const [manualSide, setManualSide] = useState('LONG');
   const [manualCash, setManualCash] = useState('1000');
@@ -1392,11 +1481,17 @@ function TabStrategy({refreshKey=0}) {
       .then(setChartPlan)
       .catch(()=>setChartPlan(null));
   },[selectedSymbol, tf, refreshKey]);
-  const visibleBars = bars.slice(-(RANGE_COUNTS[range]||9999));
+  const rangeCount = RANGE_COUNTS[range]||9999;
+  const visibleBars = bars.slice(-rangeCount);
   const strategyOverlay = useMemo(
-    ()=>showStrategy ? buildBmsbStrategyOverlay(visibleBars) : null,
-    [showStrategy, visibleBars]
+    ()=>showStrategy ? sliceOverlayPoints(buildBmsbStrategyOverlay(bars), rangeCount) : null,
+    [showStrategy, bars, rangeCount]
   );
+  const gaussianOverlay = useMemo(()=>{
+    if(!showGaussian && !showGaussianSignals) return null;
+    const full = buildGaussianChannelOverlay(bars);
+    return full ? {...full, showChannel:showGaussian, showSignals:showGaussianSignals, points: full.points.slice(-rangeCount)} : null;
+  },[showGaussian, showGaussianSignals, bars, rangeCount]);
   const chartLevels = useMemo(
     ()=>buildChartLevels(chartPlan?.trade_levels, chartPlan?.raw_levels, showTrade, showRaw),
     [chartPlan, showTrade, showRaw]
@@ -1541,6 +1636,8 @@ function TabStrategy({refreshKey=0}) {
             <Toggle on={showRaw} label="Raw levels" onChange={setShowRaw}/>
             <Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/>
             <Toggle on={showStrategy} label="BMSB strategy" onChange={setShowStrategy}/>
+            <Toggle on={showGaussian} label="Gaussian channel" onChange={v=>{setShowGaussian(v); if(v) setShowGaussianSignals(true);}}/>
+            <Toggle on={showGaussianSignals} label="Gaussian signals" onChange={setShowGaussianSignals}/>
             <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
             <Toggle on={showManualSetup} label="Manual setup" onChange={setShowManualSetup}/>
           </div>
@@ -1630,6 +1727,7 @@ function TabStrategy({refreshKey=0}) {
             lines={manualSetupLines}
             zones={manualSetupZones}
             strategyOverlay={strategyOverlay}
+            gaussianOverlay={gaussianOverlay}
             showVol={showVol}
             height={840}
             stale={barsInfo.stale}
@@ -1864,6 +1962,8 @@ function TabForecast({refreshKey=0}) {
   const [showRaw, setShowRaw] = useState(false);
   const [showTrade, setShowTrade] = useState(true);
   const [showStrategy, setShowStrategy] = useState(false);
+  const [showGaussian, setShowGaussian] = useState(false);
+  const [showGaussianSignals, setShowGaussianSignals] = useState(false);
   const [selBars, setSelBars] = useState([]);
   const [selBarsInfo, setSelBarsInfo] = useState({stale:false,lastDate:null});
   const [tf, setTf] = useState('1D');
@@ -1928,9 +2028,18 @@ function TabForecast({refreshKey=0}) {
     selRow.stop!=null   && {p:selRow.stop,  color:C.err, label:`STOP ${fmtP2(selRow.stop)}`},
   ].filter(Boolean) : [];
   const strategyOverlay = useMemo(
-    ()=>showStrategy ? buildBmsbStrategyOverlay(selBars.slice(-(RANGE_COUNTS[fcChartRange]||9999))) : null,
+    ()=>{
+      if(!showStrategy) return null;
+      const count = RANGE_COUNTS[fcChartRange]||9999;
+      return sliceOverlayPoints(buildBmsbStrategyOverlay(selBars), count);
+    },
     [showStrategy, selBars, fcChartRange]
   );
+  const gaussianOverlay = useMemo(()=>{
+    if(!showGaussian && !showGaussianSignals) return null;
+    const full = buildGaussianChannelOverlay(selBars);
+    return full ? {...full, showChannel:showGaussian, showSignals:showGaussianSignals, points: full.points.slice(-(RANGE_COUNTS[fcChartRange]||9999))} : null;
+  },[showGaussian, showGaussianSignals, selBars, fcChartRange]);
   const visibleSelBars = selBars.slice(-(RANGE_COUNTS[fcChartRange]||9999));
 
   return (
@@ -2250,6 +2359,8 @@ function TabForecast({refreshKey=0}) {
                 <Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/>
                 <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
                 <Toggle on={showStrategy} label="BMSB strategy" onChange={setShowStrategy}/>
+                <Toggle on={showGaussian} label="Gaussian channel" onChange={v=>{setShowGaussian(v); if(v) setShowGaussianSignals(true);}}/>
+                <Toggle on={showGaussianSignals} label="Gaussian signals" onChange={setShowGaussianSignals}/>
               </div>
               <div style={{display:'flex',gap:5,flexWrap:'wrap'}}>
                 {['1M','3M','6M','YTD','1Y','ALL'].map(rg=>{
@@ -2265,6 +2376,7 @@ function TabForecast({refreshKey=0}) {
                   ...(selRow?.entry!=null && selRow?.stop!=null ? [{p1:selRow.entry,p2:selRow.stop,color:C.err,opacity:0.08}] : []),
                 ]}
                 strategyOverlay={strategyOverlay}
+                gaussianOverlay={gaussianOverlay}
                 showVol={showVol} height={600} stale={selBarsInfo.stale} lastDate={selBarsInfo.lastDate}/>
             </div>
           </GlassCard>
@@ -2345,6 +2457,8 @@ function TabCrypto({refreshKey=0}) {
   const [showTrade, setShowTrade] = useState(true);
   const [showVol, setShowVol] = useState(true);
   const [showStrategy, setShowStrategy] = useState(false);
+  const [showGaussian, setShowGaussian] = useState(false);
+  const [showGaussianSignals, setShowGaussianSignals] = useState(false);
   const [bars, setBars] = useState([]);
   const [barsInfo, setBarsInfo] = useState({stale:false,lastDate:null});
   const [plan, setPlan] = useState(null);
@@ -2380,9 +2494,18 @@ function TabCrypto({refreshKey=0}) {
   };
 
   const strategyOverlay = useMemo(
-    ()=>showStrategy ? buildBmsbStrategyOverlay(bars.slice(-(RANGE_COUNTS[range]||9999))) : null,
+    ()=>{
+      if(!showStrategy) return null;
+      const count = RANGE_COUNTS[range]||9999;
+      return sliceOverlayPoints(buildBmsbStrategyOverlay(bars), count);
+    },
     [showStrategy, bars, range]
   );
+  const gaussianOverlay = useMemo(()=>{
+    if(!showGaussian && !showGaussianSignals) return null;
+    const full = buildGaussianChannelOverlay(bars);
+    return full ? {...full, showChannel:showGaussian, showSignals:showGaussianSignals, points: full.points.slice(-(RANGE_COUNTS[range]||9999))} : null;
+  },[showGaussian, showGaussianSignals, bars, range]);
 
   if(!data) return <Spinner/>;
   const rows = data.rows || [];
@@ -2413,6 +2536,8 @@ function TabCrypto({refreshKey=0}) {
             <Toggle on={showRaw} label="Raw levels" onChange={setShowRaw}/>
             <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
             <Toggle on={showStrategy} label="BMSB strategy" onChange={setShowStrategy}/>
+            <Toggle on={showGaussian} label="Gaussian channel" onChange={v=>{setShowGaussian(v); if(v) setShowGaussianSignals(true);}}/>
+            <Toggle on={showGaussianSignals} label="Gaussian signals" onChange={setShowGaussianSignals}/>
           </div>
           <div style={{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}>
             <select value={selected} onChange={e=>setSelected(e.target.value)}
@@ -2430,7 +2555,7 @@ function TabCrypto({refreshKey=0}) {
           </div>
         </div>
         <div style={{padding:'18px 20px'}}>
-          <CandleChart bars={visibleBars} levels={chartLevels} strategyOverlay={strategyOverlay} showVol={showVol} height={840} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
+          <CandleChart bars={visibleBars} levels={chartLevels} strategyOverlay={strategyOverlay} gaussianOverlay={gaussianOverlay} showVol={showVol} height={840} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
         </div>
       </GlassCard>
 
@@ -2515,6 +2640,12 @@ function buildChartLevels(tradeLevels, rawLevels, showTrade, showRaw) {
   if(showTrade) (tradeLevels||[]).forEach(l => add(l, C.cyan, true));
   if(showRaw)   (rawLevels||[]).forEach(l  => add(l, C.outline, false));
   return out.sort((a,b)=>b.p-a.p);
+}
+
+function sliceOverlayPoints(overlay, count) {
+  if(!overlay) return null;
+  const n = count || 9999;
+  return {...overlay, points:(overlay.points||[]).slice(-n)};
 }
 
 /* ── strategies/bmsb_strategy_1 → Forecast chart overlay ─────────────────── */
@@ -2626,6 +2757,127 @@ function buildBmsbStrategyOverlay(bars) {
   });
 
   return {...weeklyOverlay, points};
+}
+
+/* ── GaussianChannel Strategy Vitaly v1.0 → Strategy chart overlay ───────── */
+function buildGaussianChannelOverlay(bars, opts={}) {
+  const rows = (bars||[]).map((b,i)=>({
+    i,
+    t:b.t,
+    open:Number(b.open),
+    high:Number(b.high),
+    low:Number(b.low),
+    close:Number(b.close),
+    src:(Number(b.high)+Number(b.low)+Number(b.close))/3,
+  })).filter(r=>
+    Number.isFinite(r.high) && Number.isFinite(r.low) &&
+    Number.isFinite(r.close) && Number.isFinite(r.src)
+  );
+  if(rows.length < 3) return null;
+
+  const poles = Math.max(1, Math.min(4, Number(opts.poles ?? 4)));
+  const period = Math.max(2, Number(opts.period ?? 144));
+  const mult = Number(opts.mult ?? 1.414);
+  const reducedLag = Boolean(opts.reducedLag ?? false);
+  const fastResponse = Boolean(opts.fastResponse ?? false);
+  const enableShorts = Boolean(opts.enableShorts ?? false);
+  const lag = Math.floor((period - 1) / (2 * poles));
+  const alphaFor = (p, n) => {
+    const beta = (1 - Math.cos(2 * Math.PI / p)) / (Math.pow(Math.sqrt(2), 2 / n) - 1);
+    return -beta + Math.sqrt(beta * beta + 2 * beta);
+  };
+  const gaussianFilter = (values, p, n) => {
+    const alpha = alphaFor(p, n);
+    let f1=null, f2=null, f3=null, f4=null;
+    return values.map(v=>{
+      const x = Number.isFinite(v) ? v : 0;
+      if(f1==null){
+        f1=x; f2=x; f3=x; f4=x;
+        return x;
+      }
+      f1 = alpha*x + (1-alpha)*f1;
+      f2 = alpha*f1 + (1-alpha)*f2;
+      f3 = alpha*f2 + (1-alpha)*f3;
+      f4 = alpha*f3 + (1-alpha)*f4;
+      return n===1 ? f1 : n===2 ? f2 : n===3 ? f3 : f4;
+    });
+  };
+  const crossOver = (prevA, prevB, a, b) =>
+    Number.isFinite(prevA) && Number.isFinite(prevB) && Number.isFinite(a) && Number.isFinite(b) && prevA <= prevB && a > b;
+  const crossUnder = (prevA, prevB, a, b) =>
+    Number.isFinite(prevA) && Number.isFinite(prevB) && Number.isFinite(a) && Number.isFinite(b) && prevA >= prevB && a < b;
+
+  const src = rows.map((r,i)=>{
+    if(!reducedLag || i-lag < 0) return r.src;
+    return r.src + (r.src - rows[i-lag].src);
+  });
+  const ranges = rows.map((r,i)=>{
+    const prevClose = i>0 ? rows[i-1].close : r.close;
+    const tr = Math.max(r.high-r.low, Math.abs(r.high-prevClose), Math.abs(r.low-prevClose));
+    if(!reducedLag || i-lag < 0) return tr;
+    const lagPrevClose = i-lag>0 ? rows[i-lag-1].close : rows[i-lag].close;
+    const lagTr = Math.max(
+      rows[i-lag].high-rows[i-lag].low,
+      Math.abs(rows[i-lag].high-lagPrevClose),
+      Math.abs(rows[i-lag].low-lagPrevClose)
+    );
+    return tr + (tr - lagTr);
+  });
+
+  const midMain = gaussianFilter(src, period, poles);
+  const midFast = gaussianFilter(src, period, 1);
+  const rangeMain = gaussianFilter(ranges, period, poles);
+  const rangeFast = gaussianFilter(ranges, period, 1);
+  const rowByBarIndex = new Map(rows.map((r,idx)=>[r.i, idx]));
+  let position = 0;
+
+  const points = (bars||[]).map((b,i)=> {
+    const rowIdx = rowByBarIndex.has(i) ? rowByBarIndex.get(i) : -1;
+    if(rowIdx < 0) return {mid:null, upper:null, lower:null, close:Number(b.close), bullish:null, signal:null};
+    const mid = fastResponse ? (midMain[rowIdx]+midFast[rowIdx])/2 : midMain[rowIdx];
+    const rangeFiltered = fastResponse ? (rangeMain[rowIdx]+rangeFast[rowIdx])/2 : rangeMain[rowIdx];
+    const width = mult * rangeFiltered;
+    const upper = mid + width;
+    const lower = mid - width;
+    const prevMid = rowIdx>0 ? (fastResponse ? (midMain[rowIdx-1]+midFast[rowIdx-1])/2 : midMain[rowIdx-1]) : null;
+    const prevUpper = rowIdx>0 ? (
+      (fastResponse ? (midMain[rowIdx-1]+midFast[rowIdx-1])/2 : midMain[rowIdx-1]) +
+      mult * (fastResponse ? (rangeMain[rowIdx-1]+rangeFast[rowIdx-1])/2 : rangeMain[rowIdx-1])
+    ) : null;
+    const prevLower = rowIdx>0 ? (
+      (fastResponse ? (midMain[rowIdx-1]+midFast[rowIdx-1])/2 : midMain[rowIdx-1]) -
+      mult * (fastResponse ? (rangeMain[rowIdx-1]+rangeFast[rowIdx-1])/2 : rangeMain[rowIdx-1])
+    ) : null;
+    const close = Number(b.close);
+    const prevClose = rowIdx>0 ? rows[rowIdx-1].close : null;
+    const bullish = Number.isFinite(prevMid) ? mid > prevMid : null;
+    const bearish = Number.isFinite(prevMid) ? mid < prevMid : null;
+    let signal = null;
+    if(bullish && crossOver(prevClose, prevUpper, close, upper) && position <= 0){
+      signal = 'long_entry';
+      position = 1;
+    } else if(position > 0 && crossUnder(prevClose, prevUpper, close, upper)){
+      signal = 'long_exit';
+      position = 0;
+    } else if(enableShorts && bearish && crossUnder(prevClose, prevLower, close, lower) && position >= 0){
+      signal = 'short_entry';
+      position = -1;
+    } else if(enableShorts && position < 0 && crossOver(prevClose, prevLower, close, lower)){
+      signal = 'short_exit';
+      position = 0;
+    }
+    return {mid, upper, lower, close, bullish, bearish, signal};
+  });
+
+  return {
+    name:'GaussianChannel Strategy Vitaly v1.0',
+    period,
+    poles,
+    mult,
+    upColor:'#00e5ff',
+    downColor:'#ff5252',
+    points,
+  };
 }
 
 /* ── spinner ─────────────────────────────────────────────────────────────── */
