@@ -79,3 +79,22 @@ def add_stock_symbol(symbol: str, path: Path | None = None) -> dict:
             writer.writerow([item])
     os.replace(temp, resolved)
     return {"symbol": normalized, "added": True, "path": str(resolved)}
+
+
+def remove_stock_symbol(symbol: str, path: Path | None = None) -> dict:
+    """Remove ``symbol`` from the stock CSV if present. Returns a serialisable result."""
+    normalized = normalize_stock_symbol(symbol)
+    resolved = path or stock_symbols_file()
+    existing = load_stock_symbols(resolved)
+    updated = [item for item in existing if item != normalized]
+    removed = len(updated) != len(existing)
+
+    resolved.parent.mkdir(parents=True, exist_ok=True)
+    temp = resolved.with_suffix(resolved.suffix + ".tmp")
+    with temp.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(["symbol"])
+        for item in updated:
+            writer.writerow([item])
+    os.replace(temp, resolved)
+    return {"symbol": normalized, "removed": removed, "path": str(resolved)}

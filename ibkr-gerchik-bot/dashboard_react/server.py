@@ -7,6 +7,7 @@ Run:  python dashboard_react/server.py
 from __future__ import annotations
 
 import os
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -404,13 +405,61 @@ async def api_watchlist_add(body: dict):
         raise HTTPException(500, str(exc))
 
 
+@app.post("/api/watchlist/remove")
+async def api_watchlist_remove(body: dict):
+    from src.symbol_universe import normalize_stock_symbol, remove_stock_symbol
+
+    try:
+        symbol = normalize_stock_symbol(str(body.get("symbol", "")))
+    except ValueError as exc:
+        raise HTTPException(400, str(exc))
+
+    try:
+        remove_result = remove_stock_symbol(symbol)
+        state_path = SETTINGS.paths.state_file
+        removed_from_state = False
+        if state_path.exists():
+            try:
+                state = json.loads(state_path.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, OSError):
+                state = {}
+            if isinstance(state, dict):
+                watchlist = state.get("watchlist")
+                if isinstance(watchlist, dict) and symbol in watchlist:
+                    watchlist.pop(symbol, None)
+                    removed_from_state = True
+                temp_path = state_path.with_suffix(state_path.suffix + ".tmp")
+                temp_path.write_text(json.dumps(state, indent=2), encoding="utf-8")
+                os.replace(temp_path, state_path)
+        return {
+            "ok": True,
+            "symbol": symbol,
+            "removed": bool(remove_result.get("removed")) or removed_from_state,
+            "removed_from_config": bool(remove_result.get("removed")),
+            "removed_from_state": removed_from_state,
+            "message": f"{symbol} removed from stock universe and active watchlist.",
+        }
+    except Exception as exc:
+        raise HTTPException(500, str(exc))
+
+
 @app.get("/api/strategy")
 def api_strategy():
+    from src.symbol_universe import load_stock_symbols, stock_symbols_file
+
     index = _safe(da.bars_index, {})
-    symbols = sorted(
-        symbol for symbol, frames in (index or {}).items()
-        if isinstance(frames, dict) and ("daily" in frames or "weekly" in frames)
-    )
+    configured_symbols = _safe(load_stock_symbols, [])
+    if stock_symbols_file().exists():
+        symbols = sorted(
+            symbol for symbol in configured_symbols
+            if isinstance((index or {}).get(symbol), dict)
+            and ("daily" in (index or {}).get(symbol, {}) or "weekly" in (index or {}).get(symbol, {}))
+        )
+    else:
+        symbols = sorted(
+            symbol for symbol, frames in (index or {}).items()
+            if isinstance(frames, dict) and ("daily" in frames or "weekly" in frames)
+        )
     today = datetime.now(ET).date()
     rows = [
         row for symbol in symbols

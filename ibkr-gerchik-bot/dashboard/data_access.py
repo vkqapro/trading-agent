@@ -17,6 +17,7 @@ from src.config import SETTINGS
 from src.data.bar_store import bar_path
 from src.crypto.analysis import configured_crypto_symbols, load_crypto_state
 from src.crypto.bar_store import crypto_bar_path, crypto_index_snapshot
+from src.symbol_universe import load_stock_symbols, stock_symbols_file
 
 DAILY_DECISIONS_PATH = SETTINGS.paths.runtime_dir.parent / "daily_decisions.json"
 STATE_PATH = SETTINGS.paths.state_file
@@ -152,6 +153,14 @@ def load_watchlist() -> Dict[str, Any]:
         # Runtime state is fresher for symbols added through the Watchlist Add
         # flow; do not hide those symbols behind the last full premarket snapshot.
         merged.update(state_watchlist)
+    try:
+        configured_symbols = set(load_stock_symbols())
+        has_configured_symbol_file = stock_symbols_file().exists()
+    except Exception:
+        configured_symbols = set()
+        has_configured_symbol_file = False
+    if has_configured_symbol_file:
+        merged = {symbol: plan for symbol, plan in merged.items() if symbol in configured_symbols}
     return merged
 
 
