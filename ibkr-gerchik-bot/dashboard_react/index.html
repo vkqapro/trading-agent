@@ -150,18 +150,20 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
   const [hover,    setHover]    = useState(null);   // {idx, svgX, svgY}
   const [crosshair,setCrosshair]= useState(false);
   const [showMA,   setShowMA]   = useState(false);
+  const [yRangeFactor, setYRangeFactor] = useState(1);
+  const [yPanRatio, setYPanRatio] = useState(0);
   const [measureMode, setMeasureMode] = useState(false);
   const [measure, setMeasure]   = useState(null); // {ax,ay,bx,by} in SVG coords, locked after mouseup
   const [isDragging, setIsDragging] = useState(false);
   const [isFullscreen,setIsFullscreen] = useState(false);
-  const dragRef = useRef(null);  // {startX, startVisStart, startVisEnd}
+  const dragRef = useRef(null);  // {startX, startY, startVisStart, startVisEnd, startYPanRatio}
   const measureRef = useRef(null); // {svgX, svgY, barIdx, price} anchor while dragging
   const measureModeRef = useRef(false); // mirror of measureMode for use inside event handlers
 
   // reset view only when the dataset itself changes (different length or different last bar),
   // not on every parent re-render that passes a new array reference with the same data.
   const barsKey = (bars?.length||0) + '|' + (bars?.[bars.length-1]?.t||'');
-  useEffect(()=>{ setVisStart(0); setVisEnd(bars?.length||0); setHover(null); },[barsKey]);
+  useEffect(()=>{ setVisStart(0); setVisEnd(bars?.length||0); setHover(null); setYRangeFactor(1); setYPanRatio(0); },[barsKey]);
   const getFullscreenTarget = useCallback(()=>fullscreenTargetRef?.current || chartRef.current,[fullscreenTargetRef]);
   useEffect(()=>{
     const onFullscreenChange = ()=>setIsFullscreen(document.fullscreenElement===getFullscreenTarget());
@@ -223,6 +225,11 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
   });
   if(!isFinite(pmin)) { pmin=0; pmax=1; }
   const pd=(pmax-pmin)*0.08; pmin-=pd; pmax+=pd;
+  const baseRange = Math.max(pmax - pmin, 1e-9);
+  const yMid = (pmin + pmax) / 2 + yPanRatio * baseRange;
+  const yHalfRange = (baseRange / 2) * yRangeFactor;
+  pmin = yMid - yHalfRange;
+  pmax = yMid + yHalfRange;
 
   const yp  = p => padT + (pmax-p)/(pmax-pmin)*priceH;
   const step = plotW/vn;
@@ -274,8 +281,9 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
     // anchor: right edge stays fixed, left edge moves
     const [ns,ne] = clampVis(ve - newSpan, ve);
     setVisStart(ns); setVisEnd(ne);
+    setYRangeFactor(prev=>Math.max(0.12, Math.min(8, prev * factor)));
   };
-  const fitAll = () => { setVisStart(0); setVisEnd(n); setHover(null); };
+  const fitAll = () => { setVisStart(0); setVisEnd(n); setYRangeFactor(1); setYPanRatio(0); setHover(null); };
   const toggleFullscreen = async() => {
     try {
       if(document.fullscreenElement) await document.exitFullscreen();
@@ -302,7 +310,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
       setMeasure(null);
       setIsDragging(true);
     } else {
-      dragRef.current = {startX: e.clientX, startVisStart: vs, startVisEnd: ve};
+      dragRef.current = {startX: e.clientX, startY: e.clientY, startVisStart: vs, startVisEnd: ve, startYPanRatio: yPanRatio};
       e.currentTarget.setPointerCapture(e.pointerId);
       setIsDragging(true);
     }
@@ -331,6 +339,9 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
       const span = dragRef.current.startVisEnd - dragRef.current.startVisStart;
       const [ns,ne] = clampVis(dragRef.current.startVisStart+shift, dragRef.current.startVisStart+shift+span);
       setVisStart(ns); setVisEnd(ne);
+      const dy = e.clientY - dragRef.current.startY;
+      const yShift = -(dy / (r?.height||1)) * (H / priceH) * yRangeFactor;
+      setYPanRatio(Math.max(-4, Math.min(4, dragRef.current.startYPanRatio + yShift)));
     }
   };
   const onMouseUp = () => {
@@ -2359,8 +2370,9 @@ function TabTrades({refreshKey=0}) {
   const [data, setData] = useState(null);
   useEffect(()=>{ fetch(`${API}/trades`).then(r=>r.json()).then(setData); },[refreshKey]);
   if(!data) return <Spinner/>;
-  const {positions, executed, skipped, order_requests, open_requests, worker_alive, worker_age, trade_log} = data;
+  const {positions, executed, skipped, order_requests, open_requests, worker_alive, worker_age, trade_log, stock_tradingview} = data;
   const fmtP = v => v!=null ? `$${Number(v).toFixed(2)}` : '—';
+  const stockWebhookUrl = `${window.location.origin}/api/webhook/tradingview/stocks`;
 
   return (
     <div style={{display:'flex',flexDirection:'column',gap:28}}>
@@ -2380,6 +2392,42 @@ function TabTrades({refreshKey=0}) {
           {worker_alive ? `Execute worker online · last heartbeat ${Math.round(worker_age||0)}s ago` : `Execute worker offline${worker_age!=null?` · last heartbeat ${Math.round(worker_age)}s ago`:''}`}
         </span>
       </div>
+
+      {/* TradingView stock webhook */}
+      <GlassCard style={{overflow:'hidden'}}>
+        <PanelHeader icon="webhook" title="TradingView → IBKR Stock Webhook" badge="PAPER"/>
+        <div style={{padding:'16px 18px',display:'flex',flexDirection:'column',gap:14}}>
+          <div style={{display:'flex',alignItems:'center',gap:10,padding:'12px 14px',borderRadius:10,
+            background:R(C.cyan,0.06),border:`1px solid ${R(C.cyan,0.24)}`}}>
+            <Icon n="link" size={18} color={C.cyan}/>
+            <code style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.cyan,wordBreak:'break-all'}}>
+              {stockWebhookUrl}
+            </code>
+          </div>
+          <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline,lineHeight:1.7}}>
+            BUY alerts queue an IBKR paper market order only — no stop-loss and no target. SELL alerts queue a market close request for the symbol.
+          </div>
+          {stock_tradingview?.executions?.length>0 ? (
+            <Table
+              cols={['Time','Action','Symbol','Status','Request','Detail']}
+              rows={stock_tradingview.executions.slice(0,8).map(x=>{
+                const st=String(x.status||'').toUpperCase();
+                const stc=st==='QUEUED'?C.cyan:st==='ERROR'?C.err:C.outline;
+                return [
+                  <span style={{color:C.outline}}>{String(x.created_at||'—').replace('T',' ').replace('+00:00','Z')}</span>,
+                  String(x.action||'—').toUpperCase(),
+                  <span style={{color:C.onSurf,fontWeight:500}}>{x.symbol||'—'}</span>,
+                  <Pill text={st||'—'} color={stc}/>,
+                  <span style={{color:C.outline}}>{x.request_id||'—'}</span>,
+                  <span style={{color:C.outline,fontFamily:"'Inter',sans-serif"}}>{x.message||'—'}</span>,
+                ];
+              })}
+            />
+          ) : (
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.outline}}>No stock TradingView alerts received yet.</span>
+          )}
+        </div>
+      </GlassCard>
 
       {/* Open Positions */}
       <GlassCard style={{overflow:'hidden'}}>
@@ -2451,6 +2499,7 @@ const FC_DEFAULTS = {
 };
 
 function TabForecast({refreshKey=0}) {
+  const forecastChartFullscreenRef = useRef(null);
   const [fc, setFc] = useState(FC_DEFAULTS);
   const [result, setResult] = useState(null);
   const [calcAt, setCalcAt] = useState('—');
@@ -2871,6 +2920,7 @@ function TabForecast({refreshKey=0}) {
 
         {/* Selected symbol chart */}
         {selRow && (
+          <div ref={forecastChartFullscreenRef} className="strategy-chart-fullscreen-shell">
           <GlassCard style={{overflow:'hidden'}}>
             <div style={{padding:'16px 20px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:10}}>
               <div style={{display:'flex',alignItems:'center',gap:10}}>
@@ -2905,9 +2955,15 @@ function TabForecast({refreshKey=0}) {
                 ]}
                 strategyOverlay={strategyOverlay}
                 gaussianOverlay={gaussianOverlay}
-                showVol={showVol} height={600} stale={selBarsInfo.stale} lastDate={selBarsInfo.lastDate}/>
+                showVol={showVol}
+                height={600}
+                fullscreenTargetRef={forecastChartFullscreenRef}
+                fullscreenHeightOffset={220}
+                stale={selBarsInfo.stale}
+                lastDate={selBarsInfo.lastDate}/>
             </div>
           </GlassCard>
+          </div>
         )}
       </>)}
 
@@ -2977,6 +3033,7 @@ function TabForecast({refreshKey=0}) {
    TAB: REPORTS
 ═══════════════════════════════════════════════════════════════════════════ */
 function TabCrypto({refreshKey=0}) {
+  const cryptoChartFullscreenRef = useRef(null);
   const [data, setData] = useState(null);
   const [selected, setSelected] = useState('');
   const [tf, setTf] = useState('1D');
@@ -3042,9 +3099,38 @@ function TabCrypto({refreshKey=0}) {
   if(!data) return <Spinner/>;
   const rows = data.rows || [];
   const m = data.metrics || {};
+  const tv = data.tradingview || {};
+  const tvPositions = tv.positions || [];
+  const tvExecutions = tv.executions || [];
   const selectedRow = rows.find(r=>r.symbol===selected) || rows[0] || {};
   const visibleBars = bars.slice(-(RANGE_COUNTS[range]||9999));
   const chartLevels = buildChartLevels(plan?.trade_levels, plan?.raw_levels, showTrade, showRaw);
+  const qty = v => v!=null && Number.isFinite(Number(v)) ? Number(v).toFixed(8).replace(/0+$/,'').replace(/\.$/,'') : 'â€”';
+  const shortTime = v => v ? String(v).slice(5,16).replace('T',' ') : 'â€”';
+  const webhookUrl = `${window.location.origin}/api/webhook/tradingview/crypto`;
+  const signedMoney = v => {
+    if(v==null || !Number.isFinite(Number(v))) return '-';
+    const n = Number(v);
+    if(Math.abs(n) < 0.005) return '$0.00';
+    return `${n>=0?'+':'-'}$${Math.abs(n).toFixed(2)}`;
+  };
+  const dailyPnlCell = r => {
+    const value = Number(r.daily_pnl);
+    if(!Number.isFinite(value)) return '-';
+    const pct = Number(r.daily_pnl_pct);
+    const status = String(r.daily_pnl_status || 'TRADE').toLowerCase();
+    const color = Math.abs(value) < 0.005 ? C.outline : value > 0 ? C.lime : C.err;
+    return (
+      <div style={{display:'flex',flexDirection:'column',gap:2,color}}>
+        <span style={{fontFamily:"'JetBrains Mono',monospace",fontWeight:800}}>{signedMoney(value)}</span>
+        <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:R(color,0.85)}}>
+          {Number.isFinite(pct)?`${pct>=0?'+':''}${pct.toFixed(2)}% `:''}{status}
+        </span>
+      </div>
+    );
+  };
+  const fmtQty = v => v!=null && Number.isFinite(Number(v)) ? Number(v).toFixed(8).replace(/0+$/,'').replace(/\.$/,'') : '-';
+  const fmtTime = v => v ? String(v).slice(5,16).replace('T',' ') : '-';
   const money = v => v!=null && Number.isFinite(Number(v)) ? `$${Number(v).toFixed(Number(v)>=10?2:4)}` : '—';
 
   return (
@@ -3060,6 +3146,101 @@ function TabCrypto({refreshKey=0}) {
         ))}
       </div>
 
+      <GlassCard style={{overflow:'hidden',order:3}}>
+        <div style={{padding:'16px 20px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,flexWrap:'wrap'}}>
+          <div style={{display:'flex',alignItems:'center',gap:10}}>
+            <Icon n="webhook" size={18} color={C.cyan}/>
+            <div>
+              <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar}}>TradingView -&gt; OKX Demo</div>
+              <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline,marginTop:4}}>BUY opens a demo spot position; SELL closes the locally tracked position.</div>
+            </div>
+          </div>
+          <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,border:`1px solid ${R(C.cyan,0.25)}`,background:R(C.cyan,0.07),padding:'8px 11px',borderRadius:9}}>
+            {webhookUrl}
+          </div>
+        </div>
+        <div style={{display:'grid',gridTemplateColumns:'minmax(0,0.9fr) minmax(0,1.4fr)',gap:0}}>
+          <div style={{padding:'14px 16px',borderRight:`1px solid ${R(C.outline,0.10)}`}}>
+            <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar,marginBottom:10}}>Open Demo Positions</div>
+            <Table
+              cols={['Symbol','Side','Qty','Entry','Opened']}
+              rows={tvPositions.length ? tvPositions.map(p=>[
+                <button onClick={()=>setSelected(p.inst_id)} style={{background:'transparent',border:0,color:C.cyan,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontWeight:800}}>{p.inst_id}</button>,
+                <Pill text={p.side || 'LONG'} color={C.lime}/>,
+                fmtQty(p.qty),
+                money(p.entry),
+                fmtTime(p.opened_at),
+              ]) : [['-','No open demo position','-','-','-']]}
+            />
+          </div>
+          <div style={{padding:'14px 16px'}}>
+            <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar,marginBottom:10}}>Recent TradingView Executions</div>
+            <Table
+              cols={['Time','Symbol','Action','Status','Qty','Price','OKX Order','Message']}
+              rows={tvExecutions.length ? tvExecutions.slice(0,8).map(e=>[
+                fmtTime(e.created_at),
+                e.inst_id || e.ticker || '-',
+                <Pill text={e.action || '-'} color={e.action==='SELL'?C.err:C.lime}/>,
+                <Pill text={String(e.status||'-').toUpperCase()} color={e.status==='error'?C.err:e.status==='submitted'?C.cyan:C.outline}/>,
+                fmtQty(e.estimated_qty),
+                money(e.price),
+                e.okx_order_id || '-',
+                e.message || '-',
+              ]) : [['-','No executions yet','-','-','-','-','-','-']]}
+            />
+          </div>
+        </div>
+      </GlassCard>
+
+      {false && (
+      <GlassCard style={{overflow:'hidden'}}>
+        <div style={{padding:'16px 20px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,flexWrap:'wrap'}}>
+          <div style={{display:'flex',alignItems:'center',gap:10}}>
+            <Icon n="webhook" size={18} color={C.cyan}/>
+            <div>
+              <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar}}>TradingView â†’ OKX Demo</div>
+              <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline,marginTop:4}}>BUY opens a demo spot position; SELL closes the locally tracked position.</div>
+            </div>
+          </div>
+          <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,border:`1px solid ${R(C.cyan,0.25)}`,background:R(C.cyan,0.07),padding:'8px 11px',borderRadius:9}}>
+            {webhookUrl}
+          </div>
+        </div>
+        <div style={{display:'grid',gridTemplateColumns:'minmax(0,0.9fr) minmax(0,1.4fr)',gap:0}}>
+          <div style={{padding:'14px 16px',borderRight:`1px solid ${R(C.outline,0.10)}`}}>
+            <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar,marginBottom:10}}>Open Demo Positions</div>
+            <Table
+              cols={['Symbol','Side','Qty','Entry','Opened']}
+              rows={(tvPositions.length?tvPositions:[{}]).map(p=>p.inst_id?[
+                <button onClick={()=>setSelected(p.inst_id)} style={{background:'transparent',border:0,color:C.cyan,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontWeight:800}}>{p.inst_id}</button>,
+                <Pill text={p.side || 'LONG'} color={C.lime}/>,
+                qty(p.qty),
+                money(p.entry),
+                shortTime(p.opened_at),
+              ]:['â€”','No open demo position','â€”','â€”','â€”'])}
+            />
+          </div>
+          <div style={{padding:'14px 16px'}}>
+            <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar,marginBottom:10}}>Recent TradingView Executions</div>
+            <Table
+              cols={['Time','Symbol','Action','Status','Qty','Price','OKX Order','Message']}
+              rows={(tvExecutions.length?tvExecutions.slice(0,8):[{}]).map(e=>e.id?[
+                shortTime(e.created_at),
+                e.inst_id || e.ticker || 'â€”',
+                <Pill text={e.action || 'â€”'} color={e.action==='SELL'?C.err:C.lime}/>,
+                <Pill text={String(e.status||'â€”').toUpperCase()} color={e.status==='error'?C.err:e.status==='submitted'?C.cyan:C.outline}/>,
+                qty(e.estimated_qty),
+                money(e.price),
+                e.okx_order_id || 'â€”',
+                e.message || 'â€”',
+              ]:['â€”','No executions yet','â€”','â€”','â€”','â€”','â€”','â€”'])}
+            />
+          </div>
+        </div>
+      </GlassCard>
+      )}
+
+      <div ref={cryptoChartFullscreenRef} className="strategy-chart-fullscreen-shell">
       <GlassCard style={{overflow:'hidden'}}>
         <PanelHeader icon="currency_bitcoin" title={`${selected || 'Crypto'} Gerchik Trade-Zone Chart`} badge={selectedRow?.inst_type || 'OKX'}/>
         <div style={{padding:'14px 18px',display:'flex',justifyContent:'space-between',alignItems:'center',gap:14,flexWrap:'wrap',borderBottom:`1px solid ${R(C.outline,0.12)}`}}>
@@ -3088,9 +3269,21 @@ function TabCrypto({refreshKey=0}) {
           </div>
         </div>
         <div style={{padding:'18px 20px'}}>
-          <CandleChart bars={visibleBars} levels={chartLevels} strategyOverlay={strategyOverlay} gaussianOverlay={gaussianOverlay} showVol={showVol} height={840} stale={barsInfo.stale} lastDate={barsInfo.lastDate}/>
+          <CandleChart
+            bars={visibleBars}
+            levels={chartLevels}
+            strategyOverlay={strategyOverlay}
+            gaussianOverlay={gaussianOverlay}
+            showVol={showVol}
+            height={840}
+            fullscreenTargetRef={cryptoChartFullscreenRef}
+            fullscreenHeightOffset={220}
+            stale={barsInfo.stale}
+            lastDate={barsInfo.lastDate}
+          />
         </div>
       </GlassCard>
+      </div>
 
       <GlassCard style={{overflow:'hidden'}}>
         <div style={{padding:'16px 20px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',alignItems:'center',justifyContent:'space-between',gap:10}}>
@@ -3103,11 +3296,12 @@ function TabCrypto({refreshKey=0}) {
           </button>
         </div>
         <Table
-          cols={['Symbol','Status','Price','ATR','Trade Zones','Raw Levels','Last Bar','Source']}
+          cols={['Symbol','Status','Price','PnL (Daily)','ATR','Trade Zones','Raw Levels','Last Bar','Source']}
           rows={rows.map(r=>[
             <button onClick={()=>setSelected(r.symbol)} style={{background:'transparent',border:0,color:r.symbol===selected?C.cyan:C.onSurf,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontWeight:800}}>{r.symbol}</button>,
             <Pill text={r.ready?'READY':'NO DATA'} color={r.ready?C.lime:C.outline}/>,
             money(r.price),
+            dailyPnlCell(r),
             r.daily_atr!=null?Number(r.daily_atr).toFixed(4):'—',
             String(r.trade_levels??0),
             String(r.raw_levels??0),
@@ -3120,6 +3314,96 @@ function TabCrypto({refreshKey=0}) {
             Errors: {(data.errors||[]).slice(0,4).map(e=>`${e.symbol}: ${e.reason}`).join(' · ')}
           </div>
         )}
+      </GlassCard>
+    </div>
+  );
+}
+
+function TabForex({refreshKey=0}) {
+  const [data, setData] = useState(null);
+  useEffect(()=>{ fetch(`${API}/forex`).then(r=>r.json()).then(setData).catch(()=>setData({error:'Failed to load Forex data'})); },[refreshKey]);
+  if(!data) return <Spinner/>;
+  const webhookUrl = `${window.location.origin}/api/webhook/tradingview/forex`;
+  const executions = data.executions || [];
+  const requests = data.order_requests || [];
+  const symbols = data.symbols || [];
+  const fmtTime = v => v ? String(v).replace('T',' ').replace('+00:00','Z') : '—';
+
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:28}}>
+      <MetricGrid items={[
+        {label:'FX Symbols', icon:'currency_exchange', value:symbols.length, sub:symbols.length?symbols.join(' · '):'No FX_SYMBOLS configured', valueColor:C.cyan},
+        {label:'Webhook Alerts', icon:'webhook', value:executions.length, sub:'TradingView Forex', valueColor:C.lime},
+        {label:'Order Requests', icon:'send', value:requests.length, sub:'queued / processed', valueColor:C.onSurf},
+        {label:'Execution Mode', icon:'bolt', value:'MKT', sub:'IBKR CASH contract', valueColor:C.cyanBright},
+      ]}/>
+
+      <GlassCard style={{overflow:'hidden'}}>
+        <PanelHeader icon="webhook" title="TradingView → IBKR Forex Webhook" badge="CASH"/>
+        <div style={{padding:'16px 18px',display:'flex',flexDirection:'column',gap:14}}>
+          <div style={{display:'flex',alignItems:'center',gap:10,padding:'12px 14px',borderRadius:10,
+            background:R(C.cyan,0.06),border:`1px solid ${R(C.cyan,0.24)}`}}>
+            <Icon n="link" size={18} color={C.cyan}/>
+            <code style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.cyan,wordBreak:'break-all'}}>
+              {webhookUrl}
+            </code>
+          </div>
+          <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline,lineHeight:1.7}}>
+            Use this for pairs like EUR.USD or EURUSD. BUY queues a market order using position_size as base-currency units. SELL queues a market close for the pair.
+          </div>
+          <pre style={{margin:0,padding:'13px 15px',borderRadius:10,background:R(C.surfLowest,0.55),border:`1px solid ${R(C.outline,0.14)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar,overflowX:'auto'}}>{`{
+  "action": "{{strategy.order.action}}",
+  "ticker": "{{ticker}}",
+  "position_size": "{{strategy.position_size}}",
+  "schema": "2",
+  "timestamp": "{{time}}",
+  "bot_id": "cun6OuYM"
+}`}</pre>
+        </div>
+      </GlassCard>
+
+      <GlassCard style={{overflow:'hidden'}}>
+        <PanelHeader icon="history" title="Recent Forex TradingView Alerts"/>
+        {executions.length>0 ? (
+          <Table
+            cols={['Time','Action','Pair','Units','Status','Request','Detail']}
+            rows={executions.slice(0,20).map(x=>{
+              const st=String(x.status||'').toUpperCase();
+              const stc=st==='QUEUED'?C.cyan:st==='ERROR'?C.err:C.outline;
+              return [
+                <span style={{color:C.outline}}>{fmtTime(x.created_at)}</span>,
+                <Pill text={String(x.action||'—').toUpperCase()} color={x.action==='SELL'?C.err:C.lime}/>,
+                <span style={{color:C.onSurf,fontWeight:800}}>{x.symbol||'—'}</span>,
+                x.quantity??'—',
+                <Pill text={st||'—'} color={stc}/>,
+                <span style={{color:C.outline}}>{x.request_id||'—'}</span>,
+                <span style={{color:C.outline,fontFamily:"'Inter',sans-serif"}}>{x.message||'—'}</span>,
+              ];
+            })}
+          />
+        ) : <div style={{padding:'20px 18px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.outline}}>No Forex TradingView alerts received yet.</div>}
+      </GlassCard>
+
+      <GlassCard style={{overflow:'hidden'}}>
+        <PanelHeader icon="swap_horiz" title="Forex Order Requests" badge="PAPER"/>
+        {requests.length>0 ? (
+          <Table
+            cols={['Updated','Action','Pair','Side','Units','Status','Detail']}
+            rows={requests.slice(0,20).map(r=>{
+              const st=String(r.status||'').toUpperCase();
+              const stc=st==='DONE'?C.lime:st==='ERROR'||st==='REJECTED'?C.err:C.cyan;
+              return [
+                <span style={{color:C.outline}}>{String(r.updated_at||'—').replace('T',' ')}</span>,
+                String(r.action||'—').toUpperCase(),
+                <span style={{color:C.onSurf,fontWeight:800}}>{r.symbol||'—'}</span>,
+                r.signal||'—',
+                r.quantity??'—',
+                <Pill text={st||'—'} color={stc}/>,
+                <span style={{color:C.outline,fontFamily:"'Inter',sans-serif"}}>{r.message||'—'}</span>,
+              ];
+            })}
+          />
+        ) : <div style={{padding:'20px 18px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.outline}}>No Forex order requests yet.</div>}
       </GlassCard>
     </div>
   );
@@ -3585,6 +3869,7 @@ const NAV = [
   {id:'intraday',   label:'Intraday',            icon:'monitoring'},
   {id:'strategy',   label:'Strategy',            icon:'insights'},
   {id:'crypto',     label:'Crypto',              icon:'currency_bitcoin'},
+  {id:'forex',      label:'Forex',               icon:'currency_exchange'},
   {id:'trades',     label:'Trades & Positions',  icon:'swap_horiz'},
   {id:'forecast',   label:'Forecast',            icon:'calculate'},
   {id:'reports',    label:'Reports',             icon:'description'},
@@ -3596,6 +3881,7 @@ const PAGE_META = {
   intraday:  {title:'Intraday Monitor',       sub:'Live decision loop · paper execution', crumb:'Intraday'},
   strategy:  {title:'Strategy Monitor',       sub:'BMSB Strategy 2 band reclaim / loss scanner', crumb:'Strategy'},
   crypto:    {title:'Crypto Trade Levels',    sub:'OKX candles · Gerchik zones · separate crypto bot', crumb:'Crypto'},
+  forex:     {title:'Forex TradingView Bridge',sub:'TradingView alerts · IBKR CASH market execution', crumb:'Forex'},
   trades:    {title:'Trades & Positions',     sub:'Open paper positions and trade journal', crumb:'Trades'},
   forecast:  {title:'Risk Forecast Calculator',sub:'Scenario-only · replays saved data · no live orders', crumb:'Forecast'},
   reports:   {title:'Reports',               sub:'Generated session workbooks', crumb:'Reports'},
@@ -3603,6 +3889,9 @@ const PAGE_META = {
 
 function App() {
   const [tab, setTab] = useState('dashboard');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(()=>{
+    try { return localStorage.getItem('sidebarCollapsed') === '1'; } catch { return false; }
+  });
   const [meta, setMeta] = useState({clock:'—',session:'—',paper:true,dry_run:false});
   const [newsModal, setNewsModal] = useState(false);
   const [newsItems, setNewsItems] = useState([]);
@@ -3618,6 +3907,9 @@ function App() {
     const iv = setInterval(()=>setRefreshKey(key=>key+1), 30000);
     return ()=>clearInterval(iv);
   },[]);
+  useEffect(()=>{
+    try { localStorage.setItem('sidebarCollapsed', sidebarCollapsed ? '1' : '0'); } catch {}
+  },[sidebarCollapsed]);
 
   const refreshDashboard = ()=>{
     fetch(`${API}/meta`).then(r=>r.json()).then(setMeta).catch(()=>{});
@@ -3633,16 +3925,24 @@ function App() {
       color:C.onSurf, fontFamily:"'Inter',sans-serif", WebkitFontSmoothing:'antialiased'}}>
 
       {/* ── Sidebar ─────────────────────────────────────────────────────── */}
-      <aside style={{flexShrink:0,width:256,height:'100%',background:'rgba(14,14,15,0.92)',borderRight:`1px solid ${R(C.outline,0.16)}`,display:'flex',flexDirection:'column',padding:'22px 16px',overflowY:'auto'}}>
+      <aside style={{flexShrink:0,width:sidebarCollapsed?74:256,height:'100%',background:'rgba(14,14,15,0.92)',borderRight:`1px solid ${R(C.outline,0.16)}`,display:'flex',flexDirection:'column',padding:sidebarCollapsed?'18px 10px':'22px 16px',overflowY:'auto',overflowX:'hidden',transition:'width .18s ease,padding .18s ease'}}>
         {/* Brand */}
-        <div style={{display:'flex',alignItems:'center',gap:11,padding:'0 6px 22px',borderBottom:`1px solid ${R(C.outline,0.12)}`,marginBottom:18}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:sidebarCollapsed?'center':'space-between',gap:11,padding:sidebarCollapsed?'0 0 16px':'0 6px 22px',borderBottom:`1px solid ${R(C.outline,0.12)}`,marginBottom:18}}>
+          <div style={{display:'flex',alignItems:'center',gap:11,minWidth:0}}>
           <div style={{width:36,height:36,borderRadius:9,flexShrink:0,background:'linear-gradient(140deg,#00f0ff,#006970)',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 0 18px rgba(0,240,255,0.35)'}}>
             <Icon n="candlestick_chart" size={20} color="#001416"/>
           </div>
-          <div>
+          {!sidebarCollapsed && <div style={{minWidth:0}}>
             <div style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:17,fontWeight:600,color:'#dbfcff',lineHeight:1.1}}>Vitaly's Trading Bot</div>
             <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.08em',color:C.outline,marginTop:2}}>IBKR · {meta.paper?'PAPER':'LIVE'}</div>
+          </div>}
           </div>
+          {!sidebarCollapsed && (
+            <button onClick={()=>setSidebarCollapsed(true)} title="Collapse sidebar"
+              style={{width:30,height:30,borderRadius:8,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',background:R(C.outline,0.07),border:`1px solid ${R(C.outline,0.18)}`,color:C.onVar,flexShrink:0}}>
+              <Icon n="keyboard_double_arrow_left" size={18} color="inherit"/>
+            </button>
+          )}
         </div>
 
         {/* Nav */}
@@ -3650,31 +3950,36 @@ function App() {
           {NAV.map(n=>{
             const a=n.id===tab;
             return (
-              <div key={n.id} onClick={()=>setTab(n.id)}
-                style={{display:'flex',alignItems:'center',gap:12,padding:'11px 14px',borderRadius:8,cursor:'pointer',transition:'all .15s',
+              <div key={n.id} onClick={()=>setTab(n.id)} title={sidebarCollapsed?n.label:undefined}
+                style={{display:'flex',alignItems:'center',justifyContent:sidebarCollapsed?'center':'flex-start',gap:12,padding:sidebarCollapsed?'11px 0':'11px 14px',borderRadius:8,cursor:'pointer',transition:'all .15s',
                   borderRight:`3px solid ${a?C.cyan:'transparent'}`,
                   background:a?R(C.cyan,0.10):'transparent',
                   color:a?C.cyan:C.onVar}}
                 onMouseEnter={e=>{if(!a)e.currentTarget.style.background='rgba(255,255,255,0.05)'}}
                 onMouseLeave={e=>{if(!a)e.currentTarget.style.background='transparent'}}>
                 <Icon n={n.icon} size={20} color={a?C.cyan:C.onVar} style={{fontVariationSettings:a?`'FILL' 1`:`'FILL' 0`}}/>
-                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.03em'}}>{n.label}</span>
+                {!sidebarCollapsed && <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.03em',whiteSpace:'nowrap'}}>{n.label}</span>}
               </div>
             );
           })}
         </div>
 
         {/* Safety box */}
-        <div style={{marginTop:14,padding:'13px 14px',borderRadius:10,background:'rgba(28,27,28,0.7)',border:`1px solid ${R(C.outline,0.14)}`}}>
+        {sidebarCollapsed ? (
+          <button onClick={()=>setSidebarCollapsed(false)} title="Expand sidebar"
+            style={{marginTop:14,width:'100%',height:38,borderRadius:10,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',background:R(C.cyan,0.08),border:`1px solid ${R(C.cyan,0.24)}`,color:C.cyan}}>
+            <Icon n="keyboard_double_arrow_right" size={20} color="inherit"/>
+          </button>
+        ) : <div style={{marginTop:14,padding:'13px 14px',borderRadius:10,background:'rgba(28,27,28,0.7)',border:`1px solid ${R(C.outline,0.14)}`}}>
           <div style={{display:'flex',alignItems:'center',gap:8}}>
             <PulseDot color={C.lime} size={7} shadow={8}/>
             <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onSurf}}>Read-only mode</span>
           </div>
           <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,marginTop:6,lineHeight:1.5}}>Never connects to IBKR.<br/>Views <span style={{color:C.onVar}}>memory/</span> only.</div>
-        </div>
+        </div>}
 
         {/* Footer */}
-        <div style={{marginTop:14,paddingTop:14,borderTop:`1px solid ${R(C.outline,0.14)}`,display:'flex',flexDirection:'column',gap:2}}>
+        {!sidebarCollapsed && <div style={{marginTop:14,paddingTop:14,borderTop:`1px solid ${R(C.outline,0.14)}`,display:'flex',flexDirection:'column',gap:2}}>
           {[{icon:'help',label:'Docs'},{icon:'settings',label:'Settings'}].map(f=>(
             <div key={f.label} style={{display:'flex',alignItems:'center',gap:11,padding:'8px 14px',borderRadius:8,cursor:'pointer',color:C.onVar,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}
               onMouseEnter={e=>e.currentTarget.style.color=C.onSurf}
@@ -3683,7 +3988,7 @@ function App() {
               {f.label}
             </div>
           ))}
-        </div>
+        </div>}
       </aside>
 
       {/* ── Main ────────────────────────────────────────────────────────── */}
@@ -3742,6 +4047,7 @@ function App() {
               {tab==='intraday'  && <TabIntraday refreshKey={refreshKey}/>}
               {tab==='strategy'  && <TabStrategy refreshKey={refreshKey}/>}
               {tab==='crypto'    && <TabCrypto refreshKey={refreshKey}/>}
+              {tab==='forex'     && <TabForex refreshKey={refreshKey}/>}
               {tab==='trades'    && <TabTrades refreshKey={refreshKey}/>}
               {tab==='forecast'  && <TabForecast refreshKey={refreshKey}/>}
               {tab==='reports'   && <TabReports refreshKey={refreshKey}/>}

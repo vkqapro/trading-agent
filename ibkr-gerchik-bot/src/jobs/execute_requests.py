@@ -15,6 +15,7 @@ from dataclasses import asdict, is_dataclass
 from typing import Any, Callable, Dict, List, Optional
 
 from src.config import LOGGER, SETTINGS
+from src.config import fx_pair_components
 from src.execution import order_requests as oq
 from src.execution.order_manager import OrderManager
 from src.jobs.session_utils import calculate_open_risk_amount
@@ -80,14 +81,72 @@ def _tracked_position_from_payload(payload: Dict[str, Any], request: Dict[str, A
     }
 
 
+def _position_symbol_key(position: Dict[str, Any]) -> str:
+    symbol = str(position.get("symbol", "")).upper()
+    sec_type = str(position.get("sec_type", "")).upper()
+    currency = str(position.get("currency", "")).upper()
+    if sec_type == "CASH" and len(symbol) == 3 and len(currency) == 3:
+        return f"{symbol}.{currency}"
+    return symbol
+
+
+def _symbols_match(requested: str, position: Dict[str, Any]) -> bool:
+    requested = str(requested or "").upper()
+    if _position_symbol_key(position) == requested:
+        return True
+    pair = fx_pair_components(requested)
+    if pair:
+        return _position_symbol_key(position) == f"{pair[0]}.{pair[1]}"
+    return str(position.get("symbol", "")).upper() == requested
+
+
 def _process_place(
     request: Dict[str, Any],
     *,
+    broker: Any,
     order_manager: OrderManager,
     account_equity: float,
     cash_available: float,
     tracked_positions: List[Dict[str, Any]],
 ) -> Dict[str, Any]:
+    if bool(request.get("market_only")):
+        symbol = str(request.get("symbol", "")).upper()
+        side = str(request.get("signal", "")).upper()
+        if side not in {"BUY", "SELL"} or not symbol:
+            return {"status": oq.ERROR, "message": "Invalid market-only setup (need symbol and BUY/SELL).", "result": None}
+        try:
+            requested_qty = int(abs(float(request.get("quantity") or 0)))
+        except (TypeError, ValueError):
+            requested_qty = 0
+        if requested_qty <= 0:
+            return {"status": oq.ERROR, "message": "Market-only TradingView order requires quantity/position_size.", "result": None}
+
+        if _effective_dry_run(request):
+            payload = {
+                "symbol": symbol,
+                "action": side,
+                "quantity": requested_qty,
+                "status": "simulated",
+                "market_only": True,
+                "dry_run": True,
+            }
+            return {
+                "status": oq.SIMULATED,
+                "message": f"Simulated market-only {side} {requested_qty} {symbol}; DRY_RUN, no live order.",
+                "result": payload,
+            }
+
+        result = broker.place_market_order(symbol, side, requested_qty)
+        payload = _serialize(result)
+        if isinstance(payload, dict):
+            payload["market_only"] = True
+        tracked_positions.append(_tracked_position_from_payload(payload if isinstance(payload, dict) else {}, request))
+        return {
+            "status": oq.DONE,
+            "message": f"Market-only order submitted: {side} {requested_qty} {symbol}.",
+            "result": payload,
+        }
+
     signal = _signal_from_request(request)
     if signal.signal not in {"BUY", "SELL"} or signal.entry <= 0 or signal.stop <= 0:
         return {"status": oq.ERROR, "message": "Invalid setup (need BUY/SELL with entry and stop).", "result": None}
@@ -134,10 +193,7 @@ def _process_close(
     tracked_positions: List[Dict[str, Any]],
 ) -> Dict[str, Any]:
     symbol = str(request.get("symbol", "")).upper()
-    position = next(
-        (p for p in broker.get_positions() if str(p.get("symbol", "")).upper() == symbol and _f(p.get("position")) != 0),
-        None,
-    )
+    position = next((p for p in broker.get_positions() if _symbols_match(symbol, p) and _f(p.get("position")) != 0), None)
     if position is None:
         return {"status": oq.ERROR, "message": f"No open broker position for {symbol}.", "result": None}
 
@@ -184,6 +240,7 @@ def _process_one(
     if action == "place":
         return _process_place(
             request,
+            broker=broker,
             order_manager=order_manager,
             account_equity=account_equity,
             cash_available=cash_available,

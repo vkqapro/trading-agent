@@ -22,7 +22,7 @@ from typing import Any
 
 import pandas as pd
 import uvicorn
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import BackgroundTasks, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -33,6 +33,14 @@ from src.config import SETTINGS
 from src.data.chart_history import daily_bars_from_intraday
 from src.crypto.analysis import run_crypto_analysis
 from src.crypto.symbols import normalize_okx_instrument
+from src.crypto.tradingview_webhook import (
+    enqueue_tradingview_webhook,
+    load_tradingview_state,
+    process_queued_tradingview_execution,
+)
+from src.config import fx_pair_components
+from src.forex.tradingview_webhook import handle_forex_tradingview_webhook, load_forex_tradingview_state
+from src.stocks.tradingview_webhook import handle_stock_tradingview_webhook, load_stock_tradingview_state
 
 app = FastAPI(title="Gerchik Bot Dashboard API", docs_url=None, redoc_url=None)
 app.add_middleware(
@@ -807,12 +815,81 @@ def api_bars(symbol: str, timeframe: str):
     }
 
 
+def _crypto_tv_payload(tv_state: dict, *, limit: int = 50) -> dict:
+    if not isinstance(tv_state, dict):
+        tv_state = {}
+    positions = tv_state.get("positions", {})
+    executions = tv_state.get("executions", [])
+    if not isinstance(positions, dict):
+        positions = {}
+    if not isinstance(executions, list):
+        executions = []
+    return {
+        "updated_at": tv_state.get("updated_at"),
+        "positions": list(positions.values()),
+        "executions": [
+            {key: value for key, value in row.items() if key not in {"okx_response", "raw"}}
+            for row in executions[:limit]
+            if isinstance(row, dict)
+        ],
+    }
+
+
+def _crypto_event_date(value: Any):
+    if not value:
+        return None
+    try:
+        text = str(value).replace("Z", "+00:00")
+        parsed = datetime.fromisoformat(text)
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=ZoneInfo("UTC"))
+        return parsed.astimezone(ET).date()
+    except Exception:
+        return None
+
+
 @app.get("/api/crypto")
 def api_crypto():
     state = _safe(da.load_crypto_dashboard_state, {})
+    tv_state = _safe(load_tradingview_state, {})
     configured = _safe(da.load_crypto_symbols, [])
     watchlist = state.get("watchlist", {}) if isinstance(state, dict) else {}
     index = _safe(da.crypto_bars_index, {})
+    tv_positions = tv_state.get("positions", {}) if isinstance(tv_state, dict) else {}
+    tv_executions = tv_state.get("executions", []) if isinstance(tv_state, dict) else []
+    if not isinstance(tv_positions, dict):
+        tv_positions = {}
+    if not isinstance(tv_executions, list):
+        tv_executions = []
+    today = datetime.now(ET).date()
+    position_by_symbol = {}
+    for inst_id, position in tv_positions.items():
+        if not isinstance(position, dict):
+            continue
+        try:
+            qty = float(position.get("qty") or 0)
+        except (TypeError, ValueError):
+            qty = 0.0
+        if qty > 0:
+            position_by_symbol[str(inst_id).upper()] = {**position, "qty": qty}
+    realized_pnl_by_symbol = {}
+    for execution in tv_executions:
+        if not isinstance(execution, dict):
+            continue
+        if str(execution.get("status", "")).lower() != "submitted":
+            continue
+        if str(execution.get("action", "")).upper() != "SELL":
+            continue
+        if _crypto_event_date(execution.get("created_at")) != today:
+            continue
+        inst_id = str(execution.get("inst_id") or "").upper()
+        if not inst_id:
+            continue
+        try:
+            pnl = float(execution.get("daily_pnl") if execution.get("daily_pnl") is not None else execution.get("estimated_pnl") or 0)
+        except (TypeError, ValueError):
+            pnl = 0.0
+        realized_pnl_by_symbol[inst_id] = realized_pnl_by_symbol.get(inst_id, 0.0) + pnl
     rows = []
     configured_by_inst = {row.get("inst_id"): row for row in configured if isinstance(row, dict)}
     symbols = sorted(set(configured_by_inst) | set(watchlist or {}) | set(index or {}))
@@ -826,13 +903,62 @@ def api_crypto():
             latest = (frames.get(tf, {}) or {}).get("last_bar") if isinstance(frames.get(tf, {}), dict) else latest
             if latest:
                 break
+        price = plan.get("price") if isinstance(plan, dict) else None
+        daily_open = None
+        daily_change = None
+        daily_change_pct = None
+        daily_pnl = None
+        daily_pnl_pct = None
+        daily_pnl_status = None
+        position = position_by_symbol.get(symbol.upper())
+        position_qty = float((position or {}).get("qty") or 0.0)
+        daily_bars = _safe(lambda s=symbol: da.get_crypto_bars(s, "daily"), None)
+        try:
+            current_price = float(price) if price is not None else None
+        except (TypeError, ValueError):
+            current_price = None
+        if daily_bars is not None and not daily_bars.empty:
+            try:
+                last_daily = daily_bars.iloc[-1]
+                daily_open = float(last_daily.get("open"))
+                latest_daily_close = float(last_daily.get("close"))
+                current_price = float(price) if price is not None else latest_daily_close
+                if daily_open > 0:
+                    daily_change = current_price - daily_open
+                    daily_change_pct = (daily_change / daily_open) * 100.0
+            except (TypeError, ValueError):
+                pass
+        realized_today = realized_pnl_by_symbol.get(symbol.upper())
+        has_pnl_today = realized_today is not None
+        if has_pnl_today:
+            daily_pnl = float(realized_today or 0.0)
+            daily_pnl_status = "CLOSED"
+        if position_qty > 0 and current_price is not None:
+            try:
+                opened_today = _crypto_event_date(position.get("opened_at")) == today if isinstance(position, dict) else False
+                entry = float(position.get("entry") or 0.0) if isinstance(position, dict) else 0.0
+                baseline = entry if opened_today and entry > 0 else daily_open
+                if baseline and baseline > 0:
+                    open_pnl = (current_price - baseline) * position_qty
+                    daily_pnl = (daily_pnl or 0.0) + open_pnl
+                    daily_pnl_pct = ((current_price - baseline) / baseline) * 100.0
+                    daily_pnl_status = "OPEN"
+            except (TypeError, ValueError):
+                pass
         rows.append({
             "symbol": symbol,
             "raw": configured_by_inst.get(symbol, {}).get("raw"),
             "inst_type": configured_by_inst.get(symbol, {}).get("inst_type"),
             "ready": bool(plan.get("ready")) if isinstance(plan, dict) else False,
-            "price": plan.get("price") if isinstance(plan, dict) else None,
+            "price": price,
             "daily_atr": plan.get("daily_atr") if isinstance(plan, dict) else None,
+            "daily_open": daily_open,
+            "daily_change": daily_change,
+            "daily_change_pct": daily_change_pct,
+            "daily_pnl": daily_pnl,
+            "daily_pnl_pct": daily_pnl_pct,
+            "daily_pnl_status": daily_pnl_status,
+            "position_qty": position_qty,
             "trade_levels": len(trade_levels),
             "raw_levels": len(raw_levels),
             "last_bar": latest,
@@ -845,6 +971,7 @@ def api_crypto():
         "symbols": symbols,
         "rows": rows,
         "errors": state.get("errors", []) if isinstance(state, dict) else [],
+        "tradingview": _crypto_tv_payload(tv_state, limit=50),
         "metrics": {
             "configured": len(configured),
             "tracked": len(rows),
@@ -852,6 +979,102 @@ def api_crypto():
             "with_trade_levels": sum(1 for row in rows if int(row.get("trade_levels") or 0) > 0),
         },
     }
+
+
+@app.get("/api/crypto/tradingview")
+def api_crypto_tradingview_state():
+    tv_state = _safe(load_tradingview_state, {})
+    return _crypto_tv_payload(tv_state, limit=100)
+
+
+@app.post("/api/crypto/tradingview")
+@app.post("/api/webhook/tradingview/crypto")
+async def api_crypto_tradingview_webhook(body: dict, background_tasks: BackgroundTasks):
+    try:
+        accepted = enqueue_tradingview_webhook(body or {})
+        execution_id = str((accepted.get("execution") or {}).get("id") or "")
+        if execution_id and accepted.get("queued"):
+            background_tasks.add_task(process_queued_tradingview_execution, execution_id)
+        return accepted
+    except PermissionError as exc:
+        raise HTTPException(403, str(exc))
+    except ValueError as exc:
+        raise HTTPException(400, str(exc))
+    except Exception as exc:
+        raise HTTPException(500, str(exc))
+
+
+@app.get("/api/stocks/tradingview")
+@app.get("/api/webhook/tradingview/stocks")
+def api_stock_tradingview_state():
+    state = _safe(load_stock_tradingview_state, {})
+    executions = state.get("executions", []) if isinstance(state, dict) else []
+    return {
+        "updated_at": state.get("updated_at") if isinstance(state, dict) else None,
+        "executions": executions[:100] if isinstance(executions, list) else [],
+    }
+
+
+@app.post("/api/stocks/tradingview")
+@app.post("/api/webhook/tradingview/stocks")
+async def api_stock_tradingview_webhook(body: dict):
+    try:
+        return handle_stock_tradingview_webhook(body or {})
+    except PermissionError as exc:
+        raise HTTPException(403, str(exc))
+    except ValueError as exc:
+        raise HTTPException(400, str(exc))
+    except Exception as exc:
+        raise HTTPException(500, str(exc))
+
+
+def _forex_request_rows(limit: int = 30) -> list[dict]:
+    requests = _safe(da.load_order_requests, [])
+    rows = []
+    for request in requests:
+        if not isinstance(request, dict):
+            continue
+        symbol = str(request.get("symbol") or "")
+        if str(request.get("source") or "") == "forex_tradingview" or fx_pair_components(symbol):
+            rows.append(request)
+    return rows[:limit]
+
+
+@app.get("/api/forex")
+def api_forex():
+    state = _safe(load_forex_tradingview_state, {})
+    executions = state.get("executions", []) if isinstance(state, dict) else []
+    return {
+        "updated_at": state.get("updated_at") if isinstance(state, dict) else None,
+        "symbols": sorted({str(item).upper() for item in SETTINGS.fx_symbols if str(item).strip()}),
+        "webhook_url": "/api/webhook/tradingview/forex",
+        "executions": executions[:100] if isinstance(executions, list) else [],
+        "order_requests": _forex_request_rows(50),
+    }
+
+
+@app.get("/api/forex/tradingview")
+@app.get("/api/webhook/tradingview/forex")
+def api_forex_tradingview_state():
+    state = _safe(load_forex_tradingview_state, {})
+    executions = state.get("executions", []) if isinstance(state, dict) else []
+    return {
+        "updated_at": state.get("updated_at") if isinstance(state, dict) else None,
+        "executions": executions[:100] if isinstance(executions, list) else [],
+    }
+
+
+@app.post("/api/forex/tradingview")
+@app.post("/api/webhook/tradingview/forex")
+async def api_forex_tradingview_webhook(body: dict):
+    try:
+        return handle_forex_tradingview_webhook(body or {})
+    except PermissionError as exc:
+        raise HTTPException(403, str(exc))
+    except ValueError as exc:
+        raise HTTPException(400, str(exc))
+    except Exception as exc:
+        raise HTTPException(500, str(exc))
 
 
 @app.get("/api/crypto/{symbol}")
@@ -935,6 +1158,7 @@ def api_trades():
     positions = _safe(da.load_tracked_positions, [])
     snapshot = _safe(da.load_intraday_snapshot, {})
     requests = _safe(da.load_order_requests, [])
+    stock_tv = _safe(load_stock_tradingview_state, {})
     from src.execution import order_requests as oq
     executed = snapshot.get("executed", []) if isinstance(snapshot, dict) else []
     skipped  = snapshot.get("skipped", []) if isinstance(snapshot, dict) else []
@@ -951,6 +1175,10 @@ def api_trades():
         "worker_alive": worker_alive,
         "worker_age": worker_age,
         "trade_log": sections,
+        "stock_tradingview": {
+            "updated_at": stock_tv.get("updated_at") if isinstance(stock_tv, dict) else None,
+            "executions": (stock_tv.get("executions", []) if isinstance(stock_tv, dict) else [])[:20],
+        },
     }
 
 

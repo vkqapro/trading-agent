@@ -9,6 +9,7 @@ import json
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
+from urllib.parse import urlencode
 
 import pandas as pd
 import requests
@@ -45,12 +46,30 @@ class OKXClient:
         url = f"{self.base_url}{path}"
         headers: Dict[str, str] = {"Content-Type": "application/json"}
         payload = json.dumps(body or {}, separators=(",", ":")) if body else ""
+        sign_path = path
+        if params:
+            sign_path = f"{path}?{urlencode(params)}"
         if private:
-            headers.update(self._auth_headers(method, path, payload))
+            headers.update(self._auth_headers(method, sign_path, payload))
         response = requests.request(method, url, params=params, data=payload or None, headers=headers, timeout=self.timeout)
-        response.raise_for_status()
-        data = response.json()
+        try:
+            data = response.json()
+        except ValueError:
+            data = {"code": str(response.status_code), "msg": response.text[:300]}
+        if response.status_code >= 400:
+            raise RuntimeError(
+                f"OKX HTTP {response.status_code} code={data.get('code')} msg={data.get('msg')}"
+            )
         if str(data.get("code", "0")) != "0":
+            details = data.get("data")
+            if isinstance(details, list) and details:
+                rendered = "; ".join(
+                    f"sCode={row.get('sCode')} sMsg={row.get('sMsg')}"
+                    for row in details
+                    if isinstance(row, dict)
+                )
+                if rendered:
+                    raise RuntimeError(f"OKX error code={data.get('code')} msg={data.get('msg')} details={rendered}")
             raise RuntimeError(f"OKX error code={data.get('code')} msg={data.get('msg')}")
         return data
 
@@ -107,3 +126,37 @@ class OKXClient:
         if not parsed:
             return pd.DataFrame(columns=["date", "open", "high", "low", "close", "volume"])
         return pd.DataFrame(parsed).sort_values("date").reset_index(drop=True)
+
+    def place_market_order(
+        self,
+        *,
+        inst_id: str,
+        side: str,
+        size: str | float,
+        td_mode: str = "cash",
+        tgt_ccy: str | None = None,
+        client_order_id: str | None = None,
+        reduce_only: bool = False,
+    ) -> Dict[str, Any]:
+        body: Dict[str, Any] = {
+            "instId": inst_id,
+            "tdMode": td_mode,
+            "side": side.lower(),
+            "ordType": "market",
+            "sz": str(size),
+        }
+        if tgt_ccy:
+            body["tgtCcy"] = tgt_ccy
+        if client_order_id:
+            body["clOrdId"] = client_order_id[:32]
+        if reduce_only:
+            body["reduceOnly"] = "true"
+        return self._request("POST", "/api/v5/trade/order", body=body, private=True)
+
+    def order_details(self, *, inst_id: str, order_id: str) -> Dict[str, Any]:
+        return self._request(
+            "GET",
+            "/api/v5/trade/order",
+            params={"instId": inst_id, "ordId": str(order_id)},
+            private=True,
+        )

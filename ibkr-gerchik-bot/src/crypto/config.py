@@ -28,6 +28,10 @@ def _env_int(name: str, default: int) -> int:
     return int(_env_str(name, str(default)))
 
 
+def _env_float(name: str, default: float) -> float:
+    return float(_env_str(name, str(default)))
+
+
 def _env_csv(name: str, default: str = "") -> List[str]:
     return [item.strip() for item in _env_str(name, default).split(",") if item.strip()]
 
@@ -45,6 +49,8 @@ class CryptoConfig:
     request_timeout_seconds: int = _env_int("OKX_REQUEST_TIMEOUT_SECONDS", 20)
     candle_limit: int = _env_int("OKX_CANDLE_LIMIT", 300)
     collect_interval_seconds: int = _env_int("CRYPTO_COLLECT_INTERVAL_SECONDS", 300)
+    tradingview_bot_id: str = _env_str("CRYPTO_TRADINGVIEW_BOT_ID", "")
+    tradingview_order_quote_usdt: float = _env_float("CRYPTO_TRADINGVIEW_ORDER_QUOTE_USDT", 100.0)
     memory_dir: Path = MEMORY_DIR / "crypto"
 
     def __post_init__(self) -> None:

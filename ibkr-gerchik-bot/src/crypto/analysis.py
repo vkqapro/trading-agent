@@ -118,11 +118,15 @@ def analyze_symbol(inst_id: str) -> Dict[str, object]:
 
 def run_crypto_analysis(symbols: Iterable[str] | None = None) -> Dict[str, object]:
     ensure_crypto_directories()
+    existing = load_crypto_state()
     if symbols is None:
         instruments = [row["inst_id"] for row in configured_crypto_symbols()]
+        watchlist = {}
+        updated_instruments = set(instruments)
     else:
         instruments = [normalize_okx_instrument(symbol) for symbol in symbols if normalize_okx_instrument(symbol)]
-    watchlist = {}
+        updated_instruments = set(instruments)
+        watchlist = existing.get("watchlist", {}) if isinstance(existing.get("watchlist"), dict) else {}
     errors = []
     for inst_id in instruments:
         try:
@@ -130,6 +134,14 @@ def run_crypto_analysis(symbols: Iterable[str] | None = None) -> Dict[str, objec
         except Exception as exc:
             LOGGER.warning("Crypto analysis failed %s: %s", inst_id, exc)
             errors.append({"symbol": inst_id, "reason": str(exc)})
+    if symbols is not None:
+        existing_symbols = existing.get("symbols", []) if isinstance(existing.get("symbols"), list) else []
+        instruments = sorted({str(symbol) for symbol in existing_symbols if symbol} | set(instruments))
+        existing_errors = existing.get("errors", []) if isinstance(existing.get("errors"), list) else []
+        errors = [
+            row for row in existing_errors
+            if not isinstance(row, dict) or row.get("symbol") not in updated_instruments
+        ] + errors
     payload = {
         "updated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "symbols": instruments,

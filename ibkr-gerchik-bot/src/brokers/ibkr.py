@@ -228,6 +228,8 @@ class IBKRClient:
             positions.append(
                 {
                     "symbol": position.contract.symbol,
+                    "currency": getattr(position.contract, "currency", ""),
+                    "local_symbol": getattr(position.contract, "localSymbol", ""),
                     "position": position.position,
                     "avg_cost": position.avgCost,
                     "sec_type": position.contract.secType,
@@ -383,7 +385,7 @@ class IBKRClient:
 
     def place_market_order(self, symbol: str, action: str, quantity: int) -> OrderResult:
         self.ensure_connection()
-        contract = self.create_stock_contract(symbol)
+        contract = self.create_contract(symbol)
         order = MarketOrder(action=action.upper(), totalQuantity=quantity)
         trade: Trade = self.ib.placeOrder(contract, order)
         self.ib.sleep(1)
