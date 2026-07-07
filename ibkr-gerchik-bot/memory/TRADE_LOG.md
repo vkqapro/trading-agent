@@ -78748,3 +78748,1293 @@ No ticker decisions recorded today.
 - **manual_override**: True
 - **entry_order_type**: LIMIT
 - **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Manual Trade BAND (2026-07-06T09:07:41)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: BAND
+- **strategy**: level_breakout_forecast
+- **level_type**: abnormal_candle
+- **direction**: long
+- **signal**: BUY
+- **entry**: 62.78
+- **stop_loss**: 60.66
+- **target**: 71.4
+- **reward_risk**: 4.06
+- **partial_targets**: []
+- **quantity**: 4
+- **market_order_id**: 352
+- **stop_order_id**: 353
+- **limit_order_id**: 354
+- **manual_override**: True
+- **entry_order_type**: MARKET
+- **broker_statuses**: {'market_order': 'PreSubmitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Manual Trade MSFT (2026-07-06T09:07:49)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: MSFT
+- **strategy**: level_breakout_forecast
+- **level_type**: historical
+- **direction**: long
+- **signal**: BUY
+- **entry**: 393.51
+- **stop_loss**: 386.73
+- **target**: 416.17
+- **reward_risk**: 3.34
+- **partial_targets**: []
+- **quantity**: 1
+- **market_order_id**: 356
+- **stop_order_id**: 357
+- **limit_order_id**: 358
+- **manual_override**: True
+- **entry_order_type**: MARKET
+- **broker_statuses**: {'market_order': 'PreSubmitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Market Open (2026-07-06T09:45:00)
+- **executed**: none
+- **skipped**: [{'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}]
+- **manual_candidates**: none
+- **scan_count**: 2
+- **skip_reason_summary**: {'no_signal': 2}
+
+## Manual Trade MSFT (2026-07-06T09:55:17)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: MSFT
+- **strategy**: level_breakout_forecast
+- **level_type**: historical
+- **direction**: long
+- **signal**: BUY
+- **entry**: 393.51
+- **stop_loss**: 386.73
+- **target**: 416.17
+- **reward_risk**: 3.34
+- **partial_targets**: []
+- **quantity**: 1
+- **market_order_id**: 360
+- **stop_order_id**: 361
+- **limit_order_id**: 362
+- **manual_override**: True
+- **entry_order_type**: MARKET
+- **broker_statuses**: {'market_order': 'Filled', 'stop_order': 'PreSubmitted', 'limit_order': 'Submitted'}
+
+## Manual Trade BAND (2026-07-06T09:55:25)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: BAND
+- **strategy**: level_breakout_forecast
+- **level_type**: abnormal_candle
+- **direction**: long
+- **signal**: BUY
+- **entry**: 62.78
+- **stop_loss**: 60.66
+- **target**: 71.4
+- **reward_risk**: 4.06
+- **partial_targets**: []
+- **quantity**: 4
+- **market_order_id**: 364
+- **stop_order_id**: 365
+- **limit_order_id**: 366
+- **manual_override**: True
+- **entry_order_type**: MARKET
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Manual Trade MSFT (2026-07-06T09:55:43)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: MSFT
+- **strategy**: level_breakout_forecast
+- **level_type**: historical
+- **direction**: long
+- **signal**: BUY
+- **entry**: 393.51
+- **stop_loss**: 386.73
+- **target**: 416.17
+- **reward_risk**: 3.34
+- **partial_targets**: []
+- **quantity**: 1
+- **market_order_id**: 368
+- **stop_order_id**: 369
+- **limit_order_id**: 370
+- **manual_override**: True
+- **entry_order_type**: MARKET
+- **broker_statuses**: {'market_order': 'Filled', 'stop_order': 'PreSubmitted', 'limit_order': 'Submitted'}
+
+## Manual Trade MSFT (2026-07-06T10:15:13)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: MSFT
+- **strategy**: level_breakout_forecast
+- **level_type**: historical
+- **direction**: long
+- **signal**: BUY
+- **entry**: 393.51
+- **stop_loss**: 386.73
+- **target**: 416.17
+- **reward_risk**: 3.34
+- **partial_targets**: []
+- **quantity**: 1
+- **market_order_id**: 376
+- **stop_order_id**: 377
+- **limit_order_id**: 378
+- **manual_override**: True
+- **entry_order_type**: MARKET
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Manual Trade MSFT (2026-07-06T10:16:16)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: MSFT
+- **strategy**: level_breakout_forecast
+- **level_type**: historical
+- **direction**: long
+- **signal**: BUY
+- **entry**: 393.51
+- **stop_loss**: 386.73
+- **target**: 416.17
+- **reward_risk**: 3.34
+- **partial_targets**: []
+- **quantity**: 1
+- **market_order_id**: 380
+- **stop_order_id**: 381
+- **limit_order_id**: 382
+- **manual_override**: True
+- **entry_order_type**: MARKET
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Manual Trade TSLA (2026-07-06T14:50:41)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: TSLA
+- **strategy**: strategy_manual_setup
+- **level_type**: dashboard_manual
+- **direction**: long
+- **signal**: BUY
+- **entry**: 393.45
+- **stop_loss**: 368.8
+- **target**: 467.3999999999999
+- **reward_risk**: 3.0
+- **partial_targets**: []
+- **quantity**: 1
+- **market_order_id**: 390
+- **stop_order_id**: 391
+- **limit_order_id**: 392
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Intraday Actions (2026-07-06T15:50:00)
+- **actions**: [{'event': 'kill_switch', 'reasons': ['missing_protective_stop']}]
+- **executed**: none
+- **skipped**: [{'symbol': 'EUR.USD', 'reason': 'no_signal'}]
+- **manual_candidates**: none
+- **trading_halted_reasons**: ['missing_protective_stop']
+- **scan_count**: 1
+- **skip_reason_summary**: {'no_signal': 1}
+
+## End Of Day (2026-07-06T16:10:08)
+- **summary**: {'date': '2026-07-06', 'daily_pnl': 0.0, 'daily_pnl_pct': 0.0, 'total_tickers_scanned': 1, 'valid_setups': 0, 'trades_taken': 0, 'skipped': 1, 'top_rejection_reasons': [('no return inside zone', 1)]}
+- **report**: 
+--------------------------------------------------
+Ticker: EUR.USD
+Level: 1.06
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 1.06 - 1.06
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+
+## Workflow EOD (2026-07-06T16:10:08)
+- **stage**: EOD
+- **summary**: {'date': '2026-07-06', 'daily_pnl': 0.0, 'daily_pnl_pct': 0.0, 'positions': [{'symbol': 'MSFT', 'quantity': 1, 'entry': 384.810003, 'avg_cost': 384.810003, 'direction': 'long', 'sec_type': 'STK'}, {'symbol': 'TSLA', 'quantity': 1, 'entry': 417.920003, 'avg_cost': 417.920003, 'direction': 'long', 'sec_type': 'STK'}], 'account_snapshot': {'account': [{'account': 'DU5454348', 'tag': 'AccountType', 'value': 'INDIVIDUAL', 'currency': ''}, {'account': 'DU5454348', 'tag': 'Cushion', 'value': '0.996699', 'currency': ''}, {'account': 'DU5454348', 'tag': 'LookAheadNextChange', 'value': '1783431000', 'currency': ''}, {'account': 'DU5454348', 'tag': 'AccruedCash', 'value': '4.51', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'AvailableFunds', 'value': '100125.19', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'BuyingPower', 'value': '400500.75', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'EquityWithLoanValue', 'value': '100483.80', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'ExcessLiquidity', 'value': '100157.79', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullAvailableFunds', 'value': '100125.19', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullExcessLiquidity', 'value': '100157.79', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullInitMarginReq', 'value': '358.61', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullMaintMarginReq', 'value': '326.01', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'GrossPositionValue', 'value': '806.86', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'InitMarginReq', 'value': '358.61', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadAvailableFunds', 'value': '100125.19', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadExcessLiquidity', 'value': '100157.79', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadInitMarginReq', 'value': '358.61', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadMaintMarginReq', 'value': '326.01', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'MaintMarginReq', 'value': '326.01', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'NetLiquidation', 'value': '100489.51', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTEquity', 'value': '100489.51', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTMargin', 'value': '403.43', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'SMA', 'value': '100369.13', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'TotalCashValue', 'value': '99678.14', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'JPY', 'currency': 'JPY'}, {'account': 'All', 'tag': 'CashBalance', 'value': '3773190.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '3773190.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '3773190.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '0.0061785', 'currency': 'JPY'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'JPY'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'JPY', 'currency': 'JPY'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'Currency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CashBalance', 'value': '800.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '800.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '800.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.1432213', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Currency', 'value': 'CAD', 'currency': 'CAD'}, {'account': 'All', 'tag': 'CashBalance', 'value': '-0.0493', 'currency': 'CAD'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '-0.0493', 'currency': 'CAD'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '-0.0493', 'currency': 'CAD'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '0.7038446', 'currency': 'CAD'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'CAD'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'CAD', 'currency': 'CAD'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'Currency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'CashBalance', 'value': '75477.5447', 'currency': 'USD'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '75477.5447', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '4.51', 'currency': 'USD'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '806.86', 'currency': 'USD'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '76288.9146', 'currency': 'USD'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '4.13', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '-36.71', 'currency': 'USD'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CashBalance', 'value': '99678.1354', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '99678.1354', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '4.51', 'currency': 'BASE'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '806.86', 'currency': 'BASE'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '100489.5054', 'currency': 'BASE'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '4.13', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '-36.71', 'currency': 'BASE'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'BASE'}], 'positions': [{'symbol': 'MSFT', 'currency': 'USD', 'local_symbol': 'MSFT', 'position': 1.0, 'avg_cost': 384.810003, 'sec_type': 'STK'}, {'symbol': 'TSLA', 'currency': 'USD', 'local_symbol': 'TSLA', 'position': 1.0, 'avg_cost': 417.920003, 'sec_type': 'STK'}], 'open_orders': []}, 'blocked': False, 'reasons': [], 'decision_summary': {'total_tickers_scanned': 1, 'valid_setups': 0, 'trades_taken': 0, 'skipped': 1, 'top_rejection_reasons': [('no return inside zone', 1)], 'open_symbols': ['MSFT', 'TSLA'], 'ticker_sections': ['--------------------------------------------------\nTicker: EUR.USD\nLevel: 1.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1.06 - 1.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n']}, 'report_text': '--------------------------------------------------\nTicker: EUR.USD\nLevel: 1.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1.06 - 1.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n'}
+```json
+{
+  "stage": "EOD",
+  "payload": {
+    "summary": {
+      "date": "2026-07-06",
+      "daily_pnl": 0.0,
+      "daily_pnl_pct": 0.0,
+      "positions": [
+        {
+          "symbol": "MSFT",
+          "quantity": 1,
+          "entry": 384.810003,
+          "avg_cost": 384.810003,
+          "direction": "long",
+          "sec_type": "STK"
+        },
+        {
+          "symbol": "TSLA",
+          "quantity": 1,
+          "entry": 417.920003,
+          "avg_cost": 417.920003,
+          "direction": "long",
+          "sec_type": "STK"
+        }
+      ],
+      "account_snapshot": {
+        "account": [
+          {
+            "account": "DU5454348",
+            "tag": "AccountType",
+            "value": "INDIVIDUAL",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "Cushion",
+            "value": "0.996699",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadNextChange",
+            "value": "1783431000",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "AccruedCash",
+            "value": "4.51",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "AvailableFunds",
+            "value": "100125.19",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "BuyingPower",
+            "value": "400500.75",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "EquityWithLoanValue",
+            "value": "100483.80",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "ExcessLiquidity",
+            "value": "100157.79",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullAvailableFunds",
+            "value": "100125.19",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullExcessLiquidity",
+            "value": "100157.79",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullInitMarginReq",
+            "value": "358.61",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullMaintMarginReq",
+            "value": "326.01",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "GrossPositionValue",
+            "value": "806.86",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "InitMarginReq",
+            "value": "358.61",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadAvailableFunds",
+            "value": "100125.19",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadExcessLiquidity",
+            "value": "100157.79",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadInitMarginReq",
+            "value": "358.61",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadMaintMarginReq",
+            "value": "326.01",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "MaintMarginReq",
+            "value": "326.01",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "NetLiquidation",
+            "value": "100489.51",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "RegTEquity",
+            "value": "100489.51",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "RegTMargin",
+            "value": "403.43",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "SMA",
+            "value": "100369.13",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "TotalCashValue",
+            "value": "99678.14",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "Currency",
+            "value": "JPY",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "CashBalance",
+            "value": "3773190.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "TotalCashBalance",
+            "value": "3773190.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "AccruedCash",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "StockMarketValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "OptionMarketValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "FutureOptionValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "FuturesPNL",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "NetLiquidationByCurrency",
+            "value": "3773190.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "UnrealizedPnL",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "RealizedPnL",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "ExchangeRate",
+            "value": "0.0061785",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "FundValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "NetDividend",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "MutualFundValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "MoneyMarketFundValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "CorporateBondValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "TBondValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "TBillValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "WarrantValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "FxCashBalance",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "AccountOrGroup",
+            "value": "All",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "RealCurrency",
+            "value": "JPY",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "IssuerOptionValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "Cryptocurrency",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "Currency",
+            "value": "EUR",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "CashBalance",
+            "value": "800.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "TotalCashBalance",
+            "value": "800.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "AccruedCash",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "StockMarketValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "OptionMarketValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "FutureOptionValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "FuturesPNL",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "NetLiquidationByCurrency",
+            "value": "800.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "UnrealizedPnL",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "RealizedPnL",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "ExchangeRate",
+            "value": "1.1432213",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "FundValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "NetDividend",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "MutualFundValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "MoneyMarketFundValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "CorporateBondValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "TBondValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "TBillValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "WarrantValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "FxCashBalance",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "AccountOrGroup",
+            "value": "All",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "RealCurrency",
+            "value": "EUR",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "IssuerOptionValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "Cryptocurrency",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "Currency",
+            "value": "CAD",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "CashBalance",
+            "value": "-0.0493",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "TotalCashBalance",
+            "value": "-0.0493",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "AccruedCash",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "StockMarketValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "OptionMarketValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "FutureOptionValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "FuturesPNL",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "NetLiquidationByCurrency",
+            "value": "-0.0493",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "UnrealizedPnL",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "RealizedPnL",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "ExchangeRate",
+            "value": "0.7038446",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "FundValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "NetDividend",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "MutualFundValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "MoneyMarketFundValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "CorporateBondValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "TBondValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "TBillValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "WarrantValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "FxCashBalance",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "AccountOrGroup",
+            "value": "All",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "RealCurrency",
+            "value": "CAD",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "IssuerOptionValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "Cryptocurrency",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "Currency",
+            "value": "USD",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "CashBalance",
+            "value": "75477.5447",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "TotalCashBalance",
+            "value": "75477.5447",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "AccruedCash",
+            "value": "4.51",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "StockMarketValue",
+            "value": "806.86",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "OptionMarketValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FutureOptionValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FuturesPNL",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "NetLiquidationByCurrency",
+            "value": "76288.9146",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "UnrealizedPnL",
+            "value": "4.13",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "RealizedPnL",
+            "value": "-36.71",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "ExchangeRate",
+            "value": "1.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FundValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "NetDividend",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "MutualFundValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "MoneyMarketFundValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "CorporateBondValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "TBondValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "TBillValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "WarrantValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FxCashBalance",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "AccountOrGroup",
+            "value": "All",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "RealCurrency",
+            "value": "USD",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "IssuerOptionValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "Cryptocurrency",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "Currency",
+            "value": "BASE",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "CashBalance",
+            "value": "99678.1354",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "TotalCashBalance",
+            "value": "99678.1354",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "AccruedCash",
+            "value": "4.51",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "StockMarketValue",
+            "value": "806.86",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "OptionMarketValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FutureOptionValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FuturesPNL",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "NetLiquidationByCurrency",
+            "value": "100489.5054",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "UnrealizedPnL",
+            "value": "4.13",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "RealizedPnL",
+            "value": "-36.71",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "ExchangeRate",
+            "value": "1.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FundValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "NetDividend",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "MutualFundValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "MoneyMarketFundValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "CorporateBondValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "TBondValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "TBillValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "WarrantValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FxCashBalance",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "AccountOrGroup",
+            "value": "All",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "RealCurrency",
+            "value": "BASE",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "IssuerOptionValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "Cryptocurrency",
+            "value": "0.00",
+            "currency": "BASE"
+          }
+        ],
+        "positions": [
+          {
+            "symbol": "MSFT",
+            "currency": "USD",
+            "local_symbol": "MSFT",
+            "position": 1.0,
+            "avg_cost": 384.810003,
+            "sec_type": "STK"
+          },
+          {
+            "symbol": "TSLA",
+            "currency": "USD",
+            "local_symbol": "TSLA",
+            "position": 1.0,
+            "avg_cost": 417.920003,
+            "sec_type": "STK"
+          }
+        ],
+        "open_orders": []
+      },
+      "blocked": false,
+      "reasons": [],
+      "decision_summary": {
+        "total_tickers_scanned": 1,
+        "valid_setups": 0,
+        "trades_taken": 0,
+        "skipped": 1,
+        "top_rejection_reasons": [
+          [
+            "no return inside zone",
+            1
+          ]
+        ],
+        "open_symbols": [
+          "MSFT",
+          "TSLA"
+        ],
+        "ticker_sections": [
+          "--------------------------------------------------\nTicker: EUR.USD\nLevel: 1.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1.06 - 1.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n"
+        ]
+      },
+      "report_text": "--------------------------------------------------\nTicker: EUR.USD\nLevel: 1.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1.06 - 1.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n"
+    }
+  }
+}
+```
+
+## Market Open (2026-07-07T09:45:01)
+- **executed**: none
+- **skipped**: [{'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'BBBY', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'BIRD', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'BAND', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'no_signal'}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'PDD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'NVDA', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MU', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'PLTR', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'BBBY', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'missing_live_data'}, {'symbol': 'ALOY', 'reason': 'missing_live_data'}, {'symbol': 'BIRD', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'missing_live_data'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'missing_live_data'}, {'symbol': 'SKYQ', 'reason': 'missing_live_data'}, {'symbol': 'KO', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'GCTS', 'reason': 'missing_live_data'}, {'symbol': 'NCEW', 'reason': 'missing_live_data'}, {'symbol': 'ICCC', 'reason': 'missing_live_data'}, {'symbol': 'VAL', 'reason': 'missing_live_data'}, {'symbol': 'BAND', 'reason': 'missing_live_data'}, {'symbol': 'AMH', 'reason': 'missing_live_data'}, {'symbol': 'BIDU', 'reason': 'missing_live_data'}, {'symbol': 'GSHD', 'reason': 'missing_live_data'}, {'symbol': 'KYTX', 'reason': 'missing_live_data'}, {'symbol': 'SRAD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MDU', 'reason': 'missing_live_data'}, {'symbol': 'SION', 'reason': 'missing_live_data'}, {'symbol': 'MRSH', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'TREX', 'reason': 'missing_live_data'}, {'symbol': 'SMA', 'reason': 'missing_live_data'}, {'symbol': 'ASND', 'reason': 'missing_live_data'}, {'symbol': 'MSEX', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'ZTO', 'reason': 'missing_live_data'}, {'symbol': 'SPOT', 'reason': 'missing_live_data'}, {'symbol': 'WTBA', 'reason': 'missing_live_data'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'missing_live_data'}, {'symbol': 'XP', 'reason': 'missing_live_data'}, {'symbol': 'LVO', 'reason': 'missing_live_data'}, {'symbol': 'ITIC', 'reason': 'missing_live_data'}, {'symbol': 'DAL', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'PDD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'AMP', 'reason': 'missing_live_data'}, {'symbol': 'KMDA', 'reason': 'missing_live_data'}, {'symbol': 'NVDA', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MU', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'PLTR', 'reason': 'missing_live_data'}]
+- **manual_candidates**: none
+- **scan_count**: 2
+- **skip_reason_summary**: {'no_signal': 51, 'symbol_news_risk': 16, 'missing_live_data': 29}
+
+## Manual Trade ROLR (2026-07-07T12:09:23)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: ROLR
+- **strategy**: level_retest_forecast
+- **level_type**: abnormal_candle
+- **direction**: long
+- **signal**: BUY
+- **entry**: 6.12
+- **stop_loss**: 5.82
+- **target**: 7.45
+- **reward_risk**: 4.43
+- **partial_targets**: []
+- **quantity**: 33
+- **market_order_id**: 401
+- **stop_order_id**: 402
+- **limit_order_id**: 403
+- **manual_override**: True
+- **entry_order_type**: MARKET
+- **broker_statuses**: {'market_order': 'Filled', 'stop_order': 'PreSubmitted', 'limit_order': 'Submitted'}
+
+## Manual Trade SPOT (2026-07-07T14:53:01)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: SPOT
+- **strategy**: level_breakout_forecast
+- **level_type**: gap
+- **direction**: long
+- **signal**: BUY
+- **entry**: 488.08
+- **stop_loss**: 479.95
+- **target**: 535.79
+- **reward_risk**: 5.86
+- **partial_targets**: []
+- **quantity**: 1
+- **market_order_id**: 412
+- **stop_order_id**: 413
+- **limit_order_id**: 414
+- **manual_override**: True
+- **entry_order_type**: MARKET
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Manual Trade SANM (2026-07-07T14:54:12)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: SANM
+- **strategy**: level_retest_forecast
+- **level_type**: abnormal_candle
+- **direction**: long
+- **signal**: BUY
+- **entry**: 211.68
+- **stop_loss**: 206.49
+- **target**: 242.42
+- **reward_risk**: 5.93
+- **partial_targets**: []
+- **quantity**: 1
+- **market_order_id**: 416
+- **stop_order_id**: 417
+- **limit_order_id**: 418
+- **manual_override**: True
+- **entry_order_type**: MARKET
+- **broker_statuses**: {'market_order': 'Filled', 'stop_order': 'PreSubmitted', 'limit_order': 'Submitted'}
+
+## Manual Trade SANM (2026-07-07T14:54:38)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: SANM
+- **strategy**: level_retest_forecast
+- **level_type**: abnormal_candle
+- **direction**: long
+- **signal**: BUY
+- **entry**: 211.68
+- **stop_loss**: 206.49
+- **target**: 242.42
+- **reward_risk**: 5.93
+- **partial_targets**: []
+- **quantity**: 1
+- **market_order_id**: 420
+- **stop_order_id**: 421
+- **limit_order_id**: 422
+- **manual_override**: True
+- **entry_order_type**: MARKET
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Manual Trade LVO (2026-07-07T14:57:50)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: LVO
+- **strategy**: level_retest_forecast
+- **level_type**: gap
+- **direction**: long
+- **signal**: BUY
+- **entry**: 5.32
+- **stop_loss**: 5.0
+- **target**: 6.86
+- **reward_risk**: 4.81
+- **partial_targets**: []
+- **quantity**: 31
+- **market_order_id**: 424
+- **stop_order_id**: 425
+- **limit_order_id**: 426
+- **manual_override**: True
+- **entry_order_type**: MARKET
+- **broker_statuses**: {'market_order': 'Filled', 'stop_order': 'PreSubmitted', 'limit_order': 'Submitted'}

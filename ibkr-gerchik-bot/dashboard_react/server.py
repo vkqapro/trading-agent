@@ -32,7 +32,9 @@ from dashboard import data_access as da, forecast as fc
 from src.config import SETTINGS
 from src.data.chart_history import daily_bars_from_intraday
 from src.crypto.analysis import run_crypto_analysis
-from src.crypto.symbols import normalize_okx_instrument
+from src.crypto.config import CRYPTO_SETTINGS
+from src.crypto.okx_client import OKXClient
+from src.crypto.symbols import add_crypto_symbol, default_instrument_type, normalize_okx_instrument
 from src.crypto.tradingview_webhook import (
     enqueue_tradingview_webhook,
     load_tradingview_state,
@@ -848,6 +850,40 @@ def _crypto_event_date(value: Any):
         return None
 
 
+def _resolve_crypto_add_instrument(raw_symbol: str) -> tuple[str, list[str]]:
+    """Resolve user-friendly crypto input to an OKX instrument id.
+
+    People often type TradingView-style pairs such as DOGE-USD while OKX spot
+    commonly lists DOGE-USDT. Prefer an exact OKX match, then try the USDT spot
+    proxy for plain USD pairs.
+    """
+
+    normalized = normalize_okx_instrument(raw_symbol)
+    if not normalized:
+        raise ValueError("Crypto symbol is required.")
+
+    candidates = [normalized]
+    if normalized.endswith("-USD") and not normalized.endswith("-USDT"):
+        candidates.append(f"{normalized[:-4]}-USDT")
+
+    by_type: dict[str, set[str]] = {}
+    client = OKXClient()
+    for candidate in candidates:
+        by_type.setdefault(default_instrument_type(candidate), set()).add(candidate)
+
+    available: set[str] = set()
+    for inst_type in by_type:
+        available.update(item.inst_id for item in client.instruments(inst_type))
+
+    for candidate in candidates:
+        if candidate in available:
+            return candidate, candidates
+
+    raise ValueError(
+        f"{normalized} is not available on OKX. Tried: {', '.join(candidates)}."
+    )
+
+
 @app.get("/api/crypto")
 def api_crypto():
     state = _safe(da.load_crypto_dashboard_state, {})
@@ -985,6 +1021,86 @@ def api_crypto():
 def api_crypto_tradingview_state():
     tv_state = _safe(load_tradingview_state, {})
     return _crypto_tv_payload(tv_state, limit=100)
+
+
+@app.post("/api/crypto/add")
+async def api_crypto_add(body: dict):
+    try:
+        raw_symbol = str((body or {}).get("symbol", "") or "").strip()
+        normalized = normalize_okx_instrument(raw_symbol)
+        if not normalized:
+            raise ValueError("Crypto symbol is required.")
+        duplicate_candidates = [normalized]
+        if normalized.endswith("-USD") and not normalized.endswith("-USDT"):
+            duplicate_candidates.append(f"{normalized[:-4]}-USDT")
+        configured_ids = {
+            str(row.get("inst_id") or "").upper()
+            for row in _safe(da.load_crypto_symbols, [])
+            if isinstance(row, dict) and row.get("inst_id")
+        }
+        duplicate = next((candidate for candidate in duplicate_candidates if candidate in configured_ids), None)
+        if duplicate:
+            return {
+                "ok": True,
+                "symbol": duplicate,
+                "added": False,
+                "duplicate": True,
+                "pid": None,
+                "log": None,
+                "message": f"{duplicate} is already in the crypto universe. Candle loading was not queued again.",
+            }
+
+        inst_id, candidates = _resolve_crypto_add_instrument(raw_symbol)
+        add_result = add_crypto_symbol(inst_id)
+        if not add_result.get("added"):
+            return {
+                "ok": True,
+                "symbol": inst_id,
+                "added": False,
+                "duplicate": True,
+                "pid": None,
+                "log": None,
+                "message": f"{inst_id} is already in the crypto universe. Candle loading was not queued again.",
+            }
+
+        runtime_dir = CRYPTO_SETTINGS.memory_dir / "runtime"
+        runtime_dir.mkdir(parents=True, exist_ok=True)
+        safe_name = "".join(char if char.isalnum() else "_" for char in inst_id)
+        log_path = runtime_dir / f"onboard_crypto_{safe_name}.log"
+        cmd = [
+            sys.executable,
+            "-m",
+            "src.crypto.main",
+            "--job",
+            "collect_analyze",
+            "--symbol",
+            inst_id,
+        ]
+        with log_path.open("a", encoding="utf-8") as log:
+            log.write(f"\n--- {datetime.now(ET).isoformat()} queued {' '.join(cmd)} ---\n")
+            if len(candidates) > 1 and inst_id != candidates[0]:
+                log.write(f"Resolved requested symbol {raw_symbol} to OKX instrument {inst_id}.\n")
+            process = subprocess.Popen(
+                cmd,
+                cwd=str(ROOT),
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+            )
+        return {
+            "ok": True,
+            "symbol": inst_id,
+            "requested": raw_symbol,
+            "added": True,
+            "duplicate": False,
+            "pid": process.pid,
+            "log": str(log_path),
+            "message": f"Queued crypto onboarding for {inst_id}. The bot will fetch candles, calculate levels/zones, and refresh the Crypto tab.",
+        }
+    except ValueError as exc:
+        raise HTTPException(400, str(exc))
+    except Exception as exc:
+        raise HTTPException(500, str(exc))
 
 
 @app.post("/api/crypto/tradingview")

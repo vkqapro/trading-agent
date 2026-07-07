@@ -100,6 +100,13 @@ def _symbols_match(requested: str, position: Dict[str, Any]) -> bool:
     return str(position.get("symbol", "")).upper() == requested
 
 
+def _market_order_tif(symbol: str) -> str | None:
+    # TradingView webhook orders are market-only one-shot instructions. Force
+    # DAY so TWS order presets cannot convert them to GTC and trigger IBKR
+    # warning/error 10349.
+    return "DAY" if str(symbol or "").strip() else None
+
+
 def _process_place(
     request: Dict[str, Any],
     *,
@@ -136,10 +143,18 @@ def _process_place(
                 "result": payload,
             }
 
-        result = broker.place_market_order(symbol, side, requested_qty)
+        result = broker.place_market_order(symbol, side, requested_qty, tif=_market_order_tif(symbol))
         payload = _serialize(result)
         if isinstance(payload, dict):
             payload["market_only"] = True
+            broker_status = str(payload.get("status") or "").strip().lower()
+            filled_qty = _f(payload.get("filled"))
+            if filled_qty <= 0 and broker_status in {"cancelled", "inactive", "apicancelled"}:
+                return {
+                    "status": oq.REJECTED,
+                    "message": f"Broker rejected/cancelled market-only order: {side} {requested_qty} {symbol} ({payload.get('status')}).",
+                    "result": payload,
+                }
         tracked_positions.append(_tracked_position_from_payload(payload if isinstance(payload, dict) else {}, request))
         return {
             "status": oq.DONE,
@@ -210,7 +225,7 @@ def _process_close(
             "result": {"symbol": symbol, "action": action, "quantity": abs_qty, "status": "simulated"},
         }
 
-    result = broker.place_market_order(symbol, action, abs_qty)
+    result = broker.place_market_order(symbol, action, abs_qty, tif=_market_order_tif(symbol))
     tracked_positions[:] = [
         p for p in tracked_positions if str(p.get("symbol", "")).upper() != symbol
     ]

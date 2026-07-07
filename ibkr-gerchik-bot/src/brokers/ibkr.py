@@ -43,6 +43,9 @@ class OrderResult:
     order_type: str
     status: str
     detail: str = ""
+    filled: float = 0.0
+    remaining: float = 0.0
+    avg_fill_price: float = 0.0
 
 
 def _safe_market_price(value: object) -> float:
@@ -383,14 +386,47 @@ class IBKRClient:
         return normalized
 
 
-    def place_market_order(self, symbol: str, action: str, quantity: int) -> OrderResult:
+    def place_market_order(self, symbol: str, action: str, quantity: int, tif: str | None = None) -> OrderResult:
         self.ensure_connection()
         contract = self.create_contract(symbol)
         order = MarketOrder(action=action.upper(), totalQuantity=quantity)
+        if tif:
+            order.tif = tif
         trade: Trade = self.ib.placeOrder(contract, order)
-        self.ib.sleep(1)
-        status = trade.orderStatus.status or "Submitted"
-        LOGGER.info("Market order placed for %s %s x%s status=%s", action, symbol, quantity, status)
+        status = self._await_order_settled(trade, timeout=12.0) or trade.orderStatus.status or "Submitted"
+        # IBKR/TWS can briefly surface preset/cancel messages even when a market
+        # order ultimately fills. Give the trade object a moment to receive fills
+        # and let actual execution data override noisy status text.
+        self.ib.sleep(1.5)
+        try:
+            filled = float(getattr(trade.orderStatus, "filled", 0) or 0)
+        except (TypeError, ValueError):
+            filled = 0.0
+        try:
+            remaining = float(getattr(trade.orderStatus, "remaining", 0) or 0)
+        except (TypeError, ValueError):
+            remaining = 0.0
+        try:
+            avg_fill_price = float(getattr(trade.orderStatus, "avgFillPrice", 0) or 0)
+        except (TypeError, ValueError):
+            avg_fill_price = 0.0
+        if filled > 0 and remaining <= 0:
+            status = "Filled"
+        elif filled > 0:
+            status = "PartiallyFilled"
+        else:
+            status = trade.orderStatus.status or status or "Submitted"
+        detail = self._order_reject_reason(trade)
+        LOGGER.info(
+            "Market order placed for %s %s x%s status=%s filled=%s remaining=%s%s",
+            action,
+            symbol,
+            quantity,
+            status,
+            filled,
+            remaining,
+            f" reason={detail}" if detail else "",
+        )
         return OrderResult(
             order_id=trade.order.orderId,
             symbol=symbol,
@@ -398,6 +434,10 @@ class IBKRClient:
             quantity=quantity,
             order_type="MKT",
             status=status,
+            detail=detail,
+            filled=filled,
+            remaining=remaining,
+            avg_fill_price=avg_fill_price,
         )
 
     @staticmethod

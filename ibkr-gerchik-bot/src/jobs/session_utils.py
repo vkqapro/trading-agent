@@ -220,12 +220,18 @@ def load_runtime_state() -> Dict[str, object]:
 
     premarket = read_latest_workflow_snapshot(SETTINGS.paths.research_log, "Premarket")
     if isinstance(premarket, dict) and isinstance(premarket.get("watchlist"), dict) and premarket["watchlist"]:
-        state["watchlist"] = premarket["watchlist"]
+        existing_watchlist = state.get("watchlist", {})
+        if not isinstance(existing_watchlist, dict):
+            existing_watchlist = {}
+        merged_watchlist = dict(existing_watchlist)
+        merged_watchlist.update(premarket["watchlist"])
+        state["watchlist"] = merged_watchlist
     return state
 
 
 def save_runtime_state(state: Dict[str, object]) -> None:
     """Persist runtime state atomically from within long-running jobs."""
+    state = _preserve_existing_runtime_watchlist(state)
     temp_path = SETTINGS.paths.state_file.with_suffix(".json.tmp")
     last_error: Optional[OSError] = None
     for attempt in range(STATE_SAVE_RETRY_ATTEMPTS):
@@ -241,6 +247,33 @@ def save_runtime_state(state: Dict[str, object]) -> None:
 
     if last_error is not None:
         raise last_error
+
+
+def _preserve_existing_runtime_watchlist(state: Dict[str, object]) -> Dict[str, object]:
+    """Preserve already-onboarded symbols when a partial job saves state."""
+
+    state_path = SETTINGS.paths.state_file
+    if not state_path.exists():
+        return state
+    try:
+        existing = json.loads(state_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return state
+
+    existing_watchlist = existing.get("watchlist") if isinstance(existing, dict) else None
+    if not isinstance(existing_watchlist, dict) or not existing_watchlist:
+        return state
+
+    state_watchlist = state.get("watchlist")
+    merged_state = dict(state)
+    if isinstance(state_watchlist, dict):
+        merged_watchlist = dict(existing_watchlist)
+        merged_watchlist.update(state_watchlist)
+        merged_state["watchlist"] = merged_watchlist
+    else:
+        merged_state["watchlist"] = existing_watchlist
+
+    return merged_state
 
 
 def _normalize_skip_reason(reason: object) -> str:

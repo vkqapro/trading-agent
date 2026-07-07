@@ -80,3 +80,36 @@ def normalize_okx_instrument(symbol: str) -> str:
 def default_instrument_type(inst_id: str) -> str:
     return "SWAP" if inst_id.endswith("-SWAP") else "SPOT"
 
+
+def add_crypto_symbol(symbol: str, *, path: Path | None = None) -> dict:
+    """Persist a crypto symbol input unless its normalized instrument exists.
+
+    Returns a small status payload for dashboard API callers. Duplicate checks
+    are performed on normalized OKX instrument ids, so ``DOGEUSDT`` and
+    ``DOGE-USDT`` are treated as the same symbol.
+    """
+
+    inst_id = normalize_okx_instrument(symbol)
+    if not inst_id:
+        raise ValueError("Crypto symbol is required.")
+
+    configured = {
+        normalize_okx_instrument(value)
+        for value in load_crypto_symbol_inputs(path)
+        if normalize_okx_instrument(value)
+    }
+    if inst_id in configured:
+        return {"added": False, "duplicate": True, "symbol": inst_id}
+
+    resolved = path or CRYPTO_SETTINGS.symbols_file
+    resolved.parent.mkdir(parents=True, exist_ok=True)
+    existing_text = resolved.read_text(encoding="utf-8-sig") if resolved.exists() else ""
+    append_text = inst_id
+    if existing_text and not existing_text.endswith(("\n", "\r")):
+        append_text = f"\n{append_text}"
+    with resolved.open("a", encoding="utf-8") as handle:
+        if not existing_text:
+            handle.write("# TradingView/OKX symbols are normalized by src.crypto.symbols.\n")
+            handle.write("# Keep one comma-separated line or one symbol per line.\n")
+        handle.write(f"{append_text}\n")
+    return {"added": True, "duplicate": False, "symbol": inst_id}

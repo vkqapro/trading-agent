@@ -138,6 +138,79 @@ def load_workflow_snapshots() -> Dict[str, Dict[str, Any]]:
     return _workflow_snapshots_cached(*_signature(RESEARCH_LOG_PATH))
 
 
+def _filter_watchlist_symbols(
+    watchlist: Any, configured_symbols: set[str]
+) -> Dict[str, Any]:
+    if not isinstance(watchlist, dict):
+        return {}
+    return {
+        symbol: plan
+        for symbol, plan in watchlist.items()
+        if symbol in configured_symbols
+    }
+
+
+@lru_cache(maxsize=8)
+def _latest_workflow_watchlist_for_symbols_cached(
+    path_text: str,
+    _mtime_ns: int,
+    _size: int,
+    stage_name: str,
+    symbols_key: tuple[str, ...],
+) -> Dict[str, Any]:
+    """Return the newest workflow watchlist containing requested symbols.
+
+    The dashboard can have multiple workflows using the same "Premarket" stage
+    name. For example, a Forex premarket run may be the newest stage in
+    RESEARCH_LOG.md even though the stock Forecast tab still needs the newest
+    stock premarket plan. This fallback walks the log newest-first and picks the
+    latest payload that actually contains configured stock symbols.
+    """
+    try:
+        text = _stable_read(Path(path_text)).decode("utf-8", errors="replace")
+    except OSError:
+        return {}
+
+    configured_symbols = set(symbols_key)
+    matches = list(_WORKFLOW_HEADER.finditer(text))
+    for index in range(len(matches) - 1, -1, -1):
+        match = matches[index]
+        stage = match.group(1).strip()
+        if stage != stage_name:
+            continue
+        section_end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
+        section = text[match.end() : section_end]
+        json_start = section.find("```json")
+        if json_start < 0:
+            continue
+        json_start += len("```json")
+        json_end = section.find("```", json_start)
+        if json_end < 0:
+            continue
+        try:
+            envelope = json.loads(section[json_start:json_end].strip())
+        except json.JSONDecodeError:
+            continue
+        payload = envelope.get("payload") if isinstance(envelope, dict) else None
+        watchlist = payload.get("watchlist") if isinstance(payload, dict) else None
+        filtered = _filter_watchlist_symbols(watchlist, configured_symbols)
+        if filtered:
+            return filtered
+    return {}
+
+
+def _latest_workflow_watchlist_for_symbols(
+    stage_name: str, configured_symbols: set[str]
+) -> Dict[str, Any]:
+    if not RESEARCH_LOG_PATH.exists() or not configured_symbols:
+        return {}
+    return _latest_workflow_watchlist_for_symbols_cached(
+        *_signature(RESEARCH_LOG_PATH),
+        stage_name,
+        tuple(sorted(configured_symbols)),
+    )
+
+
 def load_state() -> Dict[str, Any]:
     return _read_json(STATE_PATH)
 
@@ -160,7 +233,19 @@ def load_watchlist() -> Dict[str, Any]:
         configured_symbols = set()
         has_configured_symbol_file = False
     if has_configured_symbol_file:
-        merged = {symbol: plan for symbol, plan in merged.items() if symbol in configured_symbols}
+        snapshot_stock_watchlist = _filter_watchlist_symbols(
+            snapshot_watchlist, configured_symbols
+        )
+        state_stock_watchlist = _filter_watchlist_symbols(
+            state_watchlist, configured_symbols
+        )
+        if not snapshot_stock_watchlist:
+            snapshot_stock_watchlist = _latest_workflow_watchlist_for_symbols(
+                "Premarket", configured_symbols
+            )
+        merged = {}
+        merged.update(snapshot_stock_watchlist)
+        merged.update(state_stock_watchlist)
     return merged
 
 

@@ -110,6 +110,7 @@ def _load_state(state_path: Path) -> Dict[str, object]:
 
 
 def _save_state(state_path: Path, payload: Dict[str, object]) -> None:
+    payload = _preserve_existing_watchlist_on_save(state_path, payload)
     temp_path = state_path.with_suffix(f"{state_path.suffix}.tmp")
     last_error: Optional[OSError] = None
     for attempt in range(STATE_SAVE_RETRY_ATTEMPTS):
@@ -126,6 +127,42 @@ def _save_state(state_path: Path, payload: Dict[str, object]) -> None:
 
     if last_error is not None:
         raise last_error
+
+
+def _preserve_existing_watchlist_on_save(
+    state_path: Path,
+    payload: Dict[str, object],
+) -> Dict[str, object]:
+    """Merge runtime watchlists instead of silently shrinking them.
+
+    Several jobs share ``memory/runtime/state.json``. A partial workflow, for
+    example Forex-only or a single-symbol run, should not erase symbols that
+    were already onboarded for the stock dashboard. Explicit removals still
+    work because they update the state file before later jobs load and merge it.
+    """
+
+    if state_path != SETTINGS.paths.state_file or not state_path.exists():
+        return payload
+
+    try:
+        existing = json.loads(state_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return payload
+
+    existing_watchlist = existing.get("watchlist") if isinstance(existing, dict) else None
+    if not isinstance(existing_watchlist, dict) or not existing_watchlist:
+        return payload
+
+    payload_watchlist = payload.get("watchlist")
+    merged_payload = dict(payload)
+    if isinstance(payload_watchlist, dict):
+        merged_watchlist = dict(existing_watchlist)
+        merged_watchlist.update(payload_watchlist)
+        merged_payload["watchlist"] = merged_watchlist
+    else:
+        merged_payload["watchlist"] = existing_watchlist
+
+    return merged_payload
 
 
 def _merge_onboarded_watchlist(

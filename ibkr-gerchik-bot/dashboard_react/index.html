@@ -495,10 +495,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
       stroke={R(l.color,l.showZone===false?0.42:0.65)} strokeWidth={l.showZone===false?1:1.3}
       strokeDasharray={l.showZone===false?'2 5':undefined}/>);
   });
-  // dashed entry/stop/target lines
-  lines.forEach((l,i)=>els.push(
-    <line key={'dl'+i} x1={padL} x2={W-padR} y1={yp(l.p)} y2={yp(l.p)} stroke={l.color} strokeWidth={1.4} strokeDasharray="6 4"/>
-  ));
+  // Forecast/manual setup lines are drawn after candles so they stay readable.
   // strategy overlays: BMSB weekly band + optional strategy-specific trigger lines
   strategyOverlaySlices.forEach(({overlay, points:overlayPoints, idx:overlayIdx})=>{
     if(!overlay || !overlayPoints.some(p=>Number.isFinite(p.sma)||Number.isFinite(p.ema)||Number.isFinite(p.entryLevel)||Number.isFinite(p.exitLevel))) return;
@@ -634,6 +631,10 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
     }
   });
   // ── 1.3: volume with intensity scaling + 20-bar MA line
+  // dashed entry/stop/target lines above candles
+  lines.forEach((l,i)=>els.push(
+    <line key={'dl'+i} x1={padL} x2={W-padR} y1={yp(l.p)} y2={yp(l.p)} stroke={l.color} strokeWidth={1.8} strokeDasharray="6 4"/>
+  ));
   if(showVol){
     const volTop=padT+priceH+gap;
     const volNums = visBars.map(c=>c.volume||0);
@@ -2508,10 +2509,21 @@ function TabForecast({refreshKey=0}) {
   const [fcLedgerSymbol, setFcLedgerSymbol] = useState('');
   const [fcExpanded, setFcExpanded] = useState(false);
   const [fcSel, setFcSel] = useState(null);
+  const [fcSelKey, setFcSelKey] = useState(null);
   const [feedback, setFeedback] = useState(null);   // {ok, message, id} or null
   const [confirm, setConfirm] = useState(null);     // {type:'place'|'close', row} pending user confirmation
   const [qtyOverrides, setQtyOverrides] = useState({});  // index -> qty string while editing
   const setQtyOverride = (i, val) => setQtyOverrides(prev => ({...prev, [i]: val}));
+  const forecastRowKey = useCallback((r)=>[
+    r?.symbol||'',
+    r?.source||'',
+    r?.strategy||'',
+    r?.signal||'',
+    Number(r?.entry||0).toFixed(4),
+    Number(r?.stop||0).toFixed(4),
+    Number(r?.target||0).toFixed(4),
+    Number(r?.reward_risk||0).toFixed(4),
+  ].join('|'),[]);
 
   const doPlace = useCallback(async(row) => {
     setConfirm(null);
@@ -2550,10 +2562,11 @@ function TabForecast({refreshKey=0}) {
       setResult(d);
       const now=new Date(); const p=n=>String(n).padStart(2,'0');
       setCalcAt(`${now.getFullYear()}-${p(now.getMonth()+1)}-${p(now.getDate())} ${p(now.getHours())}:${p(now.getMinutes())}:${p(now.getSeconds())}`);
-      const firstAcc = d.accepted?.[0]?.symbol || d.rows?.[0]?.symbol || null;
-      setFcSel(s=>s||firstAcc);
+      const firstRow = d.accepted?.[0] || d.rows?.[0] || null;
+      setFcSel(s=>s || firstRow?.symbol || null);
+      setFcSelKey(k=>k || (firstRow ? forecastRowKey(firstRow) : null));
     } finally { setLoading(false); }
-  },[]);
+  },[forecastRowKey]);
 
   useEffect(()=>{ runCalc(FC_DEFAULTS); },[]);
 
@@ -2577,7 +2590,10 @@ function TabForecast({refreshKey=0}) {
   const ledgerSrc = fcFilter==='all' && fcLedgerSymbol
     ? ledgerBase.filter(r=>r.symbol===fcLedgerSymbol)
     : ledgerBase;
-  const selRow = rows.find(r=>r.symbol===fcSel)||rows[0]||null;
+  const selRow = (fcSelKey ? rows.find(r=>forecastRowKey(r)===fcSelKey) : null)
+    || rows.find(r=>r.symbol===fcSel)
+    || rows[0]
+    || null;
 
   const fcInputDefs = [
     {key:'equity',label:'Account equity',prefix:'$',suffix:'',step:5000},
@@ -2743,7 +2759,7 @@ function TabForecast({refreshKey=0}) {
               {fcFilter==='all' && (
                 <div style={{display:'flex',alignItems:'center',gap:10,flexWrap:'wrap'}}>
                   <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.08em',color:C.outline,textTransform:'uppercase'}}>Ledger Symbol</span>
-                  <select value={fcLedgerSymbol} onChange={e=>{setFcLedgerSymbol(e.target.value); if(e.target.value) setFcSel(e.target.value);}}
+                  <select value={fcLedgerSymbol} onChange={e=>{setFcLedgerSymbol(e.target.value); setFcSelKey(null); if(e.target.value) setFcSel(e.target.value);}}
                     style={{minWidth:180,background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.04em'}}>
                     <option value="">All symbols</option>
                     {forecastSymbols.map(symbol=><option key={symbol} value={symbol}>{symbol}</option>)}
@@ -2786,7 +2802,7 @@ function TabForecast({refreshKey=0}) {
                   return (
                     <tr key={i} onMouseEnter={e=>e.currentTarget.style.background=R('#fff',0.025)} onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
                       <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`}}>
-                        <button onClick={()=>setFcSel(r.symbol)} style={{display:'inline-flex',alignItems:'center',justifyContent:'center',padding:'7px 15px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:500,color:r.symbol===fcSel?'#001416':C.onSurf,background:r.symbol===fcSel?C.cyan:'rgba(20,20,21,0.7)',border:`1px solid ${r.symbol===fcSel?C.cyan:'rgba(132,148,149,0.22)'}`}}>{r.symbol}</button>
+                        <button onClick={()=>{setFcSel(r.symbol);setFcSelKey(forecastRowKey(r));}} style={{display:'inline-flex',alignItems:'center',justifyContent:'center',padding:'7px 15px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:500,color:forecastRowKey(r)===fcSelKey?'#001416':C.onSurf,background:forecastRowKey(r)===fcSelKey?C.cyan:'rgba(20,20,21,0.7)',border:`1px solid ${forecastRowKey(r)===fcSelKey?C.cyan:'rgba(132,148,149,0.22)'}`}}>{r.symbol}</button>
                       </td>
                       <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:sc,fontWeight:500}}>{r.signal}</td>
                       <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:C.onVar}}>${entry.toFixed(2)}</td>
@@ -3049,6 +3065,10 @@ function TabCrypto({refreshKey=0}) {
   const [barsInfo, setBarsInfo] = useState({stale:false,lastDate:null});
   const [plan, setPlan] = useState(null);
   const [analyzing, setAnalyzing] = useState(false);
+  const [cryptoAddOpen, setCryptoAddOpen] = useState(false);
+  const [cryptoNewSymbol, setCryptoNewSymbol] = useState('');
+  const [cryptoAddBusy, setCryptoAddBusy] = useState(false);
+  const [cryptoAddFeedback, setCryptoAddFeedback] = useState(null);
 
   useEffect(()=>{ fetch(`${API}/crypto`).then(r=>r.json()).then(setData).catch(()=>setData({rows:[],metrics:{}})); },[refreshKey]);
   useEffect(()=>{
@@ -3078,6 +3098,32 @@ function TabCrypto({refreshKey=0}) {
       setAnalyzing(false);
     }
   };
+
+  const submitCryptoAdd = useCallback(async()=>{
+    const symbol = cryptoNewSymbol.trim();
+    if(!symbol) return;
+    setCryptoAddBusy(true);
+    setCryptoAddFeedback(null);
+    try{
+      const r = await fetch(`${API}/crypto/add`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({symbol})
+      });
+      const d = await r.json().catch(()=>({}));
+      if(!r.ok) throw new Error(d.detail || d.message || 'Failed to add crypto symbol');
+      setCryptoAddFeedback({ok:true,message:d.message,log:d.log});
+      if(d.symbol) setSelected(d.symbol);
+      setCryptoNewSymbol('');
+      setCryptoAddOpen(false);
+      const fresh = await fetch(`${API}/crypto`).then(x=>x.json());
+      setData(fresh);
+    }catch(e){
+      setCryptoAddFeedback({ok:false,message:String(e.message||e)});
+    }finally{
+      setCryptoAddBusy(false);
+    }
+  },[cryptoNewSymbol]);
 
   const strategyOverlay = useMemo(
     ()=>{
@@ -3258,6 +3304,22 @@ function TabCrypto({refreshKey=0}) {
               style={{background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'7px 10px',fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
               {rows.map(r=><option key={r.symbol} value={r.symbol}>{r.symbol}</option>)}
             </select>
+            <button onClick={()=>{setCryptoAddOpen(v=>!v);setCryptoAddFeedback(null);}}
+              style={{padding:'7px 10px',borderRadius:8,cursor:'pointer',border:`1px solid ${R(C.lime,0.35)}`,background:R(C.lime,0.09),color:C.lime,fontFamily:"'Inter',sans-serif",fontWeight:800,display:'inline-flex',alignItems:'center',gap:6}}>
+              <Icon n="add" size={15} color={C.lime}/> Add
+            </button>
+            {cryptoAddOpen && (
+              <div style={{display:'flex',gap:6,alignItems:'center'}}>
+                <input value={cryptoNewSymbol} onChange={e=>setCryptoNewSymbol(e.target.value.toUpperCase())}
+                  onKeyDown={e=>{if(e.key==='Enter') submitCryptoAdd();}}
+                  placeholder="DOGE-USD"
+                  style={{width:122,background:R(C.surfLowest,0.9),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'7px 10px',fontFamily:"'JetBrains Mono',monospace",fontSize:12}}/>
+                <button onClick={submitCryptoAdd} disabled={cryptoAddBusy || !cryptoNewSymbol.trim()}
+                  style={{padding:'7px 10px',borderRadius:8,cursor:cryptoAddBusy?'wait':'pointer',border:`1px solid ${R(C.cyan,0.35)}`,background:R(C.cyan,0.10),color:C.cyan,fontFamily:"'Inter',sans-serif",fontWeight:800}}>
+                  {cryptoAddBusy?'Adding…':'Submit'}
+                </button>
+              </div>
+            )}
             {['5Min','1H','4H','1D'].map(t=>{
               const a=t===tf;
               return <button key={t} onClick={()=>setTf(t)} style={{padding:'6px 11px',borderRadius:7,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,border:`1px solid ${a?R(C.cyan,0.4):R(C.outline,0.18)}`,background:a?R(C.cyan,0.14):R(C.surfLowest,0.45),color:a?C.cyan:C.onVar}}>{t}</button>;
@@ -3268,6 +3330,11 @@ function TabCrypto({refreshKey=0}) {
             })}
           </div>
         </div>
+        {cryptoAddFeedback && (
+          <div style={{padding:'10px 18px',borderBottom:`1px solid ${R(C.outline,0.10)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:cryptoAddFeedback.ok?C.lime:C.err,background:R(cryptoAddFeedback.ok?C.lime:C.err,0.06)}}>
+            {cryptoAddFeedback.message}
+          </div>
+        )}
         <div style={{padding:'18px 20px'}}>
           <CandleChart
             bars={visibleBars}
