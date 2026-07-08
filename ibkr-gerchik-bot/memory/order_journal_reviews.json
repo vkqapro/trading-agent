@@ -1,0 +1,15 @@
+{
+  "reviews": {
+    "stock:req:b615c03badb7": {
+      "review_status": "Reviewed",
+      "notes": "entry was at lover part of the gaussian that is incorrect setting.",
+      "decision_quality": {
+        "Stop was logical": true,
+        "Target was realistic": true
+      },
+      "mistake_type": "Ignored trend",
+      "grade": "A",
+      "updated_at": "2026-07-08T16:59:06+00:00"
+    }
+  }
+}

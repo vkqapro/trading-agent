@@ -142,7 +142,7 @@ const Table = ({cols, rows}) => (
 );
 
 /* ── SVG candlestick chart ────────────────────────────────────────────────── */
-function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null, gaussianOverlay=null, showVol=true, height=300, stale=false, lastDate=null, fullscreenTargetRef=null, fullscreenHeightOffset=110}) {
+function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], strategyOverlay=null, gaussianOverlay=null, showVol=true, height=300, stale=false, lastDate=null, fullscreenTargetRef=null, fullscreenHeightOffset=110}) {
   const n = bars?.length || 0;
   const chartRef = useRef(null);
   const svgRef = useRef(null);
@@ -212,6 +212,12 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
   zones.forEach(z=>{
     pmin=Math.min(pmin,z.p1,z.p2);
     pmax=Math.max(pmax,z.p1,z.p2);
+  });
+  (tradeMarkers||[]).forEach(m=>{
+    if(Number.isFinite(Number(m.price))){
+      pmin=Math.min(pmin,Number(m.price));
+      pmax=Math.max(pmax,Number(m.price));
+    }
   });
   strategyOverlaySlices.forEach(({points})=>points.forEach(p=>{
     ['sma','ema','entryLevel','exitLevel'].forEach(key=>{
@@ -633,9 +639,54 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
   });
   // ── 1.3: volume with intensity scaling + 20-bar MA line
   // dashed entry/stop/target lines above candles
-  lines.forEach((l,i)=>els.push(
-    <line key={'dl'+i} x1={padL} x2={W-padR} y1={yp(l.p)} y2={yp(l.p)} stroke={l.color} strokeWidth={1.8} strokeDasharray="6 4"/>
-  ));
+  lines.forEach((l,i)=>{
+    const y = yp(l.p);
+    const col = l.color || C.cyan;
+    els.push(
+      <line key={'dl'+i} x1={padL} x2={W-padR} y1={y} y2={y} stroke={col} strokeWidth={1.8} strokeDasharray="6 4"/>
+    );
+    if(l.label){
+      const label = String(l.label);
+      const labelW = Math.min(138, Math.max(58, label.length * 6.2 + 12));
+      const labelX = W - padR + 4;
+      const labelY = Math.max(padT + 10, Math.min(padT + priceH - 10, y));
+      els.push(
+        <rect key={'dlbg'+i} x={labelX} y={labelY-10} width={labelW} height={18} rx={4}
+          fill="rgba(14,14,15,0.88)" stroke={R(col,0.45)} strokeWidth={0.8}/>,
+        <text key={'dlt'+i} x={labelX+6} y={labelY+3.5} fill={col} fontSize={9}
+          fontFamily="JetBrains Mono,monospace" fontWeight="800">{label}</text>
+      );
+    }
+  });
+  const markerIndexForTime = value => {
+    if(!value) return null;
+    const target = new Date(String(value).replace(' ','T')).getTime();
+    if(!Number.isFinite(target)) return null;
+    let best=-1, bestDiff=Infinity;
+    bars.forEach((b,i)=>{
+      const bt = new Date(String(b.t||'').replace(' ','T')).getTime();
+      if(!Number.isFinite(bt)) return;
+      const diff=Math.abs(bt-target);
+      if(diff<bestDiff){ best=i; bestDiff=diff; }
+    });
+    return best>=vs && best<ve ? best-vs : null;
+  };
+  (tradeMarkers||[]).forEach((m,i)=>{
+    const localIdx=markerIndexForTime(m.time);
+    const price=Number(m.price);
+    if(localIdx==null || !Number.isFinite(price)) return;
+    const x=xi(localIdx), y=yp(price), col=m.color||C.cyan;
+    const up = (m.kind||'').toLowerCase().includes('entry');
+    const d = up
+      ? `M ${x} ${y-13} L ${x-8} ${y+3} L ${x+8} ${y+3} Z`
+      : `M ${x} ${y+13} L ${x-8} ${y-3} L ${x+8} ${y-3} Z`;
+    els.push(<circle key={'tmGlow'+i} cx={x} cy={y} r={13} fill={R(col,0.14)} stroke="none"/>);
+    els.push(<path key={'tm'+i} d={d} fill={col} stroke={R('#ffffff',0.85)} strokeWidth={0.9}/>);
+    els.push(<text key={'tmLbl'+i} x={x+10} y={y-9} fill={col} fontSize={9} fontFamily="JetBrains Mono,monospace" fontWeight="800">{m.label||m.kind}</text>);
+    if(m.value){
+      els.push(<text key={'tmVal'+i} x={x+10} y={y+4} fill={C.onVar} fontSize={8.5} fontFamily="JetBrains Mono,monospace">{m.value}</text>);
+    }
+  });
   if(showVol){
     const volTop=padT+priceH+gap;
     const volNums = visBars.map(c=>c.volume||0);
@@ -2771,6 +2822,93 @@ function TabForecast({refreshKey=0}) {
     });
   },[selectedForecastKey, selRow]);
 
+  const forecastIsBuy = String(selRow?.signal||'BUY').toUpperCase()==='BUY';
+  const fmtForecastInput = useCallback((v)=>{
+    const n = Number(v);
+    return Number.isFinite(n) && n > 0 ? n.toFixed(2) : '';
+  },[]);
+  const getForecastDistances = useCallback((draft)=>{
+    const entry = Number(draft?.entry);
+    const stop = Number(draft?.stop);
+    const target = Number(draft?.target);
+    const rowEntry = Number(selRow?.entry);
+    const rowStop = Number(selRow?.stop);
+    const rowTarget = Number(selRow?.target);
+    const rowRr = Number(selRow?.reward_risk);
+    let risk = Number.isFinite(entry) && entry > 0 && Number.isFinite(stop) && stop > 0
+      ? Math.abs(entry - stop)
+      : NaN;
+    let reward = Number.isFinite(entry) && entry > 0 && Number.isFinite(target) && target > 0
+      ? Math.abs(target - entry)
+      : NaN;
+    if(!Number.isFinite(risk) || risk <= 0){
+      risk = Number.isFinite(rowEntry) && rowEntry > 0 && Number.isFinite(rowStop) && rowStop > 0
+        ? Math.abs(rowEntry - rowStop)
+        : NaN;
+    }
+    if(!Number.isFinite(reward) || reward <= 0){
+      reward = Number.isFinite(rowEntry) && rowEntry > 0 && Number.isFinite(rowTarget) && rowTarget > 0
+        ? Math.abs(rowTarget - rowEntry)
+        : NaN;
+    }
+    if((!Number.isFinite(reward) || reward <= 0) && Number.isFinite(risk) && risk > 0 && Number.isFinite(rowRr) && rowRr > 0){
+      reward = risk * rowRr;
+    }
+    return {risk, reward};
+  },[selRow]);
+  const applyForecastEntryChange = useCallback((value)=>{
+    setFcSetupDraft(d=>{
+      const entry = Number(value);
+      if(!Number.isFinite(entry) || entry <= 0) return {...d, entry:value};
+      const {risk, reward} = getForecastDistances(d);
+      const rr = Number(d.rr);
+      const nextStop = Number.isFinite(risk) && risk > 0
+        ? (forecastIsBuy ? entry - risk : entry + risk)
+        : Number(d.stop);
+      const nextTarget = d.rrLocked && Number.isFinite(rr) && rr > 0 && Number.isFinite(nextStop) && nextStop > 0
+        ? (forecastIsBuy ? entry + Math.abs(entry-nextStop)*rr : entry - Math.abs(entry-nextStop)*rr)
+        : (Number.isFinite(reward) && reward > 0 ? (forecastIsBuy ? entry + reward : entry - reward) : Number(d.target));
+      return {
+        ...d,
+        entry:value,
+        stop:Number.isFinite(nextStop) && nextStop > 0 ? fmtForecastInput(nextStop) : d.stop,
+        target:Number.isFinite(nextTarget) && nextTarget > 0 ? fmtForecastInput(nextTarget) : d.target,
+      };
+    });
+  },[forecastIsBuy, fmtForecastInput, getForecastDistances]);
+  const applyForecastStopChange = useCallback((value)=>{
+    setFcSetupDraft(d=>{
+      const entry = Number(d.entry);
+      const stop = Number(value);
+      const rr = Number(d.rr);
+      if(!d.rrLocked || !Number.isFinite(entry) || entry <= 0 || !Number.isFinite(stop) || stop <= 0 || !Number.isFinite(rr) || rr <= 0){
+        return {...d, stop:value};
+      }
+      const target = forecastIsBuy ? entry + Math.abs(entry-stop)*rr : entry - Math.abs(entry-stop)*rr;
+      return {...d, stop:value, target:Number.isFinite(target) && target > 0 ? fmtForecastInput(target) : d.target};
+    });
+  },[forecastIsBuy, fmtForecastInput]);
+  const applyForecastTargetChange = useCallback((value)=>{
+    setFcSetupDraft(d=>({...d, target:value, rrLocked:false, rr:''}));
+  },[]);
+  const applyForecastRrChange = useCallback((value)=>{
+    setFcSetupDraft(d=>{
+      const rr = Number(value);
+      const entry = Number(d.entry);
+      const stop = Number(d.stop);
+      if(!value || !Number.isFinite(rr) || rr <= 0 || !Number.isFinite(entry) || entry <= 0 || !Number.isFinite(stop) || stop <= 0){
+        return {...d, rr:value, rrLocked:Boolean(value)};
+      }
+      const target = forecastIsBuy ? entry + Math.abs(entry-stop)*rr : entry - Math.abs(entry-stop)*rr;
+      return {
+        ...d,
+        rr:value,
+        rrLocked:true,
+        target:Number.isFinite(target) && target > 0 ? fmtForecastInput(target) : d.target,
+      };
+    });
+  },[forecastIsBuy, fmtForecastInput]);
+
   const fcSetup = useMemo(()=>{
     if(!selRow) return null;
     const entry=Number(fcSetupDraft.entry);
@@ -3211,21 +3349,21 @@ function TabForecast({refreshKey=0}) {
                 style={{width:90,background:R(C.surfLowest,0.8),color:C.cyan,border:`1px solid ${R(C.cyan,0.30)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none',textAlign:'right'}}/>
               <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Entry</span>
               <input type="number" min="0" step="0.01" value={fcSetupDraft.entry}
-                onChange={e=>setFcSetupDraft(d=>({...d,entry:e.target.value}))}
+                onChange={e=>applyForecastEntryChange(e.target.value)}
                 style={{width:115,background:R(C.surfLowest,0.8),color:C.ocean,border:`1px solid ${R(C.ocean,0.32)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
               <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Stop</span>
               <input type="number" min="0" step="0.01" value={fcSetupDraft.stop}
-                onChange={e=>setFcSetupDraft(d=>({...d,stop:e.target.value}))}
+                onChange={e=>applyForecastStopChange(e.target.value)}
                 style={{width:115,background:R(C.surfLowest,0.8),color:C.err,border:`1px solid ${R(C.err,0.32)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
               <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Target</span>
-              <input type="number" min="0" step="0.01" value={fcSetupDraft.rrLocked && fcSetup ? fcSetup.target.toFixed(2) : fcSetupDraft.target}
+              <input type="number" min="0" step="0.01" value={fcSetupDraft.target}
                 readOnly={Boolean(fcSetupDraft.rrLocked)}
-                onChange={e=>setFcSetupDraft(d=>({...d,target:e.target.value,rrLocked:false}))}
+                onChange={e=>applyForecastTargetChange(e.target.value)}
                 title={fcSetupDraft.rrLocked ? 'Target is calculated from Entry, Stop, and R:R. Edit/clear R:R to unlock target.' : 'Manual target value.'}
                 style={{width:115,background:R(C.surfLowest,0.8),color:C.lime,border:`1px solid ${R(C.lime,0.32)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
               <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>R:R</span>
               <input type="number" min="0" step="0.25" value={fcSetupDraft.rrLocked ? fcSetupDraft.rr : (fcSetup ? fcSetup.reward_risk.toFixed(2) : fcSetupDraft.rr)}
-                onChange={e=>setFcSetupDraft(d=>({...d,rr:e.target.value,rrLocked:e.target.value!==''}))}
+                onChange={e=>applyForecastRrChange(e.target.value)}
                 title="When edited, target is recalculated from Entry, Stop, and R:R."
                 style={{width:85,background:R(C.surfLowest,0.8),color:C.cyan,border:`1px solid ${R(fcSetupDraft.rrLocked?C.cyan:C.outline,fcSetupDraft.rrLocked?0.38:0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
               <button onClick={()=>{
@@ -3676,6 +3814,290 @@ function TabCrypto({refreshKey=0}) {
           </div>
         )}
       </GlassCard>
+    </div>
+  );
+}
+
+function TabOrdersJournal({refreshKey=0}) {
+  const [data,setData]=useState(null);
+  const [selectedId,setSelectedId]=useState(null);
+  const [statusFilter,setStatusFilter]=useState('ALL');
+  const [marketFilter,setMarketFilter]=useState('ALL');
+  const [sourceFilter,setSourceFilter]=useState('ALL');
+  const [tf,setTf]=useState('1D');
+  const [reviewChartRange,setReviewChartRange]=useState('ALL');
+  const [bars,setBars]=useState([]);
+  const [barsInfo,setBarsInfo]=useState({stale:false,lastDate:null});
+  const [reviewPlan,setReviewPlan]=useState(null);
+  const [showVol,setShowVol]=useState(true);
+  const [showReviewRaw,setShowReviewRaw]=useState(false);
+  const [showReviewTrade,setShowReviewTrade]=useState(true);
+  const [showStrategy,setShowStrategy]=useState(false);
+  const [showStrategy2,setShowStrategy2]=useState(false);
+  const [showGaussian,setShowGaussian]=useState(false);
+  const [showGaussianSignals,setShowGaussianSignals]=useState(false);
+  const [reviewDraft,setReviewDraft]=useState({});
+  const [saving,setSaving]=useState(false);
+  const reviewChartFullscreenRef = useRef(null);
+  const money = v => v!=null && Number.isFinite(Number(v)) ? `$${Number(v).toFixed(Math.abs(Number(v))>=10?2:4)}` : '—';
+  const num = (v,d=2) => v!=null && Number.isFinite(Number(v)) ? Number(v).toFixed(d) : '—';
+  const fmtTime = v => v ? String(v).replace('T',' ').replace('+00:00','Z').slice(0,19) : '—';
+
+  const loadJournal = useCallback(()=>{
+    fetch(`${API}/orders-journal`,{cache:'no-store'})
+      .then(r=>r.json())
+      .then(d=>{
+        setData(d);
+        const rows=d.rows||[];
+        setSelectedId(prev=>prev && rows.some(r=>r.id===prev) ? prev : rows[0]?.id || null);
+      })
+      .catch(()=>setData({rows:[],metrics:{}}));
+  },[]);
+  useEffect(()=>{ loadJournal(); },[refreshKey, loadJournal]);
+
+  const rows=data?.rows||[];
+  const selected=rows.find(r=>r.id===selectedId)||rows[0]||null;
+  const markets=['ALL',...new Set(rows.map(r=>r.market).filter(Boolean))];
+  const sources=['ALL',...new Set(rows.map(r=>r.source).filter(Boolean))];
+  const filtered=rows.filter(r=>{
+    if(statusFilter==='OPEN' && !['OPEN','SUBMITTED','OPEN_ALERT'].includes(String(r.status).toUpperCase())) return false;
+    if(statusFilter==='CLOSED' && !(String(r.status).toUpperCase().startsWith('CLOSED') || r.closed_at)) return false;
+    if(statusFilter==='UNREVIEWED' && (r.review?.review_status||'Unreviewed')!=='Unreviewed') return false;
+    if(statusFilter==='WINNERS' && !(Number(r.pnl)>0)) return false;
+    if(statusFilter==='LOSERS' && !(Number(r.pnl)<0)) return false;
+    if(marketFilter!=='ALL' && r.market!==marketFilter) return false;
+    if(sourceFilter!=='ALL' && r.source!==sourceFilter) return false;
+    return true;
+  });
+
+  useEffect(()=>{
+    if(!selected) return;
+    setReviewDraft({
+      review_status:selected.review?.review_status||'Unreviewed',
+      grade:selected.review?.grade||'',
+      mistake_type:selected.review?.mistake_type||'',
+      notes:selected.review?.notes||'',
+      decision_quality:selected.review?.decision_quality||{},
+    });
+  },[selected?.id]);
+
+  useEffect(()=>{
+    if(!selected?.symbol) return;
+    const apitf = TF_API[tf]||'daily';
+    const endpoint = selected.market==='CRYPTO'
+      ? `${API}/crypto/bars/${encodeURIComponent(selected.symbol)}/${apitf}`
+      : `${API}/bars/${encodeURIComponent(selected.symbol)}/${apitf}`;
+    fetch(endpoint)
+      .then(r=>r.json())
+      .then(d=>{setBars(d.bars||[]);setBarsInfo({stale:d.stale,lastDate:d.last_date});})
+      .catch(()=>{setBars([]);setBarsInfo({stale:true,lastDate:null});});
+    const planEndpoint = selected.market==='CRYPTO'
+      ? `${API}/crypto/${encodeURIComponent(selected.symbol)}`
+      : `${API}/preopen/${encodeURIComponent(selected.symbol)}`;
+    fetch(planEndpoint)
+      .then(r=>r.ok?r.json():null)
+      .then(d=>setReviewPlan(d||null))
+      .catch(()=>setReviewPlan(null));
+  },[selected?.id, selected?.symbol, selected?.market, tf, refreshKey]);
+
+  const saveReview = async()=>{
+    if(!selected) return;
+    setSaving(true);
+    try{
+      const r=await fetch(`${API}/orders-journal/review`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({id:selected.id,...reviewDraft}),
+      });
+      const d=await r.json().catch(()=>({}));
+      if(!r.ok || d.ok===false) throw new Error(d.detail||d.message||'Save failed');
+      loadJournal();
+    }catch(e){
+      alert(`Review save failed: ${e.message||e}`);
+    }finally{
+      setSaving(false);
+    }
+  };
+
+  const reviewRangeCount = RANGE_COUNTS[reviewChartRange]||9999;
+  const visibleReviewBars = bars.slice(-reviewRangeCount);
+  const strategyOverlay = useMemo(()=>{
+    const overlays=[
+      showStrategy ? sliceOverlayPoints(buildBmsbStrategyOverlay(bars), reviewRangeCount) : null,
+      showStrategy2 ? sliceOverlayPoints(buildBmsbStrategy2Overlay(bars), reviewRangeCount) : null,
+    ].filter(Boolean);
+    return overlays.length ? overlays : null;
+  },[bars,showStrategy,showStrategy2,reviewRangeCount]);
+  const gaussianOverlay = useMemo(()=>{
+    if(!showGaussian && !showGaussianSignals) return null;
+    const full=buildGaussianChannelOverlay(bars);
+    return full ? {...full,showChannel:showGaussian,showSignals:showGaussianSignals,points:full.points.slice(-reviewRangeCount)} : null;
+  },[bars,showGaussian,showGaussianSignals,reviewRangeCount]);
+  const reviewChartLevels = useMemo(
+    ()=>buildChartLevels(reviewPlan?.trade_levels, reviewPlan?.raw_levels, showReviewTrade, showReviewRaw),
+    [reviewPlan, showReviewTrade, showReviewRaw]
+  );
+
+  const side=String(selected?.side||'BUY').toUpperCase();
+  const lineSet = selected ? [
+    selected.planned_target!=null && {p:selected.planned_target,color:C.lime,label:`TARGET ${money(selected.planned_target)}`},
+    selected.planned_entry!=null && {p:selected.planned_entry,color:C.ocean,label:`ENTRY PLAN ${money(selected.planned_entry)}`},
+    selected.planned_stop!=null && {p:selected.planned_stop,color:C.err,label:`STOP ${money(selected.planned_stop)}`},
+    selected.actual_exit!=null && {p:selected.actual_exit,color:C.magenta,label:`EXIT ${money(selected.actual_exit)}`},
+  ].filter(Boolean) : [];
+  const zoneSet = selected ? [
+    selected.planned_entry!=null && selected.planned_stop!=null && {p1:selected.planned_entry,p2:selected.planned_stop,color:C.err,opacity:0.08},
+    selected.planned_entry!=null && selected.planned_target!=null && {p1:selected.planned_entry,p2:selected.planned_target,color:C.lime,opacity:0.06},
+  ].filter(Boolean) : [];
+  const markers = selected ? [
+    selected.actual_entry!=null && {time:selected.opened_at||selected.created_at,price:selected.actual_entry,kind:'entry',label:`${side} ENTRY`,value:`${money(selected.actual_entry)} · ${fmtTime(selected.opened_at||selected.created_at)}`,color:side==='SELL'?C.err:C.lime},
+    selected.actual_exit!=null && {time:selected.closed_at||selected.created_at,price:selected.actual_exit,kind:'exit',label:'EXIT',value:`${money(selected.actual_exit)} · ${fmtTime(selected.closed_at||selected.created_at)}`,color:C.magenta},
+  ].filter(Boolean) : [];
+  const checks=['Entry at valid level','Stop was logical','Target was realistic','Strategy confirmed','Market condition acceptable','Followed plan'];
+  const metrics=data?.metrics||{};
+  if(!data) return <Spinner/>;
+
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:24}}>
+      <MetricGrid items={[
+        {label:'Journal Rows',icon:'receipt_long',value:metrics.total||0,sub:'unified records',valueColor:C.cyan},
+        {label:'Open / Active',icon:'radio_button_checked',value:metrics.open||0,sub:'positions / alerts',valueColor:C.lime},
+        {label:'Closed',icon:'task_alt',value:metrics.closed||0,sub:'completed trades'},
+        {label:'Unreviewed',icon:'rate_review',value:metrics.unreviewed||0,sub:'need trader review',valueColor:C.err},
+        {label:'Total PnL',icon:'attach_money',value:money(metrics.total_pnl||0),sub:'known exits only',valueColor:(metrics.total_pnl||0)>=0?C.lime:C.err},
+        {label:'Avg R',icon:'analytics',value:metrics.avg_r!=null?`${Number(metrics.avg_r).toFixed(2)}R`:'—',sub:'known stop/exit only',valueColor:C.cyan},
+      ]}/>
+
+      <GlassCard style={{overflow:'hidden'}}>
+        <div style={{padding:'16px 18px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,flexWrap:'wrap'}}>
+          <PanelHeader icon="receipt_long" title="Orders Journal" badge={`${filtered.length} rows`}/>
+          <div style={{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}>
+            {['ALL','OPEN','CLOSED','UNREVIEWED','WINNERS','LOSERS'].map(f=><button key={f} onClick={()=>setStatusFilter(f)}
+              style={{padding:'8px 10px',borderRadius:8,cursor:'pointer',border:`1px solid ${R(statusFilter===f?C.cyan:C.outline,statusFilter===f?0.45:0.18)}`,background:statusFilter===f?R(C.cyan,0.12):R(C.surf,0.5),color:statusFilter===f?C.cyan:C.onVar,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>{f}</button>)}
+            <select value={marketFilter} onChange={e=>setMarketFilter(e.target.value)} style={{background:R(C.surfLowest,0.85),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 10px'}}>
+              {markets.map(m=><option key={m}>{m}</option>)}
+            </select>
+            <select value={sourceFilter} onChange={e=>setSourceFilter(e.target.value)} style={{background:R(C.surfLowest,0.85),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 10px',maxWidth:190}}>
+              {sources.map(s=><option key={s}>{s}</option>)}
+            </select>
+          </div>
+        </div>
+        <div style={{maxHeight:360,overflowY:'auto'}}>
+          <Table
+            cols={['Symbol','Mkt','Source','Side','Status','Entry Plan','Entry Fill','Stop','Target','Exit','Qty','PnL','R','Opened','Closed','Review']}
+            rows={filtered.map(r=>[
+              <button onClick={()=>setSelectedId(r.id)} style={{background:'transparent',border:0,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontWeight:900,color:r.id===selected?.id?C.cyan:C.onSurf}}>{r.symbol}</button>,
+              r.market,
+              String(r.source||'').slice(0,18),
+              <Pill text={r.side||'-'} color={String(r.side).toUpperCase()==='SELL'?C.err:C.lime}/>,
+              <Pill text={String(r.status||'-')} color={String(r.status||'').includes('ERROR')||String(r.status||'').includes('REJECT')?C.err:String(r.status||'').startsWith('CLOSED')?C.magenta:C.cyan}/>,
+              money(r.planned_entry),
+              money(r.actual_entry),
+              money(r.planned_stop),
+              money(r.planned_target),
+              money(r.actual_exit),
+              r.quantity!=null?Number(r.quantity).toFixed(Number(r.quantity)%1?4:0):'—',
+              <span style={{color:Number(r.pnl)>0?C.lime:Number(r.pnl)<0?C.err:C.outline}}>{money(r.pnl)}</span>,
+              r.r_multiple!=null?`${Number(r.r_multiple).toFixed(2)}R`:'—',
+              fmtTime(r.opened_at),
+              fmtTime(r.closed_at),
+              <span style={{color:(r.review?.review_status||'Unreviewed')==='Reviewed'?C.lime:C.outline}}>{r.review?.grade||r.review?.review_status||'Unreviewed'}</span>,
+            ])}
+          />
+        </div>
+      </GlassCard>
+
+      {selected && <div style={{display:'grid',gridTemplateColumns:'minmax(0,1.55fr) minmax(320px,0.75fr)',gap:18,alignItems:'start'}}>
+        <div ref={reviewChartFullscreenRef} className="strategy-chart-fullscreen-shell">
+        <GlassCard style={{overflow:'hidden'}}>
+          <div style={{padding:'14px 18px',borderBottom:`1px solid ${R(C.outline,0.12)}`,display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,flexWrap:'wrap'}}>
+            <div style={{display:'flex',alignItems:'center',gap:10}}>
+              <Icon n="candlestick_chart" size={18} color={C.cyan}/>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',color:C.onVar,textTransform:'uppercase'}}>{selected.symbol} · {TF_LABEL[tf]} Trade Review Chart</span>
+              <Pill text={selected.status} color={String(selected.status).startsWith('CLOSED')?C.magenta:C.cyan}/>
+            </div>
+            <div style={{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}>
+              {['5Min','1H','4H','1D','1W'].map(t=><button key={t} onClick={()=>setTf(t)}
+                style={{padding:'6px 9px',borderRadius:7,cursor:'pointer',border:`1px solid ${R(tf===t?C.cyan:C.outline,tf===t?0.42:0.18)}`,background:tf===t?R(C.cyan,0.12):'transparent',color:tf===t?C.cyan:C.onVar,fontFamily:"'JetBrains Mono',monospace",fontSize:10}}>{t}</button>)}
+            </div>
+          </div>
+          <div style={{padding:'12px 18px',borderBottom:`1px solid ${R(C.outline,0.1)}`,display:'flex',justifyContent:'space-between',alignItems:'center',gap:14,flexWrap:'wrap'}}>
+            <div style={{display:'flex',gap:18,alignItems:'center',flexWrap:'wrap'}}>
+              <Toggle on={showReviewRaw} label="Raw levels" onChange={setShowReviewRaw}/>
+              <Toggle on={showReviewTrade} label="Trade zones" onChange={setShowReviewTrade}/>
+              <Toggle on={showStrategy} label="BMSB 1" onChange={setShowStrategy}/>
+              <Toggle on={showStrategy2} label="BMSB 2" onChange={setShowStrategy2}/>
+              <Toggle on={showGaussian} label="Gaussian" onChange={v=>{setShowGaussian(v); if(v)setShowGaussianSignals(true);}}/>
+              <Toggle on={showGaussianSignals} label="Signals" onChange={setShowGaussianSignals}/>
+              <Toggle on={showVol} label="Volume" onChange={setShowVol}/>
+            </div>
+            <div style={{display:'flex',gap:5,flexWrap:'wrap'}}>
+              {['1M','3M','6M','YTD','1Y','ALL'].map(rg=>{
+                const active=rg===reviewChartRange;
+                return <button key={rg} onClick={()=>setReviewChartRange(rg)}
+                  style={{padding:'5px 11px',borderRadius:6,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,border:`1px solid ${active?R(C.cyan,0.4):'rgba(132,148,149,0.18)'}`,background:active?R(C.cyan,0.16):'rgba(20,20,21,0.6)',color:active?C.cyan:C.onVar}}>
+                  {rg}
+                </button>;
+              })}
+            </div>
+          </div>
+          <div style={{padding:'18px 18px'}}>
+            <CandleChart
+              bars={visibleReviewBars}
+              levels={reviewChartLevels}
+              lines={lineSet}
+              zones={zoneSet}
+              tradeMarkers={markers}
+              strategyOverlay={strategyOverlay}
+              gaussianOverlay={gaussianOverlay}
+              showVol={showVol}
+              height={640}
+              fullscreenTargetRef={reviewChartFullscreenRef}
+              fullscreenHeightOffset={245}
+              stale={barsInfo.stale}
+              lastDate={barsInfo.lastDate}
+            />
+          </div>
+        </GlassCard>
+        </div>
+
+        <GlassCard style={{padding:18}}>
+          <SectionTitle title="Trade Review"/>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:14}}>
+            {[['Source',selected.source],['Strategy',selected.strategy||'—'],['Risk',money(selected.planned_risk)],['Reward',money(selected.planned_reward)],['R:R',selected.planned_reward_risk!=null?num(selected.planned_reward_risk):'—'],['Exit',selected.exit_reason||'—']].map(([k,v])=>
+              <div key={k} style={{padding:10,borderRadius:10,background:R(C.surfLowest,0.55),border:`1px solid ${R(C.outline,0.10)}`}}>
+                <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:9,color:C.outline,textTransform:'uppercase',letterSpacing:1}}>{k}</div>
+                <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onSurf,marginTop:4,wordBreak:'break-word'}}>{v}</div>
+              </div>
+            )}
+          </div>
+          <div style={{display:'flex',gap:8,marginBottom:12}}>
+            <select value={reviewDraft.review_status||'Unreviewed'} onChange={e=>setReviewDraft(d=>({...d,review_status:e.target.value}))} style={{flex:1,background:R(C.surfLowest,0.85),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'9px'}}>
+              {['Unreviewed','Reviewed','Needs follow-up'].map(x=><option key={x}>{x}</option>)}
+            </select>
+            <select value={reviewDraft.grade||''} onChange={e=>setReviewDraft(d=>({...d,grade:e.target.value}))} style={{width:90,background:R(C.surfLowest,0.85),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'9px'}}>
+              {['','A','B','C','D','F'].map(x=><option key={x} value={x}>{x||'Grade'}</option>)}
+            </select>
+          </div>
+          <select value={reviewDraft.mistake_type||''} onChange={e=>setReviewDraft(d=>({...d,mistake_type:e.target.value}))} style={{width:'100%',marginBottom:12,background:R(C.surfLowest,0.85),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'9px'}}>
+            {['','Good trade / good process','Good trade / bad result','Bad trade / lucky result','Early entry','Chased','Bad stop','Bad target','Ignored trend','Strategy conflict','News / event risk','Execution issue'].map(x=><option key={x} value={x}>{x||'Mistake / lesson type'}</option>)}
+          </select>
+          <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:12}}>
+            {checks.map(ch=>{
+              const checked=Boolean(reviewDraft.decision_quality?.[ch]);
+              return <label key={ch} style={{display:'flex',alignItems:'center',gap:9,color:C.onVar,fontSize:12,cursor:'pointer'}}>
+                <input type="checkbox" checked={checked} onChange={e=>setReviewDraft(d=>({...d,decision_quality:{...(d.decision_quality||{}),[ch]:e.target.checked}}))}/>
+                {ch}
+              </label>;
+            })}
+          </div>
+          <textarea value={reviewDraft.notes||''} onChange={e=>setReviewDraft(d=>({...d,notes:e.target.value}))} placeholder="Trader notes: was the setup correct? Did BMSB/Gaussian confirm? What should improve?"
+            style={{width:'100%',minHeight:120,resize:'vertical',background:R(C.surfLowest,0.85),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:10,padding:12,fontFamily:"'Inter',sans-serif",fontSize:13,outline:'none',marginBottom:12}}/>
+          <button onClick={saveReview} disabled={saving} style={{width:'100%',padding:'11px 14px',borderRadius:10,cursor:saving?'wait':'pointer',border:`1px solid ${R(C.cyan,0.35)}`,background:R(C.cyan,0.12),color:C.cyan,fontFamily:"'Inter',sans-serif",fontWeight:800}}>
+            {saving?'Saving review…':'Save Review'}
+          </button>
+        </GlassCard>
+      </div>}
     </div>
   );
 }
@@ -4230,12 +4652,14 @@ const NAV = [
   {id:'intraday',   label:'Intraday',            icon:'monitoring'},
   {id:'strategy',   label:'Strategy',            icon:'insights'},
   {id:'crypto',     label:'Crypto',              icon:'currency_bitcoin'},
+  {id:'orders',     label:'Orders Journal',      icon:'receipt_long'},
   {id:'forex',      label:'Forex',               icon:'currency_exchange'},
   {id:'trades',     label:'Trades & Positions',  icon:'swap_horiz'},
   {id:'forecast',   label:'Forecast',            icon:'calculate'},
   {id:'reports',    label:'Reports',             icon:'description'},
 ];
 const PAGE_META = {
+  orders:    {title:'Orders Journal',         sub:'Plan to fill to exit to trader review', crumb:'Orders Journal'},
   dashboard: {title:'Command Overview',       sub:'All systems nominal · scan cycle 5m · paper account', crumb:'Dashboard'},
   watchlist: {title:'Watchlist',              sub:'Current stock symbols · live-saved candles · daily change map', crumb:'Watchlist'},
   preopen:   {title:'Pre-Open Briefing',      sub:'Watchlist scanned · levels mapped · awaiting the open', crumb:'Pre-Open'},
@@ -4441,6 +4865,7 @@ function App() {
               {tab==='intraday'  && <TabIntraday refreshKey={refreshKey}/>}
               {tab==='strategy'  && <TabStrategy refreshKey={refreshKey}/>}
               {tab==='crypto'    && <TabCrypto refreshKey={refreshKey}/>}
+              {tab==='orders'    && <TabOrdersJournal refreshKey={refreshKey}/>}
               {tab==='forex'     && <TabForex refreshKey={refreshKey}/>}
               {tab==='trades'    && <TabTrades refreshKey={refreshKey}/>}
               {tab==='forecast'  && <TabForecast refreshKey={refreshKey}/>}

@@ -9,6 +9,15 @@ function Stop-ById {
     param([int]$ProcessId, [string]$Why)
     if ($ProcessId -le 0 -or $ProcessId -eq $PID) { return }
     try {
+        $proc = Get-CimInstance Win32_Process -Filter "ProcessId = $ProcessId" -ErrorAction SilentlyContinue
+        $name = [string]($proc.Name)
+        $cmd = [string]($proc.CommandLine)
+        if ($name -match "^ngrok(\.exe)?$" -or $cmd -match "(^|\s)ngrok(\.exe)?\s+http\s+8550(\s|$)") {
+            Write-Host "  protected pid=$ProcessId ngrok tunnel ($Why)"
+            return
+        }
+    } catch {}
+    try {
         Stop-Process -Id $ProcessId -Force -ErrorAction SilentlyContinue
         Write-Host "  stopped pid=$ProcessId $Why"
     } catch {}
@@ -16,16 +25,9 @@ function Stop-ById {
 
 Write-Host "Stopping Vitaly's Trading Bot dashboard services..."
 
-# 1) Stop only known dashboard service windows. Do not use broad title patterns
-# that can catch unrelated terminals such as ngrok.
-$dashboardTitlePattern = "^(Vitaly's Trading Bot|Gerchik).*(React Dashboard|Execute Worker|Market Data Collector|Crypto Worker|OKX 24/7 Collector)"
-
-Get-Process |
-    Where-Object {
-        $_.MainWindowTitle -and
-        ($_.MainWindowTitle -match $dashboardTitlePattern)
-    } |
-    ForEach-Object { Stop-ById -ProcessId $_.Id -Why "window '$($_.MainWindowTitle)'" }
+# 1) Do NOT stop processes by window title. A manually launched ngrok terminal can
+# inherit a dashboard-looking title, and losing that tunnel means TradingView
+# webhook alerts fail. Stop only exact service processes below.
 
 # 2) Stop the dashboard API listener on localhost:8550. ngrok is not the
 # listener on this port; it forwards traffic to it.

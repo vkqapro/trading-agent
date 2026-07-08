@@ -44,6 +44,7 @@ from src.crypto.tradingview_webhook import (
 )
 from src.config import fx_pair_components
 from src.forex.tradingview_webhook import handle_forex_tradingview_webhook, load_forex_tradingview_state
+from src.journal.order_journal import load_order_journal, save_review
 from src.stocks.tradingview_webhook import handle_stock_tradingview_webhook, load_stock_tradingview_state
 
 app = FastAPI(title="Gerchik Bot Dashboard API", docs_url=None, redoc_url=None)
@@ -1602,6 +1603,26 @@ def api_trades():
             "executions": (stock_tv.get("executions", []) if isinstance(stock_tv, dict) else [])[:20],
         },
     }
+
+
+@app.get("/api/orders-journal")
+def api_orders_journal(limit: int = 500):
+    try:
+        return load_order_journal(limit=max(1, min(1000, int(limit or 500))))
+    except Exception as exc:
+        raise HTTPException(500, str(exc))
+
+
+@app.post("/api/orders-journal/review")
+async def api_orders_journal_review(body: dict):
+    journal_id = str(body.get("id") or body.get("journal_id") or "").strip()
+    if not journal_id:
+        raise HTTPException(400, "id is required")
+    try:
+        review = save_review(journal_id, body)
+        return {"ok": True, "id": journal_id, "review": review}
+    except Exception as exc:
+        raise HTTPException(500, str(exc))
 
 
 @app.post("/api/order/place")
