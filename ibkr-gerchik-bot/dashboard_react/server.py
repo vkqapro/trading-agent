@@ -482,6 +482,23 @@ def _latest_job_log_status(job_name: str) -> dict:
         age = max(0.0, time.time() - stat.st_mtime)
         pid_match = re.search(rf"job={re.escape(job_name)}\b[^\n]*\bpid=(\d+)", text)
         pid = pid_match.group(1) if pid_match else ""
+        completed = (
+            "Job completed:" in text
+            and (
+                f"'job': '{job_name}'" in text
+                or f'"job": "{job_name}"' in text
+                or f'"job":"{job_name}"' in text
+            )
+        )
+        if completed:
+            return {
+                "status": "complete",
+                "ok": age < 24 * 60 * 60,
+                "age": age,
+                "detail": f"completed {int(age)}s ago" + (f" - pid {pid}" if pid else ""),
+                "pid": pid,
+                "path": str(path),
+            }
         alive = _pid_alive(pid) if pid else False
         if alive:
             return {

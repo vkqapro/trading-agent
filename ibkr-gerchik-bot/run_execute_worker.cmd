@@ -1,4 +1,5 @@
 @echo off
+title Vitaly's Trading Bot - Execute Worker
 REM Restart the dashboard order-execution worker as a CLEAN restart:
 REM   1) stop any worker that is already running,
 REM   2) clear its heartbeat so the single-instance guard won't block the new one,

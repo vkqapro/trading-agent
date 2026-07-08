@@ -873,27 +873,113 @@ function CandleChart({bars, levels=[], lines=[], zones=[], strategyOverlay=null,
 
 /* ── forecast scatter ──────────────────────────────────────────────────────── */
 function FcScatter({rows=[], sc={}}) {
-  const W=420,H=210,padL=44,padR=14,padT=14,padB=34;
+  const W=620,H=300,padL=52,padR=150,padT=22,padB=42;
   const plotW=W-padL-padR, plotH=H-padT-padB;
-  const xMax=3.0, yMax=5.0;
-  const xv=v=>padL+Math.min(v,xMax)/xMax*plotW;
-  const yv=v=>padT+(1-Math.min(v,yMax)/yMax)*plotH;
   const minRR=sc.minRR??3, minA=sc.minEntryAtr??1, maxA=sc.maxEntryAtr??2;
+  const vals = (key, fallback=0) => rows.map(r=>Number(r?.[key]??fallback)).filter(Number.isFinite);
+  const pct = (arr,p) => {
+    if(!arr.length) return 0;
+    const s=[...arr].sort((a,b)=>a-b);
+    return s[Math.min(s.length-1,Math.max(0,Math.floor((s.length-1)*p)))];
+  };
+  const trades=rows.filter(r=>r.status==='FORECAST TRADE');
+  const qualified=rows.filter(r=>r.status!=='FORECAST TRADE' && r.setup_qualified);
+  const filtered=rows.filter(r=>r.status!=='FORECAST TRADE' && !r.setup_qualified);
+  const activeRows=[...trades,...qualified];
+  const activeX=activeRows.map(r=>Number(r.entry_distance_atr??0)).filter(Number.isFinite);
+  const activeY=activeRows.map(r=>Number(r.reward_risk??0)).filter(Number.isFinite);
+  const xMax=activeRows.length
+    ? Math.max(0.35, maxA*1.18, pct(activeX,0.98)*1.22)
+    : Math.max(1.0, maxA*1.25, pct(vals('entry_distance_atr',0),0.80)*1.05);
+  const yMax=activeRows.length
+    ? Math.max(5, minRR*1.35, pct(activeY,0.98)*1.15)
+    : Math.max(5, minRR*1.35, pct(vals('reward_risk',0),0.80)*1.05);
+  const xv=v=>padL+Math.min(Math.max(Number(v)||0,0),xMax)/xMax*plotW;
+  const yv=v=>padT+(1-Math.min(Math.max(Number(v)||0,0),yMax)/yMax)*plotH;
+  const filteredInView=filtered.filter(r=>(Number(r.entry_distance_atr??0)<=xMax) && (Number(r.reward_risk??0)<=yMax));
+  const filteredOutOfView=Math.max(0,filtered.length-filteredInView.length);
+  const reasonCounts={};
+  filtered.forEach(r=>{
+    const reasons=(r.reason_codes&&r.reason_codes.length?r.reason_codes:[r.reason||'filtered']);
+    reasons.forEach(reason=>{
+      const key=String(reason||'filtered').replace(/_/g,' ');
+      reasonCounts[key]=(reasonCounts[key]||0)+1;
+    });
+  });
+  const topReasons=Object.entries(reasonCounts).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const jitter=(r,i,amp=4)=>{
+    const seed=String(r.symbol||i).split('').reduce((n,ch)=>n+ch.charCodeAt(0),0)+i*17;
+    return [((seed%11)-5)/5*amp, (((seed*7)%11)-5)/5*amp];
+  };
   const els=[];
-  els.push(<rect key="qz" x={xv(minA)} y={padT} width={Math.max(0,xv(maxA)-xv(minA))} height={plotH} fill={R(C.lime,0.06)}/>);
-  els.push(<line key="rrl" x1={padL} x2={W-padR} y1={yv(minRR)} y2={yv(minRR)} stroke={R(C.lime,0.5)} strokeWidth={1} strokeDasharray="4 4"/>);
+  els.push(<rect key="bg" x={padL} y={padT} width={plotW} height={plotH} rx={10} fill={R(C.surfLowest,0.42)} stroke={R(C.outline,0.16)}/>);
+  els.push(<rect key="qz" x={xv(minA)} y={padT} width={Math.max(0,xv(maxA)-xv(minA))} height={Math.max(0,yv(minRR)-padT)} fill={R(C.lime,0.10)} stroke={R(C.lime,0.22)}/>);
+  els.push(<text key="qzt" x={xv((minA+maxA)/2)} y={padT+14} fill={C.lime} fontSize={9} fontFamily="JetBrains Mono" textAnchor="middle">QUALIFICATION ZONE</text>);
+  els.push(<line key="rrl" x1={padL} x2={padL+plotW} y1={yv(minRR)} y2={yv(minRR)} stroke={R(C.lime,0.58)} strokeWidth={1.3} strokeDasharray="5 5"/>);
   els.push(<line key="mn" x1={xv(minA)} x2={xv(minA)} y1={padT} y2={padT+plotH} stroke={R(C.cyan,0.4)} strokeWidth={1} strokeDasharray="4 4"/>);
   els.push(<line key="mx" x1={xv(maxA)} x2={xv(maxA)} y1={padT} y2={padT+plotH} stroke={R(C.cyan,0.4)} strokeWidth={1} strokeDasharray="4 4"/>);
-  [0,1,2,3].forEach(t=>els.push(<text key={'xt'+t} x={xv(t)} y={H-padB+16} fill={C.outline} fontSize={9} fontFamily="JetBrains Mono" textAnchor="middle">{t}</text>));
-  [0,1,2,3,4,5].forEach(t=>els.push(<text key={'yt'+t} x={padL-8} y={yv(t)+3} fill={C.outline} fontSize={9} fontFamily="JetBrains Mono" textAnchor="end">{t}</text>));
+  const xTicks=[0,minA,maxA,xMax].filter((v,i,a)=>a.findIndex(x=>Math.abs(x-v)<0.05)===i).sort((a,b)=>a-b);
+  const yTicks=[0,minRR,yMax].filter((v,i,a)=>a.findIndex(x=>Math.abs(x-v)<0.05)===i).sort((a,b)=>a-b);
+  xTicks.forEach((t,i)=>{
+    els.push(<line key={'xg'+i} x1={xv(t)} x2={xv(t)} y1={padT} y2={padT+plotH} stroke={R(C.outline,0.08)} strokeWidth={1}/>);
+    els.push(<text key={'xt'+i} x={xv(t)} y={H-padB+16} fill={C.outline} fontSize={9} fontFamily="JetBrains Mono" textAnchor="middle">{t.toFixed(t===0?0:1)}</text>);
+  });
+  yTicks.forEach((t,i)=>{
+    els.push(<line key={'yg'+i} x1={padL} x2={padL+plotW} y1={yv(t)} y2={yv(t)} stroke={R(C.outline,0.08)} strokeWidth={1}/>);
+    els.push(<text key={'yt'+i} x={padL-8} y={yv(t)+3} fill={C.outline} fontSize={9} fontFamily="JetBrains Mono" textAnchor="end">{t.toFixed(t===0?0:1)}</text>);
+  });
   els.push(<text key="xl" x={padL+plotW/2} y={H-4} fill={C.onVar} fontSize={9} fontFamily="JetBrains Mono" textAnchor="middle">ENTRY DISTANCE (ATR)</text>);
   els.push(<text key="yl" x={12} y={padT+plotH/2} fill={C.onVar} fontSize={9} fontFamily="JetBrains Mono" textAnchor="middle" transform={`rotate(-90 12 ${padT+plotH/2})`}>REWARD : RISK</text>);
-  rows.forEach((r,i)=>{
-    const ax=r.entry_distance_atr??0.12;
-    const acc=r.status==='FORECAST TRADE'?C.lime:(r.setup_qualified?C.cyan:C.outline);
-    const cx=xv(ax), cy=yv(r.reward_risk??0);
-    els.push(<circle key={'c'+i} cx={cx} cy={cy} r={5.5} fill={R(acc,0.85)} stroke={acc} strokeWidth={1.2}/>);
-    els.push(<text key={'cl'+i} x={cx} y={cy-9} fill={acc} fontSize={8.5} fontFamily="JetBrains Mono" textAnchor="middle">{r.symbol}</text>);
+  const bins=new Map();
+  filteredInView.forEach(r=>{
+    const bx=Math.max(0,Math.min(23,Math.floor((Math.min(Number(r.entry_distance_atr)||0,xMax)/xMax)*24)));
+    const by=Math.max(0,Math.min(13,Math.floor((Math.min(Number(r.reward_risk)||0,yMax)/yMax)*14)));
+    const key=`${bx}:${by}`;
+    bins.set(key,(bins.get(key)||0)+1);
+  });
+  const maxBin=Math.max(1,...bins.values());
+  bins.forEach((count,key)=>{
+    const [bx,by]=key.split(':').map(Number);
+    const bw=plotW/24, bh=plotH/14;
+    const alpha=0.025+Math.min(0.10,count/maxBin*0.10);
+    els.push(<rect key={'bin'+key} x={padL+bx*bw+1} y={padT+plotH-(by+1)*bh+1} width={Math.max(1,bw-2)} height={Math.max(1,bh-2)} rx={3} fill={R(C.outline,alpha)} stroke={R(C.outline,0.05)}/>);
+  });
+  qualified.forEach((r,i)=>{
+    const [jx,jy]=jitter(r,i,3.2);
+    const cx=xv(r.entry_distance_atr??0)+jx, cy=yv(r.reward_risk??0)+jy;
+    els.push(<circle key={'q'+i} cx={cx} cy={cy} r={4.2} fill={R(C.cyan,0.72)} stroke={C.cyan} strokeWidth={1}/>);
+    if(qualified.length<=12){
+      els.push(<text key={'ql'+i} x={cx} y={cy-8} fill={C.cyan} fontSize={8} fontFamily="JetBrains Mono" textAnchor="middle">{r.symbol}</text>);
+    }
+  });
+  trades.forEach((r,i)=>{
+    const [jx,jy]=jitter(r,i,2.2);
+    const cx=xv(r.entry_distance_atr??0)+jx, cy=yv(r.reward_risk??0)+jy;
+    els.push(<circle key={'tGlow'+i} cx={cx} cy={cy} r={10} fill={R(C.lime,0.16)} stroke="none"/>);
+    els.push(<circle key={'t'+i} cx={cx} cy={cy} r={6.5} fill={C.lime} stroke={C.bg} strokeWidth={2}/>);
+    els.push(<text key={'tl'+i} x={cx+9} y={cy+3} fill={C.lime} fontSize={9} fontFamily="JetBrains Mono" fontWeight="800">{r.symbol}</text>);
+  });
+  const sideX=W-padR+22;
+  els.push(<text key="lgTitle" x={sideX} y={padT+4} fill={C.onSurf} fontSize={10} fontFamily="JetBrains Mono" fontWeight="800">MAP SUMMARY</text>);
+  [
+    [C.lime,'Forecast trades',trades.length],
+    [C.cyan,'ATR qualified',qualified.length],
+    [C.outline,'Filtered total',filtered.length],
+  ].forEach(([col,label,count],i)=>{
+    const y=padT+25+i*19;
+    els.push(<circle key={'legc'+i} cx={sideX+4} cy={y-3} r={4} fill={col}/>);
+    els.push(<text key={'legt'+i} x={sideX+14} y={y} fill={C.onVar} fontSize={9} fontFamily="JetBrains Mono">{label}</text>);
+    els.push(<text key={'legn'+i} x={W-14} y={y} fill={col} fontSize={9} fontFamily="JetBrains Mono" textAnchor="end">{count}</text>);
+  });
+  if(filteredOutOfView>0){
+    els.push(<text key="outView" x={sideX} y={padT+86} fill={C.outline} fontSize={8.5} fontFamily="JetBrains Mono">{filteredOutOfView} filtered outside focus</text>);
+  }
+  els.push(<text key="reasonTitle" x={sideX} y={padT+106} fill={C.outline} fontSize={9} fontFamily="JetBrains Mono">TOP FILTERS</text>);
+  (topReasons.length?topReasons:[['none',0]]).forEach(([reason,count],i)=>{
+    const label=String(reason).slice(0,17);
+    const y=padT+125+i*16;
+    els.push(<text key={'rn'+i} x={sideX} y={y} fill={C.onVar} fontSize={8.5} fontFamily="JetBrains Mono">{label}</text>);
+    els.push(<text key={'rc'+i} x={W-14} y={y} fill={C.outline} fontSize={8.5} fontFamily="JetBrains Mono" textAnchor="end">{count}</text>);
   });
   return <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{display:'block',height:'auto'}}>{els}</svg>;
 }
@@ -2872,7 +2958,7 @@ function TabForecast({refreshKey=0}) {
             <h3 style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar,marginBottom:6,display:'flex',alignItems:'center',gap:9}}>
               <Icon n="scatter_plot" size={16} color={C.outline}/>Setup Qualification Map
             </h3>
-            <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,marginBottom:14}}>Reward:risk vs entry distance · qualified setups clear both gates</div>
+            <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,marginBottom:14}}>Reward:risk vs entry distance · X-axis focuses on forecast/ATR-qualified candidates · filtered symbols are faint background density</div>
             <FcScatter rows={rows} sc={{minRR:Number(fc.minRR),minEntryAtr:Number(fc.minEntryAtr),maxEntryAtr:Number(fc.maxEntryAtr)}}/>
           </GlassCard>
         </div>
