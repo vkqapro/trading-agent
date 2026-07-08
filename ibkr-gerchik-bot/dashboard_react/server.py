@@ -10,6 +10,8 @@ import os
 import json
 import subprocess
 import sys
+import time
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,7 +19,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from dataclasses import asdict
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
 import pandas as pd
@@ -335,6 +337,293 @@ def api_meta():
         "paper": SETTINGS.paper_trading,
         "dry_run": SETTINGS.dry_run_mode,
         "health": [asdict(h) | {"path": str(h.path), "updated_at": h.updated_at.isoformat() if h.updated_at else None} for h in health],
+    }
+
+
+@app.post("/api/system/hard-reset")
+def api_system_hard_reset():
+    reset_script = ROOT / "run_dashboard_hard_reset.cmd"
+    if not reset_script.exists():
+        raise HTTPException(500, f"Reset script not found: {reset_script}")
+    try:
+        flags = getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0) | getattr(subprocess, "CREATE_NO_WINDOW", 0)
+        subprocess.Popen(
+            ["cmd", "/c", str(reset_script)],
+            cwd=str(ROOT),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            stdin=subprocess.DEVNULL,
+            creationflags=flags,
+        )
+        return {
+            "ok": True,
+            "message": "Hard reset started. Dashboard services will close and reopen in a few seconds.",
+        }
+    except Exception as exc:
+        raise HTTPException(500, str(exc))
+
+
+def _pid_alive(pid: object) -> bool:
+    try:
+        pid_int = int(pid)
+        if pid_int <= 0:
+            return False
+        if os.name == "nt":
+            import ctypes
+
+            kernel32 = ctypes.windll.kernel32
+            handle = kernel32.OpenProcess(0x1000, False, pid_int)  # PROCESS_QUERY_LIMITED_INFORMATION
+            if not handle:
+                return False
+            try:
+                exit_code = ctypes.c_ulong()
+                if not kernel32.GetExitCodeProcess(handle, ctypes.byref(exit_code)):
+                    return False
+                return exit_code.value == 259  # STILL_ACTIVE
+            finally:
+                kernel32.CloseHandle(handle)
+        os.kill(pid_int, 0)
+        return True
+    except PermissionError:
+        return True
+    except Exception:
+        return False
+
+
+def _read_json_file(path: Path) -> dict | None:
+    try:
+        if not path.exists():
+            return None
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else None
+    except Exception:
+        return None
+
+
+def _iso_age_seconds(value: object) -> float | None:
+    if not value:
+        return None
+    try:
+        text = str(value).replace("Z", "+00:00")
+        parsed = datetime.fromisoformat(text)
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone.utc)
+        return max(0.0, (datetime.now(timezone.utc) - parsed.astimezone(timezone.utc)).total_seconds())
+    except Exception:
+        return None
+
+
+def _service_status(label: str, ok: bool, *, age: float | None = None, detail: str = "", status: str | None = None, icon: str = "settings_ethernet") -> dict:
+    if status is None:
+        status = "online" if ok else "offline"
+    return {
+        "label": label,
+        "status": status,
+        "ok": bool(ok),
+        "age_seconds": None if age is None else round(float(age), 1),
+        "detail": detail,
+        "icon": icon,
+    }
+
+
+def _lock_status(path: Path, *, stale_after_seconds: float) -> tuple[bool, float | None, str]:
+    if not path.exists():
+        return False, None, "lock not present"
+    try:
+        age = max(0.0, time.time() - path.stat().st_mtime)
+        text = path.read_text(encoding="utf-8", errors="ignore").strip()
+        pid = text.split("|", 1)[0].strip() if text else ""
+        alive = _pid_alive(pid) if pid else age <= stale_after_seconds
+        ok = alive and age <= stale_after_seconds
+        detail = f"pid {pid} · {int(age)}s ago" if pid else f"{int(age)}s ago"
+        if not ok and age > stale_after_seconds:
+            detail = f"stale · {detail}"
+        detail = detail.replace("\ufffd", "-")
+        return ok, age, detail
+    except Exception as exc:
+        return False, None, f"lock read error: {exc}"
+
+
+def _market_collector_window_status(now: datetime | None = None) -> str:
+    current = now or datetime.now(ET)
+    if current.weekday() >= 5:
+        return "waiting"
+    start = current.replace(
+        hour=SETTINGS.trading_hours.market_open_hour,
+        minute=SETTINGS.trading_hours.market_open_minute,
+        second=0,
+        microsecond=0,
+    )
+    end = current.replace(
+        hour=SETTINGS.trading_hours.market_data_collector_end_hour,
+        minute=SETTINGS.trading_hours.market_data_collector_end_minute,
+        second=0,
+        microsecond=0,
+    )
+    return "online" if start <= current <= end else "waiting"
+
+
+def _latest_job_log_status(job_name: str) -> dict:
+    runtime_dir = SETTINGS.paths.runtime_dir
+    newest: dict = {"status": "unknown", "ok": False, "age": None, "detail": "no job log found"}
+    try:
+        logs = sorted(runtime_dir.glob("application.*.log"), key=lambda path: path.stat().st_mtime, reverse=True)
+    except Exception:
+        return newest
+    marker = f"job={job_name}"
+    for path in logs:
+        try:
+            text = path.read_text(encoding="utf-8", errors="ignore")
+        except Exception:
+            continue
+        if marker not in text:
+            continue
+        stat = path.stat()
+        age = max(0.0, time.time() - stat.st_mtime)
+        pid_match = re.search(rf"job={re.escape(job_name)}\b[^\n]*\bpid=(\d+)", text)
+        pid = pid_match.group(1) if pid_match else ""
+        alive = _pid_alive(pid) if pid else False
+        if alive:
+            return {
+                "status": "running",
+                "ok": True,
+                "age": age,
+                "detail": f"pid {pid} - log {int(age)}s ago",
+                "pid": pid,
+                "path": str(path),
+            }
+        newest = {
+            "status": "complete" if age < 24 * 60 * 60 else "stale",
+            "ok": age < 24 * 60 * 60,
+            "age": age,
+            "detail": f"last log {int(age)}s ago" + (f" - pid {pid} ended" if pid else ""),
+            "pid": pid,
+            "path": str(path),
+        }
+        break
+    return newest
+
+
+def _premarket_status() -> dict:
+    status = _latest_job_log_status("premarket")
+    if status.get("status") == "running":
+        return status
+
+    today = datetime.now(ET).strftime("%Y%m%d")
+    report = SETTINGS.paths.reports_dir / f"premarket_levels_{today}.xlsx"
+    if report.exists():
+        age = max(0.0, time.time() - report.stat().st_mtime)
+        return {
+            "status": "complete",
+            "ok": True,
+            "age": age,
+            "detail": f"today's report ready - {int(age)}s ago",
+        }
+
+    current = datetime.now(ET)
+    if current.weekday() < 5 and current.hour < SETTINGS.trading_hours.market_open_hour:
+        return {
+            "status": "pending",
+            "ok": False,
+            "age": status.get("age"),
+            "detail": "no completed pre-open report yet",
+        }
+    return status
+
+
+@app.get("/api/services")
+def api_services():
+    from src.execution import order_requests as oq
+
+    execute_age = _safe(oq.worker_age_seconds, None)
+    execute_ok = bool(_safe(oq.worker_is_alive, False))
+    execute_detail = (
+        f"heartbeat {int(execute_age)}s ago"
+        if execute_age is not None
+        else "no heartbeat"
+    )
+    premarket = _premarket_status()
+
+    market_lock = SETTINGS.paths.runtime_dir / "market_data_collector.lock"
+    _, market_age, market_lock_detail = _lock_status(market_lock, stale_after_seconds=900)
+    market_pid = None
+    if market_lock.exists():
+        try:
+            market_pid = market_lock.read_text(encoding="utf-8", errors="ignore").strip().split("|", 1)[0].strip()
+        except Exception:
+            market_pid = None
+    market_process_alive = _pid_alive(market_pid) if market_pid else False
+    market_window_status = _market_collector_window_status()
+    market_status = market_window_status if market_process_alive else "offline"
+    market_ok = market_process_alive
+    market_alive_detail = (
+        f"pid {market_pid} - startup lock {int(market_age)}s old"
+        if market_pid and market_age is not None
+        else "collector process alive"
+    )
+    market_detail = (
+        f"waiting for 09:30 ET - {market_alive_detail}"
+        if market_process_alive and market_window_status == "waiting"
+        else f"collector alive - {market_alive_detail}"
+        if market_process_alive
+        else market_lock_detail
+    )
+
+    crypto_heartbeat_path = CRYPTO_SETTINGS.memory_dir / "runtime" / "worker.json"
+    crypto_hb = _read_json_file(crypto_heartbeat_path)
+    crypto_age = _iso_age_seconds((crypto_hb or {}).get("updated_at"))
+    crypto_interval = float((crypto_hb or {}).get("interval_seconds") or CRYPTO_SETTINGS.collect_interval_seconds or 300)
+    crypto_stale_after = max(crypto_interval * 3, 900.0)
+    crypto_pid = (crypto_hb or {}).get("pid")
+    crypto_process_alive = _pid_alive(crypto_pid) if crypto_pid else False
+    crypto_fresh = crypto_age is not None and crypto_age <= crypto_stale_after
+    crypto_raw_status = str((crypto_hb or {}).get("status") or "unknown").lower()
+    crypto_status = (
+        crypto_raw_status
+        if bool(crypto_hb) and crypto_process_alive and crypto_fresh
+        else "stale"
+        if bool(crypto_hb) and crypto_process_alive
+        else "offline"
+    )
+    crypto_ok = crypto_status in {"ok", "sleeping", "running"}
+    crypto_detail = (
+        f"{(crypto_hb or {}).get('status', 'unknown')} · pid {crypto_pid} · {int(crypto_age)}s ago"
+        if crypto_age is not None
+        else "no heartbeat"
+    )
+
+    crypto_detail = crypto_detail.replace("\ufffd", "-")
+
+    ibkr_ok = execute_ok or market_ok
+    ibkr_detail = (
+        "via execute worker / market-data collector"
+        if execute_ok and market_ok
+        else "via execute worker"
+        if execute_ok
+        else "via market-data collector"
+        if market_ok
+        else "no live IBKR-connected service detected"
+    )
+
+    services = [
+        _service_status("Dashboard API", True, age=0, detail="FastAPI responding", icon="dashboard"),
+        _service_status("Stock Worker", execute_ok, age=execute_age, detail=execute_detail, icon="bolt"),
+        _service_status(
+            "Pre-Open",
+            bool(premarket.get("ok")),
+            age=premarket.get("age"),
+            detail=str(premarket.get("detail") or ""),
+            status=str(premarket.get("status") or "unknown"),
+            icon="wb_twilight",
+        ),
+        _service_status("Market Data", market_ok, age=market_age, detail=market_detail, status=market_status, icon="database"),
+        _service_status("Crypto Worker", crypto_ok, age=crypto_age, detail=crypto_detail, status=crypto_status, icon="currency_bitcoin"),
+        _service_status("IBKR Bridge", ibkr_ok, age=min([a for a in [execute_age, market_age] if a is not None], default=None), detail=ibkr_detail, icon="account_balance"),
+    ]
+    return {
+        "updated_at": datetime.now(ET).isoformat(),
+        "services": services,
+        "all_ok": all(service["ok"] for service in services),
     }
 
 

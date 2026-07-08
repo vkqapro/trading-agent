@@ -34,6 +34,7 @@ start "Gerchik Market Data Collector" /min cmd /c "%~dp0run_market_data_collecto
 
 REM Start the paper order-execution worker in its own window.
 REM The launcher performs a clean restart and uses dedicated client id 11.
+echo  [OK] Starting execute worker via run_execute_worker.cmd ...
 start "Gerchik Execute Worker" cmd /k "%~dp0run_execute_worker.cmd"
 
 REM Start the 24/7 OKX crypto candle collector + analyzer.

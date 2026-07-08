@@ -401,7 +401,38 @@ def _tracked_symbol_needs_stop(position: Dict[str, object]) -> bool:
     quantity = int(float(position.get("quantity", 0) or 0))
     direction = str(position.get("direction", "")).strip().lower()
     symbol = str(position.get("symbol", "")).strip().upper()
-    return bool(symbol and quantity > 0 and direction in {"long", "short"})
+    protection_policy = str(position.get("protection_policy", "") or "").strip().lower()
+    if protection_policy == "alert_managed_no_stop":
+        return False
+    if protection_policy == "manual_unmanaged":
+        return False
+    if protection_policy == "bracket_managed":
+        return bool(symbol and quantity > 0 and direction in {"long", "short"})
+
+    # Backward compatibility for positions created before protection policies:
+    # bot/dashboard bracket positions carried stop/target metadata; broker-only
+    # or TradingView market-only positions should not be forced through this
+    # stop-integrity gate.
+    source = str(position.get("source", "") or "").strip().lower()
+    if source == "tradingview" or bool(position.get("market_only")):
+        return False
+    has_bracket_metadata = any(
+        position.get(key) not in (None, "", 0, "0")
+        for key in ("stop_loss", "target", "stop_order_id", "limit_order_id")
+    )
+    return bool(symbol and quantity > 0 and direction in {"long", "short"} and has_bracket_metadata)
+
+
+def _bot_may_manage_position_exit(position: Dict[str, object]) -> bool:
+    """Return True when intraday logic may close/trail this position."""
+
+    policy = str(position.get("protection_policy", "") or "").strip().lower()
+    if policy in {"alert_managed_no_stop", "manual_unmanaged"}:
+        return False
+    source = str(position.get("source", "") or "").strip().lower()
+    if source == "tradingview" or bool(position.get("market_only")):
+        return False
+    return True
 
 
 def _position_is_within_stop_grace(position: Dict[str, object], now: datetime) -> bool:
@@ -536,6 +567,18 @@ def sync_tracked_positions_with_broker(
 
         base_position = existing_by_symbol.get(symbol, {})
         merged_position = dict(base_position)
+        protection_policy = str(merged_position.get("protection_policy", "") or "").strip()
+        if not protection_policy:
+            source = str(merged_position.get("source", "") or "").strip().lower()
+            if source == "tradingview" or bool(merged_position.get("market_only")):
+                protection_policy = "alert_managed_no_stop"
+            elif any(
+                merged_position.get(key) not in (None, "", 0, "0")
+                for key in ("stop_loss", "target", "stop_order_id", "limit_order_id")
+            ):
+                protection_policy = "bracket_managed"
+            else:
+                protection_policy = "manual_unmanaged"
         merged_position.update(
             {
                 "symbol": symbol,
@@ -544,6 +587,7 @@ def sync_tracked_positions_with_broker(
                 "avg_cost": avg_cost,
                 "direction": direction,
                 "sec_type": sec_type,
+                "protection_policy": protection_policy,
             }
         )
 
@@ -999,9 +1043,29 @@ def manage_positions(
         stop_integrity_ok=stop_integrity_ok,
     )
     if kill_switch:
+        if "missing_protective_stop" in reasons:
+            payload = {
+                "event": "protective_stop_missing_halt",
+                "reasons": reasons,
+                "message": "Trading halted; positions were not auto-flattened.",
+            }
+            actions.append(payload)
+            LOGGER.warning(
+                "Intraday protective-stop halt: reasons=%s. Positions were not auto-flattened.",
+                reasons,
+            )
+            return {"actions": actions, "macro_risk": macro_risk, "kill_switch": True, "reasons": reasons}
         for position in tracked_positions:
             quantity = int(position.get("quantity", 0))
             if quantity <= 0:
+                continue
+            if not _bot_may_manage_position_exit(position):
+                LOGGER.warning(
+                    "Skipping auto-flatten for unmanaged position %s policy=%s source=%s",
+                    position.get("symbol"),
+                    position.get("protection_policy"),
+                    position.get("source"),
+                )
                 continue
             action = "SELL" if position.get("direction") == "long" else "BUY"
             if not dry_run:
@@ -1014,6 +1078,8 @@ def manage_positions(
         return {"actions": actions, "macro_risk": macro_risk, "kill_switch": True, "reasons": reasons}
 
     for position in tracked_positions:
+        if not _bot_may_manage_position_exit(position):
+            continue
         symbol = str(position["symbol"])
         quote = broker.get_market_price(symbol)
         current_price = float(quote.get("last", 0.0))

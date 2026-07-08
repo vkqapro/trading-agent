@@ -65,6 +65,9 @@ def _signal_from_request(request: Dict[str, Any]) -> TradeSignal:
 
 def _tracked_position_from_payload(payload: Dict[str, Any], request: Dict[str, Any]) -> Dict[str, Any]:
     signal = payload.get("signal", {}) if isinstance(payload.get("signal"), dict) else {}
+    market_only = bool(request.get("market_only") or payload.get("market_only"))
+    source = str(request.get("source") or payload.get("source") or "dashboard")
+    protection_policy = "alert_managed_no_stop" if market_only else "bracket_managed"
     return {
         "symbol": str(request.get("symbol", "")).upper(),
         "quantity": signal.get("quantity") or payload.get("quantity"),
@@ -73,7 +76,9 @@ def _tracked_position_from_payload(payload: Dict[str, Any], request: Dict[str, A
         "target": request.get("target"),
         "side": request.get("signal"),
         "strategy": request.get("strategy"),
-        "source": "dashboard",
+        "source": source,
+        "market_only": market_only,
+        "protection_policy": protection_policy,
         "opened_at": oq._now(),
         "market_order_id": payload.get("market_order_id"),
         "stop_order_id": payload.get("stop_order_id"),

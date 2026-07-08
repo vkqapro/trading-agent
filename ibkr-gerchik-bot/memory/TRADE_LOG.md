@@ -80038,3 +80038,1866 @@ Reasons:
 - **manual_override**: True
 - **entry_order_type**: MARKET
 - **broker_statuses**: {'market_order': 'Filled', 'stop_order': 'PreSubmitted', 'limit_order': 'Submitted'}
+
+## Intraday Actions (2026-07-07T15:50:01)
+- **actions**: [{'event': 'kill_switch', 'reasons': ['missing_protective_stop']}]
+- **executed**: none
+- **skipped**: [{'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'BBBY', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'BIRD', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'BAND', 'reason': 'missing_live_data'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'no_signal'}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'PDD', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['BRFUPDN', 'DJ-N']}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'NVDA', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'MU', 'reason': 'symbol_news_risk', 'risk_level': 'HIGH', 'provider_hits': ['DJ-N']}, {'symbol': 'PLTR', 'reason': 'missing_live_data'}]
+- **manual_candidates**: none
+- **trading_halted_reasons**: ['missing_protective_stop']
+- **scan_count**: 1
+- **skip_reason_summary**: {'no_signal': 38, 'symbol_news_risk': 8, 'missing_live_data': 2}
+
+## Manual Trade ROLR (2026-07-07T15:59:15)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: ROLR
+- **strategy**: level_retest_forecast
+- **level_type**: abnormal_candle
+- **direction**: long
+- **signal**: BUY
+- **entry**: 6.0
+- **stop_loss**: 5.85
+- **target**: 7.45
+- **reward_risk**: 9.666666666666645
+- **partial_targets**: []
+- **quantity**: 33
+- **market_order_id**: 428
+- **stop_order_id**: 429
+- **limit_order_id**: 430
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Manual Trade ROLR (2026-07-07T15:59:58)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: ROLR
+- **strategy**: level_retest_forecast
+- **level_type**: abnormal_candle
+- **direction**: long
+- **signal**: BUY
+- **entry**: 6.0
+- **stop_loss**: 5.0
+- **target**: 7.45
+- **reward_risk**: 1.4500000000000002
+- **partial_targets**: []
+- **quantity**: 33
+- **market_order_id**: 432
+- **stop_order_id**: 433
+- **limit_order_id**: 434
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## End Of Day (2026-07-07T16:10:33)
+- **summary**: {'date': '2026-07-07', 'daily_pnl': 0.0, 'daily_pnl_pct': 0.0, 'total_tickers_scanned': 40, 'valid_setups': 0, 'trades_taken': 0, 'skipped': 40, 'top_rejection_reasons': [('no return inside zone', 39), ('no breakout', 1)]}
+- **report**: 
+--------------------------------------------------
+Ticker: AAPL
+Level: 183.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 181.86 - 184.14
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AGPU
+Level: 39.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 38.89 - 39.11
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ALOY
+Level: 21.5
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 21.28 - 21.72
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AMAT
+Level: 463.88
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 457.0 - 477.99
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AMH
+Level: 40.29
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 40.15 - 40.35
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AMP
+Level: 396.14
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 391.69 - 398.03
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AMZN
+Level: 276.08
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 275.32 - 276.84
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ASND
+Level: 267.79
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 266.89 - 268.69
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: BAND
+Level: 73.19
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 72.66 - 73.72
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: BBBY
+Level: 14.79
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 14.73 - 14.85
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: BIDU
+Level: 157.64
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 157.16 - 158.99
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: BIRD
+Level: 16.99
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 16.95 - 17.03
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: EUR.USD
+Level: 1.06
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 1.06 - 1.06
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: GCTS
+Level: 5.01
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 4.94 - 5.1
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: GSHD
+Level: 130.02
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 129.76 - 130.65
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ICCC
+Level: 8.4
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 8.28 - 8.48
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ITIC
+Level: 288.5
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 287.57 - 291.33
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: KMDA
+Level: 9.16
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 9.14 - 9.18
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: KYTX
+Level: 10.72
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 10.65 - 10.79
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: LVO
+Level: 17.2
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 17.03 - 17.27
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MDU
+Level: 15.8
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 15.7 - 15.86
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MRLN
+Level: 4.9
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 4.81 - 4.99
+
+Decision:
+NO TRADE
+
+Reasons:
+- no breakout
+
+--------------------------------------------------
+Ticker: MSFT
+Level: 538.25
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 536.87 - 539.63
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: NCEW
+Level: 24.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 23.87 - 24.13
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: NEOV
+Level: 5.98
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 5.92 - 6.08
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: OPTX
+Level: 11.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 10.58 - 11.37
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PLTR
+Level: 64.98
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 63.18 - 65.69
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ROLR
+Level: 25.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 24.93 - 25.07
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SANM
+Level: 209.5
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 206.66 - 211.51
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SEI
+Level: 73.85
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 72.21 - 75.42
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SION
+Level: 8.95
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 8.23 - 9.36
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SKYQ
+Level: 21.36
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 21.27 - 21.45
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SMA
+Level: 38.69
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 38.58 - 38.8
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SPOT
+Level: 745.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 742.63 - 750.25
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TREX
+Level: 85.92
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 85.61 - 86.13
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TSLA
+Level: 191.76
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 188.14 - 195.1
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: VAL
+Level: 111.21
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 110.77 - 111.65
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: WTBA
+Level: 16.87
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 16.77 - 16.97
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: XP
+Level: 22.56
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 22.5 - 22.62
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ZTO
+Level: 26.78
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: MEDIUM
+- Zone: 26.73 - 26.83
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+
+## Workflow EOD (2026-07-07T16:10:33)
+- **stage**: EOD
+- **summary**: {'date': '2026-07-07', 'daily_pnl': 0.0, 'daily_pnl_pct': 0.0, 'positions': [{'symbol': 'SPOT', 'quantity': 1, 'entry': 488.08, 'stop_loss': 479.95, 'target': 535.79, 'side': 'BUY', 'strategy': 'level_breakout_forecast', 'source': 'dashboard', 'opened_at': '2026-07-07T14:53:03', 'market_order_id': 412, 'stop_order_id': 413, 'limit_order_id': 414, 'avg_cost': 492.330003, 'direction': 'long', 'sec_type': 'STK'}, {'symbol': 'SANM', 'quantity': 1, 'entry': 211.68, 'stop_loss': 206.49, 'target': 242.42, 'side': 'BUY', 'strategy': 'level_retest_forecast', 'source': 'dashboard', 'opened_at': '2026-07-07T14:54:40', 'market_order_id': 420, 'stop_order_id': 421, 'limit_order_id': 422, 'avg_cost': 207.420003, 'direction': 'long', 'sec_type': 'STK'}, {'symbol': 'LVO', 'quantity': 31, 'entry': 5.32, 'stop_loss': 5, 'target': 6.86, 'side': 'BUY', 'strategy': 'level_retest_forecast', 'source': 'dashboard', 'opened_at': '2026-07-07T14:57:52', 'market_order_id': 424, 'stop_order_id': 425, 'limit_order_id': 426, 'avg_cost': 5.28226105, 'direction': 'long', 'sec_type': 'STK'}, {'symbol': 'ROLR', 'quantity': 33, 'entry': 6.0, 'stop_loss': 5, 'target': 7.45, 'side': 'BUY', 'strategy': 'level_retest_forecast', 'source': 'dashboard', 'opened_at': '2026-07-07T15:59:59', 'market_order_id': 432, 'stop_order_id': 433, 'limit_order_id': 434, 'avg_cost': 6.56030605, 'direction': 'long', 'sec_type': 'STK'}], 'account_snapshot': {'account': [{'account': 'DU5454348', 'tag': 'AccountType', 'value': 'INDIVIDUAL', 'currency': ''}, {'account': 'DU5454348', 'tag': 'Cushion', 'value': '0.994854', 'currency': ''}, {'account': 'DU5454348', 'tag': 'LookAheadNextChange', 'value': '1783517400', 'currency': ''}, {'account': 'DU5454348', 'tag': 'AccruedCash', 'value': '28.59', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'AvailableFunds', 'value': '99927.92', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'BuyingPower', 'value': '399711.67', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'EquityWithLoanValue', 'value': '100465.01', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'ExcessLiquidity', 'value': '99977.03', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullAvailableFunds', 'value': '99927.92', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullExcessLiquidity', 'value': '99977.03', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullInitMarginReq', 'value': '537.09', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullMaintMarginReq', 'value': '488.60', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'GrossPositionValue', 'value': '1074.50', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'InitMarginReq', 'value': '537.09', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadAvailableFunds', 'value': '99927.92', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadExcessLiquidity', 'value': '99977.03', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadInitMarginReq', 'value': '537.09', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadMaintMarginReq', 'value': '488.60', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'MaintMarginReq', 'value': '488.60', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'NetLiquidation', 'value': '100494.22', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTEquity', 'value': '100494.22', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTMargin', 'value': '537.25', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'SMA', 'value': '100226.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'TotalCashValue', 'value': '99391.14', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'JPY', 'currency': 'JPY'}, {'account': 'All', 'tag': 'CashBalance', 'value': '3773190.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '3773190.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '3773190.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '0.0061784', 'currency': 'JPY'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'JPY'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'JPY', 'currency': 'JPY'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'JPY'}, {'account': 'All', 'tag': 'Currency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CashBalance', 'value': '800.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '800.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '800.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.1428734', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'EUR'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'EUR', 'currency': 'EUR'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'EUR'}, {'account': 'All', 'tag': 'Currency', 'value': 'CAD', 'currency': 'CAD'}, {'account': 'All', 'tag': 'CashBalance', 'value': '-0.05', 'currency': 'CAD'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '-0.05', 'currency': 'CAD'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '-0.05', 'currency': 'CAD'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '0.7031738', 'currency': 'CAD'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'CAD'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'CAD', 'currency': 'CAD'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'CAD'}, {'account': 'All', 'tag': 'Currency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'CashBalance', 'value': '75198.9583', 'currency': 'USD'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '75198.9583', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '28.59', 'currency': 'USD'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '1074.50', 'currency': 'USD'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '76302.0457', 'currency': 'USD'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '-5.49', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '-0.13', 'currency': 'USD'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CashBalance', 'value': '99391.1359', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '99391.1359', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '28.59', 'currency': 'BASE'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '1074.50', 'currency': 'BASE'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '100494.2232', 'currency': 'BASE'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '-5.49', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '-0.13', 'currency': 'BASE'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'BASE'}], 'positions': [{'symbol': 'SPOT', 'currency': 'USD', 'local_symbol': 'SPOT', 'position': 1.0, 'avg_cost': 492.330003, 'sec_type': 'STK'}, {'symbol': 'SANM', 'currency': 'USD', 'local_symbol': 'SANM', 'position': 1.0, 'avg_cost': 207.420003, 'sec_type': 'STK'}, {'symbol': 'LVO', 'currency': 'USD', 'local_symbol': 'LVO', 'position': 31.0, 'avg_cost': 5.28226105, 'sec_type': 'STK'}, {'symbol': 'ROLR', 'currency': 'USD', 'local_symbol': 'ROLR', 'position': 33.0, 'avg_cost': 6.56030605, 'sec_type': 'STK'}], 'open_orders': []}, 'blocked': False, 'reasons': [], 'decision_summary': {'total_tickers_scanned': 40, 'valid_setups': 0, 'trades_taken': 0, 'skipped': 40, 'top_rejection_reasons': [('no return inside zone', 39), ('no breakout', 1)], 'open_symbols': ['LVO', 'ROLR', 'SANM', 'SPOT'], 'ticker_sections': ['--------------------------------------------------\nTicker: AAPL\nLevel: 183.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 181.86 - 184.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AGPU\nLevel: 39.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 38.89 - 39.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ALOY\nLevel: 21.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 21.28 - 21.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AMAT\nLevel: 463.88\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 457.0 - 477.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AMH\nLevel: 40.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 40.15 - 40.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AMP\nLevel: 396.14\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 391.69 - 398.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AMZN\nLevel: 276.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 275.32 - 276.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ASND\nLevel: 267.79\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 266.89 - 268.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: BAND\nLevel: 73.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 72.66 - 73.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: BBBY\nLevel: 14.79\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 14.73 - 14.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: BIDU\nLevel: 157.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 157.16 - 158.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: BIRD\nLevel: 16.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 16.95 - 17.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: EUR.USD\nLevel: 1.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1.06 - 1.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: GCTS\nLevel: 5.01\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.94 - 5.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: GSHD\nLevel: 130.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 129.76 - 130.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ICCC\nLevel: 8.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 8.28 - 8.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ITIC\nLevel: 288.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 287.57 - 291.33\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: KMDA\nLevel: 9.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 9.14 - 9.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: KYTX\nLevel: 10.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.65 - 10.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: LVO\nLevel: 17.2\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 17.03 - 17.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MDU\nLevel: 15.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 15.7 - 15.86\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MRLN\nLevel: 4.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.81 - 4.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no breakout\n', '--------------------------------------------------\nTicker: MSFT\nLevel: 538.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 536.87 - 539.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: NCEW\nLevel: 24.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 23.87 - 24.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: NEOV\nLevel: 5.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 5.92 - 6.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: OPTX\nLevel: 11.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.58 - 11.37\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PLTR\nLevel: 64.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 63.18 - 65.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ROLR\nLevel: 25.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 24.93 - 25.07\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SANM\nLevel: 209.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 206.66 - 211.51\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SEI\nLevel: 73.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 72.21 - 75.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SION\nLevel: 8.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 8.23 - 9.36\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SKYQ\nLevel: 21.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 21.27 - 21.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SMA\nLevel: 38.69\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 38.58 - 38.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SPOT\nLevel: 745.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 742.63 - 750.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TREX\nLevel: 85.92\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 85.61 - 86.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TSLA\nLevel: 191.76\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 188.14 - 195.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: VAL\nLevel: 111.21\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 110.77 - 111.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: WTBA\nLevel: 16.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 16.77 - 16.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: XP\nLevel: 22.56\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 22.5 - 22.62\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ZTO\nLevel: 26.78\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 26.73 - 26.83\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n']}, 'report_text': '--------------------------------------------------\nTicker: AAPL\nLevel: 183.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 181.86 - 184.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AGPU\nLevel: 39.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 38.89 - 39.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ALOY\nLevel: 21.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 21.28 - 21.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMAT\nLevel: 463.88\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 457.0 - 477.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMH\nLevel: 40.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 40.15 - 40.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMP\nLevel: 396.14\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 391.69 - 398.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMZN\nLevel: 276.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 275.32 - 276.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ASND\nLevel: 267.79\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 266.89 - 268.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BAND\nLevel: 73.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 72.66 - 73.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BBBY\nLevel: 14.79\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 14.73 - 14.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BIDU\nLevel: 157.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 157.16 - 158.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BIRD\nLevel: 16.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 16.95 - 17.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EUR.USD\nLevel: 1.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1.06 - 1.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GCTS\nLevel: 5.01\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.94 - 5.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GSHD\nLevel: 130.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 129.76 - 130.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ICCC\nLevel: 8.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 8.28 - 8.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ITIC\nLevel: 288.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 287.57 - 291.33\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KMDA\nLevel: 9.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 9.14 - 9.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KYTX\nLevel: 10.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.65 - 10.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LVO\nLevel: 17.2\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 17.03 - 17.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MDU\nLevel: 15.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 15.7 - 15.86\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MRLN\nLevel: 4.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.81 - 4.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no breakout\n\n--------------------------------------------------\nTicker: MSFT\nLevel: 538.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 536.87 - 539.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NCEW\nLevel: 24.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 23.87 - 24.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NEOV\nLevel: 5.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 5.92 - 6.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: OPTX\nLevel: 11.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.58 - 11.37\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PLTR\nLevel: 64.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 63.18 - 65.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ROLR\nLevel: 25.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 24.93 - 25.07\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SANM\nLevel: 209.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 206.66 - 211.51\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SEI\nLevel: 73.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 72.21 - 75.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SION\nLevel: 8.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 8.23 - 9.36\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SKYQ\nLevel: 21.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 21.27 - 21.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SMA\nLevel: 38.69\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 38.58 - 38.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SPOT\nLevel: 745.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 742.63 - 750.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TREX\nLevel: 85.92\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 85.61 - 86.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TSLA\nLevel: 191.76\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 188.14 - 195.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VAL\nLevel: 111.21\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 110.77 - 111.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WTBA\nLevel: 16.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 16.77 - 16.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: XP\nLevel: 22.56\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 22.5 - 22.62\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ZTO\nLevel: 26.78\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 26.73 - 26.83\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n'}
+```json
+{
+  "stage": "EOD",
+  "payload": {
+    "summary": {
+      "date": "2026-07-07",
+      "daily_pnl": 0.0,
+      "daily_pnl_pct": 0.0,
+      "positions": [
+        {
+          "symbol": "SPOT",
+          "quantity": 1,
+          "entry": 488.08,
+          "stop_loss": 479.95,
+          "target": 535.79,
+          "side": "BUY",
+          "strategy": "level_breakout_forecast",
+          "source": "dashboard",
+          "opened_at": "2026-07-07T14:53:03",
+          "market_order_id": 412,
+          "stop_order_id": 413,
+          "limit_order_id": 414,
+          "avg_cost": 492.330003,
+          "direction": "long",
+          "sec_type": "STK"
+        },
+        {
+          "symbol": "SANM",
+          "quantity": 1,
+          "entry": 211.68,
+          "stop_loss": 206.49,
+          "target": 242.42,
+          "side": "BUY",
+          "strategy": "level_retest_forecast",
+          "source": "dashboard",
+          "opened_at": "2026-07-07T14:54:40",
+          "market_order_id": 420,
+          "stop_order_id": 421,
+          "limit_order_id": 422,
+          "avg_cost": 207.420003,
+          "direction": "long",
+          "sec_type": "STK"
+        },
+        {
+          "symbol": "LVO",
+          "quantity": 31,
+          "entry": 5.32,
+          "stop_loss": 5,
+          "target": 6.86,
+          "side": "BUY",
+          "strategy": "level_retest_forecast",
+          "source": "dashboard",
+          "opened_at": "2026-07-07T14:57:52",
+          "market_order_id": 424,
+          "stop_order_id": 425,
+          "limit_order_id": 426,
+          "avg_cost": 5.28226105,
+          "direction": "long",
+          "sec_type": "STK"
+        },
+        {
+          "symbol": "ROLR",
+          "quantity": 33,
+          "entry": 6.0,
+          "stop_loss": 5,
+          "target": 7.45,
+          "side": "BUY",
+          "strategy": "level_retest_forecast",
+          "source": "dashboard",
+          "opened_at": "2026-07-07T15:59:59",
+          "market_order_id": 432,
+          "stop_order_id": 433,
+          "limit_order_id": 434,
+          "avg_cost": 6.56030605,
+          "direction": "long",
+          "sec_type": "STK"
+        }
+      ],
+      "account_snapshot": {
+        "account": [
+          {
+            "account": "DU5454348",
+            "tag": "AccountType",
+            "value": "INDIVIDUAL",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "Cushion",
+            "value": "0.994854",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadNextChange",
+            "value": "1783517400",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "AccruedCash",
+            "value": "28.59",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "AvailableFunds",
+            "value": "99927.92",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "BuyingPower",
+            "value": "399711.67",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "EquityWithLoanValue",
+            "value": "100465.01",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "ExcessLiquidity",
+            "value": "99977.03",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullAvailableFunds",
+            "value": "99927.92",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullExcessLiquidity",
+            "value": "99977.03",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullInitMarginReq",
+            "value": "537.09",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullMaintMarginReq",
+            "value": "488.60",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "GrossPositionValue",
+            "value": "1074.50",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "InitMarginReq",
+            "value": "537.09",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadAvailableFunds",
+            "value": "99927.92",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadExcessLiquidity",
+            "value": "99977.03",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadInitMarginReq",
+            "value": "537.09",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadMaintMarginReq",
+            "value": "488.60",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "MaintMarginReq",
+            "value": "488.60",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "NetLiquidation",
+            "value": "100494.22",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "RegTEquity",
+            "value": "100494.22",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "RegTMargin",
+            "value": "537.25",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "SMA",
+            "value": "100226.00",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "TotalCashValue",
+            "value": "99391.14",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "Currency",
+            "value": "JPY",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "CashBalance",
+            "value": "3773190.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "TotalCashBalance",
+            "value": "3773190.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "AccruedCash",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "StockMarketValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "OptionMarketValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "FutureOptionValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "FuturesPNL",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "NetLiquidationByCurrency",
+            "value": "3773190.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "UnrealizedPnL",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "RealizedPnL",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "ExchangeRate",
+            "value": "0.0061784",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "FundValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "NetDividend",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "MutualFundValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "MoneyMarketFundValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "CorporateBondValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "TBondValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "TBillValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "WarrantValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "FxCashBalance",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "AccountOrGroup",
+            "value": "All",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "RealCurrency",
+            "value": "JPY",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "IssuerOptionValue",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "Cryptocurrency",
+            "value": "0.00",
+            "currency": "JPY"
+          },
+          {
+            "account": "All",
+            "tag": "Currency",
+            "value": "EUR",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "CashBalance",
+            "value": "800.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "TotalCashBalance",
+            "value": "800.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "AccruedCash",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "StockMarketValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "OptionMarketValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "FutureOptionValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "FuturesPNL",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "NetLiquidationByCurrency",
+            "value": "800.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "UnrealizedPnL",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "RealizedPnL",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "ExchangeRate",
+            "value": "1.1428734",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "FundValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "NetDividend",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "MutualFundValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "MoneyMarketFundValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "CorporateBondValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "TBondValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "TBillValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "WarrantValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "FxCashBalance",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "AccountOrGroup",
+            "value": "All",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "RealCurrency",
+            "value": "EUR",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "IssuerOptionValue",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "Cryptocurrency",
+            "value": "0.00",
+            "currency": "EUR"
+          },
+          {
+            "account": "All",
+            "tag": "Currency",
+            "value": "CAD",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "CashBalance",
+            "value": "-0.05",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "TotalCashBalance",
+            "value": "-0.05",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "AccruedCash",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "StockMarketValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "OptionMarketValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "FutureOptionValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "FuturesPNL",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "NetLiquidationByCurrency",
+            "value": "-0.05",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "UnrealizedPnL",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "RealizedPnL",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "ExchangeRate",
+            "value": "0.7031738",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "FundValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "NetDividend",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "MutualFundValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "MoneyMarketFundValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "CorporateBondValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "TBondValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "TBillValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "WarrantValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "FxCashBalance",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "AccountOrGroup",
+            "value": "All",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "RealCurrency",
+            "value": "CAD",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "IssuerOptionValue",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "Cryptocurrency",
+            "value": "0.00",
+            "currency": "CAD"
+          },
+          {
+            "account": "All",
+            "tag": "Currency",
+            "value": "USD",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "CashBalance",
+            "value": "75198.9583",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "TotalCashBalance",
+            "value": "75198.9583",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "AccruedCash",
+            "value": "28.59",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "StockMarketValue",
+            "value": "1074.50",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "OptionMarketValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FutureOptionValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FuturesPNL",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "NetLiquidationByCurrency",
+            "value": "76302.0457",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "UnrealizedPnL",
+            "value": "-5.49",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "RealizedPnL",
+            "value": "-0.13",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "ExchangeRate",
+            "value": "1.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FundValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "NetDividend",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "MutualFundValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "MoneyMarketFundValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "CorporateBondValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "TBondValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "TBillValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "WarrantValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FxCashBalance",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "AccountOrGroup",
+            "value": "All",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "RealCurrency",
+            "value": "USD",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "IssuerOptionValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "Cryptocurrency",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "Currency",
+            "value": "BASE",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "CashBalance",
+            "value": "99391.1359",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "TotalCashBalance",
+            "value": "99391.1359",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "AccruedCash",
+            "value": "28.59",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "StockMarketValue",
+            "value": "1074.50",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "OptionMarketValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FutureOptionValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FuturesPNL",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "NetLiquidationByCurrency",
+            "value": "100494.2232",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "UnrealizedPnL",
+            "value": "-5.49",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "RealizedPnL",
+            "value": "-0.13",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "ExchangeRate",
+            "value": "1.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FundValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "NetDividend",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "MutualFundValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "MoneyMarketFundValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "CorporateBondValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "TBondValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "TBillValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "WarrantValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FxCashBalance",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "AccountOrGroup",
+            "value": "All",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "RealCurrency",
+            "value": "BASE",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "IssuerOptionValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "Cryptocurrency",
+            "value": "0.00",
+            "currency": "BASE"
+          }
+        ],
+        "positions": [
+          {
+            "symbol": "SPOT",
+            "currency": "USD",
+            "local_symbol": "SPOT",
+            "position": 1.0,
+            "avg_cost": 492.330003,
+            "sec_type": "STK"
+          },
+          {
+            "symbol": "SANM",
+            "currency": "USD",
+            "local_symbol": "SANM",
+            "position": 1.0,
+            "avg_cost": 207.420003,
+            "sec_type": "STK"
+          },
+          {
+            "symbol": "LVO",
+            "currency": "USD",
+            "local_symbol": "LVO",
+            "position": 31.0,
+            "avg_cost": 5.28226105,
+            "sec_type": "STK"
+          },
+          {
+            "symbol": "ROLR",
+            "currency": "USD",
+            "local_symbol": "ROLR",
+            "position": 33.0,
+            "avg_cost": 6.56030605,
+            "sec_type": "STK"
+          }
+        ],
+        "open_orders": []
+      },
+      "blocked": false,
+      "reasons": [],
+      "decision_summary": {
+        "total_tickers_scanned": 40,
+        "valid_setups": 0,
+        "trades_taken": 0,
+        "skipped": 40,
+        "top_rejection_reasons": [
+          [
+            "no return inside zone",
+            39
+          ],
+          [
+            "no breakout",
+            1
+          ]
+        ],
+        "open_symbols": [
+          "LVO",
+          "ROLR",
+          "SANM",
+          "SPOT"
+        ],
+        "ticker_sections": [
+          "--------------------------------------------------\nTicker: AAPL\nLevel: 183.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 181.86 - 184.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AGPU\nLevel: 39.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 38.89 - 39.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ALOY\nLevel: 21.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 21.28 - 21.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AMAT\nLevel: 463.88\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 457.0 - 477.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AMH\nLevel: 40.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 40.15 - 40.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AMP\nLevel: 396.14\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 391.69 - 398.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AMZN\nLevel: 276.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 275.32 - 276.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ASND\nLevel: 267.79\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 266.89 - 268.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: BAND\nLevel: 73.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 72.66 - 73.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: BBBY\nLevel: 14.79\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 14.73 - 14.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: BIDU\nLevel: 157.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 157.16 - 158.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: BIRD\nLevel: 16.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 16.95 - 17.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: EUR.USD\nLevel: 1.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1.06 - 1.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: GCTS\nLevel: 5.01\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.94 - 5.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: GSHD\nLevel: 130.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 129.76 - 130.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ICCC\nLevel: 8.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 8.28 - 8.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ITIC\nLevel: 288.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 287.57 - 291.33\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: KMDA\nLevel: 9.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 9.14 - 9.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: KYTX\nLevel: 10.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.65 - 10.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: LVO\nLevel: 17.2\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 17.03 - 17.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MDU\nLevel: 15.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 15.7 - 15.86\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MRLN\nLevel: 4.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.81 - 4.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no breakout\n",
+          "--------------------------------------------------\nTicker: MSFT\nLevel: 538.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 536.87 - 539.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: NCEW\nLevel: 24.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 23.87 - 24.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: NEOV\nLevel: 5.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 5.92 - 6.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: OPTX\nLevel: 11.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.58 - 11.37\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PLTR\nLevel: 64.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 63.18 - 65.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ROLR\nLevel: 25.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 24.93 - 25.07\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SANM\nLevel: 209.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 206.66 - 211.51\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SEI\nLevel: 73.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 72.21 - 75.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SION\nLevel: 8.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 8.23 - 9.36\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SKYQ\nLevel: 21.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 21.27 - 21.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SMA\nLevel: 38.69\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 38.58 - 38.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SPOT\nLevel: 745.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 742.63 - 750.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TREX\nLevel: 85.92\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 85.61 - 86.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TSLA\nLevel: 191.76\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 188.14 - 195.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: VAL\nLevel: 111.21\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 110.77 - 111.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: WTBA\nLevel: 16.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 16.77 - 16.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: XP\nLevel: 22.56\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 22.5 - 22.62\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ZTO\nLevel: 26.78\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 26.73 - 26.83\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n"
+        ]
+      },
+      "report_text": "--------------------------------------------------\nTicker: AAPL\nLevel: 183.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 181.86 - 184.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AGPU\nLevel: 39.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 38.89 - 39.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ALOY\nLevel: 21.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 21.28 - 21.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMAT\nLevel: 463.88\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 457.0 - 477.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMH\nLevel: 40.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 40.15 - 40.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMP\nLevel: 396.14\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 391.69 - 398.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMZN\nLevel: 276.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 275.32 - 276.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ASND\nLevel: 267.79\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 266.89 - 268.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BAND\nLevel: 73.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 72.66 - 73.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BBBY\nLevel: 14.79\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 14.73 - 14.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BIDU\nLevel: 157.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 157.16 - 158.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BIRD\nLevel: 16.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 16.95 - 17.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EUR.USD\nLevel: 1.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1.06 - 1.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GCTS\nLevel: 5.01\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.94 - 5.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GSHD\nLevel: 130.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 129.76 - 130.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ICCC\nLevel: 8.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 8.28 - 8.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ITIC\nLevel: 288.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 287.57 - 291.33\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KMDA\nLevel: 9.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 9.14 - 9.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KYTX\nLevel: 10.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.65 - 10.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LVO\nLevel: 17.2\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 17.03 - 17.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MDU\nLevel: 15.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 15.7 - 15.86\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MRLN\nLevel: 4.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 4.81 - 4.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no breakout\n\n--------------------------------------------------\nTicker: MSFT\nLevel: 538.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 536.87 - 539.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NCEW\nLevel: 24.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 23.87 - 24.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NEOV\nLevel: 5.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 5.92 - 6.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: OPTX\nLevel: 11.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 10.58 - 11.37\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PLTR\nLevel: 64.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 63.18 - 65.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ROLR\nLevel: 25.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 24.93 - 25.07\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SANM\nLevel: 209.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 206.66 - 211.51\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SEI\nLevel: 73.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 72.21 - 75.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SION\nLevel: 8.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 8.23 - 9.36\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SKYQ\nLevel: 21.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 21.27 - 21.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SMA\nLevel: 38.69\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 38.58 - 38.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SPOT\nLevel: 745.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 742.63 - 750.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TREX\nLevel: 85.92\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 85.61 - 86.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TSLA\nLevel: 191.76\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 188.14 - 195.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VAL\nLevel: 111.21\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 110.77 - 111.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WTBA\nLevel: 16.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 16.77 - 16.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: XP\nLevel: 22.56\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 22.5 - 22.62\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ZTO\nLevel: 26.78\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: MEDIUM\n- Zone: 26.73 - 26.83\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n"
+    }
+  }
+}
+```
+
+## Manual Trade MRSH (2026-07-07T23:07:06)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: MRSH
+- **strategy**: strategy_manual_setup
+- **level_type**: dashboard_manual
+- **direction**: long
+- **signal**: BUY
+- **entry**: 178.4
+- **stop_loss**: 171.6
+- **target**: 198.80000000000004
+- **reward_risk**: 3.0
+- **partial_targets**: []
+- **quantity**: 1
+- **market_order_id**: 443
+- **stop_order_id**: 444
+- **limit_order_id**: 445
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Manual Trade SRAD (2026-07-07T23:31:42)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: SRAD
+- **strategy**: strategy_manual_setup
+- **level_type**: dashboard_manual
+- **direction**: long
+- **signal**: BUY
+- **entry**: 16.4
+- **stop_loss**: 14.7
+- **target**: 21.499999999999996
+- **reward_risk**: 3.0
+- **partial_targets**: []
+- **quantity**: 14
+- **market_order_id**: 447
+- **stop_order_id**: 448
+- **limit_order_id**: 449
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}

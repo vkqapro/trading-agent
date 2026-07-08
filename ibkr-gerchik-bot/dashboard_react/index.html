@@ -16,6 +16,7 @@ html,body,#root{height:100%;width:100%;overflow:hidden}
 ::-webkit-scrollbar-thumb{background:#3b494b;border-radius:4px}
 ::-webkit-scrollbar-thumb:hover{background:#7df4ff}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes spin{to{transform:rotate(360deg)}}
 .mso{font-family:'Material Symbols Outlined';font-weight:normal;font-style:normal;
   line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;
   white-space:nowrap;word-wrap:normal;direction:ltr;-webkit-font-feature-settings:'liga';
@@ -1013,6 +1014,7 @@ function NewsModal({items=[], onClose}) {
 ═══════════════════════════════════════════════════════════════════════════ */
 function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
   const [data, setData] = useState(null);
+  const [services, setServices] = useState(null);
   const [chartSymbol, setChartSymbol] = useState('AAPL');
   const [tickerQuery, setTickerQuery] = useState('AAPL');
   const [tf, setTf] = useState('1H');
@@ -1036,6 +1038,18 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
       setTickerQuery(d.symbols[0]);
     }
   }); },[refreshKey]);
+  useEffect(()=>{
+    let alive = true;
+    const loadServices = () => {
+      fetch(`${API}/services`)
+        .then(r=>r.json())
+        .then(d=>{ if(alive) setServices(d); })
+        .catch(()=>{ if(alive) setServices(null); });
+    };
+    loadServices();
+    const timer = setInterval(loadServices, 5000);
+    return ()=>{ alive = false; clearInterval(timer); };
+  },[refreshKey]);
   useEffect(()=>{
     const apitf = TF_API[tf]||'daily';
     fetch(`${API}/bars/${chartSymbol}/${apitf}`).then(r=>r.json()).then(d=>{setBars(d.bars||[]);setBarsInfo({stale:d.stale,lastDate:d.last_date});});
@@ -1099,11 +1113,64 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
 
   const visCount = RANGE_COUNTS[range]||9999;
   const visBars = bars.slice(-visCount);
+  const serviceRows = services?.services || [
+    {label:'Dashboard API', status:'loading', ok:true, detail:'checking service health', icon:'dashboard'},
+    {label:'Stock Worker', status:'loading', ok:false, detail:'checking heartbeat', icon:'bolt'},
+    {label:'Pre-Open', status:'loading', ok:false, detail:'checking pre-open job', icon:'wb_twilight'},
+    {label:'Market Data', status:'loading', ok:false, detail:'checking collector lock', icon:'database'},
+    {label:'Crypto Worker', status:'loading', ok:false, detail:'checking heartbeat', icon:'currency_bitcoin'},
+    {label:'IBKR Bridge', status:'loading', ok:false, detail:'checking connection path', icon:'account_balance'},
+  ];
+  const serviceSummaryOk = services?.all_ok === true;
 
   const fmtP = v => v==null?'—': typeof v==='number'?`$${v.toFixed(2)}`:v;
 
   return (
     <div style={{display:'flex',flexDirection:'column',gap:28}}>
+      <GlassCard style={{padding:16}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,marginBottom:12,flexWrap:'wrap'}}>
+          <SectionTitle title="Service Health"/>
+          <Pill
+            text={services ? (serviceSummaryOk ? 'ALL ONLINE' : 'CHECK SERVICES') : 'CHECKING'}
+            color={services ? (serviceSummaryOk ? C.lime : C.err) : C.cyan}
+          />
+        </div>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(190px,1fr))',gap:10}}>
+          {serviceRows.map((s,i)=>{
+            const ok = s.ok === true;
+            const statusKey = String(s.status||'').toLowerCase();
+            const softStatus = ['loading','starting','waiting','pending','running'].includes(statusKey);
+            const color = softStatus ? C.cyan : ok ? C.lime : C.err;
+            return (
+              <div key={`${s.label}-${i}`} style={{
+                display:'flex',
+                gap:10,
+                alignItems:'flex-start',
+                padding:'12px 13px',
+                border:`1px solid ${R(color, softStatus?0.25:0.38)}`,
+                borderRadius:14,
+                background:`linear-gradient(135deg, ${R(color,0.12)}, ${R(C.surf,0.52)})`,
+                boxShadow: ok ? `0 0 18px ${R(color,0.10)}` : 'none',
+                minHeight:84,
+              }}>
+                <Icon n={s.icon||'settings_ethernet'} size={18} color={color}/>
+                <div style={{minWidth:0}}>
+                  <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:1.4,textTransform:'uppercase',color:C.muted,marginBottom:6}}>
+                    {s.label}
+                  </div>
+                  <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:13,fontWeight:900,color,marginBottom:6}}>
+                    {String(s.status||'unknown').toUpperCase()}
+                  </div>
+                  <div style={{fontSize:11,lineHeight:1.35,color:C.onSurf,opacity:0.78,wordBreak:'break-word'}}>
+                    {s.detail || 'no detail'}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </GlassCard>
+
       <MetricGrid items={metricCards}/>
 
 
@@ -2553,6 +2620,9 @@ function TabForecast({refreshKey=0}) {
   const [selBarsInfo, setSelBarsInfo] = useState({stale:false,lastDate:null});
   const [tf, setTf] = useState('1D');
   const [fcChartRange, setFcChartRange] = useState('ALL');
+  const [fcSetupDraft, setFcSetupDraft] = useState({key:null,entry:'',stop:'',target:'',rr:'',rrLocked:false});
+  const [fcOrderType, setFcOrderType] = useState('LMT');
+  const [fcSetupQty, setFcSetupQty] = useState({key:null,value:''});
 
   const runCalc = useCallback(async(inputs)=>{
     setLoading(true);
@@ -2594,6 +2664,77 @@ function TabForecast({refreshKey=0}) {
     || rows.find(r=>r.symbol===fcSel)
     || rows[0]
     || null;
+  const selectedForecastKey = selRow ? forecastRowKey(selRow) : null;
+
+  useEffect(()=>{
+    if(!selRow || !selectedForecastKey) return;
+    setFcSetupDraft(prev=>{
+      if(prev.key===selectedForecastKey) return prev;
+      return {
+        key:selectedForecastKey,
+        entry:Number(selRow.entry||0)>0 ? Number(selRow.entry||0).toFixed(2) : '',
+        stop:Number(selRow.stop||0)>0 ? Number(selRow.stop||0).toFixed(2) : '',
+        target:Number(selRow.target||0)>0 ? Number(selRow.target||0).toFixed(2) : '',
+        rr:Number(selRow.reward_risk||0)>0 ? Number(selRow.reward_risk||0).toFixed(2) : '',
+        rrLocked:false,
+      };
+    });
+    setFcSetupQty(prev=>{
+      if(prev.key===selectedForecastKey) return prev;
+      return {key:selectedForecastKey,value:String(Math.max(0,Math.floor(Number(selRow.quantity||0)||0)))};
+    });
+  },[selectedForecastKey, selRow]);
+
+  const fcSetup = useMemo(()=>{
+    if(!selRow) return null;
+    const entry=Number(fcSetupDraft.entry);
+    const stop=Number(fcSetupDraft.stop);
+    const rrInput=Number(fcSetupDraft.rr);
+    const targetInput=Number(fcSetupDraft.target);
+    if(!Number.isFinite(entry)||entry<=0||!Number.isFinite(stop)||stop<=0) return null;
+    const isBuy=String(selRow.signal||'BUY').toUpperCase()==='BUY';
+    const riskPerShare=Math.abs(entry-stop);
+    if(riskPerShare<=0) return null;
+    const target=fcSetupDraft.rrLocked && Number.isFinite(rrInput) && rrInput>0
+      ? (isBuy ? entry + riskPerShare*rrInput : entry - riskPerShare*rrInput)
+      : targetInput;
+    if(!Number.isFinite(target)||target<=0) return null;
+    const validDirection=isBuy ? stop<entry && target>entry : stop>entry && target<entry;
+    if(!validDirection) return null;
+    const rewardPerShare=Math.abs(target-entry);
+    if(rewardPerShare<=0) return null;
+    const qtyValue = fcSetupQty.key===selectedForecastKey ? fcSetupQty.value : selRow.quantity;
+    const quantity=Math.max(0,Math.floor(Number(qtyValue)||0));
+    const rr=rewardPerShare/riskPerShare;
+    return {
+      symbol:selRow.symbol,
+      signal:selRow.signal,
+      entry,
+      stop,
+      target,
+      reward_risk:rr,
+      quantity,
+      risk_amount:quantity*riskPerShare,
+      potential_reward:quantity*rewardPerShare,
+      position_value:quantity*entry,
+      risk_per_share:riskPerShare,
+      reward_per_share:rewardPerShare,
+      valid:true,
+      row:{
+        ...selRow,
+        entry,
+        stop,
+        target,
+        reward_risk:rr,
+        quantity,
+        risk_amount:quantity*riskPerShare,
+        potential_reward:quantity*rewardPerShare,
+        position_value:quantity*entry,
+        entry_order_type:fcOrderType==='MKT'?'MARKET':'LIMIT',
+        adjusted_from:'forecast_chart',
+      },
+    };
+  },[selRow, selectedForecastKey, fcSetupDraft, fcOrderType, fcSetupQty]);
 
   const fcInputDefs = [
     {key:'equity',label:'Account equity',prefix:'$',suffix:'',step:5000},
@@ -2611,10 +2752,10 @@ function TabForecast({refreshKey=0}) {
     {key:'maxEntryAtr',label:'Max entry dist',prefix:'',suffix:'ATR',step:0.25},
   ];
 
-  const selLines = selRow ? [
-    selRow.target!=null && {p:selRow.target,color:C.lime,label:`TARGET ${fmtP2(selRow.target)}`},
-    selRow.entry!=null  && {p:selRow.entry, color:C.ocean,label:`ENTRY ${fmtP2(selRow.entry)}`},
-    selRow.stop!=null   && {p:selRow.stop,  color:C.err, label:`STOP ${fmtP2(selRow.stop)}`},
+  const selLines = fcSetup ? [
+    {p:fcSetup.target,color:C.lime,label:`TARGET ${fmtP2(fcSetup.target)}`},
+    {p:fcSetup.entry, color:C.ocean,label:`ENTRY ${fmtP2(fcSetup.entry)}`},
+    {p:fcSetup.stop,  color:C.err, label:`STOP ${fmtP2(fcSetup.stop)}`},
   ].filter(Boolean) : [];
   const strategyOverlay = useMemo(
     ()=>{
@@ -2963,18 +3104,85 @@ function TabForecast({refreshKey=0}) {
                 })}
               </div>
             </div>
+            <div style={{padding:'12px 20px',borderBottom:`1px solid ${R(C.outline,0.08)}`,display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.08em',color:C.outline,textTransform:'uppercase'}}>Forecast Setup</span>
+              <Pill text={String(selRow.signal||'BUY').toUpperCase()} color={String(selRow.signal||'BUY').toUpperCase()==='BUY'?C.lime:C.err}/>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Order</span>
+              <div style={{display:'inline-flex',gap:3,padding:3,borderRadius:8,background:R(C.surfLowest,0.65),border:`1px solid ${R(C.outline,0.18)}`}}>
+                {['LMT','MKT'].map(t=>{
+                  const active=fcOrderType===t;
+                  return <button key={t} onClick={()=>setFcOrderType(t)}
+                    style={{padding:'6px 10px',borderRadius:6,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:800,border:`1px solid ${active?R(C.cyan,0.42):'transparent'}`,background:active?R(C.cyan,0.14):'transparent',color:active?C.cyan:C.onVar}}>
+                    {t}
+                  </button>;
+                })}
+              </div>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Shares</span>
+              <input type="number" min="0" step="1" value={fcSetupQty.key===selectedForecastKey ? fcSetupQty.value : String(Math.max(0,Math.floor(Number(selRow.quantity||0)||0)))}
+                onChange={e=>setFcSetupQty({key:selectedForecastKey,value:e.target.value})}
+                onBlur={e=>setFcSetupQty({key:selectedForecastKey,value:String(Math.max(0,Math.floor(Number(e.target.value)||0)))})}
+                title="Precalculated forecast shares. You can override this quantity before placing."
+                style={{width:90,background:R(C.surfLowest,0.8),color:C.cyan,border:`1px solid ${R(C.cyan,0.30)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none',textAlign:'right'}}/>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Entry</span>
+              <input type="number" min="0" step="0.01" value={fcSetupDraft.entry}
+                onChange={e=>setFcSetupDraft(d=>({...d,entry:e.target.value}))}
+                style={{width:115,background:R(C.surfLowest,0.8),color:C.ocean,border:`1px solid ${R(C.ocean,0.32)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Stop</span>
+              <input type="number" min="0" step="0.01" value={fcSetupDraft.stop}
+                onChange={e=>setFcSetupDraft(d=>({...d,stop:e.target.value}))}
+                style={{width:115,background:R(C.surfLowest,0.8),color:C.err,border:`1px solid ${R(C.err,0.32)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Target</span>
+              <input type="number" min="0" step="0.01" value={fcSetupDraft.rrLocked && fcSetup ? fcSetup.target.toFixed(2) : fcSetupDraft.target}
+                readOnly={Boolean(fcSetupDraft.rrLocked)}
+                onChange={e=>setFcSetupDraft(d=>({...d,target:e.target.value,rrLocked:false}))}
+                title={fcSetupDraft.rrLocked ? 'Target is calculated from Entry, Stop, and R:R. Edit/clear R:R to unlock target.' : 'Manual target value.'}
+                style={{width:115,background:R(C.surfLowest,0.8),color:C.lime,border:`1px solid ${R(C.lime,0.32)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>R:R</span>
+              <input type="number" min="0" step="0.25" value={fcSetupDraft.rrLocked ? fcSetupDraft.rr : (fcSetup ? fcSetup.reward_risk.toFixed(2) : fcSetupDraft.rr)}
+                onChange={e=>setFcSetupDraft(d=>({...d,rr:e.target.value,rrLocked:e.target.value!==''}))}
+                title="When edited, target is recalculated from Entry, Stop, and R:R."
+                style={{width:85,background:R(C.surfLowest,0.8),color:C.cyan,border:`1px solid ${R(fcSetupDraft.rrLocked?C.cyan:C.outline,fcSetupDraft.rrLocked?0.38:0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
+              <button onClick={()=>{
+                setFcSetupDraft({
+                  key:selectedForecastKey,
+                  entry:Number(selRow.entry||0)>0 ? Number(selRow.entry||0).toFixed(2) : '',
+                  stop:Number(selRow.stop||0)>0 ? Number(selRow.stop||0).toFixed(2) : '',
+                  target:Number(selRow.target||0)>0 ? Number(selRow.target||0).toFixed(2) : '',
+                  rr:Number(selRow.reward_risk||0)>0 ? Number(selRow.reward_risk||0).toFixed(2) : '',
+                  rrLocked:false,
+                });
+                setFcSetupQty({key:selectedForecastKey,value:String(Math.max(0,Math.floor(Number(selRow.quantity||0)||0)))});
+              }}
+                style={{padding:'8px 11px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar,background:R(C.outline,0.08),border:`1px solid ${R(C.outline,0.22)}`}}>
+                Reset forecast
+              </button>
+              {fcSetup ? (
+                <>
+                  <Pill text={`RISK $${fcSetup.risk_amount.toFixed(2)}`} color={fcSetup.quantity>0?C.err:C.outline}/>
+                  <Pill text={`PROFIT $${fcSetup.potential_reward.toFixed(2)}`} color={fcSetup.quantity>0?C.lime:C.outline}/>
+                  <Pill text={`R:R ${fcSetup.reward_risk.toFixed(2)}`} color={fcSetup.reward_risk>=Number(fc.minRR)?C.lime:C.outline}/>
+                  <button disabled={selRow.status!=='FORECAST TRADE' || !fcSetup.valid || fcSetup.quantity<=0}
+                    onClick={()=>setConfirm({type:'place',row:fcSetup.row})}
+                    style={{padding:'8px 15px',borderRadius:8,cursor:selRow.status==='FORECAST TRADE'&&fcSetup.valid&&fcSetup.quantity>0?'pointer':'not-allowed',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:700,color:selRow.status==='FORECAST TRADE'&&fcSetup.valid&&fcSetup.quantity>0?'#001416':C.outline,background:selRow.status==='FORECAST TRADE'&&fcSetup.valid&&fcSetup.quantity>0?C.cyan:R(C.outline,0.08),border:`1px solid ${selRow.status==='FORECAST TRADE'&&fcSetup.valid&&fcSetup.quantity>0?R(C.cyan,0.35):R(C.outline,0.14)}`,opacity:selRow.status==='FORECAST TRADE'&&fcSetup.valid&&fcSetup.quantity>0?1:0.6}}>
+                    Place adjusted
+                  </button>
+                </>
+              ) : (
+                <span style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:C.outline}}>Enter valid entry, stop, target, or R:R to redraw the setup.</span>
+              )}
+            </div>
             <div style={{padding:'18px 20px'}}>
               <CandleChart bars={visibleSelBars} levels={buildChartLevels(selPlan?.trade_levels, selPlan?.raw_levels, showTrade, showRaw)} lines={selLines}
                 zones={[
-                  ...(selRow?.entry!=null && selRow?.target!=null ? [{p1:selRow.entry,p2:selRow.target,color:C.lime,opacity:0.07}] : []),
-                  ...(selRow?.entry!=null && selRow?.stop!=null ? [{p1:selRow.entry,p2:selRow.stop,color:C.err,opacity:0.08}] : []),
+                  ...(fcSetup ? [{p1:fcSetup.entry,p2:fcSetup.target,color:C.lime,opacity:0.07}] : []),
+                  ...(fcSetup ? [{p1:fcSetup.entry,p2:fcSetup.stop,color:C.err,opacity:0.08}] : []),
                 ]}
                 strategyOverlay={strategyOverlay}
                 gaussianOverlay={gaussianOverlay}
                 showVol={showVol}
                 height={600}
                 fullscreenTargetRef={forecastChartFullscreenRef}
-                fullscreenHeightOffset={220}
+                fullscreenHeightOffset={300}
                 stale={selBarsInfo.stale}
                 lastDate={selBarsInfo.lastDate}/>
             </div>
@@ -3963,6 +4171,8 @@ function App() {
   const [newsModal, setNewsModal] = useState(false);
   const [newsItems, setNewsItems] = useState([]);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [refreshBusy, setRefreshBusy] = useState(false);
+  const [hardResetBusy, setHardResetBusy] = useState(false);
 
   useEffect(()=>{
     const refresh = ()=>fetch(`${API}/meta`).then(r=>r.json()).then(setMeta).catch(()=>{});
@@ -3978,9 +4188,31 @@ function App() {
     try { localStorage.setItem('sidebarCollapsed', sidebarCollapsed ? '1' : '0'); } catch {}
   },[sidebarCollapsed]);
 
-  const refreshDashboard = ()=>{
-    fetch(`${API}/meta`).then(r=>r.json()).then(setMeta).catch(()=>{});
-    setRefreshKey(key=>key+1);
+  const refreshDashboard = async()=>{
+    if(refreshBusy) return;
+    const stamp = Date.now();
+    setRefreshBusy(true);
+    try{
+      const r = await fetch(`${API}/meta?refresh=${stamp}`, {cache:'no-store'});
+      if(r.ok) setMeta(await r.json());
+    }catch{}
+    setRefreshKey(stamp);
+    setTimeout(()=>setRefreshBusy(false), 450);
+  };
+
+  const hardResetDashboard = async()=>{
+    const ok = window.confirm('Hard reset will close and reopen the dashboard server, market-data collector, execute worker, and crypto worker. Continue?');
+    if(!ok) return;
+    setHardResetBusy(true);
+    try{
+      const r = await fetch(`${API}/system/hard-reset`,{method:'POST'});
+      const d = await r.json().catch(()=>({}));
+      if(!r.ok || d.ok===false) throw new Error(d.detail || d.message || 'Hard reset failed');
+      alert(d.message || 'Hard reset started. The dashboard will reopen in a few seconds.');
+    }catch(e){
+      alert(`Hard reset failed: ${e.message || e}`);
+      setHardResetBusy(false);
+    }
   };
 
   const pm = PAGE_META[tab];
@@ -4083,12 +4315,21 @@ function App() {
               <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:marketOk?C.lime:C.onVar}}>Market {meta.session}</span>
             </div>
             {/* Refresh */}
-            <div onClick={refreshDashboard}
-              style={{width:34,height:34,borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',color:C.onVar,background:'rgba(28,27,28,0.8)',border:`1px solid ${R(C.outline,0.16)}`}}
-              onMouseEnter={e=>e.currentTarget.style.color=C.cyan}
-              onMouseLeave={e=>e.currentTarget.style.color=C.onVar}>
-              <Icon n="refresh" size={18} color="inherit"/>
-            </div>
+            <button onClick={refreshDashboard} disabled={refreshBusy}
+              title="Refresh dashboard data"
+              style={{height:34,padding:'0 11px',borderRadius:8,display:'flex',alignItems:'center',gap:7,cursor:refreshBusy?'wait':'pointer',color:refreshBusy?C.cyan:C.onVar,background:'rgba(28,27,28,0.8)',border:`1px solid ${R(refreshBusy?C.cyan:C.outline,refreshBusy?0.34:0.16)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800,letterSpacing:'0.04em'}}
+              onMouseEnter={e=>{if(!refreshBusy)e.currentTarget.style.color=C.cyan}}
+              onMouseLeave={e=>{if(!refreshBusy)e.currentTarget.style.color=C.onVar}}>
+              <Icon n="refresh" size={16} color="inherit" style={{animation:refreshBusy?'spin .8s linear infinite':undefined}}/>
+              {refreshBusy?'REFRESHING':'REFRESH'}
+            </button>
+            {/* Hard reset */}
+            <button onClick={hardResetDashboard} disabled={hardResetBusy}
+              title="Close and reopen dashboard services"
+              style={{height:34,padding:'0 12px',borderRadius:8,display:'flex',alignItems:'center',gap:7,cursor:hardResetBusy?'wait':'pointer',color:hardResetBusy?C.outline:C.err,background:R(C.err,0.08),border:`1px solid ${R(C.err,0.28)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800,letterSpacing:'0.04em'}}>
+              <Icon n="restart_alt" size={16} color="inherit"/>
+              {hardResetBusy?'RESETTING':'HARD RESET'}
+            </button>
           </div>
         </header>
 
