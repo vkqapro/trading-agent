@@ -384,10 +384,10 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
     const isRound = Math.abs(Math.round(pv/(niceStep*5))*(niceStep*5) - pv) < niceStep*0.01;
     els.push(<line key={'g'+g} x1={padL} x2={W-padR} y1={gy} y2={gy}
       stroke={isRound ? 'rgba(132,148,149,0.12)' : 'rgba(132,148,149,0.06)'} strokeWidth={1}/>);
-    els.push(<text key={'yl'+g} x={padL-6} y={gy+4} fill={isRound ? 'rgba(132,148,149,0.85)' : 'rgba(132,148,149,0.55)'}
-      fontSize={10} fontFamily="JetBrains Mono,monospace" textAnchor="end" fontWeight={isRound?'600':'400'}>{fmtP(pv)}</text>);
+    els.push(<text key={'yl'+g} x={W-padR+6} y={gy+4} fill={isRound ? 'rgba(132,148,149,0.85)' : 'rgba(132,148,149,0.55)'}
+      fontSize={10} fontFamily="JetBrains Mono,monospace" textAnchor="start" fontWeight={isRound?'600':'400'}>{fmtP(pv)}</text>);
   });
-  els.push(<line key="yax" x1={padL} x2={padL} y1={padT} y2={padT+priceH} stroke="rgba(132,148,149,0.15)" strokeWidth={1}/>);
+  els.push(<line key="yax" x1={W-padR} x2={W-padR} y1={padT} y2={padT+priceH} stroke="rgba(132,148,149,0.15)" strokeWidth={1}/>);
 
   // ── 1.2: detect session open times for separators (9:30 NY = 13:30 UTC → look for HH:MM change to 09:30)
   const isIntradayTf = visBars.length > 0 && String(visBars[0]?.t||'').includes('T');
@@ -893,12 +893,12 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
           onMouseLeave={onMouseLeave}
         >{els}</svg>
 
-        {/* Right-side price labels for levels + lines */}
+        {/* Left-side labels for trade zones/levels; price scale stays on the right */}
         {allLabels.map((l,i)=>(
-          <div key={i} style={{position:'absolute',right:4,top:`calc(${(yp(l.p)/H*100).toFixed(2)}% - 8px)`,
-            fontFamily:"'JetBrains Mono',monospace",fontSize:'9.5px',color:l.color,
-            background:R(C.bg,0.88),padding:'1px 6px',borderRadius:3,
-            border:`1px solid ${R(l.color,0.4)}`,whiteSpace:'nowrap',pointerEvents:'none'}}>
+          <div key={i} style={{position:'absolute',left:4,top:`calc(${(yp(l.p)/H*100).toFixed(2)}% - 8px)`,
+            fontFamily:"'JetBrains Mono',monospace",fontSize:'8px',color:R(l.color||C.cyan,0.82),
+            background:'transparent',padding:'0 2px',borderRadius:0,
+            border:'none',whiteSpace:'nowrap',pointerEvents:'none'}}>
             {l.label??('$'+fmtP(l.p))}
           </div>
         ))}
