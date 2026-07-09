@@ -537,14 +537,22 @@ def sync_tracked_positions_with_broker(
         if symbol:
             existing_by_symbol[symbol] = dict(position)
 
-    stop_order_ids_by_symbol: Dict[str, int] = {}
+    stop_orders_by_symbol: Dict[str, Dict[str, object]] = {}
+    limit_orders_by_symbol: Dict[str, Dict[str, object]] = {}
+    stop_orders_by_id: Dict[int, Dict[str, object]] = {}
+    limit_orders_by_id: Dict[int, Dict[str, object]] = {}
     for order in open_orders:
-        if str(order.get("type", "")).strip().upper() != "STP":
-            continue
+        order_type = str(order.get("type", "")).strip().upper()
         symbol = str(order.get("symbol", "")).strip().upper()
         order_id = int(float(order.get("order_id", 0) or 0))
-        if symbol and order_id > 0 and symbol not in stop_order_ids_by_symbol:
-            stop_order_ids_by_symbol[symbol] = order_id
+        if not symbol or order_id <= 0:
+            continue
+        if order_type in {"STP", "STP LMT"}:
+            stop_orders_by_id[order_id] = order
+            stop_orders_by_symbol.setdefault(symbol, order)
+        elif order_type == "LMT":
+            limit_orders_by_id[order_id] = order
+            limit_orders_by_symbol.setdefault(symbol, order)
 
     synced: List[Dict[str, object]] = []
     seen: set[str] = set()
@@ -591,9 +599,35 @@ def sync_tracked_positions_with_broker(
             }
         )
 
-        stop_order_id = stop_order_ids_by_symbol.get(symbol)
-        if stop_order_id is not None:
+        existing_stop_order_id = int(float(merged_position.get("stop_order_id", 0) or 0))
+        stop_order = stop_orders_by_id.get(existing_stop_order_id) if existing_stop_order_id > 0 else None
+        if stop_order is None:
+            stop_order = stop_orders_by_symbol.get(symbol)
+        if stop_order is not None:
+            stop_order_id = int(float(stop_order.get("order_id", 0) or 0))
+            stop_price = float(stop_order.get("stop_price", 0.0) or stop_order.get("aux_price", 0.0) or 0.0)
             merged_position["stop_order_id"] = stop_order_id
+            merged_position["current_stop_order_status"] = stop_order.get("status")
+            if stop_price > 0:
+                if merged_position.get("planned_stop_loss") in (None, "", 0, "0") and merged_position.get("stop_loss") not in (None, "", 0, "0"):
+                    merged_position["planned_stop_loss"] = merged_position.get("stop_loss")
+                merged_position["stop_loss"] = stop_price
+                merged_position["current_stop_loss"] = stop_price
+
+        existing_limit_order_id = int(float(merged_position.get("limit_order_id", 0) or 0))
+        limit_order = limit_orders_by_id.get(existing_limit_order_id) if existing_limit_order_id > 0 else None
+        if limit_order is None:
+            limit_order = limit_orders_by_symbol.get(symbol)
+        if limit_order is not None:
+            limit_order_id = int(float(limit_order.get("order_id", 0) or 0))
+            limit_price = float(limit_order.get("limit_price", 0.0) or 0.0)
+            merged_position["limit_order_id"] = limit_order_id
+            merged_position["current_target_order_status"] = limit_order.get("status")
+            if limit_price > 0:
+                if merged_position.get("planned_target") in (None, "", 0, "0") and merged_position.get("target") not in (None, "", 0, "0"):
+                    merged_position["planned_target"] = merged_position.get("target")
+                merged_position["target"] = limit_price
+                merged_position["current_target"] = limit_price
 
         synced.append(merged_position)
 

@@ -639,19 +639,45 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
   });
   // ── 1.3: volume with intensity scaling + 20-bar MA line
   // dashed entry/stop/target lines above candles
+  const lineLabelYByIndex = {};
+  if(lineLabelPosition === 'middle'){
+    const labelRows = lines
+      .map((l,i)=>({i,y:yp(l.p)}))
+      .filter(r=>Number.isFinite(r.y))
+      .sort((a,b)=>a.y-b.y);
+    const minGap = 20;
+    for(let i=1;i<labelRows.length;i++){
+      if(labelRows[i].y - labelRows[i-1].y < minGap){
+        labelRows[i].y = labelRows[i-1].y + minGap;
+      }
+    }
+    for(let i=labelRows.length-2;i>=0;i--){
+      if(labelRows[i+1].y > padT + priceH - 10){
+        labelRows[i+1].y = padT + priceH - 10;
+      }
+      if(labelRows[i+1].y - labelRows[i].y < minGap){
+        labelRows[i].y = labelRows[i+1].y - minGap;
+      }
+    }
+    labelRows.forEach(r=>{
+      lineLabelYByIndex[r.i] = Math.max(padT + 10, Math.min(padT + priceH - 10, r.y));
+    });
+  }
   lines.forEach((l,i)=>{
     const y = yp(l.p);
     const col = l.color || C.cyan;
     els.push(
       <line key={'dl'+i} x1={padL} x2={W-padR} y1={y} y2={y} stroke={col} strokeWidth={1.8} strokeDasharray="6 4"/>
     );
-    if(l.label){
+    if(l.label && lineLabelPosition !== 'none'){
       const label = String(l.label);
       const labelW = Math.min(138, Math.max(58, label.length * 6.2 + 12));
       const labelX = lineLabelPosition === 'middle'
         ? padL + (plotW - labelW) / 2
         : W - padR + 4;
-      const labelY = Math.max(padT + 10, Math.min(padT + priceH - 10, y));
+      const labelY = lineLabelPosition === 'middle' && lineLabelYByIndex[i] != null
+        ? lineLabelYByIndex[i]
+        : Math.max(padT + 10, Math.min(padT + priceH - 10, y));
       els.push(
         <rect key={'dlbg'+i} x={labelX} y={labelY-10} width={labelW} height={18} rx={4}
           fill="rgba(14,14,15,0.88)" stroke={R(col,0.45)} strokeWidth={0.8}/>,
@@ -803,7 +829,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
   const hovBar = hover && bars[Math.max(0,Math.min(n-1,hover.idx))];
   const tooltipRight = hover && hover.svgX > W*0.6;
 
-  const allLabels = [...levels, ...lines];
+  const allLabels = lineLabelPosition === 'right' ? [...levels, ...lines] : [...levels];
 
   return (
     <div ref={chartRef} style={{userSelect:'none',background:C.bg,
@@ -3956,10 +3982,14 @@ function TabOrdersJournal({refreshKey=0}) {
   );
 
   const side=String(selected?.side||'BUY').toUpperCase();
+  const stopChanged = selected?.current_stop!=null && selected?.planned_stop!=null && Math.abs(Number(selected.current_stop)-Number(selected.planned_stop))>0.0001;
+  const targetChanged = selected?.current_target!=null && selected?.planned_target!=null && Math.abs(Number(selected.current_target)-Number(selected.planned_target))>0.0001;
   const lineSet = selected ? [
-    selected.planned_target!=null && {p:selected.planned_target,color:C.lime,label:`TARGET ${money(selected.planned_target)}`},
+    selected.planned_target!=null && {p:selected.planned_target,color:C.lime,label:`TARGET PLAN ${money(selected.planned_target)}`},
+    targetChanged && {p:selected.current_target,color:C.lime,label:`CURRENT TARGET ${money(selected.current_target)}`,dash:[6,5]},
     selected.planned_entry!=null && {p:selected.planned_entry,color:C.ocean,label:`ENTRY PLAN ${money(selected.planned_entry)}`},
-    selected.planned_stop!=null && {p:selected.planned_stop,color:C.err,label:`STOP ${money(selected.planned_stop)}`},
+    selected.planned_stop!=null && {p:selected.planned_stop,color:C.err,label:`STOP PLAN ${money(selected.planned_stop)}`},
+    stopChanged && {p:selected.current_stop,color:C.err,label:`CURRENT STOP ${money(selected.current_stop)}`,dash:[6,5]},
     selected.actual_exit!=null && {p:selected.actual_exit,color:C.magenta,label:`EXIT ${money(selected.actual_exit)}`},
   ].filter(Boolean) : [];
   const zoneSet = selected ? [
@@ -4034,7 +4064,7 @@ function TabOrdersJournal({refreshKey=0}) {
         </div>
         <div style={{maxHeight:360,overflowY:'auto'}}>
           <Table
-            cols={['Symbol','Mkt','Source','Side','Status','Entry Plan','Entry Fill','Stop','Target','Exit','Qty','PnL','R','Opened','Closed','Review']}
+            cols={['Symbol','Mkt','Source','Side','Status','Entry Plan','Entry Fill','Current Stop','Planned Stop','Current Target','Planned Target','Exit','Qty','PnL','R','Opened','Closed','Review']}
             rows={filtered.map(r=>[
               <button onClick={()=>setSelectedId(r.id)} style={{background:'transparent',border:0,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontWeight:900,color:r.id===selected?.id?C.cyan:C.onSurf}}>{r.symbol}</button>,
               r.market,
@@ -4043,7 +4073,9 @@ function TabOrdersJournal({refreshKey=0}) {
               <Pill text={String(r.status||'-')} color={String(r.status||'').includes('ERROR')||String(r.status||'').includes('REJECT')?C.err:String(r.status||'').startsWith('CLOSED')?C.magenta:C.cyan}/>,
               money(r.planned_entry),
               money(r.actual_entry),
+              <span style={{color:r.current_stop!=null&&r.planned_stop!=null&&Math.abs(Number(r.current_stop)-Number(r.planned_stop))>0.0001?C.cyan:C.onVar}}>{money(r.current_stop)}</span>,
               money(r.planned_stop),
+              <span style={{color:r.current_target!=null&&r.planned_target!=null&&Math.abs(Number(r.current_target)-Number(r.planned_target))>0.0001?C.cyan:C.onVar}}>{money(r.current_target)}</span>,
               money(r.planned_target),
               money(r.actual_exit),
               r.quantity!=null?Number(r.quantity).toFixed(Number(r.quantity)%1?4:0):'—',

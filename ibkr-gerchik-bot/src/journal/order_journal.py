@@ -227,6 +227,8 @@ def _base_row(
     planned_entry: Any = None,
     planned_stop: Any = None,
     planned_target: Any = None,
+    current_stop: Any = None,
+    current_target: Any = None,
     actual_entry: Any = None,
     actual_exit: Any = None,
     qty: Any = None,
@@ -240,6 +242,8 @@ def _base_row(
     pe = _f(planned_entry)
     ps = _f(planned_stop)
     pt = _f(planned_target)
+    cs = _f(current_stop)
+    ct = _f(current_target)
     ae = _f(actual_entry) or pe
     ax = _f(actual_exit)
     q = _qty(qty)
@@ -262,6 +266,8 @@ def _base_row(
         "planned_entry": pe,
         "planned_stop": ps,
         "planned_target": pt,
+        "current_stop": cs,
+        "current_target": ct,
         "actual_entry": ae,
         "actual_exit": ax,
         "quantity": q,
@@ -414,6 +420,8 @@ def _rows_from_order_requests(open_positions: Dict[str, Dict[str, Any]]) -> List
                 planned_entry=req.get("entry"),
                 planned_stop=req.get("stop"),
                 planned_target=req.get("target"),
+                current_stop=(open_pos or {}).get("current_stop_loss"),
+                current_target=(open_pos or {}).get("current_target"),
                 actual_entry=(open_pos or {}).get("avg_cost") or _fill_price_from_result(result) or req.get("entry"),
                 actual_exit=actual_exit,
                 qty=(open_pos or {}).get("quantity") or result.get("quantity") or req.get("quantity"),

@@ -44,6 +44,7 @@ from src.crypto.tradingview_webhook import (
 )
 from src.config import fx_pair_components
 from src.forex.tradingview_webhook import handle_forex_tradingview_webhook, load_forex_tradingview_state
+from src.journal.broker_reconcile import reconcile_ibkr_open_orders
 from src.journal.order_journal import load_order_journal, save_review
 from src.stocks.tradingview_webhook import handle_stock_tradingview_webhook, load_stock_tradingview_state
 
@@ -1608,7 +1609,11 @@ def api_trades():
 @app.get("/api/orders-journal")
 def api_orders_journal(limit: int = 500):
     try:
-        return load_order_journal(limit=max(1, min(1000, int(limit or 500))))
+        broker_sync = reconcile_ibkr_open_orders()
+        payload = load_order_journal(limit=max(1, min(1000, int(limit or 500))))
+        if isinstance(payload, dict):
+            payload["broker_sync"] = broker_sync
+        return payload
     except Exception as exc:
         raise HTTPException(500, str(exc))
 

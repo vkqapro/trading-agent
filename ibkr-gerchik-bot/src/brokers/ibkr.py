@@ -49,12 +49,19 @@ class OrderResult:
 
 
 def _safe_market_price(value: object) -> float:
-    """Normalize broker quote values so NaN/inf become missing-data zeros."""
+    """Normalize broker quote/order prices so IBKR unset values become zeros."""
     try:
         numeric = float(value or 0.0)
     except (TypeError, ValueError):
         return 0.0
-    return numeric if math.isfinite(numeric) else 0.0
+    if not math.isfinite(numeric):
+        return 0.0
+    # ib_insync/IBKR uses very large sentinel values for unset fields such as
+    # lmtPrice/auxPrice. Treat those as missing instead of rendering absurd
+    # stop/target prices in the journal.
+    if abs(numeric) > 1e20:
+        return 0.0
+    return numeric
 
 
 class IBKRClient:
@@ -244,14 +251,27 @@ class IBKRClient:
         self.ensure_connection()
         orders = []
         for trade in self.ib.openTrades():
+            order = trade.order
+            status = trade.orderStatus
             orders.append(
                 {
                     "symbol": trade.contract.symbol,
-                    "order_id": trade.order.orderId,
-                    "action": trade.order.action,
-                    "quantity": trade.order.totalQuantity,
-                    "type": trade.order.orderType,
-                    "status": trade.orderStatus.status,
+                    "order_id": order.orderId,
+                    "perm_id": getattr(order, "permId", 0),
+                    "parent_id": getattr(order, "parentId", 0),
+                    "action": order.action,
+                    "quantity": order.totalQuantity,
+                    "type": order.orderType,
+                    "status": status.status,
+                    "aux_price": _safe_market_price(getattr(order, "auxPrice", 0.0)),
+                    "stop_price": _safe_market_price(getattr(order, "auxPrice", 0.0)),
+                    "limit_price": _safe_market_price(getattr(order, "lmtPrice", 0.0)),
+                    "filled": _safe_market_price(getattr(status, "filled", 0.0)),
+                    "remaining": _safe_market_price(getattr(status, "remaining", 0.0)),
+                    "avg_fill_price": _safe_market_price(getattr(status, "avgFillPrice", 0.0)),
+                    "order_ref": getattr(order, "orderRef", ""),
+                    "tif": getattr(order, "tif", ""),
+                    "outside_rth": bool(getattr(order, "outsideRth", False)),
                 }
             )
         return orders
