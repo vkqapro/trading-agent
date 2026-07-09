@@ -7,3 +7,7 @@ __pycache__/
 memory/runtime/
 memory/bars/
 memory/crypto/
+memory/reports/
+memory/RESEARCH_LOG.md
+
+\memory\TRADE_LOG.md
