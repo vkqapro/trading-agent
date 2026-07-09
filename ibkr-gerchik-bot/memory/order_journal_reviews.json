@@ -10,6 +10,46 @@
       "mistake_type": "Ignored trend",
       "grade": "A",
       "updated_at": "2026-07-08T16:59:06+00:00"
+    },
+    "stock:req:20178f664fdb": {
+      "review_status": "Reviewed",
+      "notes": "Trash",
+      "decision_quality": {},
+      "mistake_type": "",
+      "grade": "F",
+      "updated_at": "2026-07-09T00:54:48+00:00"
+    },
+    "stock:req:d101478e6e84": {
+      "review_status": "Reviewed",
+      "notes": "Trash",
+      "decision_quality": {},
+      "mistake_type": "",
+      "grade": "F",
+      "updated_at": "2026-07-09T00:55:20+00:00"
+    },
+    "stock:req:2aca56c97e0b": {
+      "review_status": "Reviewed",
+      "notes": "Trash",
+      "decision_quality": {},
+      "mistake_type": "",
+      "grade": "F",
+      "updated_at": "2026-07-09T00:55:36+00:00"
+    },
+    "stock:req:8dc89f9e82c2": {
+      "review_status": "Unreviewed",
+      "notes": "All strategies confirm the logic. ",
+      "decision_quality": {},
+      "mistake_type": "Bad trade / lucky result",
+      "grade": "D",
+      "updated_at": "2026-07-09T00:58:40+00:00"
+    },
+    "stock:req:466ae25c3cd7": {
+      "review_status": "Unreviewed",
+      "notes": "Just luck",
+      "decision_quality": {},
+      "mistake_type": "Bad trade / lucky result",
+      "grade": "D",
+      "updated_at": "2026-07-09T00:59:22+00:00"
     }
   }
 }

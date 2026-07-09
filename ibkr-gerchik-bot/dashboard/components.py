@@ -560,7 +560,7 @@ def topbar(brand_sub: str, chips: Sequence[tuple[str, str, str]]) -> None:
               <div class="lx-brand">
                 <div class="dot"><span class="material-symbols-outlined">monitoring</span></div>
                 <div>
-                  <div class="name">Gerchik&nbsp;Bot&nbsp;v2</div>
+                  <div class="name">Vitaly&apos;s&nbsp;Trading&nbsp;Bot</div>
                   <div class="sub">{_esc(brand_sub)}</div>
                 </div>
               </div>
@@ -582,7 +582,7 @@ def sidebar_brand(*, dry_run: bool, paper: bool) -> None:
                 <span class="material-symbols-outlined">candlestick_chart</span>
               </div>
               <div>
-                <div class="lx-side-name">Gerchik Bot</div>
+                <div class="lx-side-name">Vitaly&apos;s Trading Bot</div>
                 <div class="lx-side-sub">IBKR · {mode}</div>
               </div>
             </div>

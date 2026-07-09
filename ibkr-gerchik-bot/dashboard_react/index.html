@@ -142,7 +142,7 @@ const Table = ({cols, rows}) => (
 );
 
 /* ── SVG candlestick chart ────────────────────────────────────────────────── */
-function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], strategyOverlay=null, gaussianOverlay=null, showVol=true, height=300, stale=false, lastDate=null, fullscreenTargetRef=null, fullscreenHeightOffset=110}) {
+function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], strategyOverlay=null, gaussianOverlay=null, showVol=true, height=300, stale=false, lastDate=null, fullscreenTargetRef=null, fullscreenHeightOffset=110, lineLabelPosition='right'}) {
   const n = bars?.length || 0;
   const chartRef = useRef(null);
   const svgRef = useRef(null);
@@ -648,7 +648,9 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
     if(l.label){
       const label = String(l.label);
       const labelW = Math.min(138, Math.max(58, label.length * 6.2 + 12));
-      const labelX = W - padR + 4;
+      const labelX = lineLabelPosition === 'middle'
+        ? padL + (plotW - labelW) / 2
+        : W - padR + 4;
       const labelY = Math.max(padT + 10, Math.min(padT + priceH - 10, y));
       els.push(
         <rect key={'dlbg'+i} x={labelX} y={labelY-10} width={labelW} height={18} rx={4}
@@ -1370,7 +1372,7 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
         <div style={{padding:'18px 20px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:10}}>
           <div style={{display:'flex',alignItems:'center',gap:11}}>
             <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onSurf}}>{chartSymbol} · {TF_LABEL[tf]} Structure</span>
-            <span style={{padding:'3px 9px',borderRadius:9999,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.cyan,background:R(C.cyan,0.1),border:`1px solid ${R(C.cyan,0.28)}`}}>GERCHIK LEVELS MAPPED</span>
+            <span style={{padding:'3px 9px',borderRadius:9999,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.cyan,background:R(C.cyan,0.1),border:`1px solid ${R(C.cyan,0.28)}`}}>LEVELS MAPPED</span>
           </div>
           <TfPills value={tf} onChange={setTf}/>
         </div>
@@ -3720,7 +3722,7 @@ function TabCrypto({refreshKey=0}) {
 
       <div ref={cryptoChartFullscreenRef} className="strategy-chart-fullscreen-shell">
       <GlassCard style={{overflow:'hidden'}}>
-        <PanelHeader icon="currency_bitcoin" title={`${selected || 'Crypto'} Gerchik Trade-Zone Chart`} badge={selectedRow?.inst_type || 'OKX'}/>
+        <PanelHeader icon="currency_bitcoin" title={`${selected || 'Crypto'} Trade-Zone Chart`} badge={selectedRow?.inst_type || 'OKX'}/>
         <div style={{padding:'14px 18px',display:'flex',justifyContent:'space-between',alignItems:'center',gap:14,flexWrap:'wrap',borderBottom:`1px solid ${R(C.outline,0.12)}`}}>
           <div style={{display:'flex',gap:12,alignItems:'center',flexWrap:'wrap'}}>
             <Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/>
@@ -3821,6 +3823,9 @@ function TabCrypto({refreshKey=0}) {
 function TabOrdersJournal({refreshKey=0}) {
   const [data,setData]=useState(null);
   const [selectedId,setSelectedId]=useState(null);
+  const [symbolSearch,setSymbolSearch]=useState('');
+  const [openDateFrom,setOpenDateFrom]=useState('');
+  const [openDateTo,setOpenDateTo]=useState('');
   const [statusFilter,setStatusFilter]=useState('ALL');
   const [marketFilter,setMarketFilter]=useState('ALL');
   const [sourceFilter,setSourceFilter]=useState('ALL');
@@ -3859,12 +3864,24 @@ function TabOrdersJournal({refreshKey=0}) {
   const selected=rows.find(r=>r.id===selectedId)||rows[0]||null;
   const markets=['ALL',...new Set(rows.map(r=>r.market).filter(Boolean))];
   const sources=['ALL',...new Set(rows.map(r=>r.source).filter(Boolean))];
+  const symbolNeedle = symbolSearch.trim().toUpperCase();
+  const openFromTime = openDateFrom ? new Date(`${openDateFrom}T00:00:00`).getTime() : null;
+  const openToTime = openDateTo ? new Date(`${openDateTo}T23:59:59`).getTime() : null;
   const filtered=rows.filter(r=>{
+    if(symbolNeedle && !String(r.symbol||'').toUpperCase().includes(symbolNeedle)) return false;
     if(statusFilter==='OPEN' && !['OPEN','SUBMITTED','OPEN_ALERT'].includes(String(r.status).toUpperCase())) return false;
     if(statusFilter==='CLOSED' && !(String(r.status).toUpperCase().startsWith('CLOSED') || r.closed_at)) return false;
     if(statusFilter==='UNREVIEWED' && (r.review?.review_status||'Unreviewed')!=='Unreviewed') return false;
+    if(statusFilter==='REVIEWED' && (r.review?.review_status||'Unreviewed')!=='Reviewed') return false;
     if(statusFilter==='WINNERS' && !(Number(r.pnl)>0)) return false;
     if(statusFilter==='LOSERS' && !(Number(r.pnl)<0)) return false;
+    if(openFromTime!=null || openToTime!=null){
+      const openedAt = r.opened_at || r.created_at;
+      const openedTime = openedAt ? new Date(String(openedAt).replace(' ','T')).getTime() : NaN;
+      if(!Number.isFinite(openedTime)) return false;
+      if(openFromTime!=null && openedTime < openFromTime) return false;
+      if(openToTime!=null && openedTime > openToTime) return false;
+    }
     if(marketFilter!=='ALL' && r.market!==marketFilter) return false;
     if(sourceFilter!=='ALL' && r.source!==sourceFilter) return false;
     return true;
@@ -3954,25 +3971,58 @@ function TabOrdersJournal({refreshKey=0}) {
     selected.actual_exit!=null && {time:selected.closed_at||selected.created_at,price:selected.actual_exit,kind:'exit',label:'EXIT',value:`${money(selected.actual_exit)} · ${fmtTime(selected.closed_at||selected.created_at)}`,color:C.magenta},
   ].filter(Boolean) : [];
   const checks=['Entry at valid level','Stop was logical','Target was realistic','Strategy confirmed','Market condition acceptable','Followed plan'];
-  const metrics=data?.metrics||{};
+  const isOpenJournalRow = r => ['OPEN','SUBMITTED','OPEN_ALERT'].includes(String(r.status||'').toUpperCase());
+  const isClosedJournalRow = r => String(r.status||'').toUpperCase().startsWith('CLOSED') || Boolean(r.closed_at);
+  const filteredPnlRows = filtered.filter(r=>Number.isFinite(Number(r.pnl)));
+  const filteredRRows = filtered.filter(r=>Number.isFinite(Number(r.r_multiple)));
+  const filteredMetrics = {
+    total: filtered.length,
+    open: filtered.filter(isOpenJournalRow).length,
+    closed: filtered.filter(isClosedJournalRow).length,
+    unreviewed: filtered.filter(r=>(r.review?.review_status||'Unreviewed')==='Unreviewed').length,
+    total_pnl: filteredPnlRows.reduce((s,r)=>s+Number(r.pnl||0),0),
+    avg_r: filteredRRows.length ? filteredRRows.reduce((s,r)=>s+Number(r.r_multiple||0),0)/filteredRRows.length : null,
+  };
   if(!data) return <Spinner/>;
 
   return (
     <div style={{display:'flex',flexDirection:'column',gap:24}}>
       <MetricGrid items={[
-        {label:'Journal Rows',icon:'receipt_long',value:metrics.total||0,sub:'unified records',valueColor:C.cyan},
-        {label:'Open / Active',icon:'radio_button_checked',value:metrics.open||0,sub:'positions / alerts',valueColor:C.lime},
-        {label:'Closed',icon:'task_alt',value:metrics.closed||0,sub:'completed trades'},
-        {label:'Unreviewed',icon:'rate_review',value:metrics.unreviewed||0,sub:'need trader review',valueColor:C.err},
-        {label:'Total PnL',icon:'attach_money',value:money(metrics.total_pnl||0),sub:'known exits only',valueColor:(metrics.total_pnl||0)>=0?C.lime:C.err},
-        {label:'Avg R',icon:'analytics',value:metrics.avg_r!=null?`${Number(metrics.avg_r).toFixed(2)}R`:'—',sub:'known stop/exit only',valueColor:C.cyan},
+        {label:'Journal Rows',icon:'receipt_long',value:filteredMetrics.total,sub:'visible after filters',valueColor:C.cyan},
+        {label:'Open / Active',icon:'radio_button_checked',value:filteredMetrics.open,sub:'positions / alerts',valueColor:C.lime},
+        {label:'Closed',icon:'task_alt',value:filteredMetrics.closed,sub:'completed trades'},
+        {label:'Unreviewed',icon:'rate_review',value:filteredMetrics.unreviewed,sub:'need trader review',valueColor:C.err},
+        {label:'Total PnL',icon:'attach_money',value:money(filteredMetrics.total_pnl||0),sub:'filtered known exits',valueColor:(filteredMetrics.total_pnl||0)>=0?C.lime:C.err},
+        {label:'Avg R',icon:'analytics',value:filteredMetrics.avg_r!=null?`${Number(filteredMetrics.avg_r).toFixed(2)}R`:'—',sub:'filtered known stop/exit',valueColor:C.cyan},
       ]}/>
 
       <GlassCard style={{overflow:'hidden'}}>
         <div style={{padding:'16px 18px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,flexWrap:'wrap'}}>
           <PanelHeader icon="receipt_long" title="Orders Journal" badge={`${filtered.length} rows`}/>
           <div style={{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}>
-            {['ALL','OPEN','CLOSED','UNREVIEWED','WINNERS','LOSERS'].map(f=><button key={f} onClick={()=>setStatusFilter(f)}
+            <div style={{display:'flex',alignItems:'center',gap:8,padding:'8px 10px',borderRadius:8,background:R(C.surfLowest,0.85),border:`1px solid ${R(symbolNeedle?C.cyan:C.outline,symbolNeedle?0.38:0.25)}`,minWidth:190}}>
+              <Icon n="search" size={15} color={symbolNeedle?C.cyan:C.outline}/>
+              <input value={symbolSearch} onChange={e=>setSymbolSearch(e.target.value.toUpperCase())} placeholder="Find symbol"
+                style={{flex:1,minWidth:0,background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:11,letterSpacing:'0.06em',textTransform:'uppercase'}}/>
+              {symbolNeedle && <button onClick={()=>setSymbolSearch('')} title="Clear symbol search"
+                style={{background:'transparent',border:0,cursor:'pointer',color:C.outline,display:'inline-flex',alignItems:'center',padding:0}}>
+                <Icon n="close" size={15} color={C.outline}/>
+              </button>}
+            </div>
+            <div style={{display:'flex',alignItems:'center',gap:6,padding:'7px 10px',borderRadius:8,background:R(C.surfLowest,0.85),border:`1px solid ${R((openDateFrom||openDateTo)?C.cyan:C.outline,(openDateFrom||openDateTo)?0.38:0.25)}`}}>
+              <Icon n="event" size={15} color={(openDateFrom||openDateTo)?C.cyan:C.outline}/>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:9,letterSpacing:'0.08em',color:C.outline,textTransform:'uppercase'}}>Open</span>
+              <input type="date" value={openDateFrom} onChange={e=>setOpenDateFrom(e.target.value)}
+                style={{background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:11,colorScheme:'dark'}}/>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>to</span>
+              <input type="date" value={openDateTo} onChange={e=>setOpenDateTo(e.target.value)}
+                style={{background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:11,colorScheme:'dark'}}/>
+              {(openDateFrom||openDateTo) && <button onClick={()=>{setOpenDateFrom('');setOpenDateTo('');}} title="Clear date range"
+                style={{background:'transparent',border:0,cursor:'pointer',display:'inline-flex',alignItems:'center',padding:0}}>
+                <Icon n="close" size={15} color={C.outline}/>
+              </button>}
+            </div>
+            {['ALL','OPEN','CLOSED','UNREVIEWED','REVIEWED','WINNERS','LOSERS'].map(f=><button key={f} onClick={()=>setStatusFilter(f)}
               style={{padding:'8px 10px',borderRadius:8,cursor:'pointer',border:`1px solid ${R(statusFilter===f?C.cyan:C.outline,statusFilter===f?0.45:0.18)}`,background:statusFilter===f?R(C.cyan,0.12):R(C.surf,0.5),color:statusFilter===f?C.cyan:C.onVar,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>{f}</button>)}
             <select value={marketFilter} onChange={e=>setMarketFilter(e.target.value)} style={{background:R(C.surfLowest,0.85),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 10px'}}>
               {markets.map(m=><option key={m}>{m}</option>)}
@@ -4046,6 +4096,7 @@ function TabOrdersJournal({refreshKey=0}) {
               bars={visibleReviewBars}
               levels={reviewChartLevels}
               lines={lineSet}
+              lineLabelPosition="middle"
               zones={zoneSet}
               tradeMarkers={markers}
               strategyOverlay={strategyOverlay}
@@ -4665,7 +4716,7 @@ const PAGE_META = {
   preopen:   {title:'Pre-Open Briefing',      sub:'Watchlist scanned · levels mapped · awaiting the open', crumb:'Pre-Open'},
   intraday:  {title:'Intraday Monitor',       sub:'Live decision loop · paper execution', crumb:'Intraday'},
   strategy:  {title:'Strategy Monitor',       sub:'BMSB Strategy 2 band reclaim / loss scanner', crumb:'Strategy'},
-  crypto:    {title:'Crypto Trade Levels',    sub:'OKX candles · Gerchik zones · separate crypto bot', crumb:'Crypto'},
+  crypto:    {title:'Crypto Trade Levels',    sub:'OKX candles · trade zones · separate crypto bot', crumb:'Crypto'},
   forex:     {title:'Forex TradingView Bridge',sub:'TradingView alerts · IBKR CASH market execution', crumb:'Forex'},
   trades:    {title:'Trades & Positions',     sub:'Open paper positions and trade journal', crumb:'Trades'},
   forecast:  {title:'Risk Forecast Calculator',sub:'Scenario-only · replays saved data · no live orders', crumb:'Forecast'},

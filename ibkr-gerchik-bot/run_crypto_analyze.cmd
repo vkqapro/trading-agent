@@ -1,5 +1,5 @@
 @echo off
-title Gerchik Crypto Bot - Local Analysis
+title Vitaly's Crypto Bot - Local Analysis
 cd /d "%~dp0"
 set "PYTHON=python"
 if exist "..\.venv\Scripts\python.exe" set "PYTHON=..\.venv\Scripts\python.exe"

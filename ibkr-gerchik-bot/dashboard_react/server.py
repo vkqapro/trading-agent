@@ -47,7 +47,7 @@ from src.forex.tradingview_webhook import handle_forex_tradingview_webhook, load
 from src.journal.order_journal import load_order_journal, save_review
 from src.stocks.tradingview_webhook import handle_stock_tradingview_webhook, load_stock_tradingview_state
 
-app = FastAPI(title="Gerchik Bot Dashboard API", docs_url=None, redoc_url=None)
+app = FastAPI(title="Vitaly's Trading Bot Dashboard API", docs_url=None, redoc_url=None)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
