@@ -811,7 +811,6 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
   const lastClose = visBars[vn-1]?.close;
   if(lastClose!=null){
     const ly = yp(lastClose);
-    els.push(<rect key="lpr" x={W-padR} y={ly-9} width={padR-4} height={18} rx={3} fill={R(C.lime,0.18)} stroke={R(C.lime,0.55)} strokeWidth={1}/>);
     els.push(<text key="lpt" x={W-padR+4} y={ly+4} fill={C.lime} fontSize={10} fontFamily="JetBrains Mono,monospace" fontWeight="600">{fmtP(lastClose)}</text>);
     els.push(<line key="lpl" x1={padL} x2={W-padR} y1={ly} y2={ly} stroke={R(C.lime,0.18)} strokeWidth={1} strokeDasharray="3 4"/>);
   }
