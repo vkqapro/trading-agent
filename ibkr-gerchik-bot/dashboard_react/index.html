@@ -142,7 +142,7 @@ const Table = ({cols, rows}) => (
 );
 
 /* ── SVG candlestick chart ────────────────────────────────────────────────── */
-function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], strategyOverlay=null, gaussianOverlay=null, showVol=true, height=300, stale=false, lastDate=null, fullscreenTargetRef=null, fullscreenHeightOffset=110, lineLabelPosition='right'}) {
+function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], strategyOverlay=null, gaussianOverlay=null, trendMeterOverlay=null, showVol=true, height=300, stale=false, lastDate=null, fullscreenTargetRef=null, fullscreenHeightOffset=110, lineLabelPosition='right'}) {
   const n = bars?.length || 0;
   const chartRef = useRef(null);
   const svgRef = useRef(null);
@@ -151,6 +151,8 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
   const [hover,    setHover]    = useState(null);   // {idx, svgX, svgY}
   const [crosshair,setCrosshair]= useState(false);
   const [showMA,   setShowMA]   = useState(false);
+  const [showBars, setShowBars] = useState(false);
+  const [showTrendMeter,setShowTrendMeter] = useState(false);
   const [yRangeFactor, setYRangeFactor] = useState(1);
   const [yPanRatio, setYPanRatio] = useState(0);
   const [measureMode, setMeasureMode] = useState(false);
@@ -164,6 +166,10 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
   // reset view only when the dataset itself changes (different length or different last bar),
   // not on every parent re-render that passes a new array reference with the same data.
   const barsKey = (bars?.length||0) + '|' + (bars?.[bars.length-1]?.t||'');
+  const effectiveTrendMeterOverlay = useMemo(
+    ()=>trendMeterOverlay || (showTrendMeter ? buildTrendMeterOverlay(bars) : null),
+    [trendMeterOverlay, showTrendMeter, barsKey]
+  );
   useEffect(()=>{ setVisStart(0); setVisEnd(bars?.length||0); setHover(null); setYRangeFactor(1); setYPanRatio(0); },[barsKey]);
   const getFullscreenTarget = useCallback(()=>fullscreenTargetRef?.current || chartRef.current,[fullscreenTargetRef]);
   useEffect(()=>{
@@ -184,10 +190,12 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
     color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>No bar data</div>;
 
   const W=1000, padT=18, padR=116, padL=64, padB=26;
+  const trendMeterH = effectiveTrendMeterOverlay ? 64 : 0;
   const volH = showVol ? 55 : 0;
-  const gap  = showVol ? 12 : 0;
-  const priceH = renderedHeight - padT - padB - volH - gap;
-  const H = padT + priceH + gap + volH + padB;
+  const gapAfterPrice = (trendMeterH || volH) ? 10 : 0;
+  const gapAfterTrend = (trendMeterH && volH) ? 8 : 0;
+  const priceH = Math.max(140, renderedHeight - padT - padB - trendMeterH - volH - gapAfterPrice - gapAfterTrend);
+  const H = padT + priceH + gapAfterPrice + trendMeterH + gapAfterTrend + volH + padB;
   const plotW = W - padL - padR;
 
   const vs = Math.max(0, Math.min(visStart, n-2));
@@ -200,6 +208,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
     idx,
     points: overlay?.points?.slice(vs, ve) || [],
   }));
+  const trendMeterPoints = effectiveTrendMeterOverlay?.points?.slice(vs, ve) || [];
 
   // dynamic Y range from visible bars only
   let pmin=Infinity, pmax=-Infinity;
@@ -584,21 +593,25 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
   }
   // ── 1.1 + 1.2: candle rendering with doji detection, body stroke, after-hours dimming
   // SVG gradient defs for candle bodies (one per color direction, defined once)
+  const candleUp = '#d7ff00';
+  const candleUp2 = '#9dff00';
+  const candleDown = '#ff315f';
+  const candleDown2 = '#ff6b7d';
   els.push(
     <defs key="candle-grads">
       <linearGradient id="gradUp" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={C.lime} stopOpacity="1"/>
-        <stop offset="100%" stopColor={C.limeDim} stopOpacity="0.85"/>
+        <stop offset="0%" stopColor={candleUp} stopOpacity="1"/>
+        <stop offset="100%" stopColor={candleUp2} stopOpacity="1"/>
       </linearGradient>
       <linearGradient id="gradDown" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={C.err} stopOpacity="0.75"/>
-        <stop offset="100%" stopColor={C.err} stopOpacity="1"/>
+        <stop offset="0%" stopColor={candleDown2} stopOpacity="1"/>
+        <stop offset="100%" stopColor={candleDown} stopOpacity="1"/>
       </linearGradient>
     </defs>
   );
 
   visBars.forEach((c,i)=>{
-    const up=c.close>=c.open, col=up?C.lime:C.err;
+    const up=c.close>=c.open, col=up?candleUp:candleDown;
     const bx=xi(i), top=yp(Math.max(c.open,c.close)), bot=yp(Math.min(c.open,c.close));
     const isHov = hover && (vs+i)===hover.idx;
 
@@ -612,28 +625,39 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
         afterHoursDim = hhmm < 930 || hhmm >= 1600;
       }
     }
-    const baseOpacity = afterHoursDim ? 0.35 : (isHov ? 1 : 0.88);
+    const baseOpacity = afterHoursDim ? 0.58 : (isHov ? 1 : 0.98);
 
     // ── 1.1: doji detection — body height < 15% of candle range
     const bodyH = Math.max(1.5, bot - top);
     const candleRange = yp(c.low) - yp(c.high);
     const isDoji = candleRange > 0 && bodyH / candleRange < 0.15;
 
-    if(isDoji){
+    if(showBars){
+      // OHLC bar mode: high/low stem, open tick left, close tick right
+      const yOpen = yp(c.open), yClose = yp(c.close), yHigh = yp(c.high), yLow = yp(c.low);
+      const tick = Math.max(3, Math.min(8, step*0.32));
+      const sw = isHov ? 2.8 : 1.75;
+      els.push(<line key={'barW'+i} x1={bx} x2={bx} y1={yHigh} y2={yLow}
+        stroke={col} strokeWidth={sw} opacity={baseOpacity}/>);
+      els.push(<line key={'barO'+i} x1={bx-tick} x2={bx} y1={yOpen} y2={yOpen}
+        stroke={col} strokeWidth={sw} opacity={baseOpacity}/>);
+      els.push(<line key={'barC'+i} x1={bx} x2={bx+tick} y1={yClose} y2={yClose}
+        stroke={col} strokeWidth={sw} opacity={baseOpacity}/>);
+    } else if(isDoji){
       // Render doji as a horizontal cross: wide wick + thin body bar
       els.push(<line key={'w'+i} x1={bx} x2={bx} y1={yp(c.high)} y2={yp(c.low)}
-        stroke={col} strokeWidth={isHov?2:1} opacity={baseOpacity*0.9}/>);
+        stroke={col} strokeWidth={isHov?2.6:1.45} opacity={baseOpacity}/>);
       els.push(<line key={'b'+i} x1={bx-cw*0.7} x2={bx+cw*0.7} y1={(top+bot)/2} y2={(top+bot)/2}
-        stroke={col} strokeWidth={isHov?2.5:1.8} opacity={baseOpacity}/>);
+        stroke={col} strokeWidth={isHov?3:2.2} opacity={baseOpacity}/>);
     } else {
       // Normal candle: gradient fill + thin body border for depth
       els.push(<line key={'w'+i} x1={bx} x2={bx} y1={yp(c.high)} y2={yp(c.low)}
-        stroke={col} strokeWidth={isHov?2:1} opacity={baseOpacity*0.9}/>);
+        stroke={col} strokeWidth={isHov?2.6:1.45} opacity={baseOpacity}/>);
       els.push(<rect key={'b'+i} x={bx-cw/2} width={cw} y={top} height={bodyH}
         fill={isHov ? col : `url(#grad${up?'Up':'Down'})`}
         opacity={baseOpacity}
-        stroke={isHov ? '#fff' : R(up?C.lime:C.err, 0.55)}
-        strokeWidth={isHov ? 0.9 : 0.6}
+        stroke={isHov ? '#fff' : col}
+        strokeWidth={isHov ? 1.15 : 0.85}
         rx={cw>4 ? 0.8 : 0}/>);
     }
   });
@@ -715,8 +739,63 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
       els.push(<text key={'tmVal'+i} x={x+10} y={y+4} fill={C.onVar} fontSize={8.5} fontFamily="JetBrains Mono,monospace">{m.value}</text>);
     }
   });
+
+  if(effectiveTrendMeterOverlay && trendMeterPoints.length){
+    const meterTop = padT + priceH + gapAfterPrice;
+    const rows = [
+      {key:'tm1', label:'TM1'},
+      {key:'tm2', label:'TM2'},
+      {key:'tm3', label:'TM3'},
+      {key:'tb1', label:'TB1'},
+      {key:'tb2', label:'TB2'},
+    ];
+    const rowH = trendMeterH / rows.length;
+    const green = effectiveTrendMeterOverlay.green || '#288a75';
+    const red = effectiveTrendMeterOverlay.red || C.err;
+    els.push(<rect key="trend-meter-bg" x={padL} y={meterTop} width={plotW} height={trendMeterH} rx={4}
+      fill={R(C.surfLowest,0.45)} stroke={R(C.outline,0.12)} strokeWidth={0.8}/>);
+    rows.forEach((row,ridx)=>{
+      const y = meterTop + ridx*rowH;
+      els.push(<text key={`trend-meter-lbl-${row.key}`} x={padL-8} y={y+rowH/2+3}
+        fill={R(C.outline,0.62)} fontSize={8} fontFamily="JetBrains Mono,monospace" textAnchor="end">{row.label}</text>);
+      if(ridx>0) els.push(<line key={`trend-meter-sep-${row.key}`} x1={padL} x2={W-padR} y1={y} y2={y}
+        stroke={R(C.outline,0.08)} strokeWidth={0.8}/>);
+    });
+    trendMeterPoints.forEach((p,i)=>{
+      const x = xi(i);
+      rows.forEach((row,ridx)=>{
+        const value = p?.[row.key];
+        if(value == null) return;
+        const col = value ? green : red;
+        const y = meterTop + ridx*rowH + 2;
+        els.push(<rect key={`trend-meter-${row.key}-${i}`} x={x-cw/2} y={y} width={Math.max(1.5,cw)} height={Math.max(2,rowH-4)}
+          rx={1.4} fill={R(col, hover && (vs+i)===hover.idx ? 0.92 : 0.62)} stroke="none"/>);
+      });
+      if(p?.alignSignal){
+        const col = p.alignSignal === 'bull' ? green : red;
+        const cy = meterTop + rowH*0.5;
+        els.push(<circle key={`trend-meter-align-${i}`} cx={x} cy={cy} r={4.2} fill={R(col,0.92)} stroke={R('#ffffff',0.75)} strokeWidth={0.7}/>);
+      }
+      if(p?.wtAlignSignal){
+        const col = p.wtAlignSignal === 'bull' ? C.lime : C.err;
+        const cy = meterTop + rowH*1.5;
+        els.push(<path key={`trend-meter-wt-${i}`} d={`M ${x-4} ${cy} L ${x} ${cy-4} L ${x+4} ${cy} L ${x} ${cy+4} Z`}
+          fill={R(col,0.95)} stroke={R('#ffffff',0.72)} strokeWidth={0.7}/>);
+      }
+      if(p?.pressure){
+        const col = p.pressure === 'positive' ? green : '#DC143C';
+        const cy = meterTop + rowH*2.5;
+        els.push(<circle key={`trend-meter-pressure-${i}`} cx={x} cy={cy} r={2.7} fill={R(col,0.9)} stroke="none"/>);
+      }
+    });
+    els.push(<text key="trend-meter-title" x={W-padR-6} y={meterTop+10}
+      fill={R(C.onVar,0.58)} fontSize={8} fontFamily="JetBrains Mono,monospace" textAnchor="end">TREND METER</text>);
+  }
+
   if(showVol){
-    const volTop=padT+priceH+gap;
+    const volTop=trendMeterH
+      ? padT+priceH+gapAfterPrice+trendMeterH+gapAfterTrend
+      : padT+priceH+gapAfterPrice;
     const volNums = visBars.map(c=>c.volume||0);
     const vmax = Math.max(...volNums) || 1;
     // 20-bar rolling average for volume MA
@@ -873,6 +952,9 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
             <Icon n={b.icon} size={16} color="inherit"/>
           </button>
         ))}
+        <div style={{width:1,height:20,background:'rgba(132,148,149,0.18)',flexShrink:0,margin:'0 2px'}}/>
+        <Toggle on={showBars} label="Bars" onChange={()=>setShowBars(v=>!v)}/>
+        <Toggle on={showTrendMeter || Boolean(trendMeterOverlay)} label="Trend Meter" onChange={()=>setShowTrendMeter(v=>!v)}/>
         <div style={{flex:1}}/>
         <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,whiteSpace:'nowrap'}}>
           {vs+1}–{ve} / {n} bars
@@ -3845,6 +3927,180 @@ function TabCrypto({refreshKey=0}) {
   );
 }
 
+function OrdersPnlChart({rows=[]}) {
+  const [range,setRange]=useState('1M');
+  const [customFrom,setCustomFrom]=useState('');
+  const [customTo,setCustomTo]=useState('');
+  const [hoverIdx,setHoverIdx]=useState(null);
+  const money = v => {
+    const n=Number(v);
+    if(!Number.isFinite(n)) return '$0.00';
+    return `${n<0?'-':''}$${Math.abs(n).toFixed(2)}`;
+  };
+  const dateKey = value => {
+    if(!value) return null;
+    const d=new Date(String(value).replace(' ','T'));
+    if(!Number.isFinite(d.getTime())) return null;
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  };
+  const fmtDate = key => {
+    if(!key) return '';
+    const [y,m,d]=String(key).split('-');
+    return `${m}/${d}/${String(y).slice(2)}`;
+  };
+  const addMonths = (d, months) => {
+    const copy=new Date(d);
+    copy.setMonth(copy.getMonth()+months);
+    return copy;
+  };
+  const addDays = (d, days) => {
+    const copy=new Date(d);
+    copy.setDate(copy.getDate()+days);
+    return copy;
+  };
+  const startOfDay = d => new Date(d.getFullYear(),d.getMonth(),d.getDate());
+  const endOfDay = d => new Date(d.getFullYear(),d.getMonth(),d.getDate(),23,59,59,999);
+  const rangeBounds = useMemo(()=>{
+    const now=endOfDay(new Date());
+    if(range==='CUSTOM'){
+      return {
+        start: customFrom ? startOfDay(new Date(`${customFrom}T00:00:00`)) : null,
+        end: customTo ? endOfDay(new Date(`${customTo}T00:00:00`)) : null,
+      };
+    }
+    if(range==='1W') return {start:startOfDay(addDays(now,-7)),end:now};
+    if(range==='1M') return {start:startOfDay(addMonths(now,-1)),end:now};
+    if(range==='YTD') return {start:new Date(now.getFullYear(),0,1),end:now};
+    if(range==='1Y') return {start:startOfDay(addMonths(now,-12)),end:now};
+    return {start:null,end:now};
+  },[range,customFrom,customTo]);
+
+  const points = useMemo(()=>{
+    const grouped=new Map();
+    rows.forEach(r=>{
+      const pnl=Number(r.pnl);
+      if(!Number.isFinite(pnl)) return;
+      const key=dateKey(r.closed_at || r.opened_at || r.created_at);
+      if(!key) return;
+      const dt=startOfDay(new Date(`${key}T00:00:00`));
+      if(rangeBounds.start && dt < rangeBounds.start) return;
+      if(rangeBounds.end && dt > rangeBounds.end) return;
+      grouped.set(key,(grouped.get(key)||0)+pnl);
+    });
+    return [...grouped.entries()]
+      .sort(([a],[b])=>a.localeCompare(b))
+      .map(([date,pnl])=>({date,pnl}));
+  },[rows,rangeBounds]);
+
+  const total = points.reduce((s,p)=>s+p.pnl,0);
+  const greenDays = points.filter(p=>p.pnl>0).length;
+  const redDays = points.filter(p=>p.pnl<0).length;
+  const W=980,H=270,padL=64,padR=32,padT=24,padB=42;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const vals = points.map(p=>p.pnl);
+  const rawMin=Math.min(0,...vals), rawMax=Math.max(0,...vals);
+  const span=Math.max(1,rawMax-rawMin);
+  const minY=rawMin-span*0.12, maxY=rawMax+span*0.12;
+  const xFor = i => points.length<=1 ? padL+plotW/2 : padL+(i/(points.length-1))*plotW;
+  const yFor = v => padT+((maxY-v)/(maxY-minY))*plotH;
+  const zeroY=yFor(0);
+  const hoverPoint = hoverIdx!=null ? points[hoverIdx] : null;
+  const yTicks = [0,0.25,0.5,0.75,1].map(t=>maxY-(maxY-minY)*t);
+  const xTickIdxs = points.length
+    ? [...new Set([0,Math.floor((points.length-1)*0.25),Math.floor((points.length-1)*0.5),Math.floor((points.length-1)*0.75),points.length-1])]
+    : [];
+
+  return (
+    <GlassCard style={{overflow:'hidden'}}>
+      <div style={{padding:'16px 18px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,flexWrap:'wrap'}}>
+        <div style={{display:'flex',alignItems:'center',gap:10}}>
+          <Icon n="show_chart" size={18} color={C.cyan}/>
+          <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar}}>Profit & Loss Curve</span>
+          <span style={{padding:'3px 9px',borderRadius:9999,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.cyan,background:R(C.cyan,0.1),border:`1px solid ${R(C.cyan,0.28)}`}}>{points.length} trading days</span>
+        </div>
+        <div style={{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}>
+          {['1W','1M','YTD','1Y','ALL'].map(rg=>{
+            const active=range===rg;
+            return <button key={rg} onClick={()=>setRange(rg)}
+              style={{padding:'7px 11px',borderRadius:8,cursor:'pointer',border:`1px solid ${R(active?C.cyan:C.outline,active?0.45:0.18)}`,background:active?R(C.cyan,0.12):R(C.surf,0.5),color:active?C.cyan:C.onVar,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>
+              {rg}
+            </button>;
+          })}
+          <button onClick={()=>setRange('CUSTOM')}
+            style={{padding:'7px 11px',borderRadius:8,cursor:'pointer',border:`1px solid ${R(range==='CUSTOM'?C.cyan:C.outline,range==='CUSTOM'?0.45:0.18)}`,background:range==='CUSTOM'?R(C.cyan,0.12):R(C.surf,0.5),color:range==='CUSTOM'?C.cyan:C.onVar,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>
+            CUSTOM
+          </button>
+          {range==='CUSTOM' && (
+            <div style={{display:'flex',alignItems:'center',gap:6,padding:'6px 9px',borderRadius:8,background:R(C.surfLowest,0.85),border:`1px solid ${R(C.outline,0.22)}`}}>
+              <input type="date" value={customFrom} onChange={e=>setCustomFrom(e.target.value)}
+                style={{background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:11,colorScheme:'dark'}}/>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>to</span>
+              <input type="date" value={customTo} onChange={e=>setCustomTo(e.target.value)}
+                style={{background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:11,colorScheme:'dark'}}/>
+            </div>
+          )}
+        </div>
+      </div>
+      <div style={{padding:'14px 18px 18px'}}>
+        <div style={{display:'flex',gap:18,alignItems:'center',flexWrap:'wrap',marginBottom:10}}>
+          <Pill text={`TOTAL ${money(total)}`} color={total>=0?C.lime:C.err}/>
+          <Pill text={`${greenDays} green days`} color={C.lime}/>
+          <Pill text={`${redDays} red days`} color={C.err}/>
+          {hoverPoint && <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:hoverPoint.pnl>=0?C.lime:C.err}}>
+            {fmtDate(hoverPoint.date)} · {money(hoverPoint.pnl)}
+          </span>}
+        </div>
+        {points.length===0 ? (
+          <div style={{height:250,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.outline,border:`1px dashed ${R(C.outline,0.22)}`,borderRadius:10}}>
+            No realized P&L rows in this range.
+          </div>
+        ) : (
+          <div style={{position:'relative',height:280}}>
+            <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" width="100%" height="100%"
+              onMouseLeave={()=>setHoverIdx(null)}
+              onMouseMove={e=>{
+                const rect=e.currentTarget.getBoundingClientRect();
+                const sx=(e.clientX-rect.left)/rect.width*W;
+                if(points.length<=1){ setHoverIdx(0); return; }
+                const idx=Math.max(0,Math.min(points.length-1,Math.round((sx-padL)/plotW*(points.length-1))));
+                setHoverIdx(idx);
+              }}>
+              <rect x="0" y="0" width={W} height={H} fill={R(C.surfLowest,0.35)} rx="10"/>
+              {yTicks.map((v,i)=>(
+                <g key={i}>
+                  <line x1={padL} x2={W-padR} y1={yFor(v)} y2={yFor(v)} stroke={R(C.outline,0.08)} strokeWidth="1"/>
+                  <text x={padL-10} y={yFor(v)+4} textAnchor="end" fill={R(C.outline,0.65)} fontSize="10" fontFamily="JetBrains Mono,monospace">{money(v)}</text>
+                </g>
+              ))}
+              <line x1={padL} x2={W-padR} y1={zeroY} y2={zeroY} stroke={R(C.onVar,0.3)} strokeWidth="1.2" strokeDasharray="5 5"/>
+              {points.slice(1).map((p,i)=>{
+                const prev=points[i];
+                const col=p.pnl>=0?C.lime:C.err;
+                return <line key={p.date} x1={xFor(i)} y1={yFor(prev.pnl)} x2={xFor(i+1)} y2={yFor(p.pnl)}
+                  stroke={col} strokeWidth="2.4" strokeLinecap="round"/>;
+              })}
+              {points.length===1 && <circle cx={xFor(0)} cy={yFor(points[0].pnl)} r="4.5" fill={points[0].pnl>=0?C.lime:C.err}/>}
+              {points.map((p,i)=>(
+                <circle key={`${p.date}-dot`} cx={xFor(i)} cy={yFor(p.pnl)} r={hoverIdx===i?4.5:2.8}
+                  fill={p.pnl>=0?C.lime:C.err} stroke={R(C.bg,0.9)} strokeWidth="1"/>
+              ))}
+              {xTickIdxs.map(i=>(
+                <text key={i} x={xFor(i)} y={H-14} textAnchor="middle" fill={R(C.outline,0.68)} fontSize="10" fontFamily="JetBrains Mono,monospace">{fmtDate(points[i].date)}</text>
+              ))}
+              {hoverPoint && (
+                <g>
+                  <line x1={xFor(hoverIdx)} x2={xFor(hoverIdx)} y1={padT} y2={H-padB} stroke={R(C.cyan,0.22)} strokeDasharray="4 4"/>
+                  <circle cx={xFor(hoverIdx)} cy={yFor(hoverPoint.pnl)} r="6" fill={R(hoverPoint.pnl>=0?C.lime:C.err,0.2)} stroke={hoverPoint.pnl>=0?C.lime:C.err}/>
+                </g>
+              )}
+            </svg>
+          </div>
+        )}
+      </div>
+    </GlassCard>
+  );
+}
+
 function TabOrdersJournal({refreshKey=0}) {
   const [data,setData]=useState(null);
   const [selectedId,setSelectedId]=useState(null);
@@ -4024,6 +4280,8 @@ function TabOrdersJournal({refreshKey=0}) {
         {label:'Total PnL',icon:'attach_money',value:money(filteredMetrics.total_pnl||0),sub:'filtered known exits',valueColor:(filteredMetrics.total_pnl||0)>=0?C.lime:C.err},
         {label:'Avg R',icon:'analytics',value:filteredMetrics.avg_r!=null?`${Number(filteredMetrics.avg_r).toFixed(2)}R`:'—',sub:'filtered known stop/exit',valueColor:C.cyan},
       ]}/>
+
+      <OrdersPnlChart rows={filtered}/>
 
       <GlassCard style={{overflow:'hidden'}}>
         <div style={{padding:'16px 18px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,flexWrap:'wrap'}}>
@@ -4696,6 +4954,127 @@ function buildGaussianChannelOverlay(bars, opts={}) {
 }
 
 /* ── spinner ─────────────────────────────────────────────────────────────── */
+function buildTrendMeterOverlay(bars) {
+  const rows = (bars||[]).map((b,i)=>({
+    i,
+    open:Number(b.open),
+    high:Number(b.high),
+    low:Number(b.low),
+    close:Number(b.close),
+  })).filter(r=>Number.isFinite(r.open)&&Number.isFinite(r.high)&&Number.isFinite(r.low)&&Number.isFinite(r.close));
+  if(rows.length < 3) return null;
+
+  const closes = rows.map(r=>r.close);
+  const hlc3 = rows.map(r=>(r.high+r.low+r.close)/3);
+  const ohlc4 = rows.map(r=>(r.open+r.high+r.low+r.close)/4);
+  const sma = (values, len) => values.map((_,i)=>{
+    if(i < len-1) return null;
+    let sum=0;
+    for(let j=i-len+1;j<=i;j++){
+      if(!Number.isFinite(values[j])) return null;
+      sum += values[j];
+    }
+    return sum/len;
+  });
+  const ema = (values, len) => {
+    const k=2/(len+1);
+    let prev=null;
+    return values.map(v=>{
+      if(!Number.isFinite(v)) return prev;
+      prev = prev==null ? v : v*k + prev*(1-k);
+      return prev;
+    });
+  };
+  const rsi = (values, len) => {
+    let avgGain=null, avgLoss=null;
+    return values.map((_,i)=>{
+      if(i===0) return null;
+      if(i < len) return null;
+      if(i===len){
+        let gain=0, loss=0;
+        for(let j=1;j<=len;j++){
+          const ch=values[j]-values[j-1];
+          gain += Math.max(ch,0);
+          loss += Math.max(-ch,0);
+        }
+        avgGain=gain/len;
+        avgLoss=loss/len;
+      } else {
+        const ch=values[i]-values[i-1];
+        avgGain=(avgGain*(len-1)+Math.max(ch,0))/len;
+        avgLoss=(avgLoss*(len-1)+Math.max(-ch,0))/len;
+      }
+      if(avgLoss===0) return 100;
+      const rs=avgGain/avgLoss;
+      return 100 - 100/(1+rs);
+    });
+  };
+  const cross = (a,b,i) => i>0
+    && Number.isFinite(a[i]) && Number.isFinite(b[i])
+    && Number.isFinite(a[i-1]) && Number.isFinite(b[i-1])
+    && ((a[i-1] <= b[i-1] && a[i] > b[i]) || (a[i-1] >= b[i-1] && a[i] < b[i]));
+
+  const emaFast8 = ema(closes,8);
+  const emaSlow21 = ema(closes,21);
+  const fastMacd = emaFast8.map((v,i)=>Number.isFinite(v)&&Number.isFinite(emaSlow21[i]) ? v-emaSlow21[i] : null);
+  const fastSignal = ema(fastMacd,5);
+  const fastHist = fastMacd.map((v,i)=>Number.isFinite(v)&&Number.isFinite(fastSignal[i]) ? v-fastSignal[i] : null);
+  const rsi13 = rsi(closes,13);
+  const rsi5 = rsi(closes,5);
+  const rsi14 = rsi(closes,14);
+  const ma1 = ema(closes,5);
+  const ma2 = ema(closes,11);
+  const ma3 = ema(closes,13);
+  const ma4 = sma(closes,36);
+
+  const esa = ema(hlc3,9);
+  const absDev = hlc3.map((v,i)=>Number.isFinite(esa[i]) ? Math.abs(v-esa[i]) : null);
+  const de = ema(absDev,9);
+  const ci = hlc3.map((v,i)=>Number.isFinite(esa[i])&&Number.isFinite(de[i])&&de[i]!==0 ? (v-esa[i])/(0.015*de[i]) : null);
+  const wt1 = ema(ci,12);
+  const wt2 = sma(wt1,3);
+  const yellowWave = wt1.map((v,i)=>Number.isFinite(v)&&Number.isFinite(wt2[i]) ? v-wt2[i] : null);
+
+  const haOpen = [];
+  const haClose = ohlc4;
+  rows.forEach((r,i)=>{
+    haOpen[i] = i===0 ? (r.open+r.close)/2 : (haOpen[i-1]+haClose[i-1])/2;
+  });
+  const trendCandle = rows.map((_,i)=>haClose[i]-haOpen[i] > 0);
+
+  let prevAllBull=false;
+  let prevAllBear=false;
+  const rowPoints = rows.map((_,i)=>{
+    // Pine defaults: TM1 Fast MACD histogram, TM2 RSI13 > 50, TM3 RSI5 > 50.
+    const tm1 = Number.isFinite(fastHist[i]) ? fastHist[i] > 0 : null;
+    const tm2 = Number.isFinite(rsi13[i]) ? rsi13[i] > 50 : null;
+    const tm3 = Number.isFinite(rsi5[i]) ? rsi5[i] > 50 : null;
+    const tb1 = Number.isFinite(ma1[i])&&Number.isFinite(ma2[i]) ? ma1[i] > ma2[i] : null;
+    const tb2 = Number.isFinite(ma3[i])&&Number.isFinite(ma4[i]) ? ma3[i] > ma4[i] : null;
+    const allBull = tm1===true && tm2===true && tm3===true;
+    const allBear = tm1===false && tm2===false && tm3===false;
+    const wtCross = cross(wt1, wt2, i);
+    const wtCrossUp = Number.isFinite(wt1[i]) && Number.isFinite(wt2[i]) && wt2[i] - wt1[i] <= 0;
+    const wtCrossDown = Number.isFinite(wt1[i]) && Number.isFinite(wt2[i]) && wt2[i] - wt1[i] >= 0;
+    const yellowUp = i>0 && Number.isFinite(yellowWave[i]) && Number.isFinite(yellowWave[i-1]) && yellowWave[i] > yellowWave[i-1];
+    const prevRsi14 = i>0 ? rsi14[i-1] : null;
+    const pressure = ((rsi14[i] > 70 || prevRsi14 > 70) && wt1[i] > 60 && !yellowUp)
+      ? 'negative'
+      : ((rsi14[i] < 30 || prevRsi14 < 30) && wt1[i] < -60 && yellowUp)
+        ? 'positive'
+        : null;
+    const alignSignal = allBull && !prevAllBull ? 'bull' : allBear && !prevAllBear ? 'bear' : null;
+    const wtAlignSignal = wtCross && wtCrossUp && allBull ? 'bull' : wtCross && wtCrossDown && allBear ? 'bear' : null;
+    prevAllBull = allBull;
+    prevAllBear = allBear;
+    return {tm1,tm2,tm3,tb1,tb2,trendCandle:trendCandle[i],allBull,allBear,alignSignal,wtAlignSignal,pressure};
+  });
+
+  const byIndex = new Map(rows.map((r,i)=>[r.i,rowPoints[i]]));
+  const points = (bars||[]).map((_,i)=>byIndex.get(i) || {tm1:null,tm2:null,tm3:null,tb1:null,tb2:null});
+  return {name:'Trend Meter',green:'#288a75',red:'#ff5252',points};
+}
+
 function Spinner() {
   return (
     <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:200,gap:12,color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
@@ -4764,6 +5143,7 @@ function App() {
   const [newsItems, setNewsItems] = useState([]);
   const [refreshKey, setRefreshKey] = useState(0);
   const [refreshBusy, setRefreshBusy] = useState(false);
+  const [candleFetchBusy, setCandleFetchBusy] = useState(false);
   const [hardResetBusy, setHardResetBusy] = useState(false);
 
   useEffect(()=>{
@@ -4804,6 +5184,22 @@ function App() {
     }catch(e){
       alert(`Hard reset failed: ${e.message || e}`);
       setHardResetBusy(false);
+    }
+  };
+
+  const fetchIbkrCandles = async()=>{
+    if(candleFetchBusy) return;
+    setCandleFetchBusy(true);
+    try{
+      const r = await fetch(`${API}/system/fetch-ibkr-candles`,{method:'POST'});
+      const d = await r.json().catch(()=>({}));
+      if(!r.ok || d.ok===false) throw new Error(d.detail || d.message || 'IBKR candle fetch failed');
+      alert(d.message || `IBKR candle fetch queued. pid=${d.pid || '-'}`);
+      setRefreshKey(Date.now());
+    }catch(e){
+      alert(`IBKR candle fetch failed: ${e.message || e}`);
+    }finally{
+      setTimeout(()=>setCandleFetchBusy(false), 1200);
     }
   };
 
@@ -4907,6 +5303,14 @@ function App() {
               <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:marketOk?C.lime:C.onVar}}>Market {meta.session}</span>
             </div>
             {/* Refresh */}
+            <button onClick={fetchIbkrCandles} disabled={candleFetchBusy}
+              title="Fetch latest IBKR candle data now"
+              style={{height:34,padding:'0 11px',borderRadius:8,display:'flex',alignItems:'center',gap:7,cursor:candleFetchBusy?'wait':'pointer',color:candleFetchBusy?C.cyan:C.lime,background:R(C.lime,0.07),border:`1px solid ${R(candleFetchBusy?C.cyan:C.lime,candleFetchBusy?0.34:0.24)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800,letterSpacing:'0.04em'}}
+              onMouseEnter={e=>{if(!candleFetchBusy)e.currentTarget.style.color=C.cyan}}
+              onMouseLeave={e=>{if(!candleFetchBusy)e.currentTarget.style.color=C.lime}}>
+              <Icon n="cloud_download" size={16} color="inherit" style={{animation:candleFetchBusy?'spin .8s linear infinite':undefined}}/>
+              {candleFetchBusy?'FETCHING':'FETCH CANDLES'}
+            </button>
             <button onClick={refreshDashboard} disabled={refreshBusy}
               title="Refresh dashboard data"
               style={{height:34,padding:'0 11px',borderRadius:8,display:'flex',alignItems:'center',gap:7,cursor:refreshBusy?'wait':'pointer',color:refreshBusy?C.cyan:C.onVar,background:'rgba(28,27,28,0.8)',border:`1px solid ${R(refreshBusy?C.cyan:C.outline,refreshBusy?0.34:0.16)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800,letterSpacing:'0.04em'}}

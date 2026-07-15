@@ -60,6 +60,7 @@ def run_market_data_collector(
     *,
     interval_seconds: int = 300,
     once: bool = False,
+    force: bool = False,
     now_provider: Callable[[], datetime] | None = None,
     sleep_provider: Callable[[float], None] | None = None,
 ) -> Dict[str, object]:
@@ -78,13 +79,15 @@ def run_market_data_collector(
 
     while True:
         now = now_fn()
-        if not _collector_session_is_open(now):
+        if not force and not _collector_session_is_open(now):
             if once:
                 break
             next_open = _next_collector_open(now)
             LOGGER.info("Market-data collector waiting until %s", next_open.isoformat())
             sleep_until(next_open, now_fn, sleep_fn)
             continue
+        if force:
+            LOGGER.info("Market-data collector force cycle requested outside normal session window check.")
 
         result = collect_watchlist_intraday_bars(
             market_data,

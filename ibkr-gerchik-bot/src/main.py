@@ -754,6 +754,7 @@ def _run_connected_job(
                 watchlist,
                 interval_seconds=int((command_context or {}).get("interval_seconds", 300) or 300),
                 once=bool((command_context or {}).get("once", False)),
+                force=bool((command_context or {}).get("force", False)),
             )
             return {"job": job_name, **collector, "dry_run": True}
 
@@ -1057,6 +1058,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--once", action="store_true", help="For market_data: collect one cycle and exit.")
     parser.add_argument(
+        "--force",
+        action="store_true",
+        help="For market_data: run immediately even outside the normal collector window.",
+    )
+    parser.add_argument(
         "--interval-seconds",
         type=int,
         default=300,
@@ -1121,6 +1127,7 @@ def main() -> int:
                 dry_run_override=True,
                 command_context={
                     "once": bool(args.once),
+                    "force": bool(args.force),
                     "interval_seconds": max(60, int(args.interval_seconds)),
                 },
             )

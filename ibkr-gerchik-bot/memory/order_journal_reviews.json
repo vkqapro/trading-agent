@@ -50,6 +50,55 @@
       "mistake_type": "Bad trade / lucky result",
       "grade": "D",
       "updated_at": "2026-07-09T00:59:22+00:00"
+    },
+    "stock:req:b0804430981d": {
+      "decision_quality": {
+        "Stop was logical": true
+      },
+      "grade": "A",
+      "review_status": "Needs follow-up",
+      "mistake_type": "",
+      "notes": "All signals showing that the trend will reverse to bearish. \nMy forecast that this position will hit stop loss $6.30",
+      "updated_at": "2026-07-13T23:40:11+00:00"
+    },
+    "stock:req:80b548f59270": {
+      "decision_quality": {
+        "Stop was logical": true,
+        "Target was realistic": true
+      },
+      "grade": "",
+      "review_status": "Needs follow-up",
+      "mistake_type": "",
+      "notes": "Setup was incorrect: price was inside gussina, and too far rom MMSB. \nIt will close by Stop Loss @ $2.30",
+      "updated_at": "2026-07-13T23:40:01+00:00"
+    },
+    "stock:req:bcb759faf310": {
+      "decision_quality": {
+        "Stop was logical": true,
+        "Target was realistic": true,
+        "Strategy confirmed": true
+      },
+      "grade": "",
+      "review_status": "Needs follow-up",
+      "mistake_type": "",
+      "notes": "The enty was too late.\nForecast will be bullish",
+      "updated_at": "2026-07-13T23:39:42+00:00"
+    },
+    "stock:req:6a0ef9396882": {
+      "decision_quality": {},
+      "grade": "",
+      "review_status": "Needs follow-up",
+      "mistake_type": "",
+      "notes": "Incorrect entry: low part gussian, BMSB is squzing, trade meter shows red zone. \nWill close on Stopp Loss @ $195.05",
+      "updated_at": "2026-07-13T23:39:34+00:00"
+    },
+    "stock:req:9e087f8a9048": {
+      "decision_quality": {},
+      "grade": "",
+      "review_status": "Needs follow-up",
+      "mistake_type": "",
+      "notes": "",
+      "updated_at": "2026-07-13T23:39:51+00:00"
     }
   }
 }

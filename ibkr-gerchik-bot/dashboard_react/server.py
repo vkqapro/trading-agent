@@ -365,6 +365,47 @@ def api_system_hard_reset():
         raise HTTPException(500, str(exc))
 
 
+@app.post("/api/system/fetch-ibkr-candles")
+def api_system_fetch_ibkr_candles():
+    """Queue a one-shot IBKR candle refresh, ignoring normal market-hours gating."""
+    try:
+        SETTINGS.paths.runtime_dir.mkdir(parents=True, exist_ok=True)
+        log_path = SETTINGS.paths.runtime_dir / "manual_market_data_fetch.log"
+        client_id = os.environ.get("MANUAL_MARKET_DATA_CLIENT_ID", "117").strip() or "117"
+        cmd = [
+            sys.executable,
+            "-m",
+            "src.main",
+            "--job",
+            "market_data",
+            "--once",
+            "--force",
+            "--interval-seconds",
+            "300",
+            "--client-id",
+            str(client_id),
+        ]
+        with log_path.open("a", encoding="utf-8") as log:
+            log.write(f"\n--- {datetime.now(ET).isoformat()} queued {' '.join(cmd)} ---\n")
+            process = subprocess.Popen(
+                cmd,
+                cwd=str(ROOT),
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                stdin=subprocess.DEVNULL,
+                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+            )
+        return {
+            "ok": True,
+            "pid": process.pid,
+            "client_id": client_id,
+            "log": str(log_path),
+            "message": "Queued manual IBKR candle refresh. It will fetch latest watchlist bars even outside the normal market-data window.",
+        }
+    except Exception as exc:
+        raise HTTPException(500, str(exc))
+
+
 def _pid_alive(pid: object) -> bool:
     try:
         pid_int = int(pid)
