@@ -57,7 +57,7 @@ const R = (hex, a) => {
   const r=parseInt(h.slice(0,2),16), g=parseInt(h.slice(2,4),16), b=parseInt(h.slice(4,6),16);
   return `rgba(${r},${g},${b},${a})`;
 };
-const API = 'http://127.0.0.1:8550/api';
+const API = `${window.location.origin}/api`;
 
 // UI timeframe pill → API timeframe string (must match memory/bars filenames)
 const TF_API = {
@@ -4135,8 +4135,11 @@ function OrdersPnlChart({rows=[]}) {
 }
 
 function TabMarketScreener({refreshKey=0}) {
-  const [data,setData]=useState(null);
+  const todayKey = new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+  const emptyScreener = {signals:[],rejected:[],near_misses:[],reason_counts:{},reason_log:[],signals_found:0,universe_size:0,timeframe:'1D',anchor_date:todayKey,idle:true};
+  const [data,setData]=useState(emptyScreener);
   const [tf,setTf]=useState('1D');
+  const [anchorDate,setAnchorDate]=useState(todayKey);
   const [side,setSide]=useState('ALL');
   const [strategies,setStrategies]=useState(['LP1','LP2','PRB1','PRB2']);
   const [minScore,setMinScore]=useState(0);
@@ -4145,9 +4148,23 @@ function TabMarketScreener({refreshKey=0}) {
   const [busy,setBusy]=useState(false);
   const [symbolSearch,setSymbolSearch]=useState('');
   const [statusFilter,setStatusFilter]=useState('ALL');
+  const [selectedSignalKey,setSelectedSignalKey]=useState(null);
+  const [signalBars,setSignalBars]=useState([]);
+  const [signalBarsInfo,setSignalBarsInfo]=useState({stale:false,lastDate:null});
+  const [signalPlan,setSignalPlan]=useState(null);
+  const [showSignalOverlay,setShowSignalOverlay]=useState(true);
+  const [showSignalTrade,setShowSignalTrade]=useState(true);
+  const [showSignalRaw,setShowSignalRaw]=useState(false);
+  const [showSignalStrategy,setShowSignalStrategy]=useState(false);
+  const [showSignalStrategy2,setShowSignalStrategy2]=useState(false);
+  const [showSignalGaussian,setShowSignalGaussian]=useState(false);
+  const [showSignalGaussianSignals,setShowSignalGaussianSignals]=useState(false);
+  const [showSignalVol,setShowSignalVol]=useState(true);
   const money = v => v!=null && Number.isFinite(Number(v)) ? `$${Number(v).toFixed(Math.abs(Number(v))>=10?2:4)}` : '—';
   const num = (v,d=2) => v!=null && Number.isFinite(Number(v)) ? Number(v).toFixed(d) : '—';
   const pct = v => v!=null && Number.isFinite(Number(v)) ? `${Number(v).toFixed(2)}%` : '—';
+
+  const signalKey = row => row ? [row.ticker,row.strategy,row.side,row.signal_bar_date,row.entry_day,row.level_price,row.entry_price].join('|') : '';
 
   const loadScreener = useCallback(()=>{
     setBusy(true);
@@ -4159,32 +4176,94 @@ function TabMarketScreener({refreshKey=0}) {
       rr:String(rr),
       risk_pct:String(riskPct),
     });
+    if(anchorDate) query.set('anchor_date', anchorDate);
     fetch(`${API}/market-screener?${query.toString()}`,{cache:'no-store'})
       .then(r=>r.json())
-      .then(setData)
-      .catch(()=>setData({signals:[],rejected:[],near_misses:[],reason_counts:{},error:'Failed to load screener'}))
+      .then(d=>{
+        setData(d);
+        const first = (d.signals||[])[0];
+        setSelectedSignalKey(first ? signalKey(first) : null);
+      })
+      .catch(()=>{setData({...emptyScreener,anchor_date:anchorDate,timeframe:tf,error:'Failed to load screener',idle:false}); setSelectedSignalKey(null);})
       .finally(()=>setBusy(false));
-  },[tf,side,strategies.join(','),minScore,rr,riskPct]);
+  },[tf,anchorDate,side,strategies.join(','),minScore,rr,riskPct]);
 
-  useEffect(()=>{ loadScreener(); },[refreshKey, loadScreener]);
   const toggleStrategy = strategy => {
     setStrategies(current=>{
       const next = current.includes(strategy) ? current.filter(item=>item!==strategy) : [...current, strategy];
       return next.length ? next : [strategy];
     });
   };
-  if(!data) return <Spinner/>;
-
   const signals = data.signals || [];
   const rejected = data.rejected || [];
   const nearMisses = data.near_misses || [];
   const reasonCounts = Object.entries(data.reason_counts || {});
+  const filterToken = (value, label) => value===true ? label : value===false ? label.toLowerCase() : `${label}?`;
+  const filterColor = row => row.volume_filter_pass===false || row.spread_filter_pass===false || row.earnings_filter_pass===false || row.corporate_action_filter_pass===false ? C.err : (row.spread_filter_pass==null || row.corporate_action_filter_pass==null ? C.outline : C.lime);
   const symbolNeedle = symbolSearch.trim().toUpperCase();
   const filteredSignals = signals.filter(row=>{
     if(symbolNeedle && !String(row.ticker||'').includes(symbolNeedle)) return false;
     if(statusFilter!=='ALL' && row.status!==statusFilter) return false;
     return true;
   });
+  const selectedSignal = signals.find(row=>signalKey(row)===selectedSignalKey) || filteredSignals[0] || signals[0] || null;
+  const chartTf = data.timeframe || tf;
+  const chartApiTf = TF_API[chartTf] || 'daily_live';
+  useEffect(()=>{
+    if(!selectedSignal?.ticker){
+      setSignalBars([]);
+      setSignalBarsInfo({stale:false,lastDate:null});
+      setSignalPlan(null);
+      return;
+    }
+    fetch(`${API}/bars/${encodeURIComponent(selectedSignal.ticker)}/${chartApiTf}`,{cache:'no-store'})
+      .then(r=>r.json())
+      .then(d=>{setSignalBars(d.bars||[]);setSignalBarsInfo({stale:d.stale,lastDate:d.last_date});})
+      .catch(()=>{setSignalBars([]);setSignalBarsInfo({stale:true,lastDate:null});});
+    fetch(`${API}/preopen/${encodeURIComponent(selectedSignal.ticker)}`,{cache:'no-store'})
+      .then(r=>r.json())
+      .then(setSignalPlan)
+      .catch(()=>setSignalPlan(null));
+  },[selectedSignal?.ticker, chartApiTf]);
+  const chartAnchorDate = data.anchor_date || anchorDate;
+  const signalChartBars = useMemo(()=>{
+    const rows = signalBars||[];
+    if(!selectedSignal?.signal_bar_date) return rows.slice(-160);
+    const sigIdx = rows.findIndex(bar=>String(bar.t||bar.date||'').slice(0,10)===selectedSignal.signal_bar_date);
+    if(sigIdx < 0) return rows.slice(-160);
+    return rows.slice(Math.max(0,sigIdx-90));
+  },[signalBars, selectedSignal?.signal_bar_date]);
+  const signalChartLevels = useMemo(
+    ()=>buildChartLevels(signalPlan?.trade_levels, signalPlan?.raw_levels, showSignalTrade, showSignalRaw),
+    [signalPlan, showSignalTrade, showSignalRaw]
+  );
+  const signalStrategyOverlay = useMemo(()=>{
+    const overlays = [
+      showSignalStrategy ? buildBmsbStrategyOverlay(signalChartBars) : null,
+      showSignalStrategy2 ? buildBmsbStrategy2Overlay(signalChartBars) : null,
+    ].filter(Boolean);
+    return overlays.length ? overlays : null;
+  },[showSignalStrategy, showSignalStrategy2, signalChartBars]);
+  const signalGaussianOverlay = useMemo(()=>{
+    if(!showSignalGaussian && !showSignalGaussianSignals) return null;
+    const full = buildGaussianChannelOverlay(signalChartBars);
+    return full ? {...full, showChannel:showSignalGaussian, showSignals:showSignalGaussianSignals} : null;
+  },[showSignalGaussian, showSignalGaussianSignals, signalChartBars]);
+  const signalLines = showSignalOverlay && selectedSignal ? [
+    {p:Number(selectedSignal.level_price), label:`LEVEL ${money(selectedSignal.level_price)}`, color:C.cyan},
+    {p:Number(selectedSignal.entry_price), label:`ENTRY ${money(selectedSignal.entry_price)}`, color:selectedSignal.side==='SHORT'?C.err:C.lime},
+    {p:Number(selectedSignal.stop_price), label:`STOP ${money(selectedSignal.stop_price)}`, color:C.err},
+    {p:Number(selectedSignal.take_profit_price), label:`TP ${money(selectedSignal.take_profit_price)}`, color:C.lime},
+  ].filter(line=>Number.isFinite(line.p)) : [];
+  const signalMarkerPrice = selectedSignal ? (Number(selectedSignal.entry_price)||Number(selectedSignal.level_price)) : null;
+  const signalMarkers = showSignalOverlay && selectedSignal && Number.isFinite(signalMarkerPrice) ? [{
+    time:selectedSignal.signal_bar_date,
+    price:signalMarkerPrice,
+    kind:'entry',
+    label:`${selectedSignal.strategy} ${selectedSignal.side}`,
+    value:`score ${num(selectedSignal.score,2)}`,
+    color:selectedSignal.side==='SHORT'?C.err:C.lime,
+  }] : [];
   const readyCount = signals.filter(row=>row.status==='READY').length;
   const avgScore = signals.length ? signals.reduce((sum,row)=>sum+Number(row.score||0),0)/signals.length : null;
   const controlsShell = {display:'flex',alignItems:'center',gap:8,padding:'9px 11px',borderRadius:8,background:R(C.surfLowest,0.78),border:`1px solid ${R(C.outline,0.22)}`};
@@ -4192,12 +4271,12 @@ function TabMarketScreener({refreshKey=0}) {
   return (
     <div style={{display:'flex',flexDirection:'column',gap:22}}>
       <MetricGrid items={[
-        {label:'Universe',icon:'radar',value:data.universe_size??0,sub:`${data.timeframe||tf} scan`,valueColor:C.cyan},
+        {label:'Universe',icon:'radar',value:data.universe_size??0,sub:data.idle?'idle':`${data.timeframe||tf} scan`,valueColor:C.cyan},
         {label:'Signals',icon:'bolt',value:data.signals_found??0,sub:'LP / PRB matches',valueColor:(data.signals_found||0)>0?C.lime:C.outline},
         {label:'Ready',icon:'task_alt',value:readyCount,sub:'position size valid',valueColor:C.lime},
         {label:'Rejected',icon:'filter_alt',value:rejected.length,sub:'quality / data filters',valueColor:C.err},
         {label:'Near Misses',icon:'adjust',value:nearMisses.length,sub:'levels found, pattern incomplete',valueColor:C.cyan},
-        {label:'Avg Score',icon:'analytics',value:avgScore!=null?num(avgScore,2):'—',sub:'visible signals',valueColor:C.cyan},
+        {label:'Anchor',icon:'event',value:data.anchor_date||anchorDate,sub:'scan cutoff day',valueColor:C.cyan},
       ]}/>
 
       <GlassCard style={{padding:16}}>
@@ -4225,6 +4304,12 @@ function TabMarketScreener({refreshKey=0}) {
           </button>
         </div>
         <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:10,marginTop:14}}>
+          <label style={controlsShell}>
+            <Icon n="event" size={15} color={anchorDate?C.cyan:C.outline}/>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,textTransform:'uppercase'}}>Anchor day</span>
+            <input type="date" value={anchorDate} onChange={e=>setAnchorDate(e.target.value)}
+              style={{width:132,marginLeft:'auto',background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}/>
+          </label>
           <label style={controlsShell}>
             <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,textTransform:'uppercase'}}>Min score</span>
             <input type="number" min="0" max="1" step="0.05" value={minScore} onChange={e=>setMinScore(Number(e.target.value)||0)}
@@ -4261,7 +4346,10 @@ function TabMarketScreener({refreshKey=0}) {
         <Table
           cols={['Ticker','Strategy','Side','Status','Level','Entry','Stop','TP','RR','ATR','Score','Size','Filters','Reasoning']}
           rows={filteredSignals.map(row=>[
-            <span style={{color:C.onSurf,fontWeight:900}}>{row.ticker}</span>,
+            <button onClick={()=>setSelectedSignalKey(signalKey(row))}
+              style={{background:'transparent',border:0,padding:0,cursor:'pointer',color:signalKey(row)===signalKey(selectedSignal)?C.cyan:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:900}}>
+              {row.ticker}
+            </button>,
             <Pill text={row.strategy} color={row.strategy?.startsWith('LP')?C.cyan:C.lime}/>,
             <Pill text={row.side} color={row.side==='SHORT'?C.err:C.lime}/>,
             <Pill text={row.status} color={row.status==='READY'?C.lime:C.err}/>,
@@ -4273,8 +4361,8 @@ function TabMarketScreener({refreshKey=0}) {
             num(row.atr_clean_14,2),
             <span style={{color:Number(row.score)>=0.7?C.lime:Number(row.score)>=0.45?C.cyan:C.outline,fontWeight:900}}>{num(row.score,2)}</span>,
             row.position_size_shares,
-            <span style={{color:row.volume_filter_pass&&row.spread_filter_pass&&row.earnings_filter_pass?C.lime:C.err}}>
-              {row.volume_filter_pass?'VOL':'vol'} / {row.spread_filter_pass?'SPR':'spr'} / {row.earnings_filter_pass?'EVT':'evt'}
+            <span style={{color:filterColor(row)}}>
+              {filterToken(row.volume_filter_pass,'VOL')} / {filterToken(row.spread_filter_pass,'SPR')} / {filterToken(row.earnings_filter_pass,'EVT')} / {filterToken(row.corporate_action_filter_pass,'CA')}
             </span>,
             <span style={{fontFamily:"'Inter',sans-serif",whiteSpace:'normal',lineHeight:1.35,color:C.onVar}}>{row.reasoning}</span>,
           ])}
@@ -4282,7 +4370,55 @@ function TabMarketScreener({refreshKey=0}) {
         {!filteredSignals.length && (
           <div style={{padding:'24px 20px',display:'flex',alignItems:'center',gap:10,color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
             <Icon n="filter_alt_off" size={18} color={C.outline}/>
-            No signals matched the current scan. Check near misses and rejection reasons below.
+            {data.idle ? 'Pick an anchor day and click Scan to run the screener.' : 'No signals matched the current scan. Check near misses and rejection reasons below.'}
+          </div>
+        )}
+      </GlassCard>
+
+      <GlassCard style={{overflow:'hidden'}}>
+        <div style={{padding:'16px 18px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',justifyContent:'space-between',alignItems:'center',gap:12,flexWrap:'wrap'}}>
+          <PanelHeader
+            icon="candlestick_chart"
+            title="Signal Chart"
+            badge={selectedSignal ? `${selectedSignal.ticker} ${selectedSignal.strategy} ${selectedSignal.side}` : 'no signal'}
+          />
+          {selectedSignal && (
+            <div style={{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap',fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.onVar}}>
+              <Pill text={`ANCHOR ${chartAnchorDate || selectedSignal.entry_day || '-'}`} color={C.cyan}/>
+              <Pill text={`THRU ${signalBarsInfo.lastDate ? String(signalBarsInfo.lastDate).slice(0,10) : 'LATEST'}`} color={C.outline}/>
+              <Pill text={`SCORE ${num(selectedSignal.score,2)}`} color={Number(selectedSignal.score)>=0.7?C.lime:C.cyan}/>
+              <Pill text={selectedSignal.status} color={selectedSignal.status==='READY'?C.lime:C.err}/>
+            </div>
+          )}
+        </div>
+        <div style={{padding:'12px 18px',borderBottom:`1px solid ${R(C.outline,0.1)}`,display:'flex',gap:18,alignItems:'center',flexWrap:'wrap'}}>
+          <Toggle on={showSignalOverlay} label="Signal" onChange={setShowSignalOverlay}/>
+          <Toggle on={showSignalTrade} label="Trade zones" onChange={setShowSignalTrade}/>
+          <Toggle on={showSignalRaw} label="Raw levels" onChange={setShowSignalRaw}/>
+          <Toggle on={showSignalStrategy} label="BMSB strategy" onChange={setShowSignalStrategy}/>
+          <Toggle on={showSignalStrategy2} label="BMSB strategy 2" onChange={setShowSignalStrategy2}/>
+          <Toggle on={showSignalGaussian} label="Gaussian channel" onChange={v=>{setShowSignalGaussian(v); if(v) setShowSignalGaussianSignals(true);}}/>
+          <Toggle on={showSignalGaussianSignals} label="Gaussian signals" onChange={setShowSignalGaussianSignals}/>
+          <Toggle on={showSignalVol} label="Volume" onChange={setShowSignalVol}/>
+        </div>
+        {selectedSignal && signalChartBars.length ? (
+          <CandleChart
+            bars={signalChartBars}
+            levels={signalChartLevels}
+            lines={signalLines}
+            tradeMarkers={signalMarkers}
+            strategyOverlay={signalStrategyOverlay}
+            gaussianOverlay={signalGaussianOverlay}
+            showVol={showSignalVol}
+            height={520}
+            stale={signalBarsInfo.stale}
+            lastDate={signalBarsInfo.lastDate}
+            lineLabelPosition="middle"
+          />
+        ) : (
+          <div style={{padding:'24px 20px',display:'flex',alignItems:'center',gap:10,color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
+            <Icon n="candlestick_chart" size={18} color={C.outline}/>
+            {selectedSignal ? 'Loading chart bars for the selected signal.' : 'Run a scan and select a signal to view its chart.'}
           </div>
         )}
       </GlassCard>

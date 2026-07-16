@@ -891,6 +891,7 @@ def api_market_screener(
     rr: float = 2.0,
     risk_pct: float = 0.5,
     equity: float = 100000.0,
+    anchor_date: str = "",
 ):
     from src.symbol_universe import load_stock_symbols
 
@@ -904,6 +905,7 @@ def api_market_screener(
     ) or ("LP1", "LP2", "PRB1", "PRB2")
     params = ScreenerParams(
         timeframe=str(timeframe or "1D").upper(),
+        anchor_date=str(anchor_date or "").strip() or None,
         strategies=selected_strategies,
         side_filter=str(side or "ALL").upper(),
         score_min=max(0.0, min(1.0, float(min_score or 0.0))),
