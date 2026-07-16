@@ -30,6 +30,7 @@ from src.crypto.config import CRYPTO_SETTINGS
 from src.data.bar_store import load_bars
 
 REVIEWS_PATH = MEMORY_DIR / "order_journal_reviews.json"
+CLOSED_POSITIONS_PATH = MEMORY_DIR / "runtime" / "closed_positions.json"
 MAX_ROWS = 500
 
 
@@ -334,6 +335,23 @@ def _open_position_index() -> Dict[str, Dict[str, Any]]:
     return index
 
 
+def _closed_positions_by_symbol() -> Dict[str, List[Dict[str, Any]]]:
+    data = _read_json(CLOSED_POSITIONS_PATH, {"positions": []})
+    positions = data.get("positions") if isinstance(data, dict) else []
+    if not isinstance(positions, list):
+        return {}
+    by_symbol: Dict[str, List[Dict[str, Any]]] = {}
+    for position in positions:
+        if not isinstance(position, dict):
+            continue
+        symbol = _upper(position.get("symbol"))
+        if symbol:
+            by_symbol.setdefault(symbol, []).append(position)
+    for items in by_symbol.values():
+        items.sort(key=lambda item: str(item.get("closed_at") or ""), reverse=True)
+    return by_symbol
+
+
 def _position_matches_request(position: Dict[str, Any] | None, result: Dict[str, Any]) -> bool:
     if not position:
         return False
@@ -355,6 +373,30 @@ def _position_matches_request(position: Dict[str, Any] | None, result: Dict[str,
     return not pos_order_ids and not req_order_ids
 
 
+def _observed_close_matches_request(position: Dict[str, Any], request: Dict[str, Any], result: Dict[str, Any]) -> bool:
+    pos_order_ids = {
+        str(position.get("market_order_id") or ""),
+        str(position.get("order_id") or ""),
+    }
+    req_order_ids = {
+        str(result.get("market_order_id") or ""),
+        str(result.get("order_id") or ""),
+    }
+    pos_order_ids.discard("")
+    req_order_ids.discard("")
+    if pos_order_ids and req_order_ids:
+        return bool(pos_order_ids & req_order_ids)
+
+    opened = _parse_dt(position.get("opened_at"))
+    requested = _parse_dt(request.get("updated_at") or request.get("created_at"))
+    closed = _parse_dt(position.get("closed_at"))
+    if requested and opened and abs((opened - requested).total_seconds()) <= 24 * 60 * 60:
+        return True
+    if requested and closed and closed >= requested:
+        return True
+    return not pos_order_ids and not req_order_ids
+
+
 def _rows_from_order_requests(open_positions: Dict[str, Dict[str, Any]]) -> List[Dict[str, Any]]:
     data = _read_json(MEMORY_DIR / "order_requests.json", {"requests": []})
     requests = data.get("requests") if isinstance(data, dict) else []
@@ -362,6 +404,7 @@ def _rows_from_order_requests(open_positions: Dict[str, Dict[str, Any]]) -> List
         return []
     rows: List[Dict[str, Any]] = []
     close_by_symbol: Dict[str, List[Dict[str, Any]]] = {}
+    observed_close_by_symbol = _closed_positions_by_symbol()
     for req in requests:
         if isinstance(req, dict) and req.get("action") == "close":
             close_by_symbol.setdefault(_upper(req.get("symbol")), []).append(req)
@@ -381,7 +424,25 @@ def _rows_from_order_requests(open_positions: Dict[str, Dict[str, Any]]) -> List
             ),
             None,
         )
-        status = "OPEN" if open_pos else "CLOSED" if related_close else "SUBMITTED" if status_raw in {"done", "simulated"} else status_raw.upper()
+        observed_close = None if open_pos or related_close else next(
+            (
+                position
+                for position in observed_close_by_symbol.get(symbol, [])
+                if _observed_close_matches_request(position, req, result)
+            ),
+            None,
+        )
+        status = (
+            "OPEN"
+            if open_pos
+            else "CLOSED"
+            if related_close
+            else "CLOSED_OBSERVED"
+            if observed_close
+            else "CLOSED_UNKNOWN"
+            if status_raw in {"done", "simulated"}
+            else status_raw.upper()
+        )
         actual_exit = None
         closed_at = None
         exit_reason = ""
@@ -390,7 +451,10 @@ def _rows_from_order_requests(open_positions: Dict[str, Dict[str, Any]]) -> List
             actual_exit = _fill_price_from_result(close_result)
             closed_at = related_close.get("updated_at") or related_close.get("created_at")
             exit_reason = "MANUAL_CLOSE" if related_close.get("source") == "dashboard" else "CLOSE_REQUEST"
-        elif not open_pos and status_raw in {"done", "simulated"}:
+        elif observed_close:
+            closed_at = observed_close.get("closed_at")
+            exit_reason = str(observed_close.get("exit_reason") or "BROKER_POSITION_CLOSED")
+        elif not open_pos and status_raw == "simulated":
             inferred = _infer_bracket_exit_from_bars(
                 symbol=symbol,
                 side=req.get("signal"),
@@ -406,6 +470,8 @@ def _rows_from_order_requests(open_positions: Dict[str, Dict[str, Any]]) -> List
             else:
                 status = "CLOSED_UNKNOWN"
                 exit_reason = "UNKNOWN_OR_BRACKET"
+        elif not open_pos and status_raw == "done":
+            exit_reason = "UNKNOWN_OR_BROKER"
         rows.append(
             _base_row(
                 journal_id=f"stock:req:{req.get('id')}",

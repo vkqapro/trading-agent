@@ -47,6 +47,7 @@ from src.forex.tradingview_webhook import handle_forex_tradingview_webhook, load
 from src.journal.broker_reconcile import reconcile_ibkr_open_orders
 from src.journal.order_journal import load_order_journal, save_review
 from src.stocks.tradingview_webhook import handle_stock_tradingview_webhook, load_stock_tradingview_state
+from dashboard_react.market_screener import ScreenerParams, run_market_screener
 
 app = FastAPI(title="Vitaly's Trading Bot Dashboard API", docs_url=None, redoc_url=None)
 app.add_middleware(
@@ -135,7 +136,7 @@ def _weekly_live_frame(symbol: str) -> pd.DataFrame:
     )
 
 
-def _bmsb_scan_symbol(symbol: str, today) -> dict | None:
+def _bmsb_scan_symbol(symbol: str, today, include_neutral: bool = False) -> dict | None:
     weekly = _weekly_live_frame(symbol)
     if weekly.empty or len(weekly) < 21:
         return None
@@ -182,7 +183,11 @@ def _bmsb_scan_symbol(symbol: str, today) -> dict | None:
         urgency = "near"
 
     if not signal:
-        return None
+        if not include_neutral:
+            return None
+        signal = "NO_SIGNAL"
+        side = "NONE"
+        urgency = "none"
 
     return {
         "symbol": symbol,
@@ -195,6 +200,10 @@ def _bmsb_scan_symbol(symbol: str, today) -> dict | None:
         "gap": round(curr_diff, 4),
         "gap_pct": round(current_gap_pct, 4),
         "previous_gap_pct": round(prev_gap_pct, 4) if prev_gap_pct is not None else None,
+        "entry_level": None,
+        "exit_level": None,
+        "trigger_level": None,
+        "trigger_gap_pct": round(current_gap_pct, 4),
         "cross_date": str(latest_session_date),
         "weekly_bar": str(pd.to_datetime(curr["date"]).date()),
         "threshold_pct": BMSB_NEAR_CROSS_THRESHOLD_PCT,
@@ -841,6 +850,75 @@ def api_watchlist():
     }
 
 
+def _screener_frame(symbol: str, timeframe: str) -> pd.DataFrame:
+    timeframe = str(timeframe or "1D").upper()
+    if timeframe == "1D":
+        return _daily_live_frame(symbol)
+    if timeframe == "4H":
+        stored = da.get_bars(symbol, "intraday_4h")
+        if not stored.empty:
+            return stored
+        intraday = da.get_bars(symbol, "intraday_5m")
+        if intraday.empty:
+            return intraday
+        frame = intraday.set_index("date").sort_index()
+        return (
+            frame.resample("240min", origin="start_day", offset="30min")
+            .agg({"open": "first", "high": "max", "low": "min", "close": "last", "volume": "sum"})
+            .dropna(subset=["open", "high", "low", "close"])
+            .reset_index()
+        )
+    if timeframe == "1H":
+        intraday = da.get_bars(symbol, "intraday_5m")
+        if intraday.empty:
+            return intraday
+        frame = intraday.set_index("date").sort_index()
+        return (
+            frame.resample("60min", origin="start_day", offset="30min")
+            .agg({"open": "first", "high": "max", "low": "min", "close": "last", "volume": "sum"})
+            .dropna(subset=["open", "high", "low", "close"])
+            .reset_index()
+        )
+    return _daily_live_frame(symbol)
+
+
+@app.get("/api/market-screener")
+def api_market_screener(
+    timeframe: str = "1D",
+    strategies: str = "LP1,LP2,PRB1,PRB2",
+    side: str = "ALL",
+    min_score: float = 0.0,
+    rr: float = 2.0,
+    risk_pct: float = 0.5,
+    equity: float = 100000.0,
+):
+    from src.symbol_universe import load_stock_symbols
+
+    watchlist = _safe(da.load_watchlist, {})
+    configured_symbols = _safe(load_stock_symbols, [])
+    symbols = sorted(set(configured_symbols or []) | set((watchlist or {}).keys()))
+    selected_strategies = tuple(
+        strategy
+        for strategy in (item.strip().upper() for item in str(strategies or "").split(","))
+        if strategy in {"LP1", "LP2", "PRB1", "PRB2"}
+    ) or ("LP1", "LP2", "PRB1", "PRB2")
+    params = ScreenerParams(
+        timeframe=str(timeframe or "1D").upper(),
+        strategies=selected_strategies,
+        side_filter=str(side or "ALL").upper(),
+        score_min=max(0.0, min(1.0, float(min_score or 0.0))),
+        rr=max(1.0, min(3.0, float(rr or 2.0))),
+        risk_pct=max(0.0001, min(0.05, float(risk_pct or 0.5) / 100.0)),
+        equity=max(1.0, float(equity or 100000.0)),
+    )
+    return run_market_screener(
+        symbols=symbols,
+        bars_loader=_screener_frame,
+        watchlist=watchlist if isinstance(watchlist, dict) else {},
+        params=params,
+    )
+
+
 @app.post("/api/watchlist/add")
 async def api_watchlist_add(body: dict):
     from src.symbol_universe import add_stock_symbol, normalize_stock_symbol
@@ -951,7 +1029,7 @@ def api_strategy():
     today = datetime.now(ET).date()
     rows = []
     for symbol in symbols:
-        row = _safe(lambda s=symbol: _bmsb_strategy2_scan_symbol(s, today, include_neutral=True), None)
+        row = _safe(lambda s=symbol: _bmsb_scan_symbol(s, today, include_neutral=True), None)
         if row is None:
             row = {
                 "symbol": symbol,
@@ -969,8 +1047,7 @@ def api_strategy():
                 "trigger_gap_pct": None,
                 "cross_date": None,
                 "weekly_bar": None,
-                "threshold_pct": BMSB2_NEAR_TRIGGER_THRESHOLD_PCT,
-                "tolerance_pct": BMSB2_RECLAIM_TOLERANCE_PCT,
+                "threshold_pct": BMSB_NEAR_CROSS_THRESHOLD_PCT,
             }
         rows.append(row)
     matched_rows = [row for row in rows if row.get("urgency") in {"crossed", "near"}]
@@ -991,10 +1068,9 @@ def api_strategy():
         str(r.get("symbol", "")),
     ))
     return {
-        "strategy": "BMSB Strategy 2",
-        "description": "Weekly BMSB Strategy 2 monitor. Long entry is a reclaim of the tolerance-adjusted upper band; exit is a loss of the tolerance-adjusted lower band.",
-        "threshold_pct": BMSB2_NEAR_TRIGGER_THRESHOLD_PCT,
-        "tolerance_pct": BMSB2_RECLAIM_TOLERANCE_PCT,
+        "strategy": "BMSB Strategy",
+        "description": "Weekly BMSB monitor. Signals are based on the 21W EMA crossing the 20W SMA, or symbols near that cross.",
+        "threshold_pct": BMSB_NEAR_CROSS_THRESHOLD_PCT,
         "recent_days": BMSB_RECENT_CROSS_DAYS,
         "symbols_scanned": len(symbols),
         "symbols": symbols,

@@ -93,12 +93,15 @@
       "updated_at": "2026-07-13T23:39:34+00:00"
     },
     "stock:req:9e087f8a9048": {
-      "decision_quality": {},
-      "grade": "",
+      "decision_quality": {
+        "Stop was logical": true,
+        "Target was realistic": true
+      },
+      "grade": "F",
       "review_status": "Needs follow-up",
       "mistake_type": "",
-      "notes": "",
-      "updated_at": "2026-07-13T23:39:51+00:00"
+      "notes": "will close by stop loss @ 14.70. \nIncorrect entry, entry was after level breakout but no consolidation the breakout was on one long bag ",
+      "updated_at": "2026-07-15T01:38:42+00:00"
     }
   }
 }

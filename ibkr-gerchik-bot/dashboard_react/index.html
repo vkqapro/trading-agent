@@ -198,17 +198,21 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
   const H = padT + priceH + gapAfterPrice + trendMeterH + gapAfterTrend + volH + padB;
   const plotW = W - padL - padR;
 
+  const rightPadLimit = Math.max(8, Math.min(80, Math.round((visEnd-visStart || n) * 0.35)));
+  const rightEdgeLimit = n + rightPadLimit;
   const vs = Math.max(0, Math.min(visStart, n-2));
-  const ve = Math.max(vs+2, Math.min(visEnd, n));
-  const visBars = bars.slice(vs, ve);
+  const ve = Math.max(vs+2, Math.min(visEnd, rightEdgeLimit));
+  const dataEnd = Math.min(ve, n);
+  const viewSlots = Math.max(2, ve - vs);
+  const visBars = bars.slice(vs, dataEnd);
   const vn = visBars.length;
   const strategyOverlays = (Array.isArray(strategyOverlay) ? strategyOverlay : [strategyOverlay]).filter(Boolean);
   const strategyOverlaySlices = strategyOverlays.map((overlay, idx)=>({
     overlay,
     idx,
-    points: overlay?.points?.slice(vs, ve) || [],
+    points: overlay?.points?.slice(vs, dataEnd) || [],
   }));
-  const trendMeterPoints = effectiveTrendMeterOverlay?.points?.slice(vs, ve) || [];
+  const trendMeterPoints = effectiveTrendMeterOverlay?.points?.slice(vs, dataEnd) || [];
 
   // dynamic Y range from visible bars only
   let pmin=Infinity, pmax=-Infinity;
@@ -233,7 +237,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
       if(Number.isFinite(p[key])){ pmin=Math.min(pmin,p[key]); pmax=Math.max(pmax,p[key]); }
     });
   }));
-  const gaussianPoints = gaussianOverlay?.points?.slice(vs, ve) || [];
+  const gaussianPoints = gaussianOverlay?.points?.slice(vs, dataEnd) || [];
   if(gaussianOverlay?.showChannel !== false) gaussianPoints.forEach(p=>{
     if(Number.isFinite(p.upper)){ pmin=Math.min(pmin,p.upper); pmax=Math.max(pmax,p.upper); }
     if(Number.isFinite(p.lower)){ pmin=Math.min(pmin,p.lower); pmax=Math.max(pmax,p.lower); }
@@ -248,7 +252,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
   pmax = yMid + yHalfRange;
 
   const yp  = p => padT + (pmax-p)/(pmax-pmin)*priceH;
-  const step = plotW/vn;
+  const step = plotW/viewSlots;
   const xi   = i => padL + i*step + step/2;
   const cw   = Math.max(1.5, step*0.6);
 
@@ -266,7 +270,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
   // SVG X → bar index in full bars array
   const svgXToBarIdx = sx => {
     const frac = (sx - padL) / plotW;
-    return vs + Math.round(frac * (vn-1));
+    return vs + Math.round(frac * (viewSlots-1));
   };
   // SVG Y → price
   const svgYToPrice = sy => pmax - (sy - padT) / priceH * (pmax - pmin);
@@ -284,8 +288,12 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
   const clampVis = (s,e) => {
     const minW = Math.min(10, n);
     let ns = Math.round(s), ne = Math.round(e);
-    if(ne-ns < minW) { ne = Math.min(n, ns+minW); ns = Math.max(0, ne-minW); }
-    ns = Math.max(0,ns); ne = Math.min(n,ne);
+    const span = Math.max(minW, ne-ns);
+    const maxRightPad = Math.max(8, Math.min(80, Math.round(span * 0.35)));
+    const maxRightEdge = n + maxRightPad;
+    if(ne-ns < minW) { ne = Math.min(maxRightEdge, ns+minW); ns = Math.max(0, ne-minW); }
+    ns = Math.max(0, Math.min(ns, Math.max(0,n-2)));
+    ne = Math.min(maxRightEdge, Math.max(ns+minW, ne));
     return [ns,ne];
   };
   // Zoom anchored to the right edge (latest bars stay visible) — only left edge moves.
@@ -321,7 +329,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
     if(e.button!==0) return;
     if(measureModeRef.current){
       const sx = toSvgX(e.clientX), sy = toSvgY(e.clientY);
-      const idx = Math.max(vs, Math.min(ve-1, svgXToBarIdx(sx)));
+      const idx = Math.max(vs, Math.min(dataEnd-1, svgXToBarIdx(sx)));
       measureRef.current = {svgX:sx, svgY:sy, barIdx:idx, price:svgYToPrice(sy)};
       setMeasure(null);
       setIsDragging(true);
@@ -333,7 +341,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
   };
   const onMouseMove = e => {
     const sx = toSvgX(e.clientX), sy = toSvgY(e.clientY);
-    const idx = Math.max(vs, Math.min(ve-1, svgXToBarIdx(sx)));
+    const idx = Math.max(vs, Math.min(dataEnd-1, svgXToBarIdx(sx)));
     setHover({idx, svgX:sx, svgY:sy});
     if(measureModeRef.current){
       if(measureRef.current){
@@ -478,14 +486,16 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
       const isLongEntry=p.signal==='long_entry';
       const isShortEntry=p.signal==='short_entry';
       const isEntry=isLongEntry||isShortEntry;
-      const col=isLongEntry||p.signal==='short_exit' ? C.lime : downColor;
+      const buySignal = isLongEntry || p.signal==='short_exit';
+      const col = buySignal ? '#1f8bff' : downColor;
+      const borderCol = '#d7ff00';
       const txt=isLongEntry?'BUY':isShortEntry?'SELL':p.signal==='long_exit'?'SELL':'BUY';
       const ty=isLongEntry||p.signal==='short_exit' ? y+18 : y-13;
       const d=isEntry && !isShortEntry
         ? `M ${x.toFixed(1)} ${(y-9).toFixed(1)} L ${(x-6).toFixed(1)} ${(y+4).toFixed(1)} L ${(x+6).toFixed(1)} ${(y+4).toFixed(1)} Z`
         : `M ${x.toFixed(1)} ${(y+9).toFixed(1)} L ${(x-6).toFixed(1)} ${(y-4).toFixed(1)} L ${(x+6).toFixed(1)} ${(y-4).toFixed(1)} Z`;
       els.push(<circle key={'gaussian-sig-glow'+i} cx={x} cy={y} r={8.5} fill={R(col,0.16)} stroke="none"/>);
-      els.push(<path key={'gaussian-sig'+i} d={d} fill={R(col,0.96)} stroke={R('#ffffff',0.78)} strokeWidth={0.8}/>);
+      els.push(<path key={'gaussian-sig'+i} d={d} fill={R(col,0.96)} stroke={borderCol} strokeWidth={1.25}/>);
       els.push(<text key={'gaussian-sig-label'+i} x={x} y={ty} textAnchor="middle"
         fill={R(col,0.95)} fontSize={8.5} fontFamily="JetBrains Mono,monospace" fontWeight="700">{txt}</text>);
     });
@@ -563,22 +573,46 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
     if(lastOverlay){
       const labelX = padL + 6;
       const labelShift = overlayIdx * 38;
+      const labelRows = [];
       if(Number.isFinite(lastOverlay.sma)){
         const y=yp(lastOverlay.sma);
-        els.push(<text key={`${keyPrefix}-sma-label`} x={labelX} y={y-4-labelShift} fill={R(smaColor,0.9)} fontSize={9} fontFamily="JetBrains Mono,monospace">{overlay.smaLabel||'20W SMA'} {fmtP(lastOverlay.sma)}</text>);
+        labelRows.push({key:`${keyPrefix}-sma-label`,y:y-4-labelShift,fill:R(smaColor,0.9),text:`${overlay.smaLabel||'20W SMA'} ${fmtP(lastOverlay.sma)}`});
       }
       if(Number.isFinite(lastOverlay.ema)){
         const y=yp(lastOverlay.ema);
-        els.push(<text key={`${keyPrefix}-ema-label`} x={labelX} y={y+10-labelShift} fill={R(emaColor,0.9)} fontSize={9} fontFamily="JetBrains Mono,monospace">{overlay.emaLabel||'21W EMA'} {fmtP(lastOverlay.ema)}</text>);
+        labelRows.push({key:`${keyPrefix}-ema-label`,y:y+10-labelShift,fill:R(emaColor,0.9),text:`${overlay.emaLabel||'21W EMA'} ${fmtP(lastOverlay.ema)}`});
       }
       if(Number.isFinite(lastOverlay.entryLevel)){
         const y=yp(lastOverlay.entryLevel);
-        els.push(<text key={`${keyPrefix}-entry-level-label`} x={labelX} y={y+24-labelShift} fill={R(entryLevelColor,0.9)} fontSize={9} fontFamily="JetBrains Mono,monospace">{overlay.entryLevelLabel||'ENTRY LEVEL'} {fmtP(lastOverlay.entryLevel)}</text>);
+        labelRows.push({key:`${keyPrefix}-entry-level-label`,y:y+24-labelShift,fill:R(entryLevelColor,0.9),text:`${overlay.entryLevelLabel||'ENTRY LEVEL'} ${fmtP(lastOverlay.entryLevel)}`});
       }
       if(Number.isFinite(lastOverlay.exitLevel)){
         const y=yp(lastOverlay.exitLevel);
-        els.push(<text key={`${keyPrefix}-exit-level-label`} x={labelX} y={y+38-labelShift} fill={R(exitLevelColor,0.9)} fontSize={9} fontFamily="JetBrains Mono,monospace">{overlay.exitLevelLabel||'EXIT LEVEL'} {fmtP(lastOverlay.exitLevel)}</text>);
+        labelRows.push({key:`${keyPrefix}-exit-level-label`,y:y+38-labelShift,fill:R(exitLevelColor,0.9),text:`${overlay.exitLevelLabel||'EXIT LEVEL'} ${fmtP(lastOverlay.exitLevel)}`});
       }
+      const minLabelGap = 16;
+      const topBound = padT + 12;
+      const bottomBound = padT + priceH - 8;
+      const placedRows = labelRows
+        .sort((a,b)=>a.y-b.y)
+        .map(r=>({...r,y:Math.max(topBound,Math.min(bottomBound,r.y))}));
+      for(let i=1;i<placedRows.length;i++){
+        if(placedRows[i].y - placedRows[i-1].y < minLabelGap){
+          placedRows[i].y = placedRows[i-1].y + minLabelGap;
+        }
+      }
+      const overflow = placedRows.length ? placedRows[placedRows.length-1].y - bottomBound : 0;
+      if(overflow > 0){
+        for(let i=0;i<placedRows.length;i++) placedRows[i].y -= overflow;
+        for(let i=placedRows.length-2;i>=0;i--){
+          if(placedRows[i+1].y - placedRows[i].y < minLabelGap){
+            placedRows[i].y = placedRows[i+1].y - minLabelGap;
+          }
+        }
+      }
+      placedRows.forEach(r=>{
+        els.push(<text key={r.key} x={labelX} y={Math.max(topBound,Math.min(bottomBound,r.y))} fill={r.fill} fontSize={9} fontFamily="JetBrains Mono,monospace">{r.text}</text>);
+      });
     }
   });
   // MA
@@ -957,7 +991,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
         <Toggle on={showTrendMeter || Boolean(trendMeterOverlay)} label="Trend Meter" onChange={()=>setShowTrendMeter(v=>!v)}/>
         <div style={{flex:1}}/>
         <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,whiteSpace:'nowrap'}}>
-          {vs+1}–{ve} / {n} bars
+          {vs+1}–{dataEnd} / {n} bars{ve>n ? ` +${ve-n} space` : ''}
         </span>
       </div>
 
@@ -2068,8 +2102,8 @@ function TabStrategy({refreshKey=0}) {
   const [showRaw, setShowRaw] = useState(false);
   const [showTrade, setShowTrade] = useState(true);
   const [showVol, setShowVol] = useState(true);
-  const [showStrategy, setShowStrategy] = useState(false);
-  const [showStrategy2, setShowStrategy2] = useState(true);
+  const [showStrategy, setShowStrategy] = useState(true);
+  const [showStrategy2, setShowStrategy2] = useState(false);
   const [showManualSetup, setShowManualSetup] = useState(false);
   const [showGaussian, setShowGaussian] = useState(false);
   const [showGaussianSignals, setShowGaussianSignals] = useState(false);
@@ -2356,9 +2390,9 @@ function TabStrategy({refreshKey=0}) {
     <div style={{display:'flex',flexDirection:'column',gap:28}}>
       <MetricGrid items={[
         {label:'Symbols Scanned', icon:'radar', value:data.symbols_scanned??0, sub:'with stored chart data'},
-        {label:'BMSB S2 Matches', icon:'candlestick_chart', value:data.matches??0, valueColor:C.cyan, sub:'entry/exit or near trigger', subColor:C.cyan},
+        {label:'BMSB Matches', icon:'candlestick_chart', value:data.matches??0, valueColor:C.cyan, sub:'crossed or near EMA/SMA cross', subColor:C.cyan},
         {label:'Recent Triggers', icon:'swap_vert', value:data.crossed??0, valueColor:data.crossed?C.lime:C.onSurf, sub:`last ${data.recent_days??2} days`},
-        {label:'Near Trigger', icon:'near_me', value:data.near??0, valueColor:data.near?C.magenta:C.onSurf, sub:`≤ ${fmtNum(data.threshold_pct,2)}% to S2 level`},
+        {label:'Near Cross', icon:'near_me', value:data.near??0, valueColor:data.near?C.magenta:C.onSurf, sub:`≤ ${fmtNum(data.threshold_pct,2)}% EMA/SMA gap`},
       ]}/>
 
       <div ref={strategyChartFullscreenRef} className="strategy-chart-fullscreen-shell">
@@ -2370,7 +2404,7 @@ function TabStrategy({refreshKey=0}) {
               {chartSymbolLabel} - {TF_LABEL[tf]} Advanced Strategy Chart
             </span>
             {selectedRow && <Pill text={String(selectedRow.signal||'BMSB').replace('_',' ')} color={signalColor(selectedRow.signal)}/>}
-            {selectedRow && <Pill text={`${fmtNum(selectedRow.trigger_gap_pct ?? selectedRow.gap_pct,3)}% TRIGGER`} color={Number(selectedRow.trigger_gap_pct ?? selectedRow.gap_pct)<=Number(data.threshold_pct)?C.cyan:C.outline}/>}
+            {selectedRow && <Pill text={`${fmtNum(selectedRow.gap_pct,3)}% GAP`} color={Number(selectedRow.gap_pct)<=Number(data.threshold_pct)?C.cyan:C.outline}/>}
           </div>
           <TfPills value={tf} onChange={setTf}/>
         </div>
@@ -2627,10 +2661,10 @@ function TabStrategy({refreshKey=0}) {
       )}
 
       <GlassCard style={{overflow:'hidden'}}>
-        <PanelHeader icon="insights" title="BMSB Strategy Monitor" badge="BMSB Strategy 2"/>
+        <PanelHeader icon="insights" title="BMSB Strategy Monitor" badge="BMSB Strategy"/>
         <div style={{padding:'14px 18px',borderBottom:`1px solid ${R(C.outline,0.12)}`,display:'flex',justifyContent:'space-between',alignItems:'center',gap:14,flexWrap:'wrap'}}>
           <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline,lineHeight:1.6}}>
-            Shows BMSB Strategy 2 weekly band reclaims/losses within {data.recent_days??2} days, or symbols within {fmtNum(data.threshold_pct,2)}% of the S2 trigger level. Tolerance: {fmtNum(data.tolerance_pct,2)}%.
+            Shows BMSB weekly 21W EMA / 20W SMA crosses within {data.recent_days??2} days, or symbols within {fmtNum(data.threshold_pct,2)}% of a cross.
           </div>
           <div style={{display:'flex',gap:7,flexWrap:'wrap'}}>
             {['ALL','CROSSED','NEAR','LONG','EXIT','WATCH'].map(f=>{
@@ -2643,7 +2677,7 @@ function TabStrategy({refreshKey=0}) {
           </div>
         </div>
         <Table
-          cols={['Symbol','Watch','Signal','Side','Last Price','Entry Level','Exit Level','Trigger Gap','21W EMA','20W SMA','Signal Date','Weekly Bar']}
+          cols={['Symbol','Watch','Signal','Side','Last Price','EMA-SMA Gap','Gap %','21W EMA','20W SMA','Signal Date','Weekly Bar']}
           rows={rows.map(r=>[
             <button onClick={()=>setSelectedSymbol(r.symbol)}
               style={{display:'inline-flex',alignItems:'center',gap:8,cursor:'pointer',background:selectedSymbol===r.symbol?R(C.cyan,0.14):'transparent',border:`1px solid ${selectedSymbol===r.symbol?R(C.cyan,0.32):'transparent'}`,borderRadius:7,padding:'4px 8px',color:selectedSymbol===r.symbol?C.cyan:C.onSurf,fontWeight:600,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
@@ -2661,9 +2695,8 @@ function TabStrategy({refreshKey=0}) {
               {r.side}
             </span>,
             `$${fmtNum(r.last_price,2)}`,
-            `$${fmtNum(r.entry_level,2)}`,
-            `$${fmtNum(r.exit_level,2)}`,
-            <span style={{color:Number(r.trigger_gap_pct ?? r.gap_pct)<=Number(data.threshold_pct)?C.cyan:C.onVar}}>{fmtNum(r.trigger_gap_pct ?? r.gap_pct,3)}%</span>,
+            fmtNum(r.gap,2),
+            <span style={{color:Number(r.gap_pct)<=Number(data.threshold_pct)?C.cyan:C.onVar}}>{fmtNum(r.gap_pct,3)}%</span>,
             fmtNum(r.ema21,2),
             fmtNum(r.sma20,2),
             <span style={{color:C.outline}}>{r.cross_date||'—'}</span>,
@@ -2672,7 +2705,7 @@ function TabStrategy({refreshKey=0}) {
         />
         {!rows.length && (
           <div style={{padding:'20px 18px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.outline}}>
-            No BMSB Strategy 2 symbols match this filter right now.
+            No BMSB Strategy symbols match this filter right now.
           </div>
         )}
       </GlassCard>
@@ -4101,6 +4134,195 @@ function OrdersPnlChart({rows=[]}) {
   );
 }
 
+function TabMarketScreener({refreshKey=0}) {
+  const [data,setData]=useState(null);
+  const [tf,setTf]=useState('1D');
+  const [side,setSide]=useState('ALL');
+  const [strategies,setStrategies]=useState(['LP1','LP2','PRB1','PRB2']);
+  const [minScore,setMinScore]=useState(0);
+  const [rr,setRr]=useState(2);
+  const [riskPct,setRiskPct]=useState(0.5);
+  const [busy,setBusy]=useState(false);
+  const [symbolSearch,setSymbolSearch]=useState('');
+  const [statusFilter,setStatusFilter]=useState('ALL');
+  const money = v => v!=null && Number.isFinite(Number(v)) ? `$${Number(v).toFixed(Math.abs(Number(v))>=10?2:4)}` : '—';
+  const num = (v,d=2) => v!=null && Number.isFinite(Number(v)) ? Number(v).toFixed(d) : '—';
+  const pct = v => v!=null && Number.isFinite(Number(v)) ? `${Number(v).toFixed(2)}%` : '—';
+
+  const loadScreener = useCallback(()=>{
+    setBusy(true);
+    const query = new URLSearchParams({
+      timeframe:tf,
+      strategies:strategies.join(','),
+      side,
+      min_score:String(minScore),
+      rr:String(rr),
+      risk_pct:String(riskPct),
+    });
+    fetch(`${API}/market-screener?${query.toString()}`,{cache:'no-store'})
+      .then(r=>r.json())
+      .then(setData)
+      .catch(()=>setData({signals:[],rejected:[],near_misses:[],reason_counts:{},error:'Failed to load screener'}))
+      .finally(()=>setBusy(false));
+  },[tf,side,strategies.join(','),minScore,rr,riskPct]);
+
+  useEffect(()=>{ loadScreener(); },[refreshKey, loadScreener]);
+  const toggleStrategy = strategy => {
+    setStrategies(current=>{
+      const next = current.includes(strategy) ? current.filter(item=>item!==strategy) : [...current, strategy];
+      return next.length ? next : [strategy];
+    });
+  };
+  if(!data) return <Spinner/>;
+
+  const signals = data.signals || [];
+  const rejected = data.rejected || [];
+  const nearMisses = data.near_misses || [];
+  const reasonCounts = Object.entries(data.reason_counts || {});
+  const symbolNeedle = symbolSearch.trim().toUpperCase();
+  const filteredSignals = signals.filter(row=>{
+    if(symbolNeedle && !String(row.ticker||'').includes(symbolNeedle)) return false;
+    if(statusFilter!=='ALL' && row.status!==statusFilter) return false;
+    return true;
+  });
+  const readyCount = signals.filter(row=>row.status==='READY').length;
+  const avgScore = signals.length ? signals.reduce((sum,row)=>sum+Number(row.score||0),0)/signals.length : null;
+  const controlsShell = {display:'flex',alignItems:'center',gap:8,padding:'9px 11px',borderRadius:8,background:R(C.surfLowest,0.78),border:`1px solid ${R(C.outline,0.22)}`};
+
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:22}}>
+      <MetricGrid items={[
+        {label:'Universe',icon:'radar',value:data.universe_size??0,sub:`${data.timeframe||tf} scan`,valueColor:C.cyan},
+        {label:'Signals',icon:'bolt',value:data.signals_found??0,sub:'LP / PRB matches',valueColor:(data.signals_found||0)>0?C.lime:C.outline},
+        {label:'Ready',icon:'task_alt',value:readyCount,sub:'position size valid',valueColor:C.lime},
+        {label:'Rejected',icon:'filter_alt',value:rejected.length,sub:'quality / data filters',valueColor:C.err},
+        {label:'Near Misses',icon:'adjust',value:nearMisses.length,sub:'levels found, pattern incomplete',valueColor:C.cyan},
+        {label:'Avg Score',icon:'analytics',value:avgScore!=null?num(avgScore,2):'—',sub:'visible signals',valueColor:C.cyan},
+      ]}/>
+
+      <GlassCard style={{padding:16}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:14,flexWrap:'wrap'}}>
+          <div style={{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}>
+            {['1D','4H','1H'].map(item=><button key={item} onClick={()=>setTf(item)}
+              style={{padding:'8px 12px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:800,border:`1px solid ${R(tf===item?C.cyan:C.outline,tf===item?0.44:0.2)}`,background:tf===item?R(C.cyan,0.13):R(C.surfLowest,0.55),color:tf===item?C.cyan:C.onVar}}>
+              {item}
+            </button>)}
+            {['LP1','LP2','PRB1','PRB2'].map(item=>{
+              const active=strategies.includes(item);
+              return <button key={item} onClick={()=>toggleStrategy(item)}
+                style={{padding:'8px 12px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:800,border:`1px solid ${R(active?C.lime:C.outline,active?0.42:0.18)}`,background:active?R(C.lime,0.11):R(C.surfLowest,0.45),color:active?C.lime:C.onVar}}>
+                {item}
+              </button>;
+            })}
+            <select value={side} onChange={e=>setSide(e.target.value)} style={{...controlsShell,color:C.onSurf,outline:0}}>
+              {['ALL','LONG','SHORT'].map(item=><option key={item}>{item}</option>)}
+            </select>
+          </div>
+          <button onClick={loadScreener} disabled={busy}
+            style={{padding:'9px 14px',borderRadius:8,cursor:busy?'wait':'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:900,border:`1px solid ${R(C.cyan,0.35)}`,background:R(C.cyan,0.11),color:C.cyan,display:'flex',alignItems:'center',gap:7}}>
+            <Icon n="refresh" size={15} color="inherit" style={{animation:busy?'spin .8s linear infinite':undefined}}/>
+            {busy?'SCANNING':'SCAN'}
+          </button>
+        </div>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:10,marginTop:14}}>
+          <label style={controlsShell}>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,textTransform:'uppercase'}}>Min score</span>
+            <input type="number" min="0" max="1" step="0.05" value={minScore} onChange={e=>setMinScore(Number(e.target.value)||0)}
+              style={{width:70,marginLeft:'auto',background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}/>
+          </label>
+          <label style={controlsShell}>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,textTransform:'uppercase'}}>RR</span>
+            <input type="number" min="1" max="3" step="0.25" value={rr} onChange={e=>setRr(Number(e.target.value)||2)}
+              style={{width:70,marginLeft:'auto',background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}/>
+          </label>
+          <label style={controlsShell}>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,textTransform:'uppercase'}}>Risk %</span>
+            <input type="number" min="0.01" max="5" step="0.05" value={riskPct} onChange={e=>setRiskPct(Number(e.target.value)||0.5)}
+              style={{width:70,marginLeft:'auto',background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}/>
+          </label>
+          <label style={controlsShell}>
+            <Icon n="search" size={15} color={symbolNeedle?C.cyan:C.outline}/>
+            <input value={symbolSearch} onChange={e=>setSymbolSearch(e.target.value.toUpperCase())} placeholder="Symbol"
+              style={{flex:1,minWidth:0,background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.06em',textTransform:'uppercase'}}/>
+          </label>
+        </div>
+      </GlassCard>
+
+      <GlassCard style={{overflow:'hidden'}}>
+        <div style={{padding:'16px 18px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',justifyContent:'space-between',alignItems:'center',gap:12,flexWrap:'wrap'}}>
+          <PanelHeader icon="radar" title="Screener Signals" badge={`${filteredSignals.length} shown`}/>
+          <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+            {['ALL','READY','capital_insufficient'].map(item=><button key={item} onClick={()=>setStatusFilter(item)}
+              style={{padding:'8px 10px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800,border:`1px solid ${R(statusFilter===item?C.cyan:C.outline,statusFilter===item?0.44:0.18)}`,background:statusFilter===item?R(C.cyan,0.12):R(C.surf,0.5),color:statusFilter===item?C.cyan:C.onVar}}>
+              {item}
+            </button>)}
+          </div>
+        </div>
+        <Table
+          cols={['Ticker','Strategy','Side','Status','Level','Entry','Stop','TP','RR','ATR','Score','Size','Filters','Reasoning']}
+          rows={filteredSignals.map(row=>[
+            <span style={{color:C.onSurf,fontWeight:900}}>{row.ticker}</span>,
+            <Pill text={row.strategy} color={row.strategy?.startsWith('LP')?C.cyan:C.lime}/>,
+            <Pill text={row.side} color={row.side==='SHORT'?C.err:C.lime}/>,
+            <Pill text={row.status} color={row.status==='READY'?C.lime:C.err}/>,
+            `${row.level_type} ${money(row.level_price)}`,
+            money(row.entry_price),
+            money(row.stop_price),
+            money(row.take_profit_price),
+            num(row.rr,2),
+            num(row.atr_clean_14,2),
+            <span style={{color:Number(row.score)>=0.7?C.lime:Number(row.score)>=0.45?C.cyan:C.outline,fontWeight:900}}>{num(row.score,2)}</span>,
+            row.position_size_shares,
+            <span style={{color:row.volume_filter_pass&&row.spread_filter_pass&&row.earnings_filter_pass?C.lime:C.err}}>
+              {row.volume_filter_pass?'VOL':'vol'} / {row.spread_filter_pass?'SPR':'spr'} / {row.earnings_filter_pass?'EVT':'evt'}
+            </span>,
+            <span style={{fontFamily:"'Inter',sans-serif",whiteSpace:'normal',lineHeight:1.35,color:C.onVar}}>{row.reasoning}</span>,
+          ])}
+        />
+        {!filteredSignals.length && (
+          <div style={{padding:'24px 20px',display:'flex',alignItems:'center',gap:10,color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
+            <Icon n="filter_alt_off" size={18} color={C.outline}/>
+            No signals matched the current scan. Check near misses and rejection reasons below.
+          </div>
+        )}
+      </GlassCard>
+
+      <div style={{display:'grid',gridTemplateColumns:'minmax(280px,0.75fr) minmax(0,1.25fr)',gap:16,alignItems:'start'}}>
+        <GlassCard style={{overflow:'hidden'}}>
+          <PanelHeader icon="filter_list" title="Rejected Reasons" badge={`${rejected.length} rejected`}/>
+          <Table
+            cols={['Reason','Count']}
+            rows={reasonCounts.map(([reason,count])=>[
+              <span style={{color:C.err,fontWeight:800}}>{reason}</span>,
+              count,
+            ])}
+          />
+        </GlassCard>
+        <GlassCard style={{overflow:'hidden'}}>
+          <PanelHeader icon="adjust" title="Near Misses" badge={`${nearMisses.length} tracked`}/>
+          <Table
+            cols={['Ticker','Reason','Nearest Level','Distance ATR','Levels']}
+            rows={nearMisses.slice(0,18).map(row=>[
+              <span style={{color:C.onSurf,fontWeight:900}}>{row.ticker}</span>,
+              row.reason,
+              `${row.level_type || 'level'} ${money(row.nearest_level)}`,
+              num(row.distance_atr,3),
+              row.levels_found,
+            ])}
+          />
+        </GlassCard>
+      </div>
+
+      <GlassCard style={{overflow:'hidden'}}>
+        <PanelHeader icon="data_object" title="JSON Payload" badge={data.scan_timestamp ? String(data.scan_timestamp).slice(0,19).replace('T',' ') : 'latest'}/>
+        <pre style={{margin:0,maxHeight:360,overflow:'auto',padding:18,background:R(C.surfLowest,0.55),fontFamily:"'JetBrains Mono',monospace",fontSize:11,lineHeight:1.45,color:C.onVar,whiteSpace:'pre-wrap'}}>
+{JSON.stringify({scan_timestamp:data.scan_timestamp,timeframe:data.timeframe,universe_size:data.universe_size,signals_found:data.signals_found,signals:data.signals,rejected:data.rejected?.slice(0,80)},null,2)}
+        </pre>
+      </GlassCard>
+    </div>
+  );
+}
+
 function TabOrdersJournal({refreshKey=0}) {
   const [data,setData]=useState(null);
   const [selectedId,setSelectedId]=useState(null);
@@ -4252,7 +4474,7 @@ function TabOrdersJournal({refreshKey=0}) {
     selected.planned_entry!=null && selected.planned_target!=null && {p1:selected.planned_entry,p2:selected.planned_target,color:C.lime,opacity:0.06},
   ].filter(Boolean) : [];
   const markers = selected ? [
-    selected.actual_entry!=null && {time:selected.opened_at||selected.created_at,price:selected.actual_entry,kind:'entry',label:`${side} ENTRY`,value:`${money(selected.actual_entry)} · ${fmtTime(selected.opened_at||selected.created_at)}`,color:side==='SELL'?C.err:C.lime},
+    selected.actual_entry!=null && {time:selected.opened_at||selected.created_at,price:selected.actual_entry,kind:'entry',label:`${side} ENTRY`,color:side==='SELL'?C.err:C.lime},
     selected.actual_exit!=null && {time:selected.closed_at||selected.created_at,price:selected.actual_exit,kind:'exit',label:'EXIT',value:`${money(selected.actual_exit)} · ${fmtTime(selected.closed_at||selected.created_at)}`,color:C.magenta},
   ].filter(Boolean) : [];
   const checks=['Entry at valid level','Stop was logical','Target was realistic','Strategy confirmed','Market condition acceptable','Followed plan'];
@@ -4814,12 +5036,12 @@ function buildBmsbStrategy2Overlay(bars, opts={}) {
   return {
     id:'bmsb-strategy-2',
     name:'BMSB Strategy 2',
-    smaColor:C.err,
-    emaColor:C.lime,
+    smaColor:'#ff315f',
+    emaColor:'#d7ff00',
     bandColor:'#ffb35c',
     bandOpacity:0.09,
-    lineOpacity:0.58,
-    lineWidth:1.2,
+    lineOpacity:0.98,
+    lineWidth:2.2,
     entryColor:'#1f8bff',
     exitColor:'#ff1744',
     entryLevelColor:'#1f8bff',
@@ -5110,6 +5332,7 @@ const NAV = [
   {id:'dashboard',  label:'Dashboard',          icon:'space_dashboard'},
   {id:'watchlist',  label:'Watchlist',          icon:'visibility'},
   {id:'preopen',    label:'Pre-Open',            icon:'wb_twilight'},
+  {id:'screener',   label:'Market Screener',     icon:'radar'},
   {id:'intraday',   label:'Intraday',            icon:'monitoring'},
   {id:'strategy',   label:'Strategy',            icon:'insights'},
   {id:'crypto',     label:'Crypto',              icon:'currency_bitcoin'},
@@ -5124,8 +5347,9 @@ const PAGE_META = {
   dashboard: {title:'Command Overview',       sub:'All systems nominal · scan cycle 5m · paper account', crumb:'Dashboard'},
   watchlist: {title:'Watchlist',              sub:'Current stock symbols · live-saved candles · daily change map', crumb:'Watchlist'},
   preopen:   {title:'Pre-Open Briefing',      sub:'Watchlist scanned · levels mapped · awaiting the open', crumb:'Pre-Open'},
+  screener:  {title:'Market Screener',        sub:'LP1 / LP2 / PRB1 / PRB2 patterns on saved OHLCV', crumb:'Screener'},
   intraday:  {title:'Intraday Monitor',       sub:'Live decision loop · paper execution', crumb:'Intraday'},
-  strategy:  {title:'Strategy Monitor',       sub:'BMSB Strategy 2 band reclaim / loss scanner', crumb:'Strategy'},
+  strategy:  {title:'Strategy Monitor',       sub:'BMSB weekly EMA/SMA cross scanner', crumb:'Strategy'},
   crypto:    {title:'Crypto Trade Levels',    sub:'OKX candles · trade zones · separate crypto bot', crumb:'Crypto'},
   forex:     {title:'Forex TradingView Bridge',sub:'TradingView alerts · IBKR CASH market execution', crumb:'Forex'},
   trades:    {title:'Trades & Positions',     sub:'Open paper positions and trade journal', crumb:'Trades'},
@@ -5348,6 +5572,7 @@ function App() {
               {tab==='dashboard' && <TabDashboard setNewsModal={setNewsModal} setNewsItems={setNewsItems} refreshKey={refreshKey}/>}
               {tab==='watchlist' && <TabWatchlist refreshKey={refreshKey}/>}
               {tab==='preopen'   && <TabPreOpen refreshKey={refreshKey}/>}
+              {tab==='screener'  && <TabMarketScreener refreshKey={refreshKey}/>}
               {tab==='intraday'  && <TabIntraday refreshKey={refreshKey}/>}
               {tab==='strategy'  && <TabStrategy refreshKey={refreshKey}/>}
               {tab==='crypto'    && <TabCrypto refreshKey={refreshKey}/>}

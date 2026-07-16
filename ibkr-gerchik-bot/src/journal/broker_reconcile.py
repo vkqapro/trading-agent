@@ -12,6 +12,7 @@ import json
 import os
 import time
 from dataclasses import replace
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict
 
@@ -20,6 +21,7 @@ from src.config import LOGGER, MEMORY_DIR, SETTINGS
 from src.jobs.session_utils import sync_tracked_positions_with_broker
 
 SYNC_STATUS_PATH = MEMORY_DIR / "runtime" / "broker_order_sync.json"
+CLOSED_POSITIONS_PATH = MEMORY_DIR / "runtime" / "closed_positions.json"
 SYNC_TTL_SECONDS = float(os.getenv("ORDER_JOURNAL_BROKER_SYNC_TTL_SECONDS", "15") or 15)
 
 
@@ -37,6 +39,60 @@ def _write_json(path: Path, payload: Any) -> None:
     temp = path.with_suffix(path.suffix + ".tmp")
     temp.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     os.replace(temp, path)
+
+
+def _now() -> str:
+    return datetime.now(timezone.utc).isoformat(timespec="seconds")
+
+
+def _record_closed_positions(before: Dict[str, Dict[str, Any]], synced: list[Dict[str, Any]]) -> int:
+    synced_symbols = {str(item.get("symbol", "")).strip().upper() for item in synced if isinstance(item, dict)}
+    closed = [position for symbol, position in before.items() if symbol and symbol not in synced_symbols]
+    if not closed:
+        return 0
+
+    data = _read_json(CLOSED_POSITIONS_PATH, {"positions": []})
+    if not isinstance(data, dict):
+        data = {"positions": []}
+    positions = data.get("positions")
+    if not isinstance(positions, list):
+        positions = []
+    existing_keys = {
+        (
+            str(item.get("symbol", "")).strip().upper(),
+            str(item.get("market_order_id") or item.get("order_id") or ""),
+            str(item.get("opened_at") or ""),
+        )
+        for item in positions
+        if isinstance(item, dict)
+    }
+
+    observed_at = _now()
+    added = 0
+    for position in closed:
+        symbol = str(position.get("symbol", "")).strip().upper()
+        key = (
+            symbol,
+            str(position.get("market_order_id") or position.get("order_id") or ""),
+            str(position.get("opened_at") or ""),
+        )
+        if not symbol or key in existing_keys:
+            continue
+        record = dict(position)
+        record.update(
+            {
+                "symbol": symbol,
+                "closed_at": observed_at,
+                "exit_reason": "BROKER_POSITION_CLOSED",
+            }
+        )
+        positions.append(record)
+        existing_keys.add(key)
+        added += 1
+    if added:
+        data["positions"] = positions[-500:]
+        _write_json(CLOSED_POSITIONS_PATH, data)
+    return added
 
 
 def _sync_recent_enough() -> bool:
@@ -86,6 +142,7 @@ def reconcile_ibkr_open_orders(*, force: bool = False) -> Dict[str, Any]:
             positions,
             open_orders,
         )
+        closed_observed = _record_closed_positions(before, synced)
         state["tracked_positions"] = synced
         _write_json(state_path, state)
 
@@ -104,6 +161,7 @@ def reconcile_ibkr_open_orders(*, force: bool = False) -> Dict[str, Any]:
             {
                 "ok": True,
                 "updated": updated,
+                "closed_observed": closed_observed,
                 "open_orders": len(open_orders),
                 "positions": len(positions),
                 "client_id": client_id,
