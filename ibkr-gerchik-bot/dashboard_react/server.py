@@ -7,6 +7,8 @@ Run:  python dashboard_react/server.py
 from __future__ import annotations
 
 import os
+import csv
+import io
 import json
 import subprocess
 import sys
@@ -80,6 +82,66 @@ def _onboard_client_id(symbol: str) -> str:
     seed = sum((index + 1) * ord(char) for index, char in enumerate(symbol.upper()))
     timestamp = int(datetime.now(ET).timestamp())
     return str(1000 + ((timestamp + seed) % 8000))
+
+
+def _parse_stock_symbol_upload(body: dict) -> tuple[list[str], list[dict[str, str]]]:
+    from src.symbol_universe import normalize_stock_symbol
+
+    raw_values: list[str] = []
+    for key in ("csv_text", "text", "symbols_text"):
+        value = body.get(key)
+        if isinstance(value, str) and value.strip():
+            for row in csv.reader(io.StringIO(value)):
+                raw_values.extend(row)
+    symbols_value = body.get("symbols")
+    if isinstance(symbols_value, list):
+        raw_values.extend(str(item) for item in symbols_value)
+    elif isinstance(symbols_value, str) and symbols_value.strip():
+        for row in csv.reader(io.StringIO(symbols_value)):
+            raw_values.extend(row)
+
+    headers = {"symbol", "symbols", "ticker", "tickers", "stock", "stocks", "stock_symbol", "stock_symbols"}
+    parsed: list[str] = []
+    seen: set[str] = set()
+    invalid: list[dict[str, str]] = []
+    for raw in raw_values:
+        value = str(raw or "").strip()
+        if not value or value.startswith("#") or value.lower() in headers:
+            continue
+        try:
+            symbol = normalize_stock_symbol(value)
+        except ValueError as exc:
+            invalid.append({"value": value, "reason": str(exc)})
+            continue
+        if symbol not in seen:
+            seen.add(symbol)
+            parsed.append(symbol)
+    return parsed, invalid
+
+
+def _queue_bulk_stock_onboarding(symbols: list[str]) -> dict:
+    if not symbols:
+        return {"pid": None, "log": None, "queue_file": None}
+    SETTINGS.paths.runtime_dir.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.now(ET).strftime("%Y%m%d_%H%M%S")
+    queue_path = SETTINGS.paths.runtime_dir / f"bulk_onboard_symbols_{stamp}.csv"
+    log_path = SETTINGS.paths.runtime_dir / f"bulk_onboard_symbols_{stamp}.log"
+    with queue_path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(["symbol"])
+        for symbol in symbols:
+            writer.writerow([symbol])
+    cmd = [sys.executable, "scripts/bulk_onboard_symbols.py", "--symbols-file", str(queue_path)]
+    with log_path.open("a", encoding="utf-8") as log:
+        log.write(f"\n--- {datetime.now(ET).isoformat()} queued {' '.join(cmd)} ---\n")
+        process = subprocess.Popen(
+            cmd,
+            cwd=str(ROOT),
+            stdout=log,
+            stderr=subprocess.STDOUT,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+        )
+    return {"pid": process.pid, "log": str(log_path), "queue_file": str(queue_path)}
 BMSB_NEAR_CROSS_THRESHOLD_PCT = 0.75
 BMSB_RECENT_CROSS_DAYS = 2
 BMSB2_RECLAIM_TOLERANCE_PCT = 0.5
@@ -975,6 +1037,53 @@ async def api_watchlist_add(body: dict):
         }
     except Exception as exc:
         raise HTTPException(500, str(exc))
+
+
+@app.post("/api/watchlist/bulk-add")
+async def api_watchlist_bulk_add(body: dict):
+    from src.symbol_universe import add_stock_symbol, load_stock_symbols
+
+    parsed, invalid = _parse_stock_symbol_upload(body)
+    if not parsed and not invalid:
+        raise HTTPException(400, "Upload a CSV containing comma-separated stock symbols.")
+    existing = set(_safe(load_stock_symbols, []) or [])
+    duplicates = [symbol for symbol in parsed if symbol in existing]
+    new_symbols = [symbol for symbol in parsed if symbol not in existing]
+    added: list[str] = []
+    errors: list[dict[str, str]] = []
+    for symbol in new_symbols:
+        try:
+            result = add_stock_symbol(symbol)
+            if result.get("added"):
+                added.append(symbol)
+                existing.add(symbol)
+            else:
+                duplicates.append(symbol)
+        except Exception as exc:
+            errors.append({"symbol": symbol, "reason": str(exc)})
+    queue = _queue_bulk_stock_onboarding(added) if added else {"pid": None, "log": None, "queue_file": None}
+    message_parts = []
+    if added:
+        message_parts.append(f"Queued bulk onboarding for {len(added)} new symbol{'s' if len(added) != 1 else ''}, followed by a premarket refresh.")
+    if duplicates:
+        message_parts.append(f"Skipped {len(duplicates)} duplicate{'s' if len(duplicates) != 1 else ''}.")
+    if invalid:
+        message_parts.append(f"Ignored {len(invalid)} invalid entr{'ies' if len(invalid) != 1 else 'y'}.")
+    if errors:
+        message_parts.append(f"{len(errors)} symbol{'s' if len(errors) != 1 else ''} failed to add.")
+    return {
+        "ok": not errors,
+        "requested": len(parsed) + len(invalid),
+        "parsed": parsed,
+        "added": added,
+        "duplicates": sorted(set(duplicates)),
+        "invalid": invalid,
+        "errors": errors,
+        "pid": queue.get("pid"),
+        "log": queue.get("log"),
+        "queue_file": queue.get("queue_file"),
+        "message": " ".join(message_parts) or "No new symbols to onboard.",
+    }
 
 
 @app.post("/api/watchlist/remove")

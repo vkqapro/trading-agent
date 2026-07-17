@@ -142,7 +142,7 @@ const Table = ({cols, rows}) => (
 );
 
 /* ── SVG candlestick chart ────────────────────────────────────────────────── */
-function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], strategyOverlay=null, gaussianOverlay=null, trendMeterOverlay=null, showVol=true, height=300, stale=false, lastDate=null, fullscreenTargetRef=null, fullscreenHeightOffset=110, lineLabelPosition='right'}) {
+function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], highlightBars=[], strategyOverlay=null, gaussianOverlay=null, trendMeterOverlay=null, showVol=true, height=300, stale=false, lastDate=null, fullscreenTargetRef=null, fullscreenHeightOffset=110, lineLabelPosition='right'}) {
   const n = bars?.length || 0;
   const chartRef = useRef(null);
   const svgRef = useRef(null);
@@ -283,6 +283,12 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
     return m[4] ? `${m[2]}/${m[3]} ${m[4]}:${m[5]}` : `${m[1]}-${m[2]}-${m[3]}`;
   };
   const fmtVol = v => v>=1e6?`${(v/1e6).toFixed(1)}M`:v>=1e3?`${(v/1e3).toFixed(0)}K`:String(v);
+  const timeKey = value => {
+    if(!value) return '';
+    const text = String(value);
+    const parsed = new Date(text.replace(' ','T')).getTime();
+    return Number.isFinite(parsed) ? String(parsed) : text.slice(0,16);
+  };
 
   // ── zoom helpers
   const clampVis = (s,e) => {
@@ -695,6 +701,23 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], stra
         rx={cw>4 ? 0.8 : 0}/>);
     }
   });
+  const highlightedTimeKeys = new Set((highlightBars||[]).map(item=>timeKey(item?.time || item)).filter(Boolean));
+  if(highlightedTimeKeys.size){
+    visBars.forEach((c,i)=>{
+      if(!highlightedTimeKeys.has(timeKey(c.t||c.date))) return;
+      const bx=xi(i);
+      const tick = Math.max(3, Math.min(8, step*0.32));
+      const halfCore = showBars ? tick : Math.max(cw/2, 2);
+      const padX = Math.max(3, Math.min(9, step*0.16));
+      const x = Math.max(padL, bx - halfCore - padX);
+      const y = Math.max(padT, yp(c.high) - 5);
+      const right = Math.min(W-padR, bx + halfCore + padX);
+      const bottom = Math.min(padT+priceH, yp(c.low) + 5);
+      els.push(<rect key={`strategy-candle-outline-${i}`} x={x} y={y} width={Math.max(3,right-x)} height={Math.max(4,bottom-y)}
+        rx={2.5} fill="transparent" stroke={R('#ffffff',0.96)} strokeWidth={1.45}
+        vectorEffect="non-scaling-stroke" pointerEvents="none"/>);
+    });
+  }
   // ── 1.3: volume with intensity scaling + 20-bar MA line
   // dashed entry/stop/target lines above candles
   const lineLabelYByIndex = {};
@@ -2120,6 +2143,11 @@ function TabStrategy({refreshKey=0}) {
   const [strategyNewSymbol, setStrategyNewSymbol] = useState('');
   const [strategySymbolBusy, setStrategySymbolBusy] = useState(false);
   const [strategySymbolFeedback, setStrategySymbolFeedback] = useState(null);
+  const [bulkUploadOpen, setBulkUploadOpen] = useState(false);
+  const [bulkUploadText, setBulkUploadText] = useState('');
+  const [bulkUploadName, setBulkUploadName] = useState('');
+  const [bulkUploadBusy, setBulkUploadBusy] = useState(false);
+  const [bulkUploadResult, setBulkUploadResult] = useState(null);
   const [strategyRemoveConfirm, setStrategyRemoveConfirm] = useState(null);
   const [strategyWatchSymbols, setStrategyWatchSymbols] = useState(()=>{
     try {
@@ -2205,6 +2233,69 @@ function TabStrategy({refreshKey=0}) {
       setStrategySymbolBusy(false);
     }
   },[strategyNewSymbol, loadStrategy]);
+  const onBulkUploadFile = useCallback((event)=>{
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if(!file) return;
+    setBulkUploadName(file.name);
+    setBulkUploadResult(null);
+    const reader = new FileReader();
+    reader.onload = () => setBulkUploadText(String(reader.result || ''));
+    reader.onerror = () => setBulkUploadResult({ok:false,message:'Could not read the selected CSV file.'});
+    reader.readAsText(file);
+  },[]);
+  const parseBulkUploadSymbols = text => {
+    const valid = [];
+    const invalid = [];
+    const seen = new Set();
+    String(text || '')
+      .split(/[\s,;]+/)
+      .map(item=>item.trim().replace(/^["']|["']$/g,'').toUpperCase())
+      .filter(Boolean)
+      .forEach(item=>{
+        if(item==='SYMBOL') return;
+        if(!/^[A-Z][A-Z0-9]{0,9}$/.test(item)) {
+          invalid.push(item);
+          return;
+        }
+        if(!seen.has(item)) {
+          seen.add(item);
+          valid.push(item);
+        }
+      });
+    return {valid, invalid};
+  };
+  const submitBulkUpload = useCallback(async()=>{
+    const text = bulkUploadText.trim();
+    if(!text) {
+      setBulkUploadResult({ok:false,message:'Choose a CSV file or paste comma-separated symbols first.'});
+      return;
+    }
+    setBulkUploadBusy(true);
+    setBulkUploadResult(null);
+    try {
+      const r = await fetch(`${API}/watchlist/bulk-add`, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({csv_text:text}),
+      });
+      const d = await r.json();
+      if(r.status===404) {
+        setBulkUploadResult({
+          ok:false,
+          message:'Bulk upload endpoint is not loaded on the running dashboard server. Restart the dashboard on port 8550, then click Queue New again.',
+        });
+        return;
+      }
+      if(!r.ok) throw new Error(d.detail || d.message || 'Bulk upload failed');
+      setBulkUploadResult(d);
+      loadStrategy();
+    } catch(e) {
+      setBulkUploadResult({ok:false,message:String(e.message||e)});
+    } finally {
+      setBulkUploadBusy(false);
+    }
+  },[bulkUploadText, loadStrategy]);
   const submitStrategySymbolRemove = useCallback(async()=>{
     const symbol = String(strategyRemoveConfirm?.symbol || '').trim().toUpperCase();
     if(!symbol) return;
@@ -2394,6 +2485,45 @@ function TabStrategy({refreshKey=0}) {
         {label:'Recent Triggers', icon:'swap_vert', value:data.crossed??0, valueColor:data.crossed?C.lime:C.onSurf, sub:`last ${data.recent_days??2} days`},
         {label:'Near Cross', icon:'near_me', value:data.near??0, valueColor:data.near?C.magenta:C.onSurf, sub:`≤ ${fmtNum(data.threshold_pct,2)}% EMA/SMA gap`},
       ]}/>
+
+      <GlassCard style={{padding:16}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:14,flexWrap:'wrap'}}>
+          <div style={{display:'flex',alignItems:'center',gap:10,flexWrap:'wrap'}}>
+            <Icon n="upload_file" size={18} color={C.cyan}/>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar}}>Bulk Symbol Upload</span>
+            {bulkUploadName && <Pill text={bulkUploadName} color={C.outline}/>}
+            {bulkUploadResult?.pid && <Pill text={`PID ${bulkUploadResult.pid}`} color={C.cyan}/>}
+          </div>
+          <div style={{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}>
+            <label style={{padding:'8px 12px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:800,color:C.cyan,background:R(C.cyan,0.10),border:`1px solid ${R(C.cyan,0.30)}`,display:'inline-flex',alignItems:'center',gap:7}}>
+              <Icon n="upload_file" size={15} color={C.cyan}/>
+              CSV
+              <input type="file" accept=".csv,text/csv" onChange={onBulkUploadFile} style={{display:'none'}}/>
+            </label>
+            <button onClick={()=>setBulkUploadOpen(v=>!v)}
+              style={{padding:'8px 12px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:800,color:C.onVar,background:R(C.outline,0.08),border:`1px solid ${R(C.outline,0.22)}`}}>
+              {bulkUploadOpen?'Hide':'Paste'}
+            </button>
+            <button onClick={submitBulkUpload} disabled={bulkUploadBusy || !bulkUploadText.trim()}
+              style={{padding:'8px 13px',borderRadius:8,cursor:bulkUploadBusy?'wait':'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:900,color:bulkUploadBusy||!bulkUploadText.trim()?C.outline:C.lime,background:bulkUploadBusy||!bulkUploadText.trim()?R(C.outline,0.08):R(C.lime,0.10),border:`1px solid ${R(bulkUploadBusy||!bulkUploadText.trim()?C.outline:C.lime,0.28)}`}}>
+              {bulkUploadBusy?'QUEUING':'QUEUE NEW'}
+            </button>
+          </div>
+        </div>
+        {bulkUploadOpen && (
+          <textarea value={bulkUploadText} onChange={e=>{setBulkUploadText(e.target.value);setBulkUploadResult(null);}} placeholder="AAPL,MSFT,NVDA"
+            style={{marginTop:12,width:'100%',minHeight:74,resize:'vertical',background:R(C.surfLowest,0.7),border:`1px solid ${R(C.outline,0.22)}`,borderRadius:8,color:C.onSurf,padding:'10px 12px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:0}}/>
+        )}
+        {bulkUploadResult && (
+          <div style={{marginTop:12,display:'flex',alignItems:'center',gap:10,flexWrap:'wrap',padding:'10px 12px',borderRadius:8,background:bulkUploadResult.ok===false?R(C.err,0.07):R(C.lime,0.07),border:`1px solid ${bulkUploadResult.ok===false?R(C.err,0.24):R(C.lime,0.24)}`}}>
+            <Icon n={bulkUploadResult.ok===false?'error':'task_alt'} size={16} color={bulkUploadResult.ok===false?C.err:C.lime}/>
+            <span style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:bulkUploadResult.ok===false?C.err:C.onVar}}>{bulkUploadResult.message}</span>
+            {Array.isArray(bulkUploadResult.added) && <Pill text={`${bulkUploadResult.added.length} NEW`} color={bulkUploadResult.added.length?C.lime:C.outline}/>}
+            {Array.isArray(bulkUploadResult.duplicates) && bulkUploadResult.duplicates.length>0 && <Pill text={`${bulkUploadResult.duplicates.length} DUP`} color={C.outline}/>}
+            {Array.isArray(bulkUploadResult.invalid) && bulkUploadResult.invalid.length>0 && <Pill text={`${bulkUploadResult.invalid.length} BAD`} color={C.err}/>}
+          </div>
+        )}
+      </GlassCard>
 
       <div ref={strategyChartFullscreenRef} className="strategy-chart-fullscreen-shell">
       <GlassCard style={{overflow:'hidden'}}>
@@ -4152,6 +4282,7 @@ function TabMarketScreener({refreshKey=0}) {
   const [signalBars,setSignalBars]=useState([]);
   const [signalBarsInfo,setSignalBarsInfo]=useState({stale:false,lastDate:null});
   const [signalPlan,setSignalPlan]=useState(null);
+  const signalChartFullscreenRef = useRef(null);
   const [showSignalOverlay,setShowSignalOverlay]=useState(true);
   const [showSignalTrade,setShowSignalTrade]=useState(true);
   const [showSignalRaw,setShowSignalRaw]=useState(false);
@@ -4160,11 +4291,37 @@ function TabMarketScreener({refreshKey=0}) {
   const [showSignalGaussian,setShowSignalGaussian]=useState(false);
   const [showSignalGaussianSignals,setShowSignalGaussianSignals]=useState(false);
   const [showSignalVol,setShowSignalVol]=useState(true);
+  const [showSignalManualSetup,setShowSignalManualSetup]=useState(false);
+  const [signalManualEntry,setSignalManualEntry]=useState('');
+  const [signalManualStop,setSignalManualStop]=useState('');
+  const [signalManualTarget,setSignalManualTarget]=useState('');
+  const [signalManualRR,setSignalManualRR]=useState('');
+  const [signalManualSide,setSignalManualSide]=useState('LONG');
+  const [signalManualCash,setSignalManualCash]=useState('1000');
+  const [signalManualMaxOpenRisk,setSignalManualMaxOpenRisk]=useState('5');
+  const [signalOrderFeedback,setSignalOrderFeedback]=useState(null);
+  const [signalConfirm,setSignalConfirm]=useState(null);
   const money = v => v!=null && Number.isFinite(Number(v)) ? `$${Number(v).toFixed(Math.abs(Number(v))>=10?2:4)}` : '—';
   const num = (v,d=2) => v!=null && Number.isFinite(Number(v)) ? Number(v).toFixed(d) : '—';
   const pct = v => v!=null && Number.isFinite(Number(v)) ? `${Number(v).toFixed(2)}%` : '—';
 
   const signalKey = row => row ? [row.ticker,row.strategy,row.side,row.signal_bar_date,row.entry_day,row.level_price,row.entry_price].join('|') : '';
+  const dateKeyFromLocal = value => {
+    const y = value.getFullYear();
+    const m = String(value.getMonth()+1).padStart(2,'0');
+    const d = String(value.getDate()).padStart(2,'0');
+    return `${y}-${m}-${d}`;
+  };
+  const shiftAnchorDate = delta => {
+    setAnchorDate(current=>{
+      const source = current || todayKey;
+      const parts = String(source).split('-').map(Number);
+      if(parts.length!==3 || parts.some(part=>!Number.isFinite(part))) return todayKey;
+      const next = new Date(parts[0], parts[1]-1, parts[2]);
+      next.setDate(next.getDate()+delta);
+      return dateKeyFromLocal(next);
+    });
+  };
 
   const loadScreener = useCallback(()=>{
     setBusy(true);
@@ -4209,6 +4366,10 @@ function TabMarketScreener({refreshKey=0}) {
   const selectedSignal = signals.find(row=>signalKey(row)===selectedSignalKey) || filteredSignals[0] || signals[0] || null;
   const chartTf = data.timeframe || tf;
   const chartApiTf = TF_API[chartTf] || 'daily_live';
+  const signalInputValue = value => {
+    const n = Number(value);
+    return Number.isFinite(n) && n > 0 ? n.toFixed(Math.abs(n)>=10?2:4) : '';
+  };
   useEffect(()=>{
     if(!selectedSignal?.ticker){
       setSignalBars([]);
@@ -4225,6 +4386,15 @@ function TabMarketScreener({refreshKey=0}) {
       .then(setSignalPlan)
       .catch(()=>setSignalPlan(null));
   },[selectedSignal?.ticker, chartApiTf]);
+  useEffect(()=>{
+    if(!selectedSignal) return;
+    setSignalManualEntry(signalInputValue(selectedSignal.entry_price));
+    setSignalManualStop(signalInputValue(selectedSignal.stop_price));
+    setSignalManualTarget(signalInputValue(selectedSignal.take_profit_price));
+    setSignalManualRR('');
+    setSignalManualSide(selectedSignal.side === 'SHORT' ? 'SHORT' : 'LONG');
+    setSignalOrderFeedback(null);
+  },[selectedSignalKey]);
   const chartAnchorDate = data.anchor_date || anchorDate;
   const signalChartBars = useMemo(()=>{
     const rows = signalBars||[];
@@ -4249,12 +4419,109 @@ function TabMarketScreener({refreshKey=0}) {
     const full = buildGaussianChannelOverlay(signalChartBars);
     return full ? {...full, showChannel:showSignalGaussian, showSignals:showSignalGaussianSignals} : null;
   },[showSignalGaussian, showSignalGaussianSignals, signalChartBars]);
+  const signalManualSetup = useMemo(()=>{
+    if(!selectedSignal) return null;
+    const entry = Number(signalManualEntry);
+    const stopInput = Number(signalManualStop);
+    const targetInput = Number(signalManualTarget);
+    const rrInput = Number(signalManualRR);
+    const side = signalManualSide === 'SHORT' ? 'SHORT' : 'LONG';
+    const signalStop = Number(selectedSignal.stop_price);
+    const signalTarget = Number(selectedSignal.take_profit_price);
+    const stop = Number.isFinite(stopInput) && stopInput > 0
+      ? stopInput
+      : (Number.isFinite(signalStop) && signalStop > 0 ? signalStop : NaN);
+    const target = Number.isFinite(rrInput) && rrInput > 0 && Number.isFinite(entry) && Number.isFinite(stop)
+      ? (side === 'LONG' ? entry + Math.abs(entry-stop) * rrInput : entry - Math.abs(entry-stop) * rrInput)
+      : (Number.isFinite(targetInput) && targetInput > 0
+          ? targetInput
+          : (Number.isFinite(signalTarget) && signalTarget > 0 ? signalTarget : NaN));
+    if(!Number.isFinite(entry) || entry<=0 || !Number.isFinite(stop) || stop<=0 || !Number.isFinite(target) || target<=0) return null;
+    const validDirection = side === 'LONG' ? stop < entry && target > entry : stop > entry && target < entry;
+    if(!validDirection) return null;
+    const risk = Math.abs(entry-stop);
+    const reward = Math.abs(target-entry);
+    if(risk<=0 || reward<=0) return null;
+    return {
+      side,
+      entry,
+      stop,
+      target,
+      rr: reward/risk,
+      rrOverridden:Number.isFinite(rrInput) && rrInput > 0,
+      method:'selected screener signal',
+    };
+  },[selectedSignal, signalManualEntry, signalManualStop, signalManualTarget, signalManualRR, signalManualSide]);
+  const signalManualOrderPlan = useMemo(()=>{
+    if(!signalManualSetup || !selectedSignal?.ticker) return null;
+    const cash = Number(signalManualCash);
+    const maxOpenRiskPct = Number(signalManualMaxOpenRisk);
+    if(!Number.isFinite(cash) || cash<=0 || !Number.isFinite(maxOpenRiskPct) || maxOpenRiskPct<=0) return null;
+    const riskPerShare = Math.abs(signalManualSetup.entry-signalManualSetup.stop);
+    const rewardPerShare = Math.abs(signalManualSetup.target-signalManualSetup.entry);
+    if(riskPerShare<=0 || rewardPerShare<=0) return null;
+    const maxRiskAmount = cash * (maxOpenRiskPct/100);
+    const riskQty = Math.floor(maxRiskAmount / riskPerShare);
+    const cashQty = Math.floor(cash / signalManualSetup.entry);
+    const quantity = Math.max(0, Math.min(riskQty, cashQty));
+    const riskAmount = quantity * riskPerShare;
+    const potentialProfit = quantity * rewardPerShare;
+    const positionValue = quantity * signalManualSetup.entry;
+    return {
+      symbol:selectedSignal.ticker,
+      signal:signalManualSetup.side==='SHORT'?'SELL':'BUY',
+      direction:signalManualSetup.side.toLowerCase(),
+      entry:signalManualSetup.entry,
+      stop:signalManualSetup.stop,
+      target:signalManualSetup.target,
+      reward_risk:signalManualSetup.rr,
+      quantity,
+      risk_amount:riskAmount,
+      potential_reward:potentialProfit,
+      position_value:positionValue,
+      max_risk_amount:maxRiskAmount,
+      available_cash:cash,
+      max_open_risk_pct:maxOpenRiskPct,
+      entry_order_type:'LIMIT',
+      strategy:`market_screener_${String(selectedSignal.strategy||'signal').toLowerCase()}_manual_setup`,
+      source:'MARKET_SCREENER_MANUAL',
+      level_type:selectedSignal.level_type || 'screener_signal',
+      confidence:Number(selectedSignal.score || 1),
+    };
+  },[signalManualSetup, selectedSignal, signalManualCash, signalManualMaxOpenRisk]);
+  const doSignalManualPlace = useCallback(async(row)=>{
+    setSignalConfirm(null);
+    try {
+      const r = await fetch(`${API}/order/place`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(row)});
+      const d = await r.json();
+      setSignalOrderFeedback({ok:d.ok, message:d.message, id:d.id, dryRun:d.dry_run});
+    } catch(e) {
+      setSignalOrderFeedback({ok:false, message:'Network error: '+e.message});
+    }
+  },[]);
   const signalLines = showSignalOverlay && selectedSignal ? [
     {p:Number(selectedSignal.level_price), label:`LEVEL ${money(selectedSignal.level_price)}`, color:C.cyan},
     {p:Number(selectedSignal.entry_price), label:`ENTRY ${money(selectedSignal.entry_price)}`, color:selectedSignal.side==='SHORT'?C.err:C.lime},
     {p:Number(selectedSignal.stop_price), label:`STOP ${money(selectedSignal.stop_price)}`, color:C.err},
     {p:Number(selectedSignal.take_profit_price), label:`TP ${money(selectedSignal.take_profit_price)}`, color:C.lime},
   ].filter(line=>Number.isFinite(line.p)) : [];
+  const signalManualLines = showSignalManualSetup && signalManualSetup ? [
+    {p:signalManualSetup.target,color:C.lime,label:`TARGET ${money(signalManualSetup.target)}`},
+    {p:signalManualSetup.entry,color:C.ocean,label:`ENTRY ${money(signalManualSetup.entry)}`},
+    {p:signalManualSetup.stop,color:C.err,label:`STOP ${money(signalManualSetup.stop)}`},
+  ] : [];
+  const signalChartLines = showSignalManualSetup && signalManualSetup
+    ? [
+        ...(showSignalOverlay && selectedSignal && Number.isFinite(Number(selectedSignal.level_price))
+          ? [{p:Number(selectedSignal.level_price), label:`LEVEL ${money(selectedSignal.level_price)}`, color:C.cyan}]
+          : []),
+        ...signalManualLines,
+      ]
+    : signalLines;
+  const signalManualZones = showSignalManualSetup && signalManualSetup ? [
+    {p1:signalManualSetup.entry,p2:signalManualSetup.target,color:C.lime,opacity:0.07},
+    {p1:signalManualSetup.entry,p2:signalManualSetup.stop,color:C.err,opacity:0.08},
+  ] : [];
   const signalMarkerPrice = selectedSignal ? (Number(selectedSignal.entry_price)||Number(selectedSignal.level_price)) : null;
   const signalMarkers = showSignalOverlay && selectedSignal && Number.isFinite(signalMarkerPrice) ? [{
     time:selectedSignal.signal_bar_date,
@@ -4264,9 +4531,44 @@ function TabMarketScreener({refreshKey=0}) {
     value:`score ${num(selectedSignal.score,2)}`,
     color:selectedSignal.side==='SHORT'?C.err:C.lime,
   }] : [];
+  const signalHighlightedBars = useMemo(()=>{
+    if(!selectedSignal || !signalChartBars.length) return [];
+    const dateKey = value => String(value||'').slice(0,10);
+    const barDate = bar => dateKey(bar?.t || bar?.date);
+    const signalDate = dateKey(selectedSignal.signal_bar_date);
+    const entryDate = dateKey(selectedSignal.entry_day || selectedSignal.signal_bar_date);
+    const signalIdx = signalChartBars.findIndex(bar=>barDate(bar)===signalDate);
+    const entryIdx = signalChartBars.findIndex(bar=>barDate(bar)===entryDate);
+    const indexes = new Set();
+    const strategy = String(selectedSignal.strategy||'').toUpperCase();
+    if(strategy === 'LP1') {
+      if(signalIdx >= 0) indexes.add(signalIdx);
+    } else if(strategy === 'LP2') {
+      const idx = signalIdx >= 0 ? signalIdx : entryIdx;
+      if(idx > 0) indexes.add(idx-1);
+      if(idx >= 0) indexes.add(idx);
+    } else if(strategy === 'PRB1') {
+      if(signalIdx >= 0) indexes.add(signalIdx);
+      if(entryIdx >= 0) indexes.add(entryIdx);
+    } else if(strategy === 'PRB2') {
+      if(signalIdx >= 0 && entryIdx >= signalIdx) {
+        for(let idx=signalIdx; idx<=entryIdx; idx++) indexes.add(idx);
+      } else {
+        if(signalIdx >= 0) indexes.add(signalIdx);
+        if(entryIdx >= 0) indexes.add(entryIdx);
+      }
+    } else if(signalIdx >= 0) {
+      indexes.add(signalIdx);
+    }
+    return [...indexes]
+      .sort((a,b)=>a-b)
+      .map(idx=>({time:signalChartBars[idx]?.t || signalChartBars[idx]?.date}));
+  },[selectedSignalKey, selectedSignal?.strategy, selectedSignal?.signal_bar_date, selectedSignal?.entry_day, signalChartBars]);
   const readyCount = signals.filter(row=>row.status==='READY').length;
   const avgScore = signals.length ? signals.reduce((sum,row)=>sum+Number(row.score||0),0)/signals.length : null;
   const controlsShell = {display:'flex',alignItems:'center',gap:8,padding:'9px 11px',borderRadius:8,background:R(C.surfLowest,0.78),border:`1px solid ${R(C.outline,0.22)}`};
+  const dateStepButton = {width:24,height:16,padding:0,borderRadius:5,cursor:'pointer',display:'inline-flex',alignItems:'center',justifyContent:'center',background:R(C.cyan,0.08),border:`1px solid ${R(C.cyan,0.24)}`,color:C.cyan};
+  const signalManualEntryReady = Number.isFinite(Number(signalManualEntry)) && Number(signalManualEntry) > 0;
 
   return (
     <div style={{display:'flex',flexDirection:'column',gap:22}}>
@@ -4304,12 +4606,21 @@ function TabMarketScreener({refreshKey=0}) {
           </button>
         </div>
         <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:10,marginTop:14}}>
-          <label style={controlsShell}>
+          <div style={controlsShell}>
             <Icon n="event" size={15} color={anchorDate?C.cyan:C.outline}/>
             <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,textTransform:'uppercase'}}>Anchor day</span>
             <input type="date" value={anchorDate} onChange={e=>setAnchorDate(e.target.value)}
+              aria-label="Anchor day"
               style={{width:132,marginLeft:'auto',background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}/>
-          </label>
+            <div style={{display:'flex',flexDirection:'column',gap:2}}>
+              <button type="button" title="Next anchor day" aria-label="Next anchor day" onClick={()=>shiftAnchorDate(1)} style={dateStepButton}>
+                <Icon n="keyboard_arrow_up" size={15} color="inherit"/>
+              </button>
+              <button type="button" title="Previous anchor day" aria-label="Previous anchor day" onClick={()=>shiftAnchorDate(-1)} style={dateStepButton}>
+                <Icon n="keyboard_arrow_down" size={15} color="inherit"/>
+              </button>
+            </div>
+          </div>
           <label style={controlsShell}>
             <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,textTransform:'uppercase'}}>Min score</span>
             <input type="number" min="0" max="1" step="0.05" value={minScore} onChange={e=>setMinScore(Number(e.target.value)||0)}
@@ -4375,6 +4686,7 @@ function TabMarketScreener({refreshKey=0}) {
         )}
       </GlassCard>
 
+      <div ref={signalChartFullscreenRef} className="strategy-chart-fullscreen-shell">
       <GlassCard style={{overflow:'hidden'}}>
         <div style={{padding:'16px 18px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',justifyContent:'space-between',alignItems:'center',gap:12,flexWrap:'wrap'}}>
           <PanelHeader
@@ -4400,17 +4712,105 @@ function TabMarketScreener({refreshKey=0}) {
           <Toggle on={showSignalGaussian} label="Gaussian channel" onChange={v=>{setShowSignalGaussian(v); if(v) setShowSignalGaussianSignals(true);}}/>
           <Toggle on={showSignalGaussianSignals} label="Gaussian signals" onChange={setShowSignalGaussianSignals}/>
           <Toggle on={showSignalVol} label="Volume" onChange={setShowSignalVol}/>
+          <Toggle on={showSignalManualSetup} label="Manual setup" onChange={setShowSignalManualSetup}/>
         </div>
+        {showSignalManualSetup && (
+          <div style={{padding:'12px 18px',borderBottom:`1px solid ${R(C.outline,0.08)}`,display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.08em',color:C.outline,textTransform:'uppercase'}}>Manual Setup</span>
+            <input type="number" min="0" step="0.01" value={signalManualEntry}
+              onChange={e=>setSignalManualEntry(e.target.value)}
+              placeholder="Entry price"
+              style={{width:130,background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
+            <select value={signalManualSide} onChange={e=>setSignalManualSide(e.target.value)}
+              style={{background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
+              <option value="LONG">Long</option>
+              <option value="SHORT">Short</option>
+            </select>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Stop</span>
+            <input type="number" min="0" step="0.01" value={signalManualStop}
+              onChange={e=>setSignalManualStop(e.target.value)}
+              disabled={!signalManualEntryReady}
+              placeholder="Stop"
+              style={{width:115,background:R(C.surfLowest,0.8),color:C.err,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none',opacity:signalManualEntryReady?1:0.55}}/>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Target</span>
+            <input type="number" min="0" step="0.01" value={signalManualTarget}
+              onChange={e=>{setSignalManualTarget(e.target.value); if(e.target.value) setSignalManualRR('');}}
+              disabled={!signalManualEntryReady}
+              readOnly={Boolean(signalManualRR)}
+              title={signalManualRR ? "Target is calculated from Entry, Stop, and R:R. Clear R:R to edit target manually." : "Target defaults to the selected screener signal."}
+              placeholder="Target"
+              style={{width:115,background:R(C.surfLowest,0.8),color:C.lime,border:`1px solid ${R(signalManualSetup?.rrOverridden?C.lime:C.outline,signalManualSetup?.rrOverridden?0.38:0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none',opacity:signalManualEntryReady?1:0.55}}/>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>R:R</span>
+            <input type="number" min="0" step="0.25" value={signalManualRR}
+              onChange={e=>{setSignalManualRR(e.target.value); if(e.target.value) setSignalManualTarget('');}}
+              disabled={!signalManualEntryReady}
+              title="Optional R:R override. When set, target is calculated from Entry and Stop."
+              placeholder="Auto"
+              style={{width:85,background:R(C.surfLowest,0.8),color:C.cyan,border:`1px solid ${R(signalManualSetup?.rrOverridden?C.cyan:C.outline,signalManualSetup?.rrOverridden?0.38:0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none',opacity:signalManualEntryReady?1:0.55}}/>
+            <button disabled={!selectedSignal} onClick={()=>{
+              if(!selectedSignal) return;
+              setSignalManualEntry(signalInputValue(selectedSignal.entry_price));
+              setSignalManualStop(signalInputValue(selectedSignal.stop_price));
+              setSignalManualTarget(signalInputValue(selectedSignal.take_profit_price));
+              setSignalManualRR('');
+              setSignalManualSide(selectedSignal.side === 'SHORT' ? 'SHORT' : 'LONG');
+            }}
+              style={{padding:'8px 11px',borderRadius:8,cursor:selectedSignal?'pointer':'not-allowed',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,background:R(C.cyan,0.08),border:`1px solid ${R(C.cyan,0.28)}`,opacity:selectedSignal?1:0.55}}>
+              Use signal
+            </button>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Cash $</span>
+            <input type="number" min="0" step="100" value={signalManualCash}
+              onChange={e=>setSignalManualCash(e.target.value)}
+              title="Available cash used to cap position size"
+              style={{width:145,background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Max risk %</span>
+            <input type="number" min="0" step="0.25" value={signalManualMaxOpenRisk}
+              onChange={e=>setSignalManualMaxOpenRisk(e.target.value)}
+              title="Maximum open risk as percent of available cash"
+              style={{width:115,background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
+            {signalManualSetup ? (
+              <>
+                <Pill text={`STOP ${money(signalManualSetup.stop)}`} color={C.err}/>
+                <Pill text={`TARGET ${money(signalManualSetup.target)}`} color={C.lime}/>
+                <Pill text={`R:R ${signalManualSetup.rr.toFixed(2)}`} color={signalManualSetup.rr>=3?C.lime:C.outline}/>
+                {signalManualOrderPlan && <Pill text={`${signalManualOrderPlan.quantity} SH`} color={signalManualOrderPlan.quantity>0?C.cyan:C.err}/>}
+                {signalManualOrderPlan && <Pill text={`RISK $${signalManualOrderPlan.risk_amount.toFixed(2)}`} color={signalManualOrderPlan.quantity>0?C.err:C.outline}/>}
+                {signalManualOrderPlan && <Pill text={`PROFIT $${signalManualOrderPlan.potential_reward.toFixed(2)}`} color={signalManualOrderPlan.quantity>0?C.lime:C.outline}/>}
+                <button disabled={!signalManualOrderPlan || signalManualOrderPlan.quantity<=0}
+                  onClick={()=>setSignalConfirm({row:signalManualOrderPlan})}
+                  style={{padding:'8px 15px',borderRadius:8,cursor:signalManualOrderPlan&&signalManualOrderPlan.quantity>0?'pointer':'not-allowed',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:700,color:signalManualOrderPlan&&signalManualOrderPlan.quantity>0?'#001416':C.outline,background:signalManualOrderPlan&&signalManualOrderPlan.quantity>0?C.cyan:R(C.outline,0.08),border:`1px solid ${signalManualOrderPlan&&signalManualOrderPlan.quantity>0?R(C.cyan,0.35):R(C.outline,0.14)}`,opacity:signalManualOrderPlan&&signalManualOrderPlan.quantity>0?1:0.6}}>
+                  Place
+                </button>
+              </>
+            ) : (
+              <span style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:C.outline}}>Entry, stop, and target must match the selected side.</span>
+            )}
+          </div>
+        )}
+        {showSignalManualSetup && signalOrderFeedback && (
+          <div style={{margin:'12px 18px 0',display:'flex',alignItems:'center',gap:10,padding:'11px 14px',borderRadius:10,
+            background:signalOrderFeedback.ok?R(C.lime,0.07):R(C.err,0.07),
+            border:`1px solid ${signalOrderFeedback.ok?R(C.lime,0.25):R(C.err,0.25)}`}}>
+            <Icon n={signalOrderFeedback.ok?'task_alt':'error'} size={17} color={signalOrderFeedback.ok?C.lime:C.err}/>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:signalOrderFeedback.ok?'#dbe9b0':C.err}}>{signalOrderFeedback.message}</span>
+            {signalOrderFeedback.id && <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>ID: {signalOrderFeedback.id}</span>}
+            {signalOrderFeedback.dryRun && <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.magenta}}>DRY_RUN</span>}
+          </div>
+        )}
         {selectedSignal && signalChartBars.length ? (
           <CandleChart
             bars={signalChartBars}
             levels={signalChartLevels}
-            lines={signalLines}
+            lines={signalChartLines}
+            zones={signalManualZones}
             tradeMarkers={signalMarkers}
+            highlightBars={signalHighlightedBars}
             strategyOverlay={signalStrategyOverlay}
             gaussianOverlay={signalGaussianOverlay}
             showVol={showSignalVol}
             height={520}
+            fullscreenTargetRef={signalChartFullscreenRef}
+            fullscreenHeightOffset={showSignalManualSetup?280:170}
             stale={signalBarsInfo.stale}
             lastDate={signalBarsInfo.lastDate}
             lineLabelPosition="middle"
@@ -4422,6 +4822,56 @@ function TabMarketScreener({refreshKey=0}) {
           </div>
         )}
       </GlassCard>
+      </div>
+
+      {signalConfirm && (
+        <div onClick={()=>setSignalConfirm(null)} style={{position:'fixed',inset:0,zIndex:70,background:'rgba(8,8,9,0.80)',backdropFilter:'blur(8px)',display:'flex',alignItems:'center',justifyContent:'center',padding:24}}>
+          <div onClick={e=>e.stopPropagation()} style={{width:'100%',maxWidth:480,background:'rgba(20,19,20,0.98)',border:`1px solid ${R(C.outline,0.22)}`,borderRadius:14,boxShadow:'0 30px 80px rgba(0,0,0,0.7)',overflow:'hidden'}}>
+            <div style={{padding:'18px 22px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',alignItems:'center',gap:12}}>
+              <Icon n="send" size={20} color={C.cyan}/>
+              <span style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:17,fontWeight:600,color:C.onSurf}}>Confirm Signal Manual Order</span>
+            </div>
+            <div style={{padding:'20px 22px',display:'flex',flexDirection:'column',gap:14}}>
+              <div style={{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderRadius:10,background:R(C.magenta,0.06),border:`1px solid ${R(C.magenta,0.22)}`}}>
+                <Icon n="shield_lock" size={18} color={C.magenta} style={{flexShrink:0}}/>
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.magenta,lineHeight:1.5}}>Queues to execute_requests - paper account - respects DRY_RUN</span>
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px 18px'}}>
+                {[
+                  ['Symbol', signalConfirm.row.symbol],
+                  ['Side', signalConfirm.row.signal],
+                  ['Entry Order', signalConfirm.row.entry_order_type || 'LIMIT'],
+                  ['Entry', '$'+Number(signalConfirm.row.entry||0).toFixed(2)],
+                  ['Stop', '$'+Number(signalConfirm.row.stop||0).toFixed(2)],
+                  ['Target', '$'+Number(signalConfirm.row.target||0).toFixed(2)],
+                  ['Shares', signalConfirm.row.quantity],
+                  ['Position Value', '$'+Number(signalConfirm.row.position_value||0).toFixed(2)],
+                  ['Risk', '$'+Number(signalConfirm.row.risk_amount||0).toFixed(2)],
+                  ['Potential Profit', '$'+Number(signalConfirm.row.potential_reward||0).toFixed(2)],
+                  ['Max Open Risk', '$'+Number(signalConfirm.row.max_risk_amount||0).toFixed(2)],
+                  ['R:R', Number(signalConfirm.row.reward_risk||0).toFixed(2)],
+                  ['Strategy', signalConfirm.row.strategy],
+                ].map(([k,v])=>(
+                  <div key={k}>
+                    <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,marginBottom:4}}>{k}</div>
+                    <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:13,color:C.onSurf,fontWeight:500}}>{v}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={{padding:'16px 22px',borderTop:`1px solid ${R(C.outline,0.14)}`,display:'flex',gap:10,justifyContent:'flex-end'}}>
+              <button onClick={()=>setSignalConfirm(null)}
+                style={{padding:'10px 20px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onVar,background:'rgba(28,27,28,0.8)',border:`1px solid ${R(C.outline,0.25)}`}}>
+                Cancel
+              </button>
+              <button onClick={()=>doSignalManualPlace(signalConfirm.row)}
+                style={{padding:'10px 22px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:600,color:'#001416',background:C.cyan,border:'none'}}>
+                Place
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div style={{display:'grid',gridTemplateColumns:'minmax(280px,0.75fr) minmax(0,1.25fr)',gap:16,alignItems:'start'}}>
         <GlassCard style={{overflow:'hidden'}}>
