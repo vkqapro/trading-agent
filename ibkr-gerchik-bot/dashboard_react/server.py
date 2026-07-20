@@ -10,6 +10,7 @@ import os
 import csv
 import io
 import json
+import math
 import subprocess
 import sys
 import time
@@ -146,6 +147,11 @@ BMSB_NEAR_CROSS_THRESHOLD_PCT = 0.75
 BMSB_RECENT_CROSS_DAYS = 2
 BMSB2_RECLAIM_TOLERANCE_PCT = 0.5
 BMSB2_NEAR_TRIGGER_THRESHOLD_PCT = 0.75
+GAUSSIAN_NEAR_THRESHOLD_PCT = 1.0
+GAUSSIAN_RECENT_SIGNAL_DAYS = 2
+GAUSSIAN_PERIOD = 144
+GAUSSIAN_POLES = 4
+GAUSSIAN_MULT = 1.414
 
 def _safe(fn, default=None):
     try:
@@ -390,6 +396,170 @@ def _bmsb_strategy2_scan_symbol(symbol: str, today, include_neutral: bool = Fals
         "weekly_bar": str(pd.to_datetime(curr["date"]).date()),
         "threshold_pct": BMSB2_NEAR_TRIGGER_THRESHOLD_PCT,
         "tolerance_pct": BMSB2_RECLAIM_TOLERANCE_PCT,
+    }
+
+
+def _gaussian_alpha(period: int, poles: int) -> float:
+    beta = (1 - math.cos(2 * math.pi / period)) / (math.sqrt(2) ** (2 / poles) - 1)
+    return -beta + math.sqrt(beta * beta + 2 * beta)
+
+
+def _gaussian_filter(values: list[float], period: int = GAUSSIAN_PERIOD, poles: int = GAUSSIAN_POLES) -> list[float]:
+    alpha = _gaussian_alpha(period, poles)
+    f1 = f2 = f3 = f4 = None
+    out: list[float] = []
+    for value in values:
+        x = float(value) if math.isfinite(float(value)) else 0.0
+        if f1 is None:
+            f1 = f2 = f3 = f4 = x
+        else:
+            f1 = alpha * x + (1 - alpha) * f1
+            f2 = alpha * f1 + (1 - alpha) * f2
+            f3 = alpha * f2 + (1 - alpha) * f3
+            f4 = alpha * f3 + (1 - alpha) * f4
+        out.append(f1 if poles == 1 else f2 if poles == 2 else f3 if poles == 3 else f4)
+    return out
+
+
+def _cross_over(prev_a: float | None, prev_b: float | None, a: float, b: float) -> bool:
+    return (
+        prev_a is not None
+        and prev_b is not None
+        and math.isfinite(prev_a)
+        and math.isfinite(prev_b)
+        and math.isfinite(a)
+        and math.isfinite(b)
+        and prev_a <= prev_b
+        and a > b
+    )
+
+
+def _cross_under(prev_a: float | None, prev_b: float | None, a: float, b: float) -> bool:
+    return (
+        prev_a is not None
+        and prev_b is not None
+        and math.isfinite(prev_a)
+        and math.isfinite(prev_b)
+        and math.isfinite(a)
+        and math.isfinite(b)
+        and prev_a >= prev_b
+        and a < b
+    )
+
+
+def _gaussian_scan_symbol(symbol: str, today, include_neutral: bool = False) -> dict | None:
+    daily = _daily_live_frame(symbol)
+    if daily.empty or len(daily) < 3:
+        return None
+
+    frame = daily.sort_values("date").tail(420).reset_index(drop=True).copy()
+    for column in ("open", "high", "low", "close"):
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    frame = frame.dropna(subset=["date", "high", "low", "close"]).reset_index(drop=True)
+    if len(frame) < 3:
+        return None
+
+    src = ((frame["high"] + frame["low"] + frame["close"]) / 3).astype(float).tolist()
+    ranges: list[float] = []
+    closes = frame["close"].astype(float).tolist()
+    highs = frame["high"].astype(float).tolist()
+    lows = frame["low"].astype(float).tolist()
+    for idx, high in enumerate(highs):
+        prev_close = closes[idx - 1] if idx > 0 else closes[idx]
+        ranges.append(max(high - lows[idx], abs(high - prev_close), abs(lows[idx] - prev_close)))
+
+    mid_values = _gaussian_filter(src)
+    range_values = _gaussian_filter(ranges)
+    position = 0
+    latest_signal: tuple[str, str, str, str] | None = None
+    latest_daily_date = pd.to_datetime(frame["date"].iloc[-1], errors="coerce").date()
+    recent_cutoff = today - timedelta(days=GAUSSIAN_RECENT_SIGNAL_DAYS)
+
+    for idx, close in enumerate(closes):
+        mid = mid_values[idx]
+        width = GAUSSIAN_MULT * range_values[idx]
+        upper = mid + width
+        lower = mid - width
+        prev_mid = mid_values[idx - 1] if idx > 0 else None
+        prev_close = closes[idx - 1] if idx > 0 else None
+        prev_upper = mid_values[idx - 1] + GAUSSIAN_MULT * range_values[idx - 1] if idx > 0 else None
+        prev_lower = mid_values[idx - 1] - GAUSSIAN_MULT * range_values[idx - 1] if idx > 0 else None
+        bullish = prev_mid is not None and mid > prev_mid
+
+        signal = None
+        side = None
+        if bullish and _cross_over(prev_close, prev_upper, close, upper) and position <= 0:
+            signal = "GAUSSIAN_LONG_ENTRY"
+            side = "LONG"
+            position = 1
+        elif position > 0 and _cross_under(prev_close, prev_upper, close, upper):
+            signal = "GAUSSIAN_LONG_EXIT"
+            side = "EXIT"
+            position = 0
+        if signal:
+            latest_signal = (signal, side or "NONE", "crossed", str(pd.to_datetime(frame["date"].iloc[idx]).date()))
+
+    close_price = float(closes[-1])
+    mid = float(mid_values[-1])
+    upper = mid + GAUSSIAN_MULT * float(range_values[-1])
+    lower = mid - GAUSSIAN_MULT * float(range_values[-1])
+    prev_mid = float(mid_values[-2])
+    bullish = mid > prev_mid
+    near_long_gap = abs(upper - close_price) / close_price * 100.0 if close_price > 0 else None
+    exit_gap = abs(close_price - upper) / close_price * 100.0 if close_price > 0 else None
+
+    signal = side = urgency = None
+    signal_date = None
+    if latest_signal:
+        signal, side, urgency, signal_date = latest_signal
+        try:
+            if pd.to_datetime(signal_date).date() < recent_cutoff:
+                signal = side = urgency = signal_date = None
+        except Exception:
+            signal = side = urgency = signal_date = None
+    if not signal and bullish and near_long_gap is not None and close_price <= upper and near_long_gap <= GAUSSIAN_NEAR_THRESHOLD_PCT:
+        signal = "GAUSSIAN_NEAR_LONG"
+        side = "LONG"
+        urgency = "near"
+        signal_date = str(latest_daily_date)
+    elif not signal and position > 0 and exit_gap is not None and close_price >= upper and exit_gap <= GAUSSIAN_NEAR_THRESHOLD_PCT:
+        signal = "GAUSSIAN_NEAR_EXIT"
+        side = "EXIT"
+        urgency = "near"
+        signal_date = str(latest_daily_date)
+
+    if not signal:
+        if not include_neutral:
+            return None
+        signal = "NO_SIGNAL"
+        side = "NONE"
+        urgency = "none"
+        signal_date = str(latest_daily_date)
+
+    gap = close_price - upper
+    gap_pct = abs(gap) / close_price * 100.0 if close_price > 0 else None
+    return {
+        "symbol": symbol,
+        "signal": signal,
+        "side": side,
+        "urgency": urgency,
+        "last_price": round(close_price, 4),
+        "ema21": round(upper, 4),
+        "sma20": round(mid, 4),
+        "gap": round(gap, 4),
+        "gap_pct": round(gap_pct, 4) if gap_pct is not None else None,
+        "previous_gap_pct": None,
+        "entry_level": round(upper, 4),
+        "exit_level": round(upper, 4),
+        "trigger_level": round(upper, 4),
+        "trigger_gap_pct": round(gap_pct, 4) if gap_pct is not None else None,
+        "cross_date": signal_date,
+        "daily_bar": str(latest_daily_date),
+        "weekly_bar": str(latest_daily_date),
+        "threshold_pct": GAUSSIAN_NEAR_THRESHOLD_PCT,
+        "channel_mid": round(mid, 4),
+        "channel_upper": round(upper, 4),
+        "channel_lower": round(lower, 4),
     }
 
 
@@ -1125,7 +1295,7 @@ async def api_watchlist_remove(body: dict):
 
 
 @app.get("/api/strategy")
-def api_strategy():
+def api_strategy(mode: str = "bmsb"):
     from src.symbol_universe import load_stock_symbols, stock_symbols_file
 
     index = _safe(da.bars_index, {})
@@ -1138,9 +1308,21 @@ def api_strategy():
             if isinstance(frames, dict) and ("daily" in frames or "weekly" in frames)
         )
     today = datetime.now(ET).date()
+    selected_mode = str(mode or "bmsb").strip().lower()
+    if selected_mode not in {"bmsb", "gaussian"}:
+        selected_mode = "bmsb"
+    scanner = _gaussian_scan_symbol if selected_mode == "gaussian" else _bmsb_scan_symbol
+    strategy_name = "Gaussian Channel Strategy" if selected_mode == "gaussian" else "BMSB Strategy"
+    threshold_pct = GAUSSIAN_NEAR_THRESHOLD_PCT if selected_mode == "gaussian" else BMSB_NEAR_CROSS_THRESHOLD_PCT
+    recent_days = GAUSSIAN_RECENT_SIGNAL_DAYS if selected_mode == "gaussian" else BMSB_RECENT_CROSS_DAYS
+    description = (
+        "Gaussian Channel monitor. Signals are based on bullish close crosses over the upper channel or symbols near that trigger."
+        if selected_mode == "gaussian"
+        else "Weekly BMSB monitor. Signals are based on the 21W EMA crossing the 20W SMA, or symbols near that cross."
+    )
     rows = []
     for symbol in symbols:
-        row = _safe(lambda s=symbol: _bmsb_scan_symbol(s, today, include_neutral=True), None)
+        row = _safe(lambda s=symbol: scanner(s, today, include_neutral=True), None)
         if row is None:
             row = {
                 "symbol": symbol,
@@ -1157,8 +1339,9 @@ def api_strategy():
                 "trigger_level": None,
                 "trigger_gap_pct": None,
                 "cross_date": None,
+                "daily_bar": None,
                 "weekly_bar": None,
-                "threshold_pct": BMSB_NEAR_CROSS_THRESHOLD_PCT,
+                "threshold_pct": threshold_pct,
             }
         rows.append(row)
     matched_rows = [row for row in rows if row.get("urgency") in {"crossed", "near"}]
@@ -1179,10 +1362,11 @@ def api_strategy():
         str(r.get("symbol", "")),
     ))
     return {
-        "strategy": "BMSB Strategy",
-        "description": "Weekly BMSB monitor. Signals are based on the 21W EMA crossing the 20W SMA, or symbols near that cross.",
-        "threshold_pct": BMSB_NEAR_CROSS_THRESHOLD_PCT,
-        "recent_days": BMSB_RECENT_CROSS_DAYS,
+        "mode": selected_mode,
+        "strategy": strategy_name,
+        "description": description,
+        "threshold_pct": threshold_pct,
+        "recent_days": recent_days,
         "symbols_scanned": len(symbols),
         "symbols": symbols,
         "matches": len(matched_rows),

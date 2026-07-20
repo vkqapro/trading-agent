@@ -151,7 +151,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
   const [hover,    setHover]    = useState(null);   // {idx, svgX, svgY}
   const [crosshair,setCrosshair]= useState(false);
   const [showMA,   setShowMA]   = useState(false);
-  const [showBars, setShowBars] = useState(false);
+  const [showBars, setShowBars] = useState(true);
   const [showTrendMeter,setShowTrendMeter] = useState(false);
   const [yRangeFactor, setYRangeFactor] = useState(1);
   const [yPanRatio, setYPanRatio] = useState(0);
@@ -784,16 +784,20 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
     const localIdx=markerIndexForTime(m.time);
     const price=Number(m.price);
     if(localIdx==null || !Number.isFinite(price)) return;
-    const x=xi(localIdx), y=yp(price), col=m.color||C.cyan;
+    const markerBar = visBars[localIdx];
+    const markerAboveBar = m.placement === 'above_bar' && markerBar && Number.isFinite(Number(markerBar.high));
+    const markerBelowBar = m.placement === 'below_bar' && markerBar && Number.isFinite(Number(markerBar.low));
+    const x=xi(localIdx), baseY=markerAboveBar ? yp(Number(markerBar.high)) - 24 : markerBelowBar ? yp(Number(markerBar.low)) + 24 : yp(price), col=m.color||C.cyan;
+    const y=Math.max(padT+14, Math.min(padT+priceH-14, baseY + Number(m.yOffset||0)));
     const up = (m.kind||'').toLowerCase().includes('entry');
     const d = up
       ? `M ${x} ${y-13} L ${x-8} ${y+3} L ${x+8} ${y+3} Z`
       : `M ${x} ${y+13} L ${x-8} ${y-3} L ${x+8} ${y-3} Z`;
     els.push(<circle key={'tmGlow'+i} cx={x} cy={y} r={13} fill={R(col,0.14)} stroke="none"/>);
     els.push(<path key={'tm'+i} d={d} fill={col} stroke={R('#ffffff',0.85)} strokeWidth={0.9}/>);
-    els.push(<text key={'tmLbl'+i} x={x+10} y={y-9} fill={col} fontSize={9} fontFamily="JetBrains Mono,monospace" fontWeight="800">{m.label||m.kind}</text>);
+    els.push(<text key={'tmLbl'+i} x={x+10} y={y-12} fill={col} fontSize={m.labelFontSize||9} fontFamily="JetBrains Mono,monospace" fontWeight="800">{m.label||m.kind}</text>);
     if(m.value){
-      els.push(<text key={'tmVal'+i} x={x+10} y={y+4} fill={C.onVar} fontSize={8.5} fontFamily="JetBrains Mono,monospace">{m.value}</text>);
+      els.push(<text key={'tmVal'+i} x={x+10} y={y+5} fill={C.onVar} fontSize={m.valueFontSize||8.5} fontFamily="JetBrains Mono,monospace" fontWeight={m.valueFontWeight||500}>{m.value}</text>);
     }
   });
 
@@ -1321,7 +1325,7 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
   const [chartSymbol, setChartSymbol] = useState('AAPL');
   const [tickerQuery, setTickerQuery] = useState('AAPL');
   const [tf, setTf] = useState('1H');
-  const [range, setRange] = useState('ALL');
+  const [range, setRange] = useState('3M');
   const [showRaw, setShowRaw] = useState(false);
   const [showTrade, setShowTrade] = useState(true);
   const [showVol, setShowVol] = useState(true);
@@ -2118,10 +2122,11 @@ function TabIntraday({refreshKey=0}) {
 ═══════════════════════════════════════════════════════════════════════════ */
 function TabStrategy({refreshKey=0}) {
   const [data, setData] = useState(null);
+  const [strategyMode, setStrategyMode] = useState('bmsb');
   const [filter, setFilter] = useState('ALL');
   const [selectedSymbol, setSelectedSymbol] = useState(null);
   const [tf, setTf] = useState('1D');
-  const [range, setRange] = useState('ALL');
+  const [range, setRange] = useState('3M');
   const [showRaw, setShowRaw] = useState(false);
   const [showTrade, setShowTrade] = useState(true);
   const [showVol, setShowVol] = useState(true);
@@ -2162,11 +2167,11 @@ function TabStrategy({refreshKey=0}) {
   const [chartPlan, setChartPlan] = useState(null);
   const strategyChartFullscreenRef = useRef(null);
   const loadStrategy = useCallback(()=>{
-    fetch(`${API}/strategy`)
+    fetch(`${API}/strategy?mode=${encodeURIComponent(strategyMode)}`)
       .then(r=>r.json())
       .then(setData)
-      .catch(()=>setData({rows:[],symbols:[],symbols_scanned:0,matches:0,crossed:0,near:0}));
-  },[]);
+      .catch(()=>setData({mode:strategyMode,rows:[],symbols:[],symbols_scanned:0,matches:0,crossed:0,near:0}));
+  },[strategyMode]);
   useEffect(()=>{ loadStrategy(); },[refreshKey, loadStrategy]);
   useEffect(()=>{
     const symbols = data?.symbols || [];
@@ -2199,6 +2204,22 @@ function TabStrategy({refreshKey=0}) {
   useEffect(()=>{
     try { localStorage.setItem('strategyWatchSymbols', JSON.stringify(strategyWatchSymbols)); } catch {}
   },[strategyWatchSymbols]);
+  const switchStrategyMode = useCallback((mode)=>{
+    const next = mode === 'gaussian' ? 'gaussian' : 'bmsb';
+    setStrategyMode(next);
+    setFilter('ALL');
+    if(next === 'gaussian'){
+      setShowStrategy(false);
+      setShowStrategy2(false);
+      setShowGaussian(true);
+      setShowGaussianSignals(true);
+    } else {
+      setShowStrategy(true);
+      setShowStrategy2(false);
+      setShowGaussian(false);
+      setShowGaussianSignals(false);
+    }
+  },[]);
   const toggleStrategyWatch = useCallback((symbol)=>{
     const normalized = String(symbol || '').trim().toUpperCase();
     if(!normalized) return;
@@ -2476,14 +2497,44 @@ function TabStrategy({refreshKey=0}) {
   };
   const fmtNum = (v, d=2) => v==null || !Number.isFinite(Number(v)) ? '—' : Number(v).toFixed(d);
   const manualEntryReady = Number.isFinite(Number(manualEntry)) && Number(manualEntry) > 0;
+  const isGaussianMode = strategyMode === 'gaussian';
+  const strategyDisplayName = isGaussianMode ? 'Gaussian Channel' : 'BMSB';
+  const strategyMatchSub = isGaussianMode ? 'crossed or near channel trigger' : 'crossed or near EMA/SMA cross';
+  const strategyNearSub = isGaussianMode ? `<= ${fmtNum(data.threshold_pct,2)}% upper channel gap` : `<= ${fmtNum(data.threshold_pct,2)}% EMA/SMA gap`;
+  const strategyInfoText = isGaussianMode
+    ? `Shows Gaussian Channel long entries/exits within ${data.recent_days??2} days, or symbols within ${fmtNum(data.threshold_pct,2)}% of the upper channel trigger.`
+    : `Shows BMSB weekly 21W EMA / 20W SMA crosses within ${data.recent_days??2} days, or symbols within ${fmtNum(data.threshold_pct,2)}% of a cross.`;
+  const strategyColumns = isGaussianMode
+    ? ['Symbol','Watch','Signal','Side','Last Price','Close-Upper Gap','Gap %','Upper Channel','Channel Mid','Signal Date','Daily Bar']
+    : ['Symbol','Watch','Signal','Side','Last Price','EMA-SMA Gap','Gap %','21W EMA','20W SMA','Signal Date','Weekly Bar'];
 
   return (
     <div style={{display:'flex',flexDirection:'column',gap:28}}>
+      <GlassCard style={{padding:14,display:'flex',alignItems:'center',justifyContent:'space-between',gap:14,flexWrap:'wrap'}}>
+        <div style={{display:'flex',alignItems:'center',gap:10,flexWrap:'wrap'}}>
+          <Icon n="insights" size={18} color={isGaussianMode?C.magenta:C.cyan}/>
+          <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar}}>Strategy Check</span>
+          <Pill text={data.strategy || strategyDisplayName} color={isGaussianMode?C.magenta:C.cyan}/>
+        </div>
+        <div style={{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}>
+          {[
+            {id:'bmsb',label:'BMSB',icon:'candlestick_chart',color:C.cyan},
+            {id:'gaussian',label:'Gaussian',icon:'stacked_line_chart',color:C.magenta},
+          ].map(item=>{
+            const active = strategyMode === item.id;
+            return <button key={item.id} onClick={()=>item.id===strategyMode ? loadStrategy() : switchStrategyMode(item.id)}
+              style={{padding:'9px 13px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:900,color:active?item.color:C.onVar,background:active?R(item.color,0.13):R(C.surfLowest,0.62),border:`1px solid ${R(active?item.color:C.outline,active?0.42:0.18)}`,display:'inline-flex',alignItems:'center',gap:7}}>
+              <Icon n={item.icon} size={15} color="inherit"/>
+              {item.label}
+            </button>;
+          })}
+        </div>
+      </GlassCard>
       <MetricGrid items={[
         {label:'Symbols Scanned', icon:'radar', value:data.symbols_scanned??0, sub:'with stored chart data'},
-        {label:'BMSB Matches', icon:'candlestick_chart', value:data.matches??0, valueColor:C.cyan, sub:'crossed or near EMA/SMA cross', subColor:C.cyan},
+        {label:`${strategyDisplayName} Matches`, icon:'candlestick_chart', value:data.matches??0, valueColor:C.cyan, sub:strategyMatchSub, subColor:C.cyan},
         {label:'Recent Triggers', icon:'swap_vert', value:data.crossed??0, valueColor:data.crossed?C.lime:C.onSurf, sub:`last ${data.recent_days??2} days`},
-        {label:'Near Cross', icon:'near_me', value:data.near??0, valueColor:data.near?C.magenta:C.onSurf, sub:`≤ ${fmtNum(data.threshold_pct,2)}% EMA/SMA gap`},
+        {label:'Near Trigger', icon:'near_me', value:data.near??0, valueColor:data.near?C.magenta:C.onSurf, sub:strategyNearSub},
       ]}/>
 
       <GlassCard style={{padding:16}}>
@@ -2590,7 +2641,7 @@ function TabStrategy({refreshKey=0}) {
             Remove
           </button>
           {selectedSymbol && !(data.rows||[]).some(r=>r.symbol===selectedSymbol) && (
-            <Pill text="NO CURRENT S2 MATCH" color={C.outline}/>
+            <Pill text={`NO CURRENT ${strategyDisplayName.toUpperCase()} MATCH`} color={C.outline}/>
           )}
           {strategySymbolFeedback && (
             <span style={{display:'inline-flex',alignItems:'center',gap:7,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:strategySymbolFeedback.ok?C.lime:C.err}}>
@@ -2791,10 +2842,10 @@ function TabStrategy({refreshKey=0}) {
       )}
 
       <GlassCard style={{overflow:'hidden'}}>
-        <PanelHeader icon="insights" title="BMSB Strategy Monitor" badge="BMSB Strategy"/>
+        <PanelHeader icon="insights" title={`${strategyDisplayName} Strategy Monitor`} badge={data.strategy || strategyDisplayName}/>
         <div style={{padding:'14px 18px',borderBottom:`1px solid ${R(C.outline,0.12)}`,display:'flex',justifyContent:'space-between',alignItems:'center',gap:14,flexWrap:'wrap'}}>
           <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline,lineHeight:1.6}}>
-            Shows BMSB weekly 21W EMA / 20W SMA crosses within {data.recent_days??2} days, or symbols within {fmtNum(data.threshold_pct,2)}% of a cross.
+            {strategyInfoText}
           </div>
           <div style={{display:'flex',gap:7,flexWrap:'wrap'}}>
             {['ALL','CROSSED','NEAR','LONG','EXIT','WATCH'].map(f=>{
@@ -2807,7 +2858,7 @@ function TabStrategy({refreshKey=0}) {
           </div>
         </div>
         <Table
-          cols={['Symbol','Watch','Signal','Side','Last Price','EMA-SMA Gap','Gap %','21W EMA','20W SMA','Signal Date','Weekly Bar']}
+          cols={strategyColumns}
           rows={rows.map(r=>[
             <button onClick={()=>setSelectedSymbol(r.symbol)}
               style={{display:'inline-flex',alignItems:'center',gap:8,cursor:'pointer',background:selectedSymbol===r.symbol?R(C.cyan,0.14):'transparent',border:`1px solid ${selectedSymbol===r.symbol?R(C.cyan,0.32):'transparent'}`,borderRadius:7,padding:'4px 8px',color:selectedSymbol===r.symbol?C.cyan:C.onSurf,fontWeight:600,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
@@ -2830,12 +2881,12 @@ function TabStrategy({refreshKey=0}) {
             fmtNum(r.ema21,2),
             fmtNum(r.sma20,2),
             <span style={{color:C.outline}}>{r.cross_date||'—'}</span>,
-            <span style={{color:C.outline}}>{r.weekly_bar||'—'}</span>,
+            <span style={{color:C.outline}}>{isGaussianMode ? (r.daily_bar||r.weekly_bar||'—') : (r.weekly_bar||'—')}</span>,
           ])}
         />
         {!rows.length && (
           <div style={{padding:'20px 18px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.outline}}>
-            No BMSB Strategy symbols match this filter right now.
+            No {strategyDisplayName} Strategy symbols match this filter right now.
           </div>
         )}
       </GlassCard>
@@ -3028,7 +3079,7 @@ function TabForecast({refreshKey=0}) {
   const [selBars, setSelBars] = useState([]);
   const [selBarsInfo, setSelBarsInfo] = useState({stale:false,lastDate:null});
   const [tf, setTf] = useState('1D');
-  const [fcChartRange, setFcChartRange] = useState('ALL');
+  const [fcChartRange, setFcChartRange] = useState('3M');
   const [fcSetupDraft, setFcSetupDraft] = useState({key:null,entry:'',stop:'',target:'',rr:'',rrLocked:false});
   const [fcOrderType, setFcOrderType] = useState('LMT');
   const [fcSetupQty, setFcSetupQty] = useState({key:null,value:''});
@@ -3757,7 +3808,7 @@ function TabCrypto({refreshKey=0}) {
   const [data, setData] = useState(null);
   const [selected, setSelected] = useState('');
   const [tf, setTf] = useState('1D');
-  const [range, setRange] = useState('6M');
+  const [range, setRange] = useState('3M');
   const [showRaw, setShowRaw] = useState(false);
   const [showTrade, setShowTrade] = useState(true);
   const [showVol, setShowVol] = useState(true);
@@ -4091,7 +4142,7 @@ function TabCrypto({refreshKey=0}) {
 }
 
 function OrdersPnlChart({rows=[]}) {
-  const [range,setRange]=useState('1M');
+  const [range,setRange]=useState('3M');
   const [customFrom,setCustomFrom]=useState('');
   const [customTo,setCustomTo]=useState('');
   const [hoverIdx,setHoverIdx]=useState(null);
@@ -4133,6 +4184,7 @@ function OrdersPnlChart({rows=[]}) {
     }
     if(range==='1W') return {start:startOfDay(addDays(now,-7)),end:now};
     if(range==='1M') return {start:startOfDay(addMonths(now,-1)),end:now};
+    if(range==='3M') return {start:startOfDay(addMonths(now,-3)),end:now};
     if(range==='YTD') return {start:new Date(now.getFullYear(),0,1),end:now};
     if(range==='1Y') return {start:startOfDay(addMonths(now,-12)),end:now};
     return {start:null,end:now};
@@ -4182,7 +4234,7 @@ function OrdersPnlChart({rows=[]}) {
           <span style={{padding:'3px 9px',borderRadius:9999,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.cyan,background:R(C.cyan,0.1),border:`1px solid ${R(C.cyan,0.28)}`}}>{points.length} trading days</span>
         </div>
         <div style={{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}>
-          {['1W','1M','YTD','1Y','ALL'].map(rg=>{
+          {['1W','1M','3M','YTD','1Y','ALL'].map(rg=>{
             const active=range===rg;
             return <button key={rg} onClick={()=>setRange(rg)}
               style={{padding:'7px 11px',borderRadius:8,cursor:'pointer',border:`1px solid ${R(active?C.cyan:C.outline,active?0.45:0.18)}`,background:active?R(C.cyan,0.12):R(C.surf,0.5),color:active?C.cyan:C.onVar,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>
@@ -4530,6 +4582,10 @@ function TabMarketScreener({refreshKey=0}) {
     label:`${selectedSignal.strategy} ${selectedSignal.side}`,
     value:`score ${num(selectedSignal.score,2)}`,
     color:selectedSignal.side==='SHORT'?C.err:C.lime,
+    placement:'above_bar',
+    labelFontSize:10.5,
+    valueFontSize:10.5,
+    valueFontWeight:800,
   }] : [];
   const signalHighlightedBars = useMemo(()=>{
     if(!selectedSignal || !signalChartBars.length) return [];
@@ -4919,7 +4975,7 @@ function TabOrdersJournal({refreshKey=0}) {
   const [marketFilter,setMarketFilter]=useState('ALL');
   const [sourceFilter,setSourceFilter]=useState('ALL');
   const [tf,setTf]=useState('1D');
-  const [reviewChartRange,setReviewChartRange]=useState('ALL');
+  const [reviewChartRange,setReviewChartRange]=useState('3M');
   const [bars,setBars]=useState([]);
   const [barsInfo,setBarsInfo]=useState({stale:false,lastDate:null});
   const [reviewPlan,setReviewPlan]=useState(null);
