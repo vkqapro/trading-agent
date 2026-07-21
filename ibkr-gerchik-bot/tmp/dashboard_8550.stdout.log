@@ -1,0 +1,14 @@
+INFO:     127.0.0.1:49981 - "GET /api/meta HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53047 - "GET /api/market-screener?anchor_date=2026-07-20&strategies=LP1&min_score=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50517 - "GET /api/meta HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50521 - "GET /api/market-screener?anchor_date=2026-07-20&strategies=LP1,LP2,PRB1,PRB2&min_score=0&require_complete_quality=false HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50543 - "GET /api/meta HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63945 - "GET /api/meta HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55824 - "GET /api/meta HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62370 - "GET /api/meta HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53482 - "GET /api/meta HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59850 - "GET /api/meta HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58689 - "GET /api/meta HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51356 - "GET /api/meta HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54468 - "GET /api/meta HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55330 - "POST /api/system/hard-reset HTTP/1.1" 200 OK

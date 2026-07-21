@@ -964,9 +964,12 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
     }
   }
 
-  // ── hovered candle OHLCV tooltip data
+  // ── hovered candle OHLCV toolbar data
   const hovBar = hover && bars[Math.max(0,Math.min(n-1,hover.idx))];
-  const tooltipRight = hover && hover.svgX > W*0.6;
+  const hovChange = hovBar ? hovBar.close - hovBar.open : null;
+  const hovChangePct = hovBar && hovBar.open ? (hovChange / hovBar.open * 100) : null;
+  const hovUp = hovChange != null && hovChange >= 0;
+  const hovColor = hovBar ? (hovUp ? C.lime : C.err) : C.outline;
 
   const allLabels = lineLabelPosition === 'right' ? [...levels, ...lines] : [...levels];
 
@@ -1016,6 +1019,36 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
         <div style={{width:1,height:20,background:'rgba(132,148,149,0.18)',flexShrink:0,margin:'0 2px'}}/>
         <Toggle on={showBars} label="Bars" onChange={()=>setShowBars(v=>!v)}/>
         <Toggle on={showTrendMeter || Boolean(trendMeterOverlay)} label="Trend Meter" onChange={()=>setShowTrendMeter(v=>!v)}/>
+        <div style={{display:'flex',alignItems:'center',gap:8,marginLeft:6,padding:'5px 9px',borderRadius:7,
+          background:R(C.surfLowest,0.72),border:`1px solid ${R(hovColor,hovBar?0.24:0.12)}`,minHeight:28,flexWrap:'wrap'}}>
+          {hovBar ? (
+            <>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.onSurf,fontWeight:800,whiteSpace:'nowrap'}}>{fmtD(hovBar.t)}</span>
+              {[
+                ['O',hovBar.open,C.onVar],
+                ['H',hovBar.high,C.onVar],
+                ['L',hovBar.low,C.onVar],
+                ['C',hovBar.close,hovColor],
+              ].map(([lbl,val,col])=>(
+                <span key={lbl} style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,whiteSpace:'nowrap'}}>
+                  {lbl} <span style={{color:col,fontWeight:700}}>{fmtP(val)}</span>
+                </span>
+              ))}
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:hovColor,fontWeight:800,whiteSpace:'nowrap'}}>
+                {hovUp?'+':''}{hovChange.toFixed(2)}{hovChangePct!=null ? ` (${hovUp?'+':''}${hovChangePct.toFixed(2)}%)` : ''}
+              </span>
+              {hovBar.volume>0 && (
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,whiteSpace:'nowrap'}}>
+                  VOL <span style={{color:C.onVar,fontWeight:700}}>{fmtVol(hovBar.volume)}</span>
+                </span>
+              )}
+            </>
+          ) : (
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,whiteSpace:'nowrap'}}>
+              Hover candle for OHLCV
+            </span>
+          )}
+        </div>
         <div style={{flex:1}}/>
         <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,whiteSpace:'nowrap'}}>
           {vs+1}–{dataEnd} / {n} bars{ve>n ? ` +${ve-n} space` : ''}
@@ -1044,49 +1077,6 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
             {l.label??('$'+fmtP(l.p))}
           </div>
         ))}
-
-        {/* OHLCV Tooltip */}
-        {hovBar && (() => {
-          const chg = hovBar.close - hovBar.open;
-          const chgPct = (chg/hovBar.open*100);
-          const up = chg>=0;
-          const col = up?C.lime:C.err;
-          const r = svgRef.current?.getBoundingClientRect();
-          const tooltipW = 210;
-          const leftPct = tooltipRight ? null : `${((hover.svgX+12)/W*100).toFixed(1)}%`;
-          const rightPct = tooltipRight ? `${((W-hover.svgX+12)/W*100).toFixed(1)}%` : null;
-          return (
-            <div style={{position:'absolute',
-              top:`${Math.max(4,(hover.svgY-10)/H*100).toFixed(1)}%`,
-              left:leftPct, right:rightPct,
-              width:tooltipW,
-              background:'rgba(14,14,15,0.96)',border:`1px solid ${R(col,0.35)}`,
-              borderRadius:9,padding:'11px 14px',pointerEvents:'none',zIndex:10,
-              boxShadow:`0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px ${R(col,0.12)}`}}>
-              <div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:8}}>
-                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onSurf,fontWeight:600}}>{fmtD(hovBar.t)}</span>
-                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:col,fontWeight:600}}>
-                  {up?'+':''}{chg.toFixed(2)} ({up?'+':''}{chgPct.toFixed(2)}%)
-                </span>
-              </div>
-              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'5px 14px'}}>
-                {[['O',hovBar.open],['H',hovBar.high],['L',hovBar.low],['C',hovBar.close]].map(([lbl,val])=>(
-                  <div key={lbl} style={{display:'flex',justifyContent:'space-between',alignItems:'baseline'}}>
-                    <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>{lbl}</span>
-                    <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:lbl==='C'?col:C.onVar}}>{fmtP(val)}</span>
-                  </div>
-                ))}
-              </div>
-              {hovBar.volume>0 && (
-                <div style={{marginTop:7,paddingTop:7,borderTop:`1px solid rgba(132,148,149,0.12)`,
-                  display:'flex',justifyContent:'space-between',alignItems:'baseline'}}>
-                  <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>VOL</span>
-                  <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar}}>{fmtVol(hovBar.volume)}</span>
-                </div>
-              )}
-            </div>
-          );
-        })()}
       </div>
     </div>
   );
@@ -4327,6 +4317,35 @@ function TabMarketScreener({refreshKey=0}) {
   const [minScore,setMinScore]=useState(0);
   const [rr,setRr]=useState(2);
   const [riskPct,setRiskPct]=useState(0.5);
+  const [showScreenerAdvanced,setShowScreenerAdvanced]=useState(false);
+  const [scanParams,setScanParams]=useState({
+    entryAtrPct:0.50,
+    levelToleranceAtr:0.10,
+    openToleranceAtr:0.15,
+    lp1DeltaBreak:0.05,
+    lp1DeltaClose:0.03,
+    lp2DeltaBreak:0.05,
+    lp2DeltaClose:0.03,
+    prb1DeltaBreak:0.05,
+    prb1DeltaClose:0.05,
+    prb2DeltaBreak:0.05,
+    prb2DeltaClose:0.05,
+    lp1VolumeMult:1.0,
+    lp2VolumeMult:1.0,
+    prbVolumeMult:1.2,
+    rangeCap:2.5,
+    twoBarRangeCap:4.0,
+    stopBufferAtr:0.25,
+    stopVariant:'strategy_default',
+    approachLookback:4,
+    approachMinAtr:0.05,
+    gapMaxAtr:1.2,
+    chaseMaxAtr:0.30,
+    lp2OverextendedAtr:1.2,
+    slippagePerShare:0.01,
+    feesPerShare:0.005,
+    requireCompleteQuality:false,
+  });
   const [busy,setBusy]=useState(false);
   const [symbolSearch,setSymbolSearch]=useState('');
   const [statusFilter,setStatusFilter]=useState('ALL');
@@ -4374,6 +4393,8 @@ function TabMarketScreener({refreshKey=0}) {
       return dateKeyFromLocal(next);
     });
   };
+  const setScanParam = (key,value) => setScanParams(current=>({...current,[key]:value}));
+  const scanParamKey = JSON.stringify(scanParams);
 
   const loadScreener = useCallback(()=>{
     setBusy(true);
@@ -4384,6 +4405,32 @@ function TabMarketScreener({refreshKey=0}) {
       min_score:String(minScore),
       rr:String(rr),
       risk_pct:String(riskPct),
+      entry_atr_pct:String(scanParams.entryAtrPct),
+      level_tolerance_atr:String(scanParams.levelToleranceAtr),
+      open_tolerance_atr:String(scanParams.openToleranceAtr),
+      lp1_delta_break:String(scanParams.lp1DeltaBreak),
+      lp1_delta_close:String(scanParams.lp1DeltaClose),
+      lp2_delta_break:String(scanParams.lp2DeltaBreak),
+      lp2_delta_close:String(scanParams.lp2DeltaClose),
+      prb1_delta_break:String(scanParams.prb1DeltaBreak),
+      prb1_delta_close:String(scanParams.prb1DeltaClose),
+      prb2_delta_break:String(scanParams.prb2DeltaBreak),
+      prb2_delta_close:String(scanParams.prb2DeltaClose),
+      lp1_volume_mult:String(scanParams.lp1VolumeMult),
+      lp2_volume_mult:String(scanParams.lp2VolumeMult),
+      prb_volume_mult:String(scanParams.prbVolumeMult),
+      range_cap:String(scanParams.rangeCap),
+      two_bar_range_cap:String(scanParams.twoBarRangeCap),
+      stop_buffer_atr:String(scanParams.stopBufferAtr),
+      stop_variant:scanParams.stopVariant,
+      approach_lookback:String(scanParams.approachLookback),
+      approach_min_atr:String(scanParams.approachMinAtr),
+      gap_max_atr:String(scanParams.gapMaxAtr),
+      chase_max_atr:String(scanParams.chaseMaxAtr),
+      lp2_overextended_atr:String(scanParams.lp2OverextendedAtr),
+      slippage_per_share:String(scanParams.slippagePerShare),
+      fees_per_share:String(scanParams.feesPerShare),
+      require_complete_quality:String(scanParams.requireCompleteQuality),
     });
     if(anchorDate) query.set('anchor_date', anchorDate);
     fetch(`${API}/market-screener?${query.toString()}`,{cache:'no-store'})
@@ -4395,7 +4442,7 @@ function TabMarketScreener({refreshKey=0}) {
       })
       .catch(()=>{setData({...emptyScreener,anchor_date:anchorDate,timeframe:tf,error:'Failed to load screener',idle:false}); setSelectedSignalKey(null);})
       .finally(()=>setBusy(false));
-  },[tf,anchorDate,side,strategies.join(','),minScore,rr,riskPct]);
+  },[tf,anchorDate,side,strategies.join(','),minScore,rr,riskPct,scanParamKey]);
 
   const toggleStrategy = strategy => {
     setStrategies(current=>{
@@ -4408,7 +4455,14 @@ function TabMarketScreener({refreshKey=0}) {
   const nearMisses = data.near_misses || [];
   const reasonCounts = Object.entries(data.reason_counts || {});
   const filterToken = (value, label) => value===true ? label : value===false ? label.toLowerCase() : `${label}?`;
-  const filterColor = row => row.volume_filter_pass===false || row.spread_filter_pass===false || row.earnings_filter_pass===false || row.corporate_action_filter_pass===false ? C.err : (row.spread_filter_pass==null || row.corporate_action_filter_pass==null ? C.outline : C.lime);
+  const filterColor = row => row.volume_filter_pass===false || row.spread_filter_pass===false || row.earnings_filter_pass===false || row.corporate_action_filter_pass===false || row.listing_status_filter_pass===false ? C.err : (row.data_quality_complete===false ? C.outline : C.lime);
+  const statusOptions = ['ALL',...new Set(signals.map(row=>row.status).filter(Boolean))];
+  const statusColor = status => status==='READY' ? C.lime : ['pending_entry','review_required'].includes(status) ? C.cyan : C.err;
+  const levelLabel = row => {
+    const effective = row.level_type || 'level';
+    const origin = row.level_origin_type;
+    return origin && origin!==effective ? `${effective} (from ${origin}) ${money(row.level_price)}` : `${effective} ${money(row.level_price)}`;
+  };
   const symbolNeedle = symbolSearch.trim().toUpperCase();
   const filteredSignals = signals.filter(row=>{
     if(symbolNeedle && !String(row.ticker||'').includes(symbolNeedle)) return false;
@@ -4591,6 +4645,13 @@ function TabMarketScreener({refreshKey=0}) {
     if(!selectedSignal || !signalChartBars.length) return [];
     const dateKey = value => String(value||'').slice(0,10);
     const barDate = bar => dateKey(bar?.t || bar?.date);
+    const exactPatternDates = (selectedSignal.pattern_bar_dates||[]).map(dateKey).filter(Boolean);
+    if(exactPatternDates.length) {
+      const wanted = new Set(exactPatternDates);
+      return signalChartBars
+        .filter(bar=>wanted.has(barDate(bar)))
+        .map(bar=>({time:bar?.t || bar?.date}));
+    }
     const signalDate = dateKey(selectedSignal.signal_bar_date);
     const entryDate = dateKey(selectedSignal.entry_day || selectedSignal.signal_bar_date);
     const signalIdx = signalChartBars.findIndex(bar=>barDate(bar)===signalDate);
@@ -4619,11 +4680,37 @@ function TabMarketScreener({refreshKey=0}) {
     return [...indexes]
       .sort((a,b)=>a-b)
       .map(idx=>({time:signalChartBars[idx]?.t || signalChartBars[idx]?.date}));
-  },[selectedSignalKey, selectedSignal?.strategy, selectedSignal?.signal_bar_date, selectedSignal?.entry_day, signalChartBars]);
+  },[selectedSignalKey, selectedSignal?.strategy, selectedSignal?.signal_bar_date, selectedSignal?.entry_day, JSON.stringify(selectedSignal?.pattern_bar_dates||[]), signalChartBars]);
   const readyCount = signals.filter(row=>row.status==='READY').length;
   const avgScore = signals.length ? signals.reduce((sum,row)=>sum+Number(row.score||0),0)/signals.length : null;
   const controlsShell = {display:'flex',alignItems:'center',gap:8,padding:'9px 11px',borderRadius:8,background:R(C.surfLowest,0.78),border:`1px solid ${R(C.outline,0.22)}`};
   const dateStepButton = {width:24,height:16,padding:0,borderRadius:5,cursor:'pointer',display:'inline-flex',alignItems:'center',justifyContent:'center',background:R(C.cyan,0.08),border:`1px solid ${R(C.cyan,0.24)}`,color:C.cyan};
+  const advancedNumberFields = [
+    {key:'entryAtrPct',label:'Entry ATR',min:0.2,max:0.8,step:0.05},
+    {key:'levelToleranceAtr',label:'Level tol',min:0.05,max:0.2,step:0.01},
+    {key:'openToleranceAtr',label:'Open tol',min:0.05,max:0.3,step:0.01},
+    {key:'approachLookback',label:'Approach bars',min:2,max:10,step:1},
+    {key:'approachMinAtr',label:'Approach ATR',min:0,max:0.5,step:0.01},
+    {key:'lp1DeltaBreak',label:'LP1 break',min:0.01,max:0.3,step:0.01},
+    {key:'lp1DeltaClose',label:'LP1 close',min:0.01,max:0.2,step:0.01},
+    {key:'lp2DeltaBreak',label:'LP2 break',min:0.01,max:0.3,step:0.01},
+    {key:'lp2DeltaClose',label:'LP2 close',min:0.01,max:0.2,step:0.01},
+    {key:'prb1DeltaBreak',label:'PRB1 break',min:0.01,max:0.3,step:0.01},
+    {key:'prb1DeltaClose',label:'PRB1 close',min:0.01,max:0.25,step:0.01},
+    {key:'prb2DeltaBreak',label:'PRB2 break',min:0.01,max:0.3,step:0.01},
+    {key:'prb2DeltaClose',label:'PRB2 close',min:0.01,max:0.25,step:0.01},
+    {key:'lp1VolumeMult',label:'LP1 volume',min:0.5,max:3,step:0.1},
+    {key:'lp2VolumeMult',label:'LP2 volume',min:0.5,max:3,step:0.1},
+    {key:'prbVolumeMult',label:'PRB volume',min:0.5,max:3,step:0.1},
+    {key:'rangeCap',label:'1-bar range',min:1,max:5,step:0.25},
+    {key:'twoBarRangeCap',label:'2-bar range',min:1.5,max:8,step:0.25},
+    {key:'stopBufferAtr',label:'Stop buffer',min:0.05,max:0.5,step:0.05},
+    {key:'gapMaxAtr',label:'Gap max',min:0.2,max:3,step:0.1},
+    {key:'chaseMaxAtr',label:'Chase max',min:0.05,max:1.5,step:0.05},
+    {key:'lp2OverextendedAtr',label:'LP2 max close',min:0.5,max:3,step:0.1},
+    {key:'slippagePerShare',label:'Slippage $',min:0,max:5,step:0.005},
+    {key:'feesPerShare',label:'Fees $',min:0,max:5,step:0.001},
+  ];
   const signalManualEntryReady = Number.isFinite(Number(signalManualEntry)) && Number(signalManualEntry) > 0;
 
   return (
@@ -4634,7 +4721,7 @@ function TabMarketScreener({refreshKey=0}) {
         {label:'Ready',icon:'task_alt',value:readyCount,sub:'position size valid',valueColor:C.lime},
         {label:'Rejected',icon:'filter_alt',value:rejected.length,sub:'quality / data filters',valueColor:C.err},
         {label:'Near Misses',icon:'adjust',value:nearMisses.length,sub:'levels found, pattern incomplete',valueColor:C.cyan},
-        {label:'Anchor',icon:'event',value:data.anchor_date||anchorDate,sub:'scan cutoff day',valueColor:C.cyan},
+        {label:'Anchor',icon:'event',value:data.anchor_date||anchorDate,sub:'entry / decision day',valueColor:C.cyan},
       ]}/>
 
       <GlassCard style={{padding:16}}>
@@ -4655,11 +4742,17 @@ function TabMarketScreener({refreshKey=0}) {
               {['ALL','LONG','SHORT'].map(item=><option key={item}>{item}</option>)}
             </select>
           </div>
-          <button onClick={loadScreener} disabled={busy}
-            style={{padding:'9px 14px',borderRadius:8,cursor:busy?'wait':'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:900,border:`1px solid ${R(C.cyan,0.35)}`,background:R(C.cyan,0.11),color:C.cyan,display:'flex',alignItems:'center',gap:7}}>
-            <Icon n="refresh" size={15} color="inherit" style={{animation:busy?'spin .8s linear infinite':undefined}}/>
-            {busy?'SCANNING':'SCAN'}
-          </button>
+          <div style={{display:'flex',gap:8,alignItems:'center'}}>
+            <button type="button" onClick={()=>setShowScreenerAdvanced(value=>!value)} title="Screener parameters"
+              style={{width:36,height:36,borderRadius:8,cursor:'pointer',display:'inline-flex',alignItems:'center',justifyContent:'center',border:`1px solid ${R(showScreenerAdvanced?C.cyan:C.outline,showScreenerAdvanced?0.4:0.2)}`,background:showScreenerAdvanced?R(C.cyan,0.11):R(C.surfLowest,0.55),color:showScreenerAdvanced?C.cyan:C.onVar}}>
+              <Icon n="tune" size={17} color="inherit"/>
+            </button>
+            <button onClick={loadScreener} disabled={busy}
+              style={{padding:'9px 14px',borderRadius:8,cursor:busy?'wait':'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:900,border:`1px solid ${R(C.cyan,0.35)}`,background:R(C.cyan,0.11),color:C.cyan,display:'flex',alignItems:'center',gap:7}}>
+              <Icon n="refresh" size={15} color="inherit" style={{animation:busy?'spin .8s linear infinite':undefined}}/>
+              {busy?'SCANNING':'SCAN'}
+            </button>
+          </div>
         </div>
         <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:10,marginTop:14}}>
           <div style={controlsShell}>
@@ -4698,13 +4791,39 @@ function TabMarketScreener({refreshKey=0}) {
               style={{flex:1,minWidth:0,background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.06em',textTransform:'uppercase'}}/>
           </label>
         </div>
+        {showScreenerAdvanced && (
+          <div style={{marginTop:14,paddingTop:14,borderTop:`1px solid ${R(C.outline,0.12)}`}}>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(155px,1fr))',gap:8}}>
+              <label style={controlsShell}>
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:9,color:C.outline,textTransform:'uppercase'}}>Stop mode</span>
+                <select value={scanParams.stopVariant} onChange={e=>setScanParam('stopVariant',e.target.value)}
+                  style={{minWidth:0,flex:1,background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:10}}>
+                  <option value="strategy_default">Strategy default</option>
+                  <option value="behind_level">Behind level</option>
+                  <option value="behind_signal_bar">Behind signal</option>
+                  <option value="behind_two_bar_structure">Behind 2 bars</option>
+                  <option value="behind_day1">Behind day 1</option>
+                </select>
+              </label>
+              {advancedNumberFields.map(field=><label key={field.key} style={controlsShell}>
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:9,color:C.outline,textTransform:'uppercase'}}>{field.label}</span>
+                <input type="number" min={field.min} max={field.max} step={field.step} value={scanParams[field.key]}
+                  onChange={e=>setScanParam(field.key,Number(e.target.value))}
+                  style={{width:58,marginLeft:'auto',background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}/>
+              </label>)}
+              <div style={{...controlsShell,justifyContent:'space-between'}}>
+                <Toggle on={scanParams.requireCompleteQuality} label="Strict data" onChange={value=>setScanParam('requireCompleteQuality',value)}/>
+              </div>
+            </div>
+          </div>
+        )}
       </GlassCard>
 
       <GlassCard style={{overflow:'hidden'}}>
         <div style={{padding:'16px 18px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',justifyContent:'space-between',alignItems:'center',gap:12,flexWrap:'wrap'}}>
           <PanelHeader icon="radar" title="Screener Signals" badge={`${filteredSignals.length} shown`}/>
           <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
-            {['ALL','READY','capital_insufficient'].map(item=><button key={item} onClick={()=>setStatusFilter(item)}
+            {statusOptions.map(item=><button key={item} onClick={()=>setStatusFilter(item)}
               style={{padding:'8px 10px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800,border:`1px solid ${R(statusFilter===item?C.cyan:C.outline,statusFilter===item?0.44:0.18)}`,background:statusFilter===item?R(C.cyan,0.12):R(C.surf,0.5),color:statusFilter===item?C.cyan:C.onVar}}>
               {item}
             </button>)}
@@ -4719,8 +4838,8 @@ function TabMarketScreener({refreshKey=0}) {
             </button>,
             <Pill text={row.strategy} color={row.strategy?.startsWith('LP')?C.cyan:C.lime}/>,
             <Pill text={row.side} color={row.side==='SHORT'?C.err:C.lime}/>,
-            <Pill text={row.status} color={row.status==='READY'?C.lime:C.err}/>,
-            `${row.level_type} ${money(row.level_price)}`,
+            <Pill text={row.status} color={statusColor(row.status)}/>,
+            levelLabel(row),
             money(row.entry_price),
             money(row.stop_price),
             money(row.take_profit_price),
@@ -4729,7 +4848,7 @@ function TabMarketScreener({refreshKey=0}) {
             <span style={{color:Number(row.score)>=0.7?C.lime:Number(row.score)>=0.45?C.cyan:C.outline,fontWeight:900}}>{num(row.score,2)}</span>,
             row.position_size_shares,
             <span style={{color:filterColor(row)}}>
-              {filterToken(row.volume_filter_pass,'VOL')} / {filterToken(row.spread_filter_pass,'SPR')} / {filterToken(row.earnings_filter_pass,'EVT')} / {filterToken(row.corporate_action_filter_pass,'CA')}
+              {filterToken(row.volume_filter_pass,'VOL')} / {filterToken(row.spread_filter_pass,'SPR')} / {filterToken(row.earnings_filter_pass,'EVT')} / {filterToken(row.corporate_action_filter_pass,'CA')} / {filterToken(row.listing_status_filter_pass,'LST')} / {row.split_adjusted===true?'ADJ':'ADJ?'}
             </span>,
             <span style={{fontFamily:"'Inter',sans-serif",whiteSpace:'normal',lineHeight:1.35,color:C.onVar}}>{row.reasoning}</span>,
           ])}
@@ -4755,7 +4874,7 @@ function TabMarketScreener({refreshKey=0}) {
               <Pill text={`ANCHOR ${chartAnchorDate || selectedSignal.entry_day || '-'}`} color={C.cyan}/>
               <Pill text={`THRU ${signalBarsInfo.lastDate ? String(signalBarsInfo.lastDate).slice(0,10) : 'LATEST'}`} color={C.outline}/>
               <Pill text={`SCORE ${num(selectedSignal.score,2)}`} color={Number(selectedSignal.score)>=0.7?C.lime:C.cyan}/>
-              <Pill text={selectedSignal.status} color={selectedSignal.status==='READY'?C.lime:C.err}/>
+              <Pill text={selectedSignal.status} color={statusColor(selectedSignal.status)}/>
             </div>
           )}
         </div>

@@ -1124,6 +1124,32 @@ def api_market_screener(
     risk_pct: float = 0.5,
     equity: float = 100000.0,
     anchor_date: str = "",
+    entry_atr_pct: float = 0.50,
+    level_tolerance_atr: float = 0.10,
+    open_tolerance_atr: float = 0.15,
+    lp1_delta_break: float = 0.05,
+    lp1_delta_close: float = 0.03,
+    lp2_delta_break: float = 0.05,
+    lp2_delta_close: float = 0.03,
+    prb1_delta_break: float = 0.05,
+    prb1_delta_close: float = 0.05,
+    prb2_delta_break: float = 0.05,
+    prb2_delta_close: float = 0.05,
+    lp1_volume_mult: float = 1.0,
+    lp2_volume_mult: float = 1.0,
+    prb_volume_mult: float = 1.2,
+    range_cap: float = 2.5,
+    two_bar_range_cap: float = 4.0,
+    stop_buffer_atr: float = 0.25,
+    stop_variant: str = "strategy_default",
+    approach_lookback: int = 4,
+    approach_min_atr: float = 0.05,
+    gap_max_atr: float = 1.2,
+    chase_max_atr: float = 0.30,
+    lp2_overextended_atr: float = 1.2,
+    slippage_per_share: float = 0.01,
+    fees_per_share: float = 0.005,
+    require_complete_quality: bool = False,
 ):
     from src.symbol_universe import load_stock_symbols
 
@@ -1135,6 +1161,16 @@ def api_market_screener(
         for strategy in (item.strip().upper() for item in str(strategies or "").split(","))
         if strategy in {"LP1", "LP2", "PRB1", "PRB2"}
     ) or ("LP1", "LP2", "PRB1", "PRB2")
+    selected_stop_variant = str(stop_variant or "strategy_default").strip().lower()
+    allowed_stop_variants = {
+        "strategy_default",
+        "behind_level",
+        "behind_signal_bar",
+        "behind_two_bar_structure",
+        "behind_day1",
+    }
+    if selected_stop_variant not in allowed_stop_variants:
+        selected_stop_variant = "strategy_default"
     params = ScreenerParams(
         timeframe=str(timeframe or "1D").upper(),
         anchor_date=str(anchor_date or "").strip() or None,
@@ -1144,6 +1180,32 @@ def api_market_screener(
         rr=max(1.0, min(3.0, float(rr or 2.0))),
         risk_pct=max(0.0001, min(0.05, float(risk_pct or 0.5) / 100.0)),
         equity=max(1.0, float(equity or 100000.0)),
+        entry_atr_pct=max(0.20, min(0.80, float(entry_atr_pct or 0.50))),
+        level_tolerance_atr=max(0.05, min(0.20, float(level_tolerance_atr or 0.10))),
+        open_tolerance_atr=max(0.05, min(0.30, float(open_tolerance_atr or 0.15))),
+        lp1_delta_break=max(0.01, min(0.30, float(lp1_delta_break or 0.05))),
+        lp1_delta_close=max(0.01, min(0.20, float(lp1_delta_close or 0.03))),
+        lp2_delta_break=max(0.01, min(0.30, float(lp2_delta_break or 0.05))),
+        lp2_delta_close=max(0.01, min(0.20, float(lp2_delta_close or 0.03))),
+        prb1_delta_break=max(0.01, min(0.30, float(prb1_delta_break or 0.05))),
+        prb1_delta_close=max(0.01, min(0.25, float(prb1_delta_close or 0.05))),
+        prb2_delta_break=max(0.01, min(0.30, float(prb2_delta_break or 0.05))),
+        prb2_delta_close=max(0.01, min(0.25, float(prb2_delta_close or 0.05))),
+        lp1_volume_mult=max(0.5, min(3.0, float(lp1_volume_mult or 1.0))),
+        lp2_volume_mult=max(0.5, min(3.0, float(lp2_volume_mult or 1.0))),
+        prb_volume_mult=max(0.5, min(3.0, float(prb_volume_mult or 1.2))),
+        range_cap=max(1.0, min(5.0, float(range_cap or 2.5))),
+        two_bar_range_cap=max(1.5, min(8.0, float(two_bar_range_cap or 4.0))),
+        stop_buffer_atr=max(0.05, min(0.50, float(stop_buffer_atr or 0.25))),
+        stop_variant=selected_stop_variant,
+        approach_lookback=max(2, min(10, int(approach_lookback or 4))),
+        approach_min_atr=max(0.0, min(0.50, float(approach_min_atr or 0.05))),
+        gap_max_atr=max(0.20, min(3.0, float(gap_max_atr or 1.2))),
+        chase_max_atr=max(0.05, min(1.5, float(chase_max_atr or 0.30))),
+        lp2_overextended_atr=max(0.50, min(3.0, float(lp2_overextended_atr or 1.2))),
+        slippage_per_share=max(0.0, min(5.0, float(slippage_per_share or 0.0))),
+        fees_per_share=max(0.0, min(5.0, float(fees_per_share or 0.0))),
+        require_complete_quality=bool(require_complete_quality),
     )
     return run_market_screener(
         symbols=symbols,
