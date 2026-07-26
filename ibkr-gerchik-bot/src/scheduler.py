@@ -11,6 +11,7 @@ JOB_MODULES: Dict[str, str] = {
     "open": "src.main --job open --client-id 41",
     "intraday": "src.main --job intraday --client-id 21",
     "market_data": "src.main --job market_data --client-id 17",
+    "irs_scan": "src.main --job irs_scan --irs-mode FIFTEEN_MIN_CONFIRMATION_SCAN --client-id 71",
     "eod": "src.main --job eod --client-id 51",
     "weekly": "src.main --job weekly --client-id 61",
 }

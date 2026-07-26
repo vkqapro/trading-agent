@@ -27,6 +27,7 @@ from src.execution import order_requests as order_requests_store
 from src.jobs.eod import run_eod
 from src.jobs.execute_requests import run_execute_requests
 from src.jobs.intraday import run_intraday
+from src.jobs.inefficiency_reclaim import IRS_WORKFLOW_MODES, run_inefficiency_reclaim_job
 from src.jobs.market_data_collector import run_market_data_collector
 from src.jobs.open import run_open
 from src.jobs.premarket import run_premarket
@@ -784,6 +785,38 @@ def _run_connected_job(
         account_snapshot = {"account": account_summary, "positions": positions, "open_orders": open_orders}
         _save_state(state_path, state)
 
+        if job_name == "irs_scan":
+            watchlist = state.get("watchlist", {})
+            if not isinstance(watchlist, dict):
+                watchlist = {}
+            requested_symbol = str((command_context or {}).get("symbol", "") or "").strip().upper()
+            symbols = (
+                [requested_symbol]
+                if requested_symbol
+                else sorted(
+                    symbol
+                    for symbol in set(SETTINGS.stock_symbols) | set(watchlist)
+                    if SETTINGS.symbol_security_type(symbol) == "STK"
+                )
+            )
+            mode = str((command_context or {}).get("irs_mode") or "HOURLY_SETUP_SCAN")
+            return {
+                "job": job_name,
+                **run_inefficiency_reclaim_job(
+                    market_data=market_data,
+                    symbols=symbols,
+                    watchlist=watchlist,
+                    account_summary=account_summary,
+                    positions=positions,
+                    open_orders=open_orders,
+                    mode=mode,
+                    hydrate=not bool((command_context or {}).get("no_hydrate", False)),
+                    alerter=alerter,
+                    broker=broker,
+                ),
+                "dry_run": True,
+            }
+
         if job_name == "onboard_symbol":
             symbol = str((command_context or {}).get("symbol", "") or "").strip().upper()
             if not symbol:
@@ -1029,10 +1062,10 @@ def _connect_broker_with_startup_retry(job_name: str) -> IBKRClient:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="IBKR Gerchik bot job runner.")
-    parser.add_argument("--job", required=True, choices=["premarket", "open", "intraday", "market_data", "eod", "weekly", "slack", "manual_watch", "validate_watchlist", "quote_check", "execute_requests", "onboard_symbol"])
+    parser.add_argument("--job", required=True, choices=["premarket", "open", "intraday", "market_data", "irs_scan", "eod", "weekly", "slack", "manual_watch", "validate_watchlist", "quote_check", "execute_requests", "onboard_symbol"])
     parser.add_argument("--dry-run", action="store_true", help="Simulate trades without placing broker orders.")
     parser.add_argument("--client-id", type=int, help="Override IBKR API client id for this process (avoid collisions).")
-    parser.add_argument("--symbol", help="Ticker symbol for manual_watch jobs.")
+    parser.add_argument("--symbol", help="Ticker symbol for single-symbol jobs.")
     parser.add_argument("--entry", type=float, help="Entry price for manual_watch jobs.")
     parser.add_argument("--stop", type=float, help="Stop price for manual_watch jobs.")
     parser.add_argument("--target", type=float, help="Target price for manual_watch jobs.")
@@ -1067,6 +1100,17 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=300,
         help="For market_data: collection cadence while the market is open.",
+    )
+    parser.add_argument(
+        "--irs-mode",
+        choices=sorted(IRS_WORKFLOW_MODES),
+        default="HOURLY_SETUP_SCAN",
+        help="IRS workflow event to run. It remains analysis-only.",
+    )
+    parser.add_argument(
+        "--no-hydrate",
+        action="store_true",
+        help="For irs_scan: use only saved bars and skip IBKR history refresh.",
     )
     return parser.parse_args()
 
@@ -1129,6 +1173,16 @@ def main() -> int:
                     "once": bool(args.once),
                     "force": bool(args.force),
                     "interval_seconds": max(60, int(args.interval_seconds)),
+                },
+            )
+        elif args.job == "irs_scan":
+            result = run_job_with_context(
+                "irs_scan",
+                dry_run_override=True,
+                command_context={
+                    "irs_mode": str(args.irs_mode),
+                    "no_hydrate": bool(args.no_hydrate),
+                    "symbol": str(args.symbol or ""),
                 },
             )
         else:

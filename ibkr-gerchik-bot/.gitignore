@@ -8,6 +8,8 @@ memory/runtime/
 memory/bars/
 memory/crypto/
 memory/reports/
+memory/inefficiency_reclaim.db*
 memory/RESEARCH_LOG.md
+tmp/irs_dashboard_*.log
 
 \memory\TRADE_LOG.md

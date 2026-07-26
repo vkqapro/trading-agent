@@ -51,6 +51,8 @@ from src.journal.broker_reconcile import reconcile_ibkr_open_orders
 from src.journal.order_journal import load_order_journal, save_review
 from src.stocks.tradingview_webhook import handle_stock_tradingview_webhook, load_stock_tradingview_state
 from dashboard_react.market_screener import ScreenerParams, run_market_screener
+from src.scanners.inefficiency_reclaim import run_inefficiency_reclaim_screener
+from src.storage.inefficiency_reclaim_store import InefficiencyReclaimStore
 
 app = FastAPI(title="Vitaly's Trading Bot Dashboard API", docs_url=None, redoc_url=None)
 app.add_middleware(
@@ -1215,6 +1217,44 @@ def api_market_screener(
     )
 
 
+@app.get("/api/inefficiency-reclaim")
+def api_inefficiency_reclaim(anchor_date: str = ""):
+    """Run the disabled-by-default IRS analysis scan over persisted bars."""
+    from src.symbol_universe import load_stock_symbols
+
+    try:
+        config = SETTINGS.inefficiency_reclaim.strategy_config()
+        parsed_anchor = str(anchor_date or "").strip()
+        if parsed_anchor:
+            datetime.strptime(parsed_anchor, "%Y-%m-%d")
+        watchlist = _safe(da.load_watchlist, {})
+        configured_symbols = _safe(load_stock_symbols, [])
+        symbols = sorted(set(configured_symbols or []) | set((watchlist or {}).keys()))
+        return run_inefficiency_reclaim_screener(
+            symbols=symbols,
+            watchlist=watchlist if isinstance(watchlist, dict) else {},
+            anchor_date=parsed_anchor or None,
+            config=config,
+        )
+    except ValueError as exc:
+        raise HTTPException(400, f"Invalid IRS scan request: {exc}")
+    except Exception as exc:
+        raise HTTPException(500, f"IRS scan failed closed: {exc}")
+
+
+@app.get("/api/inefficiency-reclaim/active")
+def api_inefficiency_reclaim_active():
+    try:
+        store = InefficiencyReclaimStore(SETTINGS.inefficiency_reclaim.database_path)
+        return {
+            "strategy_enabled": SETTINGS.inefficiency_reclaim.enabled,
+            "paper_live_mode": "PAPER",
+            "active_setups": store.active_setups(),
+        }
+    except Exception as exc:
+        raise HTTPException(500, f"IRS state unavailable: {exc}")
+
+
 @app.post("/api/watchlist/add")
 async def api_watchlist_add(body: dict):
     from src.symbol_universe import add_stock_symbol, normalize_stock_symbol
@@ -1488,6 +1528,21 @@ def api_preopen_symbol(symbol: str):
 def api_bars(symbol: str, timeframe: str):
     symbol = symbol.upper()
 
+    def _fifteen_minute_bars() -> pd.DataFrame:
+        stored = da.get_bars(symbol, "intraday_15m")
+        if not stored.empty:
+            return stored
+        intraday = da.get_bars(symbol, "intraday_5m")
+        if intraday.empty:
+            return intraday
+        frame = intraday.set_index("date").sort_index()
+        return (
+            frame.resample("15min", origin="start_day", offset="30min")
+            .agg({"open": "first", "high": "max", "low": "min", "close": "last", "volume": "sum"})
+            .dropna(subset=["open", "high", "low", "close"])
+            .reset_index()
+        )
+
     def _hourly_bars() -> pd.DataFrame:
         intraday = da.get_bars(symbol, "intraday_5m")
         if intraday.empty:
@@ -1549,7 +1604,9 @@ def api_bars(symbol: str, timeframe: str):
             return daily
         return pd.concat([daily, missing_or_live], ignore_index=True).sort_values("date")
 
-    if timeframe == "intraday_1h":
+    if timeframe == "intraday_15m":
+        df = _safe(_fifteen_minute_bars, None)
+    elif timeframe == "intraday_1h":
         df = _safe(_hourly_bars, None)
     elif timeframe == "intraday_4h":
         df = _safe(_four_hour_bars, None)
@@ -1563,6 +1620,7 @@ def api_bars(symbol: str, timeframe: str):
         return {"bars": [], "stale": True, "last_date": None}
     chart_limits = {
         "intraday_5m": 500,
+        "intraday_15m": 700,
         "intraday_1h": 500,
         "intraday_4h": 500,
         "daily_live": 600,

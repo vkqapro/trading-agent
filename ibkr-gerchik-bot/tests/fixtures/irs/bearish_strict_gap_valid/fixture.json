@@ -1,0 +1,17 @@
+{
+  "name": "bearish_strict_gap_valid",
+  "input_bars": {
+    "hourly": [
+      {"timestamp": "2026-07-06T10:30:00-04:00", "open": 75.20, "high": 75.80, "low": 75.00, "close": 75.40, "volume": 620000},
+      {"timestamp": "2026-07-06T11:30:00-04:00", "open": 75.40, "high": 75.60, "low": 75.10, "close": 75.25, "volume": 580000},
+      {"timestamp": "2026-07-06T12:30:00-04:00", "open": 74.60, "high": 74.80, "low": 71.80, "close": 72.05, "volume": 1500000}
+    ],
+    "15m": [
+      {"timestamp": "2026-07-06T14:00:00-04:00", "open": 73.90, "high": 74.95, "low": 73.75, "close": 74.35, "volume": 175000},
+      {"timestamp": "2026-07-06T14:15:00-04:00", "open": 74.35, "high": 75.05, "low": 73.50, "close": 73.65, "volume": 230000}
+    ]
+  },
+  "config": {"min_retrace_wait_1h_bars": 1, "max_retrace_wait_1h_bars": 7},
+  "expected": {"accepted": true, "direction": "IRS_SHORT", "zone_type": "STRICT_THREE_BAR_GAP", "zone_low": 74.80, "zone_high": 75.00}
+}
+

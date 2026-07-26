@@ -23,10 +23,21 @@ def _ensure_event_loop() -> None:
 _ensure_event_loop()
 
 try:
-    from ib_insync import IB, Forex, LimitOrder, MarketOrder, Stock, StopOrder, Ticker, Trade, util
+    from ib_insync import (
+        IB,
+        Forex,
+        LimitOrder,
+        MarketOrder,
+        Stock,
+        StopLimitOrder,
+        StopOrder,
+        Ticker,
+        Trade,
+        util,
+    )
 except ImportError:  # pragma: no cover - exercised only when dependency is missing.
     IB = None  # type: ignore[assignment]
-    Forex = LimitOrder = MarketOrder = StopOrder = Stock = Ticker = Trade = None  # type: ignore[assignment]
+    Forex = LimitOrder = MarketOrder = StopLimitOrder = StopOrder = Stock = Ticker = Trade = None  # type: ignore[assignment]
     util = None  # type: ignore[assignment]
 
 
@@ -707,6 +718,137 @@ class IBKRClient:
             else None
         )
         return parent_result, stop_result, limit_result
+
+    def place_stop_limit_bracket_order(
+        self,
+        symbol: str,
+        action: str,
+        quantity: int,
+        entry_stop_price: float,
+        entry_limit_price: float,
+        stop_price: float,
+        target_price: float,
+        *,
+        order_ref: str,
+        tif: str = "DAY",
+        outside_rth: bool = False,
+    ) -> tuple[OrderResult, OrderResult, OrderResult]:
+        """Place an idempotency-tagged stop-limit parent with OCA protection."""
+        self.ensure_connection()
+        if not order_ref:
+            raise ValueError("IRS stop-limit bracket requires order_ref.")
+        contract = self.create_stock_contract(symbol)
+        entry_stop_price = self._round_to_tick(entry_stop_price)
+        entry_limit_price = self._round_to_tick(entry_limit_price)
+        stop_price = self._round_to_tick(stop_price)
+        target_price = self._round_to_tick(target_price)
+        parent_action = action.upper()
+        exit_action = "SELL" if parent_action == "BUY" else "BUY"
+        oca_group = f"{order_ref}-OCA"
+
+        parent = StopLimitOrder(
+            action=parent_action,
+            totalQuantity=quantity,
+            stopPrice=entry_stop_price,
+            lmtPrice=entry_limit_price,
+        )
+        parent.orderId = self.ib.client.getReqId()
+        parent.orderRef = order_ref
+        parent.tif = tif
+        parent.outsideRth = outside_rth
+        parent.transmit = False
+
+        protective_stop = StopOrder(
+            action=exit_action,
+            totalQuantity=quantity,
+            stopPrice=stop_price,
+        )
+        protective_stop.orderId = self.ib.client.getReqId()
+        protective_stop.parentId = parent.orderId
+        protective_stop.orderRef = f"{order_ref}-SL"
+        protective_stop.ocaGroup = oca_group
+        protective_stop.ocaType = 1
+        protective_stop.tif = "GTC"
+        protective_stop.outsideRth = outside_rth
+        protective_stop.transmit = False
+
+        target = LimitOrder(
+            action=exit_action,
+            totalQuantity=quantity,
+            lmtPrice=target_price,
+        )
+        target.orderId = self.ib.client.getReqId()
+        target.parentId = parent.orderId
+        target.orderRef = f"{order_ref}-TP"
+        target.ocaGroup = oca_group
+        target.ocaType = 1
+        target.tif = "GTC"
+        target.outsideRth = outside_rth
+        target.transmit = True
+
+        parent_trade: Trade = self.ib.placeOrder(contract, parent)
+        stop_trade: Trade = self.ib.placeOrder(contract, protective_stop)
+        target_trade: Trade = self.ib.placeOrder(contract, target)
+        self._await_order_settled(parent_trade)
+        statuses = [
+            parent_trade.orderStatus.status or "Submitted",
+            stop_trade.orderStatus.status or "Submitted",
+            target_trade.orderStatus.status or "Submitted",
+        ]
+        detail = self._order_reject_reason(parent_trade)
+        LOGGER.info(
+            "Stop-limit bracket placed ref=%s %s %s x%s parent=%s stop=%s target=%s%s",
+            order_ref,
+            parent_action,
+            symbol,
+            quantity,
+            statuses[0],
+            statuses[1],
+            statuses[2],
+            f" reason={detail}" if detail else "",
+        )
+        return (
+            OrderResult(
+                parent.orderId,
+                symbol,
+                parent_action,
+                quantity,
+                "STP LMT",
+                statuses[0],
+                detail=detail,
+            ),
+            OrderResult(
+                protective_stop.orderId,
+                symbol,
+                exit_action,
+                quantity,
+                "STP",
+                statuses[1],
+            ),
+            OrderResult(
+                target.orderId,
+                symbol,
+                exit_action,
+                quantity,
+                "LMT",
+                statuses[2],
+            ),
+        )
+
+    def resize_open_order(self, order_id: int, quantity: int) -> bool:
+        """Resize an existing open child order, used for partial-fill protection."""
+        self.ensure_connection()
+        if quantity <= 0:
+            return False
+        for trade in self.ib.openTrades():
+            if int(getattr(trade.order, "orderId", 0) or 0) != int(order_id):
+                continue
+            trade.order.totalQuantity = int(quantity)
+            self.ib.placeOrder(trade.contract, trade.order)
+            self.ib.sleep(0.5)
+            status = str(getattr(trade.orderStatus, "status", "") or "").lower()
+            return status not in {"cancelled", "inactive", "apicancelled"}
+        return False
 
     def place_stop_order(self, symbol: str, action: str, quantity: int, stop_price: float) -> OrderResult:
         self.ensure_connection()

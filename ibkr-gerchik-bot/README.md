@@ -112,6 +112,8 @@ python -m src.main --job open
 python -m src.main --job intraday
 python -m src.main --job eod
 python -m src.main --job weekly
+python -m src.main --job irs_scan --irs-mode HOURLY_SETUP_SCAN
+python -m src.main --job irs_scan --irs-mode FIFTEEN_MIN_CONFIRMATION_SCAN
 python -m src.main --job manual_watch --symbol SANM --entry 241.97 --stop 237.09 --target 255.22
 python -m src.main --job manual_watch --symbol SANM --entry 241.97 --stop 237.09 --target 255.22 --execute
 ```
@@ -137,17 +139,29 @@ Suggested cadence:
 
 ## Dashboard
 
-An interactive Streamlit dashboard visualizes everything the bot produces
-(watchlist, levels, candle charts, intraday decisions, positions, reports). It
-is read-only and never connects to IBKR.
+The React/FastAPI dashboard visualizes the watchlist, levels, candle charts,
+intraday decisions, positions, reports, and the manually controlled
+Inefficiency Reclaim scanner.
 
 ```powershell
 pip install -r requirements-dashboard.txt
-streamlit run dashboard/app.py   # or double-click run_dashboard.cmd
+python dashboard_react/server.py
 ```
 
-Candle charts read OHLCV bars persisted by the premarket/intraday jobs under
-`memory/bars/`. See [dashboard/README.md](dashboard/README.md) for details.
+Open `http://127.0.0.1:8550`. Candle charts read OHLCV bars persisted under
+`memory/bars/`.
+
+## Inefficiency Reclaim
+
+The Inefficiency Reclaim subsystem is disabled by default and permanently
+paper-only. It uses completed D1/1H/15m bars, immutable zones, forward-only
+setup state, cost-aware stop-limit planning, SQLite audit persistence, and
+conservative lower-timeframe replay. Enabling it does not automatically submit
+orders.
+
+See
+[docs/strategies/inefficiency_reclaim.md](docs/strategies/inefficiency_reclaim.md)
+for formulas, jobs, activation, safety gates, and limitations.
 
 ## Tests
 
@@ -155,4 +169,7 @@ Candle charts read OHLCV bars persisted by the premarket/intraday jobs under
 python -m unittest discover -s tests
 ```
 
-The suite covers ATR, levels, level strength, breakout/false-breakout logic, stop calculation, reward:risk validation, position sizing, news blocking, and kill-switch behavior.
+The suite covers ATR, levels, level strength, breakout/false-breakout logic,
+stop calculation, reward:risk validation, position sizing, news blocking,
+kill-switch behavior, Inefficiency Reclaim state/idempotency, paper brackets,
+and conservative replay.

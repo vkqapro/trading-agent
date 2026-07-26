@@ -10,13 +10,15 @@ import pandas as pd
 
 from src.brokers.ibkr import IBKRClient
 from src.config import SETTINGS
+from src.data.nasdaq_data import NasdaqDataClient
 
 
 class MarketDataService:
     """Provide reusable market data retrieval wrappers."""
 
-    def __init__(self, broker: IBKRClient) -> None:
+    def __init__(self, broker: IBKRClient, nasdaq_provider: NasdaqDataClient | None = None) -> None:
         self.broker = broker
+        self.nasdaq_provider = nasdaq_provider or NasdaqDataClient()
         self._delayed_fallback_enabled = False
 
     def enable_delayed_fallback(self) -> None:
@@ -54,6 +56,14 @@ class MarketDataService:
         *,
         include_current_session: bool = False,
     ) -> pd.DataFrame:
+        nasdaq_bars = self.nasdaq_provider.get_intraday_bars(
+            symbol,
+            duration=duration,
+            bar_size=bar_size,
+        )
+        if nasdaq_bars is not None and not nasdaq_bars.empty:
+            return self._normalize_bars_frame(nasdaq_bars)
+
         bars = self.broker.get_historical_bars(symbol=symbol, duration=duration, bar_size=bar_size)
         frames = [bars] if bars is not None and not bars.empty else []
 
@@ -75,6 +85,10 @@ class MarketDataService:
 
     def get_daily_bars(self, symbol: str, duration: str | None = None) -> pd.DataFrame:
         resolved_duration = duration or f"{SETTINGS.strategy.premarket_daily_lookback_days} D"
+        nasdaq_bars = self.nasdaq_provider.get_daily_bars(symbol, duration=resolved_duration)
+        if nasdaq_bars is not None and not nasdaq_bars.empty:
+            return self._normalize_bars_frame(nasdaq_bars)
+
         bars = self.broker.get_historical_bars(symbol=symbol, duration=resolved_duration, bar_size="1 day")
         if bars is None:
             return pd.DataFrame(columns=["date", "open", "high", "low", "close", "volume"])
@@ -98,6 +112,24 @@ class MarketDataService:
 
     def get_quote(self, symbol: str) -> Dict[str, float]:
         return self.broker.get_market_price(symbol)
+
+    def get_bars(
+        self,
+        symbol: str,
+        *,
+        duration: str,
+        bar_size: str,
+        include_current_session: bool = False,
+    ) -> pd.DataFrame:
+        """Fetch a timeframe for an incremental strategy cache."""
+        if bar_size == "1 day":
+            return self.get_daily_bars(symbol, duration=duration)
+        return self.get_intraday_bars(
+            symbol,
+            duration=duration,
+            bar_size=bar_size,
+            include_current_session=include_current_session,
+        )
 
     def market_is_open(self, current_time: datetime | None = None) -> bool:
         now = current_time or datetime.now(ZoneInfo(SETTINGS.trading_hours.timezone))

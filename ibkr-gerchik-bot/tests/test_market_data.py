@@ -10,8 +10,10 @@ from src.data.market_data import MarketDataService
 class _BrokerStub:
     def __init__(self, bars: pd.DataFrame) -> None:
         self._bars = bars
+        self.requests: list[dict] = []
 
-    def get_historical_bars(self, **_kwargs) -> pd.DataFrame:
+    def get_historical_bars(self, **kwargs) -> pd.DataFrame:
+        self.requests.append(kwargs)
         return self._bars.copy()
 
 
@@ -25,6 +27,22 @@ class _DurationBrokerStub:
         duration = str(kwargs["duration"])
         self.requests.append(duration)
         return (self.current if duration == "1 D" else self.completed).copy()
+
+
+class _NasdaqProviderStub:
+    def __init__(self, *, daily: pd.DataFrame | None = None, intraday: pd.DataFrame | None = None) -> None:
+        self.daily = daily if daily is not None else pd.DataFrame()
+        self.intraday = intraday if intraday is not None else pd.DataFrame()
+        self.daily_requests: list[dict] = []
+        self.intraday_requests: list[dict] = []
+
+    def get_daily_bars(self, symbol: str, duration: str) -> pd.DataFrame:
+        self.daily_requests.append({"symbol": symbol, "duration": duration})
+        return self.daily.copy()
+
+    def get_intraday_bars(self, symbol: str, *, duration: str, bar_size: str) -> pd.DataFrame:
+        self.intraday_requests.append({"symbol": symbol, "duration": duration, "bar_size": bar_size})
+        return self.intraday.copy()
 
 
 class MarketDataServiceTests(unittest.TestCase):
@@ -42,6 +60,38 @@ class MarketDataServiceTests(unittest.TestCase):
 
         self.assertEqual(list(result["close"]), [5.95, 5.98, 4.58])
         self.assertEqual(float(result.iloc[-1]["close"]), 4.58)
+
+    def test_get_intraday_bars_prefers_nasdaq_provider(self) -> None:
+        broker = _BrokerStub(pd.DataFrame())
+        nasdaq = _NasdaqProviderStub(
+            intraday=pd.DataFrame(
+                [
+                    {"date": "2026-05-19 09:35:00", "open": 5, "high": 6, "low": 4, "close": 5.5, "volume": 1000},
+                ]
+            )
+        )
+        service = MarketDataService(broker, nasdaq_provider=nasdaq)
+
+        result = service.get_intraday_bars("BBBY", duration="5 D", bar_size="5 mins")
+
+        self.assertEqual(float(result.iloc[0]["close"]), 5.5)
+        self.assertEqual(broker.requests, [])
+        self.assertEqual(nasdaq.intraday_requests[0]["symbol"], "BBBY")
+
+    def test_get_intraday_bars_falls_back_to_broker_when_nasdaq_empty(self) -> None:
+        broker = _BrokerStub(
+            pd.DataFrame(
+                [
+                    {"date": "2026-05-19 09:35:00", "open": 5, "high": 6, "low": 4, "close": 5.5, "volume": 1000},
+                ]
+            )
+        )
+        service = MarketDataService(broker, nasdaq_provider=_NasdaqProviderStub())
+
+        result = service.get_intraday_bars("BBBY", duration="5 D", bar_size="5 mins")
+
+        self.assertEqual(float(result.iloc[0]["close"]), 5.5)
+        self.assertEqual(len(broker.requests), 1)
 
     def test_get_intraday_bars_stitches_current_partial_session(self) -> None:
         completed = pd.DataFrame([
@@ -78,6 +128,23 @@ class MarketDataServiceTests(unittest.TestCase):
         result = service.get_daily_bars("SEI")
 
         self.assertEqual([d.strftime("%Y-%m-%d") for d in result["date"]], ["2026-05-04", "2026-05-05", "2026-05-06"])
+
+    def test_get_daily_bars_prefers_nasdaq_provider(self) -> None:
+        broker = _BrokerStub(pd.DataFrame())
+        nasdaq = _NasdaqProviderStub(
+            daily=pd.DataFrame(
+                [
+                    {"date": "2026-05-05", "open": 72.0, "high": 74.0, "low": 71.4, "close": 73.0, "volume": 100},
+                ]
+            )
+        )
+        service = MarketDataService(broker, nasdaq_provider=nasdaq)
+
+        result = service.get_daily_bars("SEI", duration="10 Y")
+
+        self.assertEqual(float(result.iloc[0]["close"]), 73.0)
+        self.assertEqual(broker.requests, [])
+        self.assertEqual(nasdaq.daily_requests[0], {"symbol": "SEI", "duration": "10 Y"})
 
 
 if __name__ == "__main__":

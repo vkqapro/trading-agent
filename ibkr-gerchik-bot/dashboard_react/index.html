@@ -117,11 +117,11 @@ const SectionTitle = ({title}) => (
 );
 
 /* ── table ────────────────────────────────────────────────────────────────── */
-const Table = ({cols, rows}) => (
+const Table = ({cols, rows, compact=false, minColWidth=100}) => (
   <div style={{overflowX:'auto'}}>
-    <table style={{width:'100%',borderCollapse:'collapse',minWidth:cols.length*100}}>
+    <table style={{width:'100%',borderCollapse:'collapse',minWidth:cols.length*minColWidth}}>
       <thead><tr>{cols.map((c,i)=>(
-        <th key={i} style={{padding:'11px 18px',textAlign:'left',fontFamily:"'JetBrains Mono',monospace",
+        <th key={i} style={{padding:compact?'8px 12px':'11px 18px',textAlign:'left',fontFamily:"'JetBrains Mono',monospace",
           fontSize:10,letterSpacing:'0.07em',textTransform:'uppercase',color:C.outline,
           borderBottom:`1px solid ${R(C.outline,0.12)}`}}>{c}</th>
       ))}</tr></thead>
@@ -129,8 +129,8 @@ const Table = ({cols, rows}) => (
         <tr key={i} style={{}} onMouseEnter={e=>e.currentTarget.style.background=R('#fff',0.025)}
           onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
           {r.map((cell,j)=>(
-            <td key={j} style={{padding:'11px 18px',fontFamily:"'JetBrains Mono',monospace",
-              fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:C.onVar,
+            <td key={j} style={{padding:compact?'7px 12px':'11px 18px',fontFamily:"'JetBrains Mono',monospace",
+              fontSize:compact?11:12,borderBottom:`1px solid ${R(C.outline,0.06)}`,color:C.onVar,
               whiteSpace:'nowrap'}}>
               {cell}
             </td>
@@ -4306,6 +4306,160 @@ function OrdersPnlChart({rows=[]}) {
   );
 }
 
+function TabInefficiencyReclaim({refreshKey=0}) {
+  const todayKey = new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+  const empty = {signals:[],rejected:[],reason_counts:{},data_readiness:{},active_setups:[],signals_found:0,universe_size:0,anchor_date:todayKey,idle:true,strategy_enabled:false,analysis_only:true};
+  const [data,setData]=useState(empty);
+  const [anchorDate,setAnchorDate]=useState(todayKey);
+  const [busy,setBusy]=useState(false);
+  const [selectedId,setSelectedId]=useState(null);
+  const [bars,setBars]=useState([]);
+  const [barsInfo,setBarsInfo]=useState({stale:false,lastDate:null});
+  const money = value => value!=null && Number.isFinite(Number(value)) ? `$${Number(value).toFixed(Math.abs(Number(value))>=10?2:4)}` : '—';
+  const number = (value,digits=2) => value!=null && Number.isFinite(Number(value)) ? Number(value).toFixed(digits) : '—';
+  const dateKeyFromLocal = value => `${value.getFullYear()}-${String(value.getMonth()+1).padStart(2,'0')}-${String(value.getDate()).padStart(2,'0')}`;
+  const shiftDate = delta => setAnchorDate(current=>{
+    const parts=String(current||todayKey).split('-').map(Number);
+    if(parts.length!==3 || parts.some(value=>!Number.isFinite(value))) return todayKey;
+    const next=new Date(parts[0],parts[1]-1,parts[2]);
+    next.setDate(next.getDate()+delta);
+    return dateKeyFromLocal(next);
+  });
+  const scan = useCallback(()=>{
+    setBusy(true);
+    const query=new URLSearchParams();
+    if(anchorDate) query.set('anchor_date',anchorDate);
+    fetch(`${API}/inefficiency-reclaim?${query.toString()}`,{cache:'no-store'})
+      .then(async response=>{
+        const payload=await response.json().catch(()=>({}));
+        if(!response.ok) throw new Error(payload.detail||'IRS scan failed');
+        return payload;
+      })
+      .then(payload=>{
+        setData({...payload,idle:false});
+        setSelectedId((payload.signals||[])[0]?.signal_id||null);
+      })
+      .catch(error=>setData({...empty,idle:false,anchor_date:anchorDate,error:error.message||String(error)}))
+      .finally(()=>setBusy(false));
+  },[anchorDate]);
+  const rows=data.signals||[];
+  const selected=rows.find(item=>item.signal_id===selectedId)||rows[0]||null;
+  useEffect(()=>{
+    if(!selected){setBars([]);setBarsInfo({stale:false,lastDate:null});return;}
+    fetch(`${API}/bars/${encodeURIComponent(selected.ticker)}/intraday_15m`,{cache:'no-store'})
+      .then(response=>response.json())
+      .then(payload=>{
+        setBars(payload.bars||[]);
+        setBarsInfo({stale:Boolean(payload.stale),lastDate:payload.last_date||null});
+      })
+      .catch(()=>{setBars([]);setBarsInfo({stale:true,lastDate:null});});
+  },[selected?.signal_id]);
+  const statusColor = state => state==='ENTRY_ARMED'?C.lime:state==='WAITING_FOR_RETRACE'||state==='WAITING_FOR_CONFIRMATION'?C.cyan:state==='EXPIRED'||state==='INVALIDATED'?C.outline:C.err;
+  const reasonEntries=Object.entries(data.reason_counts||{});
+  const chartLines=(selected?.chart?.lines||[]).filter(item=>Number.isFinite(Number(item.p))).map(item=>({...item,p:Number(item.p)}));
+  const chartZones=selected?.chart?.zone?[{...selected.chart.zone,p1:Number(selected.chart.zone.p1),p2:Number(selected.chart.zone.p2),color:C.cyan}]:[];
+  const chartHighlights=selected?.chart?.highlight_bars||[];
+  const chartMarkers=selected?[
+    {time:selected.chart?.displacement_bar_time||selected.displacement_time,price:selected.zone_high,kind:'displacement',label:'DISPLACEMENT',placement:'above_bar',color:C.cyan},
+    ...(selected.confirmation_time?[{time:selected.chart?.confirmation_bar_time||selected.confirmation_time,price:selected.planned_entry||selected.zone_high,kind:'entry',label:selected.confirmation_type||'CONFIRM',placement:'above_bar',color:C.lime}]:[]),
+  ]:[];
+  const incompleteSymbols=Object.values(data.data_readiness||{}).filter(item=>!item.paper_ready).length;
+
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:18}}>
+      <GlassCard style={{padding:18}}>
+        <div style={{display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
+          <div style={{display:'flex',alignItems:'center',height:36,border:`1px solid ${R(C.outline,0.24)}`,borderRadius:8,overflow:'hidden',background:R(C.surfLowest,0.8)}}>
+            <input type="date" value={anchorDate} max={todayKey} onChange={event=>setAnchorDate(event.target.value)}
+              style={{height:'100%',width:150,padding:'0 10px',background:'transparent',border:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
+            <button onClick={()=>shiftDate(1)} title="Next anchor day" aria-label="Next anchor day"
+              style={{width:34,height:'100%',border:0,borderLeft:`1px solid ${R(C.outline,0.18)}`,cursor:'pointer',background:'transparent',color:C.onVar,display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <Icon n="keyboard_arrow_up" size={19} color="inherit"/>
+            </button>
+            <button onClick={()=>shiftDate(-1)} title="Previous anchor day" aria-label="Previous anchor day"
+              style={{width:34,height:'100%',border:0,borderLeft:`1px solid ${R(C.outline,0.18)}`,cursor:'pointer',background:'transparent',color:C.onVar,display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <Icon n="keyboard_arrow_down" size={19} color="inherit"/>
+            </button>
+          </div>
+          <button onClick={scan} disabled={busy}
+            style={{height:36,padding:'0 16px',borderRadius:8,cursor:busy?'wait':'pointer',display:'flex',alignItems:'center',gap:8,fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:900,color:'#001416',background:busy?R(C.cyan,0.55):C.cyan,border:`1px solid ${R(C.cyan,0.55)}`}}>
+            <Icon n={busy?'progress_activity':'radar'} size={17} color="#001416" style={{animation:busy?'spin .8s linear infinite':undefined}}/>
+            {busy?'SCANNING':'SCAN'}
+          </button>
+          <Pill text="1H SETUP" color={C.cyan}/>
+          <Pill text="15M CONFIRM" color={C.lime}/>
+          <Pill text="PAPER" color={C.magenta}/>
+          <Pill text={data.strategy_enabled?'ENABLED':'DISABLED'} color={data.strategy_enabled?C.lime:C.err}/>
+          <span style={{marginLeft:'auto',fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:data.strategy_enabled?C.onVar:C.err}}>
+            {data.execution_block||'Analysis waits for a manual scan.'}
+          </span>
+        </div>
+        {data.error&&<div style={{marginTop:12,padding:'10px 12px',borderRadius:8,color:C.err,background:R(C.err,0.08),border:`1px solid ${R(C.err,0.24)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}>{data.error}</div>}
+      </GlassCard>
+
+      <MetricGrid items={[
+        {label:'Universe',icon:'radar',value:data.universe_size||0,sub:data.idle?'idle':'symbols evaluated',valueColor:C.cyan},
+        {label:'Display Setups',icon:'candlestick_chart',value:data.signals_found||0,sub:'score at display threshold',valueColor:C.lime},
+        {label:'Active States',icon:'account_tree',value:(data.active_setups||[]).length,sub:'persisted non-terminal',valueColor:C.cyan},
+        {label:'Data Blocked',icon:'database',value:incompleteSymbols,sub:'not paper-ready',valueColor:incompleteSymbols?C.err:C.lime},
+      ]}/>
+
+      <GlassCard style={{overflow:'hidden'}}>
+        <PanelHeader icon="insights" title="Inefficiency Reclaim Setups" badge={`${rows.length} shown`}/>
+        <Table cols={['Ticker','Direction','State','Score','Zone','Retrace','Confirmation','Entry','Stop','Target','R','Primary reason']}
+          rows={rows.map(row=>[
+            <button onClick={()=>setSelectedId(row.signal_id)}
+              style={{padding:0,border:0,cursor:'pointer',background:'transparent',color:selected?.signal_id===row.signal_id?C.cyan:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:900}}>{row.ticker}</button>,
+            <Pill text={row.side} color={row.side==='SHORT'?C.err:C.lime}/>,
+            <Pill text={row.setup_state} color={statusColor(row.setup_state)}/>,
+            <span style={{color:Number(row.score)>=90?C.lime:C.cyan,fontWeight:900}}>{number(row.score,1)} {row.grade}</span>,
+            <span>{money(row.zone_low)}–{money(row.zone_high)}<br/><span style={{fontSize:9,color:C.outline}}>{row.zone_type}</span></span>,
+            row.retrace_depth!=null?`${number(Number(row.retrace_depth)*100,0)}%`:'—',
+            row.confirmation_type||'—',
+            money(row.planned_entry),
+            money(row.planned_stop),
+            money(row.planned_target),
+            number(row.structural_R,2),
+            <span title={(row.rejection_reasons||[]).join(', ')} style={{color:row.primary_reason==='QUALIFIED'?C.lime:C.err}}>{row.primary_reason}</span>,
+          ])}/>
+        {!rows.length&&<div style={{padding:'24px 20px',display:'flex',alignItems:'center',gap:10,color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
+          <Icon n={data.idle?'touch_app':'filter_alt_off'} size={18} color={C.outline}/>
+          {data.idle?'Choose an anchor day and click Scan.':'No setup reached the 80-point display threshold. Rejection diagnostics are below.'}
+        </div>}
+      </GlassCard>
+
+      <GlassCard style={{overflow:'hidden'}}>
+        <PanelHeader icon="candlestick_chart" title="IRS Signal Chart" badge={selected?`${selected.ticker} ${selected.side}`:'no setup'}/>
+        {selected&&bars.length?(
+          <CandleChart bars={bars} lines={chartLines} zones={chartZones} tradeMarkers={chartMarkers}
+            highlightBars={chartHighlights} showVol={true} height={520} stale={barsInfo.stale} lastDate={barsInfo.lastDate} lineLabelPosition="middle"/>
+        ):<div style={{height:180,display:'flex',alignItems:'center',justifyContent:'center',color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
+          {selected?'No stored 15-minute bars for this setup.':'Select a displayed setup to inspect its zone and confirmation.'}
+        </div>}
+      </GlassCard>
+
+      <div style={{display:'grid',gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)',gap:18}}>
+        <GlassCard style={{overflow:'hidden'}}>
+          <PanelHeader icon="rule" title="Rejection Summary" badge={`${reasonEntries.length} reasons`}/>
+          <Table cols={['Reason','Count']} rows={reasonEntries.map(([reason,count])=>[
+            <span style={{color:C.err}}>{reason}</span>,count
+          ])}/>
+        </GlassCard>
+        <GlassCard style={{overflow:'hidden'}}>
+          <PanelHeader icon="database" title="Data Readiness" badge={`${Object.keys(data.data_readiness||{}).length} symbols`}/>
+          <Table cols={['Ticker','Daily','1H','15M','Paper']} rows={Object.entries(data.data_readiness||{}).slice(0,100).map(([ticker,item])=>[
+            ticker,
+            item.daily?.completed_rows??0,
+            item.hourly?.completed_rows??0,
+            item['15m']?.completed_rows??0,
+            <Pill text={item.paper_ready?'READY':'BLOCKED'} color={item.paper_ready?C.lime:C.err}/>,
+          ])}/>
+        </GlassCard>
+      </div>
+    </div>
+  );
+}
+
 function TabMarketScreener({refreshKey=0}) {
   const todayKey = new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
   const emptyScreener = {signals:[],rejected:[],near_misses:[],reason_counts:{},reason_log:[],signals_found:0,universe_size:0,timeframe:'1D',anchor_date:todayKey,idle:true};
@@ -4454,8 +4608,32 @@ function TabMarketScreener({refreshKey=0}) {
   const rejected = data.rejected || [];
   const nearMisses = data.near_misses || [];
   const reasonCounts = Object.entries(data.reason_counts || {});
-  const filterToken = (value, label) => value===true ? label : value===false ? label.toLowerCase() : `${label}?`;
-  const filterColor = row => row.volume_filter_pass===false || row.spread_filter_pass===false || row.earnings_filter_pass===false || row.corporate_action_filter_pass===false || row.listing_status_filter_pass===false ? C.err : (row.data_quality_complete===false ? C.outline : C.lime);
+  const FilterBadge = ({value, code, label}) => {
+    const pass = value === true;
+    const fail = value === false;
+    const color = pass ? C.lime : fail ? C.err : C.outline;
+    const suffix = pass ? '' : fail ? '!' : '?';
+    const title = `${label}: ${pass ? 'pass' : fail ? 'fail' : 'unknown'}`;
+    return (
+      <span title={title} style={{
+        width:22,height:18,borderRadius:5,display:'inline-flex',alignItems:'center',justifyContent:'center',
+        fontFamily:"'JetBrains Mono',monospace",fontSize:9,fontWeight:900,letterSpacing:0,
+        color,background:R(color,fail?0.13:0.09),border:`1px solid ${R(color,fail?0.38:0.24)}`,lineHeight:1,
+      }}>
+        {code}{suffix}
+      </span>
+    );
+  };
+  const FilterBadges = ({row}) => (
+    <span style={{display:'inline-flex',alignItems:'center',gap:3,whiteSpace:'nowrap'}} title="V volume, S spread, E event, C corporate action, L listing, A adjusted">
+      <FilterBadge value={row.volume_filter_pass} code="V" label="Volume"/>
+      <FilterBadge value={row.spread_filter_pass} code="S" label="Spread"/>
+      <FilterBadge value={row.earnings_filter_pass} code="E" label="Event / earnings"/>
+      <FilterBadge value={row.corporate_action_filter_pass} code="C" label="Corporate action"/>
+      <FilterBadge value={row.listing_status_filter_pass} code="L" label="Listing status"/>
+      <FilterBadge value={row.split_adjusted===true ? true : null} code="A" label="Split adjusted"/>
+    </span>
+  );
   const statusOptions = ['ALL',...new Set(signals.map(row=>row.status).filter(Boolean))];
   const statusColor = status => status==='READY' ? C.lime : ['pending_entry','review_required'].includes(status) ? C.cyan : C.err;
   const levelLabel = row => {
@@ -4830,6 +5008,8 @@ function TabMarketScreener({refreshKey=0}) {
           </div>
         </div>
         <Table
+          compact
+          minColWidth={82}
           cols={['Ticker','Strategy','Side','Status','Level','Entry','Stop','TP','RR','ATR','Score','Size','Filters','Reasoning']}
           rows={filteredSignals.map(row=>[
             <button onClick={()=>setSelectedSignalKey(signalKey(row))}
@@ -4847,10 +5027,8 @@ function TabMarketScreener({refreshKey=0}) {
             num(row.atr_clean_14,2),
             <span style={{color:Number(row.score)>=0.7?C.lime:Number(row.score)>=0.45?C.cyan:C.outline,fontWeight:900}}>{num(row.score,2)}</span>,
             row.position_size_shares,
-            <span style={{color:filterColor(row)}}>
-              {filterToken(row.volume_filter_pass,'VOL')} / {filterToken(row.spread_filter_pass,'SPR')} / {filterToken(row.earnings_filter_pass,'EVT')} / {filterToken(row.corporate_action_filter_pass,'CA')} / {filterToken(row.listing_status_filter_pass,'LST')} / {row.split_adjusted===true?'ADJ':'ADJ?'}
-            </span>,
-            <span style={{fontFamily:"'Inter',sans-serif",whiteSpace:'normal',lineHeight:1.35,color:C.onVar}}>{row.reasoning}</span>,
+            <FilterBadges row={row}/>,
+            <span title={row.reasoning} style={{fontFamily:"'Inter',sans-serif",whiteSpace:'normal',lineHeight:1.25,color:C.onVar,display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',overflow:'hidden',maxWidth:360}}>{row.reasoning}</span>,
           ])}
         />
         {!filteredSignals.length && (
@@ -6094,6 +6272,7 @@ const NAV = [
   {id:'watchlist',  label:'Watchlist',          icon:'visibility'},
   {id:'preopen',    label:'Pre-Open',            icon:'wb_twilight'},
   {id:'screener',   label:'Market Screener',     icon:'radar'},
+  {id:'irs',        label:'Inefficiency Reclaim',icon:'deployed_code'},
   {id:'intraday',   label:'Intraday',            icon:'monitoring'},
   {id:'strategy',   label:'Strategy',            icon:'insights'},
   {id:'crypto',     label:'Crypto',              icon:'currency_bitcoin'},
@@ -6109,6 +6288,7 @@ const PAGE_META = {
   watchlist: {title:'Watchlist',              sub:'Current stock symbols · live-saved candles · daily change map', crumb:'Watchlist'},
   preopen:   {title:'Pre-Open Briefing',      sub:'Watchlist scanned · levels mapped · awaiting the open', crumb:'Pre-Open'},
   screener:  {title:'Market Screener',        sub:'LP1 / LP2 / PRB1 / PRB2 patterns on saved OHLCV', crumb:'Screener'},
+  irs:       {title:'Inefficiency Reclaim',   sub:'1H displacement · 15m reclaim · deterministic paper controls', crumb:'IRS'},
   intraday:  {title:'Intraday Monitor',       sub:'Live decision loop · paper execution', crumb:'Intraday'},
   strategy:  {title:'Strategy Monitor',       sub:'BMSB weekly EMA/SMA cross scanner', crumb:'Strategy'},
   crypto:    {title:'Crypto Trade Levels',    sub:'OKX candles · trade zones · separate crypto bot', crumb:'Crypto'},
@@ -6334,6 +6514,7 @@ function App() {
               {tab==='watchlist' && <TabWatchlist refreshKey={refreshKey}/>}
               {tab==='preopen'   && <TabPreOpen refreshKey={refreshKey}/>}
               {tab==='screener'  && <TabMarketScreener refreshKey={refreshKey}/>}
+              {tab==='irs'       && <TabInefficiencyReclaim refreshKey={refreshKey}/>}
               {tab==='intraday'  && <TabIntraday refreshKey={refreshKey}/>}
               {tab==='strategy'  && <TabStrategy refreshKey={refreshKey}/>}
               {tab==='crypto'    && <TabCrypto refreshKey={refreshKey}/>}

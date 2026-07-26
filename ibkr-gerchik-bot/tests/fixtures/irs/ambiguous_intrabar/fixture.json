@@ -1,0 +1,13 @@
+{
+  "name": "ambiguous_intrabar",
+  "input_bars": {
+    "15m": [
+      {"timestamp": "2026-07-09T11:45:00-04:00", "open": 101.00, "high": 104.00, "low": 98.00, "close": 102.00, "volume": 400000}
+    ],
+    "5m": [],
+    "1m": []
+  },
+  "config": {"entry": 101.00, "stop": 99.00, "target": 103.50},
+  "expected": {"accepted": true, "trade_label": "AMBIGUOUS", "conservative_label": "LOSS"}
+}
+

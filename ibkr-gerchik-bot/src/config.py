@@ -8,6 +8,7 @@ import logging.handlers
 import os
 from dataclasses import dataclass, field
 from datetime import datetime
+from decimal import Decimal
 from pathlib import Path
 from typing import Dict, List, Tuple
 
@@ -211,6 +212,130 @@ class StrategyConfig:
 
 
 @dataclass(frozen=True)
+class InefficiencyReclaimSettings:
+    """Validated environment-facing settings for the isolated IRS subsystem."""
+
+    enabled: bool = _env_bool("INEFFICIENCY_RECLAIM_ENABLED", False)
+    trading_mode: str = _env_str("IRS_TRADING_MODE", "paper").lower()
+    allow_live_trading: bool = _env_bool("ALLOW_LIVE_TRADING", False)
+    version: str = _env_str("IRS_STRATEGY_VERSION", "1.0")
+    database_path: Path = field(
+        default_factory=lambda: _resolve_env_path(
+            _env_str("IRS_DATABASE_PATH", "memory/inefficiency_reclaim.db")
+        )
+    )
+    daily_history_years: int = _env_int("IRS_DAILY_HISTORY_YEARS", 10)
+    min_daily_history_rows: int = _env_int("IRS_MIN_DAILY_HISTORY_ROWS", 1000)
+    hourly_history_years: int = _env_int("IRS_HOURLY_HISTORY_YEARS", 3)
+    fifteen_minute_history_years: int = _env_int("IRS_15M_HISTORY_YEARS", 2)
+    five_minute_history_months: int = _env_int("IRS_5M_HISTORY_MONTHS", 12)
+    one_minute_history_months: int = _env_int("IRS_1M_HISTORY_MONTHS", 6)
+    history_request_delay_seconds: float = _env_float("IRS_HISTORY_REQUEST_DELAY_SECONDS", 2.0)
+    history_timeout_retry_count: int = _env_int("IRS_HISTORY_TIMEOUT_RETRY_COUNT", 1)
+    history_timeout_retry_delay_seconds: float = _env_float("IRS_HISTORY_TIMEOUT_RETRY_DELAY_SECONDS", 12.0)
+    min_true_range_atr_multiple: float = _env_float("IRS_MIN_TR_ATR_MULTIPLE", 1.40)
+    min_body_ratio: float = _env_float("IRS_MIN_BODY_RATIO", 0.65)
+    min_close_location: float = _env_float("IRS_MIN_CLOSE_LOCATION", 0.75)
+    min_directional_efficiency: float = _env_float("IRS_MIN_DIRECTIONAL_EFFICIENCY", 0.70)
+    max_overlap_ratio: float = _env_float("IRS_MAX_OVERLAP_RATIO", 0.25)
+    min_relative_volume: float = _env_float("IRS_MIN_RELATIVE_VOLUME", 1.30)
+    min_zone_width_atr: float = _env_float("IRS_MIN_ZONE_WIDTH_ATR", 0.08)
+    max_zone_width_atr: float = _env_float("IRS_MAX_ZONE_WIDTH_ATR", 0.60)
+    minimum_display_score: float = _env_float("IRS_MINIMUM_DISPLAY_SCORE", 80.0)
+    minimum_order_score: float = _env_float("IRS_MINIMUM_ORDER_SCORE", 85.0)
+    risk_percent_per_trade: float = _env_float("IRS_RISK_PERCENT_PER_TRADE", 0.25)
+    max_fixed_risk_cash: float = _env_float("IRS_MAX_FIXED_RISK_CASH", 1000.0)
+    min_price: float = _env_float("IRS_MIN_PRICE", 5.0)
+    max_price: float = _env_float("IRS_MAX_PRICE", 1000.0)
+    min_average_daily_volume: int = _env_int("IRS_MIN_AVERAGE_DAILY_VOLUME", 750000)
+    min_average_daily_dollar_volume: float = _env_float(
+        "IRS_MIN_AVERAGE_DAILY_DOLLAR_VOLUME", 20000000.0
+    )
+    max_spread_percent: float = _env_float("IRS_MAX_SPREAD_PERCENT", 0.20)
+    max_quote_age_seconds: int = _env_int("IRS_MAX_QUOTE_AGE_SECONDS", 5)
+
+    def validate(self) -> None:
+        if self.trading_mode != "paper":
+            raise ValueError("IRS_TRADING_MODE must remain 'paper'.")
+        if self.allow_live_trading:
+            raise ValueError("ALLOW_LIVE_TRADING must remain false for IRS.")
+        if not (0.0 < self.risk_percent_per_trade <= 1.0):
+            raise ValueError("IRS_RISK_PERCENT_PER_TRADE must be in percent units (0, 1].")
+        if not (0.0 <= self.min_zone_width_atr < self.max_zone_width_atr <= 1.0):
+            raise ValueError("IRS zone-width limits are invalid.")
+        if not (0.0 <= self.minimum_display_score <= self.minimum_order_score <= 100.0):
+            raise ValueError("IRS score thresholds are invalid.")
+        if min(
+            self.daily_history_years,
+            self.min_daily_history_rows,
+            self.hourly_history_years,
+            self.fifteen_minute_history_years,
+            self.five_minute_history_months,
+            self.one_minute_history_months,
+        ) <= 0:
+            raise ValueError("IRS historical horizons must be positive.")
+        if min(
+            self.history_request_delay_seconds,
+            self.history_timeout_retry_count,
+            self.history_timeout_retry_delay_seconds,
+        ) < 0:
+            raise ValueError("IRS history pacing settings must be non-negative.")
+
+    def strategy_config(self):
+        """Build the pure strategy config without making that module read env."""
+        from src.strategy.inefficiency_reclaim import IRSConfig
+
+        self.validate()
+        config = IRSConfig(
+            version=self.version,
+            min_true_range_atr_multiple=Decimal(str(self.min_true_range_atr_multiple)),
+            min_body_ratio=Decimal(str(self.min_body_ratio)),
+            min_close_location=Decimal(str(self.min_close_location)),
+            min_directional_efficiency=Decimal(str(self.min_directional_efficiency)),
+            max_overlap_ratio=Decimal(str(self.max_overlap_ratio)),
+            min_relative_volume=Decimal(str(self.min_relative_volume)),
+            min_zone_width_atr=Decimal(str(self.min_zone_width_atr)),
+            max_zone_width_atr=Decimal(str(self.max_zone_width_atr)),
+            minimum_display_score=Decimal(str(self.minimum_display_score)),
+            minimum_order_score=Decimal(str(self.minimum_order_score)),
+            risk_percent_per_trade=Decimal(str(self.risk_percent_per_trade)) / Decimal("100"),
+            max_fixed_risk_cash=Decimal(str(self.max_fixed_risk_cash)),
+            min_price=Decimal(str(self.min_price)),
+            max_price=Decimal(str(self.max_price)),
+            min_average_daily_volume=self.min_average_daily_volume,
+            min_average_daily_dollar_volume=Decimal(str(self.min_average_daily_dollar_volume)),
+            max_spread_percent=Decimal(str(self.max_spread_percent)),
+            max_quote_age_seconds=self.max_quote_age_seconds,
+        )
+        config.validate()
+        return config
+
+
+@dataclass(frozen=True)
+class NasdaqDataConfig:
+    """Optional Nasdaq market-data fallback for historical candles."""
+
+    enabled: bool = _env_bool("NASDAQ_DATA_PROVIDER_ENABLED", False)
+    data_link_api_key: str = _env_str("NASDAQ_DATA_LINK_API_KEY", _env_str("NDL_APIKEY", ""))
+    data_link_base_url: str = _env_str("NASDAQ_DATA_LINK_BASE_URL", "https://data.nasdaq.com/api/v3")
+    data_link_eod_database: str = _env_str("NASDAQ_DATA_LINK_EOD_DATABASE", "EOD")
+    cloud_base_url: str = _env_str("NASDAQ_CLOUD_BASE_URL", "")
+    cloud_client_id: str = _env_str("NASDAQ_CLOUD_CLIENT_ID", "")
+    cloud_client_secret: str = _env_str("NASDAQ_CLOUD_CLIENT_SECRET", "")
+    cloud_source: str = _env_str("NASDAQ_CLOUD_SOURCE", "CQT")
+    cloud_offset: str = _env_str("NASDAQ_CLOUD_OFFSET", "delayed")
+    request_timeout_seconds: int = _env_int("NASDAQ_REQUEST_TIMEOUT_SECONDS", 20)
+
+    @property
+    def data_link_configured(self) -> bool:
+        return bool(self.data_link_api_key)
+
+    @property
+    def cloud_configured(self) -> bool:
+        return bool(self.cloud_base_url and self.cloud_client_id and self.cloud_client_secret)
+
+
+@dataclass(frozen=True)
 class TradingHours:
     timezone: str = _env_str("TRADING_TIMEZONE", "America/New_York")
     market_open_hour: int = _env_int("MARKET_OPEN_HOUR", 9)
@@ -305,6 +430,8 @@ class Settings:
     broker: BrokerConfig = field(default_factory=BrokerConfig)
     risk: RiskConfig = field(default_factory=RiskConfig)
     strategy: StrategyConfig = field(default_factory=StrategyConfig)
+    inefficiency_reclaim: InefficiencyReclaimSettings = field(default_factory=InefficiencyReclaimSettings)
+    nasdaq_data: NasdaqDataConfig = field(default_factory=NasdaqDataConfig)
     trading_hours: TradingHours = field(default_factory=TradingHours)
     news: NewsConfig = field(default_factory=NewsConfig)
     paths: PathsConfig = field(default_factory=PathsConfig)
@@ -315,6 +442,23 @@ class Settings:
     slack_command_prefix: str = _env_str("SLACK_COMMAND_PREFIX", "ibkr").strip().lower()
     slack_allowed_user_ids: List[str] = field(default_factory=lambda: _csv_env("SLACK_ALLOWED_USER_IDS", ""))
     premarket_levels_export_min_strength: float = _env_float("PREMARKET_LEVELS_EXPORT_MIN_STRENGTH", 7.0)
+
+    def __post_init__(self) -> None:
+        # Invalid IRS config must fail closed without weakening the rest of the
+        # bot. The scanner reports this validation error and IRS stays disabled.
+        try:
+            self.inefficiency_reclaim.validate()
+        except ValueError as exc:
+            object.__setattr__(
+                self,
+                "inefficiency_reclaim",
+                InefficiencyReclaimSettings(
+                    enabled=False,
+                    trading_mode="paper",
+                    allow_live_trading=False,
+                ),
+            )
+            logging.getLogger(__name__).error("IRS disabled by invalid configuration: %s", exc)
 
     @property
     def symbols(self) -> List[str]:

@@ -1,0 +1,13 @@
+{
+  "name": "weak_volume",
+  "input_bars": {
+    "hourly": [
+      {"timestamp": "2026-07-08T10:30:00-04:00", "open": 30.00, "high": 30.40, "low": 29.80, "close": 30.20, "volume": 900000},
+      {"timestamp": "2026-07-08T11:30:00-04:00", "open": 30.20, "high": 30.50, "low": 30.00, "close": 30.30, "volume": 950000},
+      {"timestamp": "2026-07-08T12:30:00-04:00", "open": 30.40, "high": 32.80, "low": 30.35, "close": 32.60, "volume": 700000}
+    ]
+  },
+  "config": {"min_relative_volume": 1.30},
+  "expected": {"accepted": false, "rejection_reason": "RELATIVE_VOLUME_TOO_LOW"}
+}
+
