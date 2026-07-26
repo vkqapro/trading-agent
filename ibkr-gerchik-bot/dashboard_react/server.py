@@ -77,6 +77,13 @@ HERE = Path(__file__).parent
 app.mount("/static", StaticFiles(directory=HERE), name="static")
 
 ET = ZoneInfo(SETTINGS.trading_hours.timezone)
+IRS_SCHEDULED_TASKS = {
+    "IBKR Bot - IRS Premarket": "Premarket",
+    "IBKR Bot - IRS Hourly": "Hourly",
+    "IBKR Bot - IRS Confirmation": "Confirmation",
+    "IBKR Bot - IRS EOD": "EOD",
+}
+_IRS_TASK_CACHE: dict[str, Any] = {"loaded_at": 0.0, "tasks": None}
 IRS_MIN_DAILY_HISTORY_ROWS_KEY = "IRS_MIN_DAILY_HISTORY_ROWS"
 IRS_MIN_DAILY_HISTORY_ROWS_FLOOR = 20
 IRS_MIN_DAILY_HISTORY_ROWS_CEILING = 5000
@@ -806,7 +813,7 @@ def _read_json_file(path: Path) -> dict | None:
     try:
         if not path.exists():
             return None
-        data = json.loads(path.read_text(encoding="utf-8"))
+        data = json.loads(path.read_text(encoding="utf-8-sig"))
         return data if isinstance(data, dict) else None
     except Exception:
         return None
@@ -836,6 +843,211 @@ def _service_status(label: str, ok: bool, *, age: float | None = None, detail: s
         "detail": detail,
         "icon": icon,
     }
+
+
+def _query_irs_scheduled_tasks() -> list[dict[str, Any]] | None:
+    cached_tasks = _IRS_TASK_CACHE.get("tasks")
+    if time.monotonic() - float(_IRS_TASK_CACHE.get("loaded_at") or 0.0) < 15:
+        return cached_tasks
+    if os.name != "nt":
+        _IRS_TASK_CACHE.update({"loaded_at": time.monotonic(), "tasks": None})
+        return None
+
+    names = ", ".join(f"'{name.replace(chr(39), chr(39) * 2)}'" for name in IRS_SCHEDULED_TASKS)
+    command = (
+        f"$names=@({names}); $rows=@(); "
+        "foreach($name in $names){"
+        "$task=Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue; "
+        "if($null -ne $task){"
+        "$info=Get-ScheduledTaskInfo -TaskName $name -ErrorAction SilentlyContinue; "
+        "$rows += [pscustomobject]@{"
+        "task_name=$name; state=$task.State.ToString(); "
+        "last_run=if($info -and $info.LastRunTime -gt [datetime]::MinValue){$info.LastRunTime.ToString('o')}else{$null}; "
+        "next_run=if($info -and $info.NextRunTime -gt [datetime]::MinValue){$info.NextRunTime.ToString('o')}else{$null}; "
+        "last_result=if($info){$info.LastTaskResult}else{$null}"
+        "}}}; ConvertTo-Json -InputObject @($rows) -Compress"
+    )
+    try:
+        completed = subprocess.run(
+            ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", command],
+            capture_output=True,
+            text=True,
+            timeout=8,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+            check=True,
+        )
+        parsed = json.loads(completed.stdout.strip() or "[]")
+        tasks = parsed if isinstance(parsed, list) else [parsed]
+        tasks = [task for task in tasks if isinstance(task, dict)]
+    except Exception:
+        tasks = None
+    if not tasks:
+        manifest = _read_json_file(SETTINGS.paths.runtime_dir / "irs_scheduler_tasks.json")
+        manifest_tasks = (manifest or {}).get("tasks")
+        if isinstance(manifest_tasks, list):
+            tasks = [
+                {
+                    "task_name": str(task.get("task_name") or ""),
+                    "state": "Ready",
+                    "next_run": _next_manifest_run(task.get("times"), now=datetime.now(ET)),
+                    "source": "installation_manifest",
+                }
+                for task in manifest_tasks
+                if isinstance(task, dict) and task.get("task_name")
+            ]
+    _IRS_TASK_CACHE.update({"loaded_at": time.monotonic(), "tasks": tasks})
+    return tasks
+
+
+def _next_manifest_run(times: object, *, now: datetime) -> str | None:
+    if not isinstance(times, list):
+        return None
+    parsed_times: list[tuple[int, int]] = []
+    for value in times:
+        try:
+            hour_text, minute_text = str(value).split(":", 1)
+            parsed_times.append((int(hour_text), int(minute_text)))
+        except (TypeError, ValueError):
+            continue
+    for day_offset in range(8):
+        day = now + timedelta(days=day_offset)
+        if day.weekday() >= 5:
+            continue
+        for hour, minute in sorted(parsed_times):
+            candidate = day.replace(hour=hour, minute=minute, second=0, microsecond=0)
+            if candidate >= now:
+                return candidate.isoformat()
+    return None
+
+
+def _scheduled_time(value: object) -> datetime | None:
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        return parsed.replace(tzinfo=ET) if parsed.tzinfo is None else parsed.astimezone(ET)
+    except (TypeError, ValueError):
+        return None
+
+
+def _irs_schedule_status(
+    *,
+    tasks: list[dict[str, Any]] | None = None,
+    runtime: dict[str, Any] | None = None,
+    now: datetime | None = None,
+) -> dict:
+    scheduled_tasks = _query_irs_scheduled_tasks() if tasks is None else tasks
+    runtime_state = (
+        _read_json_file(SETTINGS.paths.runtime_dir / "irs_scheduler_status.json")
+        if runtime is None
+        else runtime
+    ) or {}
+    current = now or datetime.now(ET)
+    if scheduled_tasks is None:
+        return _service_status(
+            "IRS Scheduler",
+            False,
+            detail="Windows Task Scheduler status is unavailable",
+            status="unknown",
+            icon="schedule",
+        )
+
+    by_name = {
+        str(task.get("task_name") or task.get("TaskName") or ""): task
+        for task in scheduled_tasks
+    }
+    installed = [name for name in IRS_SCHEDULED_TASKS if name in by_name]
+    missing = [IRS_SCHEDULED_TASKS[name] for name in IRS_SCHEDULED_TASKS if name not in by_name]
+    all_installed = len(installed) == len(IRS_SCHEDULED_TASKS)
+
+    upcoming: list[tuple[datetime, str]] = []
+    task_running = False
+    for name, task in by_name.items():
+        task_running = task_running or str(task.get("state") or task.get("State") or "").lower() == "running"
+        next_run = _scheduled_time(task.get("next_run") or task.get("NextRunTime"))
+        if name in IRS_SCHEDULED_TASKS and next_run and next_run >= current:
+            upcoming.append((next_run, IRS_SCHEDULED_TASKS[name]))
+    upcoming.sort(key=lambda item: item[0])
+    next_detail = (
+        f"next {upcoming[0][1]} {upcoming[0][0].strftime('%a %H:%M')}"
+        if upcoming
+        else "no next run reported"
+    )
+
+    runtime_status = str(runtime_state.get("status") or "").lower()
+    runtime_pid = runtime_state.get("pid")
+    runtime_alive = _pid_alive(runtime_pid) if runtime_pid else False
+    runtime_active = runtime_status in {"starting", "running"} and runtime_alive
+    mode = str(runtime_state.get("mode") or "IRS").replace("_", " ").title()
+    age = _iso_age_seconds(runtime_state.get("updated_at"))
+
+    if runtime_active or task_running:
+        connected = runtime_active and bool(runtime_state.get("connected"))
+        status = "connected" if connected else "running"
+        detail = (
+            f"{mode} - IBKR connected - pid {runtime_pid}"
+            if connected
+            else f"{mode} - connecting to IBKR"
+            if runtime_active
+            else "Windows task is running - connection status pending"
+        )
+        return _service_status(
+            "IRS Scheduler",
+            True,
+            age=age,
+            detail=f"{detail}; {next_detail}",
+            status=status,
+            icon="schedule",
+        )
+
+    if not all_installed:
+        detail = f"{len(installed)}/4 tasks installed"
+        if missing:
+            detail += f"; missing {', '.join(missing)}"
+        return _service_status(
+            "IRS Scheduler",
+            False,
+            age=age,
+            detail=detail,
+            status="partial" if installed else "not installed",
+            icon="schedule",
+        )
+
+    if runtime_status == "failed":
+        error = str(runtime_state.get("error") or "last IRS run failed")
+        return _service_status(
+            "IRS Scheduler",
+            False,
+            age=age,
+            detail=f"{error}; {next_detail}",
+            status="failed",
+            icon="schedule",
+        )
+
+    if runtime_status == "complete":
+        finished_age = _iso_age_seconds(runtime_state.get("finished_at"))
+        finished_text = (
+            f"finished {int(finished_age)}s ago"
+            if finished_age is not None
+            else "last run finished"
+        )
+        return _service_status(
+            "IRS Scheduler",
+            True,
+            age=finished_age,
+            detail=f"{mode} {finished_text}; {next_detail}",
+            status="finished",
+            icon="schedule",
+        )
+
+    return _service_status(
+        "IRS Scheduler",
+        True,
+        age=age,
+        detail=f"4 tasks ready; {next_detail}",
+        status="scheduled",
+        icon="schedule",
+    )
 
 
 def _lock_status(path: Path, *, stale_after_seconds: float) -> tuple[bool, float | None, str]:
@@ -972,6 +1184,7 @@ def api_services():
         else "no heartbeat"
     )
     premarket = _premarket_status()
+    irs_scheduler = _irs_schedule_status()
 
     market_lock = SETTINGS.paths.runtime_dir / "market_data_collector.lock"
     _, market_age, market_lock_detail = _lock_status(market_lock, stale_after_seconds=900)
@@ -1047,6 +1260,7 @@ def api_services():
         ),
         _service_status("Market Data", market_ok, age=market_age, detail=market_detail, status=market_status, icon="database"),
         _service_status("Crypto Worker", crypto_ok, age=crypto_age, detail=crypto_detail, status=crypto_status, icon="currency_bitcoin"),
+        irs_scheduler,
         _service_status("IBKR Bridge", ibkr_ok, age=min([a for a in [execute_age, market_age] if a is not None], default=None), detail=ibkr_detail, icon="account_balance"),
     ]
     return {

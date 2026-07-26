@@ -27,7 +27,12 @@ from src.execution import order_requests as order_requests_store
 from src.jobs.eod import run_eod
 from src.jobs.execute_requests import run_execute_requests
 from src.jobs.intraday import run_intraday
-from src.jobs.inefficiency_reclaim import IRS_WORKFLOW_MODES, run_inefficiency_reclaim_job
+from src.jobs.inefficiency_reclaim import (
+    IRS_WORKFLOW_MODES,
+    active_confirmation_symbols,
+    record_irs_runtime_status,
+    run_inefficiency_reclaim_job,
+)
 from src.jobs.market_data_collector import run_market_data_collector
 from src.jobs.open import run_open
 from src.jobs.premarket import run_premarket
@@ -695,6 +700,43 @@ def run_job_with_context(
                 command_context=command_context,
             )
 
+    if job_name == "irs_scan":
+        mode = str((command_context or {}).get("irs_mode") or "HOURLY_SETUP_SCAN").strip().upper()
+        with job_loop_lock("irs_scan") as acquired:
+            if not acquired:
+                LOGGER.info("Skipping irs_scan because another IRS workflow is already active.")
+                return {
+                    "job": job_name,
+                    "blocked": True,
+                    "reasons": ["irs_scan_already_running"],
+                    "dry_run": True,
+                }
+            record_irs_runtime_status("starting", mode=mode, connected=False)
+            try:
+                result = _run_connected_job(
+                    job_name,
+                    state_path,
+                    state,
+                    True,
+                    command_context=command_context,
+                )
+                record_irs_runtime_status(
+                    "complete",
+                    mode=mode,
+                    connected=False,
+                    symbol_count=int(result.get("universe_size", 0) or 0),
+                    signals_found=int(result.get("signals_found", 0) or 0),
+                )
+                return result
+            except Exception as exc:
+                record_irs_runtime_status(
+                    "failed",
+                    mode=mode,
+                    connected=False,
+                    error=str(exc),
+                )
+                raise
+
     preconnect_lock_name = None
     if job_name == "open":
         preconnect_lock_name = "open_session"
@@ -754,6 +796,12 @@ def _run_connected_job(
         market_data = MarketDataService(broker)
         if job_name in {"market_data", "quote_check", "irs_scan"}:
             market_data.enable_delayed_fallback()
+        if job_name == "irs_scan":
+            record_irs_runtime_status(
+                "running",
+                mode=str((command_context or {}).get("irs_mode") or "HOURLY_SETUP_SCAN"),
+                connected=True,
+            )
         if job_name == "market_data":
             watchlist = state.get("watchlist", {})
             if not isinstance(watchlist, dict) or not watchlist:
@@ -798,18 +846,27 @@ def _run_connected_job(
             if not isinstance(watchlist, dict):
                 watchlist = {}
             requested_symbol = str((command_context or {}).get("symbol", "") or "").strip().upper()
+            mode = str((command_context or {}).get("irs_mode") or "HOURLY_SETUP_SCAN").strip().upper()
             symbols = (
                 [requested_symbol]
                 if requested_symbol
+                else active_confirmation_symbols()
+                if mode == "FIFTEEN_MIN_CONFIRMATION_SCAN"
                 else sorted(
                     symbol
                     for symbol in set(SETTINGS.stock_symbols) | set(watchlist)
                     if SETTINGS.symbol_security_type(symbol) == "STK"
                 )
             )
-            mode = str((command_context or {}).get("irs_mode") or "HOURLY_SETUP_SCAN")
             return {
                 "job": job_name,
+                "symbol_selection": (
+                    "requested"
+                    if requested_symbol
+                    else "active_setups"
+                    if mode == "FIFTEEN_MIN_CONFIRMATION_SCAN"
+                    else "full_universe"
+                ),
                 **run_inefficiency_reclaim_job(
                     market_data=market_data,
                     symbols=symbols,

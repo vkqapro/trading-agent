@@ -1416,6 +1416,7 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
     {label:'Pre-Open', status:'loading', ok:false, detail:'checking pre-open job', icon:'wb_twilight'},
     {label:'Market Data', status:'loading', ok:false, detail:'checking collector lock', icon:'database'},
     {label:'Crypto Worker', status:'loading', ok:false, detail:'checking heartbeat', icon:'currency_bitcoin'},
+    {label:'IRS Scheduler', status:'loading', ok:false, detail:'checking scheduled workflows', icon:'schedule'},
     {label:'IBKR Bridge', status:'loading', ok:false, detail:'checking connection path', icon:'account_balance'},
   ];
   const serviceSummaryOk = services?.all_ok === true;
@@ -1436,7 +1437,7 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
           {serviceRows.map((s,i)=>{
             const ok = s.ok === true;
             const statusKey = String(s.status||'').toLowerCase();
-            const softStatus = ['loading','starting','waiting','pending','running'].includes(statusKey);
+            const softStatus = ['loading','starting','waiting','pending','running','scheduled','connected'].includes(statusKey);
             const color = softStatus ? C.cyan : ok ? C.lime : C.err;
             return (
               <div key={`${s.label}-${i}`} style={{

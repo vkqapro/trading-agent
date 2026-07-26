@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+import os
 from datetime import datetime
 from typing import Any, Mapping, Sequence
 from zoneinfo import ZoneInfo
@@ -22,6 +24,76 @@ IRS_WORKFLOW_MODES = {
     "POSITION_MANAGEMENT",
     "EOD_REPORT",
 }
+
+
+def active_confirmation_symbols(
+    *,
+    store: InefficiencyReclaimStore | None = None,
+    as_of: datetime | None = None,
+) -> list[str]:
+    """Return non-expired symbols that need the 15-minute confirmation scan."""
+    now = as_of or datetime.now(ZoneInfo(SETTINGS.trading_hours.timezone))
+    setup_store = store or InefficiencyReclaimStore(SETTINGS.inefficiency_reclaim.database_path)
+    symbols: set[str] = set()
+    for setup in setup_store.active_setups():
+        expires_at = setup.get("expires_at")
+        if expires_at:
+            try:
+                expiry = datetime.fromisoformat(str(expires_at).replace("Z", "+00:00"))
+                if expiry.tzinfo is None:
+                    expiry = expiry.replace(tzinfo=now.tzinfo)
+                if expiry <= now:
+                    continue
+            except (TypeError, ValueError):
+                LOGGER.warning(
+                    "IRS setup %s has invalid expires_at=%r; retaining it for confirmation.",
+                    setup.get("setup_id"),
+                    expires_at,
+                )
+        symbol = str(setup.get("symbol") or "").strip().upper()
+        if symbol:
+            symbols.add(symbol)
+    return sorted(symbols)
+
+
+def record_irs_runtime_status(
+    status: str,
+    *,
+    mode: str,
+    connected: bool,
+    **details: Any,
+) -> dict[str, Any]:
+    """Atomically publish IRS scheduler state for the Service Health dashboard."""
+    path = SETTINGS.paths.runtime_dir / "irs_scheduler_status.json"
+    now = datetime.now(ZoneInfo(SETTINGS.trading_hours.timezone)).isoformat()
+    previous: dict[str, Any] = {}
+    try:
+        previous = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    except (OSError, ValueError, TypeError):
+        previous = {}
+
+    normalized_status = str(status or "unknown").strip().lower()
+    payload: dict[str, Any] = {
+        "status": normalized_status,
+        "mode": str(mode or "UNKNOWN").strip().upper(),
+        "connected": bool(connected),
+        "pid": os.getpid(),
+        "started_at": (
+            now
+            if normalized_status in {"starting", "running"}
+            and str(previous.get("status") or "").lower() not in {"starting", "running"}
+            else previous.get("started_at") or now
+        ),
+        "updated_at": now,
+    }
+    if normalized_status in {"complete", "failed", "skipped"}:
+        payload["finished_at"] = now
+    payload.update(details)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(f"{path.suffix}.{os.getpid()}.tmp")
+    temporary.write_text(json.dumps(payload, indent=2, default=str), encoding="utf-8")
+    os.replace(temporary, path)
+    return payload
 
 
 def notify_inefficiency_reclaim_scan(

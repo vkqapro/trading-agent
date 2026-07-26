@@ -12,6 +12,10 @@ JOB_MODULES: Dict[str, str] = {
     "intraday": "src.main --job intraday --client-id 21",
     "market_data": "src.main --job market_data --client-id 17",
     "irs_scan": "src.main --job irs_scan --irs-mode FIFTEEN_MIN_CONFIRMATION_SCAN --client-id 71",
+    "irs_premarket": "src.main --job irs_scan --irs-mode PREMARKET_CONTEXT --client-id 71",
+    "irs_hourly": "src.main --job irs_scan --irs-mode HOURLY_SETUP_SCAN --client-id 71",
+    "irs_confirmation": "src.main --job irs_scan --irs-mode FIFTEEN_MIN_CONFIRMATION_SCAN --client-id 71",
+    "irs_eod": "src.main --job irs_scan --irs-mode EOD_REPORT --client-id 71",
     "eod": "src.main --job eod --client-id 51",
     "weekly": "src.main --job weekly --client-id 61",
 }
@@ -41,4 +45,13 @@ def build_all_task_scheduler_commands(project_root: Path, python_executable: str
 
 def get_recommended_task_names() -> Dict[str, str]:
     """Map jobs to recommended Task Scheduler task names."""
-    return {job: f"IBKR Gerchik Bot - {job.title()}" for job in JOB_MODULES}
+    names = {job: f"IBKR Gerchik Bot - {job.title()}" for job in JOB_MODULES}
+    names.update(
+        {
+            "irs_premarket": "IBKR Bot - IRS Premarket",
+            "irs_hourly": "IBKR Bot - IRS Hourly",
+            "irs_confirmation": "IBKR Bot - IRS Confirmation",
+            "irs_eod": "IBKR Bot - IRS EOD",
+        }
+    )
+    return names
