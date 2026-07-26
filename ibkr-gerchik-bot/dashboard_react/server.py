@@ -13,6 +13,7 @@ import json
 import math
 import subprocess
 import sys
+import tempfile
 import time
 import re
 from pathlib import Path
@@ -21,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dataclasses import asdict
+from dataclasses import asdict, replace
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
@@ -76,6 +77,131 @@ HERE = Path(__file__).parent
 app.mount("/static", StaticFiles(directory=HERE), name="static")
 
 ET = ZoneInfo(SETTINGS.trading_hours.timezone)
+IRS_MIN_DAILY_HISTORY_ROWS_KEY = "IRS_MIN_DAILY_HISTORY_ROWS"
+IRS_MIN_DAILY_HISTORY_ROWS_FLOOR = 20
+IRS_MIN_DAILY_HISTORY_ROWS_CEILING = 5000
+IRS_MINIMUM_DISPLAY_SCORE_KEY = "IRS_MINIMUM_DISPLAY_SCORE"
+IRS_MINIMUM_DISPLAY_SCORE_FLOOR = 0.0
+
+
+def _write_env_setting(path: Path, key: str, value: str) -> None:
+    """Atomically update one allowlisted environment setting."""
+    if key not in {
+        IRS_MIN_DAILY_HISTORY_ROWS_KEY,
+        IRS_MINIMUM_DISPLAY_SCORE_KEY,
+    }:
+        raise ValueError(f"Dashboard setting is not allowlisted: {key}")
+    text = path.read_text(encoding="utf-8-sig") if path.exists() else ""
+    newline = "\r\n" if "\r\n" in text else "\n"
+    lines = text.splitlines(keepends=True)
+    pattern = re.compile(rf"^(\s*{re.escape(key)}\s*=\s*)([^#\r\n]*?)(\s+#.*)?(\r?\n)?$")
+    found = False
+    updated_lines: list[str] = []
+    for line in lines:
+        match = pattern.match(line)
+        if not match:
+            updated_lines.append(line)
+            continue
+        found = True
+        updated_lines.append(
+            f"{match.group(1)}{value}{match.group(3) or ''}{match.group(4) or ''}"
+        )
+    if not found:
+        if updated_lines and not updated_lines[-1].endswith(("\n", "\r")):
+            updated_lines[-1] += newline
+        updated_lines.append(f"{key}={value}{newline}")
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temp_name = ""
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            newline="",
+            dir=path.parent,
+            prefix=f".{path.name}.",
+            suffix=".tmp",
+            delete=False,
+        ) as handle:
+            temp_name = handle.name
+            handle.write("".join(updated_lines))
+        os.replace(temp_name, path)
+    finally:
+        if temp_name:
+            Path(temp_name).unlink(missing_ok=True)
+
+
+def _parse_irs_min_daily_history_rows(value: object) -> int:
+    if isinstance(value, bool):
+        raise ValueError("Minimum daily history must be a whole number.")
+    try:
+        numeric = float(value)
+    except (TypeError, ValueError):
+        raise ValueError("Minimum daily history must be a whole number.") from None
+    if not math.isfinite(numeric) or not numeric.is_integer():
+        raise ValueError("Minimum daily history must be a whole number.")
+    rows = int(numeric)
+    if not IRS_MIN_DAILY_HISTORY_ROWS_FLOOR <= rows <= IRS_MIN_DAILY_HISTORY_ROWS_CEILING:
+        raise ValueError(
+            "Minimum daily history must be between "
+            f"{IRS_MIN_DAILY_HISTORY_ROWS_FLOOR} and {IRS_MIN_DAILY_HISTORY_ROWS_CEILING} rows."
+        )
+    return rows
+
+
+def _set_irs_min_daily_history_rows(rows: int, *, env_path: Path | None = None) -> int:
+    resolved_rows = _parse_irs_min_daily_history_rows(rows)
+    updated_settings = replace(
+        SETTINGS.inefficiency_reclaim,
+        min_daily_history_rows=resolved_rows,
+    )
+    updated_settings.validate()
+    _write_env_setting(
+        env_path or ROOT / ".env",
+        IRS_MIN_DAILY_HISTORY_ROWS_KEY,
+        str(resolved_rows),
+    )
+    os.environ[IRS_MIN_DAILY_HISTORY_ROWS_KEY] = str(resolved_rows)
+    object.__setattr__(SETTINGS, "inefficiency_reclaim", updated_settings)
+    return resolved_rows
+
+
+def _parse_irs_minimum_display_score(value: object) -> float:
+    if isinstance(value, bool):
+        raise ValueError("Inefficiency Reclaim Score must be a number.")
+    try:
+        score = float(value)
+    except (TypeError, ValueError):
+        raise ValueError("Inefficiency Reclaim Score must be a number.") from None
+    maximum = float(SETTINGS.inefficiency_reclaim.minimum_order_score)
+    if not math.isfinite(score) or not IRS_MINIMUM_DISPLAY_SCORE_FLOOR <= score <= maximum:
+        raise ValueError(
+            "Inefficiency Reclaim Score must be between "
+            f"{IRS_MINIMUM_DISPLAY_SCORE_FLOOR:g} and {maximum:g}."
+        )
+    return score
+
+
+def _set_irs_minimum_display_score(
+    score: float,
+    *,
+    env_path: Path | None = None,
+) -> float:
+    resolved_score = _parse_irs_minimum_display_score(score)
+    updated_settings = replace(
+        SETTINGS.inefficiency_reclaim,
+        minimum_display_score=resolved_score,
+    )
+    updated_settings.validate()
+    env_value = f"{resolved_score:g}"
+    _write_env_setting(
+        env_path or ROOT / ".env",
+        IRS_MINIMUM_DISPLAY_SCORE_KEY,
+        env_value,
+    )
+    os.environ[IRS_MINIMUM_DISPLAY_SCORE_KEY] = env_value
+    object.__setattr__(SETTINGS, "inefficiency_reclaim", updated_settings)
+    return resolved_score
 
 
 def _onboard_client_id(symbol: str) -> str:
@@ -1217,8 +1343,71 @@ def api_market_screener(
     )
 
 
+@app.get("/api/inefficiency-reclaim/settings")
+def api_inefficiency_reclaim_settings():
+    return {
+        "min_daily_history_rows": SETTINGS.inefficiency_reclaim.min_daily_history_rows,
+        "minimum": IRS_MIN_DAILY_HISTORY_ROWS_FLOOR,
+        "maximum": IRS_MIN_DAILY_HISTORY_ROWS_CEILING,
+        "env_key": IRS_MIN_DAILY_HISTORY_ROWS_KEY,
+        "minimum_display_score": SETTINGS.inefficiency_reclaim.minimum_display_score,
+        "display_score_minimum": IRS_MINIMUM_DISPLAY_SCORE_FLOOR,
+        "display_score_maximum": SETTINGS.inefficiency_reclaim.minimum_order_score,
+        "display_score_env_key": IRS_MINIMUM_DISPLAY_SCORE_KEY,
+    }
+
+
+@app.post("/api/inefficiency-reclaim/settings")
+async def api_update_inefficiency_reclaim_settings(body: dict):
+    try:
+        if not isinstance(body, dict):
+            raise ValueError("IRS settings payload must be an object.")
+        has_rows = "min_daily_history_rows" in body
+        has_score = "minimum_display_score" in body
+        if not has_rows and not has_score:
+            raise ValueError("No supported IRS setting was provided.")
+        parsed_rows = (
+            _parse_irs_min_daily_history_rows(body["min_daily_history_rows"])
+            if has_rows
+            else None
+        )
+        parsed_score = (
+            _parse_irs_minimum_display_score(body["minimum_display_score"])
+            if has_score
+            else None
+        )
+        rows = (
+            _set_irs_min_daily_history_rows(parsed_rows)
+            if parsed_rows is not None
+            else SETTINGS.inefficiency_reclaim.min_daily_history_rows
+        )
+        score = (
+            _set_irs_minimum_display_score(parsed_score)
+            if parsed_score is not None
+            else SETTINGS.inefficiency_reclaim.minimum_display_score
+        )
+    except ValueError as exc:
+        raise HTTPException(400, str(exc))
+    except OSError as exc:
+        raise HTTPException(500, f"Could not save IRS settings: {exc}")
+    saved = []
+    if has_rows:
+        saved.append(f"{IRS_MIN_DAILY_HISTORY_ROWS_KEY}={rows}")
+    if has_score:
+        saved.append(f"{IRS_MINIMUM_DISPLAY_SCORE_KEY}={score:g}")
+    return {
+        "ok": True,
+        "min_daily_history_rows": rows,
+        "minimum_display_score": score,
+        "message": f"SAVED: {', '.join(saved)}",
+    }
+
+
 @app.get("/api/inefficiency-reclaim")
-def api_inefficiency_reclaim(anchor_date: str = ""):
+def api_inefficiency_reclaim(
+    anchor_date: str = "",
+    min_daily_history_rows: int | None = None,
+):
     """Run the disabled-by-default IRS analysis scan over persisted bars."""
     from src.symbol_universe import load_stock_symbols
 
@@ -1234,6 +1423,7 @@ def api_inefficiency_reclaim(anchor_date: str = ""):
             symbols=symbols,
             watchlist=watchlist if isinstance(watchlist, dict) else {},
             anchor_date=parsed_anchor or None,
+            min_daily_history_rows=min_daily_history_rows,
             config=config,
         )
     except ValueError as exc:

@@ -416,6 +416,54 @@ class PlanningAndGateTests(unittest.TestCase):
         self.assertIn("STALE_QUOTE", reasons)
         self.assertIn("POSITION_EXISTS", reasons)
 
+    def test_delayed_quote_is_a_hard_reject(self) -> None:
+        now = datetime(2026, 7, 1, 14, tzinfo=ET)
+        daily = [
+            Bar(
+                symbol="TEST",
+                timeframe="1 day",
+                timestamp=now - timedelta(days=30 - index),
+                open=D("100"),
+                high=D("101"),
+                low=D("99"),
+                close=D("100"),
+                volume=1_000_000,
+            )
+            for index in range(30)
+        ]
+        context = StrategyContext(
+            symbol="TEST",
+            as_of=now,
+            daily_bars=daily,
+            hourly_bars=(),
+            bars_15m=(),
+            quote=Quote(
+                D("100"),
+                D("100.05"),
+                D("100.02"),
+                now,
+                "delayed",
+            ),
+            market_regime=MarketRegime.TREND_LOW_VOL,
+            news_status=RiskStatus.CLEAR,
+            earnings_status=RiskStatus.CLEAR,
+            corporate_action_status=RiskStatus.CLEAR,
+            halt_status=RiskStatus.CLEAR,
+            account_state=AccountState(D("100000"), D("100000")),
+            sector_regime=MarketRegime.TREND_LOW_VOL,
+            session_entry_allowed=True,
+        )
+
+        reasons = evaluate_hard_gates(
+            context,
+            Direction.LONG,
+            D("90"),
+            D("1.2"),
+        )
+
+        self.assertIn("DELAYED_QUOTE", reasons)
+        self.assertNotIn("MISSING_QUOTE", reasons)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -17,6 +17,22 @@ class _BrokerStub:
         return self._bars.copy()
 
 
+class _QuoteBrokerStub:
+    def __init__(self) -> None:
+        self.market_data_types: list[int] = []
+
+    def request_market_data_type(self, market_data_type: int) -> None:
+        self.market_data_types.append(market_data_type)
+
+    def get_market_price(self, _symbol: str) -> dict[str, object]:
+        return {
+            "bid": 49.90,
+            "ask": 50.10,
+            "last": 50.00,
+            "quote_status": "ok",
+        }
+
+
 class _DurationBrokerStub:
     def __init__(self, completed: pd.DataFrame, current: pd.DataFrame) -> None:
         self.completed = completed
@@ -46,6 +62,16 @@ class _NasdaqProviderStub:
 
 
 class MarketDataServiceTests(unittest.TestCase):
+    def test_delayed_fallback_marks_quote_source(self) -> None:
+        broker = _QuoteBrokerStub()
+        service = MarketDataService(broker)
+
+        service.enable_delayed_fallback()
+        quote = service.get_quote("DAL")
+
+        self.assertEqual(broker.market_data_types, [3])
+        self.assertEqual(quote["market_data_type"], "delayed")
+
     def test_get_intraday_bars_sorts_oldest_to_newest(self) -> None:
         bars = pd.DataFrame(
             [

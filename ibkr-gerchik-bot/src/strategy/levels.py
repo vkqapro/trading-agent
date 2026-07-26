@@ -134,34 +134,30 @@ def _build_zone(price: float, zone_buffer: float) -> tuple[float, float, float]:
 
 
 def _touch_indices_for_zone(bars: pd.DataFrame, zone_low: float, zone_high: float) -> List[int]:
-    indices: List[int] = []
-    for idx, (_, row) in enumerate(bars.iterrows()):
-        high = float(row["high"])
-        low = float(row["low"])
-        if high >= zone_low and low <= zone_high:
-            indices.append(idx)
-    return indices
+    highs = bars["high"].astype(float).to_numpy()
+    lows = bars["low"].astype(float).to_numpy()
+    return [
+        idx
+        for idx, (high, low) in enumerate(zip(highs, lows))
+        if high >= zone_low and low <= zone_high
+    ]
 
 
 def _false_breakout_indices_for_zone(bars: pd.DataFrame, zone_low: float, zone_high: float) -> List[int]:
-    indices: List[int] = []
     center = (zone_low + zone_high) / 2.0
-    for idx, (_, row) in enumerate(bars.iterrows()):
-        low = float(row["low"])
-        high = float(row["high"])
-        close = float(row["close"])
-        if low < zone_low < close <= zone_high:
-            indices.append(idx)
-            continue
-        if high > zone_high > close >= zone_low:
-            indices.append(idx)
-            continue
-        if low < center < close and close <= zone_high:
-            indices.append(idx)
-            continue
-        if high > center > close and close >= zone_low:
-            indices.append(idx)
-    return indices
+    lows = bars["low"].astype(float).to_numpy()
+    highs = bars["high"].astype(float).to_numpy()
+    closes = bars["close"].astype(float).to_numpy()
+    return [
+        idx
+        for idx, (low, high, close) in enumerate(zip(lows, highs, closes))
+        if (
+            low < zone_low < close <= zone_high
+            or high > zone_high > close >= zone_low
+            or low < center < close <= zone_high
+            or high > center > close >= zone_low
+        )
+    ]
 
 
 def _first_touch_date_from_indices(bars: pd.DataFrame, indices: Sequence[int]) -> Optional[str]:

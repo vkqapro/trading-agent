@@ -4315,6 +4315,14 @@ function TabInefficiencyReclaim({refreshKey=0}) {
   const [selectedId,setSelectedId]=useState(null);
   const [bars,setBars]=useState([]);
   const [barsInfo,setBarsInfo]=useState({stale:false,lastDate:null});
+  const [minDailyRows,setMinDailyRows]=useState('1000');
+  const [savedMinDailyRows,setSavedMinDailyRows]=useState(1000);
+  const [settingsBounds,setSettingsBounds]=useState({minimum:20,maximum:5000});
+  const [displayScore,setDisplayScore]=useState('80');
+  const [savedDisplayScore,setSavedDisplayScore]=useState(80);
+  const [scoreBounds,setScoreBounds]=useState({minimum:0,maximum:85});
+  const [settingsBusy,setSettingsBusy]=useState(false);
+  const [settingsStatus,setSettingsStatus]=useState('');
   const money = value => value!=null && Number.isFinite(Number(value)) ? `$${Number(value).toFixed(Math.abs(Number(value))>=10?2:4)}` : '—';
   const number = (value,digits=2) => value!=null && Number.isFinite(Number(value)) ? Number(value).toFixed(digits) : '—';
   const dateKeyFromLocal = value => `${value.getFullYear()}-${String(value.getMonth()+1).padStart(2,'0')}-${String(value.getDate()).padStart(2,'0')}`;
@@ -4325,23 +4333,115 @@ function TabInefficiencyReclaim({refreshKey=0}) {
     next.setDate(next.getDate()+delta);
     return dateKeyFromLocal(next);
   });
-  const scan = useCallback(()=>{
-    setBusy(true);
-    const query=new URLSearchParams();
-    if(anchorDate) query.set('anchor_date',anchorDate);
-    fetch(`${API}/inefficiency-reclaim?${query.toString()}`,{cache:'no-store'})
+  useEffect(()=>{
+    fetch(`${API}/inefficiency-reclaim/settings`,{cache:'no-store'})
       .then(async response=>{
         const payload=await response.json().catch(()=>({}));
-        if(!response.ok) throw new Error(payload.detail||'IRS scan failed');
+        if(!response.ok) throw new Error(payload.detail||'IRS settings unavailable');
         return payload;
       })
       .then(payload=>{
-        setData({...payload,idle:false});
-        setSelectedId((payload.signals||[])[0]?.signal_id||null);
+        const rows=Number(payload.min_daily_history_rows);
+        if(Number.isFinite(rows)){
+          setMinDailyRows(String(rows));
+          setSavedMinDailyRows(rows);
+        }
+        const score=Number(payload.minimum_display_score);
+        if(Number.isFinite(score)){
+          setDisplayScore(String(score));
+          setSavedDisplayScore(score);
+        }
+        setSettingsBounds({
+          minimum:Number(payload.minimum)||20,
+          maximum:Number(payload.maximum)||5000,
+        });
+        setScoreBounds({
+          minimum:Number.isFinite(Number(payload.display_score_minimum))?Number(payload.display_score_minimum):0,
+          maximum:Number(payload.display_score_maximum)||85,
+        });
       })
-      .catch(error=>setData({...empty,idle:false,anchor_date:anchorDate,error:error.message||String(error)}))
-      .finally(()=>setBusy(false));
-  },[anchorDate]);
+      .catch(error=>setSettingsStatus(error.message||String(error)));
+  },[]);
+  const normalizedMinDailyRows = () => {
+    const rows=Number(minDailyRows);
+    if(!Number.isInteger(rows)||rows<settingsBounds.minimum||rows>settingsBounds.maximum){
+      throw new Error(`Daily history minimum must be a whole number from ${settingsBounds.minimum} to ${settingsBounds.maximum}.`);
+    }
+    return rows;
+  };
+  const normalizedDisplayScore = () => {
+    const score=Number(displayScore);
+    if(!Number.isFinite(score)||score<scoreBounds.minimum||score>scoreBounds.maximum){
+      throw new Error(`Inefficiency Reclaim Score must be from ${scoreBounds.minimum} to ${scoreBounds.maximum}.`);
+    }
+    return score;
+  };
+  const saveMinDailyRows = useCallback(async()=>{
+    const rows=normalizedMinDailyRows();
+    setSettingsBusy(true);
+    setSettingsStatus('');
+    try{
+      const response=await fetch(`${API}/inefficiency-reclaim/settings`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({min_daily_history_rows:rows}),
+      });
+      const payload=await response.json().catch(()=>({}));
+      if(!response.ok) throw new Error(payload.detail||'Could not save IRS settings');
+      setSavedMinDailyRows(rows);
+      setSettingsStatus(payload.message||'SAVED');
+      return rows;
+    }finally{
+      setSettingsBusy(false);
+    }
+  },[minDailyRows,settingsBounds.minimum,settingsBounds.maximum]);
+  const saveDisplayScore = useCallback(async()=>{
+    const score=normalizedDisplayScore();
+    setSettingsBusy(true);
+    setSettingsStatus('');
+    try{
+      const response=await fetch(`${API}/inefficiency-reclaim/settings`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          min_daily_history_rows:normalizedMinDailyRows(),
+          minimum_display_score:score,
+        }),
+      });
+      const payload=await response.json().catch(()=>({}));
+      if(!response.ok) throw new Error(payload.detail||'Could not save IRS settings');
+      if(!Number.isFinite(Number(payload.minimum_display_score))){
+        throw new Error('Restart the dashboard backend to enable the Score setting.');
+      }
+      setSavedDisplayScore(score);
+      setSettingsStatus(payload.message||'SAVED');
+      return score;
+    }finally{
+      setSettingsBusy(false);
+    }
+  },[displayScore,scoreBounds.minimum,scoreBounds.maximum]);
+  const scan = useCallback(async()=>{
+    setBusy(true);
+    try{
+      const currentRows=normalizedMinDailyRows();
+      const rows=currentRows===savedMinDailyRows?currentRows:await saveMinDailyRows();
+      const currentScore=normalizedDisplayScore();
+      if(currentScore!==savedDisplayScore) await saveDisplayScore();
+      const query=new URLSearchParams();
+      if(anchorDate) query.set('anchor_date',anchorDate);
+      query.set('min_daily_history_rows',String(rows));
+      const response=await fetch(`${API}/inefficiency-reclaim?${query.toString()}`,{cache:'no-store'});
+      const payload=await response.json().catch(()=>({}));
+      if(!response.ok) throw new Error(payload.detail||'IRS scan failed');
+      setData({...payload,idle:false});
+      setSelectedId((payload.signals||[])[0]?.signal_id||null);
+    }catch(error){
+      setSettingsStatus(error.message||String(error));
+      setData({...empty,idle:false,anchor_date:anchorDate,error:error.message||String(error)});
+    }finally{
+      setBusy(false);
+    }
+  },[anchorDate,minDailyRows,savedMinDailyRows,settingsBounds.minimum,settingsBounds.maximum,saveMinDailyRows,displayScore,savedDisplayScore,scoreBounds.minimum,scoreBounds.maximum,saveDisplayScore]);
   const rows=data.signals||[];
   const selected=rows.find(item=>item.signal_id===selectedId)||rows[0]||null;
   useEffect(()=>{
@@ -4381,8 +4481,56 @@ function TabInefficiencyReclaim({refreshKey=0}) {
               <Icon n="keyboard_arrow_down" size={19} color="inherit"/>
             </button>
           </div>
-          <button onClick={scan} disabled={busy}
-            style={{height:36,padding:'0 16px',borderRadius:8,cursor:busy?'wait':'pointer',display:'flex',alignItems:'center',gap:8,fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:900,color:'#001416',background:busy?R(C.cyan,0.55):C.cyan,border:`1px solid ${R(C.cyan,0.55)}`}}>
+          <div style={{display:'flex',alignItems:'stretch',height:36,border:`1px solid ${R(minDailyRows===String(savedMinDailyRows)?C.outline:C.cyan,0.28)}`,borderRadius:8,overflow:'hidden',background:R(C.surfLowest,0.8)}}>
+            <label style={{display:'flex',alignItems:'center',gap:7,padding:'0 10px',fontFamily:"'JetBrains Mono',monospace",fontSize:9,fontWeight:800,color:C.outline,textTransform:'uppercase'}}>
+              Daily bars
+              <input type="number" min={settingsBounds.minimum} max={settingsBounds.maximum} step="10" value={minDailyRows}
+                onChange={event=>{setMinDailyRows(event.target.value);setSettingsStatus('');}}
+                aria-label="IRS minimum daily history rows"
+                style={{width:62,background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:900,textAlign:'right'}}/>
+            </label>
+            <button onClick={()=>{const value=Math.min(settingsBounds.maximum,(Number(minDailyRows)||settingsBounds.minimum)+10);setMinDailyRows(String(value));setSettingsStatus('');}}
+              title="Increase minimum daily bars" aria-label="Increase minimum daily bars"
+              style={{width:30,border:0,borderLeft:`1px solid ${R(C.outline,0.18)}`,cursor:'pointer',background:'transparent',color:C.onVar,display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <Icon n="keyboard_arrow_up" size={18} color="inherit"/>
+            </button>
+            <button onClick={()=>{const value=Math.max(settingsBounds.minimum,(Number(minDailyRows)||settingsBounds.minimum)-10);setMinDailyRows(String(value));setSettingsStatus('');}}
+              title="Decrease minimum daily bars" aria-label="Decrease minimum daily bars"
+              style={{width:30,border:0,borderLeft:`1px solid ${R(C.outline,0.18)}`,cursor:'pointer',background:'transparent',color:C.onVar,display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <Icon n="keyboard_arrow_down" size={18} color="inherit"/>
+            </button>
+            <button onClick={()=>saveMinDailyRows().catch(error=>setSettingsStatus(error.message||String(error)))} disabled={settingsBusy||minDailyRows===String(savedMinDailyRows)}
+              title="Save daily history minimum" aria-label="Save daily history minimum"
+              style={{width:34,border:0,borderLeft:`1px solid ${R(C.outline,0.18)}`,cursor:settingsBusy?'wait':minDailyRows===String(savedMinDailyRows)?'default':'pointer',background:minDailyRows===String(savedMinDailyRows)?'transparent':R(C.cyan,0.12),color:minDailyRows===String(savedMinDailyRows)?C.outline:C.cyan,display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <Icon n={settingsBusy?'progress_activity':'save'} size={16} color="inherit" style={{animation:settingsBusy?'spin .8s linear infinite':undefined}}/>
+            </button>
+          </div>
+          <div style={{display:'flex',alignItems:'stretch',height:36,border:`1px solid ${R(Number(displayScore)===savedDisplayScore?C.outline:C.cyan,0.28)}`,borderRadius:8,overflow:'hidden',background:R(C.surfLowest,0.8)}}>
+            <label style={{display:'flex',alignItems:'center',gap:7,padding:'0 10px',fontFamily:"'JetBrains Mono',monospace",fontSize:9,fontWeight:800,color:C.outline,textTransform:'uppercase'}}>
+              Score
+              <input type="number" min={scoreBounds.minimum} max={scoreBounds.maximum} step="1" value={displayScore}
+                onChange={event=>{setDisplayScore(event.target.value);setSettingsStatus('');}}
+                aria-label="Inefficiency Reclaim minimum display score"
+                style={{width:42,background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:900,textAlign:'right'}}/>
+            </label>
+            <button onClick={()=>{const value=Math.min(scoreBounds.maximum,(Number(displayScore)||scoreBounds.minimum)+1);setDisplayScore(String(value));setSettingsStatus('');}}
+              title="Increase display score" aria-label="Increase Inefficiency Reclaim display score"
+              style={{width:30,border:0,borderLeft:`1px solid ${R(C.outline,0.18)}`,cursor:'pointer',background:'transparent',color:C.onVar,display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <Icon n="keyboard_arrow_up" size={18} color="inherit"/>
+            </button>
+            <button onClick={()=>{const value=Math.max(scoreBounds.minimum,(Number(displayScore)||scoreBounds.minimum)-1);setDisplayScore(String(value));setSettingsStatus('');}}
+              title="Decrease display score" aria-label="Decrease Inefficiency Reclaim display score"
+              style={{width:30,border:0,borderLeft:`1px solid ${R(C.outline,0.18)}`,cursor:'pointer',background:'transparent',color:C.onVar,display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <Icon n="keyboard_arrow_down" size={18} color="inherit"/>
+            </button>
+            <button onClick={()=>saveDisplayScore().catch(error=>setSettingsStatus(error.message||String(error)))} disabled={settingsBusy||Number(displayScore)===savedDisplayScore}
+              title="Save display score" aria-label="Save Inefficiency Reclaim display score"
+              style={{width:34,border:0,borderLeft:`1px solid ${R(C.outline,0.18)}`,cursor:settingsBusy?'wait':Number(displayScore)===savedDisplayScore?'default':'pointer',background:Number(displayScore)===savedDisplayScore?'transparent':R(C.cyan,0.12),color:Number(displayScore)===savedDisplayScore?C.outline:C.cyan,display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <Icon n={settingsBusy?'progress_activity':'save'} size={16} color="inherit" style={{animation:settingsBusy?'spin .8s linear infinite':undefined}}/>
+            </button>
+          </div>
+          <button onClick={scan} disabled={busy||settingsBusy}
+            style={{height:36,padding:'0 16px',borderRadius:8,cursor:busy||settingsBusy?'wait':'pointer',display:'flex',alignItems:'center',gap:8,fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:900,color:'#001416',background:busy?R(C.cyan,0.55):C.cyan,border:`1px solid ${R(C.cyan,0.55)}`}}>
             <Icon n={busy?'progress_activity':'radar'} size={17} color="#001416" style={{animation:busy?'spin .8s linear infinite':undefined}}/>
             {busy?'SCANNING':'SCAN'}
           </button>
@@ -4394,12 +4542,15 @@ function TabInefficiencyReclaim({refreshKey=0}) {
             {data.execution_block||'Analysis waits for a manual scan.'}
           </span>
         </div>
+        {settingsStatus&&<div style={{marginTop:8,fontFamily:"'JetBrains Mono',monospace",fontSize:9,color:settingsStatus.startsWith('SAVED')?C.lime:C.err}}>
+          {settingsStatus}
+        </div>}
         {data.error&&<div style={{marginTop:12,padding:'10px 12px',borderRadius:8,color:C.err,background:R(C.err,0.08),border:`1px solid ${R(C.err,0.24)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}>{data.error}</div>}
       </GlassCard>
 
       <MetricGrid items={[
         {label:'Universe',icon:'radar',value:data.universe_size||0,sub:data.idle?'idle':'symbols evaluated',valueColor:C.cyan},
-        {label:'Display Setups',icon:'candlestick_chart',value:data.signals_found||0,sub:'score at display threshold',valueColor:C.lime},
+        {label:'Display Setups',icon:'candlestick_chart',value:data.signals_found||0,sub:`score >= ${savedDisplayScore}`,valueColor:C.lime},
         {label:'Active States',icon:'account_tree',value:(data.active_setups||[]).length,sub:'persisted non-terminal',valueColor:C.cyan},
         {label:'Data Blocked',icon:'database',value:incompleteSymbols,sub:'not paper-ready',valueColor:incompleteSymbols?C.err:C.lime},
       ]}/>
@@ -4424,7 +4575,7 @@ function TabInefficiencyReclaim({refreshKey=0}) {
           ])}/>
         {!rows.length&&<div style={{padding:'24px 20px',display:'flex',alignItems:'center',gap:10,color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
           <Icon n={data.idle?'touch_app':'filter_alt_off'} size={18} color={C.outline}/>
-          {data.idle?'Choose an anchor day and click Scan.':'No setup reached the 80-point display threshold. Rejection diagnostics are below.'}
+          {data.idle?'Choose an anchor day and click Scan.':`No setup reached the ${savedDisplayScore}-point display threshold. Rejection diagnostics are below.`}
         </div>}
       </GlassCard>
 

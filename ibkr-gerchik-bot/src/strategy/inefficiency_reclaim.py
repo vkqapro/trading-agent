@@ -91,6 +91,7 @@ class RejectionReason(str, Enum):
     INVALID_BAR_DATA = "INVALID_BAR_DATA"
     STALE_QUOTE = "STALE_QUOTE"
     MISSING_QUOTE = "MISSING_QUOTE"
+    DELAYED_QUOTE = "DELAYED_QUOTE"
     SPREAD_TOO_WIDE = "SPREAD_TOO_WIDE"
     PRICE_OUT_OF_RANGE = "PRICE_OUT_OF_RANGE"
     LIQUIDITY_TOO_LOW = "LIQUIDITY_TOO_LOW"
@@ -179,10 +180,12 @@ class Quote:
     ask: Decimal
     last: Decimal
     timestamp: datetime
+    data_type: str = "live"
 
     def __post_init__(self) -> None:
         if self.timestamp.tzinfo is None:
             raise ValueError("Quote timestamp must be timezone-aware.")
+        object.__setattr__(self, "data_type", str(self.data_type or "unknown").lower())
 
     @property
     def mid(self) -> Decimal:
@@ -1333,6 +1336,8 @@ def evaluate_hard_gates(
         age = (context.as_of - context.quote.timestamp).total_seconds()
         if age < 0 or age > config.max_quote_age_seconds:
             reasons.append(RejectionReason.STALE_QUOTE.value)
+        if context.quote.data_type != "live":
+            reasons.append(RejectionReason.DELAYED_QUOTE.value)
         spread = context.quote.spread_percent
         if spread is None:
             reasons.append(RejectionReason.MISSING_QUOTE.value)
@@ -1657,6 +1662,9 @@ def evaluate_strategy(
                     ),
                     "spread_percent": (
                         context.quote.spread_percent if context.quote else None
+                    ),
+                    "quote_data_type": (
+                        context.quote.data_type if context.quote else None
                     ),
                     "news_status": context.news_status,
                     "earnings_status": context.earnings_status,

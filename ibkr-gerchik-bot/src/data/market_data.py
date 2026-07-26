@@ -110,8 +110,12 @@ class MarketDataService:
             return pd.DataFrame(columns=["date", "open", "high", "low", "close", "volume"])
         return self._normalize_bars_frame(bars)
 
-    def get_quote(self, symbol: str) -> Dict[str, float]:
-        return self.broker.get_market_price(symbol)
+    def get_quote(self, symbol: str) -> Dict[str, object]:
+        quote = dict(self.broker.get_market_price(symbol))
+        quote["market_data_type"] = (
+            "delayed" if self._delayed_fallback_enabled else "live"
+        )
+        return quote
 
     def get_bars(
         self,

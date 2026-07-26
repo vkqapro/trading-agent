@@ -18,6 +18,33 @@ from src.strategy.levels import Level, detect_levels, optimize_trade_levels
 from src.workflow_log import append_workflow_snapshot
 
 
+def _duration_to_trading_rows(duration: str) -> int:
+    parts = str(duration or "").strip().upper().split()
+    if len(parts) != 2:
+        return 504
+    try:
+        amount = int(float(parts[0]))
+    except ValueError:
+        return 504
+    unit = parts[1]
+    if unit.startswith("Y"):
+        return max(amount * 252, 1)
+    if unit.startswith("M"):
+        return max(amount * 21, 1)
+    if unit.startswith("W"):
+        return max(amount * 5, 1)
+    if unit.startswith("D"):
+        return max(amount, 1)
+    return 504
+
+
+def _level_daily_window(daily_bars):
+    max_rows = _duration_to_trading_rows(SETTINGS.strategy.chart_daily_duration)
+    if daily_bars is None or daily_bars.empty or len(daily_bars) <= max_rows:
+        return daily_bars
+    return daily_bars.tail(max_rows).reset_index(drop=True)
+
+
 def _level_zone(level: Level) -> Tuple[float, float]:
     zone_low = level.zone_low if level.zone_low is not None else level.price
     zone_high = level.zone_high if level.zone_high is not None else level.price
@@ -149,17 +176,18 @@ def run_premarket(
         intraday_bars = market_data.get_intraday_bars(symbol, duration="2 D", bar_size="15 mins")
         if daily_bars.empty or intraday_bars.empty:
             continue
+        level_daily_bars = _level_daily_window(daily_bars)
         # Persist bars for the dashboard so charts render without a live TWS
         # connection. Best-effort: failures must never break the scan.
         save_bars(symbol, "daily", daily_bars)
         save_bars(symbol, "intraday_15m", intraday_bars)
-        detected_levels = detect_levels(symbol, daily_bars, intraday_bars)
+        detected_levels = detect_levels(symbol, level_daily_bars, intraday_bars)
         strong_levels = filter_strong_levels(detected_levels)
         if not strong_levels:
             continue
 
         current_price = float(intraday_bars.iloc[-1]["close"])
-        daily_atr = calculate_daily_atr(daily_bars)
+        daily_atr = calculate_daily_atr(level_daily_bars)
         raw_level_dicts = [level.to_dict() for level in strong_levels]
         optimized_levels = optimize_trade_levels(strong_levels, daily_atr)
         lower_level = max((level.price for level in optimized_levels if level.price < current_price), default=None)

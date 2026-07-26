@@ -32,6 +32,7 @@ from src.strategy.inefficiency_reclaim import (
     StrategyContext,
     StructuralLevel,
     calculate_robust_atr,
+    completed_bars,
     detect_displacement,
     evaluate_strategy,
     grade_for_score,
@@ -40,6 +41,7 @@ from src.strategy.inefficiency_reclaim import (
 
 ET = ZoneInfo("America/New_York")
 BarLoader = Callable[[str, str], pd.DataFrame]
+QuoteLoader = Callable[[str], Mapping[str, Any]]
 TIMEFRAME_DELTAS = {
     "1 day": timedelta(days=1),
     "1 hour": timedelta(hours=1),
@@ -319,6 +321,7 @@ def _quote(value: Mapping[str, Any] | None, as_of: datetime) -> Quote | None:
         Decimal(str(ask)),
         Decimal(str(last or (bid + ask) / 2)),
         timestamp,
+        str(value.get("market_data_type") or "live"),
     )
 
 
@@ -426,6 +429,7 @@ def candidate_row(candidate: StrategyCandidate) -> dict[str, Any]:
         "earnings_status": diagnostics.get("earnings_status"),
         "news_status": diagnostics.get("news_status"),
         "quote_age": diagnostics.get("quote_age_seconds"),
+        "quote_data_type": diagnostics.get("quote_data_type"),
         "expires_at": payload.get("expires_at"),
         "primary_reason": candidate.hard_rejections[0] if candidate.hard_rejections else "QUALIFIED",
         "rejection_reasons": list(candidate.hard_rejections),
@@ -471,15 +475,16 @@ def _diagnose_no_candidate(
     levels: Sequence[StructuralLevel],
     config: IRSConfig,
 ) -> list[str]:
-    if len(hourly) < max(120, config.robust_atr_min_values + 2):
+    complete_hourly = completed_bars(hourly)
+    if len(complete_hourly) < max(120, config.robust_atr_min_values + 2):
         return [RejectionReason.INSUFFICIENT_HOURLY_HISTORY.value]
     reasons: Counter[str] = Counter()
-    start = max(config.robust_atr_min_values + 1, len(hourly) - 8)
-    for index in range(start, len(hourly)):
-        atr = calculate_robust_atr(hourly, config, end_index=index)
+    start = max(config.robust_atr_min_values + 1, len(complete_hourly) - 8)
+    for index in range(start, len(complete_hourly)):
+        atr = calculate_robust_atr(complete_hourly, config, end_index=index)
         if atr is None:
             continue
-        result = detect_displacement(hourly, index, atr, levels, config)
+        result = detect_displacement(complete_hourly, index, atr, levels, config)
         reasons.update(result.failed_conditions)
     return [item for item, _count in reasons.most_common(4)] or [
         RejectionReason.NO_MEANINGFUL_STRUCTURE.value
@@ -493,14 +498,23 @@ def run_inefficiency_reclaim_screener(
     watchlist: Mapping[str, Any] | None = None,
     as_of: datetime | None = None,
     anchor_date: str | None = None,
+    min_daily_history_rows: int | None = None,
     config: IRSConfig | None = None,
     store: InefficiencyReclaimStore | None = None,
     quotes: Mapping[str, Mapping[str, Any]] | None = None,
+    quote_loader: QuoteLoader | None = None,
     account: Mapping[str, Any] | None = None,
     persist: bool = True,
 ) -> dict[str, Any]:
     scan_started = clock.perf_counter()
     resolved_config = config or SETTINGS.inefficiency_reclaim.strategy_config()
+    resolved_min_daily_rows = (
+        SETTINGS.inefficiency_reclaim.min_daily_history_rows
+        if min_daily_history_rows is None
+        else int(min_daily_history_rows)
+    )
+    if resolved_min_daily_rows < 20:
+        raise ValueError("IRS minimum daily history must be at least 20 rows.")
     now = as_of or datetime.now(ET)
     if now.tzinfo is None:
         now = now.replace(tzinfo=ET)
@@ -517,7 +531,10 @@ def run_inefficiency_reclaim_screener(
             mode="HOURLY_SETUP_SCAN",
             started_at=now,
             strategy_version=resolved_config.version,
-            config_snapshot=asdict(resolved_config),
+            config_snapshot={
+                **asdict(resolved_config),
+                "min_daily_history_rows": resolved_min_daily_rows,
+            },
             git_commit=_git_commit(),
             status="RUNNING",
         )
@@ -530,6 +547,9 @@ def run_inefficiency_reclaim_screener(
     candidate_count = 0
     retrace_count = 0
     confirmation_count = 0
+    quote_requests = 0
+    quotes_available = 0
+    delayed_quotes = 0
     zone_ids: set[str] = set()
     newly_armed: list[dict[str, Any]] = []
     watchlist = watchlist or {}
@@ -566,9 +586,8 @@ def run_inefficiency_reclaim_screener(
             "5m": data_quality_diagnostics(bars_5m, "5 mins"),
             "1m": data_quality_diagnostics(bars_1m, "1 min"),
         }
-        min_daily_rows = SETTINGS.inefficiency_reclaim.min_daily_history_rows
         readiness["paper_ready"] = (
-            readiness["daily"]["completed_rows"] >= min_daily_rows
+            readiness["daily"]["completed_rows"] >= resolved_min_daily_rows
             and readiness["hourly"]["completed_rows"] >= 120
             and readiness["15m"]["completed_rows"] >= 200
             and readiness["daily"]["complete"]
@@ -590,6 +609,7 @@ def run_inefficiency_reclaim_screener(
             and now.astimezone(ET).weekday() < 5
             and time(9, 30) <= now.astimezone(ET).time() < time(15, 45)
         )
+        raw_quote = quotes.get(symbol)
         context = StrategyContext(
             symbol=symbol,
             as_of=now,
@@ -598,7 +618,7 @@ def run_inefficiency_reclaim_screener(
             bars_15m=bars_15m,
             bars_5m=bars_5m or None,
             bars_1m=bars_1m or None,
-            quote=_quote(quotes.get(symbol), now),
+            quote=_quote(raw_quote, now),
             levels=levels,
             market_regime=classify_market_regime(daily),
             market_trend_direction=classify_market_trend_direction(daily),
@@ -617,8 +637,27 @@ def run_inefficiency_reclaim_screener(
             session_entry_allowed=session_entry_allowed,
         )
         candidates = evaluate_strategy(context, resolved_config)
+        if (
+            candidates
+            and context.quote is None
+            and quote_loader is not None
+            and anchor_date is None
+        ):
+            quote_requests += 1
+            try:
+                fetched_quote = dict(quote_loader(symbol) or {})
+                fetched_quote.setdefault("timestamp", now.isoformat())
+                fetched = _quote(fetched_quote, now)
+            except Exception as exc:
+                LOGGER.warning("IRS quote fetch failed %s: %s", symbol, exc)
+                fetched = None
+            if fetched is not None:
+                quotes_available += 1
+                delayed_quotes += int(fetched.data_type != "live")
+                context = replace(context, quote=fetched)
+                candidates = evaluate_strategy(context, resolved_config)
         scanner_reasons = list(_liquidity_rejections(daily, resolved_config))
-        if len([bar for bar in daily if bar.is_complete]) < min_daily_rows:
+        if len([bar for bar in daily if bar.is_complete]) < resolved_min_daily_rows:
             scanner_reasons.append(RejectionReason.INSUFFICIENT_DAILY_HISTORY.value)
         if len([bar for bar in hourly if bar.is_complete]) < 120:
             scanner_reasons.append(RejectionReason.INSUFFICIENT_HOURLY_HISTORY.value)
@@ -645,7 +684,10 @@ def run_inefficiency_reclaim_screener(
                 enriched,
                 diagnostics={
                     **enriched.diagnostics,
-                    "config_snapshot": asdict(resolved_config),
+                    "config_snapshot": {
+                        **asdict(resolved_config),
+                        "min_daily_history_rows": resolved_min_daily_rows,
+                    },
                 },
             )
             row = candidate_row(enriched)
@@ -702,6 +744,9 @@ def run_inefficiency_reclaim_screener(
         "irs_retraces_total": retrace_count,
         "irs_confirmations_total": confirmation_count,
         "irs_candidates_total": candidate_count,
+        "irs_quote_requests_total": quote_requests,
+        "irs_quotes_available_total": quotes_available,
+        "irs_delayed_quotes_total": delayed_quotes,
         "irs_rejections_total": sum(reason_counts.values()),
         "irs_rejections_by_reason": dict(reason_counts.most_common()),
         "irs_data_stale_total": int(
@@ -724,6 +769,7 @@ def run_inefficiency_reclaim_screener(
         "anchor_date": anchor_date,
         "strategy": "INEFFICIENCY_RECLAIM",
         "strategy_version": resolved_config.version,
+        "min_daily_history_rows": resolved_min_daily_rows,
         "strategy_enabled": SETTINGS.inefficiency_reclaim.enabled,
         "paper_live_mode": "PAPER",
         "analysis_only": True,

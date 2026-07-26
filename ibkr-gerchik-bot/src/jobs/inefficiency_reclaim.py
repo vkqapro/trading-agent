@@ -115,6 +115,7 @@ def run_inefficiency_reclaim_job(
         as_of=now,
         config=SETTINGS.inefficiency_reclaim.strategy_config(),
         store=store,
+        quote_loader=market_data.get_quote,
         account=account,
         persist=True,
     )

@@ -429,9 +429,10 @@ def _quote_check_once(symbol: str, market_data: MarketDataService) -> Dict[str, 
     bid = _finite_or_zero(quote.get("bid", 0.0))
     ask = _finite_or_zero(quote.get("ask", 0.0))
     last = _finite_or_zero(quote.get("last", 0.0))
-    mid = ((bid + ask) / 2.0) if bid > 0 and ask > 0 else last
-    spread = abs(ask - bid) if bid > 0 and ask > 0 else 0.0
-    spread_pct = (spread / mid) if mid > 0 else 1.0
+    has_two_sided_quote = bid > 0 and ask > 0
+    mid = ((bid + ask) / 2.0) if has_two_sided_quote else last
+    spread = abs(ask - bid) if has_two_sided_quote else 0.0
+    spread_pct = (spread / mid) if has_two_sided_quote and mid > 0 else 1.0
     max_spread_dollars = (mid * SETTINGS.risk.max_spread_pct) if mid > 0 else 0.0
     return {
         "job": "quote_check",
@@ -439,6 +440,10 @@ def _quote_check_once(symbol: str, market_data: MarketDataService) -> Dict[str, 
         "bid": bid,
         "ask": ask,
         "last": last,
+        "quote_status": str(quote.get("quote_status", "unknown") or "unknown"),
+        "market_data_type": str(
+            quote.get("market_data_type", "unknown") or "unknown"
+        ),
         "mid": round(mid, 6),
         "spread": round(spread, 6),
         "spread_pct": round(spread_pct, 6),
@@ -446,7 +451,9 @@ def _quote_check_once(symbol: str, market_data: MarketDataService) -> Dict[str, 
         "max_spread_pct": SETTINGS.risk.max_spread_pct,
         "max_spread_pct_percent": round(SETTINGS.risk.max_spread_pct * 100.0, 4),
         "max_spread_dollars": round(max_spread_dollars, 6),
-        "passes_spread_filter": spread_pct <= SETTINGS.risk.max_spread_pct,
+        "passes_spread_filter": (
+            has_two_sided_quote and spread_pct <= SETTINGS.risk.max_spread_pct
+        ),
     }
 
 
@@ -745,8 +752,9 @@ def _run_connected_job(
     broker = _connect_broker_with_startup_retry(job_name)
     try:
         market_data = MarketDataService(broker)
-        if job_name == "market_data":
+        if job_name in {"market_data", "quote_check", "irs_scan"}:
             market_data.enable_delayed_fallback()
+        if job_name == "market_data":
             watchlist = state.get("watchlist", {})
             if not isinstance(watchlist, dict) or not watchlist:
                 watchlist = {symbol: {} for symbol in SETTINGS.symbols}
