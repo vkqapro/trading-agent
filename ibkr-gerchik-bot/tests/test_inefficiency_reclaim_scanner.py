@@ -3,6 +3,7 @@ from __future__ import annotations
 import tempfile
 import unittest
 from datetime import datetime
+from decimal import Decimal
 from pathlib import Path
 from unittest.mock import patch
 from zoneinfo import ZoneInfo
@@ -10,16 +11,94 @@ from zoneinfo import ZoneInfo
 import pandas as pd
 
 from src.scanners.inefficiency_reclaim import (
+    HISTORICAL_ANALYSIS_SOFT_WARNING,
     _diagnose_no_candidate,
+    _historical_analysis_candidate,
     frame_to_bars,
     resample_rth,
     run_inefficiency_reclaim_screener,
 )
 from src.storage.inefficiency_reclaim_store import InefficiencyReclaimStore
-from src.strategy.inefficiency_reclaim import Bar, IRSConfig
+from src.strategy.inefficiency_reclaim import (
+    Bar,
+    ConfirmationEvent,
+    ConfirmationType,
+    Direction,
+    IRSConfig,
+    InefficiencyZone,
+    ScoreBreakdown,
+    SetupState,
+    StrategyCandidate,
+    StrategyProfile,
+    ZoneType,
+)
 
 
 ET = ZoneInfo("America/New_York")
+D = Decimal
+
+
+def _runtime_rejected_candidate(now: datetime) -> StrategyCandidate:
+    zone = InefficiencyZone(
+        zone_id="zone-test",
+        symbol="TEST",
+        direction=Direction.LONG,
+        zone_type=ZoneType.STRICT_THREE_BAR_GAP,
+        source_timeframe="1 hour",
+        created_at=now - pd.Timedelta(hours=1),
+        displacement_bar_time=now - pd.Timedelta(hours=1),
+        zone_low=D("100"),
+        zone_high=D("101"),
+        zone_mid=D("100.5"),
+        zone_width=D("1"),
+        zone_width_atr=D("0.20"),
+        displacement_atr_multiple=D("1.50"),
+        body_ratio=D("0.80"),
+        close_location=D("0.85"),
+        relative_volume=D("1.60"),
+        source_bar_ids=("bar-test",),
+        structure_reference_id="level-test",
+        expires_at=now + pd.Timedelta(hours=1),
+    )
+    confirmation = ConfirmationEvent(
+        confirmation_type=ConfirmationType.SWEEP_AND_RECLAIM,
+        timestamp=now,
+        bar_id="confirm-test",
+        high=D("102"),
+        low=D("100"),
+        boundary=D("100.5"),
+        score=D("0.90"),
+        metrics={},
+    )
+    return StrategyCandidate(
+        signal_id="signal-test",
+        symbol="TEST",
+        strategy="INEFFICIENCY_RECLAIM",
+        profile=StrategyProfile.INTRADAY,
+        direction=Direction.LONG,
+        state=SetupState.REJECTED_BY_RISK,
+        score=D("90"),
+        score_breakdown=ScoreBreakdown(
+            structure=D("15"),
+            displacement=D("15"),
+            zone=D("10"),
+            volume_order_flow=D("15"),
+            retrace=D("10"),
+            confirmation=D("15"),
+            regime=D("10"),
+            target_space=D("0"),
+        ),
+        zone=zone,
+        displacement_metrics={},
+        retrace_metrics={"first_touch_time": now},
+        confirmation=confirmation,
+        order_plan=None,
+        expires_at=now + pd.Timedelta(minutes=30),
+        hard_rejections=("MISSING_QUOTE", "BUYING_POWER", "SESSION_CUTOFF"),
+        soft_warnings=(),
+        diagnostics={},
+        explanation="TEST | IRS_LONG | Score 90 PAPER. No order: MISSING_QUOTE, BUYING_POWER, SESSION_CUTOFF.",
+    )
 
 
 class SavedBarScannerTests(unittest.TestCase):
@@ -170,6 +249,26 @@ class SavedBarScannerTests(unittest.TestCase):
             result["rejected"][0]["rejection_reasons"],
         )
 
+    def test_persist_false_does_not_audit_even_when_store_is_supplied(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            store = InefficiencyReclaimStore(Path(directory) / "irs.db")
+
+            def loader(_symbol: str, _timeframe: str) -> pd.DataFrame:
+                return pd.DataFrame(columns=["date", "open", "high", "low", "close", "volume"])
+
+            run_inefficiency_reclaim_screener(
+                symbols=["EMPTY"],
+                bars_loader=loader,
+                watchlist={},
+                anchor_date="2026-07-01",
+                config=IRSConfig(),
+                store=store,
+                persist=False,
+            )
+
+            self.assertEqual(store.table_count("scanner_runs"), 0)
+            self.assertEqual(store.table_count("strategy_setups"), 0)
+
     def test_live_scan_fetches_delayed_quote_only_after_technical_candidate(self) -> None:
         empty_frame = pd.DataFrame(
             columns=["date", "open", "high", "low", "close", "volume"]
@@ -204,6 +303,23 @@ class SavedBarScannerTests(unittest.TestCase):
         self.assertEqual(result["observability"]["irs_quote_requests_total"], 1)
         self.assertEqual(result["observability"]["irs_quotes_available_total"], 1)
         self.assertEqual(result["observability"]["irs_delayed_quotes_total"], 1)
+
+    def test_anchor_scan_marks_runtime_risk_unevaluated_instead_of_missing_quote(self) -> None:
+        now = datetime(2026, 7, 24, 16, 0, tzinfo=ET)
+        candidate = _historical_analysis_candidate(_runtime_rejected_candidate(now))
+
+        self.assertEqual(candidate.hard_rejections, ())
+        self.assertEqual(candidate.state, SetupState.ENTRY_ARMED)
+        self.assertIn(HISTORICAL_ANALYSIS_SOFT_WARNING, candidate.soft_warnings)
+        self.assertEqual(
+            candidate.diagnostics["runtime_risk_evaluation"],
+            "not_evaluated_for_historical_anchor",
+        )
+        self.assertIn(
+            "MISSING_QUOTE",
+            candidate.diagnostics["suppressed_runtime_rejections"],
+        )
+        self.assertNotIn("MISSING_QUOTE", candidate.explanation)
 
 
 if __name__ == "__main__":

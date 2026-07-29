@@ -49,6 +49,23 @@ TIMEFRAME_DELTAS = {
     "5 mins": timedelta(minutes=5),
     "1 min": timedelta(minutes=1),
 }
+HISTORICAL_ANALYSIS_SOFT_WARNING = "LIVE_RISK_NOT_EVALUATED"
+HISTORICAL_RUNTIME_REJECTIONS = {
+    RejectionReason.MISSING_QUOTE.value,
+    RejectionReason.STALE_QUOTE.value,
+    RejectionReason.DELAYED_QUOTE.value,
+    RejectionReason.SPREAD_TOO_WIDE.value,
+    RejectionReason.NEWS_STATUS_UNAVAILABLE.value,
+    RejectionReason.SESSION_CUTOFF.value,
+    RejectionReason.BUYING_POWER.value,
+    RejectionReason.POSITION_EXISTS.value,
+    RejectionReason.PENDING_ORDER_EXISTS.value,
+    RejectionReason.MAX_POSITIONS.value,
+    RejectionReason.DAILY_TRADE_LIMIT.value,
+    RejectionReason.DAILY_LOSS_LOCKOUT.value,
+    RejectionReason.PROTECTIVE_STOP_UNAVAILABLE.value,
+    RejectionReason.BROKER_DISCONNECTED.value,
+}
 
 
 def _git_commit() -> str | None:
@@ -369,6 +386,57 @@ def _with_scanner_rejections(
     return replace(candidate, hard_rejections=merged, state=state)
 
 
+def _historical_analysis_candidate(candidate: StrategyCandidate) -> StrategyCandidate:
+    """Remove live-only risk gates from an anchor-date analysis result."""
+    filtered = tuple(
+        reason
+        for reason in candidate.hard_rejections
+        if reason not in HISTORICAL_RUNTIME_REJECTIONS
+    )
+    if filtered == candidate.hard_rejections:
+        return candidate
+
+    state = candidate.state
+    if not filtered and candidate.state in {
+        SetupState.REJECTED_BY_NEWS,
+        SetupState.REJECTED_BY_RISK,
+        SetupState.REJECTED_BY_TARGET_SPACE,
+    }:
+        state = SetupState.ENTRY_ARMED if candidate.confirmation is not None else (
+            SetupState.WAITING_FOR_CONFIRMATION
+            if candidate.retrace_metrics.get("first_touch_time")
+            else SetupState.WAITING_FOR_RETRACE
+        )
+
+    old_tail = f" No order: {', '.join(candidate.hard_rejections)}."
+    if old_tail in candidate.explanation:
+        replacement = f" No order: {', '.join(filtered)}." if filtered else ""
+        explanation = candidate.explanation.replace(old_tail, replacement)
+    else:
+        explanation = candidate.explanation
+    explanation = (
+        f"{explanation} Historical analysis: live quote, account, and session checks were not evaluated."
+    )
+    return replace(
+        candidate,
+        state=state,
+        hard_rejections=filtered,
+        soft_warnings=tuple(
+            dict.fromkeys((*candidate.soft_warnings, HISTORICAL_ANALYSIS_SOFT_WARNING))
+        ),
+        diagnostics={
+            **candidate.diagnostics,
+            "runtime_risk_evaluation": "not_evaluated_for_historical_anchor",
+            "suppressed_runtime_rejections": tuple(
+                reason
+                for reason in candidate.hard_rejections
+                if reason in HISTORICAL_RUNTIME_REJECTIONS
+            ),
+        },
+        explanation=explanation,
+    )
+
+
 def candidate_row(candidate: StrategyCandidate) -> dict[str, Any]:
     payload = candidate.to_dict()
     zone = payload["zone"]
@@ -522,7 +590,7 @@ def run_inefficiency_reclaim_screener(
         anchor = date.fromisoformat(anchor_date)
         now = datetime.combine(anchor, time(16, 0), tzinfo=ET)
     run_id = uuid.uuid4().hex
-    resolved_store = store
+    resolved_store = store if persist else None
     if persist and resolved_store is None:
         resolved_store = InefficiencyReclaimStore(SETTINGS.inefficiency_reclaim.database_path)
     if resolved_store:
@@ -610,6 +678,7 @@ def run_inefficiency_reclaim_screener(
             and time(9, 30) <= now.astimezone(ET).time() < time(15, 45)
         )
         raw_quote = quotes.get(symbol)
+        risk_snapshot_quote: Mapping[str, Any] = raw_quote or {}
         context = StrategyContext(
             symbol=symbol,
             as_of=now,
@@ -654,6 +723,7 @@ def run_inefficiency_reclaim_screener(
             if fetched is not None:
                 quotes_available += 1
                 delayed_quotes += int(fetched.data_type != "live")
+                risk_snapshot_quote = fetched_quote
                 context = replace(context, quote=fetched)
                 candidates = evaluate_strategy(context, resolved_config)
         scanner_reasons = list(_liquidity_rejections(daily, resolved_config))
@@ -680,6 +750,8 @@ def run_inefficiency_reclaim_screener(
             continue
         for candidate in candidates:
             enriched = _with_scanner_rejections(candidate, scanner_reasons)
+            if anchor_date:
+                enriched = _historical_analysis_candidate(enriched)
             enriched = replace(
                 enriched,
                 diagnostics={
@@ -705,7 +777,7 @@ def run_inefficiency_reclaim_screener(
                     captured_at=now,
                     payload={
                         "account": account or {},
-                        "quote": quotes.get(symbol) or {},
+                        "quote": risk_snapshot_quote,
                         "market_regime": context.market_regime.value,
                         "market_trend_direction": context.market_trend_direction,
                         "sector_regime": context.sector_regime.value if context.sector_regime else None,

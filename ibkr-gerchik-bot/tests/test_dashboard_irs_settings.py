@@ -2,9 +2,13 @@ from __future__ import annotations
 
 import tempfile
 import unittest
+from dataclasses import replace
 from pathlib import Path
+from unittest.mock import patch
 
 from dashboard_react.server import (
+    SETTINGS,
+    api_inefficiency_reclaim,
     _parse_irs_min_daily_history_rows,
     _parse_irs_minimum_display_score,
     _write_env_setting,
@@ -42,7 +46,16 @@ class DashboardIrsSettingsTests(unittest.TestCase):
             _parse_irs_min_daily_history_rows(1000.5)
 
     def test_display_score_defaults_to_80_and_respects_order_threshold(self) -> None:
-        settings = api_inefficiency_reclaim_settings()
+        original = SETTINGS.inefficiency_reclaim
+        object.__setattr__(
+            SETTINGS,
+            "inefficiency_reclaim",
+            replace(original, minimum_display_score=80.0, minimum_order_score=85.0),
+        )
+        try:
+            settings = api_inefficiency_reclaim_settings()
+        finally:
+            object.__setattr__(SETTINGS, "inefficiency_reclaim", original)
 
         self.assertEqual(settings["minimum_display_score"], 80.0)
         self.assertEqual(_parse_irs_minimum_display_score("80"), 80.0)
@@ -62,6 +75,24 @@ class DashboardIrsSettingsTests(unittest.TestCase):
                 env_path.read_text(encoding="utf-8"),
                 "KEEP=true\nIRS_MINIMUM_DISPLAY_SCORE=75\n",
             )
+
+    def test_dashboard_irs_analysis_scan_is_read_only(self) -> None:
+        with (
+            patch("src.symbol_universe.load_stock_symbols", return_value=["SANM"]),
+            patch("dashboard_react.server.da.load_watchlist", return_value={}),
+            patch(
+                "dashboard_react.server.InefficiencyReclaimStore"
+            ) as store_cls,
+            patch(
+                "dashboard_react.server.run_inefficiency_reclaim_screener",
+                return_value={"ok": True},
+            ) as scanner,
+        ):
+            store_cls.return_value.active_setups.return_value = [{"ticker": "SANM"}]
+            result = api_inefficiency_reclaim(anchor_date="2026-07-24")
+
+        self.assertEqual(result["active_setups"], [{"ticker": "SANM"}])
+        self.assertFalse(scanner.call_args.kwargs["persist"])
 
 
 if __name__ == "__main__":

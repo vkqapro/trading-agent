@@ -1633,13 +1633,21 @@ def api_inefficiency_reclaim(
         watchlist = _safe(da.load_watchlist, {})
         configured_symbols = _safe(load_stock_symbols, [])
         symbols = sorted(set(configured_symbols or []) | set((watchlist or {}).keys()))
-        return run_inefficiency_reclaim_screener(
+        result = run_inefficiency_reclaim_screener(
             symbols=symbols,
             watchlist=watchlist if isinstance(watchlist, dict) else {},
             anchor_date=parsed_anchor or None,
             min_daily_history_rows=min_daily_history_rows,
             config=config,
+            persist=False,
         )
+        try:
+            result["active_setups"] = InefficiencyReclaimStore(
+                SETTINGS.inefficiency_reclaim.database_path
+            ).active_setups()
+        except Exception:
+            result["active_setups"] = []
+        return result
     except ValueError as exc:
         raise HTTPException(400, f"Invalid IRS scan request: {exc}")
     except Exception as exc:
