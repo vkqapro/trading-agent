@@ -31,7 +31,7 @@ html,body{background:var(--dashboard-bg,#131314);color:var(--dashboard-on-surf,#
 }
 .strategy-chart-fullscreen-shell:fullscreen > div{
   min-height:calc(100vh - 36px);
-  background:rgba(32,31,32,.78)!important;
+  background:var(--dashboard-surface,rgba(32,31,32,.78))!important;
 }
 </style>
 </head>
@@ -52,15 +52,17 @@ const THEMES = {
     cyan:'#7df4ff', cyanBright:'#00f0ff', cyanDim:'#00dbe9',
     ocean:'#0077be',
     lime:'#c3f400', limeDim:'#abd600', lemon:'#fff176',
+    chartUp:'#d7ff00', chartUp2:'#9dff00', chartDown:'#ff315f', chartDown2:'#ff6b7d', chartBlue:'#1f8bff',
     magenta:'#ecb2ff', err:'#ffb4ab',
   },
   light: {
     bg:'#f3f7f7', surf:'#ffffff', surfLow:'#edf3f3', surfLowest:'#e3ebec',
     surfHigh:'#d8e4e5', onSurf:'#17272a', onVar:'#42575b',
     outline:'#60777b', outlineVar:'#b1c1c3',
-    cyan:'#007f8c', cyanBright:'#006d78', cyanDim:'#008f9d',
+    cyan:'#005f6b', cyanBright:'#00515e', cyanDim:'#007684',
     ocean:'#006aa6',
-    lime:'#4f7800', limeDim:'#668b08', lemon:'#9a7700',
+    lime:'#566d00', limeDim:'#6f8400', lemon:'#805f00',
+    chartUp:'#566d00', chartUp2:'#6f8400', chartDown:'#b42318', chartDown2:'#c43a32', chartBlue:'#005b9f',
     magenta:'#8b4aa9', err:'#b42318',
   },
 };
@@ -70,6 +72,16 @@ const R = (hex, a) => {
   const h = hex.replace('#','');
   const r=parseInt(h.slice(0,2),16), g=parseInt(h.slice(2,4),16), b=parseInt(h.slice(4,6),16);
   return `rgba(${r},${g},${b},${a})`;
+};
+const THEME_ACCENT_MAP = {
+  '#7df4ff':'cyan', '#00f0ff':'cyanBright', '#00dbe9':'cyanDim',
+  '#00e5ff':'cyanBright', '#c3f400':'lime', '#d7ff00':'chartUp',
+  '#9dff00':'chartUp2', '#fff176':'lemon', '#1f8bff':'chartBlue',
+};
+const themedColor = (value, fallback) => {
+  const raw = String(value || '').toLowerCase();
+  const mapped = ACTIVE_THEME === 'light' ? THEME_ACCENT_MAP[raw] : null;
+  return mapped ? C[mapped] : (value || fallback);
 };
 const API = `${window.location.origin}/api`;
 
@@ -473,27 +485,28 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
   sessionOpenIdxs.forEach((i,si) => {
     const cx = xi(i);
     els.push(<line key={'sess'+si} x1={cx} x2={cx} y1={padT} y2={padT+priceH}
-      stroke="rgba(125,244,255,0.22)" strokeWidth={1} strokeDasharray="2 4"/>);
-    els.push(<text key={'sessl'+si} x={cx+3} y={padT+10} fill="rgba(125,244,255,0.45)"
+      stroke={R(C.cyan,0.32)} strokeWidth={1} strokeDasharray="2 4"/>);
+    els.push(<text key={'sessl'+si} x={cx+3} y={padT+10} fill={R(C.cyan,0.78)}
       fontSize={8.5} fontFamily="JetBrains Mono,monospace">09:30</text>);
   });
 
   // filled zones between two price levels (e.g. entry → target)
   zones.forEach((z,i)=>{
     const y1=yp(Math.max(z.p1,z.p2)), y2=yp(Math.min(z.p1,z.p2));
-    els.push(<rect key={'z'+i} x={padL} y={y1} width={plotW} height={Math.max(1,y2-y1)} fill={R(z.color,z.opacity??0.08)}/>);
+    const zoneColor = themedColor(z.color,C.cyan);
+    els.push(<rect key={'z'+i} x={padL} y={y1} width={plotW} height={Math.max(1,y2-y1)} fill={R(zoneColor,z.opacity??0.08)}/>);
     // subtle diagonal hatch feel via a second lighter rect
     els.push(<rect key={'zh'+i} x={padL} y={y1} width={plotW} height={Math.max(1,y2-y1)} fill={`url(#hatch${i})`} opacity={0.18}/>);
     els.push(<defs key={'hd'+i}><pattern id={`hatch${i}`} patternUnits="userSpaceOnUse" width={8} height={8} patternTransform="rotate(45)">
-      <line x1={0} y1={0} x2={0} y2={8} stroke={z.color} strokeWidth={1.5}/>
+      <line x1={0} y1={0} x2={0} y2={8} stroke={zoneColor} strokeWidth={1.5}/>
     </pattern></defs>);
   });
 
   // Gaussian Channel Strategy Vitaly v1.0 overlay
   if(gaussianOverlay && gaussianPoints.some(p=>Number.isFinite(p.mid)||Number.isFinite(p.upper)||Number.isFinite(p.lower))){
     const showGaussianChannel = gaussianOverlay.showChannel !== false;
-    const upColor = gaussianOverlay.upColor || '#00e5ff';
-    const downColor = gaussianOverlay.downColor || '#ff5252';
+    const upColor = themedColor(gaussianOverlay.upColor,C.cyanBright);
+    const downColor = themedColor(gaussianOverlay.downColor,C.err);
     const pathFor = key => {
       let path='', started=false;
       gaussianPoints.forEach((p,i)=>{
@@ -528,8 +541,8 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
       const isShortEntry=p.signal==='short_entry';
       const isEntry=isLongEntry||isShortEntry;
       const buySignal = isLongEntry || p.signal==='short_exit';
-      const col = buySignal ? '#1f8bff' : downColor;
-      const borderCol = '#d7ff00';
+      const col = buySignal ? C.chartBlue : downColor;
+      const borderCol = C.lime;
       const txt=isLongEntry?'BUY':isShortEntry?'SELL':p.signal==='long_exit'?'SELL':'BUY';
       const ty=isLongEntry||p.signal==='short_exit' ? y+18 : y-13;
       const d=isEntry && !isShortEntry
@@ -556,10 +569,10 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
     const zT=yp(Math.max(zoneLow,zoneHigh)), zB=yp(Math.min(zoneLow,zoneHigh));
     if(l.showZone!==false){
       els.push(<rect key={'lz'+i} x={padL} y={zT} width={plotW} height={Math.max(4,zB-zT)}
-        fill={R(l.color,0.16)} stroke={R(l.color,0.30)} strokeWidth={0.7}/>);
+        fill={R(themedColor(l.color,C.cyan),0.16)} stroke={R(themedColor(l.color,C.cyan),0.30)} strokeWidth={0.7}/>);
     }
     els.push(<line key={'lv'+i} x1={padL} x2={W-padR} y1={yp(l.p)} y2={yp(l.p)}
-      stroke={R(l.color,l.showZone===false?0.42:0.65)} strokeWidth={l.showZone===false?1:1.3}
+      stroke={R(themedColor(l.color,C.cyan),l.showZone===false?0.42:0.65)} strokeWidth={l.showZone===false?1:1.3}
       strokeDasharray={l.showZone===false?'2 5':undefined}/>);
   });
   // Forecast/manual setup lines are drawn after candles so they stay readable.
@@ -567,11 +580,13 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
   strategyOverlaySlices.forEach(({overlay, points:overlayPoints, idx:overlayIdx})=>{
     if(!overlay || !overlayPoints.some(p=>Number.isFinite(p.sma)||Number.isFinite(p.ema)||Number.isFinite(p.entryLevel)||Number.isFinite(p.exitLevel))) return;
     const keyPrefix = `strategy-${overlay.id||overlay.name||overlayIdx}-${overlayIdx}`;
-    const smaColor = overlay.smaColor || C.err;
-    const emaColor = overlay.emaColor || C.lime;
-    const bandColor = overlay.bandColor || '#ffb35c';
-    const entryLevelColor = overlay.entryLevelColor || overlay.entryColor || '#1f8bff';
-    const exitLevelColor = overlay.exitLevelColor || overlay.exitColor || '#bb6bff';
+    const smaColor = themedColor(overlay.smaColor,C.err);
+    const emaColor = themedColor(overlay.emaColor,C.lime);
+    const bandColor = themedColor(overlay.bandColor,ACTIVE_THEME === 'light' ? '#9a5a00' : '#ffb35c');
+    const entryLevelColor = themedColor(overlay.entryLevelColor || overlay.entryColor,
+      ACTIVE_THEME === 'light' ? '#005b9f' : '#1f8bff');
+    const exitLevelColor = themedColor(overlay.exitLevelColor || overlay.exitColor,
+      ACTIVE_THEME === 'light' ? '#7938a0' : '#bb6bff');
     const linePath = key => {
       let path='', started=false;
       overlayPoints.forEach((p,i)=>{
@@ -602,8 +617,8 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
       const x=xi(i), y=yp(p.close);
       const isEntry=p.signal==='entry';
       const col=isEntry
-        ? (overlay.entryColor || '#1f8bff')
-        : (overlay.exitColor || '#ff1744');
+        ? themedColor(overlay.entryColor,ACTIVE_THEME === 'light' ? '#005b9f' : '#1f8bff')
+        : themedColor(overlay.exitColor,ACTIVE_THEME === 'light' ? '#b42318' : '#ff1744');
       const d=isEntry
         ? `M ${x.toFixed(1)} ${(y-9).toFixed(1)} L ${(x-6).toFixed(1)} ${(y+4).toFixed(1)} L ${(x+6).toFixed(1)} ${(y+4).toFixed(1)} Z`
         : `M ${x.toFixed(1)} ${(y+9).toFixed(1)} L ${(x-6).toFixed(1)} ${(y-4).toFixed(1)} L ${(x+6).toFixed(1)} ${(y-4).toFixed(1)} Z`;
@@ -668,10 +683,10 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
   }
   // ── 1.1 + 1.2: candle rendering with doji detection, body stroke, after-hours dimming
   // SVG gradient defs for candle bodies (one per color direction, defined once)
-  const candleUp = '#d7ff00';
-  const candleUp2 = '#9dff00';
-  const candleDown = '#ff315f';
-  const candleDown2 = '#ff6b7d';
+  const candleUp = C.chartUp;
+  const candleUp2 = C.chartUp2;
+  const candleDown = C.chartDown;
+  const candleDown2 = C.chartDown2;
   els.push(
     <defs key="candle-grads">
       <linearGradient id="gradUp" x1="0" y1="0" x2="0" y2="1">
@@ -781,7 +796,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
   }
   lines.forEach((l,i)=>{
     const y = yp(l.p);
-    const col = l.color || C.cyan;
+    const col = themedColor(l.color,C.cyan);
     const segmentStart = l.startTime ? lineXForTime(l.startTime) : padL;
     const segmentEnd = l.endTime ? lineXForTime(l.endTime) : W-padR;
     const x1 = Math.min(segmentStart ?? padL, segmentEnd ?? W-padR);
@@ -818,7 +833,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
     const markerBar = visBars[localIdx];
     const markerAboveBar = m.placement === 'above_bar' && markerBar && Number.isFinite(Number(markerBar.high));
     const markerBelowBar = m.placement === 'below_bar' && markerBar && Number.isFinite(Number(markerBar.low));
-    const x=xi(localIdx), baseY=markerAboveBar ? yp(Number(markerBar.high)) - 24 : markerBelowBar ? yp(Number(markerBar.low)) + 24 : yp(price), col=m.color||C.cyan;
+    const x=xi(localIdx), baseY=markerAboveBar ? yp(Number(markerBar.high)) - 24 : markerBelowBar ? yp(Number(markerBar.low)) + 24 : yp(price), col=themedColor(m.color,C.cyan);
     const y=Math.max(padT+14, Math.min(padT+priceH-14, baseY + Number(m.yOffset||0)));
     const up = (m.kind||'').toLowerCase().includes('entry');
     const d = up
@@ -914,7 +929,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
       volMaPath += (i===0 ? 'M' : ' L') + xi(i).toFixed(1) + ' ' + vy.toFixed(1);
     });
     if(volMaPath) els.push(<path key="volma" d={volMaPath} fill="none"
-      stroke="rgba(125,244,255,0.55)" strokeWidth={1.2} strokeDasharray="none"/>);
+      stroke={R(C.cyan,0.72)} strokeWidth={1.2} strokeDasharray="none"/>);
 
     els.push(<line key="vb" x1={padL} x2={W-padR} y1={volTop} y2={volTop} stroke="rgba(132,148,149,0.10)" strokeWidth={1}/>);
     els.push(<text key="vlbl" x={padL-6} y={volTop+volH/2+4} fill="rgba(132,148,149,0.45)" fontSize={9}
@@ -967,12 +982,12 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
   if(hover && crosshair){
     const cx=hover.svgX, cy=hover.svgY;
     if(cx>=padL && cx<=W-padR){
-      els.push(<line key="chv" x1={cx} x2={cx} y1={padT} y2={padT+priceH} stroke="rgba(125,244,255,0.35)" strokeWidth={1} strokeDasharray="4 3"/>);
+      els.push(<line key="chv" x1={cx} x2={cx} y1={padT} y2={padT+priceH} stroke={R(C.cyan,0.72)} strokeWidth={1} strokeDasharray="4 3"/>);
       // price label on Y axis for crosshair
       const chPrice = svgYToPrice(cy);
       if(cy>=padT && cy<=padT+priceH){
-        els.push(<line key="chh" x1={padL} x2={W-padR} y1={cy} y2={cy} stroke="rgba(125,244,255,0.25)" strokeWidth={1} strokeDasharray="4 3"/>);
-        els.push(<rect key="chpr" x={W-padR} y={cy-9} width={padR-4} height={18} rx={3} fill="rgba(0,240,255,0.15)" stroke="rgba(125,244,255,0.5)" strokeWidth={1}/>);
+        els.push(<line key="chh" x1={padL} x2={W-padR} y1={cy} y2={cy} stroke={R(C.cyan,0.58)} strokeWidth={1} strokeDasharray="4 3"/>);
+        els.push(<rect key="chpr" x={W-padR} y={cy-9} width={padR-4} height={18} rx={3} fill={R(C.cyanBright,0.15)} stroke={R(C.cyan,0.82)} strokeWidth={1}/>);
         els.push(<text key="chpt" x={W-padR+4} y={cy+4} fill={C.cyan} fontSize={10} fontFamily="JetBrains Mono,monospace">{fmtP(chPrice)}</text>);
       }
     }
@@ -2513,7 +2528,7 @@ function TabStrategy({refreshKey=0}) {
   const selectedRow = (data.rows||[]).find(r=>r.symbol===selectedSymbol) || rows[0] || data.rows?.[0] || null;
   const chartSymbolLabel = selectedSymbol || selectedRow?.symbol || 'SELECT SYMBOL';
   const signalColor = signal => {
-    if(String(signal).includes('LONG')) return '#1f8bff';
+    if(String(signal).includes('LONG')) return C.chartBlue;
     if(String(signal).includes('EXIT')) return '#ff1744';
     return C.outline;
   };
@@ -6545,6 +6560,7 @@ function App() {
     document.documentElement.dataset.theme = theme;
     document.documentElement.style.colorScheme = theme;
     document.documentElement.style.setProperty('--dashboard-bg', C.bg);
+    document.documentElement.style.setProperty('--dashboard-surface', C.surf);
     document.documentElement.style.setProperty('--dashboard-on-surf', C.onSurf);
     document.documentElement.style.setProperty('--dashboard-scrollbar', C.outlineVar);
     document.documentElement.style.setProperty('--dashboard-accent', C.cyan);
