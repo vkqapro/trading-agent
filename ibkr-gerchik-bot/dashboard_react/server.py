@@ -1955,6 +1955,21 @@ def api_bars(symbol: str, timeframe: str):
             .reset_index()
         )
 
+    def _thirty_minute_bars() -> pd.DataFrame:
+        stored = da.get_bars(symbol, "intraday_30m")
+        if not stored.empty:
+            return stored
+        intraday = da.get_bars(symbol, "intraday_5m")
+        if intraday.empty:
+            return intraday
+        frame = intraday.set_index("date").sort_index()
+        return (
+            frame.resample("30min", origin="start_day", offset="30min")
+            .agg({"open": "first", "high": "max", "low": "min", "close": "last", "volume": "sum"})
+            .dropna(subset=["open", "high", "low", "close"])
+            .reset_index()
+        )
+
     def _hourly_bars() -> pd.DataFrame:
         intraday = da.get_bars(symbol, "intraday_5m")
         if intraday.empty:
@@ -2018,6 +2033,8 @@ def api_bars(symbol: str, timeframe: str):
 
     if timeframe == "intraday_15m":
         df = _safe(_fifteen_minute_bars, None)
+    elif timeframe == "intraday_30m":
+        df = _safe(_thirty_minute_bars, None)
     elif timeframe == "intraday_1h":
         df = _safe(_hourly_bars, None)
     elif timeframe == "intraday_4h":
@@ -2033,6 +2050,7 @@ def api_bars(symbol: str, timeframe: str):
     chart_limits = {
         "intraday_5m": 500,
         "intraday_15m": 700,
+        "intraday_30m": 700,
         "intraday_1h": 500,
         "intraday_4h": 500,
         "daily_live": 600,

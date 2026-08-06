@@ -12,4 +12,9 @@ memory/inefficiency_reclaim.db*
 memory/RESEARCH_LOG.md
 tmp/irs_dashboard_*.log
 
+# Graphify local-only state; commit graphify-out/graph.json, GRAPH_REPORT.md,
+# graph.html, and manifest.json so the project map is available to the team.
+graphify-out/cost.json
+graphify-out/cache/
+
 \memory\TRADE_LOG.md

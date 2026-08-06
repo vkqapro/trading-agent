@@ -1,0 +1,379 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// Market Screener LP1 / LP2 / PRB1 / PRB2 TradingView strategy
+// Mirrors the dashboard Market Screener pattern logic on the chart's OHLCV.
+
+//@version=6
+strategy("Market Screener LP/PRB Strategy", overlay=true,
+     initial_capital=100000,
+     default_qty_type=strategy.fixed,
+     default_qty_value=1,
+     commission_type=strategy.commission.cash_per_contract,
+     commission_value=0.005,
+     slippage=1,
+     pyramiding=0,
+     margin_long=0,
+     margin_short=0,
+     use_bar_magnifier=false,
+     calc_on_order_fills=false,
+     calc_on_every_tick=false,
+     fill_orders_on_standard_ohlc=true)
+
+// Trading window
+i_start = input.time(timestamp("2020-01-01"), "Start Date", group="Trading Window")
+i_end = input.time(timestamp("2030-12-31"), "End Date", group="Trading Window")
+i_side = input.string("Both", "Trade Side", options=["Both", "Long Only", "Short Only"], group="Trading Window")
+
+// Strategy switches
+i_lp1 = input.bool(true, "LP1", group="Strategy Switches")
+i_lp2 = input.bool(true, "LP2", group="Strategy Switches")
+i_prb1 = input.bool(true, "PRB1", group="Strategy Switches")
+i_prb2 = input.bool(true, "PRB2", group="Strategy Switches")
+
+// Level source
+i_level_source = input.string("Auto Pivots", "Level Source", options=["Auto Pivots", "Manual"], group="Levels")
+i_manual_support = input.float(0.0, "Manual Support", minval=0.0, step=0.01, group="Levels")
+i_manual_resistance = input.float(0.0, "Manual Resistance", minval=0.0, step=0.01, group="Levels")
+i_pivot_k = input.int(5, "Pivot Left/Right Bars", minval=1, maxval=20, group="Levels")
+i_min_touches = input.int(2, "Minimum Touches", minval=1, maxval=20, group="Levels")
+i_touch_lookback = input.int(120, "Touch Lookback Bars", minval=20, maxval=500, group="Levels")
+i_level_tolerance_atr = input.float(0.10, "Level Tolerance ATR", minval=0.01, maxval=1.00, step=0.01, group="Levels")
+i_open_tolerance_atr = input.float(0.15, "Open Tolerance ATR", minval=0.01, maxval=1.00, step=0.01, group="Levels")
+i_allow_role_flip = input.bool(true, "Allow Role-Flipped Levels", group="Levels")
+
+// Pattern thresholds
+i_atr_length = input.int(14, "ATR Length", minval=1, group="Pattern Settings")
+i_volume_length = input.int(20, "Volume Baseline Length", minval=2, group="Pattern Settings")
+i_entry_atr_pct = input.float(0.50, "Entry ATR Offset", minval=0.05, maxval=2.00, step=0.05, group="Pattern Settings")
+i_lp1_delta_break = input.float(0.05, "LP1 Break ATR", minval=0.00, maxval=1.00, step=0.01, group="Pattern Settings")
+i_lp1_delta_close = input.float(0.03, "LP1 Close ATR", minval=0.00, maxval=1.00, step=0.01, group="Pattern Settings")
+i_lp2_delta_break = input.float(0.05, "LP2 Break ATR", minval=0.00, maxval=1.00, step=0.01, group="Pattern Settings")
+i_lp2_delta_close = input.float(0.03, "LP2 Close ATR", minval=0.00, maxval=1.00, step=0.01, group="Pattern Settings")
+i_prb1_delta_break = input.float(0.05, "PRB1 Break ATR", minval=0.00, maxval=1.00, step=0.01, group="Pattern Settings")
+i_prb1_delta_close = input.float(0.05, "PRB1 Close ATR", minval=0.00, maxval=1.00, step=0.01, group="Pattern Settings")
+i_prb2_delta_break = input.float(0.05, "PRB2 Break ATR", minval=0.00, maxval=1.00, step=0.01, group="Pattern Settings")
+i_prb2_delta_close = input.float(0.05, "PRB2 Close ATR", minval=0.00, maxval=1.00, step=0.01, group="Pattern Settings")
+i_prb2_hold_epsilon_atr = input.float(0.05, "PRB2 Hold Epsilon ATR", minval=0.00, maxval=1.00, step=0.01, group="Pattern Settings")
+i_range_cap = input.float(2.5, "One-Bar Range Cap ATR", minval=0.25, maxval=10.0, step=0.25, group="Pattern Settings")
+i_two_bar_range_cap = input.float(4.0, "Two-Bar Range Cap ATR", minval=0.50, maxval=15.0, step=0.25, group="Pattern Settings")
+i_lp1_volume_mult = input.float(1.0, "LP1 Volume Multiple", minval=0.0, maxval=5.0, step=0.1, group="Pattern Settings")
+i_lp2_volume_mult = input.float(1.0, "LP2 Volume Multiple", minval=0.0, maxval=5.0, step=0.1, group="Pattern Settings")
+i_prb_volume_mult = input.float(1.2, "PRB Volume Multiple", minval=0.0, maxval=5.0, step=0.1, group="Pattern Settings")
+i_approach_lookback = input.int(4, "Approach Lookback", minval=2, maxval=20, group="Pattern Settings")
+i_approach_min_atr = input.float(0.05, "Approach Min ATR", minval=0.0, maxval=2.0, step=0.01, group="Pattern Settings")
+i_lp2_overextended_atr = input.float(1.2, "LP2 Overextended ATR", minval=0.10, maxval=5.0, step=0.10, group="Pattern Settings")
+
+// Trade management
+i_rr = input.float(2.0, "Target R Multiple", minval=0.25, maxval=10.0, step=0.25, group="Trade Management")
+i_stop_buffer_atr = input.float(0.25, "Stop Buffer ATR", minval=0.0, maxval=2.0, step=0.05, group="Trade Management")
+i_stop_variant = input.string("Strategy Default", "Stop Variant", options=["Strategy Default", "Behind Level", "Behind Signal Bar", "Behind Two-Bar Structure", "Behind Day 1"], group="Trade Management")
+i_gap_max_atr = input.float(1.2, "Max Entry-Day Gap ATR", minval=0.1, maxval=10.0, step=0.1, group="Trade Management")
+i_chase_max_atr = input.float(0.30, "Max Chase ATR", minval=0.0, maxval=5.0, step=0.05, group="Trade Management")
+i_equity_for_sizing = input.float(100000, "Sizing Equity", minval=1, step=1000, group="Trade Management")
+i_risk_pct = input.float(0.50, "Risk Per Trade %", minval=0.01, maxval=10.0, step=0.05, group="Trade Management") / 100.0
+i_max_shares = input.int(10000, "Max Shares", minval=1, group="Trade Management")
+i_slippage_per_share = input.float(0.01, "Slippage Per Share", minval=0.0, step=0.01, group="Trade Management")
+i_fees_per_share = input.float(0.005, "Fees Per Share", minval=0.0, step=0.001, group="Trade Management")
+i_min_score = input.float(0.0, "Minimum Score", minval=0.0, maxval=100.0, step=1.0, group="Trade Management")
+i_require_entry_day_trigger = input.bool(true, "Require Entry-Day Trigger", group="Trade Management")
+i_close_on_opposite = input.bool(true, "Close On Opposite Signal", group="Trade Management")
+
+// Quality filters available inside TradingView
+i_use_liquidity_filter = input.bool(false, "Use Liquidity Filter", group="Quality Filters")
+i_min_price = input.float(5.0, "Min Price", minval=0.0, step=0.50, group="Quality Filters")
+i_max_price = input.float(500.0, "Max Price", minval=1.0, step=1.0, group="Quality Filters")
+i_min_avg_volume = input.float(700000, "Min Avg Volume", minval=0.0, step=10000, group="Quality Filters")
+i_min_dollar_volume = input.float(10000000, "Min Dollar Volume", minval=0.0, step=100000, group="Quality Filters")
+
+// Display
+i_show_levels = input.bool(true, "Show Levels", group="Display")
+i_show_trade_lines = input.bool(true, "Show Entry/Stop/Target", group="Display")
+i_show_stats = input.bool(true, "Show Key Stats", group="Display")
+
+f_clamp(value, low, high) =>
+    math.max(low, math.min(high, value))
+
+f_bar_pos(_high, _low, _close) =>
+    span = math.max(_high - _low, syminfo.mintick)
+    (_close - _low) / span
+
+f_touches(level, tolerance, lookback) =>
+    int count = 0
+    if not na(level)
+        for i = 1 to lookback
+            count += low[i] <= level + tolerance and high[i] >= level - tolerance ? 1 : 0
+    count
+
+f_approach_direction(start_offset, lookback, atr_value) =>
+    change_atr = (close[start_offset] - close[start_offset + lookback - 1]) / math.max(atr_value, syminfo.mintick)
+    change_atr >= i_approach_min_atr ? 1 : change_atr <= -i_approach_min_atr ? -1 : 0
+
+f_score(level_strength, signal_volume, volume_base, pattern_quality, entry_price, dollar_volume, event_quality, atr_value) =>
+    relative_volume = math.min(1.0, signal_volume / math.max(volume_base, 1.0) / 2.0)
+    distance_quality = math.max(0.0, 1.0 - math.abs(entry_price - close) / math.max(atr_value * 2.0, syminfo.mintick))
+    liquidity_quality = math.min(1.0, dollar_volume / 50000000.0)
+    raw = 0.30 * level_strength + 0.20 * relative_volume + 0.20 * distance_quality + 0.15 * f_clamp(pattern_quality, 0.0, 1.0) + 0.10 * liquidity_quality + 0.05 * event_quality
+    f_clamp(raw * 100.0, 0.0, 100.0)
+
+f_stop_variant(strategy_name) =>
+    strategy_name == "LP1" ? "Behind Signal Bar" :
+     strategy_name == "LP2" ? "Behind Two-Bar Structure" :
+     strategy_name == "PRB1" ? "Behind Level" :
+     strategy_name == "PRB2" ? "Behind Day 1" : "Behind Level"
+
+f_pick_stop(strategy_name, side_mult, entry_price, level_price, signal_high, signal_low, structure_high, structure_low, day1_high, day1_low, has_structure, has_day1, atr_value) =>
+    requested = i_stop_variant == "Strategy Default" ? f_stop_variant(strategy_name) : i_stop_variant
+    behind_level = level_price - side_mult * i_stop_buffer_atr * atr_value
+    behind_signal = side_mult == 1 ? signal_low - i_stop_buffer_atr * atr_value : signal_high + i_stop_buffer_atr * atr_value
+    behind_structure = side_mult == 1 ? structure_low - i_stop_buffer_atr * atr_value : structure_high + i_stop_buffer_atr * atr_value
+    behind_day1 = side_mult == 1 ? day1_low - i_stop_buffer_atr * atr_value : day1_high + i_stop_buffer_atr * atr_value
+    selected = requested == "Behind Level" ? behind_level :
+     requested == "Behind Signal Bar" ? behind_signal :
+     requested == "Behind Two-Bar Structure" and has_structure ? behind_structure :
+     requested == "Behind Day 1" and has_day1 ? behind_day1 : behind_level
+    valid = side_mult == 1 ? selected < entry_price : selected > entry_price
+    fallback = side_mult == 1 ? math.min(behind_level, behind_signal) : math.max(behind_level, behind_signal)
+    valid ? selected : fallback
+
+// Metrics
+atr = ta.atr(i_atr_length)
+bar_range = high - low
+median_volume = ta.median(volume, i_volume_length)
+avg_volume = ta.sma(volume, i_volume_length)
+volume_base_signal = nz(median_volume[1], nz(avg_volume[1], volume[1]))
+volume_base_day1 = nz(median_volume[2], nz(avg_volume[2], volume[2]))
+dollar_volume = ta.sma(close * volume, i_volume_length)
+
+// Auto pivot levels
+pivot_low = ta.pivotlow(low, i_pivot_k, i_pivot_k)
+pivot_high = ta.pivothigh(high, i_pivot_k, i_pivot_k)
+var float auto_support = na
+var float auto_resistance = na
+if not na(pivot_low)
+    auto_support := pivot_low
+if not na(pivot_high)
+    auto_resistance := pivot_high
+
+raw_support = i_level_source == "Manual" ? (i_manual_support > 0 ? i_manual_support : na) : auto_support
+raw_resistance = i_level_source == "Manual" ? (i_manual_resistance > 0 ? i_manual_resistance : na) : auto_resistance
+tolerance = math.max(i_level_tolerance_atr * atr, close * 0.0005)
+open_tolerance = math.max(tolerance, i_open_tolerance_atr * atr)
+support_touches = f_touches(raw_support, tolerance, i_touch_lookback)
+resistance_touches = f_touches(raw_resistance, tolerance, i_touch_lookback)
+support_ok = not na(raw_support) and support_touches >= i_min_touches
+resistance_ok = not na(raw_resistance) and resistance_touches >= i_min_touches
+support_level = support_ok ? raw_support : na
+resistance_level = resistance_ok ? raw_resistance : na
+lp_support_level = not na(support_level) ? support_level : i_allow_role_flip ? resistance_level : na
+lp_resistance_level = not na(resistance_level) ? resistance_level : i_allow_role_flip ? support_level : na
+
+// Shared current entry-day filters
+in_range = time >= i_start and time <= i_end
+allow_long = i_side != "Short Only"
+allow_short = i_side != "Long Only"
+liquidity_ok = not i_use_liquidity_filter or (close >= i_min_price and close <= i_max_price and (avg_volume >= i_min_avg_volume or dollar_volume >= i_min_dollar_volume))
+
+// Pattern helpers for current entry day, signal bar [1], and first two-bar pattern bar [2].
+lp1_approach = f_approach_direction(2, i_approach_lookback, atr)
+multi_approach = f_approach_direction(3, i_approach_lookback, atr)
+lp1_last_close = close[2]
+multi_last_close = close[3]
+signal_body = math.abs(close[1] - open[1])
+signal_lower_wick = math.min(open[1], close[1]) - low[1]
+signal_upper_wick = high[1] - math.max(open[1], close[1])
+signal_pos = f_bar_pos(high[1], low[1], close[1])
+first_pos = f_bar_pos(high[2], low[2], close[2])
+signal_range_ok = (high[1] - low[1]) <= i_range_cap * atr
+two_bar_structure_range = math.max(high[2], high[1]) - math.min(low[2], low[1])
+two_bar_range_ok = two_bar_structure_range <= i_two_bar_range_cap * atr
+prb2_bars_in_range = (high[2] - low[2]) <= i_two_bar_range_cap * atr and (high[1] - low[1]) <= i_two_bar_range_cap * atr
+
+// Candidate signals
+lp1_long_level = lp_support_level
+lp1_short_level = lp_resistance_level
+prb_long_level = resistance_level
+prb_short_level = support_level
+
+lp1_long = i_lp1 and allow_long and not na(lp1_long_level) and lp1_approach == -1 and lp1_last_close >= lp1_long_level - open_tolerance and volume[1] >= i_lp1_volume_mult * volume_base_signal and open[1] >= lp1_long_level - open_tolerance and low[1] < lp1_long_level - i_lp1_delta_break * atr and close[1] > lp1_long_level + i_lp1_delta_close * atr and signal_range_ok and signal_lower_wick >= signal_body and signal_pos >= 0.60
+lp1_short = i_lp1 and allow_short and not na(lp1_short_level) and lp1_approach == 1 and lp1_last_close <= lp1_short_level + open_tolerance and volume[1] >= i_lp1_volume_mult * volume_base_signal and open[1] <= lp1_short_level + open_tolerance and high[1] > lp1_short_level + i_lp1_delta_break * atr and close[1] < lp1_short_level - i_lp1_delta_close * atr and signal_range_ok and signal_upper_wick >= signal_body and signal_pos <= 0.40
+
+lp2_long = i_lp2 and allow_long and not na(lp1_long_level) and multi_approach == -1 and multi_last_close >= lp1_long_level - open_tolerance and volume[1] >= i_lp2_volume_mult * volume_base_signal and low[2] < lp1_long_level - i_lp2_delta_break * atr and close[2] < lp1_long_level and close[1] > lp1_long_level + i_lp2_delta_close * atr and two_bar_range_ok
+lp2_short = i_lp2 and allow_short and not na(lp1_short_level) and multi_approach == 1 and multi_last_close <= lp1_short_level + open_tolerance and volume[1] >= i_lp2_volume_mult * volume_base_signal and high[2] > lp1_short_level + i_lp2_delta_break * atr and close[2] > lp1_short_level and close[1] < lp1_short_level - i_lp2_delta_close * atr and two_bar_range_ok
+
+prb1_long = i_prb1 and allow_long and not na(prb_long_level) and lp1_approach == 1 and lp1_last_close <= prb_long_level + open_tolerance and volume[1] >= i_prb_volume_mult * volume_base_signal and open[1] <= prb_long_level + open_tolerance and high[1] > prb_long_level + i_prb1_delta_break * atr and close[1] > prb_long_level + i_prb1_delta_close * atr and open >= prb_long_level - tolerance
+prb1_short = i_prb1 and allow_short and not na(prb_short_level) and lp1_approach == -1 and lp1_last_close >= prb_short_level - open_tolerance and volume[1] >= i_prb_volume_mult * volume_base_signal and open[1] >= prb_short_level - open_tolerance and low[1] < prb_short_level - i_prb1_delta_break * atr and close[1] < prb_short_level - i_prb1_delta_close * atr and open <= prb_short_level + tolerance
+
+prb2_long = i_prb2 and allow_long and not na(prb_long_level) and multi_approach == 1 and multi_last_close <= prb_long_level + open_tolerance and volume[2] >= i_prb_volume_mult * volume_base_day1 and prb2_bars_in_range and open[2] <= prb_long_level + open_tolerance and high[2] > prb_long_level + i_prb2_delta_break * atr and close[2] > prb_long_level + i_prb2_delta_close * atr and low[1] >= prb_long_level - tolerance and close[1] >= prb_long_level - i_prb2_hold_epsilon_atr * atr and open >= prb_long_level - tolerance
+prb2_short = i_prb2 and allow_short and not na(prb_short_level) and multi_approach == -1 and multi_last_close >= prb_short_level - open_tolerance and volume[2] >= i_prb_volume_mult * volume_base_day1 and prb2_bars_in_range and open[2] >= prb_short_level - open_tolerance and low[2] < prb_short_level - i_prb2_delta_break * atr and close[2] < prb_short_level - i_prb2_delta_close * atr and high[1] <= prb_short_level + tolerance and close[1] <= prb_short_level + i_prb2_hold_epsilon_atr * atr and open <= prb_short_level + tolerance
+
+// Pick one signal per bar in dashboard priority order.
+string sig_name = ""
+int side_mult = 0
+float sig_level = na
+float pattern_quality = na
+bool has_structure = false
+bool has_day1 = false
+float signal_high = high[1]
+float signal_low = low[1]
+float structure_high = na
+float structure_low = na
+float day1_high = na
+float day1_low = na
+bool overextended = false
+
+if lp1_long
+    sig_name := "LP1"
+    side_mult := 1
+    sig_level := lp1_long_level
+    pattern_quality := math.min(1.0, 0.45 + 0.35 * signal_pos + 0.20 * math.min(1.0, signal_lower_wick / math.max(signal_body, syminfo.mintick)))
+else if lp1_short
+    sig_name := "LP1"
+    side_mult := -1
+    sig_level := lp1_short_level
+    pattern_quality := math.min(1.0, 0.45 + 0.35 * (1.0 - signal_pos) + 0.20 * math.min(1.0, signal_upper_wick / math.max(signal_body, syminfo.mintick)))
+else if lp2_long
+    sig_name := "LP2"
+    side_mult := 1
+    sig_level := lp1_long_level
+    has_structure := true
+    structure_high := math.max(high[2], high[1])
+    structure_low := math.min(low[2], low[1])
+    pattern_quality := math.min(1.0, 0.55 + 0.20 * signal_pos + 0.25 * math.min(1.0, (sig_level - low[2]) / math.max(atr, syminfo.mintick)))
+    overextended := close[1] - sig_level > i_lp2_overextended_atr * atr
+else if lp2_short
+    sig_name := "LP2"
+    side_mult := -1
+    sig_level := lp1_short_level
+    has_structure := true
+    structure_high := math.max(high[2], high[1])
+    structure_low := math.min(low[2], low[1])
+    pattern_quality := math.min(1.0, 0.55 + 0.20 * (1.0 - signal_pos) + 0.25 * math.min(1.0, (high[2] - sig_level) / math.max(atr, syminfo.mintick)))
+    overextended := sig_level - close[1] > i_lp2_overextended_atr * atr
+else if prb1_long
+    sig_name := "PRB1"
+    side_mult := 1
+    sig_level := prb_long_level
+    pattern_quality := math.min(1.0, 0.60 + 0.20 * signal_pos + 0.20 * math.min(1.0, (close[1] - sig_level) / math.max(atr, syminfo.mintick)))
+else if prb1_short
+    sig_name := "PRB1"
+    side_mult := -1
+    sig_level := prb_short_level
+    pattern_quality := math.min(1.0, 0.60 + 0.20 * (1.0 - signal_pos) + 0.20 * math.min(1.0, (sig_level - close[1]) / math.max(atr, syminfo.mintick)))
+else if prb2_long
+    sig_name := "PRB2"
+    side_mult := 1
+    sig_level := prb_long_level
+    signal_high := high[2]
+    signal_low := low[2]
+    has_day1 := true
+    day1_high := high[1]
+    day1_low := low[1]
+    pattern_quality := math.min(1.0, 0.62 + 0.18 * first_pos + 0.20 * math.min(1.0, (low[1] - (sig_level - tolerance)) / math.max(tolerance, syminfo.mintick)))
+else if prb2_short
+    sig_name := "PRB2"
+    side_mult := -1
+    sig_level := prb_short_level
+    signal_high := high[2]
+    signal_low := low[2]
+    has_day1 := true
+    day1_high := high[1]
+    day1_low := low[1]
+    pattern_quality := math.min(1.0, 0.62 + 0.18 * (1.0 - first_pos) + 0.20 * math.min(1.0, ((sig_level + tolerance) - high[1]) / math.max(tolerance, syminfo.mintick)))
+
+has_signal = sig_name != "" and side_mult != 0 and not na(sig_level) and liquidity_ok and in_range
+planned_entry = has_signal ? sig_level + side_mult * i_entry_atr_pct * atr : na
+gap_atr = has_signal ? math.abs(open - close[1]) / math.max(atr, syminfo.mintick) : na
+chase_atr = has_signal ? side_mult * (open - planned_entry) / math.max(atr, syminfo.mintick) : na
+triggered = has_signal ? (side_mult == 1 ? high >= planned_entry : low <= planned_entry) : false
+effective_entry = has_signal and triggered ? (side_mult == 1 ? math.max(planned_entry, open) : math.min(planned_entry, open)) : planned_entry
+stop_price = has_signal ? f_pick_stop(sig_name, side_mult, effective_entry, sig_level, signal_high, signal_low, structure_high, structure_low, day1_high, day1_low, has_structure, has_day1, atr) : na
+risk_per_share = has_signal ? math.abs(effective_entry - stop_price) : na
+target_price = has_signal ? effective_entry + side_mult * i_rr * risk_per_share : na
+cost_per_share = i_slippage_per_share + i_fees_per_share
+sized_risk = risk_per_share + cost_per_share
+shares_raw = has_signal and sized_risk > 0 ? math.floor(i_equity_for_sizing * i_risk_pct / sized_risk) : 0
+shares = math.min(shares_raw, i_max_shares)
+level_strength = has_signal ? math.min(1.0, 0.35 + 0.12 * (math.max(support_touches, resistance_touches))) : na
+signal_score = has_signal ? f_score(level_strength, sig_name == "PRB2" ? volume[2] : volume[1], sig_name == "PRB2" ? volume_base_day1 : volume_base_signal, pattern_quality, effective_entry, dollar_volume, 1.0, atr) : na
+score_ok = has_signal and signal_score >= i_min_score
+valid_stop = has_signal and (side_mult == 1 ? stop_price < effective_entry : stop_price > effective_entry)
+execution_ok = has_signal and score_ok and valid_stop and shares >= 1 and gap_atr <= i_gap_max_atr and chase_atr <= i_chase_max_atr and not overextended and (not i_require_entry_day_trigger or triggered)
+long_signal = execution_ok and side_mult == 1
+short_signal = execution_ok and side_mult == -1
+
+long_id = sig_name + " Long"
+short_id = sig_name + " Short"
+
+if i_close_on_opposite and long_signal and strategy.position_size < 0
+    strategy.close_all(comment="Opposite long")
+if i_close_on_opposite and short_signal and strategy.position_size > 0
+    strategy.close_all(comment="Opposite short")
+
+if long_signal and strategy.position_size <= 0
+    strategy.entry(long_id, strategy.long, qty=shares, stop=planned_entry, comment=sig_name + " LONG")
+    strategy.exit(long_id + " Exit", from_entry=long_id, stop=stop_price, limit=target_price)
+
+if short_signal and strategy.position_size >= 0
+    strategy.entry(short_id, strategy.short, qty=shares, stop=planned_entry, comment=sig_name + " SHORT")
+    strategy.exit(short_id + " Exit", from_entry=short_id, stop=stop_price, limit=target_price)
+
+// Persist latest planned trade lines for visual inspection.
+var float last_entry = na
+var float last_stop = na
+var float last_target = na
+var string last_signal = "None"
+var float last_score = na
+if has_signal
+    last_entry := planned_entry
+    last_stop := stop_price
+    last_target := target_price
+    last_signal := sig_name + (side_mult == 1 ? " LONG" : " SHORT")
+    last_score := signal_score
+
+plot(i_show_levels ? support_level : na, "Support", color=color.new(color.teal, 0), linewidth=2, style=plot.style_linebr)
+plot(i_show_levels ? resistance_level : na, "Resistance", color=color.new(color.orange, 0), linewidth=2, style=plot.style_linebr)
+plot(i_show_trade_lines ? last_entry : na, "Planned Entry", color=color.new(color.aqua, 0), linewidth=2, style=plot.style_linebr)
+plot(i_show_trade_lines ? last_stop : na, "Planned Stop", color=color.new(color.red, 0), linewidth=2, style=plot.style_linebr)
+plot(i_show_trade_lines ? last_target : na, "Planned Target", color=color.new(color.lime, 0), linewidth=2, style=plot.style_linebr)
+
+plotshape(long_signal, title="LP/PRB Long", style=shape.triangleup, location=location.belowbar, color=color.new(color.lime, 0), size=size.small, text="LONG")
+plotshape(short_signal, title="LP/PRB Short", style=shape.triangledown, location=location.abovebar, color=color.new(color.red, 0), size=size.small, text="SHORT")
+plotshape(has_signal and not execution_ok, title="Filtered LP/PRB Signal", style=shape.circle, location=location.top, color=color.new(color.yellow, 0), size=size.tiny, text="FILTER")
+
+alertcondition(long_signal, "Market Screener Long", "Market Screener LP/PRB long signal on {{ticker}}")
+alertcondition(short_signal, "Market Screener Short", "Market Screener LP/PRB short signal on {{ticker}}")
+
+// Key stats table
+var table stats = table.new(position.top_right, 2, 12, border_width=1)
+if i_show_stats and barstate.islast
+    closed = strategy.closedtrades
+    wins = strategy.wintrades
+    losses = strategy.losstrades
+    gross_loss_abs = math.abs(strategy.grossloss)
+    profit_factor = gross_loss_abs > 0 ? strategy.grossprofit / gross_loss_abs : na
+    win_rate = closed > 0 ? wins / closed * 100.0 : na
+    avg_trade = closed > 0 ? strategy.netprofit / closed : na
+    table.cell(stats, 0, 0, "Key Stats", bgcolor=color.new(color.silver, 15), text_color=color.black)
+    table.cell(stats, 1, 0, syminfo.ticker, bgcolor=color.new(color.silver, 15), text_color=color.black)
+    table.cell(stats, 0, 1, "Last Signal")
+    table.cell(stats, 1, 1, last_signal)
+    table.cell(stats, 0, 2, "Score")
+    table.cell(stats, 1, 2, na(last_score) ? "-" : str.tostring(last_score, "#.0"))
+    table.cell(stats, 0, 3, "Entry / Stop / Target")
+    table.cell(stats, 1, 3, na(last_entry) ? "-" : str.tostring(last_entry, format.mintick) + " / " + str.tostring(last_stop, format.mintick) + " / " + str.tostring(last_target, format.mintick))
+    table.cell(stats, 0, 4, "Shares")
+    table.cell(stats, 1, 4, str.tostring(shares))
+    table.cell(stats, 0, 5, "Closed Trades")
+    table.cell(stats, 1, 5, str.tostring(closed))
+    table.cell(stats, 0, 6, "Win Rate")
+    table.cell(stats, 1, 6, na(win_rate) ? "-" : str.tostring(win_rate, "#.0") + "%")
+    table.cell(stats, 0, 7, "Profit Factor")
+    table.cell(stats, 1, 7, na(profit_factor) ? "-" : str.tostring(profit_factor, "#.00"))
+    table.cell(stats, 0, 8, "Net Profit")
+    table.cell(stats, 1, 8, str.tostring(strategy.netprofit, "#.##"))
+    table.cell(stats, 0, 9, "Avg Trade")
+    table.cell(stats, 1, 9, na(avg_trade) ? "-" : str.tostring(avg_trade, "#.##"))
+    table.cell(stats, 0, 10, "Open P/L")
+    table.cell(stats, 1, 10, str.tostring(strategy.openprofit, "#.##"))
+    table.cell(stats, 0, 11, "Status")
+    status_text = not has_signal ? "No signal" : not liquidity_ok ? "Liquidity filter" : overextended ? "Overextended" : gap_atr > i_gap_max_atr ? "Gap skip" : chase_atr > i_chase_max_atr ? "Chased" : not triggered ? "Pending entry" : not valid_stop ? "Invalid stop" : signal_score < i_min_score ? "Score filter" : "Ready"
+    table.cell(stats, 1, 11, status_text)

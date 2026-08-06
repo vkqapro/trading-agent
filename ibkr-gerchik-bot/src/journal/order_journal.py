@@ -92,6 +92,36 @@ def _fill_price_from_result(result: Any) -> float | None:
     return None
 
 
+def _result_has_fill(result: Any) -> bool:
+    """Return whether a broker result contains evidence of an execution."""
+    if not isinstance(result, dict):
+        return False
+    filled = _f(result.get("filled"))
+    if filled is not None and filled > 0:
+        return True
+    for key in ("avgFillPrice", "avg_fill_price", "fill_price", "price"):
+        price = _f(result.get(key))
+        if price is not None and price > 0:
+            return True
+    broker_statuses = result.get("broker_statuses")
+    if isinstance(broker_statuses, dict):
+        return any(_upper(value) in {"FILLED", "EXECUTED"} for value in broker_statuses.values())
+    return _upper(result.get("status")) in {"FILLED", "EXECUTED"}
+
+
+def _order_request_ids() -> set[str]:
+    """Return request ids already represented by the broker request store."""
+    data = _read_json(MEMORY_DIR / "order_requests.json", {"requests": []})
+    requests = data.get("requests") if isinstance(data, dict) else []
+    if not isinstance(requests, list):
+        return set()
+    return {
+        str(request.get("id"))
+        for request in requests
+        if isinstance(request, dict) and request.get("id")
+    }
+
+
 def _upper(value: Any) -> str:
     return str(value or "").strip().upper()
 
@@ -239,13 +269,16 @@ def _base_row(
     execution_id: str = "",
     message: str = "",
     raw: Dict[str, Any] | None = None,
+    actual_entry_fallback_to_plan: bool = True,
 ) -> Dict[str, Any]:
     pe = _f(planned_entry)
     ps = _f(planned_stop)
     pt = _f(planned_target)
     cs = _f(current_stop)
     ct = _f(current_target)
-    ae = _f(actual_entry) or pe
+    ae = _f(actual_entry)
+    if ae is None and actual_entry_fallback_to_plan:
+        ae = pe
     ax = _f(actual_exit)
     q = _qty(qty)
     pnl = _pnl(side, ae, ax, q)
@@ -345,26 +378,45 @@ def _closed_positions_by_symbol() -> Dict[str, List[Dict[str, Any]]]:
         if not isinstance(position, dict):
             continue
         symbol = _upper(position.get("symbol"))
-        if symbol:
+        # Older reconciliation versions wrote BROKER_POSITION_CLOSED when a
+        # symbol was absent from one position snapshot. That is not enough to
+        # prove a close: a working entry can have no position yet, and an API
+        # snapshot can be incomplete. Keep only execution-backed records.
+        if (
+            symbol
+            and not (
+                _upper(position.get("exit_reason")) == "BROKER_POSITION_CLOSED"
+                and not position.get("exit_execution_id")
+            )
+        ):
             by_symbol.setdefault(symbol, []).append(position)
     for items in by_symbol.values():
         items.sort(key=lambda item: str(item.get("closed_at") or ""), reverse=True)
     return by_symbol
 
 
+def _order_ids(payload: Dict[str, Any]) -> set[str]:
+    """Collect the parent and child broker ids for an order/position."""
+    return {
+        str(payload.get(key))
+        for key in (
+            "market_order_id",
+            "order_id",
+            "entry_order_id",
+            "parent_order_id",
+            "stop_order_id",
+            "limit_order_id",
+            "target_order_id",
+        )
+        if payload.get(key) not in (None, "", 0, "0")
+    }
+
+
 def _position_matches_request(position: Dict[str, Any] | None, result: Dict[str, Any]) -> bool:
     if not position:
         return False
-    pos_order_ids = {
-        str(position.get("market_order_id") or ""),
-        str(position.get("order_id") or ""),
-    }
-    req_order_ids = {
-        str(result.get("market_order_id") or ""),
-        str(result.get("order_id") or ""),
-    }
-    pos_order_ids.discard("")
-    req_order_ids.discard("")
+    pos_order_ids = _order_ids(position)
+    req_order_ids = _order_ids(result)
     if pos_order_ids and req_order_ids:
         return bool(pos_order_ids & req_order_ids)
     # If neither side recorded an order id, fall back to symbol-level matching.
@@ -373,17 +425,18 @@ def _position_matches_request(position: Dict[str, Any] | None, result: Dict[str,
     return not pos_order_ids and not req_order_ids
 
 
+def _position_opened_near_request(position: Dict[str, Any], request: Dict[str, Any]) -> bool:
+    """Match a market-only request when broker ids were not persisted."""
+    opened = _parse_dt(position.get("opened_at"))
+    requested = _parse_dt(request.get("updated_at") or request.get("created_at"))
+    if not opened or not requested:
+        return False
+    return abs((opened - requested).total_seconds()) <= 5 * 60
+
+
 def _observed_close_matches_request(position: Dict[str, Any], request: Dict[str, Any], result: Dict[str, Any]) -> bool:
-    pos_order_ids = {
-        str(position.get("market_order_id") or ""),
-        str(position.get("order_id") or ""),
-    }
-    req_order_ids = {
-        str(result.get("market_order_id") or ""),
-        str(result.get("order_id") or ""),
-    }
-    pos_order_ids.discard("")
-    req_order_ids.discard("")
+    pos_order_ids = _order_ids(position)
+    req_order_ids = _order_ids(result)
     if pos_order_ids and req_order_ids:
         return bool(pos_order_ids & req_order_ids)
 
@@ -416,11 +469,33 @@ def _rows_from_order_requests(open_positions: Dict[str, Dict[str, Any]]) -> List
         status_raw = str(req.get("status") or "").lower()
         candidate_open_pos = open_positions.get(symbol)
         open_pos = candidate_open_pos if _position_matches_request(candidate_open_pos, result) else None
+        has_fill = _result_has_fill(result)
+        if (
+            not open_pos
+            and candidate_open_pos
+            and _upper(req.get("source")) == "TRADINGVIEW"
+            and bool(req.get("market_only"))
+            and has_fill
+            and _position_opened_near_request(candidate_open_pos, req)
+        ):
+            open_pos = candidate_open_pos
+        # TradingView market orders can be marked DONE when they were only
+        # submitted to TWS. Do not turn a zero-fill historical request into a
+        # journal trade; it has no entry price and cannot be analyzed.
+        if (
+            _upper(req.get("source")) == "TRADINGVIEW"
+            and bool(req.get("market_only"))
+            and status_raw in {"done", "simulated"}
+            and not open_pos
+            and not has_fill
+        ):
+            continue
         related_close = next(
             (
                 c
                 for c in close_by_symbol.get(symbol, [])
                 if str(c.get("created_at") or "") >= str(req.get("created_at") or "")
+                and _upper(c.get("status")) in {"DONE", "SIMULATED"}
             ),
             None,
         )
@@ -439,6 +514,12 @@ def _rows_from_order_requests(open_positions: Dict[str, Dict[str, Any]]) -> List
             if related_close
             else "CLOSED_OBSERVED"
             if observed_close
+            else "UNFILLED"
+            if (
+                status_raw in {"done", "simulated"}
+                and not has_fill
+                and "MARKET_SCREENER" in _upper(req.get("source"))
+            )
             else "CLOSED_UNKNOWN"
             if status_raw in {"done", "simulated"}
             else status_raw.upper()
@@ -446,6 +527,9 @@ def _rows_from_order_requests(open_positions: Dict[str, Dict[str, Any]]) -> List
         actual_exit = None
         closed_at = None
         exit_reason = ""
+        observed_entry = None
+        observed_quantity = None
+        observed_execution_id = ""
         if related_close:
             close_result = related_close.get("result") if isinstance(related_close.get("result"), dict) else {}
             actual_exit = _fill_price_from_result(close_result)
@@ -453,6 +537,10 @@ def _rows_from_order_requests(open_positions: Dict[str, Dict[str, Any]]) -> List
             exit_reason = "MANUAL_CLOSE" if related_close.get("source") == "dashboard" else "CLOSE_REQUEST"
         elif observed_close:
             closed_at = observed_close.get("closed_at")
+            observed_entry = observed_close.get("avg_cost") or observed_close.get("entry")
+            actual_exit = _f(observed_close.get("exit_price") or observed_close.get("actual_exit"))
+            observed_quantity = observed_close.get("exit_quantity") or observed_close.get("quantity")
+            observed_execution_id = str(observed_close.get("exit_execution_id") or "")
             exit_reason = str(observed_close.get("exit_reason") or "BROKER_POSITION_CLOSED")
         elif not open_pos and status_raw == "simulated":
             inferred = _infer_bracket_exit_from_bars(
@@ -470,7 +558,7 @@ def _rows_from_order_requests(open_positions: Dict[str, Dict[str, Any]]) -> List
             else:
                 status = "CLOSED_UNKNOWN"
                 exit_reason = "UNKNOWN_OR_BRACKET"
-        elif not open_pos and status_raw == "done":
+        elif not open_pos and status_raw == "done" and status != "UNFILLED":
             exit_reason = "UNKNOWN_OR_BROKER"
         rows.append(
             _base_row(
@@ -488,12 +576,14 @@ def _rows_from_order_requests(open_positions: Dict[str, Dict[str, Any]]) -> List
                 planned_target=req.get("target"),
                 current_stop=(open_pos or {}).get("current_stop_loss"),
                 current_target=(open_pos or {}).get("current_target"),
-                actual_entry=(open_pos or {}).get("avg_cost") or _fill_price_from_result(result) or req.get("entry"),
+                actual_entry=(open_pos or {}).get("avg_cost") or observed_entry or (_fill_price_from_result(result) if has_fill else None),
+                actual_entry_fallback_to_plan=bool(open_pos or observed_close or has_fill),
                 actual_exit=actual_exit,
-                qty=(open_pos or {}).get("quantity") or result.get("quantity") or req.get("quantity"),
+                qty=(open_pos or {}).get("quantity") or observed_quantity or result.get("quantity") or req.get("quantity"),
                 strategy=req.get("strategy"),
                 exit_reason=exit_reason,
                 request_id=str(req.get("id") or ""),
+                execution_id=observed_execution_id,
                 message=str(req.get("message") or ""),
                 raw=req,
             )
@@ -501,7 +591,13 @@ def _rows_from_order_requests(open_positions: Dict[str, Dict[str, Any]]) -> List
     return rows
 
 
-def _rows_from_tv_state(path: Path, *, market: str, source: str) -> List[Dict[str, Any]]:
+def _rows_from_tv_state(
+    path: Path,
+    *,
+    market: str,
+    source: str,
+    linked_request_ids: set[str] | None = None,
+) -> List[Dict[str, Any]]:
     state = _read_json(path, {"executions": []})
     executions = state.get("executions") if isinstance(state, dict) else []
     if not isinstance(executions, list):
@@ -512,6 +608,11 @@ def _rows_from_tv_state(path: Path, *, market: str, source: str) -> List[Dict[st
             continue
         action = _upper(ex.get("action"))
         symbol = _upper(ex.get("symbol") or ex.get("inst_id") or ex.get("ticker"))
+        request_id = str(ex.get("request_id") or "")
+        if request_id and request_id in (linked_request_ids or set()):
+            # The broker request row is the canonical trade record. Keeping
+            # this alert copy would create a second row for the same trade.
+            continue
         status = str(ex.get("status") or "").upper()
         if action == "SELL":
             status = "CLOSE_ALERT" if status in {"QUEUED", "SUBMITTED"} else status
@@ -536,7 +637,7 @@ def _rows_from_tv_state(path: Path, *, market: str, source: str) -> List[Dict[st
                 qty=ex.get("estimated_qty") or ex.get("quantity") or ex.get("tv_position_size"),
                 strategy="tradingview_webhook",
                 exit_reason="TRADINGVIEW_SELL" if action == "SELL" else "",
-                request_id=str(ex.get("request_id") or ""),
+                request_id=request_id,
                 execution_id=str(ex.get("id") or ""),
                 message=str(ex.get("message") or ""),
                 raw=ex,
@@ -684,10 +785,25 @@ def _merge_reviews(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
 
 def load_order_journal(*, limit: int = MAX_ROWS) -> Dict[str, Any]:
     open_positions = _open_position_index()
+    linked_request_ids = _order_request_ids()
     rows: List[Dict[str, Any]] = []
     rows.extend(_rows_from_order_requests(open_positions))
-    rows.extend(_rows_from_tv_state(MEMORY_DIR / "runtime" / "tradingview_stock_state.json", market="STOCK", source="TradingView Stock"))
-    rows.extend(_rows_from_tv_state(MEMORY_DIR / "runtime" / "tradingview_forex_state.json", market="FOREX", source="TradingView Forex"))
+    rows.extend(
+        _rows_from_tv_state(
+            MEMORY_DIR / "runtime" / "tradingview_stock_state.json",
+            market="STOCK",
+            source="TradingView Stock",
+            linked_request_ids=linked_request_ids,
+        )
+    )
+    rows.extend(
+        _rows_from_tv_state(
+            MEMORY_DIR / "runtime" / "tradingview_forex_state.json",
+            market="FOREX",
+            source="TradingView Forex",
+            linked_request_ids=linked_request_ids,
+        )
+    )
     rows.extend(_rows_from_crypto_state())
 
     seen = set()

@@ -105,6 +105,16 @@ def _apply_anchor_date(frame: pd.DataFrame, anchor_date: str | None) -> pd.DataF
     return data.loc[dates.dt.date <= pd.Timestamp(anchor).date()].reset_index(drop=True)
 
 
+def _date_value(value: Any) -> object | None:
+    parsed = pd.to_datetime(value, errors="coerce")
+    return None if pd.isna(parsed) else parsed.date()
+
+
+def _is_current_session_date(value: Any) -> bool:
+    current = _date_value(value)
+    return current == datetime.now().astimezone().date() if current is not None else False
+
+
 def _wilder(values: pd.Series, period: int) -> pd.Series:
     out: list[float | None] = [None] * len(values)
     seed: list[float] = []
@@ -480,6 +490,7 @@ def _make_signal(
     approach: dict[str, Any] | None = None,
     chase_status: str = "chased_gap_skip",
     forced_execution_status: str | None = None,
+    entry_day_partial: bool = False,
 ) -> dict[str, Any]:
     latest = data.iloc[entry_index]
     signal_row = data.iloc[signal_index]
@@ -551,6 +562,7 @@ def _make_signal(
         "level_price": _round(level_price),
         "signal_bar_date": str(pd.Timestamp(signal_row["date"]).date()),
         "entry_day": str(pd.Timestamp(latest["date"]).date()),
+        "entry_day_status": "IN_PROGRESS" if entry_day_partial else "COMPLETE",
         "pattern_bar_dates": pattern_bar_dates,
         "day1_date": str(pd.Timestamp(day1_row["date"]).date()) if day1_row is not None else None,
         "entry_price": _round(entry),
@@ -642,10 +654,13 @@ def _detect_signals(
     levels: list[dict[str, Any]],
     params: ScreenerParams,
     metrics: dict[str, Any] | None = None,
+    entry_day_partial: bool | None = None,
 ) -> list[dict[str, Any]]:
     if len(data) < 4:
         return []
     entry_day = data.iloc[-1]
+    if entry_day_partial is None:
+        entry_day_partial = _is_current_session_date(entry_day.get("date"))
     signal_bar = data.iloc[-2]
     first_two_bar = data.iloc[-3]
     atr = _num(entry_day.get("atr_clean_14"))
@@ -669,10 +684,10 @@ def _detect_signals(
             approach_short = lp1_approach["direction"] == "UP" and float(lp1_approach["last_close"] or math.inf) <= level_price + open_tol
             if approach_long and volume_ok and signal_bar["open"] >= level_price - open_tol and signal_bar["low"] < level_price - params.lp1_delta_break * atr and signal_bar["close"] > level_price + params.lp1_delta_close * atr and bar_range_ok and lower_wick >= body and _bar_position(signal_bar) >= 0.60:
                 quality = min(1.0, 0.45 + 0.35 * _bar_position(signal_bar) + 0.20 * min(1.0, lower_wick / max(body, 0.0001)))
-                out.append(_make_signal(symbol=symbol, strategy="LP1", side="LONG", level=_level_for_role(level, "support"), data=data, params=params, reasoning="LP1 long: price approached support from above, made a one-bar false break, and reclaimed the level before the entry day.", signal_index=-2, entry_index=-1, pattern_quality=quality, metrics=metrics, volume_filter_pass=volume_ok, approach=lp1_approach, chase_status="missed_due_to_gap"))
+                out.append(_make_signal(symbol=symbol, strategy="LP1", side="LONG", level=_level_for_role(level, "support"), data=data, params=params, reasoning="LP1 long: price approached support from above, made a one-bar false break, and reclaimed the level before the entry day.", signal_index=-2, entry_index=-1, pattern_quality=quality, metrics=metrics, volume_filter_pass=volume_ok, approach=lp1_approach, chase_status="missed_due_to_gap", entry_day_partial=entry_day_partial))
             if approach_short and volume_ok and signal_bar["open"] <= level_price + open_tol and signal_bar["high"] > level_price + params.lp1_delta_break * atr and signal_bar["close"] < level_price - params.lp1_delta_close * atr and bar_range_ok and upper_wick >= body and _bar_position(signal_bar) <= 0.40:
                 quality = min(1.0, 0.45 + 0.35 * (1.0 - _bar_position(signal_bar)) + 0.20 * min(1.0, upper_wick / max(body, 0.0001)))
-                out.append(_make_signal(symbol=symbol, strategy="LP1", side="SHORT", level=_level_for_role(level, "resistance"), data=data, params=params, reasoning="LP1 short: price approached resistance from below, made a one-bar false break, and rejected the level before the entry day.", signal_index=-2, entry_index=-1, pattern_quality=quality, metrics=metrics, volume_filter_pass=volume_ok, approach=lp1_approach, chase_status="missed_due_to_gap"))
+                out.append(_make_signal(symbol=symbol, strategy="LP1", side="SHORT", level=_level_for_role(level, "resistance"), data=data, params=params, reasoning="LP1 short: price approached resistance from below, made a one-bar false break, and rejected the level before the entry day.", signal_index=-2, entry_index=-1, pattern_quality=quality, metrics=metrics, volume_filter_pass=volume_ok, approach=lp1_approach, chase_status="missed_due_to_gap", entry_day_partial=entry_day_partial))
 
         if "LP2" in params.strategies:
             structure_range = max(float(first_two_bar["high"]), float(signal_bar["high"])) - min(float(first_two_bar["low"]), float(signal_bar["low"]))
@@ -682,11 +697,11 @@ def _detect_signals(
             if approach_long and volume_ok and first_two_bar["low"] < level_price - params.lp2_delta_break * atr and first_two_bar["close"] < level_price and signal_bar["close"] > level_price + params.lp2_delta_close * atr and structure_range <= params.two_bar_range_cap * atr:
                 quality = min(1.0, 0.55 + 0.20 * _bar_position(signal_bar) + 0.25 * min(1.0, (level_price - float(first_two_bar["low"])) / max(atr, 0.0001)))
                 overextended = float(signal_bar["close"]) - level_price > params.lp2_overextended_atr * atr
-                out.append(_make_signal(symbol=symbol, strategy="LP2", side="LONG", level=_level_for_role(level, "support"), data=data, params=params, reasoning="LP2 long: the first bar closed below support, the second reclaimed it, and entry is evaluated on the following day.", signal_index=-2, entry_index=-1, structure_indexes=[-3, -2], pattern_quality=quality, metrics=metrics, volume_filter_pass=volume_ok, approach=multi_approach, chase_status="missed_due_to_gap", forced_execution_status="overextended" if overextended else None))
+                out.append(_make_signal(symbol=symbol, strategy="LP2", side="LONG", level=_level_for_role(level, "support"), data=data, params=params, reasoning="LP2 long: the first bar closed below support, the second reclaimed it, and entry is evaluated on the following day.", signal_index=-2, entry_index=-1, structure_indexes=[-3, -2], pattern_quality=quality, metrics=metrics, volume_filter_pass=volume_ok, approach=multi_approach, chase_status="missed_due_to_gap", forced_execution_status="overextended" if overextended else None, entry_day_partial=entry_day_partial))
             if approach_short and volume_ok and first_two_bar["high"] > level_price + params.lp2_delta_break * atr and first_two_bar["close"] > level_price and signal_bar["close"] < level_price - params.lp2_delta_close * atr and structure_range <= params.two_bar_range_cap * atr:
                 quality = min(1.0, 0.55 + 0.20 * (1.0 - _bar_position(signal_bar)) + 0.25 * min(1.0, (float(first_two_bar["high"]) - level_price) / max(atr, 0.0001)))
                 overextended = level_price - float(signal_bar["close"]) > params.lp2_overextended_atr * atr
-                out.append(_make_signal(symbol=symbol, strategy="LP2", side="SHORT", level=_level_for_role(level, "resistance"), data=data, params=params, reasoning="LP2 short: the first bar closed above resistance, the second rejected it, and entry is evaluated on the following day.", signal_index=-2, entry_index=-1, structure_indexes=[-3, -2], pattern_quality=quality, metrics=metrics, volume_filter_pass=volume_ok, approach=multi_approach, chase_status="missed_due_to_gap", forced_execution_status="overextended" if overextended else None))
+                out.append(_make_signal(symbol=symbol, strategy="LP2", side="SHORT", level=_level_for_role(level, "resistance"), data=data, params=params, reasoning="LP2 short: the first bar closed above resistance, the second rejected it, and entry is evaluated on the following day.", signal_index=-2, entry_index=-1, structure_indexes=[-3, -2], pattern_quality=quality, metrics=metrics, volume_filter_pass=volume_ok, approach=multi_approach, chase_status="missed_due_to_gap", forced_execution_status="overextended" if overextended else None, entry_day_partial=entry_day_partial))
 
         if "PRB1" in params.strategies:
             volume_ok = _volume_ok(signal_bar, params.prb_volume_mult)
@@ -694,22 +709,24 @@ def _detect_signals(
             approach_short = lp1_approach["direction"] == "DOWN" and float(lp1_approach["last_close"] or -math.inf) >= level_price - open_tol
             if approach_long and volume_ok and signal_bar["open"] <= level_price + open_tol and signal_bar["high"] > level_price + params.prb1_delta_break * atr and signal_bar["close"] > level_price + params.prb1_delta_close * atr and entry_day["open"] >= level_price - tol:
                 quality = min(1.0, 0.60 + 0.20 * _bar_position(signal_bar) + 0.20 * min(1.0, (float(signal_bar["close"]) - level_price) / max(atr, 0.0001)))
-                out.append(_make_signal(symbol=symbol, strategy="PRB1", side="LONG", level=_level_for_role(level, "resistance"), data=data, params=params, reasoning="PRB1 long: price approached resistance from below, the prior bar closed above it with volume, and the entry day opened holding the level.", signal_index=-2, entry_index=-1, pattern_quality=quality, metrics=metrics, volume_filter_pass=volume_ok, approach=lp1_approach))
+                out.append(_make_signal(symbol=symbol, strategy="PRB1", side="LONG", level=_level_for_role(level, "resistance"), data=data, params=params, reasoning="PRB1 long: price approached resistance from below, the prior bar closed above it with volume, and the entry day opened holding the level.", signal_index=-2, entry_index=-1, pattern_quality=quality, metrics=metrics, volume_filter_pass=volume_ok, approach=lp1_approach, entry_day_partial=entry_day_partial))
             if approach_short and volume_ok and signal_bar["open"] >= level_price - open_tol and signal_bar["low"] < level_price - params.prb1_delta_break * atr and signal_bar["close"] < level_price - params.prb1_delta_close * atr and entry_day["open"] <= level_price + tol:
                 quality = min(1.0, 0.60 + 0.20 * (1.0 - _bar_position(signal_bar)) + 0.20 * min(1.0, (level_price - float(signal_bar["close"])) / max(atr, 0.0001)))
-                out.append(_make_signal(symbol=symbol, strategy="PRB1", side="SHORT", level=_level_for_role(level, "support"), data=data, params=params, reasoning="PRB1 short: price approached support from above, the prior bar closed below it with volume, and the entry day opened holding below the level.", signal_index=-2, entry_index=-1, pattern_quality=quality, metrics=metrics, volume_filter_pass=volume_ok, approach=lp1_approach))
+                out.append(_make_signal(symbol=symbol, strategy="PRB1", side="SHORT", level=_level_for_role(level, "support"), data=data, params=params, reasoning="PRB1 short: price approached support from above, the prior bar closed below it with volume, and the entry day opened holding below the level.", signal_index=-2, entry_index=-1, pattern_quality=quality, metrics=metrics, volume_filter_pass=volume_ok, approach=lp1_approach, entry_day_partial=entry_day_partial))
 
         if "PRB2" in params.strategies:
             volume_ok = _volume_ok(first_two_bar, params.prb_volume_mult)
             approach_long = multi_approach["direction"] == "UP" and float(multi_approach["last_close"] or math.inf) <= level_price + open_tol
             approach_short = multi_approach["direction"] == "DOWN" and float(multi_approach["last_close"] or -math.inf) >= level_price - open_tol
             bars_in_range = float(first_two_bar["range"]) <= params.two_bar_range_cap * atr and float(signal_bar["range"]) <= params.two_bar_range_cap * atr
-            if approach_long and volume_ok and bars_in_range and first_two_bar["open"] <= level_price + open_tol and first_two_bar["high"] > level_price + params.prb2_delta_break * atr and first_two_bar["close"] > level_price + params.prb2_delta_close * atr and signal_bar["low"] >= level_price - tol and signal_bar["close"] >= level_price - params.prb2_hold_epsilon_atr * atr and entry_day["open"] >= level_price - tol:
+            long_entry_hold = entry_day["low"] >= level_price if entry_day_partial else entry_day["low"] >= level_price and entry_day["close"] >= level_price - params.prb2_hold_epsilon_atr * atr
+            if approach_long and volume_ok and bars_in_range and first_two_bar["open"] <= level_price + open_tol and first_two_bar["high"] > level_price + params.prb2_delta_break * atr and first_two_bar["close"] > level_price + params.prb2_delta_close * atr and signal_bar["low"] >= level_price - tol and signal_bar["close"] >= level_price - params.prb2_hold_epsilon_atr * atr and entry_day["open"] >= level_price - tol and long_entry_hold:
                 quality = min(1.0, 0.62 + 0.18 * _bar_position(first_two_bar) + 0.20 * min(1.0, (float(signal_bar["low"]) - (level_price - tol)) / max(tol, 0.0001)))
-                out.append(_make_signal(symbol=symbol, strategy="PRB2", side="LONG", level=_level_for_role(level, "resistance"), data=data, params=params, reasoning="PRB2 long: the breakout bar closed above resistance with volume, day 1 held it, and day 2 opened above the level.", signal_index=-3, entry_index=-1, day1_index=-2, pattern_quality=quality, metrics=metrics, volume_filter_pass=volume_ok, approach=multi_approach))
-            if approach_short and volume_ok and bars_in_range and first_two_bar["open"] >= level_price - open_tol and first_two_bar["low"] < level_price - params.prb2_delta_break * atr and first_two_bar["close"] < level_price - params.prb2_delta_close * atr and signal_bar["high"] <= level_price + tol and signal_bar["close"] <= level_price + params.prb2_hold_epsilon_atr * atr and entry_day["open"] <= level_price + tol:
+                out.append(_make_signal(symbol=symbol, strategy="PRB2", side="LONG", level=_level_for_role(level, "resistance"), data=data, params=params, reasoning="PRB2 long: the breakout bar closed above resistance with volume, day 1 held it, and day 2 opened above the level.", signal_index=-3, entry_index=-1, day1_index=-2, pattern_quality=quality, metrics=metrics, volume_filter_pass=volume_ok, approach=multi_approach, entry_day_partial=entry_day_partial))
+            short_entry_hold = entry_day["high"] <= level_price if entry_day_partial else entry_day["high"] <= level_price and entry_day["close"] <= level_price + params.prb2_hold_epsilon_atr * atr
+            if approach_short and volume_ok and bars_in_range and first_two_bar["open"] >= level_price - open_tol and first_two_bar["low"] < level_price - params.prb2_delta_break * atr and first_two_bar["close"] < level_price - params.prb2_delta_close * atr and signal_bar["high"] <= level_price + tol and signal_bar["close"] <= level_price + params.prb2_hold_epsilon_atr * atr and entry_day["open"] <= level_price + tol and short_entry_hold:
                 quality = min(1.0, 0.62 + 0.18 * (1.0 - _bar_position(first_two_bar)) + 0.20 * min(1.0, ((level_price + tol) - float(signal_bar["high"])) / max(tol, 0.0001)))
-                out.append(_make_signal(symbol=symbol, strategy="PRB2", side="SHORT", level=_level_for_role(level, "support"), data=data, params=params, reasoning="PRB2 short: the breakdown bar closed below support with volume, day 1 held below it, and day 2 opened below the level.", signal_index=-3, entry_index=-1, day1_index=-2, pattern_quality=quality, metrics=metrics, volume_filter_pass=volume_ok, approach=multi_approach))
+                out.append(_make_signal(symbol=symbol, strategy="PRB2", side="SHORT", level=_level_for_role(level, "support"), data=data, params=params, reasoning="PRB2 short: the breakdown bar closed below support with volume, day 1 held below it, and day 2 opened below the level.", signal_index=-3, entry_index=-1, day1_index=-2, pattern_quality=quality, metrics=metrics, volume_filter_pass=volume_ok, approach=multi_approach, entry_day_partial=entry_day_partial))
 
     if params.side_filter in {"LONG", "SHORT"}:
         out = [signal for signal in out if signal["side"] == params.side_filter]
@@ -734,15 +751,37 @@ def run_market_screener(
     reason_log: list[dict[str, Any]] = []
     levels_by_symbol: dict[str, list[dict[str, Any]]] = {}
     reason_counts: Counter[str] = Counter()
+    requested_anchor = _date_value(params.anchor_date)
+    anchor_warnings: list[dict[str, Any]] = []
+    latest_available_dates: list[object] = []
+    in_progress_symbols: list[str] = []
 
     for symbol in symbols:
-        frame = _add_metrics(_apply_anchor_date(_normalize_frame(bars_loader(symbol, params.timeframe)), params.anchor_date))
+        raw_frame = _normalize_frame(bars_loader(symbol, params.timeframe))
+        raw_dates = {_date_value(value) for value in raw_frame.get("date", [])}
+        raw_dates.discard(None)
+        latest_raw_date = max(raw_dates) if raw_dates else None
+        if latest_raw_date is not None:
+            latest_available_dates.append(latest_raw_date)
+        if requested_anchor is not None and requested_anchor not in raw_dates:
+            anchor_warnings.append(
+                {
+                    "ticker": symbol,
+                    "requested_anchor_date": str(requested_anchor),
+                    "latest_available_date": str(latest_raw_date) if latest_raw_date is not None else None,
+                    "reason": "anchor_data_unavailable",
+                }
+            )
+        frame = _add_metrics(_apply_anchor_date(raw_frame, params.anchor_date))
         if frame.empty or len(frame) < 40:
             row = {"ticker": symbol, "reason": "insufficient_data"}
             rejected.append(row)
             reason_log.append(row)
             reason_counts["insufficient_data"] += 1
             continue
+        entry_day_partial = _is_current_session_date(frame.iloc[-1]["date"])
+        if entry_day_partial:
+            in_progress_symbols.append(symbol)
         plan = watchlist.get(symbol, {}) if isinstance(watchlist, dict) else {}
         ok, filter_reasons, metrics = _passes_filters(frame, plan if isinstance(plan, dict) else {})
         levels = _pivot_levels(
@@ -765,7 +804,7 @@ def run_market_screener(
             reason_log.append(row)
             reason_counts.update(filter_reasons)
             continue
-        found = _detect_signals(symbol, frame, levels, params, metrics=metrics)
+        found = _detect_signals(symbol, frame, levels, params, metrics=metrics, entry_day_partial=entry_day_partial)
         if found:
             signals.extend(found)
             continue
@@ -785,10 +824,36 @@ def run_market_screener(
         reason_counts["broken_pattern"] += 1
 
     signals.sort(key=lambda item: (-float(item.get("score") or 0.0), -float(item.get("expected_R_multiple") or 0.0), -float(item.get("liquidity_quality") or 0.0), item.get("ticker", "")))
+    anchor_status = "UNSPECIFIED"
+    if requested_anchor is not None:
+        if anchor_warnings and in_progress_symbols:
+            anchor_status = "PARTIAL"
+        elif anchor_warnings:
+            anchor_status = "MISSING"
+        elif in_progress_symbols:
+            anchor_status = "IN_PROGRESS"
+        else:
+            anchor_status = "AVAILABLE"
+    elif in_progress_symbols:
+        anchor_status = "IN_PROGRESS"
+    anchor_message = None
+    if anchor_warnings:
+        latest = max(latest_available_dates) if latest_available_dates else None
+        anchor_message = (
+            f"No stored bar for requested anchor {requested_anchor}; latest available data is {latest}."
+            if latest is not None
+            else f"No stored bar for requested anchor {requested_anchor}."
+        )
+    elif in_progress_symbols:
+        anchor_message = "Anchor includes an in-progress session; opening price is usable, but the candle is not complete."
     return {
         "scan_timestamp": datetime.now().astimezone().isoformat(timespec="seconds"),
         "timeframe": params.timeframe,
         "anchor_date": params.anchor_date,
+        "anchor_status": anchor_status,
+        "latest_available_date": str(max(latest_available_dates)) if latest_available_dates else None,
+        "anchor_message": anchor_message,
+        "anchor_warnings": anchor_warnings,
         "universe_size": len(symbols),
         "signals_found": len(signals),
         "signals": signals,

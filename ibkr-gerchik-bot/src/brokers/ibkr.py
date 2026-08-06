@@ -79,6 +79,10 @@ class IBKRClient:
     """Thin broker adapter responsible for connectivity and core order actions."""
 
     def __init__(self) -> None:
+        # Dashboard reconciliation runs in an AnyIO worker thread.  The
+        # module-level initialization only covers the importing thread, while
+        # ib_insync constructs its eventkit objects in the current thread.
+        _ensure_event_loop()
         if IB is None:
             raise IBKRDependencyError(
                 "ib_insync is not installed. Install requirements.txt before using the broker adapter."
@@ -261,7 +265,11 @@ class IBKRClient:
     def get_open_orders(self) -> List[Dict[str, Any]]:
         self.ensure_connection()
         orders = []
-        for trade in self.ib.openTrades():
+        # ``openTrades()`` only includes orders owned by this API client.
+        # Journal reconciliation must also see orders submitted by TWS or a
+        # different client id, otherwise a working entry/bracket can look like
+        # a missing position and be misclassified as closed.
+        for trade in self.ib.reqAllOpenOrders():
             order = trade.order
             status = trade.orderStatus
             orders.append(
@@ -286,6 +294,43 @@ class IBKRClient:
                 }
             )
         return orders
+
+    def get_executions(self) -> List[Dict[str, Any]]:
+        """Return executions currently available from IBKR as plain records.
+
+        ``reqExecutions`` is intentionally kept behind the broker adapter so
+        journal/reconciliation code does not depend on ib_insync ``Fill``
+        objects.  IBKR normally returns the current day's executions, which is
+        sufficient to reconcile a bracket exit while the dashboard is open.
+        """
+        self.ensure_connection()
+        executions: List[Dict[str, Any]] = []
+        for fill in self.ib.reqExecutions():
+            execution = getattr(fill, "execution", None)
+            contract = getattr(fill, "contract", None)
+            if execution is None or contract is None:
+                continue
+            execution_time = getattr(execution, "time", None)
+            commission_report = getattr(fill, "commissionReport", None)
+            executions.append(
+                {
+                    "symbol": str(getattr(contract, "symbol", "") or "").upper(),
+                    "order_id": int(getattr(execution, "orderId", 0) or 0),
+                    "perm_id": int(getattr(execution, "permId", 0) or 0),
+                    "exec_id": str(getattr(execution, "execId", "") or ""),
+                    "side": str(getattr(execution, "side", "") or "").upper(),
+                    "shares": _safe_market_price(getattr(execution, "shares", 0.0)),
+                    "price": _safe_market_price(getattr(execution, "price", 0.0)),
+                    "cum_qty": _safe_market_price(getattr(execution, "cumQty", 0.0)),
+                    "avg_price": _safe_market_price(getattr(execution, "avgPrice", 0.0)),
+                    "time": execution_time.isoformat() if hasattr(execution_time, "isoformat") else str(execution_time or ""),
+                    "exchange": str(getattr(execution, "exchange", "") or ""),
+                    "account": str(getattr(execution, "acctNumber", "") or ""),
+                    "commission": _safe_market_price(getattr(commission_report, "commission", 0.0)),
+                    "realized_pnl": _safe_market_price(getattr(commission_report, "realizedPNL", 0.0)),
+                }
+            )
+        return executions
 
     def cancel_order(self, order_id: int) -> bool:
         self.ensure_connection()

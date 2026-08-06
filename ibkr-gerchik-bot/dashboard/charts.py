@@ -381,7 +381,7 @@ def mark_forecast_position(
             fillcolor="rgba(195, 244, 0, 0.12)", line_width=0, layer="below", row=1, col=1,
         )
     markers = (
-        (f"ENTRY  ${entry_f:,.2f}", entry_f, FORECAST_ENTRY, "dash"),
+        (f"ENTRY  ${entry_f:,.2f}", entry_f, FORECAST_ENTRY, "solid"),
         (f"STOP  ${stop_f:,.2f}", stop_f, FORECAST_STOP, "dash"),
         (f"TARGET  ${target_f:,.2f}  ·  {r_multiple:.1f}R", target_f, FORECAST_TARGET, "dash"),
     )

@@ -198,6 +198,68 @@ class MarketScreenerTests(TestCase):
         self.assertEqual(signals[0]["stop_variant"], "behind_day1")
         self.assertEqual(signals[0]["pattern_bar_dates"], ["2026-07-03", "2026-07-06"])
 
+    def test_prb2_long_rejects_completed_entry_day_that_breaks_the_level(self) -> None:
+        rows = [
+            {"date": "2026-07-01", "open": 99.2, "high": 100.0, "low": 98.8, "close": 99.6, "volume": 1_000_000},
+            {"date": "2026-07-02", "open": 99.7, "high": 100.1, "low": 99.1, "close": 99.8, "volume": 1_000_000},
+            {"date": "2026-07-03", "open": 99.8, "high": 101.3, "low": 99.5, "close": 100.9, "volume": 1_600_000},
+            {"date": "2026-07-06", "open": 100.4, "high": 101.2, "low": 100.1, "close": 100.7, "volume": 1_200_000},
+            {"date": "2026-07-07", "open": 100.3, "high": 101.5, "low": 99.0, "close": 99.4, "volume": 1_200_000},
+        ]
+        signals = _detect_signals(
+            "TEST",
+            _frame(rows),
+            [{"price": 100.0, "kind": "resistance", "touches": 3, "strength": 0.8, "tolerance": 0.2}],
+            ScreenerParams(strategies=("PRB2",)),
+            entry_day_partial=False,
+        )
+
+        self.assertEqual(signals, [])
+
+    def test_prb2_partial_entry_day_uses_open_and_marks_signal_in_progress(self) -> None:
+        rows = [
+            {"date": "2026-07-01", "open": 99.2, "high": 100.0, "low": 98.8, "close": 99.6, "volume": 1_000_000},
+            {"date": "2026-07-02", "open": 99.7, "high": 100.1, "low": 99.1, "close": 99.8, "volume": 1_000_000},
+            {"date": "2026-07-03", "open": 99.8, "high": 101.3, "low": 99.5, "close": 100.9, "volume": 1_600_000},
+            {"date": "2026-07-06", "open": 100.4, "high": 101.2, "low": 100.1, "close": 100.7, "volume": 1_200_000},
+            {"date": "2026-07-07", "open": 100.3, "high": 101.5, "low": 100.0, "close": 99.85, "volume": 1_200_000},
+        ]
+        signals = _detect_signals(
+            "TEST",
+            _frame(rows),
+            [{"price": 100.0, "kind": "resistance", "touches": 3, "strength": 0.8, "tolerance": 0.2}],
+            ScreenerParams(strategies=("PRB2",)),
+            entry_day_partial=True,
+        )
+
+        self.assertEqual(len(signals), 1)
+        self.assertEqual(signals[0]["side"], "LONG")
+        self.assertEqual(signals[0]["entry_day_status"], "IN_PROGRESS")
+
+    def test_explicit_anchor_without_bar_is_reported(self) -> None:
+        rows = [
+            {
+                "date": str((pd.Timestamp("2026-01-01") + pd.Timedelta(days=index)).date()),
+                "open": 20.0,
+                "high": 20.5,
+                "low": 19.5,
+                "close": 20.0,
+                "volume": 1_500_000,
+            }
+            for index in range(45)
+        ]
+
+        result = run_market_screener(
+            symbols=["ANCHOR"],
+            bars_loader=lambda _symbol, _timeframe: pd.DataFrame(rows),
+            watchlist={},
+            params=ScreenerParams(anchor_date="2026-02-20"),
+        )
+
+        self.assertEqual(result["anchor_status"], "MISSING")
+        self.assertEqual(result["latest_available_date"], "2026-02-14")
+        self.assertEqual(result["anchor_warnings"][0]["reason"], "anchor_data_unavailable")
+
     def test_prb1_rejects_a_downward_approach_to_resistance(self) -> None:
         rows = [
             {"date": "2026-07-13", "open": 70.0, "high": 71.0, "low": 69.0, "close": 70.0, "volume": 1_000_000},

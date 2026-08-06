@@ -49,7 +49,7 @@ const C = {
   outline:'#849495', outlineVar:'#3b494b',
   cyan:'#7df4ff', cyanBright:'#00f0ff', cyanDim:'#00dbe9',
   ocean:'#0077be',
-  lime:'#c3f400', limeDim:'#abd600',
+  lime:'#c3f400', limeDim:'#abd600', lemon:'#fff176',
   magenta:'#ecb2ff', err:'#ffb4ab',
 };
 const R = (hex, a) => {
@@ -62,6 +62,8 @@ const API = `${window.location.origin}/api`;
 // UI timeframe pill → API timeframe string (must match memory/bars filenames)
 const TF_API = {
   '5Min':'intraday_5m',
+  '15Min':'intraday_15m',
+  '30Min':'intraday_30m',
   '4H':'intraday_4h',
   '1H':'intraday_1h',
   '1D':'daily_live',
@@ -288,6 +290,25 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
     const text = String(value);
     const parsed = new Date(text.replace(' ','T')).getTime();
     return Number.isFinite(parsed) ? String(parsed) : text.slice(0,16);
+  };
+  const nearestBarIndexForTime = value => {
+    if(!value) return null;
+    const target = new Date(String(value).replace(' ','T')).getTime();
+    if(!Number.isFinite(target)) return null;
+    let best=-1, bestDiff=Infinity;
+    bars.forEach((b,i)=>{
+      const bt = new Date(String(b.t||b.date||'').replace(' ','T')).getTime();
+      if(!Number.isFinite(bt)) return;
+      const diff=Math.abs(bt-target);
+      if(diff<bestDiff){ best=i; bestDiff=diff; }
+    });
+    return best>=0 ? best : null;
+  };
+  const lineXForTime = value => {
+    const fullIdx = nearestBarIndexForTime(value);
+    if(fullIdx==null) return null;
+    const localIdx = Math.max(0, Math.min(viewSlots-1, fullIdx-vs));
+    return xi(localIdx);
   };
 
   // ── zoom helpers
@@ -747,14 +768,19 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
   lines.forEach((l,i)=>{
     const y = yp(l.p);
     const col = l.color || C.cyan;
+    const segmentStart = l.startTime ? lineXForTime(l.startTime) : padL;
+    const segmentEnd = l.endTime ? lineXForTime(l.endTime) : W-padR;
+    const x1 = Math.min(segmentStart ?? padL, segmentEnd ?? W-padR);
+    const x2 = Math.max(segmentStart ?? padL, segmentEnd ?? W-padR);
     els.push(
-      <line key={'dl'+i} x1={padL} x2={W-padR} y1={y} y2={y} stroke={col} strokeWidth={1.8} strokeDasharray="6 4"/>
+      <line key={'dl'+i} x1={x1} x2={x2} y1={y} y2={y} stroke={col} strokeWidth={1.8} strokeDasharray="6 4"/>
     );
     if(l.label && lineLabelPosition !== 'none'){
       const label = String(l.label);
       const labelW = Math.min(138, Math.max(58, label.length * 6.2 + 12));
+      const segmentMiddle = (x1+x2)/2;
       const labelX = lineLabelPosition === 'middle'
-        ? padL + (plotW - labelW) / 2
+        ? Math.max(padL, Math.min(W-padR-labelW, segmentMiddle-labelW/2))
         : W - padR + 4;
       const labelY = lineLabelPosition === 'middle' && lineLabelYByIndex[i] != null
         ? lineLabelYByIndex[i]
@@ -768,17 +794,8 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
     }
   });
   const markerIndexForTime = value => {
-    if(!value) return null;
-    const target = new Date(String(value).replace(' ','T')).getTime();
-    if(!Number.isFinite(target)) return null;
-    let best=-1, bestDiff=Infinity;
-    bars.forEach((b,i)=>{
-      const bt = new Date(String(b.t||'').replace(' ','T')).getTime();
-      if(!Number.isFinite(bt)) return;
-      const diff=Math.abs(bt-target);
-      if(diff<bestDiff){ best=i; bestDiff=diff; }
-    });
-    return best>=vs && best<ve ? best-vs : null;
+    const fullIdx = nearestBarIndexForTime(value);
+    return fullIdx!=null && fullIdx>=vs && fullIdx<ve ? fullIdx-vs : null;
   };
   (tradeMarkers||[]).forEach((m,i)=>{
     const localIdx=markerIndexForTime(m.time);
@@ -4656,6 +4673,7 @@ function TabMarketScreener({refreshKey=0}) {
   const [symbolSearch,setSymbolSearch]=useState('');
   const [statusFilter,setStatusFilter]=useState('ALL');
   const [selectedSignalKey,setSelectedSignalKey]=useState(null);
+  const [signalChartTf,setSignalChartTf]=useState('1D');
   const [signalBars,setSignalBars]=useState([]);
   const [signalBarsInfo,setSignalBarsInfo]=useState({stale:false,lastDate:null});
   const [signalPlan,setSignalPlan]=useState(null);
@@ -4787,7 +4805,7 @@ function TabMarketScreener({refreshKey=0}) {
     </span>
   );
   const statusOptions = ['ALL',...new Set(signals.map(row=>row.status).filter(Boolean))];
-  const statusColor = status => status==='READY' ? C.lime : ['pending_entry','review_required'].includes(status) ? C.cyan : C.err;
+  const statusColor = status => status==='READY' ? C.lime : ['pending_entry','review_required','IN_PROGRESS'].includes(status) ? C.cyan : C.err;
   const levelLabel = row => {
     const effective = row.level_type || 'level';
     const origin = row.level_origin_type;
@@ -4800,8 +4818,7 @@ function TabMarketScreener({refreshKey=0}) {
     return true;
   });
   const selectedSignal = signals.find(row=>signalKey(row)===selectedSignalKey) || filteredSignals[0] || signals[0] || null;
-  const chartTf = data.timeframe || tf;
-  const chartApiTf = TF_API[chartTf] || 'daily_live';
+  const chartApiTf = TF_API[signalChartTf] || 'daily_live';
   const signalInputValue = value => {
     const n = Number(value);
     return Number.isFinite(n) && n > 0 ? n.toFixed(Math.abs(n)>=10?2:4) : '';
@@ -5149,6 +5166,13 @@ function TabMarketScreener({refreshKey=0}) {
         )}
       </GlassCard>
 
+      {data.anchor_message && (
+        <div style={{display:'flex',alignItems:'center',gap:10,padding:'11px 14px',borderRadius:9,background:R(data.anchor_status==='MISSING'?C.err:C.cyan,0.08),border:`1px solid ${R(data.anchor_status==='MISSING'?C.err:C.cyan,0.26)}`,color:data.anchor_status==='MISSING'?C.err:C.cyan,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}>
+          <Icon n={data.anchor_status==='MISSING'?'warning':'schedule'} size={17} color="inherit"/>
+          <span>{data.anchor_message}</span>
+        </div>
+      )}
+
       <GlassCard style={{overflow:'hidden'}}>
         <div style={{padding:'16px 18px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',justifyContent:'space-between',alignItems:'center',gap:12,flexWrap:'wrap'}}>
           <PanelHeader icon="radar" title="Screener Signals" badge={`${filteredSignals.length} shown`}/>
@@ -5209,6 +5233,11 @@ function TabMarketScreener({refreshKey=0}) {
           )}
         </div>
         <div style={{padding:'12px 18px',borderBottom:`1px solid ${R(C.outline,0.1)}`,display:'flex',gap:18,alignItems:'center',flexWrap:'wrap'}}>
+          <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:9,letterSpacing:'0.08em',textTransform:'uppercase',color:C.outline}}>Chart TF</span>
+          {['1D','4H','1H','30Min','15Min','5Min'].map(t=><button key={t} onClick={()=>setSignalChartTf(t)}
+            style={{padding:'6px 9px',borderRadius:7,cursor:'pointer',border:`1px solid ${R(signalChartTf===t?C.cyan:C.outline,signalChartTf===t?0.42:0.18)}`,background:signalChartTf===t?R(C.cyan,0.12):'transparent',color:signalChartTf===t?C.cyan:C.onVar,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:signalChartTf===t?800:500}}>
+            {t==='30Min'?'30 min':t==='15Min'?'15 min':t==='5Min'?'5 min':t}
+          </button>)}
           <Toggle on={showSignalOverlay} label="Signal" onChange={setShowSignalOverlay}/>
           <Toggle on={showSignalTrade} label="Trade zones" onChange={setShowSignalTrade}/>
           <Toggle on={showSignalRaw} label="Raw levels" onChange={setShowSignalRaw}/>
@@ -5550,14 +5579,28 @@ function TabOrdersJournal({refreshKey=0}) {
   );
 
   const side=String(selected?.side||'BUY').toUpperCase();
-  const stopChanged = selected?.current_stop!=null && selected?.planned_stop!=null && Math.abs(Number(selected.current_stop)-Number(selected.planned_stop))>0.0001;
-  const targetChanged = selected?.current_target!=null && selected?.planned_target!=null && Math.abs(Number(selected.current_target)-Number(selected.planned_target))>0.0001;
+  const isClosedJournalRow = r => String(r?.status||'').toUpperCase().startsWith('CLOSED') || Boolean(r?.closed_at);
+  const isTradingViewAlert = r => /tradingview/i.test(`${r?.source||''} ${r?.strategy||''}`);
+  const closedManualTrade = Boolean(selected && isClosedJournalRow(selected) && !isTradingViewAlert(selected));
+  const shiftTradeTime = (value, days) => {
+    if(!value) return null;
+    const date = new Date(String(value).replace(' ','T'));
+    if(!Number.isFinite(date.getTime())) return null;
+    date.setDate(date.getDate()+days);
+    return date.toISOString();
+  };
+  const entryStopWindow = closedManualTrade && selected.opened_at ? {
+    startTime:shiftTradeTime(selected.opened_at,-1),
+    endTime:shiftTradeTime(selected.opened_at,1),
+  } : null;
+  const exitTargetWindow = closedManualTrade && selected.closed_at ? {
+    startTime:shiftTradeTime(selected.closed_at,-1),
+    endTime:shiftTradeTime(selected.closed_at,1),
+  } : null;
   const lineSet = selected ? [
-    selected.planned_target!=null && {p:selected.planned_target,color:C.lime,label:`TARGET PLAN ${money(selected.planned_target)}`},
-    targetChanged && {p:selected.current_target,color:C.lime,label:`CURRENT TARGET ${money(selected.current_target)}`,dash:[6,5]},
     selected.planned_entry!=null && {p:selected.planned_entry,color:C.ocean,label:`ENTRY PLAN ${money(selected.planned_entry)}`},
-    selected.planned_stop!=null && {p:selected.planned_stop,color:C.err,label:`STOP PLAN ${money(selected.planned_stop)}`},
-    stopChanged && {p:selected.current_stop,color:C.err,label:`CURRENT STOP ${money(selected.current_stop)}`,dash:[6,5]},
+    closedManualTrade && selected.planned_stop!=null && entryStopWindow && {...entryStopWindow,p:selected.planned_stop,color:'#ff4d4d',label:`STOP LOSS ${money(selected.planned_stop)}`},
+    closedManualTrade && selected.planned_target!=null && exitTargetWindow && {...exitTargetWindow,p:selected.planned_target,color:C.lemon,label:`TAKE PROFIT ${money(selected.planned_target)}`},
     selected.actual_exit!=null && {p:selected.actual_exit,color:C.magenta,label:`EXIT ${money(selected.actual_exit)}`},
   ].filter(Boolean) : [];
   const zoneSet = selected ? [
@@ -5570,7 +5613,6 @@ function TabOrdersJournal({refreshKey=0}) {
   ].filter(Boolean) : [];
   const checks=['Entry at valid level','Stop was logical','Target was realistic','Strategy confirmed','Market condition acceptable','Followed plan'];
   const isOpenJournalRow = r => ['OPEN','SUBMITTED','OPEN_ALERT'].includes(String(r.status||'').toUpperCase());
-  const isClosedJournalRow = r => String(r.status||'').toUpperCase().startsWith('CLOSED') || Boolean(r.closed_at);
   const filteredPnlRows = filtered.filter(r=>Number.isFinite(Number(r.pnl)));
   const filteredRRows = filtered.filter(r=>Number.isFinite(Number(r.r_multiple)));
   const filteredMetrics = {

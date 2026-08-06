@@ -36,7 +36,11 @@ class IntradaySyncTests(TestCase):
                     "avg_cost": 78.18,
                     "direction": "short",
                     "sec_type": "STK",
+                    "protection_policy": "manual_unmanaged",
                     "stop_order_id": 456,
+                    "current_stop_order_status": None,
+                    "limit_order_id": 789,
+                    "current_target_order_status": None,
                 }
             ],
         )

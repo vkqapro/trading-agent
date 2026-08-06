@@ -27,7 +27,7 @@ class FakeBroker:
     def get_positions(self):
         return self._positions
 
-    def place_market_order(self, symbol, action, quantity):
+    def place_market_order(self, symbol, action, quantity, tif=None):
         self.market_orders.append((symbol, action, quantity))
         return SimpleNamespace(order_id=99, symbol=symbol, action=action, quantity=quantity, status="Submitted")
 

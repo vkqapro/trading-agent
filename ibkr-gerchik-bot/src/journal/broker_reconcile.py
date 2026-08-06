@@ -45,10 +45,97 @@ def _now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
-def _record_closed_positions(before: Dict[str, Dict[str, Any]], synced: list[Dict[str, Any]]) -> int:
-    synced_symbols = {str(item.get("symbol", "")).strip().upper() for item in synced if isinstance(item, dict)}
-    closed = [position for symbol, position in before.items() if symbol and symbol not in synced_symbols]
-    if not closed:
+def _upper(value: Any) -> str:
+    return str(value or "").strip().upper()
+
+
+def _order_ids(payload: Dict[str, Any]) -> set[str]:
+    return {
+        str(payload.get(key))
+        for key in (
+            "market_order_id",
+            "order_id",
+            "entry_order_id",
+            "parent_order_id",
+            "stop_order_id",
+            "limit_order_id",
+            "target_order_id",
+        )
+        if payload.get(key) not in (None, "", 0, "0")
+    }
+
+
+def _place_requests() -> list[Dict[str, Any]]:
+    data = _read_json(MEMORY_DIR / "order_requests.json", {"requests": []})
+    requests = data.get("requests") if isinstance(data, dict) else []
+    return [
+        request
+        for request in requests
+        if isinstance(request, dict) and request.get("action") == "place"
+    ] if isinstance(requests, list) else []
+
+
+def _execution_matches_request(execution: Dict[str, Any], request: Dict[str, Any]) -> bool:
+    if _upper(execution.get("symbol")) != _upper(request.get("symbol")):
+        return False
+    result = request.get("result") if isinstance(request.get("result"), dict) else {}
+    execution_order_id = str(execution.get("order_id") or "")
+    if execution_order_id and execution_order_id in _order_ids(result):
+        return True
+    return False
+
+
+def _execution_closed_record(
+    execution: Dict[str, Any],
+    request: Dict[str, Any],
+    prior_position: Dict[str, Any] | None,
+) -> Dict[str, Any]:
+    result = request.get("result") if isinstance(request.get("result"), dict) else {}
+    entry_price = (
+        (prior_position or {}).get("avg_cost")
+        or result.get("avg_fill_price")
+        or request.get("entry")
+    )
+    order_id = execution.get("order_id")
+    stop_order_id = result.get("stop_order_id")
+    limit_order_id = result.get("limit_order_id")
+    if str(order_id) == str(limit_order_id):
+        exit_reason = "BRACKET_TARGET_FILLED"
+    elif str(order_id) == str(stop_order_id):
+        exit_reason = "BRACKET_STOP_FILLED"
+    else:
+        exit_reason = "BROKER_SELL_EXECUTION"
+    return {
+        **(prior_position or {}),
+        "symbol": _upper(request.get("symbol")),
+        "quantity": abs(float(request.get("quantity") or result.get("quantity") or execution.get("shares") or 0)),
+        "entry": entry_price,
+        "avg_cost": entry_price,
+        "opened_at": (prior_position or {}).get("opened_at") or request.get("updated_at") or request.get("created_at"),
+        "market_order_id": result.get("market_order_id"),
+        "stop_order_id": stop_order_id,
+        "limit_order_id": limit_order_id,
+        "strategy": request.get("strategy") or result.get("strategy"),
+        "source": request.get("source"),
+        "closed_at": execution.get("time") or _now(),
+        "exit_price": execution.get("price"),
+        "exit_quantity": abs(float(execution.get("shares") or 0)),
+        "exit_order_id": order_id,
+        "exit_perm_id": execution.get("perm_id"),
+        "exit_execution_id": execution.get("exec_id"),
+        "exit_reason": exit_reason,
+        "request_id": str(request.get("id") or ""),
+        "entry_price_source": "broker_position" if prior_position else "planned_entry",
+    }
+
+
+def _record_closed_positions(
+    before: Dict[str, Dict[str, Any]],
+    synced: list[Dict[str, Any]],
+    executions: list[Dict[str, Any]] | None = None,
+) -> int:
+    executions = executions or []
+    if not executions:
         return 0
 
     data = _read_json(CLOSED_POSITIONS_PATH, {"positions": []})
@@ -57,39 +144,56 @@ def _record_closed_positions(before: Dict[str, Dict[str, Any]], synced: list[Dic
     positions = data.get("positions")
     if not isinstance(positions, list):
         positions = []
-    existing_keys = {
-        (
-            str(item.get("symbol", "")).strip().upper(),
-            str(item.get("market_order_id") or item.get("order_id") or ""),
-            str(item.get("opened_at") or ""),
-        )
-        for item in positions
-        if isinstance(item, dict)
-    }
+    changed = False
 
-    observed_at = _now()
     added = 0
-    for position in closed:
-        symbol = str(position.get("symbol", "")).strip().upper()
-        key = (
-            symbol,
-            str(position.get("market_order_id") or position.get("order_id") or ""),
-            str(position.get("opened_at") or ""),
-        )
-        if not symbol or key in existing_keys:
+    # A bracket child can fill after the local tracked position has already
+    # disappeared. Match today's broker sell execution back to the original
+    # place request by parent/child order id. A missing position snapshot by
+    # itself is not closure evidence: an entry can still be working, or an
+    # IBKR/API snapshot can be temporarily incomplete.
+    for execution in executions:
+        if not isinstance(execution, dict) or _upper(execution.get("side")) not in {"SLD", "SELL"}:
             continue
-        record = dict(position)
-        record.update(
-            {
-                "symbol": symbol,
-                "closed_at": observed_at,
-                "exit_reason": "BROKER_POSITION_CLOSED",
-            }
+        request = next((item for item in _place_requests() if _execution_matches_request(execution, item)), None)
+        if request is None:
+            continue
+        symbol = _upper(request.get("symbol"))
+        request_result = request.get("result") if isinstance(request.get("result"), dict) else {}
+        request_ids = _order_ids(request_result)
+        matching = next(
+            (
+                item
+                for item in positions
+                if isinstance(item, dict)
+                and _upper(item.get("symbol")) == symbol
+                and request_ids.intersection(_order_ids(item))
+            ),
+            None,
         )
-        positions.append(record)
-        existing_keys.add(key)
-        added += 1
-    if added:
+        if matching is None:
+            matching = next(
+                (
+                    item
+                    for item in positions
+                    if isinstance(item, dict)
+                    and _upper(item.get("symbol")) == symbol
+                    and str(item.get("exit_execution_id") or "") == str(execution.get("exec_id") or "")
+                ),
+                None,
+            )
+        record = _execution_closed_record(execution, request, before.get(symbol))
+        if matching is None:
+            positions.append(record)
+            added += 1
+            changed = True
+        else:
+            for key, value in record.items():
+                if matching.get(key) in (None, "", 0, "0") and value not in (None, "", 0, "0"):
+                    matching[key] = value
+                    changed = True
+
+    if changed:
         data["positions"] = positions[-500:]
         _write_json(CLOSED_POSITIONS_PATH, data)
     return added
@@ -128,6 +232,7 @@ def reconcile_ibkr_open_orders(*, force: bool = False) -> Dict[str, Any]:
         broker.connect()
         positions = broker.get_positions()
         open_orders = broker.get_open_orders()
+        executions = broker.get_executions() if hasattr(broker, "get_executions") else []
         state_path = SETTINGS.paths.state_file
         state = _read_json(state_path, {})
         if not isinstance(state, dict):
@@ -142,7 +247,7 @@ def reconcile_ibkr_open_orders(*, force: bool = False) -> Dict[str, Any]:
             positions,
             open_orders,
         )
-        closed_observed = _record_closed_positions(before, synced)
+        closed_observed = _record_closed_positions(before, synced, executions)
         state["tracked_positions"] = synced
         _write_json(state_path, state)
 
@@ -163,6 +268,7 @@ def reconcile_ibkr_open_orders(*, force: bool = False) -> Dict[str, Any]:
                 "updated": updated,
                 "closed_observed": closed_observed,
                 "open_orders": len(open_orders),
+                "executions": len(executions),
                 "positions": len(positions),
                 "client_id": client_id,
                 "ts": time.time(),
