@@ -11,10 +11,11 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body,#root{height:100%;width:100%;overflow:hidden}
+html,body{background:var(--dashboard-bg,#131314);color:var(--dashboard-on-surf,#e5e2e3)}
 ::-webkit-scrollbar{width:7px;height:7px}
 ::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:#3b494b;border-radius:4px}
-::-webkit-scrollbar-thumb:hover{background:#7df4ff}
+::-webkit-scrollbar-thumb{background:var(--dashboard-scrollbar,#3b494b);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--dashboard-accent,#7df4ff)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 @keyframes spin{to{transform:rotate(360deg)}}
 .mso{font-family:'Material Symbols Outlined';font-weight:normal;font-style:normal;
@@ -26,7 +27,7 @@ html,body,#root{height:100%;width:100%;overflow:hidden}
   height:100vh;
   overflow:auto;
   padding:18px;
-  background:#131314;
+  background:var(--dashboard-bg,#131314);
 }
 .strategy-chart-fullscreen-shell:fullscreen > div{
   min-height:calc(100vh - 36px);
@@ -43,15 +44,28 @@ html,body,#root{height:100%;width:100%;overflow:hidden}
 const {useState, useEffect, useCallback, useRef, useMemo} = React;
 
 /* ── palette ─────────────────────────────────────────────────────────────── */
-const C = {
-  bg:'#131314', surf:'#201f20', surfLow:'#1c1b1c', surfLowest:'#0e0e0f',
-  surfHigh:'#2a2a2b', onSurf:'#e5e2e3', onVar:'#b9cacb',
-  outline:'#849495', outlineVar:'#3b494b',
-  cyan:'#7df4ff', cyanBright:'#00f0ff', cyanDim:'#00dbe9',
-  ocean:'#0077be',
-  lime:'#c3f400', limeDim:'#abd600', lemon:'#fff176',
-  magenta:'#ecb2ff', err:'#ffb4ab',
+const THEMES = {
+  dark: {
+    bg:'#131314', surf:'#201f20', surfLow:'#1c1b1c', surfLowest:'#0e0e0f',
+    surfHigh:'#2a2a2b', onSurf:'#e5e2e3', onVar:'#b9cacb',
+    outline:'#849495', outlineVar:'#3b494b',
+    cyan:'#7df4ff', cyanBright:'#00f0ff', cyanDim:'#00dbe9',
+    ocean:'#0077be',
+    lime:'#c3f400', limeDim:'#abd600', lemon:'#fff176',
+    magenta:'#ecb2ff', err:'#ffb4ab',
+  },
+  light: {
+    bg:'#f3f7f7', surf:'#ffffff', surfLow:'#edf3f3', surfLowest:'#e3ebec',
+    surfHigh:'#d8e4e5', onSurf:'#17272a', onVar:'#42575b',
+    outline:'#60777b', outlineVar:'#b1c1c3',
+    cyan:'#007f8c', cyanBright:'#006d78', cyanDim:'#008f9d',
+    ocean:'#006aa6',
+    lime:'#4f7800', limeDim:'#668b08', lemon:'#9a7700',
+    magenta:'#8b4aa9', err:'#b42318',
+  },
 };
+let C = THEMES.dark;
+let ACTIVE_THEME = 'dark';
 const R = (hex, a) => {
   const h = hex.replace('#','');
   const r=parseInt(h.slice(0,2),16), g=parseInt(h.slice(2,4),16), b=parseInt(h.slice(4,6),16);
@@ -787,7 +801,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
         : Math.max(padT + 10, Math.min(padT + priceH - 10, y));
       els.push(
         <rect key={'dlbg'+i} x={labelX} y={labelY-10} width={labelW} height={18} rx={4}
-          fill="rgba(14,14,15,0.88)" stroke={R(col,0.45)} strokeWidth={0.8}/>,
+          fill={R(C.surfLowest,0.88)} stroke={R(col,0.45)} strokeWidth={0.8}/>,
         <text key={'dlt'+i} x={labelX+6} y={labelY+3.5} fill={col} fontSize={9}
           fontFamily="JetBrains Mono,monospace" fontWeight="800">{label}</text>
       );
@@ -943,7 +957,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
     const lblH = 20;
     els.push(
       <rect key="meas-lbg" x={lblX-lblW/2} y={lblY-lblH/2} width={lblW} height={lblH} rx={4}
-        fill="rgba(14,14,15,0.92)" stroke={R(mCol,0.5)} strokeWidth={1}/>,
+        fill={R(C.surfLowest,0.92)} stroke={R(mCol,0.5)} strokeWidth={1}/>,
       <text key="meas-lbt" x={lblX} y={lblY+4.5} textAnchor="middle"
         fill={mCol} fontSize={10.5} fontFamily="JetBrains Mono,monospace" fontWeight="600">{labelText}</text>
     );
@@ -1014,7 +1028,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
         ].map(b=>(
           <button key={b.icon} title={b.title} onClick={b.action}
             style={{width:30,height:28,borderRadius:6,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',
-              background:'rgba(28,27,28,0.7)',border:`1px solid rgba(132,148,149,0.2)`,color:C.onVar,flexShrink:0}}
+              background:R(C.surfLow,0.7),border:`1px solid ${R(C.outline,0.2)}`,color:C.onVar,flexShrink:0}}
             onMouseEnter={e=>{e.currentTarget.style.borderColor=C.cyan;e.currentTarget.style.color=C.cyan;}}
             onMouseLeave={e=>{e.currentTarget.style.borderColor='rgba(132,148,149,0.2)';e.currentTarget.style.color=C.onVar;}}>
             <Icon n={b.icon} size={16} color="inherit"/>
@@ -1028,7 +1042,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
         ].map(b=>(
           <button key={b.icon} title={b.title} onClick={b.toggle}
             style={{width:30,height:28,borderRadius:6,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,
-              background:b.on?R(C.cyan,0.14):'rgba(28,27,28,0.7)',
+              background:b.on?R(C.cyan,0.14):R(C.surfLow,0.7),
               border:`1px solid ${b.on?R(C.cyan,0.45):'rgba(132,148,149,0.2)'}`,color:b.on?C.cyan:C.onVar}}>
             <Icon n={b.icon} size={16} color="inherit"/>
           </button>
@@ -1946,8 +1960,8 @@ function TabPreOpen({refreshKey=0}) {
             <div style={{flex:1,display:'flex',alignItems:'center',padding:'11px 14px',borderRadius:9,background:R(C.surfLowest,0.7),border:`1px solid ${R(C.outline,0.2)}`}}>
               <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:14,color:C.lime}}>{minLevels}</span>
             </div>
-            <button onClick={()=>setMinLevels(m=>Math.max(0,m-1))} style={{width:46,borderRadius:9,background:'rgba(28,27,28,0.8)',border:`1px solid ${R(C.outline,0.2)}`,color:C.onVar,cursor:'pointer',fontFamily:"'Material Symbols Outlined'",fontSize:18}}>remove</button>
-            <button onClick={()=>setMinLevels(m=>Math.min(20,m+1))} style={{width:46,borderRadius:9,background:'rgba(28,27,28,0.8)',border:`1px solid ${R(C.outline,0.2)}`,color:C.onVar,cursor:'pointer',fontFamily:"'Material Symbols Outlined'",fontSize:18}}>add</button>
+            <button onClick={()=>setMinLevels(m=>Math.max(0,m-1))} style={{width:46,borderRadius:9,background:R(C.surfLow,0.8),border:`1px solid ${R(C.outline,0.2)}`,color:C.onVar,cursor:'pointer',fontFamily:"'Material Symbols Outlined'",fontSize:18}}>remove</button>
+            <button onClick={()=>setMinLevels(m=>Math.min(20,m+1))} style={{width:46,borderRadius:9,background:R(C.surfLow,0.8),border:`1px solid ${R(C.outline,0.2)}`,color:C.onVar,cursor:'pointer',fontFamily:"'Material Symbols Outlined'",fontSize:18}}>add</button>
           </div>
         </label>
       </div>
@@ -2837,7 +2851,7 @@ function TabStrategy({refreshKey=0}) {
             </div>
             <div style={{padding:'16px 22px',borderTop:`1px solid ${R(C.outline,0.14)}`,display:'flex',gap:10,justifyContent:'flex-end'}}>
               <button onClick={()=>setStrategyConfirm(null)}
-                style={{padding:'10px 20px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onVar,background:'rgba(28,27,28,0.8)',border:`1px solid ${R(C.outline,0.25)}`}}>
+                style={{padding:'10px 20px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onVar,background:R(C.surfLow,0.8),border:`1px solid ${R(C.outline,0.25)}`}}>
                 Cancel
               </button>
               <button onClick={()=>doStrategyPlace(strategyConfirm.row)}
@@ -3370,7 +3384,7 @@ function TabForecast({refreshKey=0}) {
               <Icon n="query_stats" size={17} color={C.cyan}/>{loading?'Calculating…':'Calculate Forecast'}
             </button>
             <button onClick={()=>{setFc(FC_DEFAULTS);runCalc(FC_DEFAULTS);}}
-              style={{display:'flex',alignItems:'center',gap:8,padding:'11px 18px',borderRadius:9,border:`1px solid ${R(C.outline,0.25)}`,background:'rgba(28,27,28,0.6)',color:C.onVar,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
+              style={{display:'flex',alignItems:'center',gap:8,padding:'11px 18px',borderRadius:9,border:`1px solid ${R(C.outline,0.25)}`,background:R(C.surfLow,0.6),color:C.onVar,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
               <Icon n="restart_alt" size={17} color={C.onVar}/>Reset to Live Settings
             </button>
           </div>
@@ -3383,7 +3397,7 @@ function TabForecast({refreshKey=0}) {
           <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:14}}>
             <Icon n="query_stats" size={17} color={C.outline}/>
             <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar}}>Forecast Summary</span>
-            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,background:'rgba(28,27,28,0.7)',padding:'2px 8px',borderRadius:9999,border:`1px solid ${R(C.outline,0.16)}`}}>{calcAt}</span>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,background:R(C.surfLow,0.7),padding:'2px 8px',borderRadius:9999,border:`1px solid ${R(C.outline,0.16)}`}}>{calcAt}</span>
           </div>
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:16}}>
             {[
@@ -3514,7 +3528,7 @@ function TabForecast({refreshKey=0}) {
                             onBlur={e=>{ const v=Math.max(0,Math.floor(Number(e.target.value)||0)); setQtyOverride(i,String(v)); }}
                             style={{width:70,padding:'5px 8px',borderRadius:7,fontFamily:"'JetBrains Mono',monospace",fontSize:12,
                               color:qtyEdited?C.cyan:C.onVar,
-                              background:qtyEdited?R(C.cyan,0.08):'rgba(28,27,28,0.7)',
+                              background:qtyEdited?R(C.cyan,0.08):R(C.surfLow,0.7),
                               border:`1px solid ${qtyEdited?R(C.cyan,0.4):R(C.outline,0.22)}`,
                               outline:'none',textAlign:'right'}}
                           />
@@ -3578,9 +3592,9 @@ function TabForecast({refreshKey=0}) {
                       <td style={{padding:'11px 16px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,borderBottom:`1px solid ${R(C.outline,0.06)}`}}>
                         <div style={{display:'flex',gap:8,justifyContent:'flex-end'}}>
                           <button onClick={()=>!filtered&&setConfirm({type:'place',row:{...r,quantity:qty}})}
-                            style={{padding:'7px 16px',borderRadius:7,cursor:filtered?'not-allowed':'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:filtered?C.outline:C.cyan,background:filtered?'rgba(28,27,28,0.4)':R(C.cyan,0.1),border:`1px solid ${filtered?'rgba(132,148,149,0.14)':R(C.cyan,0.4)}`,opacity:filtered?0.45:1}}>Place</button>
+                            style={{padding:'7px 16px',borderRadius:7,cursor:filtered?'not-allowed':'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:filtered?C.outline:C.cyan,background:filtered?R(C.surfLow,0.4):R(C.cyan,0.1),border:`1px solid ${filtered?R(C.outline,0.14):R(C.cyan,0.4)}`,opacity:filtered?0.45:1}}>Place</button>
                           <button onClick={()=>setConfirm({type:'close',row:r})}
-                            style={{padding:'7px 16px',borderRadius:7,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar,background:'rgba(28,27,28,0.6)',border:`1px solid rgba(132,148,149,0.22)`}}>Close</button>
+                            style={{padding:'7px 16px',borderRadius:7,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar,background:R(C.surfLow,0.6),border:`1px solid ${R(C.outline,0.22)}`}}>Close</button>
                         </div>
                       </td>
                     </tr>
@@ -3790,7 +3804,7 @@ function TabForecast({refreshKey=0}) {
             {/* footer */}
             <div style={{padding:'16px 22px',borderTop:`1px solid ${R(C.outline,0.14)}`,display:'flex',gap:10,justifyContent:'flex-end'}}>
               <button onClick={()=>setConfirm(null)}
-                style={{padding:'10px 20px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onVar,background:'rgba(28,27,28,0.8)',border:`1px solid ${R(C.outline,0.25)}`}}>
+                style={{padding:'10px 20px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onVar,background:R(C.surfLow,0.8),border:`1px solid ${R(C.outline,0.25)}`}}>
                 Cancel
               </button>
               <button onClick={()=>confirm.type==='place'?doPlace(confirm.row):doClose(confirm.row.symbol)}
@@ -4256,10 +4270,10 @@ function OrdersPnlChart({rows=[]}) {
           {range==='CUSTOM' && (
             <div style={{display:'flex',alignItems:'center',gap:6,padding:'6px 9px',borderRadius:8,background:R(C.surfLowest,0.85),border:`1px solid ${R(C.outline,0.22)}`}}>
               <input type="date" value={customFrom} onChange={e=>setCustomFrom(e.target.value)}
-                style={{background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:11,colorScheme:'dark'}}/>
+                style={{background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:11,colorScheme:ACTIVE_THEME}}/>
               <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>to</span>
               <input type="date" value={customTo} onChange={e=>setCustomTo(e.target.value)}
-                style={{background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:11,colorScheme:'dark'}}/>
+                style={{background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:11,colorScheme:ACTIVE_THEME}}/>
             </div>
           )}
         </div>
@@ -5395,7 +5409,7 @@ function TabMarketScreener({refreshKey=0}) {
             </div>
             <div style={{padding:'16px 22px',borderTop:`1px solid ${R(C.outline,0.14)}`,display:'flex',gap:10,justifyContent:'flex-end'}}>
               <button onClick={()=>setSignalConfirm(null)}
-                style={{padding:'10px 20px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onVar,background:'rgba(28,27,28,0.8)',border:`1px solid ${R(C.outline,0.25)}`}}>
+                style={{padding:'10px 20px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onVar,background:R(C.surfLow,0.8),border:`1px solid ${R(C.outline,0.25)}`}}>
                 Cancel
               </button>
               <button onClick={()=>doSignalManualPlace(signalConfirm.row)}
@@ -5655,10 +5669,10 @@ function TabOrdersJournal({refreshKey=0}) {
               <Icon n="event" size={15} color={(openDateFrom||openDateTo)?C.cyan:C.outline}/>
               <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:9,letterSpacing:'0.08em',color:C.outline,textTransform:'uppercase'}}>Open</span>
               <input type="date" value={openDateFrom} onChange={e=>setOpenDateFrom(e.target.value)}
-                style={{background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:11,colorScheme:'dark'}}/>
+                style={{background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:11,colorScheme:ACTIVE_THEME}}/>
               <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>to</span>
               <input type="date" value={openDateTo} onChange={e=>setOpenDateTo(e.target.value)}
-                style={{background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:11,colorScheme:'dark'}}/>
+                style={{background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:11,colorScheme:ACTIVE_THEME}}/>
               {(openDateFrom||openDateTo) && <button onClick={()=>{setOpenDateFrom('');setOpenDateTo('');}} title="Clear date range"
                 style={{background:'transparent',border:0,cursor:'pointer',display:'inline-flex',alignItems:'center',padding:0}}>
                 <Icon n="close" size={15} color={C.outline}/>
@@ -6450,7 +6464,7 @@ class ErrBound extends React.Component {
           <span className="mso" style={{fontSize:20,color:'#ffb4ab'}}>error</span>
           <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:'#ffb4ab'}}>Tab render error — check the browser console for details.</span>
         </div>
-        <pre style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:'#849495',whiteSpace:'pre-wrap',padding:'14px 18px',borderRadius:10,background:'rgba(14,14,15,0.5)',border:'1px solid rgba(132,148,149,0.16)',maxHeight:300,overflowY:'auto'}}>{String(this.state.err)}</pre>
+        <pre style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline,whiteSpace:'pre-wrap',padding:'14px 18px',borderRadius:10,background:R(C.surfLowest,0.5),border:`1px solid ${R(C.outline,0.16)}`,maxHeight:300,overflowY:'auto'}}>{String(this.state.err)}</pre>
         <button onClick={()=>this.setState({err:null})} style={{alignSelf:'flex-start',padding:'9px 20px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:'#7df4ff',background:'rgba(125,244,255,0.08)',border:'1px solid rgba(125,244,255,0.3)'}}>Retry</button>
       </div>
     );
@@ -6494,6 +6508,9 @@ const PAGE_META = {
 
 function App() {
   const [tab, setTab] = useState('dashboard');
+  const [theme, setTheme] = useState(()=>{
+    try { return localStorage.getItem('dashboardTheme') === 'light' ? 'light' : 'dark'; } catch { return 'dark'; }
+  });
   const [sidebarCollapsed, setSidebarCollapsed] = useState(()=>{
     try { return localStorage.getItem('sidebarCollapsed') === '1'; } catch { return false; }
   });
@@ -6504,6 +6521,11 @@ function App() {
   const [refreshBusy, setRefreshBusy] = useState(false);
   const [candleFetchBusy, setCandleFetchBusy] = useState(false);
   const [hardResetBusy, setHardResetBusy] = useState(false);
+
+  // The dashboard is a single-file React app, so keep the active palette in
+  // the shared palette reference before rendering any child tab.
+  C = THEMES[theme] || THEMES.dark;
+  ACTIVE_THEME = theme;
 
   useEffect(()=>{
     const refresh = ()=>fetch(`${API}/meta`).then(r=>r.json()).then(setMeta).catch(()=>{});
@@ -6518,6 +6540,16 @@ function App() {
   useEffect(()=>{
     try { localStorage.setItem('sidebarCollapsed', sidebarCollapsed ? '1' : '0'); } catch {}
   },[sidebarCollapsed]);
+  useEffect(()=>{
+    try { localStorage.setItem('dashboardTheme', theme); } catch {}
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+    document.documentElement.style.setProperty('--dashboard-bg', C.bg);
+    document.documentElement.style.setProperty('--dashboard-on-surf', C.onSurf);
+    document.documentElement.style.setProperty('--dashboard-scrollbar', C.outlineVar);
+    document.documentElement.style.setProperty('--dashboard-accent', C.cyan);
+    document.body.style.background = C.bg;
+  },[theme]);
 
   const refreshDashboard = async()=>{
     if(refreshBusy) return;
@@ -6571,7 +6603,7 @@ function App() {
       color:C.onSurf, fontFamily:"'Inter',sans-serif", WebkitFontSmoothing:'antialiased'}}>
 
       {/* ── Sidebar ─────────────────────────────────────────────────────── */}
-      <aside style={{flexShrink:0,width:sidebarCollapsed?74:256,height:'100%',background:'rgba(14,14,15,0.92)',borderRight:`1px solid ${R(C.outline,0.16)}`,display:'flex',flexDirection:'column',padding:sidebarCollapsed?'18px 10px':'22px 16px',overflowY:'auto',overflowX:'hidden',transition:'width .18s ease,padding .18s ease'}}>
+      <aside style={{flexShrink:0,width:sidebarCollapsed?74:256,height:'100%',background:R(C.surfLowest,0.92),borderRight:`1px solid ${R(C.outline,0.16)}`,display:'flex',flexDirection:'column',padding:sidebarCollapsed?'18px 10px':'22px 16px',overflowY:'auto',overflowX:'hidden',transition:'width .18s ease,padding .18s ease'}}>
         {/* Brand */}
         <div style={{display:'flex',alignItems:'center',justifyContent:sidebarCollapsed?'center':'space-between',gap:11,padding:sidebarCollapsed?'0 0 16px':'0 6px 22px',borderBottom:`1px solid ${R(C.outline,0.12)}`,marginBottom:18}}>
           <div style={{display:'flex',alignItems:'center',gap:11,minWidth:0}}>
@@ -6579,7 +6611,7 @@ function App() {
             <Icon n="candlestick_chart" size={20} color="#001416"/>
           </div>
           {!sidebarCollapsed && <div style={{minWidth:0}}>
-            <div style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:17,fontWeight:600,color:'#dbfcff',lineHeight:1.1}}>Vitaly's Trading Bot</div>
+            <div style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:17,fontWeight:600,color:C.onSurf,lineHeight:1.1}}>Vitaly's Trading Bot</div>
             <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.08em',color:C.outline,marginTop:2}}>IBKR · {meta.paper?'PAPER':'LIVE'}</div>
           </div>}
           </div>
@@ -6601,7 +6633,7 @@ function App() {
                   borderRight:`3px solid ${a?C.cyan:'transparent'}`,
                   background:a?R(C.cyan,0.10):'transparent',
                   color:a?C.cyan:C.onVar}}
-                onMouseEnter={e=>{if(!a)e.currentTarget.style.background='rgba(255,255,255,0.05)'}}
+                onMouseEnter={e=>{if(!a)e.currentTarget.style.background=R(C.onSurf,0.05)}}
                 onMouseLeave={e=>{if(!a)e.currentTarget.style.background='transparent'}}>
                 <Icon n={n.icon} size={20} color={a?C.cyan:C.onVar} style={{fontVariationSettings:a?`'FILL' 1`:`'FILL' 0`}}/>
                 {!sidebarCollapsed && <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.03em',whiteSpace:'nowrap'}}>{n.label}</span>}
@@ -6611,12 +6643,28 @@ function App() {
         </div>
 
         {/* Safety box */}
+        {/* Theme switch */}
+        <button
+          onClick={()=>setTheme(current=>current==='dark'?'light':'dark')}
+          title={`Switch to ${theme==='dark'?'light':'dark'} theme`}
+          aria-label={`Switch to ${theme==='dark'?'light':'dark'} theme`}
+          aria-pressed={theme==='light'}
+          style={{marginTop:14,width:'100%',minHeight:38,padding:sidebarCollapsed?'0':'0 11px',borderRadius:9,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:sidebarCollapsed?'center':'space-between',gap:9,background:R(C.cyan,0.07),border:`1px solid ${R(C.cyan,0.24)}`,color:C.cyan,fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.04em',textTransform:'uppercase'}}>
+          <span style={{display:'flex',alignItems:'center',gap:8}}>
+            <Icon n={theme==='dark'?'light_mode':'dark_mode'} size={18} color="inherit"/>
+            {!sidebarCollapsed && <span>{theme==='dark'?'Light theme':'Dark theme'}</span>}
+          </span>
+          {!sidebarCollapsed && <span aria-hidden="true" style={{width:34,height:18,borderRadius:9999,background:R(C.cyan,0.28),position:'relative',display:'inline-block',flexShrink:0}}>
+            <span style={{position:'absolute',top:2,left:theme==='light'?18:2,width:14,height:14,borderRadius:'50%',background:C.cyan,transition:'left .15s'}}/>
+          </span>}
+        </button>
+
         {sidebarCollapsed ? (
           <button onClick={()=>setSidebarCollapsed(false)} title="Expand sidebar"
             style={{marginTop:14,width:'100%',height:38,borderRadius:10,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',background:R(C.cyan,0.08),border:`1px solid ${R(C.cyan,0.24)}`,color:C.cyan}}>
             <Icon n="keyboard_double_arrow_right" size={20} color="inherit"/>
           </button>
-        ) : <div style={{marginTop:14,padding:'13px 14px',borderRadius:10,background:'rgba(28,27,28,0.7)',border:`1px solid ${R(C.outline,0.14)}`}}>
+        ) : <div style={{marginTop:14,padding:'13px 14px',borderRadius:10,background:R(C.surfLow,0.7),border:`1px solid ${R(C.outline,0.14)}`}}>
           <div style={{display:'flex',alignItems:'center',gap:8}}>
             <PulseDot color={C.lime} size={7} shadow={8}/>
             <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onSurf}}>Read-only mode</span>
@@ -6640,7 +6688,7 @@ function App() {
       {/* ── Main ────────────────────────────────────────────────────────── */}
       <main style={{flex:1,minWidth:0,display:'flex',flexDirection:'column',height:'100%'}}>
         {/* Header */}
-        <header style={{flexShrink:0,height:62,borderBottom:`1px solid ${R(C.outline,0.16)}`,background:'rgba(19,19,20,0.7)',backdropFilter:'blur(12px)',display:'flex',alignItems:'center',justifyContent:'space-between',gap:16,padding:'0 26px',overflow:'hidden'}}>
+        <header style={{flexShrink:0,height:62,borderBottom:`1px solid ${R(C.outline,0.16)}`,background:R(C.bg,0.7),backdropFilter:'blur(12px)',display:'flex',alignItems:'center',justifyContent:'space-between',gap:16,padding:'0 26px',overflow:'hidden'}}>
           <div style={{display:'flex',alignItems:'center',gap:12,fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.06em',color:C.outline}}>
             <span>OPERATIONS DESK</span>
             <span style={{color:C.outlineVar}}>/</span>
@@ -6648,7 +6696,7 @@ function App() {
           </div>
           <div style={{display:'flex',alignItems:'center',gap:12}}>
             {/* SYNCED clock */}
-            <div style={{display:'flex',alignItems:'center',gap:7,padding:'6px 11px',borderRadius:8,background:'rgba(28,27,28,0.8)',border:`1px solid ${R(C.outline,0.16)}`}}>
+            <div style={{display:'flex',alignItems:'center',gap:7,padding:'6px 11px',borderRadius:8,background:R(C.surfLow,0.8),border:`1px solid ${R(C.outline,0.16)}`}}>
               <span style={{width:6,height:6,borderRadius:'50%',background:C.cyanBright,boxShadow:`0 0 7px ${C.cyanBright}`,animation:'pulse 1.8s infinite',display:'inline-block'}}/>
               <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar}}>SYNCED {meta.clock} ET</span>
             </div>
@@ -6657,7 +6705,7 @@ function App() {
               {meta.paper?'PAPER · READ-ONLY':'LIVE'}
             </div>
             {/* Market status */}
-            <div style={{display:'flex',alignItems:'center',gap:7,padding:'6px 11px',borderRadius:8,background:marketOk?R(C.lime,0.06):'rgba(28,27,28,0.8)',border:`1px solid ${marketOk?R(C.lime,0.28):R(C.outline,0.16)}`}}>
+            <div style={{display:'flex',alignItems:'center',gap:7,padding:'6px 11px',borderRadius:8,background:marketOk?R(C.lime,0.06):R(C.surfLow,0.8),border:`1px solid ${marketOk?R(C.lime,0.28):R(C.outline,0.16)}`}}>
               <Icon n={marketOk?'check_circle':'schedule'} size={15} color={marketOk?C.lime:C.onVar}/>
               <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:marketOk?C.lime:C.onVar}}>Market {meta.session}</span>
             </div>
@@ -6672,7 +6720,7 @@ function App() {
             </button>
             <button onClick={refreshDashboard} disabled={refreshBusy}
               title="Refresh dashboard data"
-              style={{height:34,padding:'0 11px',borderRadius:8,display:'flex',alignItems:'center',gap:7,cursor:refreshBusy?'wait':'pointer',color:refreshBusy?C.cyan:C.onVar,background:'rgba(28,27,28,0.8)',border:`1px solid ${R(refreshBusy?C.cyan:C.outline,refreshBusy?0.34:0.16)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800,letterSpacing:'0.04em'}}
+              style={{height:34,padding:'0 11px',borderRadius:8,display:'flex',alignItems:'center',gap:7,cursor:refreshBusy?'wait':'pointer',color:refreshBusy?C.cyan:C.onVar,background:R(C.surfLow,0.8),border:`1px solid ${R(refreshBusy?C.cyan:C.outline,refreshBusy?0.34:0.16)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800,letterSpacing:'0.04em'}}
               onMouseEnter={e=>{if(!refreshBusy)e.currentTarget.style.color=C.cyan}}
               onMouseLeave={e=>{if(!refreshBusy)e.currentTarget.style.color=C.onVar}}>
               <Icon n="refresh" size={16} color="inherit" style={{animation:refreshBusy?'spin .8s linear infinite':undefined}}/>
