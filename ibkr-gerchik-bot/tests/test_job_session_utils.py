@@ -13,6 +13,7 @@ from src.jobs.session_utils import (
     get_scan_interval,
     is_open_entry_window,
     job_loop_lock,
+    manage_positions,
     next_scan_time,
     protective_stops_ok,
 )
@@ -98,6 +99,48 @@ class JobSessionUtilsTests(TestCase):
                 sleep_provider=lambda _seconds: None,
             )
         )
+
+    def test_invalid_quote_does_not_trigger_loss_cut(self) -> None:
+        class BrokerStub:
+            is_connected = True
+
+            def get_positions(self):
+                return [{"symbol": "SANM", "position": 1, "sec_type": "STK"}]
+
+            def get_market_price(self, _symbol):
+                return {"last": 0.0, "quote_status": "subscription_blocked"}
+
+            def place_market_order(self, *args, **kwargs):
+                raise AssertionError("An invalid quote must not trigger a market exit.")
+
+        class NewsStub:
+            def is_macro_risk(self):
+                return False
+
+            def has_high_risk_news(self, _symbol):
+                return False
+
+        tracked = [
+            {
+                "symbol": "SANM",
+                "quantity": 1,
+                "entry": 190.83,
+                "direction": "long",
+                "protection_policy": "bracket_managed",
+                "stop_order_id": 668,
+            }
+        ]
+
+        with patch("src.jobs.session_utils.protective_stops_ok", return_value=True):
+            result = manage_positions(
+                broker=BrokerStub(),
+                news_filter=NewsStub(),
+                tracked_positions=tracked,
+                account_equity=100000,
+            )
+
+        self.assertEqual(result["actions"], [{"symbol": "SANM", "event": "quote_unavailable", "quote_status": "subscription_blocked"}])
+        self.assertEqual(tracked[0]["symbol"], "SANM")
 
     def test_job_loop_lock_recovers_stale_lock_file(self) -> None:
         original_runtime_dir = SETTINGS.paths.runtime_dir

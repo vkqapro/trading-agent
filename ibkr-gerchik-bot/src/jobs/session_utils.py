@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 import time
 from contextlib import contextmanager
@@ -1116,10 +1117,35 @@ def manage_positions(
             continue
         symbol = str(position["symbol"])
         quote = broker.get_market_price(symbol)
-        current_price = float(quote.get("last", 0.0))
+        try:
+            current_price = float(quote.get("last", 0.0))
+        except (TypeError, ValueError):
+            current_price = 0.0
         entry = float(position.get("entry", 0.0))
         quantity = int(position.get("quantity", 0))
         direction = str(position.get("direction", "long"))
+        quote_status = str(quote.get("quote_status", "unknown") or "unknown")
+        quote_valid = math.isfinite(current_price) and current_price > 0
+        if not quote_valid:
+            # A missing/blocked quote must never become a synthetic -100% loss.
+            # IBKR error 10089 can leave ``last`` at zero when the API lacks a
+            # live subscription; wait for a usable quote before price-based
+            # loss cuts or trailing-stop adjustments.
+            if news_filter.has_high_risk_news(symbol) and quantity > 0:
+                if not dry_run:
+                    broker.place_market_order(symbol, "SELL" if direction == "long" else "BUY", quantity)
+                actions.append({"symbol": symbol, "event": "thesis_break_news"})
+                closed_symbols.add(symbol)
+                LOGGER.info("Intraday action %s: thesis_break_news", symbol)
+            else:
+                actions.append({"symbol": symbol, "event": "quote_unavailable", "quote_status": quote_status})
+                LOGGER.warning(
+                    "Skipping price-based management for %s: invalid market quote last=%s status=%s",
+                    symbol,
+                    current_price,
+                    quote_status,
+                )
+            continue
         pnl_pct = (
             ((current_price - entry) / entry) * 100.0
             if direction == "long" and entry

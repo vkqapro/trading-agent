@@ -1106,7 +1106,7 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
         <svg ref={svgRef}
           viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none"
           width="100%" height="100%"
-          style={{display:'block',cursor:measureMode?'crosshair':isDragging?'grabbing':'grab'}}
+          style={{display:'block',overflow:'hidden',cursor:measureMode?'crosshair':isDragging?'grabbing':'grab'}}
           onWheel={onWheel}
           onMouseDown={onMouseDown}
           onMouseMove={onMouseMove}
@@ -1116,7 +1116,8 @@ function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], high
 
         {/* Left-side labels for trade zones/levels; price scale stays on the right */}
         {allLabels.map((l,i)=>(
-          <div key={i} style={{position:'absolute',left:4,top:`calc(${(yp(l.p)/H*100).toFixed(2)}% - 8px)`,
+          <div key={i} style={{position:'absolute',left:4,
+            top:Math.max(padT,Math.min(padT+priceH-16,yp(l.p)-8)),
             fontFamily:"'JetBrains Mono',monospace",fontSize:'8px',color:R(l.color||C.cyan,0.82),
             background:'transparent',padding:'0 2px',borderRadius:0,
             border:'none',whiteSpace:'nowrap',pointerEvents:'none'}}>

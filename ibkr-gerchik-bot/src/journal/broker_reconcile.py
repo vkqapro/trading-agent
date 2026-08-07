@@ -49,6 +49,16 @@ def _upper(value: Any) -> str:
     return str(value or "").strip().upper()
 
 
+def _parse_dt(value: Any) -> datetime | None:
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(str(value).strip().replace("Z", "+00:00"))
+        return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
+    except (TypeError, ValueError):
+        return None
+
+
 def _order_ids(payload: Dict[str, Any]) -> set[str]:
     return {
         str(payload.get(key))
@@ -133,8 +143,10 @@ def _record_closed_positions(
     before: Dict[str, Dict[str, Any]],
     synced: list[Dict[str, Any]],
     executions: list[Dict[str, Any]] | None = None,
+    open_orders: list[Dict[str, Any]] | None = None,
 ) -> int:
     executions = executions or []
+    open_orders = open_orders or []
     if not executions:
         return 0
 
@@ -156,6 +168,65 @@ def _record_closed_positions(
         if not isinstance(execution, dict) or _upper(execution.get("side")) not in {"SLD", "SELL"}:
             continue
         request = next((item for item in _place_requests() if _execution_matches_request(execution, item)), None)
+        symbol = _upper(execution.get("symbol"))
+        prior_position = before.get(symbol)
+        if request is None and prior_position:
+            # Auto-management exits are standalone market orders, so their
+            # order id is not one of the entry/bracket ids in order_requests.
+            # Recover the originating request through the tracked position.
+            prior_ids = _order_ids(prior_position)
+            request = next(
+                (
+                    item
+                    for item in _place_requests()
+                    if _upper(item.get("symbol")) == symbol
+                    and prior_ids.intersection(
+                        _order_ids(item.get("result") if isinstance(item.get("result"), dict) else {})
+                    )
+                ),
+                None,
+            )
+        if request is None and open_orders:
+            # If the local position snapshot was already lost, a still-working
+            # bracket identifies the originating request without guessing from
+            # symbol alone. This covers a market exit that leaves its bracket
+            # children visible in TWS until they are cancelled.
+            open_ids = {
+                str(order.get("order_id"))
+                for order in open_orders
+                if isinstance(order, dict) and order.get("order_id") not in (None, "", 0, "0")
+            }
+            request = next(
+                (
+                    item
+                    for item in _place_requests()
+                    if _upper(item.get("symbol")) == symbol
+                    and open_ids.intersection(
+                        _order_ids(item.get("result") if isinstance(item.get("result"), dict) else {})
+                    )
+                ),
+                None,
+            )
+        if request is None:
+            # Last-resort recovery for a bot-generated market exit after both
+            # the local position and bracket children have disappeared. Only
+            # consider completed bracket requests for the same symbol and use
+            # the latest request that predates the execution; this avoids
+            # treating an unrelated symbol sale as a journal close.
+            execution_time = _parse_dt(execution.get("time"))
+            candidates = []
+            for item in _place_requests():
+                if _upper(item.get("symbol")) != symbol:
+                    continue
+                result = item.get("result") if isinstance(item.get("result"), dict) else {}
+                if not _order_ids(result) or _upper(item.get("status")) not in {"DONE", "SIMULATED"}:
+                    continue
+                request_time = _parse_dt(item.get("updated_at") or item.get("created_at"))
+                if execution_time and request_time and request_time > execution_time:
+                    continue
+                candidates.append((request_time or datetime.min.replace(tzinfo=timezone.utc), item))
+            if candidates:
+                request = max(candidates, key=lambda pair: pair[0])[1]
         if request is None:
             continue
         symbol = _upper(request.get("symbol"))
@@ -182,7 +253,7 @@ def _record_closed_positions(
                 ),
                 None,
             )
-        record = _execution_closed_record(execution, request, before.get(symbol))
+        record = _execution_closed_record(execution, request, prior_position or before.get(symbol))
         if matching is None:
             positions.append(record)
             added += 1
@@ -247,7 +318,7 @@ def reconcile_ibkr_open_orders(*, force: bool = False) -> Dict[str, Any]:
             positions,
             open_orders,
         )
-        closed_observed = _record_closed_positions(before, synced, executions)
+        closed_observed = _record_closed_positions(before, synced, executions, open_orders)
         state["tracked_positions"] = synced
         _write_json(state_path, state)
 

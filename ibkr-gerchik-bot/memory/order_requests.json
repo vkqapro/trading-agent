@@ -1815,6 +1815,52 @@
         "market_only": true
       },
       "message": "Market-only order submitted: BUY 10 TSLA."
+    },
+    {
+      "id": "da2d97302c37",
+      "action": "close",
+      "status": "done",
+      "created_at": "2026-08-06T09:30:02",
+      "updated_at": "2026-08-06T09:30:15",
+      "source": "dashboard",
+      "live": false,
+      "symbol": "TSLA",
+      "result": {
+        "order_id": 749,
+        "symbol": "TSLA",
+        "action": "SELL",
+        "quantity": 10,
+        "order_type": "MKT",
+        "status": "Filled",
+        "detail": "Fill 10.0@317.39",
+        "filled": 10.0,
+        "remaining": 0.0,
+        "avg_fill_price": 317.39
+      },
+      "message": "Close order submitted: SELL 10 TSLA."
+    },
+    {
+      "id": "5d1d246b9ad8",
+      "action": "close",
+      "status": "done",
+      "created_at": "2026-08-06T10:30:10",
+      "updated_at": "2026-08-06T10:30:13",
+      "source": "dashboard",
+      "live": false,
+      "symbol": "AAPL",
+      "result": {
+        "order_id": 751,
+        "symbol": "AAPL",
+        "action": "SELL",
+        "quantity": 1,
+        "order_type": "MKT",
+        "status": "Filled",
+        "detail": "Fill 1.0@312.62",
+        "filled": 1.0,
+        "remaining": 0.0,
+        "avg_fill_price": 312.62
+      },
+      "message": "Close order submitted: SELL 1 AAPL."
     }
   ]
 }

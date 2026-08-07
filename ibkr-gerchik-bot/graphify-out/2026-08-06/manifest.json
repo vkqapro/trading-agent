@@ -135,8 +135,8 @@
     "semantic_hash": "a47f92efff8d7a388062745b50785c68"
   },
   "memory/order_requests.json": {
-    "mtime": 1785950577.06116,
-    "ast_hash": "72aaa48528ac4f618b2c5c86400b7f99",
+    "mtime": 1786021441.8393261,
+    "ast_hash": "e4ff8e19c0f62c33ceb1cc3a94dcf657",
     "semantic_hash": ""
   },
   "migrations/001_inefficiency_reclaim_down.sql": {
@@ -995,8 +995,8 @@
     "semantic_hash": ""
   },
   "dashboard_react/index.html": {
-    "mtime": 1785520686.91836,
-    "ast_hash": "c79a1a5b97883dd5e5d454eff2897be4",
+    "mtime": 1786021417.4442492,
+    "ast_hash": "3587b9c010fd89be507dfb4b51afc132",
     "semantic_hash": ""
   },
   "design_handoff/trading-bot-dashboard/README.md": {
@@ -1020,13 +1020,13 @@
     "semantic_hash": ""
   },
   "memory/LEVELS_LOG.md": {
-    "mtime": 1785932606.4372585,
-    "ast_hash": "f24c5084725843353f6b9bc3a1c7f062",
+    "mtime": 1786019002.2399552,
+    "ast_hash": "bfd0688e3deb1685ee88d1c23fb539a5",
     "semantic_hash": ""
   },
   "memory/TRADE_LOG.md": {
-    "mtime": 1785943848.7882943,
-    "ast_hash": "205d48820c5b3243925536ddcd7e0457",
+    "mtime": 1785960619.0065618,
+    "ast_hash": "a6f771dc26f66b6a2178dc07984cebcd",
     "semantic_hash": ""
   },
   "memory/TRADING_STRATEGY.md": {
