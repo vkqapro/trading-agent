@@ -138,10 +138,13 @@ const PanelHeader = ({icon, title, badge}) => (
   </div>
 );
 
-const SectionTitle = ({title}) => (
+const SectionTitle = ({title, action}) => (
   <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.12em',
     textTransform:'uppercase',color:C.onVar,marginBottom:16,paddingBottom:12,
-    borderBottom:`1px solid ${R(C.outline,0.14)}`}}>{title}</div>
+    borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
+    <span>{title}</span>
+    {action}
+  </div>
 );
 
 /* ── table ────────────────────────────────────────────────────────────────── */
@@ -5495,6 +5498,7 @@ function TabOrdersJournal({refreshKey=0}) {
   const [showGaussian,setShowGaussian]=useState(false);
   const [showGaussianSignals,setShowGaussianSignals]=useState(false);
   const [reviewDraft,setReviewDraft]=useState({});
+  const [reviewPanelCollapsed,setReviewPanelCollapsed]=useState(true);
   const [saving,setSaving]=useState(false);
   const reviewChartFullscreenRef = useRef(null);
   const money = v => v!=null && Number.isFinite(Number(v)) ? `$${Number(v).toFixed(Math.abs(Number(v))>=10?2:4)}` : '—';
@@ -5731,7 +5735,7 @@ function TabOrdersJournal({refreshKey=0}) {
         </div>
       </GlassCard>
 
-      {selected && <div style={{display:'grid',gridTemplateColumns:'minmax(0,1.55fr) minmax(320px,0.75fr)',gap:18,alignItems:'start'}}>
+      {selected && <div style={{display:'grid',gridTemplateColumns:reviewPanelCollapsed?'minmax(0,1fr) 56px':'minmax(0,1.55fr) minmax(320px,0.75fr)',gap:18,alignItems:'start'}}>
         <div ref={reviewChartFullscreenRef} className="strategy-chart-fullscreen-shell">
         <GlassCard style={{overflow:'hidden'}}>
           <div style={{padding:'14px 18px',borderBottom:`1px solid ${R(C.outline,0.12)}`,display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,flexWrap:'wrap'}}>
@@ -5786,8 +5790,36 @@ function TabOrdersJournal({refreshKey=0}) {
         </GlassCard>
         </div>
 
-        <GlassCard style={{padding:18}}>
-          <SectionTitle title="Trade Review"/>
+        <GlassCard style={{padding:reviewPanelCollapsed?'10px 8px':18,alignSelf:reviewPanelCollapsed?'stretch':undefined,display:reviewPanelCollapsed?'flex':undefined,alignItems:reviewPanelCollapsed?'center':undefined,justifyContent:reviewPanelCollapsed?'center':undefined}}>
+          {reviewPanelCollapsed ? (
+            <button
+              type="button"
+              onClick={()=>setReviewPanelCollapsed(false)}
+              aria-expanded={false}
+              aria-label="Expand Trade Review"
+              title="Expand Trade Review"
+              style={{width:'100%',height:'100%',minHeight:160,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:10,padding:8,borderRadius:8,cursor:'pointer',border:`1px solid ${R(C.cyan,0.25)}`,background:R(C.cyan,0.07),color:C.cyan}}
+            >
+              <Icon n="expand_more" size={20} color={C.cyan}/>
+              <span style={{writingMode:'vertical-rl',transform:'rotate(180deg)',fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.12em',textTransform:'uppercase'}}>Trade Review</span>
+            </button>
+          ) : (
+          <>
+          <SectionTitle
+            title="Trade Review"
+            action={<button
+              type="button"
+              onClick={()=>setReviewPanelCollapsed(true)}
+              aria-expanded={true}
+              aria-controls="trade-review-fields"
+              title="Collapse Trade Review"
+              style={{display:'inline-flex',alignItems:'center',gap:5,padding:'4px 7px',borderRadius:7,cursor:'pointer',border:`1px solid ${R(C.outline,0.22)}`,background:R(C.surfLowest,0.55),color:C.cyan,fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.04em',textTransform:'uppercase'}}
+            >
+              <Icon n="expand_less" size={16} color={C.cyan}/>
+              Collapse
+            </button>}
+          />
+          <div id="trade-review-fields">
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:14}}>
             {[['Source',selected.source],['Strategy',selected.strategy||'—'],['Risk',money(selected.planned_risk)],['Reward',money(selected.planned_reward)],['R:R',selected.planned_reward_risk!=null?num(selected.planned_reward_risk):'—'],['Exit',selected.exit_reason||'—']].map(([k,v])=>
               <div key={k} style={{padding:10,borderRadius:10,background:R(C.surfLowest,0.55),border:`1px solid ${R(C.outline,0.10)}`}}>
@@ -5821,6 +5853,9 @@ function TabOrdersJournal({refreshKey=0}) {
           <button onClick={saveReview} disabled={saving} style={{width:'100%',padding:'11px 14px',borderRadius:10,cursor:saving?'wait':'pointer',border:`1px solid ${R(C.cyan,0.35)}`,background:R(C.cyan,0.12),color:C.cyan,fontFamily:"'Inter',sans-serif",fontWeight:800}}>
             {saving?'Saving review…':'Save Review'}
           </button>
+          </div>
+          </>
+          )}
         </GlassCard>
       </div>}
     </div>
