@@ -47,6 +47,8 @@ from src.jobs.session_utils import (
 )
 from src.jobs.symbol_onboarding import run_symbol_onboarding, run_symbol_onboarding_from_saved_bars
 from src.jobs.weekly import run_weekly
+from src.journal.position_history import archive_positions
+from src.journal.flex_statement import commit_flex_checkpoint, reconcile_statement_trades, run_flex_catch_up
 from src.risk.kill_switch import should_trigger_kill_switch
 from src.risk.risk_manager import RiskManager
 from src.risk.take_profit import reward_risk_ratio
@@ -525,11 +527,14 @@ def run_manual_watch(
         cash_available = _cash_from_summary(account_summary)
         positions = broker.get_positions()
         open_orders = broker.get_open_orders()
+        previous_positions = state.get("tracked_positions", [])
+        archive_positions(previous_positions)
         state["tracked_positions"] = sync_tracked_positions_with_broker(
-            state.get("tracked_positions", []),
+            previous_positions,
             positions,
             open_orders,
         )
+        archive_positions(state["tracked_positions"])
         account_snapshot = {"account": account_summary, "positions": positions, "open_orders": open_orders}
         _save_state(state_path, state)
 
@@ -778,6 +783,33 @@ def run_job_with_context(
                     }
                 return _run_connected_job(job_name, state_path, state, dry_run, command_context=command_context)
 
+    if job_name == "eod":
+        try:
+            return _run_connected_job(job_name, state_path, state, dry_run, command_context=command_context)
+        except Exception as exc:
+            # Flex is an independent HTTPS service.  Keep EOD reconciliation
+            # available when TWS/IB Gateway was offline during the session.
+            LOGGER.warning("EOD broker connection unavailable; attempting Flex-only catch-up: %s", exc)
+            flex_result = run_flex_catch_up(commit=False)
+            flex_details = (
+                reconcile_statement_trades(flex_result.get("trades", []), return_details=True)
+                if flex_result.get("status") == "success"
+                else {"added": 0, "unmatched": 0}
+            )
+            if flex_result.get("status") == "success" and flex_details.get("unmatched", 0) == 0:
+                commit_flex_checkpoint(flex_result)
+            summary = {
+                "flex_statement": {
+                    "status": flex_result.get("status"),
+                    "reconciled": flex_details.get("added", 0),
+                    "unmatched": flex_details.get("unmatched", 0),
+                    "archive": flex_result.get("archive"),
+                    "reason": flex_result.get("reason"),
+                    "broker_connected": False,
+                }
+            }
+            append_workflow_snapshot(SETTINGS.paths.trade_log, "EOD Flex-Only Reconciliation", summary)
+            return {"job": job_name, "summary": summary, "dry_run": dry_run, "broker_connected": False}
     return _run_connected_job(job_name, state_path, state, dry_run, command_context=command_context)
 
 
@@ -830,11 +862,14 @@ def _run_connected_job(
         cash_available = _cash_from_summary(account_summary)
         positions = broker.get_positions()
         open_orders = broker.get_open_orders()
+        previous_positions = state.get("tracked_positions", [])
+        archive_positions(previous_positions)
         state["tracked_positions"] = sync_tracked_positions_with_broker(
-            state.get("tracked_positions", []),
+            previous_positions,
             positions,
             open_orders,
         )
+        archive_positions(state["tracked_positions"])
         research_symbols = _build_research_symbols(positions)
         risk_manager = RiskManager(account_equity)
         repo_root = SETTINGS.paths.trade_log.parents[1]
@@ -993,6 +1028,17 @@ def _run_connected_job(
             return {"job": job_name, "executed": executed, "dry_run": dry_run}
 
         if job_name == "intraday":
+            # TWS periodically overwrites its configured trade_report file.
+            # Ingest it on every intraday cycle so a later EOD run cannot miss
+            # a close that existed only in an earlier 15-minute export.
+            trade_report_result = run_flex_catch_up(commit=False)
+            trade_report_details = (
+                reconcile_statement_trades(trade_report_result.get("trades", []), return_details=True)
+                if trade_report_result.get("status") == "success"
+                else {"added": 0, "unmatched": 0}
+            )
+            if trade_report_result.get("status") == "success" and trade_report_details.get("unmatched", 0) == 0:
+                commit_flex_checkpoint(trade_report_result)
             tracked_positions = state.get("tracked_positions", [])
             intraday_options = (
                 {"initial_trading_halt_reasons": initial_intraday_halt_reasons}
@@ -1016,10 +1062,37 @@ def _run_connected_job(
                     [SETTINGS.paths.trade_log, SETTINGS.paths.research_log, SETTINGS.paths.state_file],
                     "workflow: intraday adjustments",
                 )
-            return {"job": job_name, "actions": actions, "dry_run": dry_run}
+            return {
+                "job": job_name,
+                "actions": actions,
+                "trade_report": {
+                    "status": trade_report_result.get("status"),
+                    "reconciled": trade_report_details.get("added", 0),
+                    "unmatched": trade_report_details.get("unmatched", 0),
+                    "source": trade_report_result.get("source"),
+                },
+                "dry_run": dry_run,
+            }
 
         if job_name == "eod":
+            flex_result = run_flex_catch_up(commit=False)
+            flex_details = reconcile_statement_trades(flex_result.get("trades", []), return_details=True) if flex_result.get("status") == "success" else {"added": 0, "unmatched": 0}
+            if flex_result.get("status") == "success" and flex_details.get("unmatched", 0) == 0:
+                commit_flex_checkpoint(flex_result)
+            flex_reconciled = flex_details.get("added", 0)
             summary = run_eod(risk_manager, account_snapshot, state.get("tracked_positions", []), daily_pnl=0.0, alerter=alerter)
+            summary["flex_statement"] = {
+                "status": flex_result.get("status"),
+                "reconciled": flex_reconciled,
+                "archive": flex_result.get("archive"),
+                "reason": flex_result.get("reason"),
+                "unmatched": flex_details.get("unmatched", 0),
+            }
+            append_workflow_snapshot(
+                SETTINGS.paths.trade_log,
+                "EOD Flex Reconciliation",
+                {"summary": summary["flex_statement"]},
+            )
             maybe_commit_and_push(
                 repo_root,
                 [SETTINGS.paths.trade_log, SETTINGS.paths.state_file],

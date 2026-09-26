@@ -84,6 +84,7 @@ class IntradaySyncTests(TestCase):
             patch("src.jobs.intraday.load_runtime_state", return_value={"watchlist": {}, "tracked_positions": []}),
             patch("src.jobs.intraday.manage_positions", side_effect=fake_manage_positions),
             patch("src.jobs.intraday.persist_tracked_positions", return_value=None),
+            patch("src.jobs.intraday.archive_positions", return_value=None),
             patch("src.jobs.intraday.append_workflow_snapshot", return_value=None),
             patch("src.jobs.intraday.append_markdown_log", return_value=None),
         ):

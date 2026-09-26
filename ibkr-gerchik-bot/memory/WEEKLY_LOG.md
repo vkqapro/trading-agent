@@ -91,3 +91,69 @@ Weekly performance metrics are appended here.
 - **strategy_counts**: {}
 - **strategy_pnl**: {}
 - **context_loaded**: True
+
+## Weekly Review (2026-07-17T16:25:03)
+- **metrics**: {'trade_count': 0, 'win_rate': 0.0, 'average_r': 0.0, 'expectancy': 0.0, 'best_trade': 0.0, 'worst_trade': 0.0, 'best_strategy': 'none', 'worst_strategy': 'none', 'sp500_week_return_pct': 0.0}
+- **strategy_counts**: {}
+- **strategy_pnl**: {}
+- **context_loaded**: True
+
+## Weekly Review (2026-07-24T16:25:03)
+- **metrics**: {'trade_count': 0, 'win_rate': 0.0, 'average_r': 0.0, 'expectancy': 0.0, 'best_trade': 0.0, 'worst_trade': 0.0, 'best_strategy': 'none', 'worst_strategy': 'none', 'sp500_week_return_pct': 0.0}
+- **strategy_counts**: {}
+- **strategy_pnl**: {}
+- **context_loaded**: True
+
+## Weekly Review (2026-07-31T16:25:12)
+- **metrics**: {'trade_count': 0, 'win_rate': 0.0, 'average_r': 0.0, 'expectancy': 0.0, 'best_trade': 0.0, 'worst_trade': 0.0, 'best_strategy': 'none', 'worst_strategy': 'none', 'sp500_week_return_pct': 0.0}
+- **strategy_counts**: {}
+- **strategy_pnl**: {}
+- **context_loaded**: True
+
+## Weekly Review (2026-08-07T16:25:15)
+- **metrics**: {'trade_count': 0, 'win_rate': 0.0, 'average_r': 0.0, 'expectancy': 0.0, 'best_trade': 0.0, 'worst_trade': 0.0, 'best_strategy': 'none', 'worst_strategy': 'none', 'sp500_week_return_pct': 0.0}
+- **strategy_counts**: {}
+- **strategy_pnl**: {}
+- **context_loaded**: True
+
+## Weekly Review (2026-08-14T16:25:09)
+- **metrics**: {'trade_count': 0, 'win_rate': 0.0, 'average_r': 0.0, 'expectancy': 0.0, 'best_trade': 0.0, 'worst_trade': 0.0, 'best_strategy': 'none', 'worst_strategy': 'none', 'sp500_week_return_pct': 0.0}
+- **strategy_counts**: {}
+- **strategy_pnl**: {}
+- **context_loaded**: True
+
+## Weekly Review (2026-08-21T16:25:05)
+- **metrics**: {'trade_count': 0, 'win_rate': 0.0, 'average_r': 0.0, 'expectancy': 0.0, 'best_trade': 0.0, 'worst_trade': 0.0, 'best_strategy': 'none', 'worst_strategy': 'none', 'sp500_week_return_pct': 0.0}
+- **strategy_counts**: {}
+- **strategy_pnl**: {}
+- **context_loaded**: True
+
+## Weekly Review (2026-08-28T16:25:03)
+- **metrics**: {'trade_count': 0, 'win_rate': 0.0, 'average_r': 0.0, 'expectancy': 0.0, 'best_trade': 0.0, 'worst_trade': 0.0, 'best_strategy': 'none', 'worst_strategy': 'none', 'sp500_week_return_pct': 0.0}
+- **strategy_counts**: {}
+- **strategy_pnl**: {}
+- **context_loaded**: True
+
+## Weekly Review (2026-09-04T16:25:03)
+- **metrics**: {'trade_count': 0, 'win_rate': 0.0, 'average_r': 0.0, 'expectancy': 0.0, 'best_trade': 0.0, 'worst_trade': 0.0, 'best_strategy': 'none', 'worst_strategy': 'none', 'sp500_week_return_pct': 0.0}
+- **strategy_counts**: {}
+- **strategy_pnl**: {}
+- **context_loaded**: True
+
+## Weekly Review (2026-09-11T16:25:03)
+- **metrics**: {'trade_count': 0, 'win_rate': 0.0, 'average_r': 0.0, 'expectancy': 0.0, 'best_trade': 0.0, 'worst_trade': 0.0, 'best_strategy': 'none', 'worst_strategy': 'none', 'sp500_week_return_pct': 0.0}
+- **strategy_counts**: {}
+- **strategy_pnl**: {}
+- **context_loaded**: True
+
+## Weekly Review (2026-09-21T13:22:17)
+- **metrics**: {'trade_count': 0, 'win_rate': 0.0, 'average_r': 0.0, 'expectancy': 0.0, 'best_trade': 0.0, 'worst_trade': 0.0, 'best_strategy': 'none', 'worst_strategy': 'none', 'sp500_week_return_pct': 0.0}
+- **strategy_counts**: {}
+- **strategy_pnl**: {}
+- **context_loaded**: True
+
+## Weekly Review (2026-09-25T16:25:04)
+- **metrics**: {'trade_count': 0, 'win_rate': 0.0, 'average_r': 0.0, 'expectancy': 0.0, 'best_trade': 0.0, 'worst_trade': 0.0, 'best_strategy': 'none', 'worst_strategy': 'none', 'sp500_week_return_pct': 0.0}
+- **strategy_counts**: {}
+- **strategy_pnl**: {}
+- **context_loaded**: True

@@ -113,3 +113,39 @@ def add_crypto_symbol(symbol: str, *, path: Path | None = None) -> dict:
             handle.write("# Keep one comma-separated line or one symbol per line.\n")
         handle.write(f"{append_text}\n")
     return {"added": True, "duplicate": False, "symbol": inst_id}
+
+
+def remove_crypto_symbol(symbol: str, *, path: Path | None = None) -> dict:
+    """Remove every configured spelling that resolves to ``symbol``.
+
+    Comments and unrelated symbol entries are preserved.  Rewriting the file
+    instead of deleting candle/state files keeps removal reversible: adding the
+    instrument again can reuse its saved market data.
+    """
+
+    inst_id = normalize_okx_instrument(symbol)
+    if not inst_id:
+        raise ValueError("Crypto symbol is required.")
+
+    resolved = path or CRYPTO_SETTINGS.symbols_file
+    if not resolved.exists():
+        return {"removed": False, "symbol": inst_id}
+
+    lines = resolved.read_text(encoding="utf-8-sig").splitlines()
+    kept: List[str] = []
+    removed = False
+    for line in lines:
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            kept.append(line)
+            continue
+        values = [value.strip() for value in line.split(",") if value.strip()]
+        remaining = [value for value in values if normalize_okx_instrument(value) != inst_id]
+        if len(remaining) != len(values):
+            removed = True
+        if remaining:
+            kept.append(",".join(remaining))
+
+    if removed:
+        resolved.write_text("\n".join(kept).rstrip() + "\n", encoding="utf-8")
+    return {"removed": removed, "symbol": inst_id}

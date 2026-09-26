@@ -5,12 +5,16 @@ Crypto orders intentionally reuse the same risk limits as the stock bot:
 RISK_PER_TRADE, MAX_DAILY_LOSS, MAX_OPEN_POSITIONS, MAX_OPEN_RISK,
 MIN_REWARD_RISK, and MAX_POSITION_VALUE.
 
+Manual UI orders may provide a per-order minimum reward/risk ratio. Automated
+and legacy callers that omit it continue to use ``MIN_REWARD_RISK``.
+
 Live OKX submission is still disabled here until the bracket-order path is
 explicitly tested.
 """
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from typing import Any, Dict, List
 
@@ -30,6 +34,8 @@ class CryptoOrderRequest:
     open_risk_amount: float = 0.0
     current_positions_count: int = 0
     daily_realized_pnl: float = 0.0
+    max_risk_pct: float | None = None
+    min_reward_risk_ratio: float | None = None
 
 
 def stock_risk_settings() -> Dict[str, float | int]:
@@ -58,10 +64,10 @@ def _reward_risk(side: str, entry: float, stop: float, target: float | None) -> 
 
 
 def _round_crypto_quantity(quantity: float) -> float:
-    """Use a conservative generic precision until per-instrument lot sizes are wired."""
+    """Floor generic precision so rounding can never exceed buying power."""
     if quantity <= 0:
         return 0.0
-    return float(f"{quantity:.8f}")
+    return math.floor(quantity * 100_000_000) / 100_000_000
 
 
 class CryptoOrderManager:
@@ -77,6 +83,29 @@ class CryptoOrderManager:
         risk_settings = stock_risk_settings()
         reasons: List[str] = []
 
+        requested_max_risk_pct = (
+            None if request.max_risk_pct is None else float(request.max_risk_pct)
+        )
+        effective_max_risk_pct = (
+            float(risk_settings["max_open_risk_pct"])
+            if requested_max_risk_pct is None
+            else requested_max_risk_pct
+        )
+        risk_source = "environment" if requested_max_risk_pct is None else "ui"
+        requested_min_reward_risk_ratio = (
+            None
+            if request.min_reward_risk_ratio is None
+            else float(request.min_reward_risk_ratio)
+        )
+        effective_min_reward_risk_ratio = (
+            float(risk_settings["min_reward_risk_ratio"])
+            if requested_min_reward_risk_ratio is None
+            else requested_min_reward_risk_ratio
+        )
+        reward_risk_source = (
+            "environment" if requested_min_reward_risk_ratio is None else "ui"
+        )
+
         if side not in {"BUY", "SELL"} or entry <= 0 or stop <= 0:
             reasons.append("invalid_setup")
         if side == "BUY" and stop >= entry:
@@ -85,10 +114,27 @@ class CryptoOrderManager:
             reasons.append("sell_stop_must_be_above_entry")
         if equity <= 0:
             reasons.append("missing_account_equity")
+        if (
+            not math.isfinite(effective_max_risk_pct)
+            or effective_max_risk_pct <= 0
+            or effective_max_risk_pct > 1
+        ):
+            reasons.append("invalid_max_risk_pct")
+        if (
+            not math.isfinite(effective_min_reward_risk_ratio)
+            or effective_min_reward_risk_ratio <= 0
+            or effective_min_reward_risk_ratio > 100
+        ):
+            reasons.append("invalid_min_reward_risk_ratio")
 
         risk_per_unit = abs(entry - stop)
         reward_risk = _reward_risk(side, entry, stop, target)
-        if target is not None and reward_risk < float(risk_settings["min_reward_risk_ratio"]):
+        if (
+            target is not None
+            and math.isfinite(effective_min_reward_risk_ratio)
+            and effective_min_reward_risk_ratio > 0
+            and reward_risk + 1e-9 < effective_min_reward_risk_ratio
+        ):
             reasons.append("reward_risk_too_low")
 
         max_daily_loss = equity * float(risk_settings["max_daily_loss_pct"])
@@ -98,9 +144,14 @@ class CryptoOrderManager:
         if request.current_positions_count >= int(risk_settings["max_positions"]):
             reasons.append("max_positions_reached")
 
-        risk_budget = equity * float(risk_settings["risk_per_trade"])
+        risk_budget_pct = (
+            float(risk_settings["risk_per_trade"])
+            if requested_max_risk_pct is None
+            else effective_max_risk_pct
+        )
+        risk_budget = equity * risk_budget_pct
         max_position_value = float(risk_settings["max_position_value"])
-        max_open_risk = equity * float(risk_settings["max_open_risk_pct"])
+        max_open_risk = equity * effective_max_risk_pct
 
         if request.quantity is not None and float(request.quantity) > 0:
             quantity = float(request.quantity)
@@ -143,6 +194,12 @@ class CryptoOrderManager:
             "reward_risk": round(reward_risk, 2),
             "risk_budget": round(risk_budget, 2),
             "max_open_risk": round(max_open_risk, 2),
+            "requested_max_risk_pct": requested_max_risk_pct,
+            "effective_max_risk_pct": effective_max_risk_pct,
+            "risk_source": risk_source,
+            "requested_min_reward_risk_ratio": requested_min_reward_risk_ratio,
+            "effective_min_reward_risk_ratio": effective_min_reward_risk_ratio,
+            "reward_risk_source": reward_risk_source,
             "max_position_value": round(max_position_value, 2),
             "uses_stock_risk_settings": True,
             "risk_settings": risk_settings,

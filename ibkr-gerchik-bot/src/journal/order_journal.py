@@ -270,6 +270,7 @@ def _base_row(
     message: str = "",
     raw: Dict[str, Any] | None = None,
     actual_entry_fallback_to_plan: bool = True,
+    opened_at_fallback_to_created: bool = True,
 ) -> Dict[str, Any]:
     pe = _f(planned_entry)
     ps = _f(planned_stop)
@@ -295,7 +296,7 @@ def _base_row(
         "status": status,
         "exit_reason": exit_reason,
         "created_at": created_at,
-        "opened_at": opened_at or created_at,
+        "opened_at": opened_at or created_at if opened_at_fallback_to_created else opened_at,
         "closed_at": closed_at,
         "planned_entry": pe,
         "planned_stop": ps,
@@ -435,6 +436,13 @@ def _position_opened_near_request(position: Dict[str, Any], request: Dict[str, A
 
 
 def _observed_close_matches_request(position: Dict[str, Any], request: Dict[str, Any], result: Dict[str, Any]) -> bool:
+    recorded_request_id = str(position.get("request_id") or "")
+    if recorded_request_id:
+        return recorded_request_id == str(request.get("id") or "")
+    if _upper(position.get("source")) == "IBKR":
+        # Broker-only executions are authoritative closures but are not proof
+        # that any particular historical same-symbol request was their entry.
+        return False
     pos_order_ids = _order_ids(position)
     req_order_ids = _order_ids(result)
     if pos_order_ids and req_order_ids:
@@ -530,6 +538,7 @@ def _rows_from_order_requests(open_positions: Dict[str, Dict[str, Any]]) -> List
         observed_entry = None
         observed_quantity = None
         observed_execution_id = ""
+        observed_broker_pnl = None
         if related_close:
             close_result = related_close.get("result") if isinstance(related_close.get("result"), dict) else {}
             actual_exit = _fill_price_from_result(close_result)
@@ -541,6 +550,7 @@ def _rows_from_order_requests(open_positions: Dict[str, Dict[str, Any]]) -> List
             actual_exit = _f(observed_close.get("exit_price") or observed_close.get("actual_exit"))
             observed_quantity = observed_close.get("exit_quantity") or observed_close.get("quantity")
             observed_execution_id = str(observed_close.get("exit_execution_id") or "")
+            observed_broker_pnl = _f(observed_close.get("broker_realized_pnl"))
             exit_reason = str(observed_close.get("exit_reason") or "BROKER_POSITION_CLOSED")
         elif not open_pos and status_raw == "simulated":
             inferred = _infer_bracket_exit_from_bars(
@@ -560,8 +570,7 @@ def _rows_from_order_requests(open_positions: Dict[str, Dict[str, Any]]) -> List
                 exit_reason = "UNKNOWN_OR_BRACKET"
         elif not open_pos and status_raw == "done" and status != "UNFILLED":
             exit_reason = "UNKNOWN_OR_BROKER"
-        rows.append(
-            _base_row(
+        row = _base_row(
                 journal_id=f"stock:req:{req.get('id')}",
                 symbol=symbol,
                 market="STOCK",
@@ -587,7 +596,15 @@ def _rows_from_order_requests(open_positions: Dict[str, Dict[str, Any]]) -> List
                 message=str(req.get("message") or ""),
                 raw=req,
             )
-        )
+        if observed_broker_pnl is not None:
+            row["pnl"] = observed_broker_pnl
+            row["r_multiple"] = _r_multiple(
+                observed_broker_pnl,
+                row.get("planned_entry"),
+                row.get("planned_stop"),
+                row.get("quantity"),
+            )
+        rows.append(row)
     return rows
 
 
@@ -641,6 +658,61 @@ def _rows_from_tv_state(
                 execution_id=str(ex.get("id") or ""),
                 message=str(ex.get("message") or ""),
                 raw=ex,
+            )
+        )
+    return rows
+
+
+def _rows_from_unlinked_broker_closes() -> List[Dict[str, Any]]:
+    """Expose authenticated broker executions that have no local entry request.
+
+    A TWS position may predate the local request ledger or may have been opened
+    outside this application. The sell execution is still authoritative audit
+    evidence and must remain visible without inventing entry-plan details.
+    """
+    data = _read_json(CLOSED_POSITIONS_PATH, {"positions": []})
+    positions = data.get("positions") if isinstance(data, dict) else []
+    if not isinstance(positions, list):
+        return []
+    rows: List[Dict[str, Any]] = []
+    for position in positions:
+        if not isinstance(position, dict) or position.get("request_id"):
+            continue
+        execution_id = str(position.get("exit_execution_id") or "")
+        if not execution_id:
+            continue
+        direction = _upper(position.get("direction"))
+        side = position.get("side") or ("SELL" if direction == "SHORT" else "BUY" if direction == "LONG" else "UNKNOWN")
+        entry = position.get("entry") or position.get("avg_cost")
+        current_stop = position.get("current_stop_loss") or position.get("stop_loss")
+        planned_stop = position.get("planned_stop_loss") or position.get("stop_loss")
+        current_target = position.get("current_target") or position.get("target")
+        planned_target = position.get("planned_target") or position.get("target")
+        rows.append(
+            _base_row(
+                journal_id=f"stock:broker:{execution_id}",
+                symbol=_upper(position.get("symbol")),
+                market="STOCK",
+                source=str(position.get("source") or "IBKR"),
+                side=side,
+                status="CLOSED_OBSERVED",
+                created_at=position.get("closed_at"),
+                opened_at=position.get("opened_at") or position.get("first_seen_at"),
+                closed_at=position.get("closed_at"),
+                planned_entry=entry,
+                planned_stop=planned_stop,
+                planned_target=planned_target,
+                current_stop=current_stop,
+                current_target=current_target,
+                actual_entry=position.get("avg_cost") or position.get("entry"),
+                actual_exit=position.get("exit_price") or position.get("actual_exit"),
+                qty=position.get("exit_quantity") or position.get("quantity"),
+                strategy=position.get("strategy") or "broker_observed",
+                exit_reason=position.get("exit_reason") or "BROKER_SELL_EXECUTION",
+                execution_id=execution_id,
+                message="Broker execution observed without a matching local entry request.",
+                raw=position,
+                opened_at_fallback_to_created=False,
             )
         )
     return rows
@@ -805,6 +877,7 @@ def load_order_journal(*, limit: int = MAX_ROWS) -> Dict[str, Any]:
         )
     )
     rows.extend(_rows_from_crypto_state())
+    rows.extend(_rows_from_unlinked_broker_closes())
 
     seen = set()
     unique: List[Dict[str, Any]] = []

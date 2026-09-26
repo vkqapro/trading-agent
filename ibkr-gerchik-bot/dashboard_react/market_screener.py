@@ -12,6 +12,7 @@ import pandas as pd
 
 @dataclass(frozen=True)
 class ScreenerParams:
+    asset_class: str = "stock"
     timeframe: str = "1D"
     anchor_date: str | None = None
     risk_pct: float = 0.005
@@ -272,7 +273,13 @@ def _pivot_levels(
     return active
 
 
-def _passes_filters(data: pd.DataFrame, plan: dict[str, Any]) -> tuple[bool, list[str], dict[str, Any]]:
+def _passes_filters(
+    data: pd.DataFrame,
+    plan: dict[str, Any],
+    params: ScreenerParams | None = None,
+) -> tuple[bool, list[str], dict[str, Any]]:
+    selected_params = params or ScreenerParams()
+    is_crypto = str(selected_params.asset_class or "stock").strip().lower() == "crypto"
     latest = data.iloc[-1]
     close = float(latest["close"])
     volume = _num(latest.get("avg_volume_20")) or 0.0
@@ -294,25 +301,29 @@ def _passes_filters(data: pd.DataFrame, plan: dict[str, Any]) -> tuple[bool, lis
     today = pd.Timestamp(datetime.now().astimezone()).date()
     historical_anchor = latest_date.date() < today
     reasons = []
-    if not (5 <= close <= 500):
+    if not is_crypto and not (5 <= close <= 500):
         reasons.append("price_out_of_range")
-    if volume < 700_000 and dollar_volume < 10_000_000:
+    # Preserve the documented LP/PRB liquidity rule for both assets: either the
+    # native-unit volume or quote-dollar turnover may satisfy the gate.  This
+    # works for both BTC-sized instruments and high-unit sub-dollar markets.
+    volume_ok = volume >= 700_000 or dollar_volume >= 10_000_000
+    if not volume_ok:
         reasons.append("illiquid")
     if median_spread is not None and median_spread > 0.0035:
         reasons.append("bad_spread")
     if signal_spread is not None and signal_spread > 0.005:
         reasons.append("bad_spread")
-    if isinstance(plan, dict) and plan.get("news_blocked") and not historical_anchor:
+    if not is_crypto and isinstance(plan, dict) and plan.get("news_blocked") and not historical_anchor:
         reasons.append("news_risk")
     if listing_status_ok is False:
         reasons.append("inactive_listing")
-    if split_dates and _has_event_in_window(latest_date, split_dates, before=5, after=5):
+    if not is_crypto and split_dates and _has_event_in_window(latest_date, split_dates, before=5, after=5):
         reasons.append("split_window")
-    if dividend_dates and _has_event_in_window(latest_date, dividend_dates, before=3, after=1):
+    if not is_crypto and dividend_dates and _has_event_in_window(latest_date, dividend_dates, before=3, after=1):
         reasons.append("dividend_window")
-    if earnings_dates and _has_event_in_window(latest_date, earnings_dates, before=1, after=1):
+    if not is_crypto and earnings_dates and _has_event_in_window(latest_date, earnings_dates, before=1, after=1):
         reasons.append("earnings_risk")
-    elif isinstance(earnings, dict) and earnings and not earnings_dates and not historical_anchor:
+    elif not is_crypto and isinstance(earnings, dict) and earnings and not earnings_dates and not historical_anchor:
         reasons.append("earnings_risk")
     reasons = list(dict.fromkeys(reasons))
     spread_ok = None
@@ -325,20 +336,22 @@ def _passes_filters(data: pd.DataFrame, plan: dict[str, Any]) -> tuple[bool, lis
     missing_quality_data = []
     if spread_ok is None:
         missing_quality_data.append("spread")
-    if corporate_action_ok is None:
+    if corporate_action_ok is None and not is_crypto:
         missing_quality_data.append("corporate_actions")
-    if listing_status_ok is None:
+    if listing_status_ok is None and not is_crypto:
         missing_quality_data.append("listing_status")
-    if event_ok is None:
+    if event_ok is None and not is_crypto:
         missing_quality_data.append("earnings_calendar")
-    if split_adjusted is not True:
+    if split_adjusted is not True and not is_crypto:
         missing_quality_data.append("split_adjustment")
     metrics = {
         "close": close,
         "avg_volume_20": volume,
         "median_dollar_volume_20": dollar_volume,
         "gap_atr": gap_atr,
-        "volume_ok": volume >= 700_000 or dollar_volume >= 10_000_000,
+        "asset_class": "crypto" if is_crypto else "stock",
+        "price_range_ok": True if is_crypto else 5 <= close <= 500,
+        "volume_ok": volume_ok,
         "median_spread_pct_20": median_spread,
         "signal_spread_pct": signal_spread,
         "spread_ok": spread_ok,
@@ -529,12 +542,15 @@ def _make_signal(
     per_share_risk = abs(entry - stop)
     execution_cost_per_share = max(0.0, params.slippage_per_share) + max(0.0, params.fees_per_share)
     sized_per_share_risk = per_share_risk + execution_cost_per_share
-    shares = math.floor(params.equity * params.risk_pct / sized_per_share_risk) if sized_per_share_risk > 0 else 0
+    raw_size = params.equity * params.risk_pct / sized_per_share_risk if sized_per_share_risk > 0 else 0.0
+    is_crypto = str(params.asset_class or "stock").strip().lower() == "crypto"
+    shares = math.floor(raw_size * 100_000_000) / 100_000_000 if is_crypto else math.floor(raw_size)
     mult = 1 if side == "LONG" else -1
     take_profit = entry + mult * params.rr * per_share_risk
     score = _score_signal(level, data, entry, signal_row=signal_row, pattern_quality=pattern_quality, metrics=metrics)
     status = str(execution["status"])
-    if shares < 1:
+    size_valid = shares > 0 if is_crypto else shares >= 1
+    if not size_valid:
         status = "capital_insufficient"
     elif not valid_stops:
         status = "invalid_stop"
@@ -591,6 +607,7 @@ def _make_signal(
         "data_quality_complete": metrics.get("data_quality_complete", False) if metrics else False,
         "missing_quality_data": list(metrics.get("missing_quality_data") or []) if metrics else [],
         "position_size_shares": shares,
+        "position_size_units": shares,
         "price_risk_per_share": _round(per_share_risk),
         "execution_cost_per_share": _round(execution_cost_per_share),
         "sized_risk_per_share": _round(sized_per_share_risk),
@@ -783,7 +800,7 @@ def run_market_screener(
         if entry_day_partial:
             in_progress_symbols.append(symbol)
         plan = watchlist.get(symbol, {}) if isinstance(watchlist, dict) else {}
-        ok, filter_reasons, metrics = _passes_filters(frame, plan if isinstance(plan, dict) else {})
+        ok, filter_reasons, metrics = _passes_filters(frame, plan if isinstance(plan, dict) else {}, params)
         levels = _pivot_levels(
             frame,
             k=params.pivot_k,
@@ -848,6 +865,7 @@ def run_market_screener(
         anchor_message = "Anchor includes an in-progress session; opening price is usable, but the candle is not complete."
     return {
         "scan_timestamp": datetime.now().astimezone().isoformat(timespec="seconds"),
+        "asset_class": params.asset_class,
         "timeframe": params.timeframe,
         "anchor_date": params.anchor_date,
         "anchor_status": anchor_status,
@@ -863,6 +881,7 @@ def run_market_screener(
         "reason_counts": dict(reason_counts.most_common()),
         "reason_log": reason_log,
         "params": {
+            "asset_class": params.asset_class,
             "risk_pct": params.risk_pct,
             "anchor_date": params.anchor_date,
             "equity": params.equity,

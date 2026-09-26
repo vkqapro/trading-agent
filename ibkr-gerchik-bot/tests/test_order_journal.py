@@ -392,3 +392,105 @@ class OrderJournalTests(TestCase):
         self.assertEqual(rows[0]["status"], "UNFILLED")
         self.assertEqual(rows[0]["exit_reason"], "")
         self.assertIsNone(rows[0]["actual_entry"])
+
+    def test_unlinked_broker_execution_is_visible_in_public_journal(self) -> None:
+        closed_positions = {
+            "positions": [
+                {
+                    "symbol": "LIN",
+                    "quantity": 2,
+                    "avg_cost": 480.62,
+                    "entry": 480.62,
+                    "direction": "long",
+                    "stop_loss": 481.47,
+                    "current_stop_loss": 481.47,
+                    "planned_stop_loss": 479.65,
+                    "target": 500.66,
+                    "current_target": 500.66,
+                    "planned_target": 500.66,
+                    "source": "IBKR",
+                    "opened_at": "2026-08-24",
+                    "closed_at": "2026-08-27T13:31:07+00:00",
+                    "exit_price": 531.25,
+                    "exit_quantity": 2,
+                    "exit_order_id": 832,
+                    "exit_execution_id": "lin-exec",
+                    "exit_reason": "BROKER_SELL_EXECUTION",
+                    "request_id": "",
+                }
+            ]
+        }
+
+        with patch(
+            "src.journal.order_journal._read_json",
+            side_effect=self._read_json({"requests": []}, closed_positions),
+        ):
+            payload = order_journal.load_order_journal()
+
+        rows = [row for row in payload["rows"] if row["symbol"] == "LIN"]
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["status"], "CLOSED_OBSERVED")
+        self.assertEqual(rows[0]["opened_at"], "2026-08-24")
+        self.assertEqual(rows[0]["closed_at"], "2026-08-27T13:31:07+00:00")
+        self.assertEqual(rows[0]["actual_exit"], 531.25)
+        self.assertEqual(rows[0]["quantity"], 2)
+        self.assertEqual(rows[0]["execution_id"], "lin-exec")
+        self.assertAlmostEqual(rows[0]["pnl"], 101.26)
+        self.assertEqual(rows[0]["side"], "BUY")
+        self.assertEqual(rows[0]["planned_entry"], 480.62)
+        self.assertEqual(rows[0]["actual_entry"], 480.62)
+        self.assertEqual(rows[0]["current_stop"], 481.47)
+        self.assertEqual(rows[0]["planned_stop"], 479.65)
+        self.assertEqual(rows[0]["current_target"], 500.66)
+        self.assertEqual(rows[0]["planned_target"], 500.66)
+
+    def test_unlinked_broker_execution_does_not_close_historical_same_symbol_requests(self) -> None:
+        order_requests = {
+            "requests": [
+                {
+                    "id": "mrsh-old",
+                    "action": "place",
+                    "status": "done",
+                    "created_at": "2026-07-29T10:41:14",
+                    "updated_at": "2026-07-29T10:41:19",
+                    "source": "MARKET_SCREENER_MANUAL",
+                    "symbol": "MRSH",
+                    "signal": "BUY",
+                    "entry": 191.63,
+                    "quantity": 5,
+                    "result": {"market_order_id": 627, "stop_order_id": 628, "limit_order_id": 629},
+                }
+            ]
+        }
+        closed_positions = {
+            "positions": [
+                {
+                    "symbol": "MRSH",
+                    "quantity": 5,
+                    "source": "IBKR",
+                    "closed_at": "2026-08-27T13:30:25+00:00",
+                    "exit_price": 190.19,
+                    "exit_quantity": 5,
+                    "exit_order_id": 831,
+                    "exit_execution_id": "mrsh-today",
+                    "exit_reason": "BROKER_SELL_EXECUTION",
+                    "request_id": "",
+                }
+            ]
+        }
+
+        with patch(
+            "src.journal.order_journal._read_json",
+            side_effect=self._read_json(order_requests, closed_positions),
+        ):
+            payload = order_journal.load_order_journal()
+
+        closed_today = [
+            row
+            for row in payload["rows"]
+            if row["symbol"] == "MRSH" and str(row.get("closed_at") or "").startswith("2026-08-27")
+        ]
+        self.assertEqual(len(closed_today), 1)
+        self.assertEqual(closed_today[0]["id"], "stock:broker:mrsh-today")
+        self.assertEqual(closed_today[0]["quantity"], 5)
+        self.assertIsNone(closed_today[0]["opened_at"])

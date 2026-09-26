@@ -778,10 +778,10 @@ class IBKRClient:
         tif: str = "DAY",
         outside_rth: bool = False,
     ) -> tuple[OrderResult, OrderResult, OrderResult]:
-        """Place an idempotency-tagged stop-limit parent with OCA protection."""
+        """Place a stop-limit parent with attached OCA stop and target orders."""
         self.ensure_connection()
         if not order_ref:
-            raise ValueError("IRS stop-limit bracket requires order_ref.")
+            raise ValueError("Stop-limit bracket requires order_ref.")
         contract = self.create_stock_contract(symbol)
         entry_stop_price = self._round_to_tick(entry_stop_price)
         entry_limit_price = self._round_to_tick(entry_limit_price)

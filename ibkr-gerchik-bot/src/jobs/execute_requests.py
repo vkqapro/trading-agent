@@ -121,6 +121,14 @@ def _process_place(
     cash_available: float,
     tracked_positions: List[Dict[str, Any]],
 ) -> Dict[str, Any]:
+    if bool(request.get("manual_setup")):
+        if _f(request.get("stop")) <= 0 or _f(request.get("target")) <= 0:
+            return {
+                "status": oq.REJECTED,
+                "message": "Manual Setup requires both a positive Stop and Target.",
+                "result": None,
+            }
+
     if bool(request.get("market_only")):
         symbol = str(request.get("symbol", "")).upper()
         side = str(request.get("signal", "")).upper()

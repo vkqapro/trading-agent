@@ -2161,7 +2161,10 @@ function TabIntraday({refreshKey=0}) {
 /* ════════════════════════════════════════════════════════════════════════════
    TAB: TRADES
 ═══════════════════════════════════════════════════════════════════════════ */
-function TabStrategy({refreshKey=0}) {
+function TabStrategy({refreshKey=0, asset='stock'}) {
+  const isCrypto = asset === 'crypto';
+  const assetLabel = isCrypto ? 'Crypto' : 'Stock';
+  const strategyApi = isCrypto ? `${API}/crypto/strategy` : `${API}/strategy`;
   const [data, setData] = useState(null);
   const [strategyMode, setStrategyMode] = useState('bmsb');
   const [filter, setFilter] = useState('ALL');
@@ -2181,6 +2184,7 @@ function TabStrategy({refreshKey=0}) {
   const [manualTarget, setManualTarget] = useState('');
   const [manualRR, setManualRR] = useState('');
   const [manualSide, setManualSide] = useState('LONG');
+  const [manualEntryOrderType, setManualEntryOrderType] = useState('LIMIT');
   const [manualCash, setManualCash] = useState('1000');
   const [manualMaxOpenRisk, setManualMaxOpenRisk] = useState('5');
   const [strategyFeedback, setStrategyFeedback] = useState(null);
@@ -2197,7 +2201,7 @@ function TabStrategy({refreshKey=0}) {
   const [strategyRemoveConfirm, setStrategyRemoveConfirm] = useState(null);
   const [strategyWatchSymbols, setStrategyWatchSymbols] = useState(()=>{
     try {
-      const saved = JSON.parse(localStorage.getItem('strategyWatchSymbols') || '[]');
+      const saved = JSON.parse(localStorage.getItem(isCrypto?'cryptoStrategyWatchSymbols':'strategyWatchSymbols') || '[]');
       return Array.isArray(saved) ? saved.map(s=>String(s).toUpperCase()).filter(Boolean) : [];
     } catch {
       return [];
@@ -2208,11 +2212,11 @@ function TabStrategy({refreshKey=0}) {
   const [chartPlan, setChartPlan] = useState(null);
   const strategyChartFullscreenRef = useRef(null);
   const loadStrategy = useCallback(()=>{
-    fetch(`${API}/strategy?mode=${encodeURIComponent(strategyMode)}`)
+    fetch(`${strategyApi}?mode=${encodeURIComponent(strategyMode)}`)
       .then(r=>r.json())
       .then(setData)
       .catch(()=>setData({mode:strategyMode,rows:[],symbols:[],symbols_scanned:0,matches:0,crossed:0,near:0}));
-  },[strategyMode]);
+  },[strategyMode, strategyApi]);
   useEffect(()=>{ loadStrategy(); },[refreshKey, loadStrategy]);
   useEffect(()=>{
     const symbols = data?.symbols || [];
@@ -2228,23 +2232,23 @@ function TabStrategy({refreshKey=0}) {
       return;
     }
     const apitf = TF_API[tf]||'weekly';
-    fetch(`${API}/bars/${selectedSymbol}/${apitf}`)
+    fetch(isCrypto ? `${API}/crypto/bars/${selectedSymbol}/${apitf}` : `${API}/bars/${selectedSymbol}/${apitf}`)
       .then(r=>r.json())
       .then(d=>{setBars(d.bars||[]);setBarsInfo({stale:d.stale,lastDate:d.last_date});})
       .catch(()=>{setBars([]);setBarsInfo({stale:false,lastDate:null});});
-    fetch(`${API}/preopen/${selectedSymbol}`)
+    fetch(isCrypto ? `${API}/crypto/${selectedSymbol}` : `${API}/preopen/${selectedSymbol}`)
       .then(r=>r.json())
       .then(setChartPlan)
       .catch(()=>setChartPlan(null));
-  },[selectedSymbol, tf, refreshKey]);
+  },[selectedSymbol, tf, refreshKey, isCrypto]);
   useEffect(()=>{
     setManualStop('');
     setManualTarget('');
     setManualRR('');
   },[selectedSymbol, manualSide]);
   useEffect(()=>{
-    try { localStorage.setItem('strategyWatchSymbols', JSON.stringify(strategyWatchSymbols)); } catch {}
-  },[strategyWatchSymbols]);
+    try { localStorage.setItem(isCrypto?'cryptoStrategyWatchSymbols':'strategyWatchSymbols', JSON.stringify(strategyWatchSymbols)); } catch {}
+  },[strategyWatchSymbols, isCrypto]);
   const switchStrategyMode = useCallback((mode)=>{
     const next = mode === 'gaussian' ? 'gaussian' : 'bmsb';
     setStrategyMode(next);
@@ -2277,7 +2281,7 @@ function TabStrategy({refreshKey=0}) {
     setStrategySymbolBusy(true);
     setStrategySymbolFeedback(null);
     try {
-      const r = await fetch(`${API}/watchlist/add`, {
+      const r = await fetch(isCrypto ? `${API}/crypto/add` : `${API}/watchlist/add`, {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({symbol}),
@@ -2287,14 +2291,14 @@ function TabStrategy({refreshKey=0}) {
       setStrategySymbolFeedback({ok:true, message:d.message});
       setStrategyNewSymbol('');
       setStrategySymbolAddOpen(false);
-      setSelectedSymbol(symbol);
+      setSelectedSymbol(d.symbol || symbol);
       loadStrategy();
     } catch(e) {
       setStrategySymbolFeedback({ok:false, message:String(e.message||e)});
     } finally {
       setStrategySymbolBusy(false);
     }
-  },[strategyNewSymbol, loadStrategy]);
+  },[strategyNewSymbol, loadStrategy, isCrypto]);
   const onBulkUploadFile = useCallback((event)=>{
     const file = event.target.files?.[0];
     event.target.value = '';
@@ -2316,7 +2320,7 @@ function TabStrategy({refreshKey=0}) {
       .filter(Boolean)
       .forEach(item=>{
         if(item==='SYMBOL') return;
-        if(!/^[A-Z][A-Z0-9]{0,9}$/.test(item)) {
+        if(isCrypto ? !/^[A-Z0-9][A-Z0-9._:\/-]{1,24}$/.test(item) : !/^[A-Z][A-Z0-9]{0,9}$/.test(item)) {
           invalid.push(item);
           return;
         }
@@ -2336,7 +2340,7 @@ function TabStrategy({refreshKey=0}) {
     setBulkUploadBusy(true);
     setBulkUploadResult(null);
     try {
-      const r = await fetch(`${API}/watchlist/bulk-add`, {
+      const r = await fetch(isCrypto ? `${API}/crypto/bulk-add` : `${API}/watchlist/bulk-add`, {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({csv_text:text}),
@@ -2357,14 +2361,14 @@ function TabStrategy({refreshKey=0}) {
     } finally {
       setBulkUploadBusy(false);
     }
-  },[bulkUploadText, loadStrategy]);
+  },[bulkUploadText, loadStrategy, isCrypto]);
   const submitStrategySymbolRemove = useCallback(async()=>{
     const symbol = String(strategyRemoveConfirm?.symbol || '').trim().toUpperCase();
     if(!symbol) return;
     setStrategySymbolBusy(true);
     setStrategySymbolFeedback(null);
     try {
-      const r = await fetch(`${API}/watchlist/remove`, {
+      const r = await fetch(isCrypto ? `${API}/crypto/remove` : `${API}/watchlist/remove`, {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({symbol}),
@@ -2381,7 +2385,7 @@ function TabStrategy({refreshKey=0}) {
     } finally {
       setStrategySymbolBusy(false);
     }
-  },[strategyRemoveConfirm, selectedSymbol, loadStrategy]);
+  },[strategyRemoveConfirm, selectedSymbol, loadStrategy, isCrypto]);
   const rangeCount = RANGE_COUNTS[range]||9999;
   const visibleBars = bars.slice(-rangeCount);
   const strategyOverlay = useMemo(
@@ -2465,14 +2469,15 @@ function TabStrategy({refreshKey=0}) {
     if(!manualSetup || !selectedSymbol) return null;
     const cash = Number(manualCash);
     const maxOpenRiskPct = Number(manualMaxOpenRisk);
-    if(!Number.isFinite(cash) || cash<=0 || !Number.isFinite(maxOpenRiskPct) || maxOpenRiskPct<=0) return null;
+    if(!Number.isFinite(cash) || cash<=0 || !Number.isFinite(maxOpenRiskPct) || maxOpenRiskPct<=0 || maxOpenRiskPct>100) return null;
     const riskPerShare = Math.abs(manualSetup.entry-manualSetup.stop);
     const rewardPerShare = Math.abs(manualSetup.target-manualSetup.entry);
     if(riskPerShare<=0 || rewardPerShare<=0) return null;
     const maxRiskAmount = cash * (maxOpenRiskPct/100);
-    const riskQty = Math.floor(maxRiskAmount / riskPerShare);
-    const cashQty = Math.floor(cash / manualSetup.entry);
-    const quantity = Math.max(0, Math.min(riskQty, cashQty));
+    const riskQty = maxRiskAmount / riskPerShare;
+    const cashQty = cash / manualSetup.entry;
+    const rawQuantity = Math.max(0, Math.min(riskQty, cashQty));
+    const quantity = isCrypto ? Math.floor(rawQuantity*1e8)/1e8 : Math.floor(rawQuantity);
     const riskAmount = quantity * riskPerShare;
     const potentialProfit = quantity * rewardPerShare;
     const positionValue = quantity * manualSetup.entry;
@@ -2491,21 +2496,22 @@ function TabStrategy({refreshKey=0}) {
       max_risk_amount:maxRiskAmount,
       available_cash:cash,
       max_open_risk_pct:maxOpenRiskPct,
-      entry_order_type:'LIMIT',
+      entry_order_type:manualEntryOrderType,
+      manual_setup:true,
       strategy:'strategy_manual_setup',
-      source:'STRATEGY_MANUAL',
+      source:isCrypto?'CRYPTO_STRATEGY_MANUAL':'STRATEGY_MANUAL',
       level_type:'dashboard_manual',
       confidence:1,
     };
-  },[manualSetup, selectedSymbol, manualCash, manualMaxOpenRisk]);
+  },[manualSetup, selectedSymbol, manualCash, manualMaxOpenRisk, manualEntryOrderType, isCrypto]);
   const doStrategyPlace = useCallback(async(row) => {
     setStrategyConfirm(null);
     try {
-      const r = await fetch(`${API}/order/place`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(row)});
+      const r = await fetch(isCrypto ? `${API}/crypto/order/place` : `${API}/order/place`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(row)});
       const d = await r.json();
       setStrategyFeedback({ok:d.ok, message:d.message, id:d.id, dryRun:d.dry_run});
     } catch(e) { setStrategyFeedback({ok:false, message:'Network error: '+e.message}); }
-  },[]);
+  },[isCrypto]);
   const manualSetupLines = showManualSetup && manualSetup ? [
     {p:manualSetup.target,color:C.lime,label:`TARGET $${manualSetup.target.toFixed(2)}`},
     {p:manualSetup.entry,color:C.ocean,label:`ENTRY $${manualSetup.entry.toFixed(2)}`},
@@ -2526,7 +2532,7 @@ function TabStrategy({refreshKey=0}) {
     if(filter==='WATCH') return strategyWatchSet.has(String(r.symbol||'').toUpperCase());
     return r.side===filter;
   });
-  const allStockSymbols = data.symbols?.length
+  const allStrategySymbols = data.symbols?.length
     ? data.symbols
     : [...new Set((data.rows||[]).map(r=>r.symbol).filter(Boolean))].sort();
   const selectedRow = (data.rows||[]).find(r=>r.symbol===selectedSymbol) || rows[0] || data.rows?.[0] || null;
@@ -2582,7 +2588,7 @@ function TabStrategy({refreshKey=0}) {
         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:14,flexWrap:'wrap'}}>
           <div style={{display:'flex',alignItems:'center',gap:10,flexWrap:'wrap'}}>
             <Icon n="upload_file" size={18} color={C.cyan}/>
-            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar}}>Bulk Symbol Upload</span>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.1em',textTransform:'uppercase',color:C.onVar}}>Bulk {assetLabel} Symbol Upload</span>
             {bulkUploadName && <Pill text={bulkUploadName} color={C.outline}/>}
             {bulkUploadResult?.pid && <Pill text={`PID ${bulkUploadResult.pid}`} color={C.cyan}/>}
           </div>
@@ -2603,7 +2609,7 @@ function TabStrategy({refreshKey=0}) {
           </div>
         </div>
         {bulkUploadOpen && (
-          <textarea value={bulkUploadText} onChange={e=>{setBulkUploadText(e.target.value);setBulkUploadResult(null);}} placeholder="AAPL,MSFT,NVDA"
+          <textarea value={bulkUploadText} onChange={e=>{setBulkUploadText(e.target.value);setBulkUploadResult(null);}} placeholder={isCrypto?'BTC-USDT,ETH-USDT,SOL-USDT':'AAPL,MSFT,NVDA'}
             style={{marginTop:12,width:'100%',minHeight:74,resize:'vertical',background:R(C.surfLowest,0.7),border:`1px solid ${R(C.outline,0.22)}`,borderRadius:8,color:C.onSurf,padding:'10px 12px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:0}}/>
         )}
         {bulkUploadResult && (
@@ -2652,8 +2658,8 @@ function TabStrategy({refreshKey=0}) {
           <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.08em',color:C.outline,textTransform:'uppercase'}}>Chart Symbol</span>
           <select value={selectedSymbol||''} onChange={e=>setSelectedSymbol(e.target.value)}
             style={{minWidth:220,background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.04em'}}>
-            {!selectedSymbol && <option value="">Select stock</option>}
-            {allStockSymbols.map(symbol=><option key={symbol} value={symbol}>{symbol}</option>)}
+            {!selectedSymbol && <option value="">Select {isCrypto?'crypto':'stock'}</option>}
+            {allStrategySymbols.map(symbol=><option key={symbol} value={symbol}>{symbol}</option>)}
           </select>
           <button disabled={!selectedSymbol} onClick={()=>toggleStrategyWatch(selectedSymbol)}
             style={{padding:'8px 12px',borderRadius:8,cursor:selectedSymbol?'pointer':'not-allowed',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:800,color:selectedIsWatched?C.cyan:C.onVar,background:selectedIsWatched?R(C.cyan,0.12):R(C.outline,0.07),border:`1px solid ${selectedIsWatched?R(C.cyan,0.34):R(C.outline,0.22)}`,display:'inline-flex',alignItems:'center',gap:6,opacity:selectedSymbol?1:0.55}}>
@@ -2668,7 +2674,7 @@ function TabStrategy({refreshKey=0}) {
             <>
               <div style={{display:'flex',alignItems:'center',gap:8,padding:'8px 11px',borderRadius:8,background:R('#000',0.52),border:`1px solid ${R(C.cyan,0.25)}`,minWidth:170}}>
                 <Icon n="candlestick_chart" size={16} color={C.cyan}/>
-                <input value={strategyNewSymbol} onChange={e=>setStrategyNewSymbol(e.target.value.toUpperCase())} onKeyDown={e=>{if(e.key==='Enter') submitStrategySymbolAdd();}} placeholder="NVDA"
+                <input value={strategyNewSymbol} onChange={e=>setStrategyNewSymbol(e.target.value.toUpperCase())} onKeyDown={e=>{if(e.key==='Enter') submitStrategySymbolAdd();}} placeholder={isCrypto?'BTC-USDT':'NVDA'}
                   style={{flex:1,minWidth:0,background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:12,letterSpacing:'0.06em',textTransform:'uppercase'}}/>
               </div>
               <button onClick={submitStrategySymbolAdd} disabled={strategySymbolBusy || !strategyNewSymbol.trim()}
@@ -2700,10 +2706,18 @@ function TabStrategy({refreshKey=0}) {
             onChange={e=>setManualEntry(e.target.value)}
             placeholder="Entry price"
             style={{width:130,background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
+          <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Entry Order</span>
+          <select value={manualEntryOrderType} onChange={e=>setManualEntryOrderType(e.target.value)}
+            title="Manual entry order type. STOP_LIMIT uses the Entry price as both trigger and limit."
+            style={{background:R(C.surfLowest,0.8),color:C.cyan,border:`1px solid ${R(C.cyan,0.3)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:700}}>
+            <option value="LIMIT">LIMIT</option>
+            <option value="MARKET">MARKET</option>
+            {!isCrypto && <option value="STOP_LIMIT">STOP_LIMIT</option>}
+          </select>
           <select value={manualSide} onChange={e=>setManualSide(e.target.value)}
             style={{background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
             <option value="LONG">Long</option>
-            <option value="SHORT">Short</option>
+            {!isCrypto && <option value="SHORT">Short</option>}
           </select>
           <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Stop</span>
           <input type="number" min="0" step="0.01" value={manualStop}
@@ -2721,10 +2735,12 @@ function TabStrategy({refreshKey=0}) {
             placeholder={manualSetup ? `${manualRR ? 'RR' : 'Auto'} ${manualSetup.target.toFixed(2)}` : 'Target'}
             style={{width:115,background:R(C.surfLowest,0.8),color:C.lime,border:`1px solid ${R((manualSetup?.targetOverridden||manualSetup?.rrOverridden)?C.lime:C.outline,(manualSetup?.targetOverridden||manualSetup?.rrOverridden)?0.38:0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none',opacity:manualEntryReady?1:0.55}}/>
           <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>R:R</span>
-          <input type="number" min="0" step="0.25" value={manualRR}
+          <input type="number" min="0.25" max="100" step="0.25" value={manualRR}
             onChange={e=>{setManualRR(e.target.value); if(e.target.value) setManualTarget('');}}
             disabled={!manualEntryReady}
-            title="Optional R:R override. When set, target is calculated from Entry and Stop."
+            title={isCrypto
+              ? "Crypto manual orders use this UI R:R value as their order minimum; .env does not override it."
+              : "Optional R:R override. When set, target is calculated from Entry and Stop."}
             placeholder="Auto"
             style={{width:85,background:R(C.surfLowest,0.8),color:C.cyan,border:`1px solid ${R(manualSetup?.rrOverridden?C.cyan:C.outline,manualSetup?.rrOverridden?0.38:0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none',opacity:manualEntryReady?1:0.55}}/>
           {(manualStop || manualTarget || manualRR) && (
@@ -2740,9 +2756,9 @@ function TabStrategy({refreshKey=0}) {
             placeholder="Available cash"
             style={{width:145,background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
           <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Max risk %</span>
-          <input type="number" min="0" step="0.25" value={manualMaxOpenRisk}
+          <input type="number" min="0.01" max="100" step="0.25" value={manualMaxOpenRisk}
             onChange={e=>setManualMaxOpenRisk(e.target.value)}
-            title="Maximum open risk as percent of available cash"
+            title="Per-order risk limit as percent of available cash; enforced by the API"
             placeholder="Max risk %"
             style={{width:115,background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
           {bars?.length>0 && (
@@ -2756,7 +2772,7 @@ function TabStrategy({refreshKey=0}) {
               <Pill text={`STOP $${manualSetup.stop.toFixed(2)}`} color={C.err}/>
               <Pill text={`TARGET $${manualSetup.target.toFixed(2)}`} color={C.lime}/>
               <Pill text={`R:R ${manualSetup.rr.toFixed(2)}`} color={manualSetup.rr>=3?C.lime:C.outline}/>
-              {manualOrderPlan && <Pill text={`${manualOrderPlan.quantity} SH`} color={manualOrderPlan.quantity>0?C.cyan:C.err}/>}
+              {manualOrderPlan && <Pill text={`${manualOrderPlan.quantity} ${isCrypto?'UNITS':'SH'}`} color={manualOrderPlan.quantity>0?C.cyan:C.err}/>} 
               {manualOrderPlan && <Pill text={`RISK $${manualOrderPlan.risk_amount.toFixed(2)}`} color={manualOrderPlan.quantity>0?C.err:C.outline}/>}
               {manualOrderPlan && <Pill text={`PROFIT $${manualOrderPlan.potential_reward.toFixed(2)}`} color={manualOrderPlan.quantity>0?C.lime:C.outline}/>}
               <span style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:C.outline}}>
@@ -2806,7 +2822,7 @@ function TabStrategy({refreshKey=0}) {
           <div onClick={e=>e.stopPropagation()} style={{width:'100%',maxWidth:430,background:'rgba(20,19,20,0.98)',border:`1px solid ${R(C.outline,0.22)}`,borderRadius:14,boxShadow:'0 30px 80px rgba(0,0,0,0.7)',overflow:'hidden'}}>
             <div style={{padding:'18px 22px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',alignItems:'center',gap:12}}>
               <Icon n="delete" size={20} color={C.err}/>
-              <span style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:17,fontWeight:700,color:C.onSurf}}>Remove Strategy Symbol</span>
+              <span style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:17,fontWeight:700,color:C.onSurf}}>Remove {assetLabel} Strategy Symbol</span>
             </div>
             <div style={{padding:'20px 22px',display:'flex',flexDirection:'column',gap:14}}>
               <div style={{display:'flex',alignItems:'center',gap:10,padding:'12px 14px',borderRadius:10,background:R(C.err,0.07),border:`1px solid ${R(C.err,0.22)}`}}>
@@ -2816,7 +2832,7 @@ function TabStrategy({refreshKey=0}) {
                 </span>
               </div>
               <span style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:C.outline,lineHeight:1.45}}>
-                This removes the symbol from the active stock universe, Strategy monitor, Watchlist, and bot flow. Saved candle files are kept for future re-adds.
+                This removes the symbol from the active {isCrypto?'crypto':'stock'} universe, Strategy monitor, {isCrypto?'Crypto':'Watchlist'}, and bot flow. Saved candle files are kept for future re-adds.
               </span>
             </div>
             <div style={{padding:'16px 22px',borderTop:`1px solid ${R(C.outline,0.14)}`,display:'flex',gap:10,justifyContent:'flex-end'}}>
@@ -2838,12 +2854,12 @@ function TabStrategy({refreshKey=0}) {
           <div onClick={e=>e.stopPropagation()} style={{width:'100%',maxWidth:480,background:'rgba(20,19,20,0.98)',border:`1px solid ${R(C.outline,0.22)}`,borderRadius:14,boxShadow:'0 30px 80px rgba(0,0,0,0.7)',overflow:'hidden'}}>
             <div style={{padding:'18px 22px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',alignItems:'center',gap:12}}>
               <Icon n="send" size={20} color={C.cyan}/>
-              <span style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:17,fontWeight:600,color:C.onSurf}}>Confirm Strategy Manual Order</span>
+              <span style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:17,fontWeight:600,color:C.onSurf}}>Confirm {assetLabel} Strategy Manual Order</span>
             </div>
             <div style={{padding:'20px 22px',display:'flex',flexDirection:'column',gap:14}}>
               <div style={{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderRadius:10,background:R(C.magenta,0.06),border:`1px solid ${R(C.magenta,0.22)}`}}>
                 <Icon n="shield_lock" size={18} color={C.magenta} style={{flexShrink:0}}/>
-                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.magenta,lineHeight:1.5}}>Queues to execute_requests · paper account · respects DRY_RUN</span>
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.magenta,lineHeight:1.5}}>{isCrypto?'Submits to OKX Paper/Demo only · attached stop + target · live disabled':'Queues to execute_requests · paper account · respects DRY_RUN'}</span>
               </div>
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px 18px'}}>
                 {[
@@ -2853,7 +2869,7 @@ function TabStrategy({refreshKey=0}) {
                   ['Entry', '$'+Number(strategyConfirm.row.entry||0).toFixed(2)],
                   ['Stop', '$'+Number(strategyConfirm.row.stop||0).toFixed(2)],
                   ['Target', '$'+Number(strategyConfirm.row.target||0).toFixed(2)],
-                  ['Shares', strategyConfirm.row.quantity],
+                  [isCrypto?'Units':'Shares', strategyConfirm.row.quantity],
                   ['Position Value', '$'+Number(strategyConfirm.row.position_value||0).toFixed(2)],
                   ['Risk', '$'+Number(strategyConfirm.row.risk_amount||0).toFixed(2)],
                   ['Potential Profit', '$'+Number(strategyConfirm.row.potential_reward||0).toFixed(2)],
@@ -2883,7 +2899,7 @@ function TabStrategy({refreshKey=0}) {
       )}
 
       <GlassCard style={{overflow:'hidden'}}>
-        <PanelHeader icon="insights" title={`${strategyDisplayName} Strategy Monitor`} badge={data.strategy || strategyDisplayName}/>
+        <PanelHeader icon={isCrypto?'currency_bitcoin':'insights'} title={`${strategyDisplayName} Strategy Monitor · ${assetLabel}`} badge={data.strategy || strategyDisplayName}/>
         <div style={{padding:'14px 18px',borderBottom:`1px solid ${R(C.outline,0.12)}`,display:'flex',justifyContent:'space-between',alignItems:'center',gap:14,flexWrap:'wrap'}}>
           <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline,lineHeight:1.6}}>
             {strategyInfoText}
@@ -4662,9 +4678,12 @@ function TabInefficiencyReclaim({refreshKey=0}) {
   );
 }
 
-function TabMarketScreener({refreshKey=0}) {
+function TabMarketScreener({refreshKey=0,asset='stock'}) {
+  const isCrypto = asset === 'crypto';
+  const assetLabel = isCrypto ? 'Crypto' : 'Stock';
+  const screenerApi = isCrypto ? `${API}/crypto/market-screener` : `${API}/market-screener`;
   const todayKey = new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
-  const emptyScreener = {signals:[],rejected:[],near_misses:[],reason_counts:{},reason_log:[],signals_found:0,universe_size:0,timeframe:'1D',anchor_date:todayKey,idle:true};
+  const emptyScreener = {asset_class:asset,signals:[],rejected:[],near_misses:[],reason_counts:{},reason_log:[],signals_found:0,universe_size:0,timeframe:'1D',anchor_date:todayKey,idle:true};
   const [data,setData]=useState(emptyScreener);
   const [tf,setTf]=useState('1D');
   const [anchorDate,setAnchorDate]=useState(todayKey);
@@ -4725,11 +4744,17 @@ function TabMarketScreener({refreshKey=0}) {
   const [signalManualTarget,setSignalManualTarget]=useState('');
   const [signalManualRR,setSignalManualRR]=useState('');
   const [signalManualSide,setSignalManualSide]=useState('LONG');
+  const [signalManualEntryOrderType,setSignalManualEntryOrderType]=useState('LIMIT');
   const [signalManualCash,setSignalManualCash]=useState('1000');
   const [signalManualMaxOpenRisk,setSignalManualMaxOpenRisk]=useState('5');
   const [signalOrderFeedback,setSignalOrderFeedback]=useState(null);
   const [signalConfirm,setSignalConfirm]=useState(null);
-  const money = v => v!=null && Number.isFinite(Number(v)) ? `$${Number(v).toFixed(Math.abs(Number(v))>=10?2:4)}` : '—';
+  const money = v => {
+    if(v==null || !Number.isFinite(Number(v))) return '—';
+    const value = Number(v);
+    const digits = Math.abs(value)>=10 ? 2 : Math.abs(value)>=0.01 ? 4 : 8;
+    return `$${value.toFixed(digits)}`;
+  };
   const num = (v,d=2) => v!=null && Number.isFinite(Number(v)) ? Number(v).toFixed(d) : '—';
   const pct = v => v!=null && Number.isFinite(Number(v)) ? `${Number(v).toFixed(2)}%` : '—';
 
@@ -4790,7 +4815,7 @@ function TabMarketScreener({refreshKey=0}) {
       require_complete_quality:String(scanParams.requireCompleteQuality),
     });
     if(anchorDate) query.set('anchor_date', anchorDate);
-    fetch(`${API}/market-screener?${query.toString()}`,{cache:'no-store'})
+    fetch(`${screenerApi}?${query.toString()}`,{cache:'no-store'})
       .then(r=>r.json())
       .then(d=>{
         setData(d);
@@ -4799,7 +4824,7 @@ function TabMarketScreener({refreshKey=0}) {
       })
       .catch(()=>{setData({...emptyScreener,anchor_date:anchorDate,timeframe:tf,error:'Failed to load screener',idle:false}); setSelectedSignalKey(null);})
       .finally(()=>setBusy(false));
-  },[tf,anchorDate,side,strategies.join(','),minScore,rr,riskPct,scanParamKey]);
+  },[tf,anchorDate,side,strategies.join(','),minScore,rr,riskPct,scanParamKey,screenerApi,asset]);
 
   const toggleStrategy = strategy => {
     setStrategies(current=>{
@@ -4863,15 +4888,21 @@ function TabMarketScreener({refreshKey=0}) {
       setSignalPlan(null);
       return;
     }
-    fetch(`${API}/bars/${encodeURIComponent(selectedSignal.ticker)}/${chartApiTf}`,{cache:'no-store'})
+    const barsEndpoint = isCrypto
+      ? `${API}/crypto/bars/${encodeURIComponent(selectedSignal.ticker)}/${chartApiTf}`
+      : `${API}/bars/${encodeURIComponent(selectedSignal.ticker)}/${chartApiTf}`;
+    fetch(barsEndpoint,{cache:'no-store'})
       .then(r=>r.json())
       .then(d=>{setSignalBars(d.bars||[]);setSignalBarsInfo({stale:d.stale,lastDate:d.last_date});})
       .catch(()=>{setSignalBars([]);setSignalBarsInfo({stale:true,lastDate:null});});
-    fetch(`${API}/preopen/${encodeURIComponent(selectedSignal.ticker)}`,{cache:'no-store'})
+    const planEndpoint = isCrypto
+      ? `${API}/crypto/${encodeURIComponent(selectedSignal.ticker)}`
+      : `${API}/preopen/${encodeURIComponent(selectedSignal.ticker)}`;
+    fetch(planEndpoint,{cache:'no-store'})
       .then(r=>r.json())
       .then(setSignalPlan)
       .catch(()=>setSignalPlan(null));
-  },[selectedSignal?.ticker, chartApiTf]);
+  },[selectedSignal?.ticker, chartApiTf, isCrypto]);
   useEffect(()=>{
     if(!selectedSignal) return;
     setSignalManualEntry(signalInputValue(selectedSignal.entry_price));
@@ -4942,14 +4973,15 @@ function TabMarketScreener({refreshKey=0}) {
     if(!signalManualSetup || !selectedSignal?.ticker) return null;
     const cash = Number(signalManualCash);
     const maxOpenRiskPct = Number(signalManualMaxOpenRisk);
-    if(!Number.isFinite(cash) || cash<=0 || !Number.isFinite(maxOpenRiskPct) || maxOpenRiskPct<=0) return null;
+    if(!Number.isFinite(cash) || cash<=0 || !Number.isFinite(maxOpenRiskPct) || maxOpenRiskPct<=0 || maxOpenRiskPct>100) return null;
     const riskPerShare = Math.abs(signalManualSetup.entry-signalManualSetup.stop);
     const rewardPerShare = Math.abs(signalManualSetup.target-signalManualSetup.entry);
     if(riskPerShare<=0 || rewardPerShare<=0) return null;
     const maxRiskAmount = cash * (maxOpenRiskPct/100);
-    const riskQty = Math.floor(maxRiskAmount / riskPerShare);
-    const cashQty = Math.floor(cash / signalManualSetup.entry);
-    const quantity = Math.max(0, Math.min(riskQty, cashQty));
+    const riskQty = maxRiskAmount / riskPerShare;
+    const cashQty = cash / signalManualSetup.entry;
+    const rawQuantity = Math.max(0, Math.min(riskQty, cashQty));
+    const quantity = isCrypto ? Math.floor(rawQuantity*1e8)/1e8 : Math.floor(rawQuantity);
     const riskAmount = quantity * riskPerShare;
     const potentialProfit = quantity * rewardPerShare;
     const positionValue = quantity * signalManualSetup.entry;
@@ -4968,23 +5000,25 @@ function TabMarketScreener({refreshKey=0}) {
       max_risk_amount:maxRiskAmount,
       available_cash:cash,
       max_open_risk_pct:maxOpenRiskPct,
-      entry_order_type:'LIMIT',
-      strategy:`market_screener_${String(selectedSignal.strategy||'signal').toLowerCase()}_manual_setup`,
-      source:'MARKET_SCREENER_MANUAL',
+      entry_order_type:signalManualEntryOrderType,
+      manual_setup:true,
+      strategy:`${isCrypto?'crypto_':''}market_screener_${String(selectedSignal.strategy||'signal').toLowerCase()}_manual_setup`,
+      source:isCrypto?'CRYPTO_MARKET_SCREENER_MANUAL':'MARKET_SCREENER_MANUAL',
       level_type:selectedSignal.level_type || 'screener_signal',
       confidence:Number(selectedSignal.score || 1),
     };
-  },[signalManualSetup, selectedSignal, signalManualCash, signalManualMaxOpenRisk]);
+  },[signalManualSetup, selectedSignal, signalManualCash, signalManualMaxOpenRisk, signalManualEntryOrderType, isCrypto]);
+  const cryptoShortUnsupported = isCrypto && signalManualSetup?.side === 'SHORT';
   const doSignalManualPlace = useCallback(async(row)=>{
     setSignalConfirm(null);
     try {
-      const r = await fetch(`${API}/order/place`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(row)});
+      const r = await fetch(isCrypto ? `${API}/crypto/order/place` : `${API}/order/place`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(row)});
       const d = await r.json();
-      setSignalOrderFeedback({ok:d.ok, message:d.message, id:d.id, dryRun:d.dry_run});
+      setSignalOrderFeedback({ok:d.ok, message:d.message, id:d.id, dryRun:d.dry_run, demo:d.demo, okxOrderId:d.okx_order_id});
     } catch(e) {
       setSignalOrderFeedback({ok:false, message:'Network error: '+e.message});
     }
-  },[]);
+  },[isCrypto]);
   const signalLines = showSignalOverlay && selectedSignal ? [
     {p:Number(selectedSignal.level_price), label:`LEVEL ${money(selectedSignal.level_price)}`, color:C.cyan},
     {p:Number(selectedSignal.entry_price), label:`ENTRY ${money(selectedSignal.entry_price)}`, color:selectedSignal.side==='SHORT'?C.err:C.lime},
@@ -5096,7 +5130,7 @@ function TabMarketScreener({refreshKey=0}) {
   return (
     <div style={{display:'flex',flexDirection:'column',gap:22}}>
       <MetricGrid items={[
-        {label:'Universe',icon:'radar',value:data.universe_size??0,sub:data.idle?'idle':`${data.timeframe||tf} scan`,valueColor:C.cyan},
+        {label:'Universe',icon:'radar',value:data.universe_size??0,sub:data.idle?'idle':`${data.timeframe||tf} ${isCrypto?'OKX crypto':'stock'} scan`,valueColor:C.cyan},
         {label:'Signals',icon:'bolt',value:data.signals_found??0,sub:'LP / PRB matches',valueColor:(data.signals_found||0)>0?C.lime:C.outline},
         {label:'Ready',icon:'task_alt',value:readyCount,sub:'position size valid',valueColor:C.lime},
         {label:'Rejected',icon:'filter_alt',value:rejected.length,sub:'quality / data filters',valueColor:C.err},
@@ -5219,7 +5253,7 @@ function TabMarketScreener({refreshKey=0}) {
         <Table
           compact
           minColWidth={82}
-          cols={['Ticker','Strategy','Side','Status','Level','Entry','Stop','TP','RR','ATR','Score','Size','Filters','Reasoning']}
+          cols={['Ticker','Strategy','Side','Status','Level','Entry','Stop','TP','RR','ATR','Score',isCrypto?'Units':'Shares','Filters','Reasoning']}
           rows={filteredSignals.map(row=>[
             <button onClick={()=>setSelectedSignalKey(signalKey(row))}
               style={{background:'transparent',border:0,padding:0,cursor:'pointer',color:signalKey(row)===signalKey(selectedSignal)?C.cyan:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:900}}>
@@ -5235,7 +5269,7 @@ function TabMarketScreener({refreshKey=0}) {
             num(row.rr,2),
             num(row.atr_clean_14,2),
             <span style={{color:Number(row.score)>=0.7?C.lime:Number(row.score)>=0.45?C.cyan:C.outline,fontWeight:900}}>{num(row.score,2)}</span>,
-            row.position_size_shares,
+            isCrypto ? num(row.position_size_units??row.position_size_shares,8) : row.position_size_shares,
             <FilterBadges row={row}/>,
             <span title={row.reasoning} style={{fontFamily:"'Inter',sans-serif",whiteSpace:'normal',lineHeight:1.25,color:C.onVar,display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',overflow:'hidden',maxWidth:360}}>{row.reasoning}</span>,
           ])}
@@ -5288,6 +5322,14 @@ function TabMarketScreener({refreshKey=0}) {
               onChange={e=>setSignalManualEntry(e.target.value)}
               placeholder="Entry price"
               style={{width:130,background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
+            <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Entry Order</span>
+            <select value={signalManualEntryOrderType} onChange={e=>setSignalManualEntryOrderType(e.target.value)}
+              title="Manual entry order type. STOP_LIMIT uses the Entry price as both trigger and limit."
+              style={{background:R(C.surfLowest,0.8),color:C.cyan,border:`1px solid ${R(C.cyan,0.3)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:700}}>
+              <option value="LIMIT">LIMIT</option>
+              <option value="MARKET">MARKET</option>
+              {!isCrypto && <option value="STOP_LIMIT">STOP_LIMIT</option>}
+            </select>
             <select value={signalManualSide} onChange={e=>setSignalManualSide(e.target.value)}
               style={{background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
               <option value="LONG">Long</option>
@@ -5308,10 +5350,12 @@ function TabMarketScreener({refreshKey=0}) {
               placeholder="Target"
               style={{width:115,background:R(C.surfLowest,0.8),color:C.lime,border:`1px solid ${R(signalManualSetup?.rrOverridden?C.lime:C.outline,signalManualSetup?.rrOverridden?0.38:0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none',opacity:signalManualEntryReady?1:0.55}}/>
             <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>R:R</span>
-            <input type="number" min="0" step="0.25" value={signalManualRR}
+            <input type="number" min="0.25" max="100" step="0.25" value={signalManualRR}
               onChange={e=>{setSignalManualRR(e.target.value); if(e.target.value) setSignalManualTarget('');}}
               disabled={!signalManualEntryReady}
-              title="Optional R:R override. When set, target is calculated from Entry and Stop."
+              title={isCrypto
+                ? "Crypto manual orders use this UI R:R value as their order minimum; .env does not override it."
+                : "Optional R:R override. When set, target is calculated from Entry and Stop."}
               placeholder="Auto"
               style={{width:85,background:R(C.surfLowest,0.8),color:C.cyan,border:`1px solid ${R(signalManualSetup?.rrOverridden?C.cyan:C.outline,signalManualSetup?.rrOverridden?0.38:0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none',opacity:signalManualEntryReady?1:0.55}}/>
             <button disabled={!selectedSignal} onClick={()=>{
@@ -5331,23 +5375,25 @@ function TabMarketScreener({refreshKey=0}) {
               title="Available cash used to cap position size"
               style={{width:145,background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
             <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.07em',color:C.outline,textTransform:'uppercase'}}>Max risk %</span>
-            <input type="number" min="0" step="0.25" value={signalManualMaxOpenRisk}
+            <input type="number" min="0.01" max="100" step="0.25" value={signalManualMaxOpenRisk}
               onChange={e=>setSignalManualMaxOpenRisk(e.target.value)}
-              title="Maximum open risk as percent of available cash"
+              title="Per-order risk limit as percent of available cash; enforced by the API"
               style={{width:115,background:R(C.surfLowest,0.8),color:C.onSurf,border:`1px solid ${R(C.outline,0.25)}`,borderRadius:8,padding:'8px 11px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,outline:'none'}}/>
             {signalManualSetup ? (
               <>
                 <Pill text={`STOP ${money(signalManualSetup.stop)}`} color={C.err}/>
                 <Pill text={`TARGET ${money(signalManualSetup.target)}`} color={C.lime}/>
                 <Pill text={`R:R ${signalManualSetup.rr.toFixed(2)}`} color={signalManualSetup.rr>=3?C.lime:C.outline}/>
-                {signalManualOrderPlan && <Pill text={`${signalManualOrderPlan.quantity} SH`} color={signalManualOrderPlan.quantity>0?C.cyan:C.err}/>}
+                {signalManualOrderPlan && <Pill text={`${signalManualOrderPlan.quantity} ${isCrypto?'UNITS':'SH'}`} color={signalManualOrderPlan.quantity>0?C.cyan:C.err}/>}
                 {signalManualOrderPlan && <Pill text={`RISK $${signalManualOrderPlan.risk_amount.toFixed(2)}`} color={signalManualOrderPlan.quantity>0?C.err:C.outline}/>}
                 {signalManualOrderPlan && <Pill text={`PROFIT $${signalManualOrderPlan.potential_reward.toFixed(2)}`} color={signalManualOrderPlan.quantity>0?C.lime:C.outline}/>}
-                <button disabled={!signalManualOrderPlan || signalManualOrderPlan.quantity<=0}
+                <button disabled={!signalManualOrderPlan || signalManualOrderPlan.quantity<=0 || cryptoShortUnsupported}
                   onClick={()=>setSignalConfirm({row:signalManualOrderPlan})}
-                  style={{padding:'8px 15px',borderRadius:8,cursor:signalManualOrderPlan&&signalManualOrderPlan.quantity>0?'pointer':'not-allowed',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:700,color:signalManualOrderPlan&&signalManualOrderPlan.quantity>0?'#001416':C.outline,background:signalManualOrderPlan&&signalManualOrderPlan.quantity>0?C.cyan:R(C.outline,0.08),border:`1px solid ${signalManualOrderPlan&&signalManualOrderPlan.quantity>0?R(C.cyan,0.35):R(C.outline,0.14)}`,opacity:signalManualOrderPlan&&signalManualOrderPlan.quantity>0?1:0.6}}>
+                  title={cryptoShortUnsupported?'OKX SPOT can scan short setups but cannot open a short position.':'Place manual order'}
+                  style={{padding:'8px 15px',borderRadius:8,cursor:signalManualOrderPlan&&signalManualOrderPlan.quantity>0&&!cryptoShortUnsupported?'pointer':'not-allowed',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:700,color:signalManualOrderPlan&&signalManualOrderPlan.quantity>0&&!cryptoShortUnsupported?'#001416':C.outline,background:signalManualOrderPlan&&signalManualOrderPlan.quantity>0&&!cryptoShortUnsupported?C.cyan:R(C.outline,0.08),border:`1px solid ${signalManualOrderPlan&&signalManualOrderPlan.quantity>0&&!cryptoShortUnsupported?R(C.cyan,0.35):R(C.outline,0.14)}`,opacity:signalManualOrderPlan&&signalManualOrderPlan.quantity>0&&!cryptoShortUnsupported?1:0.6}}>
                   Place
                 </button>
+                {cryptoShortUnsupported && <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.err}}>SHORT signal is scan-only in OKX SPOT mode.</span>}
               </>
             ) : (
               <span style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:C.outline}}>Entry, stop, and target must match the selected side.</span>
@@ -5361,6 +5407,8 @@ function TabMarketScreener({refreshKey=0}) {
             <Icon n={signalOrderFeedback.ok?'task_alt':'error'} size={17} color={signalOrderFeedback.ok?C.lime:C.err}/>
             <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:signalOrderFeedback.ok?'#dbe9b0':C.err}}>{signalOrderFeedback.message}</span>
             {signalOrderFeedback.id && <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>ID: {signalOrderFeedback.id}</span>}
+            {signalOrderFeedback.okxOrderId && <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>OKX: {signalOrderFeedback.okxOrderId}</span>}
+            {signalOrderFeedback.demo && <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.cyan}}>OKX DEMO</span>}
             {signalOrderFeedback.dryRun && <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.magenta}}>DRY_RUN</span>}
           </div>
         )}
@@ -5396,12 +5444,12 @@ function TabMarketScreener({refreshKey=0}) {
           <div onClick={e=>e.stopPropagation()} style={{width:'100%',maxWidth:480,background:'rgba(20,19,20,0.98)',border:`1px solid ${R(C.outline,0.22)}`,borderRadius:14,boxShadow:'0 30px 80px rgba(0,0,0,0.7)',overflow:'hidden'}}>
             <div style={{padding:'18px 22px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',alignItems:'center',gap:12}}>
               <Icon n="send" size={20} color={C.cyan}/>
-              <span style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:17,fontWeight:600,color:C.onSurf}}>Confirm Signal Manual Order</span>
+              <span style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:17,fontWeight:600,color:C.onSurf}}>Confirm {assetLabel} Screener Manual Order</span>
             </div>
             <div style={{padding:'20px 22px',display:'flex',flexDirection:'column',gap:14}}>
               <div style={{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderRadius:10,background:R(C.magenta,0.06),border:`1px solid ${R(C.magenta,0.22)}`}}>
                 <Icon n="shield_lock" size={18} color={C.magenta} style={{flexShrink:0}}/>
-                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.magenta,lineHeight:1.5}}>Queues to execute_requests - paper account - respects DRY_RUN</span>
+                <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.magenta,lineHeight:1.5}}>{isCrypto?'Submits to OKX Paper/Demo only · attached stop + target · live disabled':'Queues to execute_requests · paper account · respects DRY_RUN'}</span>
               </div>
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px 18px'}}>
                 {[
@@ -5411,7 +5459,7 @@ function TabMarketScreener({refreshKey=0}) {
                   ['Entry', '$'+Number(signalConfirm.row.entry||0).toFixed(2)],
                   ['Stop', '$'+Number(signalConfirm.row.stop||0).toFixed(2)],
                   ['Target', '$'+Number(signalConfirm.row.target||0).toFixed(2)],
-                  ['Shares', signalConfirm.row.quantity],
+                  [isCrypto?'Units':'Shares', signalConfirm.row.quantity],
                   ['Position Value', '$'+Number(signalConfirm.row.position_value||0).toFixed(2)],
                   ['Risk', '$'+Number(signalConfirm.row.risk_amount||0).toFixed(2)],
                   ['Potential Profit', '$'+Number(signalConfirm.row.potential_reward||0).toFixed(2)],
@@ -5500,6 +5548,7 @@ function TabOrdersJournal({refreshKey=0}) {
   const [reviewDraft,setReviewDraft]=useState({});
   const [reviewPanelCollapsed,setReviewPanelCollapsed]=useState(true);
   const [saving,setSaving]=useState(false);
+  const [exporting,setExporting]=useState(false);
   const reviewChartFullscreenRef = useRef(null);
   const money = v => v!=null && Number.isFinite(Number(v)) ? `$${Number(v).toFixed(Math.abs(Number(v))>=10?2:4)}` : '—';
   const num = (v,d=2) => v!=null && Number.isFinite(Number(v)) ? Number(v).toFixed(d) : '—';
@@ -5533,11 +5582,11 @@ function TabOrdersJournal({refreshKey=0}) {
     if(statusFilter==='WINNERS' && !(Number(r.pnl)>0)) return false;
     if(statusFilter==='LOSERS' && !(Number(r.pnl)<0)) return false;
     if(openFromTime!=null || openToTime!=null){
-      const openedAt = r.opened_at || r.created_at;
-      const openedTime = openedAt ? new Date(String(openedAt).replace(' ','T')).getTime() : NaN;
-      if(!Number.isFinite(openedTime)) return false;
-      if(openFromTime!=null && openedTime < openFromTime) return false;
-      if(openToTime!=null && openedTime > openToTime) return false;
+      const activityAt = r.closed_at || r.opened_at || r.created_at;
+      const activityTime = activityAt ? new Date(String(activityAt).replace(' ','T')).getTime() : NaN;
+      if(!Number.isFinite(activityTime)) return false;
+      if(openFromTime!=null && activityTime < openFromTime) return false;
+      if(openToTime!=null && activityTime > openToTime) return false;
     }
     if(marketFilter!=='ALL' && r.market!==marketFilter) return false;
     if(sourceFilter!=='ALL' && r.source!==sourceFilter) return false;
@@ -5591,6 +5640,22 @@ function TabOrdersJournal({refreshKey=0}) {
     }finally{
       setSaving(false);
     }
+  };
+
+  const exportFilteredJournal = async()=>{
+    if(!filtered.length || exporting) return;
+    setExporting(true);
+    try{
+      const response=await fetch(`${API}/orders-journal/export`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({rows:filtered})});
+      if(!response.ok) throw new Error(await response.text()||'Export failed');
+      const blob=await response.blob();
+      const disposition=response.headers.get('Content-Disposition')||'';
+      const filename=(disposition.match(/filename="?([^";]+)"?/i)||[])[1]||'orders_journal.xlsx';
+      const url=URL.createObjectURL(blob);
+      const anchor=document.createElement('a'); anchor.href=url; anchor.download=filename; anchor.click();
+      URL.revokeObjectURL(url);
+    }catch(error){ alert(`XLSX export failed: ${error.message||error}`); }
+    finally{ setExporting(false); }
   };
 
   const reviewRangeCount = RANGE_COUNTS[reviewChartRange]||9999;
@@ -5674,7 +5739,13 @@ function TabOrdersJournal({refreshKey=0}) {
 
       <GlassCard style={{overflow:'hidden'}}>
         <div style={{padding:'16px 18px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,flexWrap:'wrap'}}>
-          <PanelHeader icon="receipt_long" title="Orders Journal" badge={`${filtered.length} rows`}/>
+          <div style={{display:'flex',alignItems:'center',gap:10}}>
+            <PanelHeader icon="receipt_long" title="Orders Journal" badge={`${filtered.length} rows`}/>
+            <button onClick={exportFilteredJournal} disabled={!filtered.length||exporting} title={filtered.length?'Download the filtered journal as XLSX':'No rows match the current filters'}
+              style={{display:'inline-flex',alignItems:'center',gap:7,padding:'8px 11px',borderRadius:8,cursor:filtered.length&&!exporting?'pointer':'not-allowed',border:`1px solid ${R(filtered.length?C.cyan:C.outline,filtered.length?0.4:0.18)}`,background:filtered.length?R(C.cyan,0.1):R(C.surf,0.4),color:filtered.length?C.cyan:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800,opacity:exporting?0.65:1}}>
+              <Icon n="download" size={15} color="inherit"/>{exporting?'Preparing…':'Download XLSX'}
+            </button>
+          </div>
           <div style={{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}>
             <div style={{display:'flex',alignItems:'center',gap:8,padding:'8px 10px',borderRadius:8,background:R(C.surfLowest,0.85),border:`1px solid ${R(symbolNeedle?C.cyan:C.outline,symbolNeedle?0.38:0.25)}`,minWidth:190}}>
               <Icon n="search" size={15} color={symbolNeedle?C.cyan:C.outline}/>
@@ -5687,7 +5758,7 @@ function TabOrdersJournal({refreshKey=0}) {
             </div>
             <div style={{display:'flex',alignItems:'center',gap:6,padding:'7px 10px',borderRadius:8,background:R(C.surfLowest,0.85),border:`1px solid ${R((openDateFrom||openDateTo)?C.cyan:C.outline,(openDateFrom||openDateTo)?0.38:0.25)}`}}>
               <Icon n="event" size={15} color={(openDateFrom||openDateTo)?C.cyan:C.outline}/>
-              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:9,letterSpacing:'0.08em',color:C.outline,textTransform:'uppercase'}}>Open</span>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:9,letterSpacing:'0.08em',color:C.outline,textTransform:'uppercase'}}>Activity</span>
               <input type="date" value={openDateFrom} onChange={e=>setOpenDateFrom(e.target.value)}
                 style={{background:'transparent',border:0,outline:0,color:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:11,colorScheme:ACTIVE_THEME}}/>
               <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>to</span>
@@ -6530,10 +6601,12 @@ const NAV = [
   {id:'dashboard',  label:'Dashboard',          icon:'space_dashboard'},
   {id:'watchlist',  label:'Watchlist',          icon:'visibility'},
   {id:'preopen',    label:'Pre-Open',            icon:'wb_twilight'},
-  {id:'screener',   label:'Market Screener',     icon:'radar'},
+  {id:'screener',   label:'Screener Stocks',     icon:'radar'},
+  {id:'crypto_screener',label:'Screener Crypto', icon:'track_changes'},
   {id:'irs',        label:'Inefficiency Reclaim',icon:'deployed_code'},
   {id:'intraday',   label:'Intraday',            icon:'monitoring'},
-  {id:'strategy',   label:'Strategy',            icon:'insights'},
+  {id:'strategy',   label:'Strategy Stocks',     icon:'insights'},
+  {id:'crypto_strategy', label:'Strategy Crypto',icon:'currency_bitcoin'},
   {id:'crypto',     label:'Crypto',              icon:'currency_bitcoin'},
   {id:'orders',     label:'Orders Journal',      icon:'receipt_long'},
   {id:'forex',      label:'Forex',               icon:'currency_exchange'},
@@ -6546,10 +6619,12 @@ const PAGE_META = {
   dashboard: {title:'Command Overview',       sub:'All systems nominal · scan cycle 5m · paper account', crumb:'Dashboard'},
   watchlist: {title:'Watchlist',              sub:'Current stock symbols · live-saved candles · daily change map', crumb:'Watchlist'},
   preopen:   {title:'Pre-Open Briefing',      sub:'Watchlist scanned · levels mapped · awaiting the open', crumb:'Pre-Open'},
-  screener:  {title:'Market Screener',        sub:'LP1 / LP2 / PRB1 / PRB2 patterns on saved OHLCV', crumb:'Screener'},
+  screener:  {title:'Market Screener Stocks', sub:'LP1 / LP2 / PRB1 / PRB2 patterns · saved stock OHLCV · IBKR paper flow', crumb:'Screener Stocks'},
+  crypto_screener:{title:'Market Screener Crypto',sub:'LP1 / LP2 / PRB1 / PRB2 patterns · OKX 24/7 candles · OKX Paper/Demo orders',crumb:'Screener Crypto'},
   irs:       {title:'Inefficiency Reclaim',   sub:'1H displacement · 15m reclaim · deterministic paper controls', crumb:'IRS'},
   intraday:  {title:'Intraday Monitor',       sub:'Live decision loop · paper execution', crumb:'Intraday'},
   strategy:  {title:'Strategy Monitor',       sub:'BMSB weekly EMA/SMA cross scanner', crumb:'Strategy'},
+  crypto_strategy:{title:'Strategy Monitor Crypto',sub:'BMSB and Gaussian strategy scanner · OKX candles · OKX Paper/Demo orders',crumb:'Strategy Crypto'},
   crypto:    {title:'Crypto Trade Levels',    sub:'OKX candles · trade zones · separate crypto bot', crumb:'Crypto'},
   forex:     {title:'Forex TradingView Bridge',sub:'TradingView alerts · IBKR CASH market execution', crumb:'Forex'},
   trades:    {title:'Trades & Positions',     sub:'Open paper positions and trade journal', crumb:'Trades'},
@@ -6807,10 +6882,12 @@ function App() {
               {tab==='dashboard' && <TabDashboard setNewsModal={setNewsModal} setNewsItems={setNewsItems} refreshKey={refreshKey}/>}
               {tab==='watchlist' && <TabWatchlist refreshKey={refreshKey}/>}
               {tab==='preopen'   && <TabPreOpen refreshKey={refreshKey}/>}
-              {tab==='screener'  && <TabMarketScreener refreshKey={refreshKey}/>}
+              {tab==='screener'  && <TabMarketScreener refreshKey={refreshKey} asset="stock"/>}
+              {tab==='crypto_screener' && <TabMarketScreener refreshKey={refreshKey} asset="crypto"/>}
               {tab==='irs'       && <TabInefficiencyReclaim refreshKey={refreshKey}/>}
               {tab==='intraday'  && <TabIntraday refreshKey={refreshKey}/>}
-              {tab==='strategy'  && <TabStrategy refreshKey={refreshKey}/>}
+              {tab==='strategy'  && <TabStrategy refreshKey={refreshKey} asset="stock"/>}
+              {tab==='crypto_strategy' && <TabStrategy refreshKey={refreshKey} asset="crypto"/>}
               {tab==='crypto'    && <TabCrypto refreshKey={refreshKey}/>}
               {tab==='orders'    && <TabOrdersJournal refreshKey={refreshKey}/>}
               {tab==='forex'     && <TabForex refreshKey={refreshKey}/>}

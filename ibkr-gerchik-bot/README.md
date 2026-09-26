@@ -137,6 +137,32 @@ Suggested cadence:
 - `eod`: after the close
 - `weekly`: Friday after the close
 
+### IBKR Flex statement catch-up
+
+The EOD job can import historical executions through an IBKR Flex Query. Configure
+the query in Account Management with a rolling period that covers the configured
+lookback (7 calendar days by default), then set these values in `.env`:
+
+```text
+IBKR_FLEX_STATEMENT_ENABLED=true
+IBKR_FLEX_STATEMENT_TOKEN=<local-secret>
+IBKR_FLEX_STATEMENT_QUERY_ID=<query-id>
+IBKR_FLEX_STATEMENT_LOOKBACK_DAYS=7
+IBKR_TRADE_REPORT_DIR=C:\\Users\\Vitaly\\Documents\\GitHub\\trading-agent\\ibkr-gerchik-bot\\reports
+```
+
+The EOD job first checks the TWS Export Reports directory for the newest
+`trade_report.csv`/`.txt` file, then falls back to Flex when no usable local report
+is available. Configure that directory with `IBKR_TRADE_REPORT_DIR` (the default is
+the repository `reports` folder). Raw Flex statements are archived under
+`memory/runtime/flex_statements/`. Each successful EOD run deduplicates executions
+by IBKR execution ID, reconciles statement fills to local
+bracket requests, and advances its checkpoint only after reconciliation succeeds. A missed
+one- or two-day connection is recovered by the rolling statement window. Missing
+credentials, an unavailable statement, an overlong gap, or an unmatched fill leaves
+the checkpoint unchanged and reports the issue for review; it never guesses a fill
+or submits an order.
+
 ## Dashboard
 
 The React/FastAPI dashboard visualizes the watchlist, levels, candle charts,

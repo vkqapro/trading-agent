@@ -30,8 +30,10 @@ import pandas as pd
 import uvicorn
 from fastapi import BackgroundTasks, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
+from openpyxl import Workbook
+from openpyxl.styles import Alignment, Font, PatternFill
 from zoneinfo import ZoneInfo
 
 from dashboard import data_access as da, forecast as fc
@@ -39,8 +41,10 @@ from src.config import SETTINGS
 from src.data.chart_history import daily_bars_from_intraday
 from src.crypto.analysis import run_crypto_analysis
 from src.crypto.config import CRYPTO_SETTINGS
+from src.crypto.manual_order import execute_manual_demo_order, load_manual_order_state
 from src.crypto.okx_client import OKXClient
-from src.crypto.symbols import add_crypto_symbol, default_instrument_type, normalize_okx_instrument
+from src.crypto.order_manager import CryptoOrderManager, CryptoOrderRequest
+from src.crypto.symbols import add_crypto_symbol, default_instrument_type, normalize_okx_instrument, remove_crypto_symbol
 from src.crypto.tradingview_webhook import (
     enqueue_tradingview_webhook,
     load_tradingview_state,
@@ -305,9 +309,15 @@ def _market_session(now: datetime) -> tuple[str, str]:
     return "CLOSED", "Overnight"
 
 
-def _daily_live_frame(symbol: str) -> pd.DataFrame:
-    daily = da.get_bars(symbol, "daily")
-    intraday = da.get_bars(symbol, "intraday_5m")
+def _daily_live_frame(symbol: str, asset: str = "stock") -> pd.DataFrame:
+    get_bars = da.get_crypto_bars if asset == "crypto" else da.get_bars
+    daily = get_bars(symbol, "daily")
+    # OKX daily candles are UTC-anchored and already include the current 24/7
+    # crypto day.  The stock-only intraday stitching below applies exchange
+    # session boundaries and would distort a crypto day.
+    if asset == "crypto":
+        return daily
+    intraday = get_bars(symbol, "intraday_5m")
     if intraday.empty:
         return daily
 
@@ -325,11 +335,11 @@ def _daily_live_frame(symbol: str) -> pd.DataFrame:
     return pd.concat([daily, missing_or_live], ignore_index=True).sort_values("date")
 
 
-def _weekly_live_frame(symbol: str) -> pd.DataFrame:
+def _weekly_live_frame(symbol: str, asset: str = "stock") -> pd.DataFrame:
     """Return weekly OHLCV with current-week daily/live data stitched in."""
-    daily = _daily_live_frame(symbol)
+    daily = _daily_live_frame(symbol, asset)
     if daily.empty:
-        return da.get_bars(symbol, "weekly")
+        return pd.DataFrame() if asset == "crypto" else da.get_bars(symbol, "weekly")
     frame = daily.set_index("date").sort_index()
     return (
         frame.resample("W-FRI")
@@ -339,8 +349,8 @@ def _weekly_live_frame(symbol: str) -> pd.DataFrame:
     )
 
 
-def _bmsb_scan_symbol(symbol: str, today, include_neutral: bool = False) -> dict | None:
-    weekly = _weekly_live_frame(symbol)
+def _bmsb_scan_symbol(symbol: str, today, include_neutral: bool = False, asset: str = "stock") -> dict | None:
+    weekly = _weekly_live_frame(symbol, asset)
     if weekly.empty or len(weekly) < 21:
         return None
 
@@ -362,7 +372,7 @@ def _bmsb_scan_symbol(symbol: str, today, include_neutral: bool = False) -> dict
 
     current_gap_pct = abs(curr_diff) / close_price * 100.0
     prev_gap_pct = abs(prev_diff) / float(prev["close"]) * 100.0 if float(prev["close"]) > 0 else None
-    latest_daily = _daily_live_frame(symbol)
+    latest_daily = _daily_live_frame(symbol, asset)
     latest_session = None
     if not latest_daily.empty:
         latest_session = pd.to_datetime(latest_daily["date"], errors="coerce").max()
@@ -413,8 +423,8 @@ def _bmsb_scan_symbol(symbol: str, today, include_neutral: bool = False) -> dict
     }
 
 
-def _bmsb_strategy2_scan_symbol(symbol: str, today, include_neutral: bool = False) -> dict | None:
-    weekly = _weekly_live_frame(symbol)
+def _bmsb_strategy2_scan_symbol(symbol: str, today, include_neutral: bool = False, asset: str = "stock") -> dict | None:
+    weekly = _weekly_live_frame(symbol, asset)
     if weekly.empty or len(weekly) < 21:
         return None
 
@@ -439,7 +449,7 @@ def _bmsb_strategy2_scan_symbol(symbol: str, today, include_neutral: bool = Fals
     if close_price <= 0:
         return None
 
-    latest_daily = _daily_live_frame(symbol)
+    latest_daily = _daily_live_frame(symbol, asset)
     latest_session = None
     if not latest_daily.empty:
         latest_session = pd.to_datetime(latest_daily["date"], errors="coerce").max()
@@ -582,8 +592,8 @@ def _cross_under(prev_a: float | None, prev_b: float | None, a: float, b: float)
     )
 
 
-def _gaussian_scan_symbol(symbol: str, today, include_neutral: bool = False) -> dict | None:
-    daily = _daily_live_frame(symbol)
+def _gaussian_scan_symbol(symbol: str, today, include_neutral: bool = False, asset: str = "stock") -> dict | None:
+    daily = _daily_live_frame(symbol, asset)
     if daily.empty or len(daily) < 3:
         return None
 
@@ -1424,40 +1434,47 @@ def api_watchlist():
     }
 
 
-def _screener_frame(symbol: str, timeframe: str) -> pd.DataFrame:
+def _screener_frame(symbol: str, timeframe: str, asset: str = "stock") -> pd.DataFrame:
+    selected_asset = "crypto" if str(asset or "stock").strip().lower() == "crypto" else "stock"
+    get_bars = da.get_crypto_bars if selected_asset == "crypto" else da.get_bars
     timeframe = str(timeframe or "1D").upper()
     if timeframe == "1D":
-        return _daily_live_frame(symbol)
+        return _daily_live_frame(symbol, selected_asset)
     if timeframe == "4H":
-        stored = da.get_bars(symbol, "intraday_4h")
+        stored = get_bars(symbol, "intraday_4h")
         if not stored.empty:
             return stored
-        intraday = da.get_bars(symbol, "intraday_5m")
+        intraday = get_bars(symbol, "intraday_5m")
         if intraday.empty:
             return intraday
         frame = intraday.set_index("date").sort_index()
         return (
-            frame.resample("240min", origin="start_day", offset="30min")
+            frame.resample("240min", origin="start_day", offset="0min" if selected_asset == "crypto" else "30min")
             .agg({"open": "first", "high": "max", "low": "min", "close": "last", "volume": "sum"})
             .dropna(subset=["open", "high", "low", "close"])
             .reset_index()
         )
     if timeframe == "1H":
-        intraday = da.get_bars(symbol, "intraday_5m")
+        stored = get_bars(symbol, "intraday_1h")
+        if not stored.empty:
+            return stored
+        intraday = get_bars(symbol, "intraday_5m")
         if intraday.empty:
             return intraday
         frame = intraday.set_index("date").sort_index()
         return (
-            frame.resample("60min", origin="start_day", offset="30min")
+            frame.resample("60min", origin="start_day", offset="0min" if selected_asset == "crypto" else "30min")
             .agg({"open": "first", "high": "max", "low": "min", "close": "last", "volume": "sum"})
             .dropna(subset=["open", "high", "low", "close"])
             .reset_index()
         )
-    return _daily_live_frame(symbol)
+    return _daily_live_frame(symbol, selected_asset)
 
 
 @app.get("/api/market-screener")
+@app.get("/api/crypto/market-screener")
 def api_market_screener(
+    request: Request,
     timeframe: str = "1D",
     strategies: str = "LP1,LP2,PRB1,PRB2",
     side: str = "ALL",
@@ -1495,9 +1512,24 @@ def api_market_screener(
 ):
     from src.symbol_universe import load_stock_symbols
 
-    watchlist = _safe(da.load_watchlist, {})
-    configured_symbols = _safe(load_stock_symbols, [])
-    symbols = sorted(set(configured_symbols or []) | set((watchlist or {}).keys()))
+    selected_asset = "crypto" if request.url.path.startswith("/api/crypto/") else "stock"
+    if selected_asset == "crypto":
+        crypto_state = _safe(da.load_crypto_dashboard_state, {})
+        watchlist = crypto_state.get("watchlist", {}) if isinstance(crypto_state, dict) else {}
+        configured = _safe(da.load_crypto_symbols, [])
+        configured_symbols = [
+            str(row.get("inst_id") or "").upper()
+            for row in configured
+            if isinstance(row, dict) and row.get("inst_id")
+        ]
+        if CRYPTO_SETTINGS.symbols_file.exists():
+            symbols = sorted(set(configured_symbols))
+        else:
+            symbols = sorted(set(configured_symbols) | set((_safe(da.crypto_bars_index, {}) or {}).keys()))
+    else:
+        watchlist = _safe(da.load_watchlist, {})
+        configured_symbols = _safe(load_stock_symbols, [])
+        symbols = sorted(set(configured_symbols or []) | set((watchlist or {}).keys()))
     selected_strategies = tuple(
         strategy
         for strategy in (item.strip().upper() for item in str(strategies or "").split(","))
@@ -1514,6 +1546,7 @@ def api_market_screener(
     if selected_stop_variant not in allowed_stop_variants:
         selected_stop_variant = "strategy_default"
     params = ScreenerParams(
+        asset_class=selected_asset,
         timeframe=str(timeframe or "1D").upper(),
         anchor_date=str(anchor_date or "").strip() or None,
         strategies=selected_strategies,
@@ -1551,7 +1584,7 @@ def api_market_screener(
     )
     return run_market_screener(
         symbols=symbols,
-        bars_loader=_screener_frame,
+        bars_loader=lambda symbol, selected_timeframe: _screener_frame(symbol, selected_timeframe, selected_asset),
         watchlist=watchlist if isinstance(watchlist, dict) else {},
         params=params,
     )
@@ -1808,19 +1841,33 @@ async def api_watchlist_remove(body: dict):
         raise HTTPException(500, str(exc))
 
 
-@app.get("/api/strategy")
-def api_strategy(mode: str = "bmsb"):
+def _strategy_payload(mode: str = "bmsb", asset: str = "stock") -> dict:
     from src.symbol_universe import load_stock_symbols, stock_symbols_file
 
-    index = _safe(da.bars_index, {})
-    configured_symbols = _safe(load_stock_symbols, [])
-    if stock_symbols_file().exists():
-        symbols = sorted(configured_symbols or [])
-    else:
-        symbols = sorted(
-            symbol for symbol, frames in (index or {}).items()
-            if isinstance(frames, dict) and ("daily" in frames or "weekly" in frames)
+    selected_asset = "crypto" if str(asset).strip().lower() == "crypto" else "stock"
+    if selected_asset == "crypto":
+        index = _safe(da.crypto_bars_index, {})
+        configured = _safe(da.load_crypto_symbols, [])
+        configured_symbols = [
+            str(row.get("inst_id") or "").upper()
+            for row in configured
+            if isinstance(row, dict) and row.get("inst_id")
+        ]
+        symbols = (
+            sorted(set(configured_symbols))
+            if CRYPTO_SETTINGS.symbols_file.exists()
+            else sorted(set(index or {}))
         )
+    else:
+        index = _safe(da.bars_index, {})
+        configured_symbols = _safe(load_stock_symbols, [])
+        if stock_symbols_file().exists():
+            symbols = sorted(configured_symbols or [])
+        else:
+            symbols = sorted(
+                symbol for symbol, frames in (index or {}).items()
+                if isinstance(frames, dict) and ("daily" in frames or "weekly" in frames)
+            )
     today = datetime.now(ET).date()
     selected_mode = str(mode or "bmsb").strip().lower()
     if selected_mode not in {"bmsb", "gaussian"}:
@@ -1836,7 +1883,10 @@ def api_strategy(mode: str = "bmsb"):
     )
     rows = []
     for symbol in symbols:
-        row = _safe(lambda s=symbol: scanner(s, today, include_neutral=True), None)
+        row = _safe(
+            lambda s=symbol: scanner(s, today, include_neutral=True, asset=selected_asset),
+            None,
+        )
         if row is None:
             row = {
                 "symbol": symbol,
@@ -1876,6 +1926,7 @@ def api_strategy(mode: str = "bmsb"):
         str(r.get("symbol", "")),
     ))
     return {
+        "asset": selected_asset,
         "mode": selected_mode,
         "strategy": strategy_name,
         "description": description,
@@ -1888,6 +1939,16 @@ def api_strategy(mode: str = "bmsb"):
         "near": sum(1 for row in matched_rows if row.get("urgency") == "near"),
         "rows": rows,
     }
+
+
+@app.get("/api/strategy")
+def api_strategy(mode: str = "bmsb"):
+    return _strategy_payload(mode, "stock")
+
+
+@app.get("/api/crypto/strategy")
+def api_crypto_strategy(mode: str = "bmsb"):
+    return _strategy_payload(mode, "crypto")
 
 
 @app.get("/api/preopen")
@@ -2373,6 +2434,203 @@ async def api_crypto_add(body: dict):
         raise HTTPException(500, str(exc))
 
 
+@app.post("/api/crypto/bulk-add")
+async def api_crypto_bulk_add(body: dict):
+    raw_text = str((body or {}).get("csv_text", "") or "")
+    values = [
+        value.strip().strip('"\'')
+        for value in re.split(r"[\s,;]+", raw_text)
+        if value.strip().strip('"\'')
+    ]
+    values = [value for value in values if value.upper() not in {"SYMBOL", "INSTRUMENT", "INST_ID"}]
+    if not values:
+        raise HTTPException(400, "Choose a CSV file or provide crypto symbols first.")
+
+    added: list[str] = []
+    duplicates: list[str] = []
+    invalid: list[dict[str, str]] = []
+    pids: list[int] = []
+    seen: set[str] = set()
+    for value in values:
+        normalized = normalize_okx_instrument(value)
+        if not normalized or normalized in seen:
+            continue
+        seen.add(normalized)
+        try:
+            result = await api_crypto_add({"symbol": value})
+        except HTTPException as exc:
+            invalid.append({"value": value, "reason": str(exc.detail)})
+            continue
+        symbol = str(result.get("symbol") or normalized)
+        if result.get("duplicate"):
+            duplicates.append(symbol)
+        elif result.get("added"):
+            added.append(symbol)
+            if result.get("pid"):
+                pids.append(int(result["pid"]))
+
+    return {
+        "ok": True,
+        "added": added,
+        "duplicates": duplicates,
+        "invalid": invalid,
+        "pids": pids,
+        "message": f"Queued {len(added)} crypto symbol(s); {len(duplicates)} duplicate(s); {len(invalid)} invalid.",
+    }
+
+
+@app.post("/api/crypto/remove")
+async def api_crypto_remove(body: dict):
+    try:
+        symbol = normalize_okx_instrument(str((body or {}).get("symbol", "") or ""))
+        if not symbol:
+            raise ValueError("Crypto symbol is required.")
+        result = remove_crypto_symbol(symbol)
+        state_path = CRYPTO_SETTINGS.memory_dir / "state.json"
+        removed_from_state = False
+        if state_path.exists():
+            state = _safe(lambda: json.loads(state_path.read_text(encoding="utf-8")), {})
+            if isinstance(state, dict):
+                symbols = state.get("symbols")
+                if isinstance(symbols, list):
+                    filtered = [item for item in symbols if normalize_okx_instrument(str(item)) != symbol]
+                    removed_from_state = len(filtered) != len(symbols)
+                    state["symbols"] = filtered
+                watchlist = state.get("watchlist")
+                if isinstance(watchlist, dict) and symbol in watchlist:
+                    watchlist.pop(symbol, None)
+                    removed_from_state = True
+                temp_path = state_path.with_suffix(state_path.suffix + ".tmp")
+                temp_path.write_text(json.dumps(state, indent=2), encoding="utf-8")
+                os.replace(temp_path, state_path)
+        return {
+            "ok": True,
+            "symbol": symbol,
+            "removed": bool(result.get("removed")) or removed_from_state,
+            "removed_from_config": bool(result.get("removed")),
+            "removed_from_state": removed_from_state,
+            "message": f"{symbol} removed from the crypto universe and active monitor. Saved candle files were kept.",
+        }
+    except ValueError as exc:
+        raise HTTPException(400, str(exc))
+    except Exception as exc:
+        raise HTTPException(500, str(exc))
+
+
+@app.post("/api/crypto/order/simulate")
+async def api_crypto_order_simulate(body: dict):
+    try:
+        symbol = normalize_okx_instrument(str((body or {}).get("symbol", "") or ""))
+        if not symbol:
+            raise ValueError("Crypto symbol is required.")
+        side = "SELL" if str((body or {}).get("signal", "")).upper() == "SELL" else "BUY"
+        cash = float((body or {}).get("available_cash") or 0.0)
+        request = CryptoOrderRequest(
+            symbol=symbol,
+            side=side,
+            entry=float((body or {}).get("entry") or 0.0),
+            stop=float((body or {}).get("stop") or 0.0),
+            target=float((body or {}).get("target")) if (body or {}).get("target") is not None else None,
+            quantity=float((body or {}).get("quantity") or 0.0) or None,
+            account_equity=cash,
+            cash_available=cash,
+        )
+        result = CryptoOrderManager().place_order(request, live=False)
+        plan = result.get("plan") or result
+        return {
+            "ok": bool(result.get("ok")),
+            "message": (
+                f"Simulated OKX demo order planned for {symbol}. No order was submitted."
+                if result.get("ok")
+                else f"Crypto order rejected: {', '.join(plan.get('reasons') or ['invalid setup'])}."
+            ),
+            "id": None,
+            "dry_run": True,
+            "paper": True,
+            "plan": plan,
+        }
+    except (TypeError, ValueError) as exc:
+        raise HTTPException(400, str(exc))
+    except Exception as exc:
+        raise HTTPException(500, str(exc))
+
+
+@app.get("/api/crypto/orders/manual")
+def api_crypto_manual_orders():
+    state = load_manual_order_state()
+    return {
+        "ok": True,
+        "updated_at": state.get("updated_at"),
+        "orders": state.get("orders", []),
+        "paper": True,
+        "demo": True,
+        "live_enabled": False,
+        "credentials_configured": bool(
+            CRYPTO_SETTINGS.okx_api_key
+            and CRYPTO_SETTINGS.okx_api_secret
+            and CRYPTO_SETTINGS.okx_api_passphrase
+        ),
+        "simulated_trading": bool(CRYPTO_SETTINGS.okx_simulated_trading),
+        "account_mode": CRYPTO_SETTINGS.okx_account_mode,
+    }
+
+
+@app.post("/api/crypto/order/place")
+async def api_crypto_order_place(body: dict):
+    """Submit a manual Strategy Crypto order to OKX Demo only."""
+    try:
+        body = body or {}
+        symbol = normalize_okx_instrument(str((body or {}).get("symbol", "") or ""))
+        if not symbol:
+            raise ValueError("Crypto symbol is required.")
+        side = "SELL" if str(body.get("signal", "")).upper() == "SELL" else "BUY"
+        cash = float(body.get("available_cash") or 0.0)
+        max_risk_value = body.get("max_open_risk_pct")
+        max_risk_pct = None
+        if max_risk_value not in (None, ""):
+            max_risk_percent = float(max_risk_value)
+            if not math.isfinite(max_risk_percent) or max_risk_percent <= 0 or max_risk_percent > 100:
+                raise ValueError("Max risk % must be greater than 0 and no more than 100.")
+            max_risk_pct = max_risk_percent / 100.0
+        reward_risk_value = body.get("reward_risk")
+        min_reward_risk_ratio = None
+        if reward_risk_value not in (None, ""):
+            min_reward_risk_ratio = float(reward_risk_value)
+            if (
+                not math.isfinite(min_reward_risk_ratio)
+                or min_reward_risk_ratio <= 0
+                or min_reward_risk_ratio > 100
+            ):
+                raise ValueError("Reward:risk must be greater than 0 and no more than 100.")
+        request = CryptoOrderRequest(
+            symbol=symbol,
+            side=side,
+            entry=float(body.get("entry") or 0.0),
+            stop=float(body.get("stop") or 0.0),
+            target=float(body.get("target")) if body.get("target") is not None else None,
+            quantity=float(body.get("quantity") or 0.0) or None,
+            account_equity=cash,
+            cash_available=cash,
+            max_risk_pct=max_risk_pct,
+            min_reward_risk_ratio=min_reward_risk_ratio,
+        )
+        result = execute_manual_demo_order(
+            request,
+            order_type=str(body.get("entry_order_type") or "LIMIT"),
+        )
+        return {
+            **result,
+            "paper": True,
+            "demo": True,
+            "dry_run": False,
+            "live": False,
+        }
+    except (TypeError, ValueError) as exc:
+        raise HTTPException(400, str(exc))
+    except Exception as exc:
+        raise HTTPException(500, str(exc))
+
+
 @app.post("/api/crypto/tradingview")
 @app.post("/api/webhook/tradingview/crypto")
 async def api_crypto_tradingview_webhook(body: dict, background_tasks: BackgroundTasks):
@@ -2481,13 +2739,39 @@ def api_crypto_bars(symbol: str, timeframe: str):
         "daily_live": "daily",
         "intraday_4h": "intraday_4h",
         "intraday_1h": "intraday_1h",
+        "intraday_30m": "intraday_30m",
+        "intraday_15m": "intraday_15m",
         "intraday_5m": "intraday_5m",
         "daily": "daily",
     }.get(timeframe, timeframe)
     df = _safe(lambda: da.get_crypto_bars(inst_id, tf), None)
+    if (df is None or df.empty) and tf in {"intraday_15m", "intraday_30m", "intraday_1h", "intraday_4h"}:
+        source = _safe(lambda: da.get_crypto_bars(inst_id, "intraday_5m"), None)
+        if source is not None and not source.empty:
+            minutes = {
+                "intraday_15m": 15,
+                "intraday_30m": 30,
+                "intraday_1h": 60,
+                "intraday_4h": 240,
+            }[tf]
+            frame = source.set_index("date").sort_index()
+            df = (
+                frame.resample(f"{minutes}min", origin="start_day")
+                .agg({"open": "first", "high": "max", "low": "min", "close": "last", "volume": "sum"})
+                .dropna(subset=["open", "high", "low", "close"])
+                .reset_index()
+            )
     if df is None or df.empty:
         return {"bars": [], "stale": True, "last_date": None}
-    limits = {"intraday_5m": 500, "intraday_1h": 500, "intraday_4h": 500, "daily": 600, "daily_live": 600}
+    limits = {
+        "intraday_5m": 500,
+        "intraday_15m": 700,
+        "intraday_30m": 700,
+        "intraday_1h": 500,
+        "intraday_4h": 500,
+        "daily": 600,
+        "daily_live": 600,
+    }
     df = df.tail(limits.get(tf, 300))
     last_date = str(df["date"].iloc[-1]) if "date" in df.columns else None
     return {
@@ -2578,6 +2862,65 @@ def api_orders_journal(limit: int = 500):
         return payload
     except Exception as exc:
         raise HTTPException(500, str(exc))
+
+
+@app.post("/api/orders-journal/export")
+async def api_orders_journal_export(body: dict):
+    """Export the rows currently visible in the Orders Journal as XLSX."""
+    rows = body.get("rows") if isinstance(body, dict) else None
+    if not isinstance(rows, list):
+        raise HTTPException(400, "rows must be a list")
+    if len(rows) > 1000:
+        raise HTTPException(400, "A maximum of 1000 rows can be exported")
+
+    columns = [
+        ("Symbol", "symbol"), ("Market", "market"), ("Source", "source"),
+        ("Side", "side"), ("Status", "status"), ("Entry Plan", "planned_entry"),
+        ("Entry Fill", "actual_entry"), ("Current Stop", "current_stop"),
+        ("Planned Stop", "planned_stop"), ("Current Target", "current_target"),
+        ("Planned Target", "planned_target"), ("Exit", "actual_exit"),
+        ("Quantity", "quantity"), ("P&L", "pnl"), ("R Multiple", "r_multiple"),
+        ("Opened", "opened_at"), ("Closed", "closed_at"), ("Review", "review"),
+        ("Exit Reason", "exit_reason"), ("Execution ID", "execution_id"),
+    ]
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.title = "Orders Journal"
+    sheet.append([label for label, _ in columns])
+    for cell in sheet[1]:
+        cell.fill = PatternFill("solid", fgColor="16343B")
+        cell.font = Font(color="FFFFFF", bold=True)
+        cell.alignment = Alignment(horizontal="center")
+    for raw in rows:
+        if not isinstance(raw, dict):
+            continue
+        values = []
+        for _, key in columns:
+            value = raw.get(key)
+            if key == "review":
+                review = value if isinstance(value, dict) else {}
+                value = review.get("grade") or review.get("review_status") or "Unreviewed"
+            if isinstance(value, (dict, list)):
+                value = json.dumps(value, ensure_ascii=False)
+            values.append(value)
+        sheet.append(values)
+    for column in ("F", "G", "H", "I", "J", "K", "L", "N"):
+        for cell in sheet[column][1:]:
+            if isinstance(cell.value, (int, float)):
+                cell.number_format = '$#,##0.0000'
+    for cell in sheet["O"][1:]:
+        if isinstance(cell.value, (int, float)):
+            cell.number_format = '0.00R'
+    for column_cells in sheet.columns:
+        values = ["" if cell.value is None else str(cell.value) for cell in column_cells]
+        sheet.column_dimensions[column_cells[0].column_letter].width = min(max(max((len(value) for value in values), default=0) + 2, 12), 28)
+    sheet.freeze_panes = "A2"
+    sheet.auto_filter.ref = sheet.dimensions
+    output = io.BytesIO()
+    workbook.save(output)
+    output.seek(0)
+    filename = f"orders_journal_{datetime.now(ET).strftime('%Y%m%d_%H%M%S')}.xlsx"
+    return StreamingResponse(output, media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", headers={"Content-Disposition": f'attachment; filename="{filename}"'})
 
 
 @app.post("/api/orders-journal/review")

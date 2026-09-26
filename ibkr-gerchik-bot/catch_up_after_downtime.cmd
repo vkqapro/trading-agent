@@ -5,7 +5,6 @@ cd /d "%~dp0"
 
 set PYTHON_EXE=python
 if exist "..\.venv\Scripts\python.exe" set PYTHON_EXE=..\.venv\Scripts\python.exe
-if exist ".venv\Scripts\python.exe" set PYTHON_EXE=.venv\Scripts\python.exe
 
 echo.
 echo ============================================================
@@ -46,10 +45,17 @@ call :stamp "Finished step 3/4"
 
 echo.
 call :stamp "Starting step 4/4: watchlist validation"
-echo [4/4] Validating current watchlist signals...
+echo [4/5] Validating current watchlist signals...
 %PYTHON_EXE% -m src.main --job validate_watchlist --client-id 102
 if errorlevel 1 goto failed
-call :stamp "Finished step 4/4"
+call :stamp "Finished step 4/5"
+
+echo.
+call :stamp "Starting step 5/5: trade report reconciliation"
+echo [5/5] Importing TWS/Flex executions and reconciling closed orders...
+%PYTHON_EXE% -m src.main --job eod --client-id 103
+if errorlevel 1 goto failed
+call :stamp "Finished step 5/5"
 
 echo.
 echo ============================================================

@@ -141,6 +141,7 @@ def submit_place(setup: Dict[str, Any], *, live: bool = False) -> str:
         "stop": setup.get("stop"),
         "target": setup.get("target"),
         "market_only": bool(setup.get("market_only")),
+        "manual_setup": bool(setup.get("manual_setup")),
         "entry_order_type": setup.get("entry_order_type"),
         "level_price": setup.get("level") if setup.get("level") is not None else setup.get("level_price"),
         "level_type": setup.get("level_type"),

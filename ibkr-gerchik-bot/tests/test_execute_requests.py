@@ -128,6 +128,23 @@ class ExecuteWorkerTests(unittest.TestCase):
         self.assertEqual(om.dry_run, True)
         self.assertEqual(tracked, [])  # simulated -> no tracked position
 
+    def test_manual_setup_requires_stop_and_target_before_worker_submission(self) -> None:
+        oq.submit_place({
+            "symbol": "AAPL",
+            "signal": "BUY",
+            "direction": "long",
+            "entry": 100,
+            "stop": 99,
+            "target": None,
+            "manual_setup": True,
+        }, live=False)
+        order_manager = FakeOrderManager()
+        with patch.object(worker, "SETTINGS", _paper(dry_run=False)):
+            processed = worker.process_pending_once(FakeBroker(), order_manager, 100_000.0, 100_000.0, [])
+        self.assertEqual(processed[0]["status"], oq.REJECTED)
+        self.assertIn("requires both a positive Stop and Target", processed[0]["message"])
+        self.assertEqual(order_manager.calls, [])
+
     def test_paper_only_gate_rejects_when_not_paper(self) -> None:
         oq.submit_place({"symbol": "AAPL", "signal": "BUY", "direction": "long",
                          "entry": 100, "stop": 99, "target": 104}, live=True)
@@ -196,6 +213,18 @@ class ManualOrderTests(unittest.TestCase):
             )
         self.assertFalse(ok)
         self.assertIn("insufficient_cash_or_position_value", payload["reasons"])
+
+    def test_manual_order_requires_target(self) -> None:
+        from src.execution.order_manager import OrderManager
+        signal = self._signal()
+        signal.target = 0
+        om = OrderManager(None, None, None, None, dry_run=True)
+        with patch("src.execution.order_manager.append_markdown_log"):
+            ok, payload = om.execute_manual_order(
+                signal, account_equity=100_000.0, cash_available=100_000.0
+            )
+        self.assertFalse(ok)
+        self.assertIn("manual_setup_requires_target", payload["reasons"])
 
 
 class TickRoundingTests(unittest.TestCase):

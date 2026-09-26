@@ -28,6 +28,7 @@ from src.jobs.session_utils import (
     summarize_skip_reasons,
     sync_tracked_positions_with_broker,
 )
+from src.journal.position_history import archive_positions
 from src.reports.intraday_report import write_intraday_scan_report
 from src.workflow_log import append_workflow_snapshot
 
@@ -113,11 +114,13 @@ def run_intraday(
         if not trading_halted_reasons:
             broker_positions = broker.get_positions()
             open_orders = broker.get_open_orders()
+            archive_positions(tracked_positions)
             tracked_positions[:] = sync_tracked_positions_with_broker(
                 tracked_positions,
                 broker_positions,
                 open_orders,
             )
+            archive_positions(tracked_positions)
 
         iteration_executed: List[Dict[str, object]] = []
         iteration_skipped: List[Dict[str, object]] = []

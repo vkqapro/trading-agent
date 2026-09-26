@@ -9,19 +9,22 @@ echo.
 
 cd /d "%~dp0"
 
+set "PYTHON=python"
+if exist "..\.venv\Scripts\python.exe" set "PYTHON=..\.venv\Scripts\python.exe"
+
 REM Check Python
-where python >nul 2>&1
+"%PYTHON%" --version >nul 2>&1
 if errorlevel 1 (
-    echo  [ERROR] python not found on PATH.
+    echo  [ERROR] Python not found. Expected shared venv at ..\.venv\Scripts\python.exe.
     pause
     exit /b 1
 )
 
 REM Install deps silently if missing
-python -c "import fastapi, uvicorn" >nul 2>&1
+"%PYTHON%" -c "import fastapi, uvicorn" >nul 2>&1
 if errorlevel 1 (
     echo  [INFO] Installing fastapi + uvicorn...
-    python -m pip install fastapi uvicorn --quiet
+    "%PYTHON%" -m pip install fastapi uvicorn --quiet
 )
 
 echo  [OK] Starting server on http://127.0.0.1:8550 ...
@@ -44,4 +47,4 @@ start "Vitaly's Trading Bot - Crypto Worker" /min cmd /k "%~dp0run_crypto_worker
 REM Give the server 2 seconds then open browser
 start "" /min cmd /c "timeout /t 2 /nobreak >nul && start http://127.0.0.1:8550"
 
-python -m uvicorn dashboard_react.server:app --host 127.0.0.1 --port 8550 --reload
+"%PYTHON%" -m uvicorn dashboard_react.server:app --host 127.0.0.1 --port 8550

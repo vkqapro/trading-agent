@@ -118,6 +118,31 @@ class _BrokerStub:
             self.orders[-1]["limit_price"] = limit_price
         return entry_result, stop_result, limit_result
 
+    def place_stop_limit_bracket_order(
+        self,
+        symbol: str,
+        action: str,
+        quantity: int,
+        entry_stop_price: float,
+        entry_limit_price: float,
+        stop_price: float,
+        target_price: float,
+        *,
+        order_ref: str,
+        tif: str = "DAY",
+        outside_rth: bool = False,
+    ) -> tuple[OrderResult, OrderResult, OrderResult]:
+        del order_ref, tif, outside_rth
+        entry_result = self._record("STP LMT", symbol, action, quantity)
+        self.orders[-1]["entry_stop_price"] = entry_stop_price
+        self.orders[-1]["entry_limit_price"] = entry_limit_price
+        exit_action = "SELL" if action.upper() == "BUY" else "BUY"
+        stop_result = self._record("STP", symbol, exit_action, quantity)
+        self.orders[-1]["stop_price"] = stop_price
+        limit_result = self._record("LMT", symbol, exit_action, quantity)
+        self.orders[-1]["limit_price"] = target_price
+        return entry_result, stop_result, limit_result
+
     def place_stop_order(self, symbol: str, action: str, quantity: int, stop_price: float) -> OrderResult:
         result = self._record("STP", symbol, action, quantity)
         self.orders[-1]["stop_price"] = stop_price
@@ -290,6 +315,34 @@ class OrderFlowTests(unittest.TestCase):
         self.assertEqual(payload["status"], "executed")
         self.assertEqual([order["order_type"] for order in broker.orders], ["MKT", "STP", "LMT"])
         self.assertEqual(broker.orders[2]["limit_price"], signal.target)
+
+    def test_manual_order_supports_stop_limit_bracket(self) -> None:
+        broker = _BrokerStub()
+        order_manager = OrderManager(
+            broker=broker,
+            market_data=_MarketDataStub(),
+            alerter=SlackAlerter(),
+            news_filter=_NewsFilterStub(),
+            dry_run=False,
+        )
+
+        with patch("src.execution.order_manager.append_markdown_log"):
+            success, payload = order_manager.execute_manual_order(
+                _manual_candidate_signal(),
+                account_equity=100_000.0,
+                cash_available=100_000.0,
+                quantity=10,
+                entry_order_type="STOP_LIMIT",
+                allow_extended_hours_order=True,
+                time_in_force="GTC",
+            )
+
+        self.assertTrue(success)
+        self.assertEqual(payload["entry_order_type"], "STOP_LIMIT")
+        self.assertEqual([order["order_type"] for order in broker.orders], ["STP LMT", "STP", "LMT"])
+        self.assertEqual(broker.orders[0]["entry_stop_price"], 80.0)
+        self.assertEqual(broker.orders[0]["entry_limit_price"], 80.0)
+        self.assertEqual(broker.orders[2]["limit_price"], 92.0)
 
     def test_run_entry_scan_places_sanm_orders_when_signal_and_limits_allow(self) -> None:
         original_trade_log = SETTINGS.paths.trade_log

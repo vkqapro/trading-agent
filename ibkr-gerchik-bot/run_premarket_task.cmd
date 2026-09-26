@@ -1,3 +1,5 @@
 @echo off
-cd /d C:\Users\Vitos\Documents\GitHub\trading-agent\ibkr-gerchik-bot
-C:\Users\Vitos\Documents\GitHub\trading-agent\.venv\Scripts\python.exe -m src.main --job premarket --client-id 31
+cd /d "%~dp0"
+set "PYTHON=python"
+if exist "..\.venv\Scripts\python.exe" set "PYTHON=..\.venv\Scripts\python.exe"
+"%PYTHON%" -m src.main --job premarket --client-id 31

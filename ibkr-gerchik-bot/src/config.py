@@ -406,6 +406,9 @@ class PathsConfig:
     weekly_review_log: Path = MEMORY_DIR / "WEEKLY_REVIEW.md"
     strategy_doc: Path = MEMORY_DIR / "TRADING_STRATEGY.md"
     reports_dir: Path = MEMORY_DIR / "reports"
+    # TWS Export Reports directory.  Defaults to the repository-level reports
+    # folder configured in the user's Trader Workstation screenshot.
+    trade_report_dir: Path = _resolve_env_path(_env_str("IBKR_TRADE_REPORT_DIR", str(BASE_DIR / "reports")))
     runtime_dir: Path = LOG_DIR
     state_file: Path = LOG_DIR / "state.json"
 
@@ -442,6 +445,10 @@ class Settings:
     slack_command_prefix: str = _env_str("SLACK_COMMAND_PREFIX", "ibkr").strip().lower()
     slack_allowed_user_ids: List[str] = field(default_factory=lambda: _csv_env("SLACK_ALLOWED_USER_IDS", ""))
     premarket_levels_export_min_strength: float = _env_float("PREMARKET_LEVELS_EXPORT_MIN_STRENGTH", 7.0)
+    flex_statement_enabled: bool = _env_bool("IBKR_FLEX_STATEMENT_ENABLED", False)
+    flex_statement_token: str = _env_str("IBKR_FLEX_STATEMENT_TOKEN", "")
+    flex_statement_query_id: str = _env_str("IBKR_FLEX_STATEMENT_QUERY_ID", "")
+    flex_statement_lookback_days: int = _env_int("IBKR_FLEX_STATEMENT_LOOKBACK_DAYS", 7)
 
     def __post_init__(self) -> None:
         # Invalid IRS config must fail closed without weakening the rest of the

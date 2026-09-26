@@ -35,6 +35,9 @@ class OKXInstrument:
     base_ccy: str = ""
     quote_ccy: str = ""
     state: str = ""
+    lot_sz: str = ""
+    min_sz: str = ""
+    tick_sz: str = ""
 
 
 class OKXClient:
@@ -97,6 +100,9 @@ class OKXClient:
                 base_ccy=str(row.get("baseCcy", "")),
                 quote_ccy=str(row.get("quoteCcy", "")),
                 state=str(row.get("state", "")),
+                lot_sz=str(row.get("lotSz", "")),
+                min_sz=str(row.get("minSz", "")),
+                tick_sz=str(row.get("tickSz", "")),
             )
             for row in rows
             if isinstance(row, dict) and row.get("instId")
@@ -151,6 +157,65 @@ class OKXClient:
             body["clOrdId"] = client_order_id[:32]
         if reduce_only:
             body["reduceOnly"] = "true"
+        return self._request("POST", "/api/v5/trade/order", body=body, private=True)
+
+    def place_spot_order(
+        self,
+        *,
+        inst_id: str,
+        side: str,
+        size: str | float,
+        order_type: str,
+        price: str | float | None = None,
+        client_order_id: str | None = None,
+        stop: str | float | None = None,
+        target: str | float | None = None,
+        attached_algo_client_order_id: str | None = None,
+    ) -> Dict[str, Any]:
+        """Place a SPOT order, optionally with attached market-exit TP/SL.
+
+        Private requests always inherit the configured OKX demo header from
+        :meth:`_auth_headers`. Callers must still enforce demo-only policy
+        before invoking this method so a configuration error fails closed.
+        """
+        normalized_type = str(order_type or "").strip().lower()
+        if normalized_type not in {"market", "limit"}:
+            raise ValueError("OKX SPOT order_type must be MARKET or LIMIT.")
+        if normalized_type == "limit" and price is None:
+            raise ValueError("OKX SPOT LIMIT orders require an entry price.")
+
+        body: Dict[str, Any] = {
+            "instId": inst_id,
+            "tdMode": "cash",
+            "side": side.lower(),
+            "ordType": normalized_type,
+            "sz": str(size),
+        }
+        if normalized_type == "market":
+            body["tgtCcy"] = "base_ccy"
+        else:
+            body["px"] = str(price)
+        if client_order_id:
+            body["clOrdId"] = client_order_id[:32]
+
+        if stop is not None or target is not None:
+            attached: Dict[str, Any] = {}
+            if attached_algo_client_order_id:
+                attached["attachAlgoClOrdId"] = attached_algo_client_order_id[:32]
+            if target is not None:
+                attached.update({
+                    "tpTriggerPx": str(target),
+                    "tpTriggerPxType": "last",
+                    "tpOrdPx": "-1",
+                })
+            if stop is not None:
+                attached.update({
+                    "slTriggerPx": str(stop),
+                    "slTriggerPxType": "last",
+                    "slOrdPx": "-1",
+                })
+            body["attachAlgoOrds"] = [attached]
+
         return self._request("POST", "/api/v5/trade/order", body=body, private=True)
 
     def order_details(self, *, inst_id: str, order_id: str) -> Dict[str, Any]:

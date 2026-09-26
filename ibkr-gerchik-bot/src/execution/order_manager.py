@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+import uuid
 from typing import Dict, List, Tuple
 
 from src.alerts.slack import SlackAlerter
@@ -189,6 +190,34 @@ class OrderManager:
         enriched["risk_amount"] = abs(entry - stop) * quantity
         entry_order_type = str(entry_order_type or "MARKET").strip().upper()
 
+        if entry_order_type not in {"LIMIT", "MARKET", "STOP_LIMIT"}:
+            return False, {
+                "status": "rejected",
+                "reasons": ["unsupported_entry_order_type"],
+                "entry_order_type": entry_order_type,
+                "signal": enriched,
+            }
+
+        target = float(signal.target or 0.0)
+        if target <= 0:
+            return False, {
+                "status": "rejected",
+                "reasons": ["manual_setup_requires_target"],
+                "entry_order_type": entry_order_type,
+                "signal": enriched,
+            }
+        valid_protection = (
+            (signal.signal == "BUY" and stop < entry < target)
+            or (signal.signal == "SELL" and stop > entry > target)
+        )
+        if not valid_protection:
+            return False, {
+                "status": "rejected",
+                "reasons": ["manual_setup_invalid_stop_target"],
+                "entry_order_type": entry_order_type,
+                "signal": enriched,
+            }
+
         if self.dry_run:
             payload = self._build_payload(signal, quantity, 0, 0, status="simulated", dry_run=True)
             payload["manual_override"] = True
@@ -196,7 +225,7 @@ class OrderManager:
             append_markdown_log(SETTINGS.paths.trade_log, f"Simulated Manual Trade {signal.symbol}", payload)
             return True, payload
 
-        limit_price = float(signal.target) if signal.target else None
+        limit_price = target
         if entry_order_type == "LIMIT":
             entry_order, stop_order, limit_order = self.broker.place_limit_bracket_order(
                 signal.symbol,
@@ -207,6 +236,19 @@ class OrderManager:
                 limit_price=limit_price,
                 outside_rth=allow_extended_hours_order,
                 tif=time_in_force,
+            )
+        elif entry_order_type == "STOP_LIMIT":
+            entry_order, stop_order, limit_order = self.broker.place_stop_limit_bracket_order(
+                signal.symbol,
+                signal.signal,
+                quantity,
+                entry_stop_price=signal.entry,
+                entry_limit_price=signal.entry,
+                stop_price=signal.stop,
+                target_price=target,
+                order_ref=f"manual-{signal.symbol}-{uuid.uuid4().hex[:12]}",
+                tif=time_in_force or "GTC",
+                outside_rth=allow_extended_hours_order,
             )
         else:
             entry_order, stop_order, limit_order = self.broker.place_market_bracket_order(

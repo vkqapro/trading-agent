@@ -7,6 +7,32 @@ from src.journal import broker_reconcile
 
 
 class BrokerReconcileTests(TestCase):
+    def test_broker_close_uses_first_seen_date_when_fill_timestamp_is_unavailable(self) -> None:
+        record = broker_reconcile._execution_closed_record(
+            {
+                "symbol": "LIN",
+                "order_id": 820,
+                "exec_id": "lin-close",
+                "shares": 2,
+                "price": 481.0,
+                "time": "2026-08-27T13:31:07+00:00",
+            },
+            None,
+            {
+                "symbol": "LIN",
+                "avg_cost": 480.62,
+                "first_seen_at": "2026-08-24",
+                "stop_order_id": 820,
+                "limit_order_id": 821,
+            },
+        )
+
+        self.assertEqual(record["opened_at"], "2026-08-24")
+        self.assertEqual(record["closed_at"], "2026-08-27T13:31:07+00:00")
+        self.assertEqual(record["stop_order_id"], 820)
+        self.assertEqual(record["limit_order_id"], 821)
+        self.assertEqual(record["exit_reason"], "BRACKET_STOP_FILLED")
+
     def test_missing_position_without_sell_execution_is_not_closed(self) -> None:
         writes: list[dict] = []
 
@@ -166,3 +192,116 @@ class BrokerReconcileTests(TestCase):
         self.assertEqual(record["exit_price"], 200.25)
         self.assertEqual(record["exit_reason"], "BROKER_SELL_EXECUTION")
         self.assertEqual(record["request_id"], "sanm-request")
+
+    def test_unmatched_sell_execution_is_persisted_as_broker_observed_close(self) -> None:
+        writes: list[dict] = []
+
+        def fake_read(path, default):
+            if str(path).endswith("order_requests.json"):
+                return {"requests": []}
+            return {"positions": []}
+
+        with (
+            patch("src.journal.broker_reconcile._read_json", side_effect=fake_read),
+            patch("src.journal.broker_reconcile._write_json", side_effect=lambda _path, payload: writes.append(payload)),
+        ):
+            added = broker_reconcile._record_closed_positions(
+                before={},
+                synced=[],
+                executions=[
+                    {
+                        "symbol": "LIN",
+                        "order_id": 832,
+                        "perm_id": 1108835607,
+                        "exec_id": "lin-exec",
+                        "side": "SLD",
+                        "shares": 2,
+                        "price": 531.25,
+                        "time": "2026-08-27T13:31:07+00:00",
+                        "commission": 1.0,
+                        "realized_pnl": 14.5,
+                    }
+                ],
+            )
+
+        self.assertEqual(added, 1)
+        record = writes[0]["positions"][0]
+        self.assertEqual(record["symbol"], "LIN")
+        self.assertEqual(record["quantity"], 2)
+        self.assertEqual(record["exit_quantity"], 2)
+        self.assertEqual(record["exit_execution_id"], "lin-exec")
+        self.assertEqual(record["exit_reason"], "BROKER_SELL_EXECUTION")
+        self.assertEqual(record["request_id"], "")
+        self.assertEqual(record["source"], "IBKR")
+        self.assertEqual(record["commission"], 1.0)
+        self.assertEqual(record["broker_realized_pnl"], 14.5)
+
+    def test_ambiguous_historical_requests_do_not_override_execution_facts(self) -> None:
+        order_requests = {
+            "requests": [
+                {
+                    "id": "mrsh-five",
+                    "action": "place",
+                    "status": "done",
+                    "updated_at": "2026-07-29T10:41:19",
+                    "symbol": "MRSH",
+                    "quantity": 5,
+                    "result": {"market_order_id": 627, "stop_order_id": 628, "limit_order_id": 629},
+                },
+                {
+                    "id": "mrsh-two",
+                    "action": "place",
+                    "status": "done",
+                    "updated_at": "2026-07-29T10:45:10",
+                    "symbol": "MRSH",
+                    "quantity": 2,
+                    "result": {"market_order_id": 639, "stop_order_id": 640, "limit_order_id": 641},
+                },
+            ]
+        }
+        existing = {
+            "positions": [
+                {
+                    "symbol": "MRSH",
+                    "quantity": 2,
+                    "request_id": "mrsh-two",
+                    "exit_execution_id": "mrsh-today",
+                    "exit_quantity": 5,
+                }
+            ]
+        }
+        writes: list[dict] = []
+
+        def fake_read(path, default):
+            if str(path).endswith("order_requests.json"):
+                return order_requests
+            return existing
+
+        with (
+            patch("src.journal.broker_reconcile._read_json", side_effect=fake_read),
+            patch("src.journal.broker_reconcile._write_json", side_effect=lambda _path, payload: writes.append(payload)),
+        ):
+            added = broker_reconcile._record_closed_positions(
+                before={},
+                synced=[],
+                executions=[
+                    {
+                        "symbol": "MRSH",
+                        "order_id": 831,
+                        "perm_id": 1108835606,
+                        "exec_id": "mrsh-today",
+                        "side": "SLD",
+                        "shares": 5,
+                        "price": 190.19,
+                        "time": "2026-08-27T13:30:25+00:00",
+                    }
+                ],
+            )
+
+        self.assertEqual(added, 0)
+        record = writes[0]["positions"][0]
+        self.assertEqual(record["symbol"], "MRSH")
+        self.assertEqual(record["quantity"], 5)
+        self.assertEqual(record["exit_quantity"], 5)
+        self.assertEqual(record["request_id"], "")
+        self.assertEqual(record["source"], "IBKR")

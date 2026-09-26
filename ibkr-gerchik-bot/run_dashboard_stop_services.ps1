@@ -92,3 +92,49 @@ if ($ClearRuntime) {
 }
 
 Write-Host "Dashboard service stop complete. ngrok was not targeted."
+
+# 5) Verify the exact services owned by run_react_dashboard.cmd are gone. A
+# successful exit code lets stop_react_dashboard.cmd and automation distinguish
+# a completed stop from a permissions/process-race failure.
+Start-Sleep -Milliseconds 500
+$remaining = @()
+try {
+    $remaining += netstat -ano -p tcp |
+        Select-String -Pattern "[:.]8550\s+.*LISTENING\s+(\d+)" |
+        ForEach-Object { "dashboard API pid=$($_.Matches[0].Groups[1].Value)" }
+} catch {}
+
+try {
+    $remaining += Get-CimInstance Win32_Process |
+        Where-Object {
+            if ($_.Name -notmatch "^python(\.exe)?$" -or -not $_.CommandLine) { return $false }
+            foreach ($pattern in $pythonPatterns) {
+                if ($_.CommandLine -like "*$pattern*") { return $true }
+            }
+            return $false
+        } |
+        ForEach-Object { "python service pid=$($_.ProcessId)" }
+} catch {}
+
+try {
+    $remaining += Get-CimInstance Win32_Process |
+        Where-Object {
+            if ($_.Name -notmatch "^cmd(\.exe)?$" -or -not $_.CommandLine) { return $false }
+            if ($_.CommandLine -notlike "*$Root*") { return $false }
+            foreach ($pattern in $cmdScriptPatterns) {
+                if ($_.CommandLine -like "*$pattern*") { return $true }
+            }
+            return $false
+        } |
+        ForEach-Object { "cmd wrapper pid=$($_.ProcessId)" }
+} catch {}
+
+$remaining = @($remaining | Where-Object { $_ } | Select-Object -Unique)
+if ($remaining.Count -gt 0) {
+    Write-Host "Dashboard service stop verification FAILED:" -ForegroundColor Red
+    $remaining | ForEach-Object { Write-Host "  remaining $_" -ForegroundColor Red }
+    exit 1
+}
+
+Write-Host "Verified stopped: API, market-data collector, execute worker, and crypto worker."
+exit 0

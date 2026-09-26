@@ -19,6 +19,7 @@ from typing import Any, Dict
 from src.brokers.ibkr import IBKRClient
 from src.config import LOGGER, MEMORY_DIR, SETTINGS
 from src.jobs.session_utils import sync_tracked_positions_with_broker
+from src.journal.position_history import archive_positions, load_position_history
 
 SYNC_STATUS_PATH = MEMORY_DIR / "runtime" / "broker_order_sync.json"
 CLOSED_POSITIONS_PATH = MEMORY_DIR / "runtime" / "closed_positions.json"
@@ -97,9 +98,10 @@ def _execution_matches_request(execution: Dict[str, Any], request: Dict[str, Any
 
 def _execution_closed_record(
     execution: Dict[str, Any],
-    request: Dict[str, Any],
+    request: Dict[str, Any] | None,
     prior_position: Dict[str, Any] | None,
 ) -> Dict[str, Any]:
+    request = request or {}
     result = request.get("result") if isinstance(request.get("result"), dict) else {}
     entry_price = (
         (prior_position or {}).get("avg_cost")
@@ -107,8 +109,9 @@ def _execution_closed_record(
         or request.get("entry")
     )
     order_id = execution.get("order_id")
-    stop_order_id = result.get("stop_order_id")
-    limit_order_id = result.get("limit_order_id")
+    market_order_id = result.get("market_order_id") or (prior_position or {}).get("market_order_id")
+    stop_order_id = result.get("stop_order_id") or (prior_position or {}).get("stop_order_id")
+    limit_order_id = result.get("limit_order_id") or (prior_position or {}).get("limit_order_id")
     if str(order_id) == str(limit_order_id):
         exit_reason = "BRACKET_TARGET_FILLED"
     elif str(order_id) == str(stop_order_id):
@@ -117,16 +120,21 @@ def _execution_closed_record(
         exit_reason = "BROKER_SELL_EXECUTION"
     return {
         **(prior_position or {}),
-        "symbol": _upper(request.get("symbol")),
-        "quantity": abs(float(request.get("quantity") or result.get("quantity") or execution.get("shares") or 0)),
+        "symbol": _upper(execution.get("symbol") or request.get("symbol")),
+        "quantity": abs(float(execution.get("shares") or request.get("quantity") or result.get("quantity") or 0)),
         "entry": entry_price,
         "avg_cost": entry_price,
-        "opened_at": (prior_position or {}).get("opened_at") or request.get("updated_at") or request.get("created_at"),
-        "market_order_id": result.get("market_order_id"),
+        "opened_at": (
+            (prior_position or {}).get("opened_at")
+            or (prior_position or {}).get("first_seen_at")
+            or request.get("updated_at")
+            or request.get("created_at")
+        ),
+        "market_order_id": market_order_id,
         "stop_order_id": stop_order_id,
         "limit_order_id": limit_order_id,
-        "strategy": request.get("strategy") or result.get("strategy"),
-        "source": request.get("source"),
+        "strategy": request.get("strategy") or result.get("strategy") or (prior_position or {}).get("strategy"),
+        "source": request.get("source") or "IBKR",
         "closed_at": execution.get("time") or _now(),
         "exit_price": execution.get("price"),
         "exit_quantity": abs(float(execution.get("shares") or 0)),
@@ -134,8 +142,10 @@ def _execution_closed_record(
         "exit_perm_id": execution.get("perm_id"),
         "exit_execution_id": execution.get("exec_id"),
         "exit_reason": exit_reason,
+        "commission": execution.get("commission"),
+        "broker_realized_pnl": execution.get("realized_pnl"),
         "request_id": str(request.get("id") or ""),
-        "entry_price_source": "broker_position" if prior_position else "planned_entry",
+        "entry_price_source": "broker_position" if prior_position else "planned_entry" if request else "unavailable",
     }
 
 
@@ -207,57 +217,44 @@ def _record_closed_positions(
                 ),
                 None,
             )
-        if request is None:
-            # Last-resort recovery for a bot-generated market exit after both
-            # the local position and bracket children have disappeared. Only
-            # consider completed bracket requests for the same symbol and use
-            # the latest request that predates the execution; this avoids
-            # treating an unrelated symbol sale as a journal close.
-            execution_time = _parse_dt(execution.get("time"))
-            candidates = []
-            for item in _place_requests():
-                if _upper(item.get("symbol")) != symbol:
-                    continue
-                result = item.get("result") if isinstance(item.get("result"), dict) else {}
-                if not _order_ids(result) or _upper(item.get("status")) not in {"DONE", "SIMULATED"}:
-                    continue
-                request_time = _parse_dt(item.get("updated_at") or item.get("created_at"))
-                if execution_time and request_time and request_time > execution_time:
-                    continue
-                candidates.append((request_time or datetime.min.replace(tzinfo=timezone.utc), item))
-            if candidates:
-                request = max(candidates, key=lambda pair: pair[0])[1]
-        if request is None:
-            continue
-        symbol = _upper(request.get("symbol"))
-        request_result = request.get("result") if isinstance(request.get("result"), dict) else {}
+        # Do not guess from historical same-symbol requests. A broker sell is
+        # still durable closure evidence even when its originating request is
+        # unavailable, while a guessed request can corrupt quantity and entry
+        # details when a symbol has been traded more than once.
+        symbol = _upper(execution.get("symbol") or (request or {}).get("symbol"))
+        request_payload = request or {}
+        request_result = request_payload.get("result") if isinstance(request_payload.get("result"), dict) else {}
         request_ids = _order_ids(request_result)
-        matching = next(
+        matching_by_execution = next(
+            (
+                item
+                for item in positions
+                if isinstance(item, dict)
+                and str(item.get("exit_execution_id") or "") == str(execution.get("exec_id") or "")
+            ),
+            None,
+        )
+        matching = matching_by_execution or next(
             (
                 item
                 for item in positions
                 if isinstance(item, dict)
                 and _upper(item.get("symbol")) == symbol
+                and request_ids
                 and request_ids.intersection(_order_ids(item))
             ),
             None,
         )
-        if matching is None:
-            matching = next(
-                (
-                    item
-                    for item in positions
-                    if isinstance(item, dict)
-                    and _upper(item.get("symbol")) == symbol
-                    and str(item.get("exit_execution_id") or "") == str(execution.get("exec_id") or "")
-                ),
-                None,
-            )
         record = _execution_closed_record(execution, request, prior_position or before.get(symbol))
         if matching is None:
             positions.append(record)
             added += 1
             changed = True
+        elif matching_by_execution is matching:
+            if matching != record:
+                matching.clear()
+                matching.update(record)
+                changed = True
         else:
             for key, value in record.items():
                 if matching.get(key) in (None, "", 0, "0") and value not in (None, "", 0, "0"):
@@ -313,12 +310,23 @@ def reconcile_ibkr_open_orders(*, force: bool = False) -> Dict[str, Any]:
             for p in state.get("tracked_positions", [])
             if isinstance(p, dict)
         }
+        archive_positions(before.values())
+        last_known = load_position_history()
+        reconciliation_before = dict(last_known)
+        for symbol, position in before.items():
+            # A current broker snapshot has the freshest prices/order state,
+            # but it commonly omits lifecycle metadata retained in history.
+            reconciliation_before[symbol] = {
+                **last_known.get(symbol, {}),
+                **{key: value for key, value in position.items() if value is not None},
+            }
         synced = sync_tracked_positions_with_broker(
             state.get("tracked_positions", []),
             positions,
             open_orders,
         )
-        closed_observed = _record_closed_positions(before, synced, executions, open_orders)
+        archive_positions(synced)
+        closed_observed = _record_closed_positions(reconciliation_before, synced, executions, open_orders)
         state["tracked_positions"] = synced
         _write_json(state_path, state)
 
