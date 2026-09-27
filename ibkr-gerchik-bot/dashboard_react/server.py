@@ -58,6 +58,7 @@ from src.stocks.tradingview_webhook import handle_stock_tradingview_webhook, loa
 from dashboard_react.market_screener import ScreenerParams, run_market_screener
 from src.scanners.inefficiency_reclaim import run_inefficiency_reclaim_screener
 from src.storage.inefficiency_reclaim_store import InefficiencyReclaimStore
+from src.decision.audit import DecisionAudit
 
 app = FastAPI(title="Vitaly's Trading Bot Dashboard API", docs_url=None, redoc_url=None)
 app.add_middleware(
@@ -81,6 +82,40 @@ HERE = Path(__file__).parent
 app.mount("/static", StaticFiles(directory=HERE), name="static")
 
 ET = ZoneInfo(SETTINGS.trading_hours.timezone)
+
+
+def _decision_lab_audit() -> DecisionAudit | None:
+    """Open the audit DB only when it already exists; dashboard reads stay read-only."""
+    path = Path(SETTINGS.decision_agent.database_path)
+    if not path.exists():
+        return None
+    try:
+        return DecisionAudit(path)
+    except Exception:
+        return None
+
+
+def _decision_lab_positions() -> dict[str, object]:
+    path = Path(SETTINGS.decision_agent.database_path).with_name("decision_lab_portfolio.json")
+    if not path.exists():
+        return {"owner": "LLM_AGENT", "positions": [], "closed_positions": []}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(payload, dict) or payload.get("owner") != "LLM_AGENT":
+            return {"owner": "LLM_AGENT", "positions": [], "closed_positions": []}
+        return {
+            "owner": "LLM_AGENT",
+            "equity": payload.get("equity", 0.0),
+            "cash": payload.get("cash", 0.0),
+            "realized_pnl": payload.get("realized_pnl", 0.0),
+            "unrealized_pnl": payload.get("unrealized_pnl", 0.0),
+            "daily_R": payload.get("daily_R", 0.0),
+            "total_R": payload.get("total_R", 0.0),
+            "positions": payload.get("positions", []),
+            "closed_positions": payload.get("closed_positions", []),
+        }
+    except (OSError, json.JSONDecodeError):
+        return {"owner": "LLM_AGENT", "positions": [], "closed_positions": [], "error": "portfolio_unreadable"}
 IRS_SCHEDULED_TASKS = {
     "IBKR Bot - IRS Premarket": "Premarket",
     "IBKR Bot - IRS Hourly": "Hourly",
@@ -726,6 +761,58 @@ def api_meta():
         "dry_run": SETTINGS.dry_run_mode,
         "health": [asdict(h) | {"path": str(h.path), "updated_at": h.updated_at.isoformat() if h.updated_at else None} for h in health],
     }
+
+
+@app.get("/api/decision-lab/status")
+def api_decision_lab_status():
+    config = SETTINGS.decision_agent
+    audit = _decision_lab_audit()
+    status = audit.status() if audit is not None else {
+        "candidates": 0, "decisions": 0, "model_decisions": 0,
+        "risk_decisions": 0, "execution_links": 0, "position_events": 0,
+        "outcomes": 0,
+    }
+    status.pop("database", None)
+    return {
+        "mode": str(config.mode),
+        "provider": str(config.provider),
+        "model": str(config.model or config.local_model or ""),
+        "database_available": audit is not None,
+        "paper_portfolio": _decision_lab_positions(),
+        **status,
+    }
+
+
+@app.get("/api/decision-lab/decisions")
+def api_decision_lab_decisions(request: Request):
+    audit = _decision_lab_audit()
+    if audit is None:
+        return {"decisions": []}
+    query = request.query_params
+    return {"decisions": audit.list_decisions(
+        symbol=query.get("symbol"),
+        action=query.get("action"),
+        provider=query.get("provider"),
+        mode=query.get("mode"),
+        limit=int(query.get("limit", "100")),
+    )}
+
+
+@app.get("/api/decision-lab/positions")
+def api_decision_lab_positions():
+    return _decision_lab_positions()
+
+
+@app.get("/api/decision-lab/performance")
+def api_decision_lab_performance():
+    audit = _decision_lab_audit()
+    return audit.performance() if audit is not None else {"total_outcomes": 0, "closed_outcomes": 0, "pnl": 0.0, "r": 0.0}
+
+
+@app.get("/api/decision-lab/providers")
+def api_decision_lab_providers():
+    audit = _decision_lab_audit()
+    return {"providers": audit.provider_health() if audit is not None else []}
 
 
 @app.post("/api/system/hard-reset")

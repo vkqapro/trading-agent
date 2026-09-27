@@ -18,6 +18,9 @@ import pandas as pd
 from src.alerts.slack import SlackAlerter
 from src.brokers.ibkr import IBKRClient
 from src.config import LOGGER, SETTINGS, append_markdown_log
+from src.decision.agent import AgentRuntimeContext, default_agent
+from src.decision.market import quote_age_seconds
+from src.decision.models import AgentMode
 from src.data.bar_store import load_bars, save_bars
 from src.data.chart_history import ensure_required_chart_history
 from src.data.market_data import MarketDataService
@@ -648,9 +651,17 @@ def run_entry_scan(
     open_risk_amount: float,
     scan_time: Optional[datetime] = None,
     intraday_bars_by_symbol: Optional[Dict[str, pd.DataFrame]] = None,
+    decision_agent: object | None = None,
 ) -> Dict[str, object]:
     """Run one deterministic entry scan over the prepared watchlist."""
     current_time = scan_time or session_now()
+    if decision_agent is None:
+        decision_agent = default_agent(order_manager)
+    agent_mode = getattr(decision_agent, "mode", AgentMode.OFF)
+    autonomous_ai_enabled = agent_mode is not AgentMode.OFF
+    autonomous_ai_uses_news = bool(
+        getattr(getattr(decision_agent, "config", None), "use_news", False)
+    )
     executed: List[Dict[str, object]] = []
     skipped: List[Dict[str, object]] = []
     manual_candidates: List[Dict[str, object]] = []
@@ -661,8 +672,124 @@ def run_entry_scan(
 
     LOGGER.info("%s scan started at %s", stage_name, current_time.isoformat())
 
-    macro_context = news_filter.get_macro_risk_context()
-    if macro_context.get("risk_level") == "HIGH":
+    news_disabled_for_ai = autonomous_ai_enabled and not autonomous_ai_uses_news
+    shadow_legacy_news_deferred = agent_mode is AgentMode.SHADOW and news_disabled_for_ai
+
+    def _news_disabled_context() -> Dict[str, object]:
+        return {
+            "risk_level": "DISABLED",
+            "provider_hits": [],
+            "matched_headlines": [],
+            "source": "disabled_for_autonomous_ai",
+        }
+
+    macro_context: Dict[str, object] = _news_disabled_context()
+    legacy_macro_loaded = False
+    legacy_macro_blocked = False
+
+    def _load_legacy_macro_context() -> Dict[str, object]:
+        nonlocal legacy_macro_loaded, macro_context
+        if legacy_macro_loaded:
+            return macro_context
+        try:
+            macro_context = news_filter.get_macro_risk_context()
+        except Exception as exc:
+            macro_context = {"risk_level": "UNKNOWN", "error": "news_unavailable"}
+            LOGGER.warning("%s legacy macro news lookup failed: %s", stage_name, exc)
+        legacy_macro_loaded = True
+        return macro_context
+
+    def _stamp_source_bar(signal: TradeSignal, intraday_bars: pd.DataFrame) -> None:
+        if not intraday_bars.empty and "date" in intraday_bars.columns:
+            # Strategy constructors predate the autonomous adapter and do not
+            # all carry setup provenance. The completed source bar is durable,
+            # deterministic identity material available here.
+            source_bar_timestamp = intraday_bars.iloc[-1].get("date")
+            if source_bar_timestamp is not None:
+                signal.metadata = {
+                    **signal.metadata,
+                    "source_bar_timestamp": str(source_bar_timestamp),
+                }
+
+    def _technical_metrics(
+        signal: TradeSignal,
+        plan: object,
+        session_low: float,
+        session_high: float,
+    ) -> tuple[float, float, bool, bool]:
+        plan_mapping = plan if isinstance(plan, dict) else {}
+        technical_atr = float(plan_mapping.get("technical_atr", 0.0))
+        daily_atr = float(plan_mapping.get("daily_atr", 0.0))
+        atr_ok = technical_atr_has_room(technical_atr, signal.entry)
+        trend_ok = atr_travel_filter(
+            signal.entry,
+            session_low,
+            session_high,
+            daily_atr,
+            bool(signal.is_new_extreme),
+        )
+        return technical_atr, daily_atr, atr_ok, trend_ok
+
+    def _submit_agent_signal(
+        signal: TradeSignal,
+        *,
+        technical_atr: float,
+        daily_atr: float,
+        atr_ok: bool,
+        trend_ok: bool,
+        symbol_news_context: Dict[str, object],
+        macro_context: Dict[str, object],
+        quote: Dict[str, object],
+    ) -> object:
+        # Legacy Shadow News may already have been loaded for an earlier
+        # symbol. Keep every autonomous request isolated even after that
+        # lookup: disabled News must not leak risk or headline context into a
+        # later candidate.
+        ai_symbol_news_context = (
+            _news_disabled_context() if news_disabled_for_ai else symbol_news_context
+        )
+        ai_macro_context = _news_disabled_context() if news_disabled_for_ai else macro_context
+        quote_last = float(quote.get("last", 0.0) or 0.0)
+        quote_age = quote_age_seconds(quote)
+        agent_context = AgentRuntimeContext(
+            account_id=getattr(getattr(order_manager, "broker", None), "account_id", None),
+            account_equity=account_equity,
+            cash_available=cash_available,
+            current_positions=tuple(dict(item) for item in current_positions),
+            open_risk_amount=open_risk_amount,
+            spread_pct=OrderManager._spread_pct(quote),
+            broker_connected=bool(getattr(order_manager.broker, "is_connected", False)),
+            account_synced=False,
+            market_open=market_data.market_is_open(current_time),
+            first_unstable_minutes=market_data.unstable_open_window(current_time),
+            symbol_news_risk=(ai_symbol_news_context.get("risk_level") == "HIGH") if autonomous_ai_uses_news else False,
+            macro_risk=(ai_macro_context.get("risk_level") == "HIGH") if autonomous_ai_uses_news else False,
+            atr_has_room=atr_ok and trend_ok,
+            data_age_seconds=quote_age,
+            current_price=quote_last if quote_last > 0 else intraday_reference_price,
+            daily_realized_pnl=0.0,
+            quote=quote,
+            market_context={
+                "next_major_level": signal.nearest_upper_level
+                if signal.direction == "long"
+                else signal.nearest_lower_level,
+                "news_risk": ai_symbol_news_context.get("risk_level", "UNKNOWN"),
+                "macro_risk": ai_macro_context.get("risk_level", "UNKNOWN"),
+                "technical_atr": technical_atr,
+                "daily_atr": daily_atr,
+                "atr_used": signal.atr_used,
+            },
+            isolated_paper=agent_mode is AgentMode.PAPER_AUTONOMOUS,
+        )
+        return decision_agent.submit_signal(signal, context=agent_context)
+
+    if news_disabled_for_ai:
+        # Paper/Live never need the legacy News path. Shadow defers it until
+        # after the neutral AI candidate has been submitted.
+        macro_context = _news_disabled_context()
+    else:
+        macro_context = _load_legacy_macro_context()
+    if macro_context.get("risk_level") == "HIGH" and not (autonomous_ai_enabled and not autonomous_ai_uses_news):
         LOGGER.warning(
             "%s scan blocked by macro risk providers=%s matches=%s",
             stage_name,
@@ -721,8 +848,15 @@ def run_entry_scan(
         if intraday_bars_by_symbol is None:
             save_bars(symbol, "intraday_5m", intraday_bars)
 
-        symbol_news_context = news_filter.get_symbol_risk_context(symbol)
-        if symbol_news_context.get("risk_level") == "HIGH":
+        if news_disabled_for_ai:
+            symbol_news_context = _news_disabled_context()
+        else:
+            try:
+                symbol_news_context = news_filter.get_symbol_risk_context(symbol)
+            except Exception as exc:
+                symbol_news_context = {"risk_level": "UNKNOWN", "error": "news_unavailable"}
+                LOGGER.warning("%s legacy symbol news lookup failed for %s: %s", stage_name, symbol, exc)
+        if symbol_news_context.get("risk_level") == "HIGH" and not (autonomous_ai_enabled and not autonomous_ai_uses_news):
             reason = {
                 "symbol": symbol,
                 "reason": "symbol_news_risk",
@@ -771,7 +905,8 @@ def run_entry_scan(
             continue
 
         levels = [Level(**level) for level in plan.get("levels", [])]
-        candidate_signals = route_strategies(symbol, intraday_bars, levels, news_context=symbol_news_context)
+        ai_news_context = _news_disabled_context() if news_disabled_for_ai else symbol_news_context
+        candidate_signals = route_strategies(symbol, intraday_bars, levels, news_context=ai_news_context)
         signals_detected += len(candidate_signals)
         if not candidate_signals:
             skipped.append({"symbol": symbol, "reason": "no_signal"})
@@ -792,16 +927,69 @@ def run_entry_scan(
         session_high = float(session_bars["high"].max())
         symbol_result_recorded = False
         symbol_reasons: List[str] = []
+
+        # Shadow must preserve the legacy News-dependent route, but the AI
+        # candidate must be created and queued before that legacy lookup. The
+        # neutral pass reuses the same bars, levels, quote, and ATR gate; only
+        # the legacy strategy pass is repeated with actual News context.
+        shadow_ai_pre_submitted = False
+        if shadow_legacy_news_deferred:
+            shadow_ai_pre_submitted = True
+            for signal in candidate_signals:
+                _stamp_source_bar(signal, intraday_bars)
+                technical_atr, daily_atr, atr_ok, trend_ok = _technical_metrics(
+                    signal,
+                    plan,
+                    session_low,
+                    session_high,
+                )
+                if not atr_ok or not trend_ok:
+                    continue
+                _submit_agent_signal(
+                    signal,
+                    technical_atr=technical_atr,
+                    daily_atr=daily_atr,
+                    atr_ok=atr_ok,
+                    trend_ok=trend_ok,
+                    symbol_news_context=symbol_news_context,
+                    macro_context=macro_context,
+                    quote=quote,
+                )
+
+            if not legacy_macro_blocked:
+                legacy_macro_context = _load_legacy_macro_context()
+                if legacy_macro_context.get("risk_level") == "HIGH":
+                    legacy_macro_blocked = True
+                else:
+                    try:
+                        symbol_news_context = news_filter.get_symbol_risk_context(symbol)
+                    except Exception as exc:
+                        symbol_news_context = {"risk_level": "UNKNOWN", "error": "news_unavailable"}
+                        LOGGER.warning("%s legacy symbol news lookup failed for %s: %s", stage_name, symbol, exc)
+                    if symbol_news_context.get("risk_level") == "HIGH":
+                        candidate_signals = []
+                        skipped.append({"symbol": symbol, "reason": "symbol_news_risk", "legacy_only": True})
+                    else:
+                        candidate_signals = route_strategies(
+                            symbol,
+                            intraday_bars,
+                            levels,
+                            news_context=symbol_news_context,
+                        )
+            else:
+                candidate_signals = []
+
+            if legacy_macro_blocked:
+                skipped.append({"symbol": symbol, "reason": "macro_risk", "legacy_only": True})
+                candidate_signals = []
+
         for signal in candidate_signals:
-            technical_atr = float(plan.get("technical_atr", 0.0))
-            daily_atr = float(plan.get("daily_atr", 0.0))
-            atr_ok = technical_atr_has_room(technical_atr, signal.entry)
-            trend_ok = atr_travel_filter(
-                signal.entry,
+            _stamp_source_bar(signal, intraday_bars)
+            technical_atr, daily_atr, atr_ok, trend_ok = _technical_metrics(
+                signal,
+                plan,
                 session_low,
                 session_high,
-                daily_atr,
-                bool(signal.is_new_extreme),
             )
             if not atr_ok or not trend_ok:
                 atr_summary_reason, atr_detail_reason = _atr_filter_reason_details(
@@ -828,13 +1016,52 @@ def run_entry_scan(
                 LOGGER.info("%s skip %s: %s", stage_name, symbol, atr_detail_reason)
                 continue
 
-            success, payload = order_manager.execute_trade(
-                signal,
-                account_equity=account_equity,
-                cash_available=cash_available,
-                current_positions=current_positions,
-                open_risk_amount=open_risk_amount,
-            )
+            if agent_mode is not AgentMode.OFF and not shadow_ai_pre_submitted:
+                agent_result = _submit_agent_signal(
+                    signal,
+                    technical_atr=technical_atr,
+                    daily_atr=daily_atr,
+                    atr_ok=atr_ok,
+                    trend_ok=trend_ok,
+                    symbol_news_context=symbol_news_context,
+                    macro_context=macro_context,
+                    quote=quote,
+                )
+                if agent_mode is not AgentMode.SHADOW:
+                    scheduled_reason = agent_result.reasons or ("agent_decision_scheduled",)
+                    skipped.append({"symbol": symbol, "reason": list(scheduled_reason), "source": "LLM_AGENT"})
+                    symbol_reasons.append(_normalize_skip_reason(scheduled_reason))
+                    signal_details.append(
+                        _signal_detail(
+                            signal=signal,
+                            plan=plan,
+                            quote=quote,
+                            reason=list(scheduled_reason),
+                            status=agent_result.status,
+                            reference_price=intraday_reference_price,
+                        )
+                    )
+                    symbol_result_recorded = True
+                    break
+
+            try:
+                success, payload = order_manager.execute_trade(
+                    signal,
+                    account_equity=account_equity,
+                    cash_available=cash_available,
+                    current_positions=current_positions,
+                    open_risk_amount=open_risk_amount,
+                )
+            except Exception as exc:
+                # When autonomous News is explicitly disabled, a legacy News
+                # adapter failure must not turn a completed Shadow AI
+                # observation into an AI-path failure. Legacy execution is
+                # reported as unavailable and no fallback order is attempted.
+                if agent_mode is AgentMode.SHADOW and autonomous_ai_enabled and not autonomous_ai_uses_news:
+                    skipped.append({"symbol": symbol, "reason": "legacy_execution_unavailable", "detail": str(exc)})
+                    symbol_reasons.append("legacy_execution_unavailable")
+                    continue
+                raise
             if success:
                 executed.append(payload)
                 signal_details.append(

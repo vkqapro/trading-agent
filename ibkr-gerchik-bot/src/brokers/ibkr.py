@@ -568,6 +568,7 @@ class IBKRClient:
         *,
         outside_rth: bool = False,
         tif: str | None = None,
+        order_ref: str | None = None,
     ) -> tuple[OrderResult, OrderResult, OrderResult | None]:
         self.ensure_connection()
         contract = self.create_stock_contract(symbol)
@@ -583,6 +584,8 @@ class IBKRClient:
             parent_order.tif = tif
         if outside_rth:
             parent_order.outsideRth = True
+        if order_ref:
+            parent_order.orderRef = str(order_ref)[:32]
 
         stop_order = StopOrder(action=exit_action, totalQuantity=quantity, stopPrice=stop_price)
         stop_order.orderId = self.ib.client.getReqId()
@@ -592,6 +595,8 @@ class IBKRClient:
             stop_order.tif = tif
         if outside_rth:
             stop_order.outsideRth = True
+        if order_ref:
+            stop_order.orderRef = f"{str(order_ref)[:27]}-SL"
 
         limit_order: LimitOrder | None = None
         if limit_price is not None:
@@ -603,6 +608,8 @@ class IBKRClient:
                 limit_order.tif = tif
             if outside_rth:
                 limit_order.outsideRth = True
+            if order_ref:
+                limit_order.orderRef = f"{str(order_ref)[:27]}-TP"
 
         parent_trade: Trade = self.ib.placeOrder(contract, parent_order)
         stop_trade: Trade = self.ib.placeOrder(contract, stop_order)

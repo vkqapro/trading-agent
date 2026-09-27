@@ -6597,6 +6597,29 @@ class ErrBound extends React.Component {
 /* ════════════════════════════════════════════════════════════════════════════
    ROOT APP
 ═══════════════════════════════════════════════════════════════════════════ */
+function TabDecisionLab({refreshKey}) {
+  const [status,setStatus] = useState(null);
+  const [decisions,setDecisions] = useState([]);
+  const [providers,setProviders] = useState([]);
+  useEffect(()=>{
+    Promise.all([
+      fetch(`${API}/decision-lab/status`).then(r=>r.json()),
+      fetch(`${API}/decision-lab/decisions?limit=100`).then(r=>r.json()),
+      fetch(`${API}/decision-lab/providers`).then(r=>r.json()),
+    ]).then(([s,d,p])=>{setStatus(s);setDecisions(d.decisions||[]);setProviders(p.providers||[])}).catch(()=>{});
+  },[refreshKey]);
+  const mode = String(status?.mode || 'off').toUpperCase();
+  const modeColor = mode==='LIVE_AUTONOMOUS' ? C.err : mode==='PAPER_AUTONOMOUS' ? C.lime : mode==='SHADOW' ? C.cyan : C.outline;
+  const card = {background:R(C.surfLow,0.62),border:`1px solid ${R(C.outline,0.16)}`,borderRadius:12,padding:'16px 18px'};
+  const fmt = value => value === null || value === undefined ? '—' : String(value);
+  return <div style={{display:'flex',flexDirection:'column',gap:18}}>
+    <div style={{...card,display:'flex',flexWrap:'wrap',alignItems:'center',justifyContent:'space-between',gap:18}}><div><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline,letterSpacing:'0.08em'}}>AUTONOMOUS DECISION LAYER</div><div style={{fontSize:14,color:C.onSurf,marginTop:7}}>Read-only evidence for candidate decisions, risk gates, and isolated paper ownership.</div></div><div style={{padding:'9px 13px',borderRadius:9,color:modeColor,border:`1px solid ${R(modeColor,0.35)}`,background:R(modeColor,0.08),fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:800}}>{mode}</div></div>
+    <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(145px,1fr))',gap:12}}>{[["Candidates",status?.candidates],["Decisions",status?.decisions],["Risk rows",status?.risk_decisions],["Executions",status?.execution_links],["Paper positions",status?.paper_portfolio?.positions?.length||0],["Paper P&L",status?.paper_portfolio?.realized_pnl||0]].map(([label,value])=><div key={label} style={card}><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>{label.toUpperCase()}</div><div style={{fontSize:24,fontWeight:600,color:C.onSurf,marginTop:8}}>{fmt(value)}</div></div>)}</div>
+    <div style={{...card,overflowX:'auto'}}><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,letterSpacing:'0.06em',marginBottom:12}}>RECENT MODEL DECISIONS</div><table style={{width:'100%',borderCollapse:'collapse',fontFamily:"'JetBrains Mono',monospace",fontSize:10}}><thead><tr>{['Time','Symbol','Strategy','Provider','Action','Risk','Execution'].map(h=><th key={h} style={{textAlign:'left',padding:'8px 7px',color:C.outline,borderBottom:`1px solid ${R(C.outline,0.18)}`}}>{h}</th>)}</tr></thead><tbody>{decisions.map((row,i)=><tr key={`${row.decision_id||i}`}><td style={{padding:'9px 7px',color:C.outline}}>{fmt(row.completed_at).slice(0,19).replace('T',' ')}</td><td style={{padding:'9px 7px',color:C.onSurf}}>{fmt(row.symbol)}</td><td style={{padding:'9px 7px',color:C.onVar}}>{fmt(row.strategy)}</td><td style={{padding:'9px 7px',color:C.onVar}}>{fmt(row.provider)}</td><td style={{padding:'9px 7px',color:row.action==='ENTER'?C.lime:row.action==='REJECT'?C.err:C.cyan}}>{fmt(row.action)}</td><td style={{padding:'9px 7px',color:C.onVar}}>{row.risk_approved===null||row.risk_approved===undefined?'—':row.risk_approved?'APPROVED':'VETO'}</td><td style={{padding:'9px 7px',color:C.onVar}}>{fmt(row.execution_status)}</td></tr>)}</tbody></table>{!decisions.length&&<div style={{color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:11,padding:'18px 7px'}}>No decision records yet.</div>}</div>
+    <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))',gap:18}}><div style={card}><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,letterSpacing:'0.06em',marginBottom:12}}>ISOLATED PAPER POSITIONS</div>{(status?.paper_portfolio?.positions||[]).map(p=><div key={p.position_id} style={{padding:'10px 0',borderBottom:`1px solid ${R(C.outline,0.12)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}><span style={{color:C.onSurf}}>{p.symbol}</span><span style={{color:C.outline}}> · {p.direction} · qty {p.quantity}</span><div style={{color:C.outline,marginTop:5}}>entry {fmt(p.entry)} · stop {fmt(p.stop_loss)} · target {fmt(p.target)}</div></div>)}{!(status?.paper_portfolio?.positions||[]).length&&<div style={{color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}>No agent-owned open positions.</div>}</div><div style={card}><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,letterSpacing:'0.06em',marginBottom:12}}>PROVIDER HEALTH</div>{providers.slice(0,8).map((p,i)=><div key={`${p.provider}-${p.observed_at}-${i}`} style={{display:'flex',justifyContent:'space-between',padding:'7px 0',fontFamily:"'JetBrains Mono',monospace",fontSize:10}}><span style={{color:C.onVar}}>{p.provider}</span><span style={{color:p.status==='ok'?C.lime:C.err}}>{p.status}</span></div>)}{!providers.length&&<div style={{color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}>No provider observations yet.</div>}</div></div>
+  </div>;
+}
+
 const NAV = [
   {id:'dashboard',  label:'Dashboard',          icon:'space_dashboard'},
   {id:'watchlist',  label:'Watchlist',          icon:'visibility'},
@@ -6613,6 +6636,7 @@ const NAV = [
   {id:'trades',     label:'Trades & Positions',  icon:'swap_horiz'},
   {id:'forecast',   label:'Forecast',            icon:'calculate'},
   {id:'reports',    label:'Reports',             icon:'description'},
+  {id:'decision_lab', label:'Decision Lab',       icon:'psychology'},
 ];
 const PAGE_META = {
   orders:    {title:'Orders Journal',         sub:'Plan to fill to exit to trader review', crumb:'Orders Journal'},
@@ -6630,6 +6654,7 @@ const PAGE_META = {
   trades:    {title:'Trades & Positions',     sub:'Open paper positions and trade journal', crumb:'Trades'},
   forecast:  {title:'Risk Forecast Calculator',sub:'Scenario-only · replays saved data · no live orders', crumb:'Forecast'},
   reports:   {title:'Reports',               sub:'Generated session workbooks', crumb:'Reports'},
+  decision_lab:{title:'Decision Lab',        sub:'LLM decisions Â· deterministic risk Â· isolated paper evidence', crumb:'Decision Lab'},
 };
 
 function App() {
@@ -6894,6 +6919,7 @@ function App() {
               {tab==='trades'    && <TabTrades refreshKey={refreshKey}/>}
               {tab==='forecast'  && <TabForecast refreshKey={refreshKey}/>}
               {tab==='reports'   && <TabReports refreshKey={refreshKey}/>}
+              {tab==='decision_lab' && <TabDecisionLab refreshKey={refreshKey}/>}
             </ErrBound>
           </div>
         </div>

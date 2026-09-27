@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import math
 import uuid
-from typing import Dict, List, Tuple
+from typing import Dict, List, Mapping, Tuple
 
 from src.alerts.slack import SlackAlerter
 from src.brokers.ibkr import IBKRClient, OrderResult
@@ -14,6 +14,8 @@ from src.data.news_filter import NewsRiskFilter
 from src.risk.position_size import calculate_position_size, position_value_ok
 from src.strategy.signal_models import TradeSignal
 from src.strategy.validator import validate_trade
+from src.decision.identity import broker_order_ref
+from src.decision.market import quote_age_seconds, quote_last, quote_spread_pct
 
 
 class OrderManager:
@@ -47,9 +49,28 @@ class OrderManager:
         allow_after_hours: bool = False,
         allow_extended_hours_order: bool = False,
         time_in_force: str | None = None,
+        autonomous_guard: Mapping[str, object] | None = None,
     ) -> Tuple[bool, Dict[str, object]]:
         quote = self.market_data.get_quote(signal.symbol)
         spread_pct = self._spread_pct(quote)
+        if autonomous_guard is not None:
+            guard_reasons: list[str] = []
+            age = quote_age_seconds(quote)
+            if age is None:
+                guard_reasons.append("quote_age_unknown")
+            elif age > float(autonomous_guard.get("max_data_age_seconds", 0.0) or 0.0):
+                guard_reasons.append("quote_stale")
+            current_price = quote_last(quote)
+            entry = float(autonomous_guard.get("entry", signal.entry) or signal.entry)
+            max_chase = float(autonomous_guard.get("max_entry_chase_pct", 0.0) or 0.0)
+            if current_price <= 0:
+                guard_reasons.append("quote_invalid")
+            elif entry > 0 and abs(current_price - entry) / entry > max_chase:
+                guard_reasons.append("price_chase_too_far")
+            if quote_spread_pct(quote) > float(autonomous_guard.get("max_spread_pct", SETTINGS.risk.max_spread_pct)):
+                guard_reasons.append("spread_too_wide")
+            if guard_reasons:
+                return False, {"status": "rejected", "reasons": tuple(dict.fromkeys(guard_reasons)), "signal": signal.to_dict()}
         quantity = calculate_position_size(account_equity, SETTINGS.risk.risk_per_trade, signal.entry, signal.stop)
         order_size_valid = position_value_ok(quantity, signal.entry, SETTINGS.risk.max_position_value, cash_available)
         quote_status = str(quote.get("quote_status", "unknown") or "unknown")
@@ -66,7 +87,7 @@ class OrderManager:
             spread_pct=spread_pct,
             paper_trading=SETTINGS.paper_trading,
             tws_connected=self.broker.is_connected,
-            account_synced=True,
+            account_synced=bool(autonomous_guard.get("account_synced", False)) if autonomous_guard is not None else True,
             market_open=self.market_data.market_is_open() or allow_after_hours,
             first_unstable_minutes=self.market_data.unstable_open_window(),
             allow_first_unstable_minutes=False,
@@ -98,15 +119,36 @@ class OrderManager:
             return True, trade_payload
 
         limit_price = float(signal.target) if signal.target else None
-        entry_order, stop_order, limit_order = self.broker.place_market_bracket_order(
-            signal.symbol,
-            signal.signal,
-            quantity,
-            signal.stop,
-            limit_price=limit_price,
-            outside_rth=allow_extended_hours_order,
-            tif=time_in_force,
-        )
+        broker_kwargs = {
+            "limit_price": limit_price,
+            "outside_rth": allow_extended_hours_order,
+            "tif": time_in_force,
+        }
+        if autonomous_guard is not None:
+            broker_kwargs["order_ref"] = str(
+                autonomous_guard.get("order_ref")
+                or broker_order_ref(
+                    agent_id=str(autonomous_guard.get("agent_id", "GERCHIK_LLM_01")),
+                    candidate_id=str(autonomous_guard.get("candidate_id", "")),
+                    decision_id=str(autonomous_guard.get("decision_id", "")),
+                )
+            )
+        try:
+            entry_order, stop_order, limit_order = self.broker.place_market_bracket_order(
+                signal.symbol,
+                signal.signal,
+                quantity,
+                signal.stop,
+                **broker_kwargs,
+            )
+        except TypeError:
+            if autonomous_guard is not None:
+                return False, {
+                    "status": "rejected",
+                    "reasons": ("broker_order_reference_unsupported",),
+                    "signal": signal.to_dict(),
+                }
+            raise
         broker_statuses = {
             "market_order": entry_order.status,
             "stop_order": stop_order.status,
@@ -335,7 +377,7 @@ class OrderManager:
         non_quote_reasons = [reason for reason in reasons if reason != "spread_too_wide"]
         if non_quote_reasons:
             return None
-        return {
+        payload = {
             "status": "manual_candidate",
             "reasons": ["quote_subscription_required"],
             "signal": enriched_signal,
@@ -350,6 +392,7 @@ class OrderManager:
             "quantity": quantity,
             "quote_status": quote_status,
         }
+        return payload
 
     def _notify_manual_candidate(self, payload: Dict[str, object]) -> None:
         key = (
@@ -375,7 +418,7 @@ class OrderManager:
         status: str,
         dry_run: bool = False,
     ) -> Dict[str, object]:
-        return {
+        payload = {
             "status": status,
             "dry_run": dry_run,
             "symbol": signal.symbol,
@@ -393,3 +436,7 @@ class OrderManager:
             "stop_order_id": stop_order_id,
             "limit_order_id": limit_order_id,
         }
+        for key in ("owner", "agent_id", "decision_id", "candidate_id", "order_ref"):
+            if key in signal.metadata:
+                payload[key] = signal.metadata[key]
+        return payload

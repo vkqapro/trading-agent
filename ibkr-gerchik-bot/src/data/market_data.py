@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 from typing import Dict
 
@@ -112,6 +112,10 @@ class MarketDataService:
 
     def get_quote(self, symbol: str) -> Dict[str, object]:
         quote = dict(self.broker.get_market_price(symbol))
+        # The broker snapshot has no portable age field. Stamp the point at
+        # which this process received it so autonomous callers can distinguish
+        # a fresh quote from missing freshness evidence.
+        quote["quote_timestamp"] = datetime.now(timezone.utc).isoformat()
         quote["market_data_type"] = (
             "delayed" if self._delayed_fallback_enabled else "live"
         )

@@ -12,6 +12,8 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+from src.decision.models import AgentMode
+
 try:
     from dotenv import load_dotenv
 except ImportError:  # pragma: no cover
@@ -175,6 +177,110 @@ class RiskConfig:
     calculated_stop_pct: float = _env_float("CALCULATED_STOP_PCT", 0.0015)
     max_stop_vs_calculated_multiplier: float = _env_float("MAX_STOP_VS_CALCULATED_MULTIPLIER", 1.2)
     first_unstable_minutes: int = _env_int("FIRST_UNSTABLE_MINUTES", 5)
+
+
+def _optional_env_float(name: str) -> float | None:
+    raw = os.getenv(name, "").strip()
+    if not raw:
+        return None
+    return float(raw)
+
+
+@dataclass(frozen=True)
+class DecisionAgentConfig:
+    """Configuration for the bounded LLM decision layer.
+
+    ``mode=off`` is the safe default. Credentials are read only at process
+    startup and are never included in decision snapshots or audit payloads.
+    """
+
+    mode: str = _env_str("LLM_AGENT_MODE", AgentMode.OFF.value).lower()
+    agent_id: str = _env_str("LLM_AGENT_ID", "GERCHIK_LLM_01")
+    provider: str = _env_str("LLM_DECISION_PROVIDER", "local_openai").lower()
+    model: str = _env_str("LLM_DECISION_MODEL", "")
+    timeout_seconds: float = _env_float("LLM_DECISION_TIMEOUT_SECONDS", 15.0)
+    local_base_url: str = _env_str("LLM_LOCAL_BASE_URL", "")
+    local_model: str = _env_str("LLM_LOCAL_MODEL", "")
+    openai_base_url: str = _env_str("LLM_OPENAI_BASE_URL", "https://api.openai.com/v1")
+    deepseek_base_url: str = _env_str("LLM_DEEPSEEK_BASE_URL", "https://api.deepseek.com/v1")
+    anthropic_base_url: str = _env_str("LLM_ANTHROPIC_BASE_URL", "https://api.anthropic.com/v1")
+    openai_api_key: str = _env_str("LLM_OPENAI_API_KEY", "")
+    deepseek_api_key: str = _env_str("LLM_DEEPSEEK_API_KEY", "")
+    anthropic_api_key: str = _env_str("LLM_ANTHROPIC_API_KEY", "")
+    position_review_enabled: bool = _env_bool("LLM_POSITION_REVIEW_ENABLED", False)
+    use_news: bool = _env_bool("LLM_AGENT_USE_NEWS", False)
+    multi_provider_shadow: bool = _env_bool("LLM_MULTI_PROVIDER_SHADOW", False)
+    shadow_providers: Tuple[str, ...] = tuple(
+        item.lower() for item in _csv_env(
+            "LLM_SHADOW_PROVIDERS", "local_openai,deepseek,openai,anthropic"
+        ) if item
+    )
+    max_open_positions: int = _env_int("LLM_MAX_OPEN_POSITIONS", 5)
+    risk_per_trade_pct: float = _env_float("LLM_RISK_PER_TRADE_PCT", 1.0)
+    max_daily_r: float = _env_float("LLM_MAX_DAILY_R", 0.0)
+    max_data_age_seconds: float = _env_float("LLM_MAX_DATA_AGE_SECONDS", 30.0)
+    max_entry_chase_pct: float = _env_float("LLM_MAX_ENTRY_CHASE_PCT", 0.01)
+    decision_workers: int = _env_int("LLM_DECISION_WORKERS", 2)
+    decision_queue_depth: int = _env_int("LLM_DECISION_QUEUE_DEPTH", 16)
+    candidate_expiry_seconds: float = _env_float("LLM_CANDIDATE_EXPIRY_SECONDS", 45.0)
+    shadow_dedup_minutes: float = _env_float("LLM_SHADOW_DEDUP_MINUTES", 5.0)
+    paper_protection_interval_seconds: float = _env_float("LLM_PAPER_PROTECTION_INTERVAL_SECONDS", 5.0)
+    position_review_interval_seconds: float = _env_float("LLM_POSITION_REVIEW_INTERVAL_SECONDS", 300.0)
+    provider_health_max_age_seconds: float = _env_float("LLM_PROVIDER_HEALTH_MAX_AGE_SECONDS", 900.0)
+    database_path: Path = field(
+        default_factory=lambda: _resolve_env_path(_env_str("LLM_DECISION_DATABASE_PATH", "memory/decision_lab.db"))
+    )
+    allow_live_trading: bool = _env_bool("ALLOW_LLM_LIVE_TRADING", False)
+    live_account_allowlist: Tuple[str, ...] = tuple(
+        item for item in _csv_env("LLM_LIVE_ACCOUNT_ALLOWLIST", "") if item
+    )
+    minimum_confidence: float | None = field(default_factory=lambda: _optional_env_float("LLM_MIN_CONFIDENCE"))
+    slippage_pct: float = _env_float("LLM_PAPER_SLIPPAGE_PCT", 0.0005)
+    commission_per_share: float = _env_float("LLM_PAPER_COMMISSION_PER_SHARE", 0.0)
+
+    def mode_enum(self) -> AgentMode:
+        return AgentMode.from_value(self.mode)
+
+    def validate(self, *, paper_trading: bool | None = None, account_id: str | None = None) -> None:
+        mode = self.mode_enum()
+        if self.timeout_seconds <= 0:
+            raise ValueError("LLM_DECISION_TIMEOUT_SECONDS must be positive")
+        if self.max_open_positions < 1:
+            raise ValueError("LLM_MAX_OPEN_POSITIONS must be positive")
+        if self.risk_per_trade_pct <= 0:
+            raise ValueError("LLM_RISK_PER_TRADE_PCT must be positive")
+        if self.max_daily_r < 0:
+            raise ValueError("LLM_MAX_DAILY_R cannot be negative")
+        if self.max_data_age_seconds <= 0 or self.max_entry_chase_pct < 0:
+            raise ValueError("LLM data-age/chase limits are invalid")
+        if self.decision_workers < 1 or self.decision_queue_depth < 1:
+            raise ValueError("LLM decision worker/queue settings must be positive")
+        if self.candidate_expiry_seconds <= 0 or self.shadow_dedup_minutes < 0:
+            raise ValueError("LLM candidate expiry/dedup settings are invalid")
+        if self.paper_protection_interval_seconds <= 0 or self.position_review_interval_seconds <= 0:
+            raise ValueError("LLM paper safety intervals must be positive")
+        if self.provider_health_max_age_seconds <= 0:
+            raise ValueError("LLM provider health age must be positive")
+        if self.minimum_confidence is not None and not 0.0 <= self.minimum_confidence <= 1.0:
+            raise ValueError("LLM_MIN_CONFIDENCE must be between 0 and 1")
+        if self.slippage_pct < 0 or self.commission_per_share < 0:
+            raise ValueError("LLM paper cost settings cannot be negative")
+        unsupported_shadow = set(self.shadow_providers) - {"local_openai", "openai", "deepseek", "anthropic"}
+        if unsupported_shadow:
+            raise ValueError(f"unsupported LLM shadow provider(s): {', '.join(sorted(unsupported_shadow))}")
+        if mode is AgentMode.LIVE_AUTONOMOUS:
+            if not self.allow_live_trading:
+                raise ValueError("live_autonomous requires ALLOW_LLM_LIVE_TRADING=true")
+            if paper_trading is not False:
+                raise ValueError("live_autonomous requires PAPER_TRADING=false")
+            if not self.live_account_allowlist:
+                raise ValueError("live_autonomous requires LLM_LIVE_ACCOUNT_ALLOWLIST")
+            if not account_id:
+                raise ValueError("live_autonomous requires a verified broker account ID")
+            if account_id not in self.live_account_allowlist:
+                raise ValueError("broker account is not in the LLM live account allowlist")
+        if mode is not AgentMode.OFF and not self.model and not self.local_model:
+            raise ValueError("an LLM model is required when the agent is enabled")
 
 
 @dataclass(frozen=True)
@@ -432,6 +538,7 @@ class Settings:
     fx_symbols: List[str] = field(default_factory=lambda: _csv_env("FX_SYMBOLS", ""))
     broker: BrokerConfig = field(default_factory=BrokerConfig)
     risk: RiskConfig = field(default_factory=RiskConfig)
+    decision_agent: DecisionAgentConfig = field(default_factory=DecisionAgentConfig)
     strategy: StrategyConfig = field(default_factory=StrategyConfig)
     inefficiency_reclaim: InefficiencyReclaimSettings = field(default_factory=InefficiencyReclaimSettings)
     nasdaq_data: NasdaqDataConfig = field(default_factory=NasdaqDataConfig)

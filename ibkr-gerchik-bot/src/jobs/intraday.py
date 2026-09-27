@@ -22,6 +22,7 @@ from src.jobs.session_utils import (
     next_scan_time,
     persist_tracked_positions,
     run_entry_scan,
+    default_agent,
     serialize_scan_results,
     session_now,
     sleep_until,
@@ -195,6 +196,12 @@ def run_intraday(
                 )
         else:
             LOGGER.info("Intraday watchlist is empty; managing positions only until next loop.")
+
+        # Paper stop/target enforcement is deterministic and runs before the
+        # legacy broker-management pass; it never waits for an LLM response.
+        paper_protection = default_agent(order_manager).run_paper_safety_cycle(market_data)
+        if paper_protection:
+            LOGGER.info("Paper autonomous protection closed %s position(s)", len(paper_protection))
 
         management = (
             manage_positions(

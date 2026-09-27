@@ -14,6 +14,7 @@ from src.jobs.session_utils import (
     get_scan_interval,
     is_open_entry_window,
     next_scan_time,
+    default_agent,
     run_entry_scan,
     serialize_scan_results,
     session_now,
@@ -78,6 +79,7 @@ def run_open(
             open_risk_amount=open_risk_amount,
             scan_time=scan_time,
         )
+        default_agent(order_manager).run_paper_safety_cycle(market_data)
         executed = scan_result["executed"]
         skipped = scan_result["skipped"]
         manual_candidates = scan_result.get("manual_candidates", [])
