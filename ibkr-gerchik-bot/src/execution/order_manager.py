@@ -69,9 +69,16 @@ class OrderManager:
                 guard_reasons.append("price_chase_too_far")
             if quote_spread_pct(quote) > float(autonomous_guard.get("max_spread_pct", SETTINGS.risk.max_spread_pct)):
                 guard_reasons.append("spread_too_wide")
+            quote_status = str(quote.get("quote_status", "") or "").lower()
+            if "quote_status" in quote and quote_status in {"missing", "unknown", "unavailable"}:
+                guard_reasons.append("quote_status_unknown")
             if guard_reasons:
                 return False, {"status": "rejected", "reasons": tuple(dict.fromkeys(guard_reasons)), "signal": signal.to_dict()}
         quantity = calculate_position_size(account_equity, SETTINGS.risk.risk_per_trade, signal.entry, signal.stop)
+        if autonomous_guard is not None:
+            guarded_quantity = int(autonomous_guard.get("quantity", 0) or 0)
+            if guarded_quantity > 0:
+                quantity = guarded_quantity
         order_size_valid = position_value_ok(quantity, signal.entry, SETTINGS.risk.max_position_value, cash_available)
         quote_status = str(quote.get("quote_status", "unknown") or "unknown")
         enriched_signal = signal.to_dict()

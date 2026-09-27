@@ -234,6 +234,13 @@ class DecisionAgentConfig:
     live_account_allowlist: Tuple[str, ...] = tuple(
         item for item in _csv_env("LLM_LIVE_ACCOUNT_ALLOWLIST", "") if item
     )
+    allow_ibkr_paper_trading: bool = _env_bool("ALLOW_LLM_IBKR_PAPER_TRADING", False)
+    ibkr_paper_account_allowlist: Tuple[str, ...] = tuple(
+        item for item in _csv_env("LLM_IBKR_PAPER_ACCOUNT_ALLOWLIST", "") if item
+    )
+    ibkr_paper_max_open_positions: int = _env_int("LLM_IBKR_PAPER_MAX_OPEN_POSITIONS", 1)
+    ibkr_paper_max_trades_per_day: int = _env_int("LLM_IBKR_PAPER_MAX_TRADES_PER_DAY", 3)
+    ibkr_paper_risk_per_trade_pct: float = _env_float("LLM_IBKR_PAPER_RISK_PER_TRADE_PCT", 0.10)
     minimum_confidence: float | None = field(default_factory=lambda: _optional_env_float("LLM_MIN_CONFIDENCE"))
     slippage_pct: float = _env_float("LLM_PAPER_SLIPPAGE_PCT", 0.0005)
     commission_per_share: float = _env_float("LLM_PAPER_COMMISSION_PER_SHARE", 0.0)
@@ -241,7 +248,15 @@ class DecisionAgentConfig:
     def mode_enum(self) -> AgentMode:
         return AgentMode.from_value(self.mode)
 
-    def validate(self, *, paper_trading: bool | None = None, account_id: str | None = None) -> None:
+    def validate(
+        self,
+        *,
+        paper_trading: bool | None = None,
+        dry_run: bool | None = None,
+        account_id: str | None = None,
+        paper_account_verified: bool | None = None,
+        live_trading_enabled: bool | None = None,
+    ) -> None:
         mode = self.mode_enum()
         if self.timeout_seconds <= 0:
             raise ValueError("LLM_DECISION_TIMEOUT_SECONDS must be positive")
@@ -265,6 +280,12 @@ class DecisionAgentConfig:
             raise ValueError("LLM_MIN_CONFIDENCE must be between 0 and 1")
         if self.slippage_pct < 0 or self.commission_per_share < 0:
             raise ValueError("LLM paper cost settings cannot be negative")
+        if self.ibkr_paper_max_open_positions < 1:
+            raise ValueError("LLM_IBKR_PAPER_MAX_OPEN_POSITIONS must be positive")
+        if self.ibkr_paper_max_trades_per_day < 1:
+            raise ValueError("LLM_IBKR_PAPER_MAX_TRADES_PER_DAY must be positive")
+        if self.ibkr_paper_risk_per_trade_pct <= 0:
+            raise ValueError("LLM_IBKR_PAPER_RISK_PER_TRADE_PCT must be positive")
         unsupported_shadow = set(self.shadow_providers) - {"local_openai", "openai", "deepseek", "anthropic"}
         if unsupported_shadow:
             raise ValueError(f"unsupported LLM shadow provider(s): {', '.join(sorted(unsupported_shadow))}")
@@ -279,6 +300,31 @@ class DecisionAgentConfig:
                 raise ValueError("live_autonomous requires a verified broker account ID")
             if account_id not in self.live_account_allowlist:
                 raise ValueError("broker account is not in the LLM live account allowlist")
+        if mode is AgentMode.IBKR_PAPER_AUTONOMOUS:
+            if not self.allow_ibkr_paper_trading:
+                raise ValueError("ibkr_paper_autonomous requires ALLOW_LLM_IBKR_PAPER_TRADING=true")
+            if self.ibkr_paper_max_open_positions > 1:
+                raise ValueError("ibkr_paper_autonomous max open positions cannot exceed 1")
+            if self.ibkr_paper_max_trades_per_day > 3:
+                raise ValueError("ibkr_paper_autonomous daily trade cap cannot exceed 3")
+            if self.ibkr_paper_risk_per_trade_pct > 0.10:
+                raise ValueError("ibkr_paper_autonomous risk cap cannot exceed 0.10 percent")
+            if paper_trading is not True:
+                raise ValueError("ibkr_paper_autonomous requires PAPER_TRADING=true")
+            if dry_run is not False:
+                raise ValueError("ibkr_paper_autonomous requires DRY_RUN_MODE=false")
+            if self.allow_live_trading:
+                raise ValueError("ibkr_paper_autonomous forbids ALLOW_LLM_LIVE_TRADING=true")
+            if live_trading_enabled is True:
+                raise ValueError("ibkr_paper_autonomous forbids legacy live trading")
+            if not self.ibkr_paper_account_allowlist:
+                raise ValueError("ibkr_paper_autonomous requires LLM_IBKR_PAPER_ACCOUNT_ALLOWLIST")
+            if not account_id:
+                raise ValueError("ibkr_paper_autonomous requires a verified broker account ID")
+            if paper_account_verified is not True:
+                raise ValueError("ibkr_paper_autonomous requires verified IBKR Paper account evidence")
+            if account_id not in self.ibkr_paper_account_allowlist:
+                raise ValueError("broker account is not in the IBKR Paper account allowlist")
         if mode is not AgentMode.OFF and not self.model and not self.local_model:
             raise ValueError("an LLM model is required when the agent is enabled")
 

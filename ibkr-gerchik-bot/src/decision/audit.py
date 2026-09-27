@@ -352,7 +352,9 @@ class DecisionAudit:
                 reservation_state = {
                     "paper_simulated": "PAPER_SIMULATED",
                     "live_executed": "SUBMITTED",
+                    "ibkr_paper_executed": "SUBMITTED",
                     "live_rejected": "FAILED_PRE_SUBMIT",
+                    "ibkr_paper_rejected": "FAILED_PRE_SUBMIT",
                     "paper_rejected": "FAILED_PRE_SUBMIT",
                 }.get(status, status.upper())
                 connection.execute(
@@ -439,7 +441,8 @@ class DecisionAudit:
         query = f"""
             SELECT m.*, m.chosen_action AS action, c.symbol, c.strategy, c.asset_class, c.direction,
                    r.approved AS risk_approved, r.reasons_json AS risk_reasons,
-                   e.status AS execution_status, e.order_ids_json, e.position_id
+                   e.status AS execution_status, e.mode AS execution_mode,
+                   e.agent_id AS execution_agent_id, e.order_ids_json, e.position_id
             FROM model_decisions m
             JOIN candidates c ON c.candidate_id = m.candidate_id
             LEFT JOIN risk_decisions r ON r.risk_id = (
@@ -467,7 +470,42 @@ class DecisionAudit:
         )
         with self.connection() as connection:
             counts = {table: connection.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0] for table in tables}
-        return {"database": str(self.path), **counts, "decisions": counts["model_decisions"]}
+            mode_rows = connection.execute(
+                "SELECT mode, COUNT(*) AS count FROM execution_links GROUP BY mode"
+            ).fetchall()
+            decision_rows = connection.execute(
+                "SELECT mode, COUNT(*) AS count FROM model_decisions GROUP BY mode"
+            ).fetchall()
+        executions_by_mode = {str(row["mode"]): int(row["count"]) for row in mode_rows}
+        decisions_by_mode = {str(row["mode"]): int(row["count"]) for row in decision_rows}
+        return {
+            "database": str(self.path),
+            **counts,
+            "decisions": counts["model_decisions"],
+            "shadow_decisions": decisions_by_mode.get("shadow", 0),
+            "internal_paper_executions": executions_by_mode.get("paper_autonomous", 0),
+            "ibkr_paper_executions": executions_by_mode.get("ibkr_paper_autonomous", 0),
+            "live_executions": executions_by_mode.get("live_autonomous", 0),
+            "executions_by_mode": executions_by_mode,
+        }
+
+    def count_executions_since(
+        self,
+        *,
+        mode: str,
+        agent_id: str,
+        since: str,
+    ) -> int:
+        """Count successful broker/simulated execution links after an ISO boundary."""
+        with self.connection() as connection:
+            row = connection.execute(
+                """SELECT COUNT(*) FROM execution_links
+                   WHERE mode = ? AND agent_id = ? AND created_at >= ?
+                     AND status IN ('paper_simulated', 'live_executed',
+                                    'ibkr_paper_executed', 'submitted', 'filled', 'open')""",
+                (str(mode).lower(), agent_id, since),
+            ).fetchone()
+        return int(row[0] or 0)
 
     def reserve_execution(
         self,

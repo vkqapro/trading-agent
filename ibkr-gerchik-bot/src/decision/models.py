@@ -17,6 +17,7 @@ class AgentMode(str, Enum):
     OFF = "off"
     SHADOW = "shadow"
     PAPER_AUTONOMOUS = "paper_autonomous"
+    IBKR_PAPER_AUTONOMOUS = "ibkr_paper_autonomous"
     LIVE_AUTONOMOUS = "live_autonomous"
 
     @classmethod
@@ -26,7 +27,7 @@ class AgentMode(str, Enum):
             return cls(normalized)
         except ValueError as exc:
             raise ValueError(
-                "LLM_AGENT_MODE must be one of: off, shadow, paper_autonomous, live_autonomous"
+                "LLM_AGENT_MODE must be one of: off, shadow, paper_autonomous, ibkr_paper_autonomous, live_autonomous"
             ) from exc
 
 
@@ -265,6 +266,13 @@ class DecisionResponse:
             if not isinstance(raw_ranked, (list, tuple)):
                 raise ValueError("ranked_actions must be a list")
             for item in raw_ranked:
+                # Some OpenAI-compatible models serialize the same pair as an
+                # object. Normalize only this bounded shape before applying the
+                # existing action and score validation below.
+                if isinstance(item, Mapping):
+                    if "action" not in item or "score" not in item:
+                        raise ValueError("ranked_actions objects require action and score")
+                    item = (item["action"], item["score"])
                 if not isinstance(item, (list, tuple)) or len(item) != 2:
                     raise ValueError("ranked_actions entries must be [action, score]")
                 action = str(item[0]).strip().upper()

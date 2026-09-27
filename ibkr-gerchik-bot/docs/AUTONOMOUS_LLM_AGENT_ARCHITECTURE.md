@@ -327,3 +327,33 @@ gates remain in their existing path, while the autonomous candidate path uses
 neutral News context and does not veto or abort on missing, unknown, high-risk,
 or failed News lookups. The provider receives no additional broker/account
 data.
+
+## IBKR Paper Autonomous mode
+
+`ibkr_paper_autonomous` is distinct from both `paper_autonomous` and
+`live_autonomous`:
+
+- `paper_autonomous` owns an isolated `PaperPortfolio` JSON ledger and never
+  submits to a broker.
+- `ibkr_paper_autonomous` may submit the existing Gerchik stock bracket through
+  `OrderManager`, but only after the dedicated permission, `PAPER_TRADING=true`,
+  `DRY_RUN_MODE=false`, disabled live permissions, verified Paper account
+  evidence, and a separate Paper account allowlist all pass.
+- `live_autonomous` remains the guarded live-account mode and is not enabled by
+  the Paper mode.
+
+The Paper broker identity is read from `IBKRClient.get_account_summary()` and
+classified conservatively: a single `DU...` account is Paper evidence, a
+`U...` account is live evidence, and multiple/unrecognized accounts are
+unknown. Socket ports are not used as proof of environment. The autonomous
+Paper mode additionally refreshes positions, open orders, executions, and a
+fresh quote after the provider response; same-symbol broker state, stale or
+unknown quote data, unresolved reservations, audit failures, and uncertain
+submission all fail closed. Uncertain submission becomes
+`RECONCILIATION_REQUIRED` and is never retried automatically.
+
+The mode enforces deterministic first-run limits of one open position, three
+successful trades per UTC day, and 0.10 percent risk per trade by default.
+The provider selects only `ENTER`, `WAIT`, or `REJECT`; it never selects
+quantity, stop, target, account, or order type. News is disabled for this
+mode by policy.

@@ -65,6 +65,8 @@ class AutonomousRiskGate:
         current_price: float | None = None,
         setup_still_valid: bool = True,
         isolated_paper: bool = False,
+        max_open_positions: int | None = None,
+        risk_per_trade_pct: float | None = None,
     ) -> RiskDecision:
         reasons: list[str] = []
         if not setup_still_valid:
@@ -90,14 +92,18 @@ class AutonomousRiskGate:
             owner = str(position.get("owner") or position.get("source") or "GERCHIK_LEGACY").upper()
             reasons.append("symbol_owned_by_legacy" if owner != "LLM_AGENT" else "duplicate_agent_position")
 
-        if len(current_positions) >= int(self.config.max_open_positions):
+        effective_max_positions = int(
+            self.config.max_open_positions if max_open_positions is None else max_open_positions
+        )
+        if len(current_positions) >= effective_max_positions:
             reasons.append("agent_max_positions_reached")
         if account_equity <= 0:
             reasons.append("invalid_account_equity")
         if daily_loss_exceeded(account_equity, daily_realized_pnl, self.config):
             reasons.append("daily_loss_limit")
 
-        risk_pct = min(float(SETTINGS.risk.risk_per_trade), float(self.config.risk_per_trade_pct) / 100.0)
+        configured_risk_pct = self.config.risk_per_trade_pct if risk_per_trade_pct is None else risk_per_trade_pct
+        risk_pct = min(float(SETTINGS.risk.risk_per_trade), float(configured_risk_pct) / 100.0)
         quantity = calculate_position_size(account_equity, risk_pct, candidate.entry, candidate.stop)
         risk_amount = abs(candidate.entry - candidate.stop) * quantity
         order_size_valid = position_value_ok(

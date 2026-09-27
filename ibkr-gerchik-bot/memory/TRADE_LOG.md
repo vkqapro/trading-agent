@@ -159498,3 +159498,60 @@ Reasons:
 - **stop_order_id**: 2
 - **limit_order_id**: 3
 - **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'Submitted', 'limit_order': 'Submitted'}
+
+## Trade AAPL (2026-09-27T11:05:57)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: AAPL
+- **strategy**: rebound
+- **level_type**: support
+- **direction**: long
+- **signal**: BUY
+- **entry**: 100.0
+- **stop_loss**: 98.0
+- **target**: 106.0
+- **reward_risk**: 0.0
+- **partial_targets**: []
+- **quantity**: 250
+- **market_order_id**: 1
+- **stop_order_id**: 2
+- **limit_order_id**: 3
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'Submitted', 'limit_order': 'Submitted'}
+
+## Trade AAPL (2026-09-27T11:08:00)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: AAPL
+- **strategy**: rebound
+- **level_type**: support
+- **direction**: long
+- **signal**: BUY
+- **entry**: 100.0
+- **stop_loss**: 98.0
+- **target**: 106.0
+- **reward_risk**: 0.0
+- **partial_targets**: []
+- **quantity**: 250
+- **market_order_id**: 1
+- **stop_order_id**: 2
+- **limit_order_id**: 3
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'Submitted', 'limit_order': 'Submitted'}
+
+## Trade AAPL (2026-09-27T11:10:29)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: AAPL
+- **strategy**: rebound
+- **level_type**: support
+- **direction**: long
+- **signal**: BUY
+- **entry**: 100.0
+- **stop_loss**: 98.0
+- **target**: 106.0
+- **reward_risk**: 0.0
+- **partial_targets**: []
+- **quantity**: 250
+- **market_order_id**: 1
+- **stop_order_id**: 2
+- **limit_order_id**: 3
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'Submitted', 'limit_order': 'Submitted'}

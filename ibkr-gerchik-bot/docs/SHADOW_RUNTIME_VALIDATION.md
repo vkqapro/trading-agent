@@ -249,6 +249,45 @@ The first-day review should record actual values, not estimates:
 No first-day metric is claimed by this document. Results belong in a separate
 operator record after an authorized run.
 
+## 6a. Decision Lab -> Test LLM Connection
+
+The Decision Lab status card exposes the effective runtime values for mode,
+provider, model, connection state, News state, multi-provider Shadow, workers,
+queue depth, and candidate expiry. It also shows safety badges for Live AI,
+News, paper broker, and dry-run mode. These values are read-only; the UI has
+no Live toggle or order control in this diagnostic section.
+
+Clicking `TEST LLM CONNECTION` calls:
+
+```text
+POST /api/decision-lab/test-provider
+```
+
+The endpoint builds a synthetic `TEST` / `connectivity_check` request with
+`asset_class=diagnostic`, `direction=none`, `non_trading=true`, and only
+`WAIT` allowed. It calls the configured `DecisionProvider` directly and
+accepts the result only when the existing strict response model resolves to
+`WAIT`. The request is never passed through `AutonomousGerchikAgent`, risk
+gates, `OrderManager`, `IBKRClient`, `OKXClient`, `PaperPortfolio`, candidate
+audit, execution reservations, or paper-position mutation.
+
+The UI displays `NOT TESTED`, `CONNECTED`, or `ERROR`, plus bounded latency,
+local timestamp, provider/model, and a sanitized reason. It never displays an
+API key, authorization header, account identifier, environment dump, or raw
+HTTP response. The diagnostic state is held by the running dashboard process;
+it is not written as a candidate, decision, risk, execution, or portfolio row.
+
+`CONNECTED` proves only that the configured endpoint authenticated, accepted
+the configured model, returned within the bounded provider timeout, and
+returned a valid structured `WAIT` response. It does not prove candidate
+quality, risk quality, trading performance, broker connectivity, or order
+execution. A successful test must leave Candidates, Decisions, Risk Rows,
+Executions, and Paper Positions unchanged.
+
+`ERROR` is safe to retry. The UI categorizes common failures as missing or
+invalid model configuration, HTTP 401/403/404/429/5xx, timeout, connection or
+DNS failure, invalid JSON, and structured-response validation failure.
+
 ## 7. Stop conditions
 
 Stop before starting or stop the one-shot observation if any of the following

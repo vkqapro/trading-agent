@@ -246,6 +246,50 @@ class IBKRClient:
             )
         return summary
 
+    def get_account_identity(self) -> Dict[str, Any]:
+        """Return conservative account/environment evidence without trading.
+
+        IBKR account IDs beginning with ``DU`` are Paper accounts in this
+        deployment.  The identity is obtained from accountSummary rather than
+        inferred from the configured socket port; ports are operator-changeable.
+        Multiple or unrecognized accounts are intentionally unknown.
+        """
+        summary = self.get_account_summary()
+        accounts = sorted({
+            str(item.get("account", "") or "").strip()
+            for item in summary
+            if isinstance(item, dict) and str(item.get("account", "") or "").strip()
+        })
+        if len(accounts) != 1:
+            return {
+                "account_id": accounts[0] if len(accounts) == 1 else None,
+                "accounts": accounts,
+                "environment": "unknown",
+                "paper_verified": False,
+                "evidence": "account_summary_ambiguous",
+            }
+        account_id = accounts[0]
+        normalized = account_id.upper()
+        if normalized.startswith("DU"):
+            environment = "paper"
+            paper_verified = True
+            evidence = "ibkr_account_id_du_prefix"
+        elif normalized.startswith("U"):
+            environment = "live"
+            paper_verified = False
+            evidence = "ibkr_account_id_live_prefix"
+        else:
+            environment = "unknown"
+            paper_verified = False
+            evidence = "ibkr_account_id_unrecognized"
+        return {
+            "account_id": account_id,
+            "accounts": accounts,
+            "environment": environment,
+            "paper_verified": paper_verified,
+            "evidence": evidence,
+        }
+
     def get_positions(self) -> List[Dict[str, Any]]:
         self.ensure_connection()
         positions = []

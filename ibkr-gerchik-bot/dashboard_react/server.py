@@ -14,6 +14,7 @@ import math
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import re
 from pathlib import Path
@@ -59,6 +60,8 @@ from dashboard_react.market_screener import ScreenerParams, run_market_screener
 from src.scanners.inefficiency_reclaim import run_inefficiency_reclaim_screener
 from src.storage.inefficiency_reclaim_store import InefficiencyReclaimStore
 from src.decision.audit import DecisionAudit
+from src.decision.models import AgentMode, DecisionAction, DecisionCandidate, DecisionRequest, DecisionSnapshot
+from src.decision.provider import DecisionProviderError, build_provider
 
 app = FastAPI(title="Vitaly's Trading Bot Dashboard API", docs_url=None, redoc_url=None)
 app.add_middleware(
@@ -82,6 +85,105 @@ HERE = Path(__file__).parent
 app.mount("/static", StaticFiles(directory=HERE), name="static")
 
 ET = ZoneInfo(SETTINGS.trading_hours.timezone)
+
+_PROVIDER_TEST_LOCK = threading.Lock()
+_PROVIDER_TEST_STATE: dict[str, object] = {
+    "connection_status": "not_tested",
+    "last_provider_test_status": "not_tested",
+    "last_provider_test_at": None,
+    "last_provider_latency_ms": None,
+    "last_provider_error": None,
+}
+
+
+def _provider_test_state() -> dict[str, object]:
+    with _PROVIDER_TEST_LOCK:
+        return dict(_PROVIDER_TEST_STATE)
+
+
+def _set_provider_test_state(**updates: object) -> dict[str, object]:
+    with _PROVIDER_TEST_LOCK:
+        _PROVIDER_TEST_STATE.update(updates)
+        return dict(_PROVIDER_TEST_STATE)
+
+
+def _provider_diagnostic_request(*, provider_name: str, model: str) -> DecisionRequest:
+    """Build a provider-only request that cannot represent an executable trade."""
+    now = datetime.now(timezone.utc)
+    diagnostic = DecisionCandidate(
+        candidate_id="provider-connectivity-diagnostic",
+        created_at=now,
+        asset_class="diagnostic",
+        symbol="TEST",
+        strategy="connectivity_check",
+        direction="none",
+        entry=0.0,
+        stop=0.0,
+        target=0.0,
+        metadata={"diagnostic": True, "non_trading": True},
+    )
+    return DecisionRequest(
+        decision_id="provider-connectivity-diagnostic",
+        agent_id="DECISION_LAB_DIAGNOSTIC",
+        mode=AgentMode.SHADOW,
+        provider=provider_name,
+        model=model,
+        snapshot=DecisionSnapshot.from_candidate(
+            diagnostic,
+            session="provider_connectivity",
+            context={"diagnostic": True, "non_trading": True},
+        ),
+        allowed_actions=(DecisionAction.WAIT.value,),
+    )
+
+
+def _safe_provider_diagnostic_error(error: BaseException) -> str:
+    """Map provider failures to bounded UI-safe categories; never expose transport details."""
+    cause = error.__cause__ or error
+    response = getattr(cause, "response", None)
+    status_code = getattr(response, "status_code", None)
+    if isinstance(status_code, int) and 400 <= status_code <= 599:
+        return f"HTTP {status_code}"
+    error_name = type(cause).__name__.lower()
+    message = str(error).lower()
+    if "timeout" in error_name or "timeout" in message:
+        return "timeout"
+    if "connection" in error_name or "connection" in message or "dns" in message:
+        return "connection refused or network error"
+    if "invalid decision json" in message or "invalid json" in message:
+        return "invalid JSON response"
+    if "invalid decision" in message or "schema" in message:
+        return "schema validation failure"
+    if "model" in message or "required" in message:
+        return "model unavailable or not configured"
+    if isinstance(error, DecisionProviderError):
+        return "provider diagnostic failed"
+    return "provider configuration error"
+
+
+def _decision_lab_warnings(config: object) -> list[str]:
+    warnings: list[str] = []
+    raw_mode = getattr(config, "mode", "off")
+    mode = str(getattr(raw_mode, "value", raw_mode)).strip().lower()
+    try:
+        AgentMode.from_value(mode)
+    except ValueError:
+        warnings.append("LLM_AGENT_MODE is invalid")
+    if bool(getattr(config, "allow_live_trading", False)):
+        warnings.append("ALLOW_LLM_LIVE_TRADING=true")
+    if not SETTINGS.paper_trading:
+        warnings.append("PAPER_TRADING=false")
+    if not SETTINGS.dry_run_mode:
+        warnings.append("DRY_RUN_MODE=false")
+    if mode == "live_autonomous":
+        warnings.append("LLM_AGENT_MODE=live_autonomous")
+    if mode == "ibkr_paper_autonomous":
+        warnings.append("AUTONOMOUS ORDERS ENABLED / IBKR PAPER ACCOUNT ONLY")
+        if not bool(getattr(config, "allow_ibkr_paper_trading", False)):
+            warnings.append("ALLOW_LLM_IBKR_PAPER_TRADING=false")
+        if not getattr(config, "ibkr_paper_account_allowlist", ()):
+            warnings.append("LLM_IBKR_PAPER_ACCOUNT_ALLOWLIST is empty")
+    return warnings
 
 
 def _decision_lab_audit() -> DecisionAudit | None:
@@ -766,19 +868,43 @@ def api_meta():
 @app.get("/api/decision-lab/status")
 def api_decision_lab_status():
     config = SETTINGS.decision_agent
+    raw_mode = getattr(config, "mode", "off")
+    mode = str(getattr(raw_mode, "value", raw_mode)).strip().lower()
     audit = _decision_lab_audit()
     status = audit.status() if audit is not None else {
         "candidates": 0, "decisions": 0, "model_decisions": 0,
         "risk_decisions": 0, "execution_links": 0, "position_events": 0,
-        "outcomes": 0,
+        "outcomes": 0, "shadow_decisions": 0,
+        "internal_paper_executions": 0, "ibkr_paper_executions": 0,
+        "live_executions": 0, "executions_by_mode": {},
     }
     status.pop("database", None)
+    diagnostic_state = _provider_test_state()
     return {
-        "mode": str(config.mode),
+        "mode": mode,
         "provider": str(config.provider),
         "model": str(config.model or config.local_model or ""),
+        "news_enabled": bool(config.use_news),
+        "multi_provider_shadow": bool(config.multi_provider_shadow),
+        "decision_workers": int(config.decision_workers),
+        "workers": int(config.decision_workers),
+        "queue_depth": int(config.decision_queue_depth),
+        "candidate_expiry": float(config.candidate_expiry_seconds),
+        "paper_trading": bool(SETTINGS.paper_trading),
+        "dry_run": bool(SETTINGS.dry_run_mode),
+        "allow_llm_live_trading": bool(config.allow_live_trading),
+        "warnings": _decision_lab_warnings(config),
+        **diagnostic_state,
         "database_available": audit is not None,
         "paper_portfolio": _decision_lab_positions(),
+        "ibkr_paper_autonomous_enabled": mode == "ibkr_paper_autonomous",
+        "allow_llm_ibkr_paper_trading": bool(getattr(config, "allow_ibkr_paper_trading", False)),
+        # The dashboard does not connect to IBKR merely to render status.  A
+        # verified account must therefore be reported as not checked, never
+        # inferred from an allowlist or a socket port.
+        "paper_account_verified": None if mode == "ibkr_paper_autonomous" else False,
+        "paper_account_allowlisted": None if mode == "ibkr_paper_autonomous" else False,
+        "paper_account_status": "not_checked",
         **status,
     }
 
@@ -813,6 +939,56 @@ def api_decision_lab_performance():
 def api_decision_lab_providers():
     audit = _decision_lab_audit()
     return {"providers": audit.provider_health() if audit is not None else []}
+
+
+@app.post("/api/decision-lab/test-provider")
+def api_decision_lab_test_provider():
+    """Run a direct configured-provider WAIT diagnostic without trading state."""
+    config = SETTINGS.decision_agent
+    provider_name = str(config.provider).strip().lower()
+    model = str(config.model or config.local_model or "").strip()
+    started = time.perf_counter()
+    checked_at = datetime.now(timezone.utc).isoformat()
+    try:
+        provider = build_provider(config)
+        provider_name = str(getattr(provider, "provider_name", provider_name)).strip().lower()
+        model = str(getattr(provider, "model", model)).strip()
+        response = provider.decide(_provider_diagnostic_request(provider_name=provider_name, model=model))
+        action = getattr(getattr(response, "action", None), "value", getattr(response, "action", None))
+        if str(action).upper() != DecisionAction.WAIT.value:
+            raise DecisionProviderError("provider diagnostic returned a non-WAIT action")
+        latency_ms = round((time.perf_counter() - started) * 1000.0, 2)
+        state = _set_provider_test_state(
+            connection_status="connected",
+            last_provider_test_status="connected",
+            last_provider_test_at=checked_at,
+            last_provider_latency_ms=latency_ms,
+            last_provider_error=None,
+        )
+        return {
+            "ok": True,
+            "provider": provider_name,
+            "model": model,
+            "message": "Provider connectivity test successful.",
+            **state,
+        }
+    except Exception as exc:
+        latency_ms = round((time.perf_counter() - started) * 1000.0, 2)
+        safe_error = _safe_provider_diagnostic_error(exc)
+        state = _set_provider_test_state(
+            connection_status="error",
+            last_provider_test_status="error",
+            last_provider_test_at=checked_at,
+            last_provider_latency_ms=latency_ms,
+            last_provider_error=safe_error,
+        )
+        return {
+            "ok": False,
+            "provider": provider_name,
+            "model": model,
+            "error": safe_error,
+            **state,
+        }
 
 
 @app.post("/api/system/hard-reset")

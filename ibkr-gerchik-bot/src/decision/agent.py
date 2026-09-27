@@ -66,6 +66,7 @@ class AgentRuntimeContext:
     decision_deadline: datetime | None = None
     broker_positions: Sequence[Mapping[str, object]] = tuple()
     broker_open_orders: Sequence[Mapping[str, object]] = tuple()
+    broker_executions: Sequence[Mapping[str, object]] = tuple()
 
 
 @dataclass(frozen=True)
@@ -139,24 +140,46 @@ class AutonomousGerchikAgent:
             reasons.append(self.audit_error or "decision_database_unavailable")
         try:
             if hasattr(self.config, "validate"):
+                identity = self._broker_account_identity() if self.mode is AgentMode.IBKR_PAPER_AUTONOMOUS else None
                 self.config.validate(
                     paper_trading=getattr(SETTINGS, "paper_trading", True),
+                    dry_run=getattr(SETTINGS, "dry_run_mode", True),
                     account_id=account_id,
+                    paper_account_verified=(identity or {}).get("paper_verified") if identity else None,
+                    live_trading_enabled=getattr(getattr(SETTINGS, "inefficiency_reclaim", None), "allow_live_trading", False),
                 )
         except Exception as exc:
             reasons.append(str(exc))
-        if self.mode is AgentMode.LIVE_AUTONOMOUS:
-            if not bool(getattr(self.config, "allow_live_trading", False)):
+        if self.mode in {AgentMode.LIVE_AUTONOMOUS, AgentMode.IBKR_PAPER_AUTONOMOUS}:
+            identity = self._broker_account_identity()
+            paper_verified = bool(identity and identity.get("paper_verified") is True)
+            if self.mode is AgentMode.LIVE_AUTONOMOUS and not bool(getattr(self.config, "allow_live_trading", False)):
                 reasons.append("live_ai_permission_missing")
-            if bool(getattr(SETTINGS, "paper_trading", True)):
-                reasons.append("paper_trading_mode_enabled")
-            if bool(getattr(SETTINGS, "dry_run_mode", True)):
-                reasons.append("dry_run_mode_enabled")
+            if self.mode is AgentMode.LIVE_AUTONOMOUS:
+                if bool(getattr(SETTINGS, "paper_trading", True)):
+                    reasons.append("paper_trading_mode_enabled")
+                if bool(getattr(SETTINGS, "dry_run_mode", True)):
+                    reasons.append("dry_run_mode_enabled")
+            else:
+                if not bool(getattr(self.config, "allow_ibkr_paper_trading", False)):
+                    reasons.append("ibkr_paper_permission_missing")
+                if not bool(getattr(SETTINGS, "paper_trading", True)):
+                    reasons.append("paper_trading_mode_disabled")
+                if bool(getattr(SETTINGS, "dry_run_mode", True)):
+                    reasons.append("dry_run_mode_enabled")
+                if bool(getattr(self.config, "allow_live_trading", False)) or bool(
+                    getattr(getattr(SETTINGS, "inefficiency_reclaim", None), "allow_live_trading", False)
+                ):
+                    reasons.append("live_trading_permission_enabled")
+                if str(getattr(getattr(SETTINGS, "inefficiency_reclaim", None), "trading_mode", "paper")).lower() != "paper":
+                    reasons.append("legacy_trading_mode_not_paper")
             if self.order_manager is None:
                 reasons.append("order_manager_missing")
             if not account_id:
                 reasons.append("broker_account_id_unknown")
-            elif account_id not in tuple(getattr(self.config, "live_account_allowlist", ())):
+            elif self.mode is AgentMode.IBKR_PAPER_AUTONOMOUS and not paper_verified:
+                reasons.append("paper_account_not_verified")
+            elif account_id not in tuple(getattr(self.config, "live_account_allowlist", ()) if self.mode is AgentMode.LIVE_AUTONOMOUS else getattr(self.config, "ibkr_paper_account_allowlist", ())):
                 reasons.append("account_not_allowlisted")
             if self.provider is None:
                 try:
@@ -177,7 +200,32 @@ class AutonomousGerchikAgent:
                     self.reconcile_live_reservations()
                 except Exception:
                     reasons.append("live_reconciliation_unavailable")
+            if self.mode is AgentMode.IBKR_PAPER_AUTONOMOUS and self.audit is not None:
+                start_of_day = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
+                try:
+                    used = self.audit.count_executions_since(
+                        mode=self.mode.value,
+                        agent_id=str(getattr(self.config, "agent_id", "GERCHIK_LLM_01")),
+                        since=start_of_day,
+                    )
+                    if used >= int(getattr(self.config, "ibkr_paper_max_trades_per_day", 3)):
+                        reasons.append("ibkr_paper_daily_trade_cap")
+                except Exception:
+                    reasons.append("execution_count_unavailable")
         return not reasons, tuple(dict.fromkeys(reasons))
+
+    def _broker_account_identity(self) -> Mapping[str, object] | None:
+        broker = getattr(self.order_manager, "broker", None)
+        if broker is None or not bool(getattr(broker, "is_connected", False)):
+            return None
+        getter = getattr(broker, "get_account_identity", None)
+        if not callable(getter):
+            return None
+        try:
+            identity = getter()
+        except Exception:
+            return None
+        return identity if isinstance(identity, Mapping) else None
 
     def _provider_health_probe(self) -> None:
         """Validate a provider without exposing broker/account data or trading."""
@@ -218,11 +266,20 @@ class AutonomousGerchikAgent:
         )
 
     def _discover_account_id(self, context: AgentRuntimeContext) -> str | None:
-        if self.mode is not AgentMode.LIVE_AUTONOMOUS:
+        if self.mode not in {AgentMode.LIVE_AUTONOMOUS, AgentMode.IBKR_PAPER_AUTONOMOUS}:
             return context.account_id
         broker = getattr(self.order_manager, "broker", None)
         if broker is None or not bool(getattr(broker, "is_connected", False)):
             return None
+        if self.mode is AgentMode.IBKR_PAPER_AUTONOMOUS:
+            identity = self._broker_account_identity()
+            if not identity:
+                return None
+            discovered = str(identity.get("account_id", "") or "").strip()
+            configured = str(context.account_id or "").strip()
+            if configured and configured != discovered:
+                return None
+            return discovered or None
         configured = str(context.account_id or getattr(broker, "account_id", "") or "").strip()
         try:
             summary = broker.get_account_summary()
@@ -285,7 +342,7 @@ class AutonomousGerchikAgent:
         source_signal_id: str | None,
     ) -> AgentResult:
         candidate = trade_signal_to_candidate(signal, source_signal_id=source_signal_id, market_context=context.market_context)
-        if self.mode in {AgentMode.PAPER_AUTONOMOUS, AgentMode.LIVE_AUTONOMOUS} and candidate.metadata.get("identity_status") == "unstable":
+        if self.mode in {AgentMode.PAPER_AUTONOMOUS, AgentMode.IBKR_PAPER_AUTONOMOUS, AgentMode.LIVE_AUTONOMOUS} and candidate.metadata.get("identity_status") == "unstable":
             return self._queued_result(candidate, status="unstable_candidate", reason="stable_setup_identity_unavailable")
         queue_key = self._candidate_state_key(candidate, context)
         now = time.monotonic()
@@ -352,7 +409,7 @@ class AutonomousGerchikAgent:
 
     def reconcile_live_reservations(self) -> list[dict[str, object]]:
         """Resolve uncertain Live reservations without ever resubmitting."""
-        if self.mode is not AgentMode.LIVE_AUTONOMOUS or self.audit is None or self.order_manager is None:
+        if self.mode not in {AgentMode.LIVE_AUTONOMOUS, AgentMode.IBKR_PAPER_AUTONOMOUS} or self.audit is None or self.order_manager is None:
             return []
         broker = getattr(self.order_manager, "broker", None)
         if broker is None:
@@ -409,9 +466,11 @@ class AutonomousGerchikAgent:
             raise RuntimeError("broker_account_id_unknown")
         positions = broker.get_positions()
         open_orders = broker.get_open_orders()
+        executions = broker.get_executions()
         quote = market_data.get_quote(context.market_context.get("symbol", "") or "")
         # The candidate symbol is inserted by process_candidate before this call.
-        if not quote or quote.get("quote_status") == "missing":
+        quote_status = str(quote.get("quote_status", "") or "").lower() if quote else "missing"
+        if not quote or ("quote_status" in quote and quote_status in {"missing", "unknown", "unavailable"}):
             raise RuntimeError("quote_unavailable")
         age = quote_age_seconds(quote)
         if age is None:
@@ -422,6 +481,7 @@ class AutonomousGerchikAgent:
             current_positions=tuple(dict(item) for item in positions if float(item.get("position", 0.0) or 0.0) != 0.0),
             broker_positions=tuple(dict(item) for item in positions),
             broker_open_orders=tuple(dict(item) for item in open_orders),
+            broker_executions=tuple(dict(item) for item in executions),
             broker_connected=True,
             account_synced=True,
             quote=quote,
@@ -541,15 +601,15 @@ class AutonomousGerchikAgent:
             return AgentResult(status="disabled", action="NO_ACTION", candidate_id=candidate.candidate_id)
         if self.audit is None:
             return AgentResult(status="audit_unavailable", action="NO_ACTION", candidate_id=candidate.candidate_id)
-        if self.mode in {AgentMode.PAPER_AUTONOMOUS, AgentMode.LIVE_AUTONOMOUS} and self.audit.has_active_execution(candidate.candidate_id):
+        if self.mode in {AgentMode.PAPER_AUTONOMOUS, AgentMode.IBKR_PAPER_AUTONOMOUS, AgentMode.LIVE_AUTONOMOUS} and self.audit.has_active_execution(candidate.candidate_id):
             return AgentResult(
                 status="idempotent_skip",
                 action="NO_ACTION",
                 candidate_id=candidate.candidate_id,
                 reasons=("candidate_already_executed",),
             )
-        if self.mode is AgentMode.LIVE_AUTONOMOUS:
-            allowed, reasons = self.startup_guard(account_id=context.account_id)
+        if self.mode in {AgentMode.LIVE_AUTONOMOUS, AgentMode.IBKR_PAPER_AUTONOMOUS}:
+            allowed, reasons = self.startup_guard(account_id=self._discover_account_id(context))
             if not allowed:
                 return AgentResult(
                     status="startup_veto",
@@ -904,7 +964,7 @@ class AutonomousGerchikAgent:
         if self.audit is None:
             return AgentResult(status="audit_unavailable", action="NO_ACTION", candidate_id=candidate.candidate_id)
         context = self._deadline_context(context)
-        if self.mode in {AgentMode.PAPER_AUTONOMOUS, AgentMode.LIVE_AUTONOMOUS} and candidate.metadata.get("identity_status") == "unstable":
+        if self.mode in {AgentMode.PAPER_AUTONOMOUS, AgentMode.IBKR_PAPER_AUTONOMOUS, AgentMode.LIVE_AUTONOMOUS} and candidate.metadata.get("identity_status") == "unstable":
             return AgentResult(
                 status="unstable_candidate",
                 action="NO_ACTION",
@@ -914,7 +974,7 @@ class AutonomousGerchikAgent:
 
         agent_id = str(getattr(self.config, "agent_id", "GERCHIK_LLM_01"))
         account_id = context.account_id
-        if self.mode is AgentMode.LIVE_AUTONOMOUS:
+        if self.mode in {AgentMode.LIVE_AUTONOMOUS, AgentMode.IBKR_PAPER_AUTONOMOUS}:
             account_id = self._discover_account_id(context)
             allowed, reasons = self.startup_guard(account_id=account_id)
             if not allowed:
@@ -931,7 +991,7 @@ class AutonomousGerchikAgent:
             return AgentResult(status="audit_error", action="NO_ACTION", candidate_id=candidate.candidate_id)
 
         reservation = None
-        if self.mode in {AgentMode.PAPER_AUTONOMOUS, AgentMode.LIVE_AUTONOMOUS}:
+        if self.mode in {AgentMode.PAPER_AUTONOMOUS, AgentMode.IBKR_PAPER_AUTONOMOUS, AgentMode.LIVE_AUTONOMOUS}:
             try:
                 # The reservation references the durable candidate row through
                 # SQLite foreign keys, so persist the candidate before claiming
@@ -952,7 +1012,7 @@ class AutonomousGerchikAgent:
                         agent_id=agent_id,
                         candidate_id=candidate.candidate_id,
                         decision_id=request.decision_id,
-                    ) if self.mode is AgentMode.LIVE_AUTONOMOUS else None,
+                    ) if self.mode in {AgentMode.LIVE_AUTONOMOUS, AgentMode.IBKR_PAPER_AUTONOMOUS} else None,
                 )
             except Exception:
                 return AgentResult(status="audit_error", action="NO_ACTION", candidate_id=candidate.candidate_id)
@@ -1064,7 +1124,7 @@ class AutonomousGerchikAgent:
             return AgentResult(status="no_action", action=response.action.value, candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=response.reason_codes, latency_ms=latency_ms)
 
         effective_context = context
-        if self.mode is AgentMode.LIVE_AUTONOMOUS:
+        if self.mode in {AgentMode.LIVE_AUTONOMOUS, AgentMode.IBKR_PAPER_AUTONOMOUS}:
             try:
                 effective_context = self._refresh_live_context_for_candidate(candidate, context)
             except Exception as exc:
@@ -1098,6 +1158,8 @@ class AutonomousGerchikAgent:
                 data_age_seconds=effective_context.data_age_seconds,
                 current_price=effective_context.current_price,
                 isolated_paper=self.mode is AgentMode.PAPER_AUTONOMOUS or effective_context.isolated_paper,
+                max_open_positions=(int(getattr(self.config, "ibkr_paper_max_open_positions", 1)) if self.mode is AgentMode.IBKR_PAPER_AUTONOMOUS else None),
+                risk_per_trade_pct=(float(getattr(self.config, "ibkr_paper_risk_per_trade_pct", 0.10)) if self.mode is AgentMode.IBKR_PAPER_AUTONOMOUS else None),
             )
         try:
             self.audit.record_risk(
@@ -1170,7 +1232,7 @@ class AutonomousGerchikAgent:
                 self.audit.update_reservation(reservation.reservation_id, state="FAILED_PRE_SUBMIT", error="live_execution_adapter_missing")
             except Exception:
                 pass
-            return AgentResult(status="live_rejected", action="NO_ACTION", candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=("live_execution_adapter_missing",), risk=risk, latency_ms=latency_ms)
+            return AgentResult(status="ibkr_paper_rejected" if self.mode is AgentMode.IBKR_PAPER_AUTONOMOUS else "live_rejected", action="NO_ACTION", candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=("live_execution_adapter_missing",), risk=risk, latency_ms=latency_ms)
 
         ref = broker_order_ref(agent_id=request.agent_id, candidate_id=candidate.candidate_id, decision_id=request.decision_id)
         try:
@@ -1208,6 +1270,7 @@ class AutonomousGerchikAgent:
             "max_entry_chase_pct": float(getattr(self.config, "max_entry_chase_pct", 0.01)),
             "max_spread_pct": float(getattr(SETTINGS.risk, "max_spread_pct", 0.003)),
             "account_synced": True,
+            "quantity": risk.quantity,
         }
         try:
             success, payload = self.order_manager.execute_trade(
@@ -1227,23 +1290,24 @@ class AutonomousGerchikAgent:
 
         order_ids = {key: payload.get(key) for key in ("market_order_id", "stop_order_id", "limit_order_id") if payload.get(key) is not None}
         if success and payload.get("market_order_id"):
+            execution_status = "ibkr_paper_executed" if self.mode is AgentMode.IBKR_PAPER_AUTONOMOUS else "live_executed"
             try:
-                self.audit.record_execution(decision_id=request.decision_id, candidate_id=candidate.candidate_id, status="live_executed", order_ids=order_ids, mode=self.mode.value, agent_id=request.agent_id, reservation_id=reservation.reservation_id)
+                self.audit.record_execution(decision_id=request.decision_id, candidate_id=candidate.candidate_id, status=execution_status, order_ids=order_ids, mode=self.mode.value, agent_id=request.agent_id, reservation_id=reservation.reservation_id)
             except Exception:
                 try:
                     self.audit.update_reservation(reservation.reservation_id, state="RECONCILIATION_REQUIRED", error="post_submit_audit_failed", order_ids=order_ids)
                 except Exception:
                     pass
                 return AgentResult(status="reconciliation_required", action="NO_ACTION", candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=("post_submit_audit_failed",), risk=risk, latency_ms=latency_ms)
-            return AgentResult(status="live_executed", action=DecisionAction.ENTER.value, candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=tuple(str(item) for item in payload.get("reasons", ())), risk=risk, execution=payload, latency_ms=latency_ms)
+            return AgentResult(status=execution_status, action=DecisionAction.ENTER.value, candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=tuple(str(item) for item in payload.get("reasons", ())), risk=risk, execution=payload, latency_ms=latency_ms)
 
         state = "RECONCILIATION_REQUIRED" if order_ids else "FAILED_PRE_SUBMIT"
         try:
             self.audit.update_reservation(reservation.reservation_id, state=state, error="broker_rejected", order_ids=order_ids)
-            self.audit.record_execution(decision_id=request.decision_id, candidate_id=candidate.candidate_id, status="live_rejected", order_ids=order_ids, mode=self.mode.value, agent_id=request.agent_id, reservation_id=reservation.reservation_id)
+            self.audit.record_execution(decision_id=request.decision_id, candidate_id=candidate.candidate_id, status="ibkr_paper_rejected" if self.mode is AgentMode.IBKR_PAPER_AUTONOMOUS else "live_rejected", order_ids=order_ids, mode=self.mode.value, agent_id=request.agent_id, reservation_id=reservation.reservation_id)
         except Exception:
             pass
-        return AgentResult(status="live_rejected", action="NO_ACTION", candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=tuple(str(item) for item in payload.get("reasons", ())) or ("live_execution_rejected",), risk=risk, execution=payload, latency_ms=latency_ms)
+        return AgentResult(status="ibkr_paper_rejected" if self.mode is AgentMode.IBKR_PAPER_AUTONOMOUS else "live_rejected", action="NO_ACTION", candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=tuple(str(item) for item in payload.get("reasons", ())) or ("live_execution_rejected",), risk=risk, execution=payload, latency_ms=latency_ms)
 
     def run_paper_safety_cycle(self, market_data: Any, *, now: float | None = None) -> list[dict[str, object]]:
         """Run deterministic Paper protection independently of the LLM."""
@@ -1331,7 +1395,11 @@ def default_agent(order_manager: Any | None = None) -> AutonomousGerchikAgent:
     mode = AgentMode.from_value(config.mode)
     if mode is AgentMode.OFF:
         return AutonomousGerchikAgent(config=config)
-    key = (mode.value, str(config.database_path), id(order_manager) if mode is AgentMode.LIVE_AUTONOMOUS else 0)
+    key = (
+        mode.value,
+        str(config.database_path),
+        id(order_manager) if mode in {AgentMode.LIVE_AUTONOMOUS, AgentMode.IBKR_PAPER_AUTONOMOUS} else 0,
+    )
     if key not in _DEFAULT_AGENTS:
         _DEFAULT_AGENTS[key] = AutonomousGerchikAgent(config=config, order_manager=order_manager)
     return _DEFAULT_AGENTS[key]

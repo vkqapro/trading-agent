@@ -112,6 +112,31 @@ def test_decision_response_accepts_only_allowed_actions_and_finite_confidence() 
     assert response.confidence == 0.84
 
 
+def test_decision_response_accepts_bounded_ranked_action_objects() -> None:
+    response = DecisionResponse.from_mapping(
+        {
+            "action": "WAIT",
+            "confidence": 1.0,
+            "ranked_actions": [{"action": "WAIT", "score": 1.0}],
+        },
+        allowed_actions=("WAIT",),
+    )
+
+    assert response.ranked_actions == (("WAIT", 1.0),)
+
+
+def test_decision_response_rejects_incomplete_ranked_action_objects() -> None:
+    with pytest.raises(ValueError, match="require action and score"):
+        DecisionResponse.from_mapping(
+            {
+                "action": "WAIT",
+                "confidence": 1.0,
+                "ranked_actions": [{"action": "WAIT"}],
+            },
+            allowed_actions=("WAIT",),
+        )
+
+
 def test_decision_response_rejects_off_menu_or_invalid_json_shapes() -> None:
     with pytest.raises(ValueError, match="allowed action"):
         DecisionResponse.from_mapping(

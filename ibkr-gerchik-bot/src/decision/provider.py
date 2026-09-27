@@ -39,7 +39,9 @@ def build_system_prompt() -> str:
         "Do not call a broker, exchange, or account API.\n"
         "WAIT is valid. REJECT is valid. No trade is preferable to violating setup quality.\n"
         "Use the supplied Gerchik level, ATR, confirmation, data-quality and risk context.\n"
-        "Return only JSON with action, confidence, ranked_actions, reason_codes, and short summary."
+        "Return only JSON with action, confidence, ranked_actions, reason_codes, and short summary. "
+        "Use ranked_actions as an array of [action, score] pairs, for example "
+        "[[\"WAIT\", 1.0]]. Use reason_codes as an array of strings."
     )
 
 
