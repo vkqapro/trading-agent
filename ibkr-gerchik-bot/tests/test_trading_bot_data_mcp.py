@@ -55,6 +55,15 @@ def test_level_side_filter_uses_current_price_not_reference(persisted):
     assert above["levels"] == []
 
 
+def test_chart_renders_closed_candles_and_filtered_levels(persisted):
+    result = service.render_symbol_chart("AAPL", lookback_days=60, show_levels=True, min_strength=30, width=800, height=500)
+    assert result["metadata"]["actual_bar_count"] == 2
+    assert result["metadata"]["latest_closed_price"] == 12
+    assert result["metadata"]["levels_total"] == 1
+    assert result["metadata"]["levels_rendered"] == 1
+    assert result["image_bytes"].startswith(b"\x89PNG")
+
+
 def test_invalid_level_set_is_stable_error():
     result = get_symbol_levels("AAPL", level_set="calculated")
     assert result["error"]["code"] == "INVALID_LEVEL_SET"

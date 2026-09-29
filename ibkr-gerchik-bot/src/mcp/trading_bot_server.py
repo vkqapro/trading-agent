@@ -1,11 +1,12 @@
 """Standalone read-only Trading Bot Data MCP over Streamable HTTP."""
 from __future__ import annotations
 
+import json
 import logging
 import os
 from typing import Any, Callable
 
-from mcp.server.fastmcp import FastMCP
+from mcp.server.fastmcp import FastMCP, Image
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.routing import Route
@@ -17,6 +18,7 @@ from .trading_data_service import (
     get_symbol_history as _get_symbol_history,
     get_symbol_levels as _get_symbol_levels,
     get_symbol_snapshot as _get_symbol_snapshot,
+    render_symbol_chart as _render_symbol_chart,
 )
 
 LOGGER = logging.getLogger("trading_bot_data")
@@ -91,6 +93,47 @@ def get_symbol_levels(
 
 
 @mcp.tool()
+def render_symbol_chart(
+    symbol: str,
+    timeframe: str = "1D",
+    lookback_days: int = 60,
+    start: str | None = None,
+    end: str | None = None,
+    show_levels: bool = False,
+    level_set: str = "consolidated",
+    min_strength: float | None = None,
+    level_type: str | None = None,
+    side: str | None = None,
+    level_labels: str = "compact",
+    show_current_price: bool = True,
+    include_volume: bool = True,
+    width: int | None = None,
+    height: int | None = None,
+) -> list[Any]:
+    """Render a PNG candlestick chart from stored Trading Bot data.
+
+    Uses closed candles by default and can overlay the existing raw or
+    consolidated level zones. It does not fetch market data, calculate new
+    levels, create signals, or place orders. The response includes JSON
+    provenance metadata followed by the PNG image.
+    """
+    try:
+        result = _render_symbol_chart(
+            symbol=symbol, timeframe=timeframe, lookback_days=lookback_days,
+            start=start, end=end, show_levels=show_levels, level_set=level_set,
+            min_strength=min_strength, level_type=level_type, side=side,
+            level_labels=level_labels, show_current_price=show_current_price,
+            include_volume=include_volume, width=width, height=height,
+        )
+        return [json.dumps(result["metadata"], indent=2), Image(data=result["image_bytes"], format="png")]
+    except DataError as exc:
+        return [json.dumps({"error": {"code": exc.code, "message": exc.message}})]
+    except Exception:
+        LOGGER.exception("MCP chart rendering failed")
+        return [json.dumps({"error": {"code": "DATA_SOURCE_UNAVAILABLE", "message": "Chart rendering is unavailable"}})]
+
+
+@mcp.tool()
 def get_level_context(symbol: str, level_price: float) -> dict[str, Any]:
     """Return persisted level metadata within 0.005 price units.
 
@@ -115,7 +158,7 @@ def main() -> None:
     if not ENABLED:
         raise SystemExit("Trading Bot Data MCP is disabled (TRADING_BOT_MCP_ENABLED=false)")
     logging.basicConfig(level=os.getenv("TRADING_BOT_MCP_LOG_LEVEL", "INFO"))
-    LOGGER.info("Trading Bot Data MCP server started transport=streamable-http host=%s port=%s tools=5", HOST, PORT)
+    LOGGER.info("Trading Bot Data MCP server started transport=streamable-http host=%s port=%s tools=6", HOST, PORT)
     uvicorn.run(_app(), host=HOST, port=PORT, log_level=os.getenv("TRADING_BOT_MCP_LOG_LEVEL", "info").lower())
 
 
