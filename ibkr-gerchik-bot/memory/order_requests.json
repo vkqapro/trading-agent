@@ -2863,6 +2863,58 @@
         "limit_order_id": 888
       },
       "message": "Error 163, reqId 886: The following order \"ID:886\" price exceeds  the Percentage constraint of 3%. Restriction is specified in Precautionary Settings of Global Configuration/Presets."
+    },
+    {
+      "id": "9b96a175a69e",
+      "action": "place",
+      "status": "done",
+      "created_at": "2026-09-28T14:05:01",
+      "updated_at": "2026-09-28T14:05:07",
+      "source": "MARKET_SCREENER_MANUAL",
+      "live": false,
+      "symbol": "TREX",
+      "signal": "BUY",
+      "direction": "long",
+      "entry": 44.95,
+      "stop": 43.8,
+      "target": 47.82500000000002,
+      "market_only": false,
+      "manual_setup": true,
+      "entry_order_type": "LIMIT",
+      "level_price": null,
+      "level_type": "resistance",
+      "strategy": "market_screener_prb1_manual_setup",
+      "nearest_upper_level": null,
+      "nearest_lower_level": null,
+      "reward_risk": 2.5,
+      "confidence": 0.8152,
+      "quantity": 22,
+      "result": {
+        "status": "executed",
+        "dry_run": false,
+        "symbol": "TREX",
+        "strategy": "market_screener_prb1_manual_setup",
+        "level_type": "resistance",
+        "direction": "long",
+        "signal": "BUY",
+        "entry": 44.95,
+        "stop_loss": 43.8,
+        "target": 47.82500000000002,
+        "reward_risk": 2.5,
+        "partial_targets": [],
+        "quantity": 22,
+        "market_order_id": 897,
+        "stop_order_id": 898,
+        "limit_order_id": 899,
+        "manual_override": true,
+        "entry_order_type": "LIMIT",
+        "broker_statuses": {
+          "market_order": "Submitted",
+          "stop_order": "PreSubmitted",
+          "limit_order": "PreSubmitted"
+        }
+      },
+      "message": "Order submitted to paper account (qty 22)."
     }
   ]
 }

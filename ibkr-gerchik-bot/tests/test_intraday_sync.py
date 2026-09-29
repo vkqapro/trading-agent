@@ -128,6 +128,7 @@ class IntradaySyncTests(TestCase):
                 return False
 
         collection_calls = []
+        completed_scans = []
         market_data = MarketDataStub()
         with (
             patch("src.jobs.intraday.build_job_dependencies", return_value=(market_data, object())),
@@ -156,7 +157,10 @@ class IntradaySyncTests(TestCase):
                 now_provider=lambda: datetime(2026, 6, 22, 11, 0, tzinfo=TZ),
                 sleep_provider=lambda _seconds: None,
                 initial_trading_halt_reasons=["account_not_synced"],
+                scan_complete_callback=lambda payload, **kwargs: completed_scans.append((payload, kwargs)),
             )
 
         self.assertEqual(actions, [])
         self.assertEqual(collection_calls, [["AAPL"]])
+        self.assertEqual(len(completed_scans), 1)
+        self.assertEqual(completed_scans[0][0]["symbols"], ("AAPL",))

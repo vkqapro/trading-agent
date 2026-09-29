@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from datetime import datetime, timezone
 
 import pytest
@@ -103,6 +104,16 @@ def test_openai_compatible_provider_parses_strict_json_without_exposing_secrets(
     assert session.calls[0]["url"] == "http://model.test/v1/chat/completions"
     assert "secret-do-not-log" not in str(session.calls[0].get("json"))
     assert session.calls[0]["headers"]["Authorization"] == "Bearer secret-do-not-log"
+    observation = provider.last_observation
+    assert observation["prompt_version"] == "decision-v1"
+    assert observation["provider_status"] == "SUCCESS"
+    assert observation["request_payload"]["system_prompt"] == build_system_prompt()
+    assert observation["request_payload"]["allowed_actions"] == ["ENTER", "WAIT", "REJECT"]
+    assert observation["request_payload"]["user_prompt"] == json.loads(
+        session.calls[0]["json"]["messages"][1]["content"]
+    )
+    assert observation["parsed_response_json"]["action"] == "WAIT"
+    assert observation["raw_model_text_sanitized"].startswith('{"action":"WAIT"')
 
 
 def test_provider_rejects_invalid_json_and_does_not_fail_open() -> None:
@@ -120,6 +131,7 @@ def test_provider_rejects_invalid_json_and_does_not_fail_open() -> None:
 
     with pytest.raises(DecisionProviderError, match="invalid decision"):
         provider.decide(_request())
+    assert provider.last_observation["provider_error_category"] == "SCHEMA_VALIDATION_ERROR"
 
 
 def test_provider_http_failure_is_a_provider_error() -> None:
@@ -140,3 +152,49 @@ def test_prompt_forbids_arbitrary_prices_and_broker_access() -> None:
     assert "Do not invent prices" in prompt
     assert "provided action menu" in prompt
     assert "broker" in prompt.lower()
+
+
+def test_provider_records_usage_finish_reason_and_classifies_truncated_output() -> None:
+    session = FakeSession(
+        FakeResponse(
+            {
+                "choices": [{"finish_reason": "length", "message": {"content": '{"action":"WAIT"}'}}],
+                "usage": {"prompt_tokens": 120, "completion_tokens": 900, "total_tokens": 1020},
+            }
+        )
+    )
+    provider = HttpDecisionProvider(
+        provider_name="local_openai",
+        model="test-model",
+        base_url="http://model.test/v1",
+        session=session,
+    )
+
+    with pytest.raises(DecisionProviderError) as error:
+        provider.decide(_request())
+
+    assert error.value.category == "OUTPUT_TRUNCATED"
+    assert provider.last_observation["finish_reason"] == "length"
+    assert provider.last_observation["token_usage"]["completion_tokens"] == 900
+    assert provider.last_observation["provider_status"] == "FAILED"
+
+
+def test_provider_uses_expanded_completion_budget() -> None:
+    session = FakeSession(
+        FakeResponse(
+            {
+                "choices": [{
+                    "finish_reason": "stop",
+                    "message": {"content": '{"action":"WAIT","confidence":0.5,"reason_codes":[],"summary":"Wait."}'},
+                }]
+            }
+        )
+    )
+    provider = HttpDecisionProvider(
+        provider_name="local_openai",
+        model="test-model",
+        base_url="http://model.test/v1",
+        session=session,
+    )
+    provider.decide(_request())
+    assert session.calls[0]["json"]["max_tokens"] == 900

@@ -63,7 +63,7 @@ class Provider:
 
     def decide(self, request):
         self.calls += 1
-        action = DecisionAction.WAIT if request.snapshot.candidate.strategy == "provider_health" else self.action
+        action = DecisionAction.WAIT if request.snapshot.candidate.metadata.get("non_trading") else self.action
         return DecisionResponse(
             action=action,
             confidence=0.9,

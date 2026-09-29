@@ -4,12 +4,34 @@ from __future__ import annotations
 
 import asyncio
 import math
+import re
 import time
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from src.config import LOGGER, SETTINGS, fx_pair_components
+
+
+_BROKER_ACCOUNT_ID_RE = re.compile(r"^(?:DU|U)[A-Z0-9]+$", re.IGNORECASE)
+_ACCOUNT_SUMMARY_AGGREGATES = frozenset({"ALL", "BASE"})
+
+
+def _normalized_broker_account_id(value: object) -> str | None:
+    """Return only a supported brokerage account identity."""
+    normalized = str(value or "").strip().upper()
+    if not normalized or not _BROKER_ACCOUNT_ID_RE.fullmatch(normalized):
+        return None
+    return normalized
+
+
+def _account_values(value: object) -> list[str]:
+    """Normalize ib_insync's list-or-comma-separated managed account result."""
+    if isinstance(value, str):
+        return [part.strip() for part in value.split(",") if part.strip()]
+    if isinstance(value, (list, tuple, set, frozenset)):
+        return [str(part).strip() for part in value if str(part).strip()]
+    return []
 
 
 def _ensure_event_loop() -> None:
@@ -249,45 +271,91 @@ class IBKRClient:
     def get_account_identity(self) -> Dict[str, Any]:
         """Return conservative account/environment evidence without trading.
 
-        IBKR account IDs beginning with ``DU`` are Paper accounts in this
-        deployment.  The identity is obtained from accountSummary rather than
-        inferred from the configured socket port; ports are operator-changeable.
-        Multiple or unrecognized accounts are intentionally unknown.
+        ``managedAccounts()`` is the primary IBKR identity source.  The
+        account-summary rows are corroborating evidence only: aggregate rows
+        such as ``All``/``BASE`` are ignored, while a second real account or
+        an unknown non-aggregate identifier fails closed.  Socket ports are
+        never used as proof of Paper versus Live.
         """
-        summary = self.get_account_summary()
-        accounts = sorted({
-            str(item.get("account", "") or "").strip()
-            for item in summary
-            if isinstance(item, dict) and str(item.get("account", "") or "").strip()
+        self.ensure_connection()
+        managed_raw = self.ib.managedAccounts()
+        managed_values = _account_values(managed_raw)
+        managed_invalid = [
+            value
+            for value in managed_values
+            if _normalized_broker_account_id(value) is None
+        ]
+        managed_accounts = sorted({
+            normalized
+            for value in managed_values
+            if (normalized := _normalized_broker_account_id(value)) is not None
         })
-        if len(accounts) != 1:
+
+        summary = self.get_account_summary()
+        summary_real_accounts: set[str] = set()
+        summary_unknown_accounts: set[str] = set()
+        for item in summary:
+            if not isinstance(item, dict):
+                continue
+            raw_account = str(item.get("account", "") or "").strip()
+            if not raw_account:
+                continue
+            normalized_raw = raw_account.upper()
+            if normalized_raw in _ACCOUNT_SUMMARY_AGGREGATES:
+                continue
+            normalized = _normalized_broker_account_id(raw_account)
+            if normalized is None:
+                summary_unknown_accounts.add(normalized_raw)
+            else:
+                summary_real_accounts.add(normalized)
+
+        evidence: str | None = None
+        if not managed_accounts:
+            evidence = "managed_accounts_missing"
+        elif managed_invalid:
+            evidence = "managed_accounts_unknown_format"
+        elif len(managed_accounts) != 1:
+            evidence = "managed_accounts_ambiguous"
+        elif summary_unknown_accounts:
+            evidence = "account_summary_unknown_id"
+        elif len(summary_real_accounts) > 1:
+            evidence = "account_summary_ambiguous"
+        elif summary_real_accounts and summary_real_accounts != set(managed_accounts):
+            evidence = "managed_account_summary_conflict"
+
+        if evidence is not None:
             return {
-                "account_id": accounts[0] if len(accounts) == 1 else None,
-                "accounts": accounts,
+                "account_id": managed_accounts[0] if len(managed_accounts) == 1 else None,
+                "accounts": managed_accounts,
+                "managed_accounts": managed_accounts,
+                "summary_accounts": sorted(summary_real_accounts),
                 "environment": "unknown",
                 "paper_verified": False,
-                "evidence": "account_summary_ambiguous",
+                "evidence": evidence,
             }
-        account_id = accounts[0]
+
+        account_id = managed_accounts[0]
         normalized = account_id.upper()
         if normalized.startswith("DU"):
             environment = "paper"
             paper_verified = True
-            evidence = "ibkr_account_id_du_prefix"
+            identity_evidence = "ibkr_managed_account_du_prefix"
         elif normalized.startswith("U"):
             environment = "live"
             paper_verified = False
-            evidence = "ibkr_account_id_live_prefix"
+            identity_evidence = "ibkr_managed_account_u_prefix"
         else:
             environment = "unknown"
             paper_verified = False
-            evidence = "ibkr_account_id_unrecognized"
+            identity_evidence = "ibkr_managed_account_unrecognized"
         return {
             "account_id": account_id,
-            "accounts": accounts,
+            "accounts": managed_accounts,
+            "managed_accounts": managed_accounts,
+            "summary_accounts": sorted(summary_real_accounts),
             "environment": environment,
             "paper_verified": paper_verified,
-            "evidence": evidence,
+            "evidence": identity_evidence,
         }
 
     def get_positions(self) -> List[Dict[str, Any]]:

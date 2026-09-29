@@ -124,13 +124,26 @@ def next_scan_time(current_time: datetime, interval_seconds: int) -> datetime:
     return current_time + timedelta(seconds=sleep_seconds)
 
 
-def sleep_until(next_run: datetime, now_provider: NowProvider, sleep_provider: SleepProvider) -> None:
+def sleep_until(
+    next_run: datetime,
+    now_provider: NowProvider,
+    sleep_provider: SleepProvider,
+    stop_event: object | None = None,
+    poll_callback: Callable[[], object] | None = None,
+) -> None:
     """Sleep in bounded chunks until the requested time."""
     while True:
+        if stop_event is not None and bool(getattr(stop_event, "is_set", lambda: False)()):
+            return
         remaining = (next_run - now_provider()).total_seconds()
         if remaining <= 0:
             return
         sleep_provider(min(remaining, 30.0))
+        if poll_callback is not None:
+            try:
+                poll_callback()
+            except Exception:
+                LOGGER.debug("Bounded worker poll callback failed", exc_info=True)
 
 
 def _lock_is_stale(lock_path: Path) -> bool:
@@ -396,6 +409,12 @@ def _signal_detail(
         "nearest_level": _price_value(nearest_level),
         "nearest_level_type": nearest_level_type,
         "reward_risk": _price_value(signal.reward_risk),
+        "atr": _price_value(signal.atr or signal.atr_used),
+        "risk_per_share": _price_value(signal.risk_per_share),
+        "confidence": _price_value(signal.confidence),
+        "source_bar_timestamp": signal.metadata.get("source_bar_timestamp"),
+        "signal_timestamp": signal.metadata.get("signal_timestamp"),
+        "metadata": dict(signal.metadata or {}),
         "status": status,
         "reason": _normalize_skip_reason(reason),
     }
@@ -652,6 +671,7 @@ def run_entry_scan(
     scan_time: Optional[datetime] = None,
     intraday_bars_by_symbol: Optional[Dict[str, pd.DataFrame]] = None,
     decision_agent: object | None = None,
+    decision_controlled: bool = False,
 ) -> Dict[str, object]:
     """Run one deterministic entry scan over the prepared watchlist."""
     current_time = scan_time or session_now()
@@ -673,7 +693,7 @@ def run_entry_scan(
     LOGGER.info("%s scan started at %s", stage_name, current_time.isoformat())
 
     news_disabled_for_ai = autonomous_ai_enabled and not autonomous_ai_uses_news
-    shadow_legacy_news_deferred = agent_mode is AgentMode.SHADOW and news_disabled_for_ai
+    shadow_legacy_news_deferred = agent_mode is AgentMode.SHADOW and news_disabled_for_ai and not decision_controlled
 
     def _news_disabled_context() -> Dict[str, object]:
         return {
@@ -751,6 +771,13 @@ def run_entry_scan(
         ai_macro_context = _news_disabled_context() if news_disabled_for_ai else macro_context
         quote_last = float(quote.get("last", 0.0) or 0.0)
         quote_age = quote_age_seconds(quote)
+        try:
+            first_unstable_minutes = market_data.unstable_open_window(current_time)
+        except TypeError:
+            # Keep lightweight/test market-data adapters compatible with the
+            # original no-argument protocol while production adapters can use
+            # an explicit session timestamp.
+            first_unstable_minutes = market_data.unstable_open_window()
         agent_context = AgentRuntimeContext(
             account_id=getattr(getattr(order_manager, "broker", None), "account_id", None),
             account_equity=account_equity,
@@ -761,7 +788,7 @@ def run_entry_scan(
             broker_connected=bool(getattr(order_manager.broker, "is_connected", False)),
             account_synced=False,
             market_open=market_data.market_is_open(current_time),
-            first_unstable_minutes=market_data.unstable_open_window(current_time),
+            first_unstable_minutes=first_unstable_minutes,
             symbol_news_risk=(ai_symbol_news_context.get("risk_level") == "HIGH") if autonomous_ai_uses_news else False,
             macro_risk=(ai_macro_context.get("risk_level") == "HIGH") if autonomous_ai_uses_news else False,
             atr_has_room=atr_ok and trend_ok,
@@ -1014,6 +1041,24 @@ def run_entry_scan(
                     )
                 )
                 LOGGER.info("%s skip %s: %s", stage_name, symbol, atr_detail_reason)
+                continue
+
+            if decision_controlled and agent_mode is not AgentMode.OFF and not shadow_ai_pre_submitted:
+                # Decision Lab owns the next LLM step. Preserve the completed
+                # deterministic signal as evidence and do not fall through to
+                # either the legacy LLM submission or a direct broker order.
+                signal_details.append(
+                    _signal_detail(
+                        signal=signal,
+                        plan=plan,
+                        quote=quote,
+                        reason="decision_lab_controlled",
+                        status="available",
+                        reference_price=intraday_reference_price,
+                    )
+                )
+                symbol_reasons.append("decision_lab_controlled")
+                symbol_result_recorded = True
                 continue
 
             if agent_mode is not AgentMode.OFF and not shadow_ai_pre_submitted:

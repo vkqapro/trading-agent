@@ -9,49 +9,12 @@ call and never edits ``.env`` or starts a worker.
 from __future__ import annotations
 
 import argparse
-import os
-import sqlite3
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import quote
 
 
 ROOT = Path(__file__).resolve().parents[1]
-REQUIRED_TABLES = {
-    "candidates", "decision_snapshots", "model_decisions", "risk_decisions",
-    "execution_links", "execution_reservations", "provider_health",
-}
-
-
-def read_only_schema(path: Path) -> tuple[bool, str]:
-    if not path.exists():
-        return False, "not initialized"
-    try:
-        sqlite_path = quote(path.resolve().as_posix(), safe="/:\\")
-        with sqlite3.connect(f"file:{sqlite_path}?mode=ro", uri=True, timeout=2.0) as connection:
-            tables = {str(row[0]) for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")}
-    except (OSError, sqlite3.Error) as exc:
-        return False, f"unreadable: {exc}"
-    missing = sorted(REQUIRED_TABLES - tables)
-    return (False, "missing tables: " + ", ".join(missing)) if missing else (True, "schema available")
-
-
-def read_only_unresolved(path: Path, mode: str) -> tuple[bool, str]:
-    if not path.exists():
-        return True, "database not initialized"
-    try:
-        sqlite_path = quote(path.resolve().as_posix(), safe="/:\\")
-        with sqlite3.connect(f"file:{sqlite_path}?mode=ro", uri=True, timeout=2.0) as connection:
-            count = connection.execute(
-                "SELECT COUNT(*) FROM execution_reservations WHERE mode=? AND state IN ('RESERVED','READY_TO_SUBMIT','SUBMITTING','RECONCILIATION_REQUIRED')",
-                (mode,),
-            ).fetchone()[0]
-    except (OSError, sqlite3.Error) as exc:
-        return False, f"unreadable: {exc}"
-    return (False, f"{count} unresolved reservation(s)") if count else (True, "no unresolved reservations")
-
-
 def provider_check(config) -> tuple[bool, str]:
     from src.decision.models import AgentMode, DecisionAction, DecisionCandidate, DecisionRequest, DecisionSnapshot
     from src.decision.provider import build_provider
@@ -87,6 +50,7 @@ def main(argv: list[str] | None = None) -> int:
 
     sys.path.insert(0, str(ROOT))
     from src.config import SETTINGS
+    from src.jobs.autonomous_stock_preflight import read_only_schema, read_only_unresolved
 
     config = SETTINGS.decision_agent
     mode = str(config.mode).strip().lower()
@@ -161,7 +125,7 @@ def main(argv: list[str] | None = None) -> int:
         print("IBKR PAPER AUTONOMOUS PREFLIGHT: NOT READY")
         print("failed checks: " + ", ".join(failures))
         return 1
-    print("IBKR PAPER AUTONOMOUS PREFLIGHT: READY FOR CONTROLLED MANUAL VALIDATION")
+    print("IBKR PAPER AUTONOMOUS PREFLIGHT: READY")
     return 0
 
 

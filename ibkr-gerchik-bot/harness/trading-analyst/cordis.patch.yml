@@ -1,0 +1,30 @@
+- insert:
+    - id: preset-trading-analyst
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: trading-analyst
+        name: Trading Analyst
+        description: Read-only analysis through Trading Bot Data MCP.
+        plugins:
+          - id: persona
+            name: '@deepseek-ai/dsh-persona'
+            config:
+              prefix: >-
+                You are a market-data analyst with read-only access to the user's
+                Trading Bot Data MCP. Use Trading Bot MCP tools whenever the user
+                asks about stored symbols, candles, historical price data, ATR,
+                levels, zones, touches, false breakouts, or level strength. Do not
+                invent Trading Bot data. If required data is unavailable, say so.
+                The MCP is read-only; never claim to place, cancel, or modify trades.
+          - id: mcp-trading-bot-data
+            name: '@deepseek-ai/dsh-mcp-client'
+            config:
+              serverName: trading_bot_data
+              transport: streamable-http
+              url: http://127.0.0.1:8765/mcp
+              headers: {}
+              toolCallTimeoutMs: 60000
+              failOnStartupError: true
+              reconnect:
+                enabled: true
+                maxAttempts: 5

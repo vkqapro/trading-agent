@@ -30,6 +30,7 @@ stop, target, price, order type, account, or execution venue.
 | `off` | Yes | No | No | None |
 | `shadow` | Yes | Yes | No | None |
 | `paper_autonomous` | Entry candidate is handed to the agent | Yes | No | Isolated `LLM_AGENT` JSON ledger |
+| `ibkr_paper_autonomous` | Entry candidate is handed to the agent | Yes | Only through verified Paper IBKR gates | Allowlisted IBKR Paper account and Decision Lab audit |
 | `live_autonomous` | Entry candidate is handed to the agent | Yes | Only after every hard gate | Existing `OrderManager` only |
 
 Shadow mode is asynchronous and the existing deterministic execution path
@@ -357,3 +358,28 @@ successful trades per UTC day, and 0.10 percent risk per trade by default.
 The provider selects only `ENTER`, `WAIT`, or `REJECT`; it never selects
 quantity, stop, target, account, or order type. News is disabled for this
 mode by policy.
+
+## Persistent dashboard lifecycle
+
+`run_react_dashboard.cmd` is the single startup command for the local stack.
+In startup order it launches the market-data collector, the existing
+`execute_requests` worker, the crypto worker, `src.jobs.autonomous_stock_worker`,
+and the FastAPI dashboard. The autonomous stock worker is a resident
+supervisor: it invokes `premarket` once, then invokes the existing
+`run_open()` loop and waits for it to finish, then invokes the existing
+`run_intraday()` loop and waits for it to finish. It does not create a second
+scan loop and autonomous LLM entries do not use the file-backed execute-request
+queue.
+
+The worker remains resident in `MARKET CLOSED`, including overnight and
+weekends, and retries temporary provider/TWS/database failures with new entries
+disabled. A provider-only failure leaves deterministic position protection
+running while the dashboard reports `RUNNING` plus `new entries blocked`.
+`memory/runtime/autonomous_stock_worker.json` is a credential-free heartbeat
+with state, session, mode, provider/broker status, entry permission, and the
+last safe error. An exclusive PID-bearing lock prevents a second autonomous
+worker. `stop_react_dashboard.cmd` signals that worker first, waits for its
+graceful shutdown, then stops execute, market-data, crypto, and dashboard
+processes. Hard Reset uses the same order and preserves valid protective
+brackets; restart reconciliation must complete before new Paper entries are
+enabled.

@@ -12,6 +12,7 @@ echo   Vitaly's Trading Bot  STOP REACT DASHBOARD
 echo  ============================================================
 echo   Stopping:
 echo     - React dashboard API on 127.0.0.1:8550
+echo     - Persistent autonomous stock worker
 echo     - IBKR market-data collector
 echo     - Paper execute worker
 echo     - OKX crypto collector/analyzer
@@ -38,7 +39,7 @@ if not "%STOP_EXIT%"=="0" (
 )
 
 echo.
-echo  [OK] All React dashboard services were stopped and verified.
+echo  [OK] All React dashboard services, including the autonomous stock worker, were stopped and verified.
 
 :finish
 echo.

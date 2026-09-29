@@ -20,6 +20,7 @@ from src.config import SETTINGS
 from src.strategy.signal_models import TradeSignal
 
 from .audit import DecisionAudit
+from .applicability import evaluate_candidate_applicability
 from .candidate_adapter import trade_signal_to_candidate
 from .identity import broker_order_ref, order_fingerprint
 from .market import quote_age_seconds, quote_last, quote_spread_pct
@@ -35,6 +36,9 @@ from .models import (
 from .policy import AutonomousRiskGate, RiskDecision, evaluate_position_action
 from .portfolio import PaperPortfolio
 from .provider import DecisionProvider, DecisionProviderError, build_provider
+from .provider_health import provider_health_request
+from .prompt_compiler import compile_decision_prompt
+from .prompt_presets import get_preset
 from .shadow import MultiProviderShadowRunner
 
 
@@ -79,6 +83,11 @@ class AgentResult:
     risk: RiskDecision | None = None
     execution: dict[str, object] | None = None
     latency_ms: float | None = None
+    model_action: str | None = None
+    effective_action: str | None = None
+    decision_origin: str = "NO_ACTION"
+    provider_status: str | None = None
+    provider_error_category: str | None = None
 
 
 class AutonomousGerchikAgent:
@@ -231,27 +240,9 @@ class AutonomousGerchikAgent:
         """Validate a provider without exposing broker/account data or trading."""
         if self.provider is None or self.audit is None:
             raise RuntimeError("provider health dependencies unavailable")
-        now = datetime.now(timezone.utc)
-        candidate = DecisionCandidate(
-            candidate_id=f"health-{uuid.uuid4().hex}",
-            created_at=now,
-            asset_class="stock",
-            symbol="HEALTH",
-            strategy="provider_health",
-            direction="long",
-            entry=1.0,
-            stop=0.99,
-            target=1.02,
-            metadata={"identity_status": "stable", "health_probe": True},
-        )
-        request = DecisionRequest(
-            decision_id=f"health-decision-{uuid.uuid4().hex}",
-            agent_id=str(getattr(self.config, "agent_id", "GERCHIK_LLM_01")),
-            mode=self.mode,
-            provider=str(getattr(self.provider, "provider_name", getattr(self.config, "provider", ""))),
+        request = provider_health_request(
+            provider_name=str(getattr(self.provider, "provider_name", getattr(self.config, "provider", ""))),
             model=str(getattr(self.provider, "model", getattr(self.config, "model", ""))),
-            snapshot=DecisionSnapshot.from_candidate(candidate, session="provider_health", context={"health_probe": True}),
-            allowed_actions=(DecisionAction.WAIT.value,),
         )
         started = time.perf_counter()
         response = self.provider.decide(request)
@@ -514,13 +505,43 @@ class AutonomousGerchikAgent:
             raise RuntimeError("broker_symbol_open_order_exists")
         return refreshed
 
-    def _request(self, candidate: DecisionCandidate, context: AgentRuntimeContext) -> DecisionRequest:
+    def _request(
+        self,
+        candidate: DecisionCandidate,
+        context: AgentRuntimeContext,
+        *,
+        allowed_actions: Sequence[DecisionAction | str] | None = None,
+    ) -> DecisionRequest:
         provider_name = str(getattr(self.provider, "provider_name", getattr(self.config, "provider", "")))
         model = str(getattr(self.provider, "model", getattr(self.config, "model", "")))
         market_context = dict(context.market_context)
         if not bool(getattr(self.config, "use_news", False)):
             for key in ("news", "news_risk", "macro_risk", "headlines", "macro_headlines"):
                 market_context.pop(key, None)
+        resolved_actions = tuple(
+            item.value if isinstance(item, DecisionAction) else str(item).upper()
+            for item in (allowed_actions or tuple(action.value for action in DecisionAction))
+        )
+        strategy_source = str(market_context.get("strategy_source") or candidate.metadata.get("strategy_source") or "all").strip().lower()
+        prompt_preset = market_context.get("prompt_preset")
+        if not isinstance(prompt_preset, Mapping) and market_context.get("prompt_preset_id"):
+            try:
+                prompt_preset = get_preset(str(market_context["prompt_preset_id"]))
+            except ValueError:
+                prompt_preset = None
+        applicability = evaluate_candidate_applicability(
+            candidate,
+            current_positions=context.current_positions,
+            broker_positions=context.broker_positions,
+        )
+        compiled = compile_decision_prompt(
+            strategy_source=strategy_source,
+            candidate=candidate,
+            position_context=tuple(context.current_positions) + tuple(context.broker_positions),
+            allowed_actions=resolved_actions,
+            prompt_preset=prompt_preset if isinstance(prompt_preset, Mapping) else None,
+            applicability=applicability,
+        )
         snapshot = DecisionSnapshot.from_candidate(
             candidate,
             session="intraday",
@@ -530,6 +551,7 @@ class AutonomousGerchikAgent:
             open_risk_amount=context.open_risk_amount,
             daily_realized_pnl=context.daily_realized_pnl,
             context=market_context,
+            allowed_actions=resolved_actions,
         )
         return DecisionRequest(
             decision_id=f"decision-{uuid.uuid4().hex}",
@@ -538,8 +560,43 @@ class AutonomousGerchikAgent:
             provider=provider_name,
             model=model,
             snapshot=snapshot,
-            allowed_actions=tuple(action.value for action in DecisionAction),
+            allowed_actions=resolved_actions,
+            prompt_version=compiled.prompt_version,
+            run_id=str(market_context.get("analysis_run_id") or "") or None,
+            compiled_prompt=compiled.user_payload,
+            strategy_source=compiled.strategy_source,
+            definition_version=compiled.definition_version,
+            definition_hash=compiled.definition_hash,
+            parameter_snapshot=compiled.parameter_snapshot,
+            prompt_id=compiled.prompt_id,
+            prompt_hash=compiled.prompt_hash,
+            applicability=applicability.to_dict(),
         )
+
+    @staticmethod
+    def _provider_observation(provider: object | None) -> Mapping[str, object]:
+        observation = getattr(provider, "last_observation", {})
+        return observation if isinstance(observation, Mapping) else {}
+
+    def _update_decision_outcome(
+        self,
+        *,
+        decision_id: str | None,
+        effective_action: str,
+        decision_origin: str,
+        reasons: Sequence[str] = (),
+    ) -> None:
+        if self.audit is None or not decision_id:
+            return
+        try:
+            self.audit.update_decision_outcome(
+                decision_id=decision_id,
+                effective_action=effective_action,
+                decision_origin=decision_origin,
+                system_result={"reasons": list(reasons)},
+            )
+        except Exception:
+            pass
 
     def process_signal(
         self,
@@ -663,7 +720,17 @@ class AutonomousGerchikAgent:
             started = time.perf_counter()
             response = provider.decide(request)
             latency_ms = (time.perf_counter() - started) * 1000.0
-            self.audit.record_decision(request, response, latency_ms=latency_ms)
+            observation = self._provider_observation(provider)
+            self.audit.record_decision(
+                request,
+                response,
+                latency_ms=latency_ms,
+                token_usage=observation.get("token_usage") if isinstance(observation.get("token_usage"), Mapping) else None,
+                provider_observation=observation,
+                model_action=response.action.value,
+                effective_action=response.action.value,
+                decision_origin="MODEL",
+            )
             self.audit.record_provider_health(
                 provider=request.provider,
                 model=request.model,
@@ -671,19 +738,37 @@ class AutonomousGerchikAgent:
                 latency_ms=latency_ms,
             )
         except Exception as exc:
-            self.audit.record_decision(request, error="provider_error", status="provider_error")
+            category = str(getattr(exc, "category", "UNKNOWN_PROVIDER_ERROR"))
+            origin = "INVALID_PROVIDER_RESPONSE" if category in {"INVALID_RESPONSE", "SCHEMA_VALIDATION_ERROR"} else "PROVIDER_FAILURE"
+            observation = self._provider_observation(provider)
+            self.audit.record_decision(
+                request,
+                error=category,
+                status="provider_error",
+                provider_observation=observation or {
+                    "provider_status": "INVALID_RESPONSE" if origin == "INVALID_PROVIDER_RESPONSE" else "FAILED",
+                    "provider_error_category": category,
+                },
+                effective_action="NO_ACTION",
+                decision_origin=origin,
+                system_result={"error_category": category},
+            )
             self.audit.record_provider_health(
                 provider=request.provider,
                 model=request.model,
                 status="error",
-                error="provider_error",
+                error=category,
             )
             return AgentResult(
                 status="provider_error",
                 action="NO_ACTION",
                 candidate_id=candidate.candidate_id,
                 decision_id=request.decision_id,
-                reasons=("provider_unavailable",),
+                reasons=(category.lower(),),
+                effective_action="NO_ACTION",
+                decision_origin=origin,
+                provider_status="INVALID_RESPONSE" if origin == "INVALID_PROVIDER_RESPONSE" else "FAILED",
+                provider_error_category=category,
             )
 
         if self.mode is AgentMode.SHADOW:
@@ -758,6 +843,9 @@ class AutonomousGerchikAgent:
                 reasons=risk.reasons,
                 risk=risk,
                 latency_ms=latency_ms,
+                model_action=response.action.value,
+                effective_action="NO_ACTION",
+                decision_origin="RISK_VETO",
             )
 
         if self.mode is AgentMode.PAPER_AUTONOMOUS:
@@ -957,6 +1045,7 @@ class AutonomousGerchikAgent:
         *,
         context: AgentRuntimeContext,
         signal: TradeSignal | None = None,
+        allowed_actions: Sequence[DecisionAction | str] | None = None,
     ) -> AgentResult:
         """Process one candidate through durable, fail-closed authorization."""
         if self.mode is AgentMode.OFF:
@@ -972,26 +1061,78 @@ class AutonomousGerchikAgent:
                 reasons=("stable_setup_identity_unavailable",),
             )
 
+        execution_eligible = bool(candidate.metadata.get("execution_eligible", True))
         agent_id = str(getattr(self.config, "agent_id", "GERCHIK_LLM_01"))
         account_id = context.account_id
-        if self.mode in {AgentMode.LIVE_AUTONOMOUS, AgentMode.IBKR_PAPER_AUTONOMOUS}:
+        if execution_eligible and self.mode in {AgentMode.LIVE_AUTONOMOUS, AgentMode.IBKR_PAPER_AUTONOMOUS}:
             account_id = self._discover_account_id(context)
             allowed, reasons = self.startup_guard(account_id=account_id)
             if not allowed:
+                decision_id = None
+                try:
+                    request = self._request(candidate, context, allowed_actions=allowed_actions)
+                    self.audit.record_decision(
+                        request,
+                        error="startup_veto",
+                        status="not_called",
+                        provider_observation={
+                            "provider_status": "NOT_CALLED",
+                            "provider_error_category": "STARTUP_VETO",
+                        },
+                        effective_action="NO_ACTION",
+                        decision_origin="STARTUP_VETO",
+                        system_result={"reasons": list(reasons)},
+                    )
+                    decision_id = request.decision_id
+                except Exception:
+                    pass
                 return AgentResult(
                     status="startup_veto",
                     action="NO_ACTION",
                     candidate_id=candidate.candidate_id,
+                    decision_id=decision_id,
                     reasons=reasons,
+                    effective_action="NO_ACTION",
+                    decision_origin="STARTUP_VETO",
+                    provider_status="NOT_CALLED",
                 )
 
         try:
-            request = self._request(candidate, context)
+            request = self._request(candidate, context, allowed_actions=allowed_actions)
         except Exception:
             return AgentResult(status="audit_error", action="NO_ACTION", candidate_id=candidate.candidate_id)
 
+        if request.applicability and request.applicability.get("applicable") is False:
+            reason = str(request.applicability.get("reason") or "candidate_not_applicable")
+            try:
+                self.audit.record_decision(
+                    request,
+                    error=reason,
+                    status="not_applicable",
+                    provider_observation={
+                        "provider_status": "NOT_CALLED",
+                        "provider_error_category": "NOT_APPLICABLE",
+                    },
+                    effective_action="NOT_APPLICABLE",
+                    decision_origin="SYSTEM_FILTER",
+                    system_result={"applicability": dict(request.applicability)},
+                )
+            except Exception:
+                return AgentResult(status="audit_error", action="NO_ACTION", candidate_id=candidate.candidate_id)
+            return AgentResult(
+                status="not_applicable",
+                action="NOT_APPLICABLE",
+                candidate_id=candidate.candidate_id,
+                decision_id=request.decision_id,
+                reasons=(reason,),
+                effective_action="NOT_APPLICABLE",
+                decision_origin="SYSTEM_FILTER",
+                provider_status="NOT_CALLED",
+                provider_error_category="NOT_APPLICABLE",
+            )
+
         reservation = None
-        if self.mode in {AgentMode.PAPER_AUTONOMOUS, AgentMode.IBKR_PAPER_AUTONOMOUS, AgentMode.LIVE_AUTONOMOUS}:
+        if execution_eligible and self.mode in {AgentMode.PAPER_AUTONOMOUS, AgentMode.IBKR_PAPER_AUTONOMOUS, AgentMode.LIVE_AUTONOMOUS}:
             try:
                 # The reservation references the durable candidate row through
                 # SQLite foreign keys, so persist the candidate before claiming
@@ -1078,12 +1219,37 @@ class AutonomousGerchikAgent:
             started = time.perf_counter()
             response = provider.decide(request)
             latency_ms = (time.perf_counter() - started) * 1000.0
-            self.audit.record_decision(request, response, latency_ms=latency_ms)
+            observation = self._provider_observation(provider)
+            self.audit.record_decision(
+                request,
+                response,
+                latency_ms=latency_ms,
+                token_usage=observation.get("token_usage") if isinstance(observation.get("token_usage"), Mapping) else None,
+                provider_observation=observation,
+                model_action=response.action.value,
+                effective_action=response.action.value,
+                decision_origin="MODEL",
+            )
             self.audit.record_provider_health(provider=request.provider, model=request.model, status="ok", latency_ms=latency_ms)
-        except Exception:
+        except Exception as exc:
+            category = str(getattr(exc, "category", "UNKNOWN_PROVIDER_ERROR"))
+            origin = "INVALID_PROVIDER_RESPONSE" if category in {"INVALID_RESPONSE", "SCHEMA_VALIDATION_ERROR"} else "PROVIDER_FAILURE"
+            observation = self._provider_observation(provider)
             try:
-                self.audit.record_decision(request, error="provider_error", status="provider_error")
-                self.audit.record_provider_health(provider=request.provider, model=request.model, status="error", error="provider_error")
+                self.audit.record_decision(
+                    request,
+                    error=category,
+                    status="provider_error",
+                    token_usage=observation.get("token_usage") if isinstance(observation.get("token_usage"), Mapping) else None,
+                    provider_observation=observation or {
+                        "provider_status": "INVALID_RESPONSE" if origin == "INVALID_PROVIDER_RESPONSE" else "FAILED",
+                        "provider_error_category": category,
+                    },
+                    effective_action="NO_ACTION",
+                    decision_origin=origin,
+                    system_result={"error_category": category},
+                )
+                self.audit.record_provider_health(provider=request.provider, model=request.model, status="error", error=category)
             except Exception:
                 if reservation:
                     try:
@@ -1096,7 +1262,55 @@ class AutonomousGerchikAgent:
                     self.audit.update_reservation(reservation.reservation_id, state="FAILED_PRE_SUBMIT", error="provider_unavailable")
                 except Exception:
                     pass
-            return AgentResult(status="provider_error", action="NO_ACTION", candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=("provider_unavailable",))
+            return AgentResult(
+                status="provider_error",
+                action="NO_ACTION",
+                candidate_id=candidate.candidate_id,
+                decision_id=request.decision_id,
+                reasons=(category.lower(),),
+                effective_action="NO_ACTION",
+                decision_origin=origin,
+                provider_status="INVALID_RESPONSE" if origin == "INVALID_PROVIDER_RESPONSE" else "FAILED",
+                provider_error_category=category,
+            )
+
+        # The source adapter is authoritative about whether a deterministic
+        # entry plan exists.  Keep this defense even if a provider ignores the
+        # request action menu or returns malformed-but-parseable ENTER output.
+        if not execution_eligible and response.action is DecisionAction.ENTER:
+            try:
+                self.audit.record_risk(
+                    decision_id=request.decision_id,
+                    candidate_id=candidate.candidate_id,
+                    approved=False,
+                    reasons=("analysis_only_source",),
+                )
+            except Exception:
+                return AgentResult(
+                    status="audit_error",
+                    action="NO_ACTION",
+                    candidate_id=candidate.candidate_id,
+                    decision_id=request.decision_id,
+                    reasons=("critical_state_persist_failed",),
+                )
+            self._update_decision_outcome(
+                decision_id=request.decision_id,
+                effective_action="NO_ACTION",
+                decision_origin="ANALYSIS_ONLY_VETO",
+                reasons=("analysis_only_source",),
+            )
+            return AgentResult(
+                status="source_action_veto",
+                action=DecisionAction.REJECT.value,
+                candidate_id=candidate.candidate_id,
+                decision_id=request.decision_id,
+                reasons=("analysis_only_source",),
+                latency_ms=latency_ms,
+                model_action=response.action.value,
+                effective_action="NO_ACTION",
+                decision_origin="ANALYSIS_ONLY_VETO",
+                provider_status="SUCCESS",
+            )
 
         if self._expired(context):
             try:
@@ -1105,14 +1319,16 @@ class AutonomousGerchikAgent:
                     self.audit.update_reservation(reservation.reservation_id, state="EXPIRED", error="candidate_expired")
             except Exception:
                 pass
-            return AgentResult(status="expired", action="NO_ACTION", candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=("candidate_expired",), latency_ms=latency_ms)
+            self._update_decision_outcome(decision_id=request.decision_id, effective_action="NO_ACTION", decision_origin="SYSTEM_VETO", reasons=("candidate_expired",))
+            return AgentResult(status="expired", action="NO_ACTION", candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=("candidate_expired",), latency_ms=latency_ms, model_action=response.action.value, effective_action="NO_ACTION", decision_origin="SYSTEM_VETO", provider_status="SUCCESS")
 
         if self.mode is AgentMode.SHADOW:
             try:
                 self.audit.record_risk(decision_id=request.decision_id, candidate_id=candidate.candidate_id, approved=False, reasons=("shadow_only",))
             except Exception:
                 return AgentResult(status="shadow_audit_error", action="NO_ACTION", candidate_id=candidate.candidate_id, reasons=("shadow_observability_failed",))
-            return AgentResult(status="shadow", action=response.action.value, candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=response.reason_codes, latency_ms=latency_ms)
+            self._update_decision_outcome(decision_id=request.decision_id, effective_action=response.action.value, decision_origin="SYSTEM_VETO", reasons=("shadow_only",))
+            return AgentResult(status="shadow", action=response.action.value, candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=response.reason_codes, latency_ms=latency_ms, model_action=response.action.value, effective_action=response.action.value, decision_origin="SYSTEM_VETO", provider_status="SUCCESS")
 
         if response.action is not DecisionAction.ENTER:
             try:
@@ -1121,7 +1337,8 @@ class AutonomousGerchikAgent:
                     self.audit.update_reservation(reservation.reservation_id, state="VETOED", error="model_no_entry")
             except Exception:
                 return AgentResult(status="audit_error", action="NO_ACTION", candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=("critical_state_persist_failed",))
-            return AgentResult(status="no_action", action=response.action.value, candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=response.reason_codes, latency_ms=latency_ms)
+            self._update_decision_outcome(decision_id=request.decision_id, effective_action=response.action.value, decision_origin="MODEL", reasons=response.reason_codes)
+            return AgentResult(status="no_action", action=response.action.value, candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=response.reason_codes, latency_ms=latency_ms, model_action=response.action.value, effective_action=response.action.value, decision_origin="MODEL", provider_status="SUCCESS")
 
         effective_context = context
         if self.mode in {AgentMode.LIVE_AUTONOMOUS, AgentMode.IBKR_PAPER_AUTONOMOUS}:
@@ -1133,7 +1350,8 @@ class AutonomousGerchikAgent:
                     self.audit.update_reservation(reservation.reservation_id, state="FAILED_PRE_SUBMIT", error=str(exc))
                 except Exception:
                     pass
-                return AgentResult(status="reconciliation_veto", action="NO_ACTION", candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=(str(exc),), latency_ms=latency_ms)
+                self._update_decision_outcome(decision_id=request.decision_id, effective_action="NO_ACTION", decision_origin="SYSTEM_VETO", reasons=(str(exc),))
+                return AgentResult(status="reconciliation_veto", action="NO_ACTION", candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=(str(exc),), latency_ms=latency_ms, model_action=response.action.value, effective_action="NO_ACTION", decision_origin="SYSTEM_VETO", provider_status="SUCCESS")
 
         minimum_confidence = getattr(self.config, "minimum_confidence", None)
         if minimum_confidence is not None and response.confidence < float(minimum_confidence):
@@ -1176,14 +1394,15 @@ class AutonomousGerchikAgent:
                     self.audit.update_reservation(reservation.reservation_id, state="FAILED_PRE_SUBMIT", error="risk_persist_failed")
                 except Exception:
                     pass
-            return AgentResult(status="audit_error", action="NO_ACTION", candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=("critical_state_persist_failed",), latency_ms=latency_ms)
+            return AgentResult(status="audit_error", action="NO_ACTION", candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=("critical_state_persist_failed",), latency_ms=latency_ms, provider_status="SUCCESS")
         if not risk.approved:
+            self._update_decision_outcome(decision_id=request.decision_id, effective_action="NO_ACTION", decision_origin="RISK_VETO", reasons=risk.reasons)
             if reservation:
                 try:
                     self.audit.update_reservation(reservation.reservation_id, state="VETOED", error=";".join(risk.reasons))
                 except Exception:
                     pass
-            return AgentResult(status="risk_veto", action=DecisionAction.REJECT.value, candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=risk.reasons, risk=risk, latency_ms=latency_ms)
+            return AgentResult(status="risk_veto", action=DecisionAction.REJECT.value, candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=risk.reasons, risk=risk, latency_ms=latency_ms, model_action=response.action.value, effective_action="NO_ACTION", decision_origin="RISK_VETO", provider_status="SUCCESS")
 
         fingerprint = order_fingerprint({
             "account": effective_context.account_id,
@@ -1218,21 +1437,21 @@ class AutonomousGerchikAgent:
                     agent_id=request.agent_id,
                     reservation_id=reservation.reservation_id,
                 )
-                return AgentResult(status="paper_simulated", action=DecisionAction.ENTER.value, candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=response.reason_codes, risk=risk, execution=execution, latency_ms=latency_ms)
+                return AgentResult(status="paper_simulated", action=DecisionAction.ENTER.value, candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=response.reason_codes, risk=risk, execution=execution, latency_ms=latency_ms, model_action=response.action.value, effective_action=DecisionAction.ENTER.value, decision_origin="MODEL", provider_status="SUCCESS")
             except Exception:
                 try:
                     self.audit.update_reservation(reservation.reservation_id, state="FAILED_PRE_SUBMIT", error="paper_execution_failed")
                     self.audit.record_execution(decision_id=request.decision_id, candidate_id=candidate.candidate_id, status="paper_rejected", order_ids={}, mode=self.mode.value, agent_id=request.agent_id, reservation_id=reservation.reservation_id)
                 except Exception:
                     pass
-                return AgentResult(status="paper_rejected", action="NO_ACTION", candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=("paper_execution_failed",), risk=risk, latency_ms=latency_ms)
+                return AgentResult(status="paper_rejected", action="NO_ACTION", candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=("paper_execution_failed",), risk=risk, latency_ms=latency_ms, model_action=response.action.value, effective_action="NO_ACTION", decision_origin="SYSTEM_VETO", provider_status="SUCCESS")
 
         if signal is None or self.order_manager is None:
             try:
                 self.audit.update_reservation(reservation.reservation_id, state="FAILED_PRE_SUBMIT", error="live_execution_adapter_missing")
             except Exception:
                 pass
-            return AgentResult(status="ibkr_paper_rejected" if self.mode is AgentMode.IBKR_PAPER_AUTONOMOUS else "live_rejected", action="NO_ACTION", candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=("live_execution_adapter_missing",), risk=risk, latency_ms=latency_ms)
+            return AgentResult(status="ibkr_paper_rejected" if self.mode is AgentMode.IBKR_PAPER_AUTONOMOUS else "live_rejected", action="NO_ACTION", candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=("live_execution_adapter_missing",), risk=risk, latency_ms=latency_ms, model_action=response.action.value, effective_action="NO_ACTION", decision_origin="SYSTEM_VETO", provider_status="SUCCESS")
 
         ref = broker_order_ref(agent_id=request.agent_id, candidate_id=candidate.candidate_id, decision_id=request.decision_id)
         try:
@@ -1299,7 +1518,7 @@ class AutonomousGerchikAgent:
                 except Exception:
                     pass
                 return AgentResult(status="reconciliation_required", action="NO_ACTION", candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=("post_submit_audit_failed",), risk=risk, latency_ms=latency_ms)
-            return AgentResult(status=execution_status, action=DecisionAction.ENTER.value, candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=tuple(str(item) for item in payload.get("reasons", ())), risk=risk, execution=payload, latency_ms=latency_ms)
+            return AgentResult(status=execution_status, action=DecisionAction.ENTER.value, candidate_id=candidate.candidate_id, decision_id=request.decision_id, reasons=tuple(str(item) for item in payload.get("reasons", ())), risk=risk, execution=payload, latency_ms=latency_ms, model_action=response.action.value, effective_action=DecisionAction.ENTER.value, decision_origin="MODEL", provider_status="SUCCESS")
 
         state = "RECONCILIATION_REQUIRED" if order_ids else "FAILED_PRE_SUBMIT"
         try:

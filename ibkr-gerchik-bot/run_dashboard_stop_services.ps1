@@ -4,6 +4,7 @@ param(
 
 $ErrorActionPreference = "SilentlyContinue"
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$Runtime = Join-Path $Root "memory\runtime"
 
 function Stop-ById {
     param([int]$ProcessId, [string]$Why)
@@ -16,86 +17,114 @@ function Stop-ById {
             Write-Host "  protected pid=$ProcessId ngrok tunnel ($Why)"
             return
         }
-    } catch {}
-    try {
         Stop-Process -Id $ProcessId -Force -ErrorAction SilentlyContinue
         Write-Host "  stopped pid=$ProcessId $Why"
     } catch {}
 }
 
+function Get-OwnedPython {
+    param([string[]]$Patterns)
+    try {
+        return @(Get-CimInstance Win32_Process | Where-Object {
+            if ($_.Name -notmatch "^python(\.exe)?$" -or -not $_.CommandLine) { return $false }
+            foreach ($pattern in $Patterns) {
+                if ($_.CommandLine -like "*$pattern*") { return $true }
+            }
+            return $false
+        })
+    } catch { return @() }
+}
+
+function Get-OwnedCmd {
+    param([string[]]$Patterns)
+    try {
+        return @(Get-CimInstance Win32_Process | Where-Object {
+            if ($_.Name -notmatch "^cmd(\.exe)?$" -or -not $_.CommandLine) { return $false }
+            if ($_.CommandLine -notlike "*$Root*") { return $false }
+            foreach ($pattern in $Patterns) {
+                if ($_.CommandLine -like "*$pattern*") { return $true }
+            }
+            return $false
+        })
+    } catch { return @() }
+}
+
+function Get-OwnedDashboardPython {
+    # Dashboard verification is intentionally port-scoped.  A validation or
+    # development dashboard on another local port (for example 8551) is not
+    # the 8550 service owned by this stop command and must not fail shutdown.
+    try {
+        return @(Get-CimInstance Win32_Process | Where-Object {
+            if ($_.Name -notmatch "^python(\.exe)?$" -or -not $_.CommandLine) { return $false }
+            if ($_.CommandLine -notmatch "dashboard_react\.server:app") { return $false }
+            return $_.CommandLine -match "--port(?:=|\s+)8550(?:\s|$)"
+        })
+    } catch { return @() }
+}
+
+function Stop-OwnedPython {
+    param([string[]]$Patterns, [string]$Why)
+    foreach ($proc in (Get-OwnedPython -Patterns $Patterns)) {
+        Stop-ById -ProcessId ([int]$proc.ProcessId) -Why $Why
+    }
+}
+
+function Signal-AutonomousWorker {
+    $stopPath = Join-Path $Runtime "autonomous_stock_worker.stop"
+    $workerPattern = @("src.jobs.autonomous_stock_worker")
+    $workers = @(Get-OwnedPython -Patterns $workerPattern)
+    if ($workers.Count -eq 0) { return }
+    New-Item -ItemType File -Path $stopPath -Force | Out-Null
+    Write-Host "  signaled autonomous stock worker graceful stop"
+    $deadline = (Get-Date).AddSeconds(35)
+    do {
+        Start-Sleep -Milliseconds 500
+        $workers = @(Get-OwnedPython -Patterns $workerPattern)
+    } while ($workers.Count -gt 0 -and (Get-Date) -lt $deadline)
+    if ($workers.Count -gt 0) {
+        Write-Host "  autonomous worker did not exit within graceful window; stopping exact owned process" -ForegroundColor Yellow
+        Stop-OwnedPython -Patterns $workerPattern -Why "autonomous stock worker"
+    }
+}
+
 Write-Host "Stopping Vitaly's Trading Bot dashboard services..."
+Write-Host "Shutdown order: autonomous worker, execute worker, market data, crypto, dashboard."
 
-# 1) Do NOT stop processes by window title. A manually launched ngrok terminal can
-# inherit a dashboard-looking title, and losing that tunnel means TradingView
-# webhook alerts fail. Stop only exact service processes below.
+# Graceful worker shutdown stops new candidates/LLM work, persists STOPPED,
+# releases its lock, and does not cancel protective brackets.
+Signal-AutonomousWorker
 
-# 2) Stop the dashboard API listener on localhost:8550. ngrok is not the
-# listener on this port; it forwards traffic to it.
+Stop-OwnedPython -Patterns @("--job execute_requests") -Why "execute worker"
+Stop-OwnedPython -Patterns @("--job market_data") -Why "market-data collector"
+Stop-OwnedPython -Patterns @("src.crypto.main --job worker", "-m src.crypto.main --job worker") -Why "crypto worker"
+
+# Stop the dashboard API last. ngrok is intentionally not targeted.
 try {
     netstat -ano -p tcp |
         Select-String -Pattern "[:.]8550\s+.*LISTENING\s+(\d+)" |
         ForEach-Object {
-            $portPid = [int]$_.Matches[0].Groups[1].Value
-            Stop-ById -ProcessId $portPid -Why "dashboard API port 8550"
+            Stop-ById -ProcessId ([int]$_.Matches[0].Groups[1].Value) -Why "dashboard API port 8550"
         }
 } catch {}
 
-# 3) Stop Python services by their dashboard/bot command line. These patterns do
-# not match ngrok, browser, TWS, or unrelated terminals.
-$pythonPatterns = @(
-    "dashboard_react.server:app",
-    "--job execute_requests",
-    "--job market_data",
-    "src.crypto.main --job worker",
-    "-m src.crypto.main --job worker"
-)
-
-try {
-    Get-CimInstance Win32_Process |
-        Where-Object {
-            if ($_.Name -notmatch "^python(\.exe)?$" -or -not $_.CommandLine) { return $false }
-            foreach ($pattern in $pythonPatterns) {
-                if ($_.CommandLine -like "*$pattern*") { return $true }
-            }
-            return $false
-        } |
-        ForEach-Object { Stop-ById -ProcessId $_.ProcessId -Why "python dashboard service" }
-} catch {
-    Write-Host "  process command-line scan unavailable; window-title stop was still attempted"
-}
-
-# 4) Stop cmd wrappers that launched these exact dashboard scripts from this repo.
-$cmdScriptPatterns = @(
+$cmdPatterns = @(
     "run_react_dashboard.cmd",
+    "run_autonomous_stock_worker.cmd",
     "run_execute_worker.cmd",
     "run_market_data_collector.cmd",
     "run_crypto_worker.cmd"
 )
-
-try {
-    Get-CimInstance Win32_Process |
-        Where-Object {
-            if ($_.Name -notmatch "^cmd(\.exe)?$" -or -not $_.CommandLine) { return $false }
-            if ($_.CommandLine -notlike "*$Root*") { return $false }
-            foreach ($pattern in $cmdScriptPatterns) {
-                if ($_.CommandLine -like "*$pattern*") { return $true }
-            }
-            return $false
-        } |
-        ForEach-Object { Stop-ById -ProcessId $_.ProcessId -Why "dashboard cmd wrapper" }
-} catch {}
-
-if ($ClearRuntime) {
-    Remove-Item -LiteralPath (Join-Path $Root "memory\runtime\execute_worker.json") -Force -ErrorAction SilentlyContinue
-    Remove-Item -LiteralPath (Join-Path $Root "memory\runtime\market_data_collector.lock") -Force -ErrorAction SilentlyContinue
-    Remove-Item -LiteralPath (Join-Path $Root "memory\crypto\runtime\worker.lock") -Force -ErrorAction SilentlyContinue
+foreach ($proc in (Get-OwnedCmd -Patterns $cmdPatterns)) {
+    Stop-ById -ProcessId ([int]$proc.ProcessId) -Why "dashboard cmd wrapper"
 }
 
-Write-Host "Dashboard service stop complete. ngrok was not targeted."
+if ($ClearRuntime) {
+    Remove-Item -LiteralPath (Join-Path $Runtime "execute_worker.json") -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath (Join-Path $Runtime "market_data_collector.lock") -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath (Join-Path $Root "memory\crypto\runtime\worker.lock") -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath (Join-Path $Runtime "autonomous_stock_worker.stop") -Force -ErrorAction SilentlyContinue
+}
 
-# 5) Verify the exact services owned by run_react_dashboard.cmd are gone. A
-# successful exit code lets stop_react_dashboard.cmd and automation distinguish
-# a completed stop from a permissions/process-race failure.
 Start-Sleep -Milliseconds 500
 $remaining = @()
 try {
@@ -103,31 +132,21 @@ try {
         Select-String -Pattern "[:.]8550\s+.*LISTENING\s+(\d+)" |
         ForEach-Object { "dashboard API pid=$($_.Matches[0].Groups[1].Value)" }
 } catch {}
-
-try {
-    $remaining += Get-CimInstance Win32_Process |
-        Where-Object {
-            if ($_.Name -notmatch "^python(\.exe)?$" -or -not $_.CommandLine) { return $false }
-            foreach ($pattern in $pythonPatterns) {
-                if ($_.CommandLine -like "*$pattern*") { return $true }
-            }
-            return $false
-        } |
-        ForEach-Object { "python service pid=$($_.ProcessId)" }
-} catch {}
-
-try {
-    $remaining += Get-CimInstance Win32_Process |
-        Where-Object {
-            if ($_.Name -notmatch "^cmd(\.exe)?$" -or -not $_.CommandLine) { return $false }
-            if ($_.CommandLine -notlike "*$Root*") { return $false }
-            foreach ($pattern in $cmdScriptPatterns) {
-                if ($_.CommandLine -like "*$pattern*") { return $true }
-            }
-            return $false
-        } |
-        ForEach-Object { "cmd wrapper pid=$($_.ProcessId)" }
-} catch {}
+foreach ($proc in (Get-OwnedPython -Patterns @(
+    "--job execute_requests",
+    "--job market_data",
+    "src.crypto.main --job worker",
+    "-m src.crypto.main --job worker",
+    "src.jobs.autonomous_stock_worker"
+))) {
+    $remaining += "python service pid=$($proc.ProcessId)"
+}
+foreach ($proc in (Get-OwnedDashboardPython)) {
+    $remaining += "python dashboard API pid=$($proc.ProcessId) port=8550"
+}
+foreach ($proc in (Get-OwnedCmd -Patterns $cmdPatterns)) {
+    $remaining += "cmd wrapper pid=$($proc.ProcessId)"
+}
 
 $remaining = @($remaining | Where-Object { $_ } | Select-Object -Unique)
 if ($remaining.Count -gt 0) {
@@ -136,5 +155,6 @@ if ($remaining.Count -gt 0) {
     exit 1
 }
 
-Write-Host "Verified stopped: API, market-data collector, execute worker, and crypto worker."
+Write-Host "Verified stopped: autonomous stock worker, execute worker, market-data collector, crypto worker, and dashboard API."
+Write-Host "ngrok, TWS/IB Gateway, browsers, and unrelated Python processes were not targeted."
 exit 0

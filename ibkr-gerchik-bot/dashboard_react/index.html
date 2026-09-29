@@ -1398,6 +1398,19 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
     return ()=>{ alive = false; clearInterval(timer); };
   },[refreshKey]);
   useEffect(()=>{
+    const refreshDecisionLab = async()=>{
+      try{
+        const [s,c] = await Promise.all([
+          fetch(`${API}/decision-lab/status`).then(r=>r.json()),
+          fetch(`${API}/decision-lab/control`).then(r=>r.json()),
+        ]);
+        setStatus(s); setControl(c); setRuns(c.runs||[]);
+      }catch{}
+    };
+    const iv = setInterval(refreshDecisionLab, 2500);
+    return ()=>clearInterval(iv);
+  },[]);
+  useEffect(()=>{
     const apitf = TF_API[tf]||'daily';
     fetch(`${API}/bars/${chartSymbol}/${apitf}`).then(r=>r.json()).then(d=>{setBars(d.bars||[]);setBarsInfo({stale:d.stale,lastDate:d.last_date});});
     fetch(`${API}/preopen/${chartSymbol}`).then(r=>r.json()).then(setChartPlan).catch(()=>setChartPlan(null));
@@ -1462,7 +1475,7 @@ function TabDashboard({setNewsModal, setNewsItems, refreshKey=0}) {
   const visBars = bars.slice(-visCount);
   const serviceRows = services?.services || [
     {label:'Dashboard API', status:'loading', ok:true, detail:'checking service health', icon:'dashboard'},
-    {label:'Stock Worker', status:'loading', ok:false, detail:'checking heartbeat', icon:'bolt'},
+    {label:'Autonomous Stock Worker', status:'loading', ok:false, detail:'checking lifecycle heartbeat', icon:'bolt'},
     {label:'Pre-Open', status:'loading', ok:false, detail:'checking pre-open job', icon:'wb_twilight'},
     {label:'Market Data', status:'loading', ok:false, detail:'checking collector lock', icon:'database'},
     {label:'Crypto Worker', status:'loading', ok:false, detail:'checking heartbeat', icon:'currency_bitcoin'},
@@ -6601,15 +6614,57 @@ function TabDecisionLab({refreshKey}) {
   const [status,setStatus] = useState(null);
   const [decisions,setDecisions] = useState([]);
   const [providers,setProviders] = useState([]);
+  const [control,setControl] = useState(null);
+  const [strategies,setStrategies] = useState([]);
+  const [definitions,setDefinitions] = useState([]);
+  const [presets,setPresets] = useState([]);
+  const [definition,setDefinition] = useState(null);
+  const [parameters,setParameters] = useState({});
+  const [promptDraft,setPromptDraft] = useState('');
+  const [promptPreview,setPromptPreview] = useState(null);
+  const [promptBusy,setPromptBusy] = useState(false);
+  const [promptError,setPromptError] = useState(null);
+  const [runs,setRuns] = useState([]);
+  const [controlBusy,setControlBusy] = useState(false);
+  const [runBusy,setRunBusy] = useState(false);
+  const [controlError,setControlError] = useState(null);
   const [testing,setTesting] = useState(false);
   const [testError,setTestError] = useState(null);
+  const [inspector,setInspector] = useState(null);
+  const [inspectorBusy,setInspectorBusy] = useState(false);
+  const [inspectorError,setInspectorError] = useState(null);
+  const [decisionFilters,setDecisionFilters] = useState({
+    dateFrom:'', dateTo:'', symbol:'', source:'', strategy:'', signal:'',
+    provider:'', model:'', effective:'', origin:'', risk:'', execution:'', lastEntries:''
+  });
   useEffect(()=>{
     Promise.all([
       fetch(`${API}/decision-lab/status`).then(r=>r.json()),
       fetch(`${API}/decision-lab/decisions?limit=100`).then(r=>r.json()),
       fetch(`${API}/decision-lab/providers`).then(r=>r.json()),
-    ]).then(([s,d,p])=>{setStatus(s);setDecisions(d.decisions||[]);setProviders(p.providers||[])}).catch(()=>{});
+      fetch(`${API}/decision-lab/control`).then(r=>r.json()),
+      fetch(`${API}/decision-lab/strategies`).then(r=>r.json()),
+      fetch(`${API}/decision-lab/strategy-definitions`).then(r=>r.json()),
+      fetch(`${API}/decision-lab/prompt-presets`).then(r=>r.json()),
+    ]).then(([s,d,p,catalog,sourceList,definitionList,presetList])=>{
+      setStatus(s);setDecisions(d.decisions||[]);setProviders(p.providers||[]);
+      setControl(catalog);setRuns(catalog.runs||[]);setStrategies(sourceList.strategies||[]);
+      setDefinitions(definitionList.definitions||[]);setPresets(presetList.presets||[]);
+    }).catch(()=>{});
   },[refreshKey]);
+  const selectedSourceForPrompt = String(control?.strategy_source || 'gerchik_router').toLowerCase();
+  const selectedMode = String(control?.analysis_mode || 'manual').toLowerCase();
+  const selectedSource = String(control?.strategy_source || 'gerchik_router').toLowerCase();
+  useEffect(()=>{
+    Promise.all([
+      fetch(`${API}/decision-lab/strategy-definitions?source=${encodeURIComponent(selectedSourceForPrompt)}`).then(r=>r.json()),
+      fetch(`${API}/decision-lab/prompt-presets?strategy_source=${encodeURIComponent(selectedSourceForPrompt)}`).then(r=>r.json()),
+    ]).then(([definitionPayload,presetPayload])=>{
+      setDefinition((definitionPayload.definitions||[])[0]||null);
+      setParameters(definitionPayload.parameters||{});
+      setPresets(presetPayload.presets||[]);
+    }).catch(()=>{});
+  },[selectedSourceForPrompt]);
   const testProvider = async () => {
     setTesting(true);
     setTestError(null);
@@ -6626,6 +6681,86 @@ function TabDecisionLab({refreshKey}) {
       setTesting(false);
     }
   };
+  const updateControl = async (nextMode, nextSource, nextPresetId=control?.prompt_preset_id || null) => {
+    if(controlBusy) return;
+    setControlBusy(true); setControlError(null);
+    try {
+      const response = await fetch(`${API}/decision-lab/control`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({analysis_mode:nextMode, strategy_source:nextSource, prompt_preset_id:nextPresetId})
+      });
+      const payload = await response.json().catch(()=>({}));
+      if(!response.ok) throw new Error(payload.detail || 'Control update failed');
+      const refreshed = await fetch(`${API}/decision-lab/control`).then(r=>r.json());
+      setControl(refreshed);
+      setRuns(refreshed.runs||[]);
+    } catch(error) { setControlError(error.message || String(error)); }
+    finally { setControlBusy(false); }
+  };
+  const availablePresets = presets.filter(item=>item.strategy_source===selectedSource || item.strategy_source==='all');
+  const selectedPreset = availablePresets.find(item=>item.prompt_id===control?.prompt_preset_id) || availablePresets.find(item=>item.strategy_source===selectedSource && item.built_in) || availablePresets[0] || null;
+  const promptIsDirty = Boolean(selectedPreset && promptDraft !== String(selectedPreset.prompt_text||''));
+  useEffect(()=>{ setPromptDraft(String(selectedPreset?.prompt_text||'')); setPromptPreview(null); setPromptError(null); },[selectedPreset?.prompt_id,selectedPreset?.updated_at]);
+  const duplicatePromptPreset = async () => {
+    if(!selectedPreset || promptBusy) return;
+    setPromptBusy(true);setPromptError(null);
+    try {
+      const response=await fetch(`${API}/decision-lab/prompt-presets/duplicate`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt_id:selectedPreset.prompt_id,name:`My ${sourceLabel || selectedSource} Confirmation`})});
+      const payload=await response.json().catch(()=>({})); if(!response.ok) throw new Error(payload.detail||'Duplicate failed');
+      const item=payload.preset; setPresets(previous=>[...previous,item]); await updateControl(selectedMode,selectedSource,item.prompt_id);
+    } catch(error){setPromptError(error.message||String(error));} finally{setPromptBusy(false);}
+  };
+  const savePromptPreset = async asNewVersion => {
+    if(!selectedPreset || !promptIsDirty || promptBusy) return;
+    setPromptBusy(true);setPromptError(null);
+    try {
+      const response=await fetch(`${API}/decision-lab/prompt-presets`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({strategy_source:selectedSource,name:selectedPreset.name,prompt_text:promptDraft,description:selectedPreset.description,parent_prompt_id:selectedPreset.prompt_id,as_new_version:asNewVersion})});
+      const payload=await response.json().catch(()=>({})); if(!response.ok) throw new Error(payload.detail||'Preset save failed');
+      const item=payload.preset; setPresets(previous=>[...previous,item]); await updateControl(selectedMode,selectedSource,item.prompt_id);
+    } catch(error){setPromptError(error.message||String(error));} finally{setPromptBusy(false);}
+  };
+  const disablePromptPreset = async () => {
+    if(!selectedPreset || selectedPreset.built_in || promptBusy) return;
+    setPromptBusy(true);setPromptError(null);
+    try {
+      const response=await fetch(`${API}/decision-lab/prompt-presets/${encodeURIComponent(selectedPreset.prompt_id)}/disable`,{method:'POST'});
+      const payload=await response.json().catch(()=>({})); if(!response.ok) throw new Error(payload.detail||'Preset disable failed');
+      const item=payload.preset; setPresets(previous=>previous.map(candidate=>candidate.prompt_id===item.prompt_id?item:candidate)); await updateControl(selectedMode,selectedSource,null);
+    } catch(error){setPromptError(error.message||String(error));} finally{setPromptBusy(false);}
+  };
+  const previewPrompt = async () => {
+    if(!selectedPreset || promptIsDirty || promptBusy) return;
+    setPromptBusy(true);setPromptError(null);
+    try { const response=await fetch(`${API}/decision-lab/prompt-preview`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({strategy_source:selectedSource,prompt_id:selectedPreset.prompt_id})}); const payload=await response.json().catch(()=>({})); if(!response.ok) throw new Error(payload.detail||'Prompt preview failed'); setPromptPreview(payload); }
+    catch(error){setPromptError(error.message||String(error));} finally{setPromptBusy(false);}
+  };
+  const runAnalysis = async () => {
+    if(runBusy || String(control?.analysis_mode || 'manual').toLowerCase() !== 'manual') return;
+    setRunBusy(true); setControlError(null);
+    try {
+      const response = await fetch(`${API}/decision-lab/run`, {
+        method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({})
+      });
+      const payload = await response.json().catch(()=>({}));
+      const errorDetail = payload.detail && typeof payload.detail==='object' ? payload.detail.error : payload.detail;
+      if(!response.ok) throw new Error(errorDetail || 'Analysis request failed');
+      const run = payload.run || payload;
+      setRuns(previous=>[run,...previous.filter(item=>item.run_id!==run.run_id)].slice(0,20));
+      setControl(previous=>({...previous,active_run:run,last_run:run,latest_run:run,runs:[run,...(previous?.runs||[]).filter(item=>item.run_id!==run.run_id)].slice(0,20)}));
+    } catch(error) { setControlError(error.message || String(error)); }
+    finally { setRunBusy(false); }
+  };
+  const inspectDecision = async decisionId => {
+    if(!decisionId || inspectorBusy) return;
+    setInspectorBusy(true); setInspectorError(null);
+    try {
+      const response = await fetch(`${API}/decision-lab/decision/${encodeURIComponent(decisionId)}`);
+      const payload = await response.json().catch(()=>({}));
+      if(!response.ok) throw new Error(payload.detail || 'Decision inspector unavailable');
+      setInspector(payload.decision || null);
+    } catch(error) { setInspectorError(error.message || String(error)); }
+    finally { setInspectorBusy(false); }
+  };
   const mode = String(status?.mode || 'off').toUpperCase();
   const isIbkrPaperAutonomous = mode==='IBKR_PAPER_AUTONOMOUS';
   const modeColor = mode==='LIVE_AUTONOMOUS' ? C.err : isIbkrPaperAutonomous ? C.lemon : mode==='PAPER_AUTONOMOUS' ? C.lime : mode==='SHADOW' ? C.cyan : C.outline;
@@ -6639,23 +6774,147 @@ function TabDecisionLab({refreshKey}) {
   const fmtLatency = value => value === null || value === undefined ? '—' : `${Number(value).toFixed(0)} ms`;
   const card = {background:R(C.surfLow,0.62),border:`1px solid ${R(C.outline,0.16)}`,borderRadius:12,padding:'16px 18px'};
   const fmt = value => value === null || value === undefined ? '—' : String(value);
+  const worker = status?.autonomous_stock_worker || {};
+  const workerState = String(status?.worker_state || worker.state || 'STOPPED').toUpperCase();
+  const workerRunning = status?.worker_running === true;
+  const workerStale = workerState === 'STALE';
+  const workerBroker = String(status?.broker_status || worker.broker_status || 'UNKNOWN').toUpperCase();
+  const workerAccount = String(status?.account_status || worker.account_status || 'UNKNOWN').toUpperCase();
+  const workerAllowlist = String(status?.allowlist_status || worker.allowlist_status || 'UNKNOWN').toUpperCase();
+  const workerProvider = String(status?.provider_status || worker.provider_status || 'UNKNOWN').toUpperCase();
+  const workerProviderError = String(status?.provider_last_error || worker.provider_last_error || '').toUpperCase();
+  const workerSession = String(status?.current_session || worker.current_session || 'UNKNOWN').toUpperCase();
+  const workerBlockedReason = String(status?.blocked_reason || worker.blocked_reason || '').toUpperCase();
+  const safetyLabel = value => String(value) === 'VERIFIED_PAPER' ? 'PAPER VERIFIED' : String(value).replaceAll('_',' ');
+  const brokerLabel = `${safetyLabel(workerBroker)}${workerStale ? ' — STALE' : ''}`;
+  const entryLabel = status?.autonomous_entry_enabled ? 'ENABLED' : `BLOCKED — ${workerBlockedReason === 'MARKET_CLOSED' ? 'MARKET CLOSED' : safetyLabel(workerBlockedReason || 'PREFLIGHT')}`;
+  const workerColor = workerRunning ? C.lime : workerStale ? C.lemon : C.err;
+  const decisionDisplayRows = decisions.map(row=>({...row,model_action:row.model || row.model_action,completed_at:row.completed_at || row.requested_at}));
+  const decisionFilterValue = value => String(value === null || value === undefined ? '' : value).trim().toUpperCase();
+  const decisionFilterOptionValue = (row,field) => {
+    if(field==='signal') return row.source_signal || '';
+    if(field==='effective') return row.effective_action || 'LEGACY / NOT RECORDED';
+    if(field==='origin') return row.decision_origin || 'LEGACY / NOT RECORDED';
+    if(field==='risk') return row.risk_approved===null||row.risk_approved===undefined?'NONE':row.risk_approved?'APPROVED':'VETO';
+    if(field==='execution') return row.execution_status || 'NONE';
+    return row[field] || '';
+  };
+  const decisionFilterOptions = field => Array.from(new Set(decisionDisplayRows.map(row=>decisionFilterOptionValue(row,field)).filter(Boolean).map(value=>String(value)))).sort((a,b)=>a.localeCompare(b));
+  const decisionRows = useMemo(()=>{
+    const filteredRows = decisionDisplayRows.filter(row=>{
+    const rowDate = row.completed_at || row.requested_at || '';
+    const parsedDate = rowDate ? new Date(rowDate) : null;
+    const dateOnly = parsedDate && !Number.isNaN(parsedDate.getTime()) ? parsedDate.toISOString().slice(0,10) : '';
+    const values = {
+      symbol:decisionFilterOptionValue(row,'symbol'), source:decisionFilterOptionValue(row,'source'), strategy:decisionFilterOptionValue(row,'strategy'), signal:decisionFilterOptionValue(row,'signal'),
+      provider:decisionFilterOptionValue(row,'provider'), model:decisionFilterOptionValue(row,'model'), effective:decisionFilterOptionValue(row,'effective'),
+      origin:decisionFilterOptionValue(row,'origin'), risk:decisionFilterOptionValue(row,'risk'), execution:decisionFilterOptionValue(row,'execution')
+    };
+    const textMatches = Object.entries(values).every(([field,value])=>{
+      const filter = decisionFilters[field];
+      return !filter || decisionFilterValue(value).includes(decisionFilterValue(filter));
+    });
+    return textMatches && (!decisionFilters.dateFrom || dateOnly >= decisionFilters.dateFrom) && (!decisionFilters.dateTo || dateOnly <= decisionFilters.dateTo);
+    });
+    const lastEntries = Number.parseInt(String(decisionFilters.lastEntries || ''), 10);
+    if (!Number.isInteger(lastEntries) || lastEntries < 1) return filteredRows;
+    return filteredRows
+      .slice()
+      .sort((left, right) => {
+        const leftTime = Date.parse(left.completed_at || left.requested_at || '') || 0;
+        const rightTime = Date.parse(right.completed_at || right.requested_at || '') || 0;
+        return rightTime - leftTime;
+      })
+      .slice(0, lastEntries);
+  },[decisions,decisionFilters]);
+  const workerCard = {background:R(C.surfLow,0.62),border:`1px solid ${R(C.outline,0.16)}`,borderRadius:12,padding:'16px 18px'};
+  const selectedSnapshot = control?.selected_source_snapshot || {};
+  const activeRun = control?.active_run || null;
+  const activeManualRun = activeRun && String(activeRun.analysis_mode || 'manual').toLowerCase()==='manual' ? activeRun : null;
+  const selectedActiveRun = activeManualRun && String(activeManualRun.strategy_selection || '').toLowerCase()===selectedSource ? activeManualRun : null;
+  const selectedLastRun = control?.last_run || null;
+  const runStatus = String(selectedLastRun?.status || 'IDLE').toUpperCase();
+  const activeRunStatus = String(selectedActiveRun?.status || '').toUpperCase();
+  const runActive = Boolean(selectedActiveRun && ['QUEUED','RUNNING'].includes(activeRunStatus));
+  const runBlockedByOtherSource = Boolean(activeManualRun && !selectedActiveRun);
+  const noSnapshot = selectedSnapshot.available !== true;
+  const runButtonDisabled = runBusy || runActive || runBlockedByOtherSource || selectedMode!=='manual' || noSnapshot || promptIsDirty;
+  const sourceLabel = strategies.find(item=>item.id===selectedSource)?.label || selectedSource.replaceAll('_',' ').toUpperCase();
+  const activeSource = String(activeManualRun?.strategy_selection || '').toLowerCase();
+  const activeSourceLabel = strategies.find(item=>item.id===activeSource)?.label || activeSource.replaceAll('_',' ').toUpperCase();
+  const activeDisplayStatus = String(activeManualRun?.status || '').toUpperCase();
   return <div style={{display:'flex',flexDirection:'column',gap:18}}>
     <div style={{...card,display:'flex',flexDirection:'column',gap:15}}>
       <div style={{display:'flex',flexWrap:'wrap',alignItems:'center',justifyContent:'space-between',gap:14}}>
-        <div><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline,letterSpacing:'0.08em'}}>PROVIDER STATUS</div><div style={{fontSize:13,color:C.onSurf,marginTop:7}}>Configured runtime and safe connectivity diagnostic.</div></div>
+        <div><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline,letterSpacing:'0.08em'}}>LLM DIAGNOSTIC CONNECTION</div><div style={{fontSize:13,color:C.onSurf,marginTop:7}}>Configured runtime and safe provider connectivity diagnostic.</div></div>
         <button onClick={testProvider} disabled={testing} style={{padding:'10px 15px',borderRadius:8,cursor:testing?'wait':'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:900,color:testing?C.outline:C.cyan,background:testing?R(C.outline,0.08):R(C.cyan,0.12),border:`1px solid ${R(testing?C.outline:C.cyan,0.34)}`,whiteSpace:'nowrap'}}>{testing?'TESTING...':'TEST LLM CONNECTION'}</button>
       </div>
       <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(145px,1fr))',gap:10}}>{[['MODE',mode,modeColor],['PROVIDER',provider,C.onSurf],['MODEL',model,C.onVar],['CONNECTION',connectionLabel,connectionColor],['NEWS',newsLabel,status?.news_enabled?C.lime:C.outline]].map(([label,value,color])=><div key={label} style={{padding:'11px 12px',borderRadius:9,background:R(C.surfLowest,0.45),border:`1px solid ${R(C.outline,0.12)}`}}><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,letterSpacing:'0.06em'}}>{label}</div><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:13,fontWeight:800,color,marginTop:8,overflowWrap:'anywhere'}}>{value}</div></div>)}</div>
       <div style={{display:'flex',flexWrap:'wrap',gap:7}}>{[[isIbkrPaperAutonomous?'IBKR PAPER AUTONOMOUS':mode,modeColor],[isIbkrPaperAutonomous?'REAL BROKER PAPER ORDERS':status?.allow_llm_live_trading?'LIVE AI ENABLED':'LIVE AI DISABLED',isIbkrPaperAutonomous?C.lemon:status?.allow_llm_live_trading?C.err:C.lime],[isIbkrPaperAutonomous?'NO LIVE MONEY':status?.news_enabled?'NEWS ENABLED':'NEWS DISABLED',isIbkrPaperAutonomous?C.lime:status?.news_enabled?C.lemon:C.lime],[isIbkrPaperAutonomous?'LIVE AI DISABLED':status?.paper_trading?'PAPER BROKER':'LIVE BROKER',isIbkrPaperAutonomous?C.lime:status?.paper_trading?C.lime:C.err],[isIbkrPaperAutonomous?'NEWS DISABLED':status?.dry_run?'DRY RUN':'LIVE EXECUTION',isIbkrPaperAutonomous?C.lime:status?.dry_run?C.lime:C.err]].map(([label,color])=><span key={label} style={{padding:'7px 10px',borderRadius:7,color,border:`1px solid ${R(color,0.30)}`,background:R(color,0.08),fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800,letterSpacing:'0.04em'}}>{label}</span>)}</div>
-      {isIbkrPaperAutonomous&&<div style={{padding:'11px 13px',borderRadius:8,color:C.lemon,background:R(C.lemon,0.08),border:`1px solid ${R(C.lemon,0.30)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}><strong>AUTONOMOUS ORDERS ENABLED / IBKR PAPER ACCOUNT ONLY</strong><div style={{marginTop:6,color:C.onVar}}>Account identity and allowlist status: {fmt(status?.paper_account_status)}. No account ID is shown here.</div></div>}
+      {isIbkrPaperAutonomous&&<div style={workerCard}>
+        <div style={{display:'flex',flexWrap:'wrap',alignItems:'center',justifyContent:'space-between',gap:12,marginBottom:14}}><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,letterSpacing:'0.08em'}}>AUTONOMOUS WORKER</div><div style={{padding:'7px 10px',borderRadius:7,color:workerColor,border:`1px solid ${R(workerColor,0.30)}`,background:R(workerColor,0.08),fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:800}}>{workerRunning ? 'RUNNING' : workerState}</div></div>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(145px,1fr))',gap:10}}>{[['BROKER',brokerLabel,workerBroker==='PAPER_VERIFIED'?C.lime:workerStale?C.lemon:C.err],['ACCOUNT',safetyLabel(workerAccount),workerAccount==='VERIFIED_PAPER'?C.lime:C.err],['ALLOWLIST',safetyLabel(workerAllowlist),workerAllowlist==='VERIFIED'?C.lime:C.err],['PROVIDER',safetyLabel(workerProvider),workerProvider==='CONNECTED'?C.lime:C.err],['SESSION',workerSession,C.onVar],['NEW ENTRIES',entryLabel,status?.autonomous_entry_enabled?C.lime:C.lemon]].map(([label,value,color])=><div key={label} style={{padding:'11px 12px',borderRadius:9,background:R(C.surfLowest,0.45),border:`1px solid ${R(C.outline,0.12)}`}}><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,letterSpacing:'0.06em'}}>{label}</div><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:800,color,marginTop:8,overflowWrap:'anywhere'}}>{value}</div></div>)}</div>
+        <div style={{marginTop:12,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>Worker heartbeat: {fmtTime(status?.worker_last_heartbeat)} · Last preflight: {fmtTime(status?.last_preflight_at)} · Provider check: {fmtTime(status?.provider_last_checked_at)}{workerProviderError ? ` · ${workerProviderError}` : ''} · Read-only worker evidence; no account ID is shown.</div>
+      </div>}
       {status?.warnings?.length>0&&<div style={{padding:'11px 13px',borderRadius:8,color:C.err,background:R(C.err,0.08),border:`1px solid ${R(C.err,0.30)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}><strong>WARNING</strong><div style={{marginTop:6}}>{status.warnings.join(' · ')}</div></div>}
       <div style={{display:'flex',flexWrap:'wrap',gap:18,fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline}}>Workers: <span style={{color:C.onVar}}>{fmt(status?.workers)}</span> · Queue depth: <span style={{color:C.onVar}}>{fmt(status?.queue_depth)}</span> · Candidate expiry: <span style={{color:C.onVar}}>{fmt(status?.candidate_expiry)}s</span> · Multi-provider Shadow: <span style={{color:C.onVar}}>{status?.multi_provider_shadow?'ENABLED':'DISABLED'}</span></div>
       <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline}}>This test validates only provider configuration, authentication, model availability, timeout handling, and a structured WAIT response. It never creates a candidate, decision, risk row, reservation, paper position, or broker order.</div>
       {testError&&<div style={{color:C.err,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}>Diagnostic error: {testError}</div>}
     </div>
+    <div style={{...card,display:'flex',flexDirection:'column',gap:14}}>
+      <div style={{display:'flex',flexWrap:'wrap',alignItems:'center',justifyContent:'space-between',gap:12}}>
+        <div><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,letterSpacing:'0.08em'}}>STRATEGY CONTROL</div><div style={{fontSize:13,color:C.onSurf,marginTop:7}}>Select current persisted strategy data and decide when the persistent worker may analyze it.</div></div>
+        <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>No dashboard broker connection</div>
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'minmax(220px,1.2fr) minmax(180px,1fr) auto',gap:10,alignItems:'end'}}>
+        <label style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>STRATEGY SOURCE<select value={selectedSource} disabled={controlBusy} onChange={event=>updateControl(selectedMode,event.target.value,null)} style={{display:'block',width:'100%',marginTop:7,padding:'10px 11px',borderRadius:8,color:C.onSurf,background:C.surfLowest,border:`1px solid ${R(C.outline,0.24)}`,fontFamily:"'JetBrains Mono',monospace"}}>{strategies.map(item=><option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+        <div><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>ANALYSIS MODE</div><div style={{display:'flex',gap:7,marginTop:7}}>{['manual','auto'].map(option=><button key={option} onClick={()=>updateControl(option,selectedSource)} disabled={controlBusy} style={{flex:1,padding:'10px 12px',borderRadius:8,cursor:controlBusy?'wait':'pointer',color:selectedMode===option?C.lime:C.outline,background:selectedMode===option?R(C.lime,0.12):R(C.outline,0.05),border:`1px solid ${R(selectedMode===option?C.lime:C.outline,0.34)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:900}}>{option.toUpperCase()}</button>)}</div></div>
+        <button onClick={runAnalysis} disabled={runButtonDisabled} style={{padding:'11px 14px',borderRadius:8,cursor:runButtonDisabled?(runBusy||runActive?'wait':'not-allowed'):'pointer',color:!runButtonDisabled?C.cyan:C.outline,background:!runButtonDisabled?R(C.cyan,0.12):R(C.outline,0.06),border:`1px solid ${R(!runButtonDisabled?C.cyan:C.outline,0.34)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:900,whiteSpace:'nowrap'}}>{runBusy?'QUEUED...':runActive?(activeRunStatus==='QUEUED'?'QUEUED...':'RUNNING...'):runBlockedByOtherSource?`BUSY — ${activeSourceLabel}`:noSnapshot?'SOURCE UNAVAILABLE':'RUN ANALYSIS'}</button>
+      </div>
+      <div style={{display:'flex',flexWrap:'wrap',gap:16,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>Selected: <span style={{color:C.onVar}}>{sourceLabel}</span> · Latest source data: <span style={{color:noSnapshot?C.lemon:C.onVar}}>{noSnapshot?'NONE':fmtTime(selectedSnapshot.source_timestamp)}</span> · Latest bar: <span style={{color:C.onVar}}>{noSnapshot?'—':fmtTime(selectedSnapshot.latest_bar_timestamp)}</span> · Freshness: <span style={{color:selectedSnapshot.freshness==='FRESH'?C.lime:C.lemon}}>{noSnapshot?'UNKNOWN':fmt(selectedSnapshot.freshness)}</span> · Age: <span style={{color:C.onVar}}>{noSnapshot?'—':selectedSnapshot.data_age_seconds == null ? '—' : `${Number(selectedSnapshot.data_age_seconds).toFixed(0)}s`}</span></div>
+      {noSnapshot&&<div style={{padding:'10px 12px',borderRadius:8,color:C.lemon,background:R(C.lemon,0.08),border:`1px solid ${R(C.lemon,0.28)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:800}}>SOURCE DATA UNAVAILABLE — NO CURRENT ANALYSIS SNAPSHOT</div>}
+      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))',gap:10}}>
+        <div style={{padding:'11px 12px',borderRadius:8,background:R(C.surfLowest,0.35),border:`1px solid ${R(C.outline,0.14)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}><div style={{color:C.cyan,letterSpacing:'0.06em'}}>ACTIVE RUN</div><div style={{marginTop:7,color:activeManualRun?C.onSurf:C.outline}}>{activeManualRun?`${activeSourceLabel} · ${String(activeManualRun.analysis_mode||'manual').toUpperCase()} · ${activeDisplayStatus}`:'None'}</div></div>
+        <div style={{padding:'11px 12px',borderRadius:8,background:R(C.surfLowest,0.35),border:`1px solid ${R(C.outline,0.14)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}><div style={{color:C.cyan,letterSpacing:'0.06em'}}>LAST RUN</div><div style={{marginTop:7,color:runStatus==='COMPLETED'?C.lime:runStatus==='FAILED'?C.err:C.onSurf}}>{selectedLastRun?`${sourceLabel} · ${String(selectedLastRun.analysis_mode||'manual').toUpperCase()} · ${runStatus}`:'None'}</div></div>
+      </div>
+      <div style={{display:'flex',flexWrap:'wrap',gap:16,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>Candidates: <span style={{color:C.onVar}}>{fmt(selectedLastRun?.candidate_count)}</span> · LLM decisions: <span style={{color:C.onVar}}>{fmt(selectedLastRun?.decision_count)}</span> · Model E/W/R: <span style={{color:C.onVar}}>{fmt(selectedLastRun?.model_enter_count)}/{fmt(selectedLastRun?.model_wait_count)}/{fmt(selectedLastRun?.model_reject_count)}</span> · Provider failures: <span style={{color:C.err}}>{fmt(selectedLastRun?.provider_failure_count)}</span> · System vetoes: <span style={{color:C.lemon}}>{fmt(selectedLastRun?.system_veto_count)}</span> · Risk vetoes: <span style={{color:C.lemon}}>{fmt(selectedLastRun?.risk_veto_count)}</span> · Executed: <span style={{color:C.onVar}}>{fmt(selectedLastRun?.execution_count)}</span></div>
+      <div style={{display:'flex',flexWrap:'wrap',gap:16,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>Applicable: <span style={{color:C.onVar}}>{fmt(selectedLastRun?.applicable_candidate_count)}</span> Â· Not applicable: <span style={{color:C.lemon}}>{fmt(selectedLastRun?.not_applicable_count)}</span> Â· Provider successes: <span style={{color:C.lime}}>{fmt(selectedLastRun?.provider_success_count)}</span> Â· Provider failures: <span style={{color:C.err}}>{fmt(selectedLastRun?.provider_failure_count)}</span></div>
+      {selectedMode==='auto'&&<div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.cyan}}>AUTO cadence: EVERY 30 MINUTES WHEN SOURCE DATA CHANGES</div>}
+      <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>MANUAL analyzes the latest immutable current-data snapshot after RUN ANALYSIS. AUTO is owned by the persistent worker and skips duplicate source fingerprints. Legacy session scans and their locks remain outside Decision Lab.</div>
+      {controlError&&<div style={{color:C.err,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}>Control error: {controlError}</div>}
+    </div>
+    <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))',gap:18}}>
+      <div style={{...card,display:'flex',flexDirection:'column',gap:11}}>
+        <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,letterSpacing:'0.07em'}}>STRATEGY DEFINITION</div>
+        <div style={{fontSize:16,color:C.onSurf,fontWeight:800}}>{definition?.display_name || sourceLabel}</div>
+        <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>VERSION {fmt(definition?.definition_version)} Â· HASH {fmt(definition?.definition_hash).slice(0,12)} Â· {fmt(definition?.execution_capability)}</div>
+        <div style={{fontSize:12,lineHeight:1.5,color:C.onVar}}>{definition?.description || 'Loading code-owned strategy semantics...'}</div>
+        <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>TIMEFRAME: {Array.isArray(definition?.timeframes)?definition.timeframes.join(', '):'—'}</div>
+        <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>INPUTS: {Array.isArray(definition?.required_inputs)?definition.required_inputs.join(' · '):'—'}</div>
+        <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>SIGNALS: {(definition?.signals||[]).map(item=>item.signal_id).join(' · ') || '—'}</div>
+        <details><summary style={{cursor:'pointer',color:C.cyan,fontFamily:"'JetBrains Mono',monospace",fontSize:10}}>VIEW DEFINITION DETAILS</summary><pre style={{whiteSpace:'pre-wrap',overflowWrap:'anywhere',fontFamily:"'JetBrains Mono',monospace",fontSize:10,lineHeight:1.45,color:C.onVar}}>{JSON.stringify({candidate_class_mapping:definition?.candidate_class_mapping,limitations:definition?.limitations,implementation_provenance:definition?.implementation_provenance,signals:definition?.signals},null,2)}</pre></details>
+      </div>
+      <div style={{...card,display:'flex',flexDirection:'column',gap:11}}>
+        <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,letterSpacing:'0.07em'}}>CURRENT PARAMETERS</div>
+        <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>Resolved from the active deterministic calculator; read-only.</div>
+        <pre style={{margin:0,whiteSpace:'pre-wrap',overflowWrap:'anywhere',maxHeight:260,overflowY:'auto',fontFamily:"'JetBrains Mono',monospace",fontSize:10,lineHeight:1.5,color:C.onVar}}>{JSON.stringify(parameters,null,2)}</pre>
+      </div>
+    </div>
+    <div style={{...card,display:'flex',flexDirection:'column',gap:13}}>
+      <div style={{display:'flex',flexWrap:'wrap',alignItems:'center',justifyContent:'space-between',gap:10}}><div><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,letterSpacing:'0.07em'}}>PROMPT PRESET</div><div style={{fontSize:13,color:C.onSurf,marginTop:6}}>Editable analytical guidance is versioned separately from locked policy and code-owned strategy semantics.</div></div>{selectedPreset&&<span style={{padding:'6px 9px',borderRadius:7,color:selectedPreset.built_in?C.cyan:C.lime,border:`1px solid ${R(selectedPreset.built_in?C.cyan:C.lime,0.30)}`,background:R(selectedPreset.built_in?C.cyan:C.lime,0.08),fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>{selectedPreset.built_in?'BUILT-IN · READ ONLY':'CUSTOM · EDITABLE'} · {selectedPreset.version}</span>}</div>
+      <div style={{display:'grid',gridTemplateColumns:'minmax(220px,1fr) minmax(150px,auto)',gap:10,alignItems:'end'}}><label style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>ACTIVE PRESET<select value={selectedPreset?.prompt_id||''} disabled={promptBusy||!availablePresets.length} onChange={event=>{const item=availablePresets.find(candidate=>candidate.prompt_id===event.target.value);if(item){setPromptDraft(String(item.prompt_text||''));updateControl(selectedMode,selectedSource,item.prompt_id);}}} style={{display:'block',width:'100%',marginTop:7,padding:'10px 11px',borderRadius:8,color:C.onSurf,background:C.surfLowest,border:`1px solid ${R(C.outline,0.24)}`,fontFamily:"'JetBrains Mono',monospace"}}>{availablePresets.map(item=><option key={item.prompt_id} value={item.prompt_id}>{item.name} · {item.version}{item.built_in?' · BUILT-IN':''}</option>)}</select></label><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>ID: <span style={{color:C.onVar}}>{fmt(selectedPreset?.prompt_id)}</span><br/>HASH: <span style={{color:C.onVar}}>{fmt(selectedPreset?.content_hash).slice(0,16)}</span></div></div>
+      <textarea value={promptDraft} readOnly={Boolean(selectedPreset?.built_in)} onChange={event=>setPromptDraft(event.target.value)} rows={4} style={{width:'100%',boxSizing:'border-box',resize:'vertical',padding:'11px 12px',borderRadius:8,color:C.onSurf,background:selectedPreset?.built_in?R(C.surfLowest,0.6):C.surfLowest,border:`1px solid ${R(promptIsDirty?C.lemon:C.outline,0.24)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:11,lineHeight:1.5}} />
+      <div style={{display:'flex',flexWrap:'wrap',gap:8}}><button onClick={duplicatePromptPreset} disabled={!selectedPreset||promptBusy} style={{padding:'8px 10px',borderRadius:7,cursor:'pointer',color:C.cyan,background:R(C.cyan,0.08),border:`1px solid ${R(C.cyan,0.28)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:9,fontWeight:800}}>DUPLICATE TO EDIT</button><button onClick={()=>savePromptPreset(true)} disabled={!promptIsDirty||promptBusy||selectedPreset?.built_in} style={{padding:'8px 10px',borderRadius:7,cursor:promptIsDirty?'pointer':'not-allowed',color:promptIsDirty?C.lime:C.outline,background:R(promptIsDirty?C.lime:C.outline,0.08),border:`1px solid ${R(promptIsDirty?C.lime:C.outline,0.28)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:9,fontWeight:800}}>SAVE NEW VERSION</button><button onClick={()=>savePromptPreset(false)} disabled={!promptIsDirty||promptBusy||selectedPreset?.built_in} style={{padding:'8px 10px',borderRadius:7,cursor:promptIsDirty?'pointer':'not-allowed',color:promptIsDirty?C.lime:C.outline,background:R(promptIsDirty?C.lime:C.outline,0.08),border:`1px solid ${R(promptIsDirty?C.lime:C.outline,0.28)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:9,fontWeight:800}}>SAVE AS NEW PRESET</button><button onClick={disablePromptPreset} disabled={!selectedPreset||selectedPreset.built_in||promptBusy} style={{padding:'8px 10px',borderRadius:7,cursor:selectedPreset&&!selectedPreset.built_in?'pointer':'not-allowed',color:selectedPreset&&!selectedPreset.built_in?C.lemon:C.outline,background:R(selectedPreset&&!selectedPreset.built_in?C.lemon:C.outline,0.08),border:`1px solid ${R(selectedPreset&&!selectedPreset.built_in?C.lemon:C.outline,0.28)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:9,fontWeight:800}}>DISABLE CUSTOM PRESET</button><button onClick={previewPrompt} disabled={!selectedPreset||promptIsDirty||promptBusy} style={{padding:'8px 10px',borderRadius:7,cursor:promptIsDirty?'not-allowed':'pointer',color:C.cyan,background:R(C.cyan,0.08),border:`1px solid ${R(C.cyan,0.28)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:9,fontWeight:800}}>PREVIEW FINAL PROMPT</button>{promptIsDirty&&<span style={{padding:'8px 4px',color:C.lemon,fontFamily:"'JetBrains Mono',monospace",fontSize:9,fontWeight:800}}>UNSAVED CHANGES · RUN BLOCKED</span>}</div>
+      {promptError&&<div style={{color:C.err,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}>{promptError}</div>}
+      {promptPreview&&<div style={{padding:'12px',borderRadius:8,background:R(C.surfLowest,0.45),border:`1px solid ${R(C.cyan,0.24)}`}}><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.lime}}>PREVIEW ONLY · PROVIDER CALLED: {promptPreview.provider_called?'YES':'NO'}</div><pre style={{marginTop:9,whiteSpace:'pre-wrap',overflowWrap:'anywhere',maxHeight:360,overflowY:'auto',fontFamily:"'JetBrains Mono',monospace",fontSize:10,lineHeight:1.45,color:C.onVar}}>{JSON.stringify({compiled_prompt:promptPreview.compiled_prompt,provider_request:promptPreview.provider_request},null,2)}</pre></div>}
+    </div>
+    <div style={{...card,overflowX:'auto'}}><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,letterSpacing:'0.06em',marginBottom:12}}>RECENT LLM RUNS</div><table style={{width:'100%',borderCollapse:'collapse',fontFamily:"'JetBrains Mono',monospace",fontSize:10}}><thead><tr>{['Time','Mode','Strategy','Scan','State','Candidates','Model E/W/R','Failures','Vetoes','Risk vetoes','Executed','Error'].map(h=><th key={h} style={{textAlign:'left',padding:'8px 7px',color:C.outline,borderBottom:`1px solid ${R(C.outline,0.18)}`}}>{h}</th>)}</tr></thead><tbody>{runs.slice(0,10).map((run,i)=><tr key={run.run_id||i}><td style={{padding:'9px 7px',color:C.outline}}>{fmtTime(run.completed_at||run.requested_at)}</td><td style={{padding:'9px 7px',color:C.onVar}}>{fmt(run.analysis_mode).toUpperCase()}</td><td style={{padding:'9px 7px',color:C.onVar}}>{strategies.find(item=>item.id===run.strategy_selection)?.label||fmt(run.strategy_selection)}</td><td style={{padding:'9px 7px',color:C.outline}}>{fmt(run.scan_id)}</td><td style={{padding:'9px 7px',color:run.status==='COMPLETED'?C.lime:run.status==='FAILED'?C.err:C.onVar}}>{fmt(run.status)}</td><td style={{padding:'9px 7px',color:C.onSurf}}>{fmt(run.candidate_count)}</td><td style={{padding:'9px 7px',color:C.onVar}}>{fmt(run.model_enter_count)}/{fmt(run.model_wait_count)}/{fmt(run.model_reject_count)}</td><td style={{padding:'9px 7px',color:C.err}}>{fmt(run.provider_failure_count)}</td><td style={{padding:'9px 7px',color:C.lemon}}>{fmt(run.system_veto_count)}</td><td style={{padding:'9px 7px',color:C.lemon}}>{fmt(run.risk_veto_count)}</td><td style={{padding:'9px 7px',color:C.onVar}}>{fmt(run.execution_count)}</td><td style={{padding:'9px 7px',color:C.err}}>{fmt(run.error)}</td></tr>)}</tbody></table>{!runs.length&&<div style={{color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:11,padding:'10px 7px'}}>No LLM runs yet.</div>}</div>
     <div style={{...card,display:'flex',flexWrap:'wrap',alignItems:'center',justifyContent:'space-between',gap:18}}><div><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline,letterSpacing:'0.08em'}}>AUTONOMOUS DECISION LAYER</div><div style={{fontSize:14,color:C.onSurf,marginTop:7}}>Read-only evidence for candidate decisions, risk gates, and isolated paper ownership.</div></div><div style={{padding:'9px 13px',borderRadius:9,color:modeColor,border:`1px solid ${R(modeColor,0.35)}`,background:R(modeColor,0.08),fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:800}}>{mode}</div></div>
     <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(145px,1fr))',gap:12}}>{[["Candidates",status?.candidates],["Decisions",status?.decisions],["Risk rows",status?.risk_decisions],["SHADOW DECISIONS",status?.shadow_decisions],["INTERNAL PAPER EXECUTIONS",status?.internal_paper_executions],["IBKR PAPER EXECUTIONS",status?.ibkr_paper_executions],["LIVE EXECUTIONS",status?.live_executions],["Paper P&L",status?.paper_portfolio?.realized_pnl||0]].map(([label,value])=><div key={label} style={card}><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>{label.toUpperCase()}</div><div style={{fontSize:24,fontWeight:600,color:C.onSurf,marginTop:8}}>{fmt(value)}</div></div>)}</div>
-    <div style={{...card,overflowX:'auto'}}><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,letterSpacing:'0.06em',marginBottom:12}}>RECENT MODEL DECISIONS</div><table style={{width:'100%',borderCollapse:'collapse',fontFamily:"'JetBrains Mono',monospace",fontSize:10}}><thead><tr>{['Time','Symbol','Strategy','Provider','Action','Risk','Execution'].map(h=><th key={h} style={{textAlign:'left',padding:'8px 7px',color:C.outline,borderBottom:`1px solid ${R(C.outline,0.18)}`}}>{h}</th>)}</tr></thead><tbody>{decisions.map((row,i)=><tr key={`${row.decision_id||i}`}><td style={{padding:'9px 7px',color:C.outline}}>{fmt(row.completed_at).slice(0,19).replace('T',' ')}</td><td style={{padding:'9px 7px',color:C.onSurf}}>{fmt(row.symbol)}</td><td style={{padding:'9px 7px',color:C.onVar}}>{fmt(row.strategy)}</td><td style={{padding:'9px 7px',color:C.onVar}}>{fmt(row.provider)}</td><td style={{padding:'9px 7px',color:row.action==='ENTER'?C.lime:row.action==='REJECT'?C.err:C.cyan}}>{fmt(row.action)}</td><td style={{padding:'9px 7px',color:C.onVar}}>{row.risk_approved===null||row.risk_approved===undefined?'—':row.risk_approved?'APPROVED':'VETO'}</td><td style={{padding:'9px 7px',color:C.onVar}}>{fmt(row.execution_status)}</td></tr>)}</tbody></table>{!decisions.length&&<div style={{color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:11,padding:'18px 7px'}}>No decision records yet.</div>}</div>
+  <div style={{...card,overflowX:'auto'}}><div style={{display:'flex',flexWrap:'wrap',alignItems:'center',justifyContent:'space-between',gap:12,marginBottom:12}}><div><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,letterSpacing:'0.06em'}}>RECENT MODEL DECISIONS</div><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,marginTop:6}}>FILTER ALL AVAILABLE COLUMNS · {decisionRows.length} / {decisions.length} ROWS</div></div><button onClick={()=>setDecisionFilters({dateFrom:'',dateTo:'',symbol:'',source:'',strategy:'',signal:'',provider:'',model:'',effective:'',origin:'',risk:'',execution:'',lastEntries:''})} style={{padding:'7px 10px',borderRadius:7,cursor:'pointer',color:C.cyan,background:R(C.cyan,0.08),border:`1px solid ${R(C.cyan,0.28)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:9,fontWeight:800}}>CLEAR FILTERS</button></div><div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(135px,1fr))',gap:8,padding:'11px 12px',marginBottom:12,borderRadius:9,background:R(C.surfLowest,0.38),border:`1px solid ${R(C.outline,0.14)}`}}>{[['dateFrom','TIME FROM','date'],['dateTo','TIME TO','date'],['symbol','SYMBOL','text'],['source','SOURCE','select'],['strategy','STRATEGY','select'],['signal','SIGNAL','text'],['provider','PROVIDER','select'],['model','MODEL','select'],['effective','EFFECTIVE','select'],['origin','ORIGIN','select'],['risk','RISK','select'],['execution','EXECUTION','select'],['lastEntries','LAST ENTRIES','number']].map(([field,label,type])=><label key={field} style={{fontFamily:"'JetBrains Mono',monospace",fontSize:9,color:C.outline,letterSpacing:'0.04em'}}>{label}{type==='select'?<select value={decisionFilters[field]} onChange={event=>setDecisionFilters(previous=>({...previous,[field]:event.target.value}))} style={{display:'block',width:'100%',marginTop:5,padding:'7px 8px',borderRadius:6,color:C.onSurf,background:C.surfLowest,border:`1px solid ${R(C.outline,0.22)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10}}><option value="">ALL</option>{decisionFilterOptions(field).map(value=><option key={value} value={value}>{value.replaceAll('_',' ')}</option>)}</select>:<input type={type} min={type==='number'?'1':undefined} step={type==='number'?'1':undefined} value={decisionFilters[field]} onChange={event=>setDecisionFilters(previous=>({...previous,[field]:event.target.value}))} style={{display:'block',width:'100%',marginTop:5,padding:'7px 8px',borderRadius:6,color:C.onSurf,background:C.surfLowest,border:`1px solid ${R(C.outline,0.22)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10}}/>}</label>)}</div><table style={{width:'100%',borderCollapse:'collapse',fontFamily:"'JetBrains Mono',monospace",fontSize:10}}><thead><tr>{['Time','Symbol','Source','Strategy','Signal','Provider','Model','Effective','Origin','Risk','Execution','Inspect'].map(h=><th key={h} style={{textAlign:'left',padding:'8px 7px',color:C.outline,borderBottom:`1px solid ${R(C.outline,0.18)}`}}>{h}</th>)}</tr></thead><tbody>{decisionRows.map((row,i)=><tr key={`${row.decision_id||i}`}><td style={{padding:'9px 7px',color:C.outline}}>{fmt(row.completed_at).slice(0,19).replace('T',' ')}</td><td style={{padding:'9px 7px',color:C.onSurf}}>{fmt(row.symbol)}</td><td style={{padding:'9px 7px',color:C.onVar}}>{fmt(row.source).replaceAll('_',' ')}</td><td style={{padding:'9px 7px',color:C.onVar}}>{fmt(row.strategy)}</td><td style={{padding:'9px 7px',color:C.outline}}>{fmt(row.source_signal)}</td><td style={{padding:'9px 7px',color:C.onVar}}>{fmt(row.provider)}</td><td style={{padding:'9px 7px',color:row.model_action==='ENTER'?C.lime:row.model_action==='REJECT'?C.err:C.cyan}}>{fmt(row.model_action || 'LEGACY / NOT RECORDED')}</td><td style={{padding:'9px 7px',color:row.effective_action==='ENTER'?C.lime:row.effective_action==='REJECT'?C.err:C.cyan}}>{fmt(row.effective_action || 'LEGACY / NOT RECORDED')}</td><td style={{padding:'9px 7px',color:C.onVar}}>{fmt(row.decision_origin || 'LEGACY / NOT RECORDED')}</td><td style={{padding:'9px 7px',color:C.onVar}}>{row.risk_approved===null||row.risk_approved===undefined?'—':row.risk_approved?'APPROVED':'VETO'}</td><td style={{padding:'9px 7px',color:C.onVar}}>{fmt(row.execution_status)}</td><td style={{padding:'9px 7px'}}><button onClick={()=>inspectDecision(row.decision_id)} style={{padding:'6px 8px',borderRadius:6,cursor:'pointer',color:C.cyan,background:R(C.cyan,0.08),border:`1px solid ${R(C.cyan,0.28)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:9,fontWeight:800}}>{inspectorBusy?'...':'VIEW'}</button></td></tr>)}</tbody></table>{!decisionRows.length&&<div style={{color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:11,padding:'18px 7px'}}>{decisions.length?'No rows match the active filters.':'No decision records yet.'}</div>}</div>
+  {inspectorError&&<div style={{...card,color:C.err,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}>Inspector error: {inspectorError}</div>}
+  {inspector&&<div style={{...card,border:`1px solid ${R(C.lemon,0.26)}`,display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))',gap:10}}>{[['STRATEGY DEFINITION',`${fmt(inspector.definition_version)} · ${fmt(inspector.definition_hash).slice(0,16)}`],['PARAMETER SNAPSHOT',inspector.parameter_snapshot_json],['PROMPT PRESET',`${fmt(inspector.prompt_id)} · ${fmt(inspector.prompt_version)} · ${fmt(inspector.prompt_hash).slice(0,16)}`],['APPLICABILITY',inspector.applicability_json],['COMPILED PROMPT',inspector.compiled_prompt_json],['PROVIDER FINISH REASON',inspector.provider_finish_reason],['PROVIDER TOKEN USAGE',inspector.token_usage_json]].map(([label,value])=><div key={label} style={{padding:'10px 11px',borderRadius:8,background:R(C.surfLowest,0.35),border:`1px solid ${R(C.outline,0.12)}`}}><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:9,color:C.cyan}}>{label}</div><pre style={{margin:'7px 0 0',whiteSpace:'pre-wrap',overflowWrap:'anywhere',maxHeight:180,overflowY:'auto',fontFamily:"'JetBrains Mono',monospace",fontSize:10,lineHeight:1.45,color:C.onVar}}>{value===null||value===undefined||value===''?'LEGACY / NOT RECORDED':typeof value==='string'?value:JSON.stringify(value,null,2)}</pre></div>)}</div>}
+  {inspector&&<div style={{...card,border:`1px solid ${R(C.cyan,0.32)}`,display:'flex',flexDirection:'column',gap:14}}><div style={{display:'flex',justifyContent:'space-between',alignItems:'center',gap:12}}><div><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,letterSpacing:'0.08em'}}>DECISION INSPECTOR</div><div style={{fontSize:14,color:C.onSurf,marginTop:7}}>{fmt(inspector.symbol)} Â· {fmt(inspector.decision_id)}</div></div><button onClick={()=>setInspector(null)} style={{padding:'7px 10px',borderRadius:7,cursor:'pointer',color:C.outline,background:R(C.outline,0.06),border:`1px solid ${R(C.outline,0.24)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10}}>CLOSE</button></div><div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:10}}>{[['MODEL ACTION',inspector.model_action||'LEGACY / NOT RECORDED'],['EFFECTIVE ACTION',inspector.effective_action||'LEGACY / NOT RECORDED'],['ORIGIN',inspector.decision_origin||'LEGACY / NOT RECORDED'],['PROVIDER',`${fmt(inspector.provider)} Â· ${fmt(inspector.model)}`],['PROVIDER STATUS',inspector.provider_status||'LEGACY / NOT RECORDED'],['ERROR CATEGORY',inspector.provider_error_category||'—']].map(([label,value])=><div key={label} style={{padding:'10px 11px',borderRadius:8,background:R(C.surfLowest,0.45),border:`1px solid ${R(C.outline,0.12)}`}}><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:9,color:C.outline}}>{label}</div><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onSurf,marginTop:7,overflowWrap:'anywhere'}}>{fmt(value)}</div></div>)}</div><div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))',gap:12}}>{[['CANDIDATE PROVENANCE',inspector.candidate_json],['STRATEGY DATA',inspector.snapshot_json],['PROMPT / ALLOWED ACTIONS',{prompt_version:inspector.prompt_version,allowed_actions:inspector.allowed_actions_json,payload:inspector.prompt_payload_json}],['PROVIDER RESPONSE',{raw_model_text_sanitized:inspector.raw_model_text_sanitized,parsed_response_json:inspector.parsed_response_json}],['SYSTEM POLICY RESULT',inspector.system_result_json],['RISK / EXECUTION',{risk_approved:inspector.risk_approved,risk_reasons:inspector.risk_reasons,execution_status:inspector.execution_status,execution_mode:inspector.execution_mode}]].map(([label,value])=><div key={label} style={{padding:'11px 12px',borderRadius:8,background:R(C.surfLowest,0.35),border:`1px solid ${R(C.outline,0.14)}`}}><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.cyan,letterSpacing:'0.05em',marginBottom:8}}>{label}</div><pre style={{margin:0,whiteSpace:'pre-wrap',overflowWrap:'anywhere',maxHeight:250,overflowY:'auto',fontFamily:"'JetBrains Mono',monospace",fontSize:10,lineHeight:1.5,color:C.onVar}}>{value===null||value===undefined||value===''?'LEGACY / NOT RECORDED':JSON.stringify(value,null,2)}</pre></div>)}</div></div>}
     <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))',gap:18}}><div style={card}><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,letterSpacing:'0.06em',marginBottom:12}}>ISOLATED PAPER POSITIONS</div>{(status?.paper_portfolio?.positions||[]).map(p=><div key={p.position_id} style={{padding:'10px 0',borderBottom:`1px solid ${R(C.outline,0.12)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}><span style={{color:C.onSurf}}>{p.symbol}</span><span style={{color:C.outline}}> · {p.direction} · qty {p.quantity}</span><div style={{color:C.outline,marginTop:5}}>entry {p.entry} · stop {p.stop_loss} · target {p.target}</div></div>)}{!(status?.paper_portfolio?.positions||[]).length&&<div style={{color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}>No agent-owned open positions.</div>}</div><div style={card}><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.cyan,letterSpacing:'0.06em',marginBottom:12}}>PROVIDER HEALTH</div><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar,lineHeight:1.8}}><div>Configured provider: <strong style={{color:C.onSurf}}>{provider}</strong></div><div>Model: <strong style={{color:C.onSurf}}>{model}</strong></div><div>Runtime test: <strong style={{color:connectionColor}}>{connectionLabel}</strong></div><div>Last latency: <strong style={{color:C.onSurf}}>{fmtLatency(status?.last_provider_latency_ms)}</strong></div><div>Last checked: <strong style={{color:C.onSurf}}>{fmtTime(status?.last_provider_test_at)}</strong></div>{status?.last_provider_error&&<div style={{color:C.err}}>Reason: {status.last_provider_error}</div>}<div style={{marginTop:8,color:C.outline}}>Trading observations: {status?.decisions||0}</div></div>{providers.slice(0,8).map((p,i)=><div key={`${p.provider}-${p.observed_at}-${i}`} style={{display:'flex',justifyContent:'space-between',padding:'7px 0',fontFamily:"'JetBrains Mono',monospace",fontSize:10,borderTop:`1px solid ${R(C.outline,0.10)}`,marginTop:8}}><span style={{color:C.onVar}}>{p.provider} · {p.model}</span><span style={{color:p.status==='ok'?C.lime:C.err}}>{p.status}</span></div>)}{!providers.length&&<div style={{color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:11,marginTop:10}}>No trading decision observations yet.</div>}</div></div>
   </div>;
 }
@@ -6712,6 +6971,7 @@ function App() {
   const [refreshBusy, setRefreshBusy] = useState(false);
   const [candleFetchBusy, setCandleFetchBusy] = useState(false);
   const [hardResetBusy, setHardResetBusy] = useState(false);
+  const [logoutBusy, setLogoutBusy] = useState(false);
 
   // The dashboard is a single-file React app, so keep the active palette in
   // the shared palette reference before rendering any child tab.
@@ -6756,7 +7016,7 @@ function App() {
   };
 
   const hardResetDashboard = async()=>{
-    const ok = window.confirm('Hard reset will close and reopen the dashboard server, market-data collector, execute worker, and crypto worker. Continue?');
+    const ok = window.confirm('Hard reset will close and reopen market data, execute, crypto, the autonomous stock worker, and the dashboard. Open Paper positions and protective brackets are preserved and reconciled before new entries. Continue?');
     if(!ok) return;
     setHardResetBusy(true);
     try{
@@ -6767,6 +7027,27 @@ function App() {
     }catch(e){
       alert(`Hard reset failed: ${e.message || e}`);
       setHardResetBusy(false);
+    }
+  };
+
+  const logoutDashboard = async()=>{
+    if(logoutBusy) return;
+    const ok = window.confirm('Log out and stop all dashboard services? The dashboard tab will close if the browser permits it.');
+    if(!ok) return;
+    setLogoutBusy(true);
+    try{
+      const r = await fetch(`${API}/system/logout`,{method:'POST',keepalive:true});
+      const d = await r.json().catch(()=>({}));
+      if(!r.ok || d.ok===false) throw new Error(d.detail || d.message || 'Logout failed');
+      // Chrome only permits window.close() for tabs opened by script. The
+      // blank-page fallback prevents a normal user-opened tab from retaining
+      // a live dashboard view after the services have been stopped.
+      window.open('', '_self');
+      window.close();
+      setTimeout(()=>{ window.location.replace('about:blank'); }, 350);
+    }catch(e){
+      setLogoutBusy(false);
+      alert(`Logout failed: ${e.message || e}`);
     }
   };
 
@@ -6865,8 +7146,8 @@ function App() {
         </div>}
 
         {/* Footer */}
-        {!sidebarCollapsed && <div style={{marginTop:14,paddingTop:14,borderTop:`1px solid ${R(C.outline,0.14)}`,display:'flex',flexDirection:'column',gap:2}}>
-          {[{icon:'help',label:'Docs'},{icon:'settings',label:'Settings'}].map(f=>(
+        <div style={{marginTop:14,paddingTop:14,borderTop:`1px solid ${R(C.outline,0.14)}`,display:'flex',flexDirection:'column',gap:2}}>
+          {!sidebarCollapsed && [{icon:'help',label:'Docs'},{icon:'settings',label:'Settings'}].map(f=>(
             <div key={f.label} style={{display:'flex',alignItems:'center',gap:11,padding:'8px 14px',borderRadius:8,cursor:'pointer',color:C.onVar,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}
               onMouseEnter={e=>e.currentTarget.style.color=C.onSurf}
               onMouseLeave={e=>e.currentTarget.style.color=C.onVar}>
@@ -6874,7 +7155,16 @@ function App() {
               {f.label}
             </div>
           ))}
-        </div>}
+          <button onClick={logoutDashboard} disabled={logoutBusy}
+            title="Logout and stop dashboard services"
+            aria-label="Logout and stop dashboard services"
+            style={{marginTop:4,width:'100%',display:'flex',alignItems:'center',justifyContent:sidebarCollapsed?'center':'flex-start',gap:11,padding:sidebarCollapsed?'9px 0':'8px 14px',borderRadius:8,cursor:logoutBusy?'wait':'pointer',color:logoutBusy?C.outline:C.err,background:logoutBusy?R(C.outline,0.05):R(C.err,0.06),border:`1px solid ${R(logoutBusy?C.outline:C.err,0.22)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:11,letterSpacing:'0.03em',textTransform:'uppercase'}}
+            onMouseEnter={e=>{if(!logoutBusy)e.currentTarget.style.background=R(C.err,0.12)}}
+            onMouseLeave={e=>{if(!logoutBusy)e.currentTarget.style.background=R(C.err,0.06)}}>
+            <Icon n="logout" size={18} color="inherit"/>
+            {!sidebarCollapsed && (logoutBusy?'Stopping…':'Logout')}
+          </button>
+        </div>
       </aside>
 
       {/* ── Main ────────────────────────────────────────────────────────── */}

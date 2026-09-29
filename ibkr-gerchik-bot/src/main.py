@@ -753,7 +753,12 @@ def run_job_with_context(
             if not acquired:
                 LOGGER.info("Skipping %s job because %s is already active.", job_name, preconnect_lock_name)
                 SlackAlerter().send_channel_message(_duplicate_session_message(job_name))
-                return {"job": job_name, "blocked": True, "reasons": ["session_already_running"], "dry_run": dry_run}
+                return {
+                    "job": job_name,
+                    "blocked": True,
+                    "reasons": ["session_already_running"],
+                    "dry_run": dry_run,
+                }
 
             market_lock_wait_seconds = (
                 SETTINGS.broker.market_session_lock_wait_seconds
@@ -875,6 +880,35 @@ def _run_connected_job(
         repo_root = SETTINGS.paths.trade_log.parents[1]
         account_snapshot = {"account": account_summary, "positions": positions, "open_orders": open_orders}
         _save_state(state_path, state)
+
+        manual_run_poll_callback = None
+        if command_context and command_context.get("worker"):
+            from src.decision.strategy_controller import (
+                AnalysisExecutionContext,
+                get_strategy_analysis_controller,
+            )
+
+            strategy_controller = get_strategy_analysis_controller()
+
+            def build_analysis_context() -> AnalysisExecutionContext:
+                return AnalysisExecutionContext(
+                    order_manager=order_manager,
+                    market_data=market_data,
+                    account_equity=account_equity,
+                    cash_available=cash_available,
+                    current_positions=list(state.get("tracked_positions", [])),
+                    open_risk_amount=float(risk_manager.get_state()["open_risk_amount"]),
+                    market_open=job_name in {"open", "intraday"},
+                )
+
+            def poll_manual_runs() -> None:
+                strategy_controller.drain_pending_manual(build_analysis_context())
+                status_callback = command_context.get("manual_status_callback")
+                if callable(status_callback):
+                    status_callback()
+
+            manual_run_poll_callback = poll_manual_runs
+            poll_manual_runs()
 
         if job_name == "irs_scan":
             watchlist = state.get("watchlist", {})
@@ -1006,6 +1040,16 @@ def _run_connected_job(
                 watchlist = state.get("watchlist", {})
             tracked_positions = state.get("tracked_positions", [])
             risk_manager.update_open_risk(tracked_positions)
+            open_options = {}
+            if command_context and "allow_new_entries" in command_context:
+                open_options["allow_new_entries"] = bool(command_context["allow_new_entries"])
+                open_options["stop_event"] = command_context.get("stop_event")
+            if command_context and command_context.get("worker"):
+                from src.decision.strategy_controller import completed_scan_callback
+
+                open_options["decision_controlled"] = True
+                open_options["manual_run_poll_callback"] = manual_run_poll_callback
+                open_options["scan_complete_callback"] = completed_scan_callback
             executed = run_open(
                 market_data=market_data,
                 order_manager=order_manager,
@@ -1015,6 +1059,7 @@ def _run_connected_job(
                 cash_available=cash_available,
                 current_positions=positions,
                 open_risk_amount=float(risk_manager.get_state()["open_risk_amount"]),
+                **open_options,
             )
             tracked_positions.extend(executed)
             state["tracked_positions"] = tracked_positions
@@ -1045,6 +1090,15 @@ def _run_connected_job(
                 if initial_intraday_halt_reasons
                 else {}
             )
+            if command_context and "allow_new_entries" in command_context:
+                intraday_options["allow_new_entries"] = bool(command_context["allow_new_entries"])
+                intraday_options["stop_event"] = command_context.get("stop_event")
+            if command_context and command_context.get("worker"):
+                from src.decision.strategy_controller import completed_scan_callback
+
+                intraday_options["decision_controlled"] = True
+                intraday_options["scan_complete_callback"] = completed_scan_callback
+                intraday_options["manual_run_poll_callback"] = manual_run_poll_callback
             actions = run_intraday(
                 broker,
                 alerter,

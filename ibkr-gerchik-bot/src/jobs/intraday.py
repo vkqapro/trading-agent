@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Callable, Dict, List
 
 from src.alerts.slack import SlackAlerter
@@ -46,6 +46,11 @@ def run_intraday(
     now_provider: Callable[[], datetime] | None = None,
     sleep_provider: Callable[[float], None] | None = None,
     initial_trading_halt_reasons: List[str] | None = None,
+    allow_new_entries: bool = True,
+    stop_event: object | None = None,
+    decision_controlled: bool = False,
+    scan_complete_callback: Callable[..., object] | None = None,
+    manual_run_poll_callback: Callable[[], object] | None = None,
 ) -> List[Dict[str, object]]:
     """Continue scanning for new entries and manage any open positions."""
     now_fn = now_provider or session_now
@@ -88,12 +93,21 @@ def run_intraday(
         )
 
     while True:
+        if stop_event is not None and bool(getattr(stop_event, "is_set", lambda: False)()):
+            LOGGER.info("Intraday job stopping at worker shutdown request.")
+            break
         loop_time = now_fn()
         if not market_data.market_is_open(loop_time):
             break
         if not intraday_session_active(loop_time):
             LOGGER.info("Intraday session ended at %s", loop_time.isoformat())
             break
+
+        if manual_run_poll_callback is not None:
+            try:
+                manual_run_poll_callback()
+            except Exception:
+                LOGGER.debug("Decision Lab manual-run poll failed", exc_info=True)
 
         interval = get_scan_interval(loop_time)
         LOGGER.info("Intraday loop tick at %s interval=%ss", loop_time.isoformat(), interval)
@@ -130,7 +144,16 @@ def run_intraday(
         iteration_signal_details: List[Dict[str, object]] = []
         symbols_scanned = 0
         signals_detected = 0
-        entries_enabled = can_scan_for_new_entries(loop_time) and not trading_halted_reasons
+        entries_enabled = allow_new_entries and can_scan_for_new_entries(loop_time) and not trading_halted_reasons
+        scan_result = {
+            "executed": [],
+            "skipped": [],
+            "manual_candidates": [],
+            "symbols_scanned": 0,
+            "signals_detected": 0,
+            "report_rows": [],
+            "signal_details": [],
+        }
         LOGGER.info(
             "Intraday loop state: entries_enabled=%s watchlist_symbols=%s tracked_positions=%s",
             entries_enabled,
@@ -151,6 +174,7 @@ def run_intraday(
                 open_risk_amount=calculate_open_risk_amount(tracked_positions),
                 scan_time=loop_time,
                 intraday_bars_by_symbol=bars_by_symbol if isinstance(bars_by_symbol, dict) else None,
+                decision_controlled=decision_controlled,
             )
             executed = scan_result["executed"]
             skipped = scan_result["skipped"]
@@ -196,6 +220,28 @@ def run_intraday(
                 )
         else:
             LOGGER.info("Intraday watchlist is empty; managing positions only until next loop.")
+
+        if scan_complete_callback is not None and watchlist:
+            try:
+                scan_complete_callback(
+                    {
+                        "scan_id": loop_time.isoformat(),
+                        "completed_at": datetime.now(loop_time.tzinfo or timezone.utc).isoformat(),
+                        "symbols": tuple(watchlist.keys()),
+                        "watchlist": watchlist,
+                        "scan_result": scan_result,
+                        "bars_by_symbol": bars_by_symbol,
+                    },
+                    order_manager=order_manager,
+                    market_data=market_data,
+                    account_equity=account_equity,
+                    cash_available=account_equity,
+                    current_positions=tracked_positions,
+                    open_risk_amount=calculate_open_risk_amount(tracked_positions),
+                    market_open=True,
+                )
+            except Exception:
+                LOGGER.exception("Decision Lab completed-scan callback failed; scan remains complete.")
 
         # Paper stop/target enforcement is deterministic and runs before the
         # legacy broker-management pass; it never waits for an LLM response.
@@ -275,7 +321,7 @@ def run_intraday(
         next_run = next_scan_time(loop_time, interval)
         if not market_data.market_is_open(now_fn()):
             break
-        sleep_until(next_run, now_fn, sleep_fn)
+        sleep_until(next_run, now_fn, sleep_fn, stop_event, manual_run_poll_callback)
 
     append_markdown_log(
         SETTINGS.paths.trade_log,

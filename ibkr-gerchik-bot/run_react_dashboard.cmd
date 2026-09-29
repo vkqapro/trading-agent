@@ -44,6 +44,16 @@ REM Start the 24/7 OKX crypto candle collector + analyzer.
 REM This uses public OKX market-data endpoints for candles.
 start "Vitaly's Trading Bot - Crypto Worker" /min cmd /k "%~dp0run_crypto_worker.cmd"
 
+REM Start the persistent autonomous stock lifecycle supervisor. It remains
+REM resident across market-closed periods and owns no execute-request queue.
+echo  [START] Autonomous Stock Worker via run_autonomous_stock_worker.cmd ...
+start "Vitaly's Trading Bot - Autonomous Stock Worker" /min cmd /k "%~dp0run_autonomous_stock_worker.cmd"
+
+REM The worker reports its authoritative READY/BLOCKED state in
+REM memory/runtime/autonomous_stock_worker.json. Do not claim readiness merely
+REM because the wrapper process was launched.
+"%PYTHON%" scripts\report_autonomous_stock_worker_start.py --timeout 10
+
 REM Give the server 2 seconds then open browser
 start "" /min cmd /c "timeout /t 2 /nobreak >nul && start http://127.0.0.1:8550"
 

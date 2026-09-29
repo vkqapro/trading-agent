@@ -272,6 +272,8 @@ def commit_flex_checkpoint(result: Dict[str, Any]) -> None:
 def run_flex_catch_up(commit: bool = True) -> Dict[str, Any]:
     """Fetch/archive a statement and return normalized trades plus checkpoint data."""
     state = _read_state()
+    if not SETTINGS.flex_statement_enabled or not SETTINGS.flex_statement_token or not SETTINGS.flex_statement_query_id:
+        return {"status": "disabled", "reason": "missing_flex_configuration", "trades": []}
     fetched_at = datetime.now(timezone.utc)
     try:
         previous_success = state.get("last_successful_statement_at")

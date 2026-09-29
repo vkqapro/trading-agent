@@ -199,6 +199,7 @@ class DecisionAgentConfig:
     provider: str = _env_str("LLM_DECISION_PROVIDER", "local_openai").lower()
     model: str = _env_str("LLM_DECISION_MODEL", "")
     timeout_seconds: float = _env_float("LLM_DECISION_TIMEOUT_SECONDS", 15.0)
+    max_completion_tokens: int = _env_int("LLM_DECISION_MAX_COMPLETION_TOKENS", 900)
     local_base_url: str = _env_str("LLM_LOCAL_BASE_URL", "")
     local_model: str = _env_str("LLM_LOCAL_MODEL", "")
     openai_base_url: str = _env_str("LLM_OPENAI_BASE_URL", "https://api.openai.com/v1")
@@ -227,6 +228,8 @@ class DecisionAgentConfig:
     paper_protection_interval_seconds: float = _env_float("LLM_PAPER_PROTECTION_INTERVAL_SECONDS", 5.0)
     position_review_interval_seconds: float = _env_float("LLM_POSITION_REVIEW_INTERVAL_SECONDS", 300.0)
     provider_health_max_age_seconds: float = _env_float("LLM_PROVIDER_HEALTH_MAX_AGE_SECONDS", 900.0)
+    provider_health_interval_seconds: float = _env_float("LLM_PROVIDER_HEALTH_INTERVAL_SECONDS", 300.0)
+    auto_analysis_interval_minutes: float = _env_float("LLM_AUTO_ANALYSIS_INTERVAL_MINUTES", 30.0)
     database_path: Path = field(
         default_factory=lambda: _resolve_env_path(_env_str("LLM_DECISION_DATABASE_PATH", "memory/decision_lab.db"))
     )
@@ -260,6 +263,8 @@ class DecisionAgentConfig:
         mode = self.mode_enum()
         if self.timeout_seconds <= 0:
             raise ValueError("LLM_DECISION_TIMEOUT_SECONDS must be positive")
+        if self.max_completion_tokens < 600 or self.max_completion_tokens > 2000:
+            raise ValueError("LLM_DECISION_MAX_COMPLETION_TOKENS must be between 600 and 2000")
         if self.max_open_positions < 1:
             raise ValueError("LLM_MAX_OPEN_POSITIONS must be positive")
         if self.risk_per_trade_pct <= 0:
@@ -276,6 +281,8 @@ class DecisionAgentConfig:
             raise ValueError("LLM paper safety intervals must be positive")
         if self.provider_health_max_age_seconds <= 0:
             raise ValueError("LLM provider health age must be positive")
+        if self.provider_health_interval_seconds <= 0:
+            raise ValueError("LLM provider health interval must be positive")
         if self.minimum_confidence is not None and not 0.0 <= self.minimum_confidence <= 1.0:
             raise ValueError("LLM_MIN_CONFIDENCE must be between 0 and 1")
         if self.slippage_pct < 0 or self.commission_per_share < 0:

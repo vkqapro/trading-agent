@@ -25,7 +25,7 @@ if str(ROOT) not in sys.path:
 
 from dataclasses import asdict, replace
 from datetime import datetime, timedelta, timezone
-from typing import Any
+from typing import Any, Mapping
 
 import pandas as pd
 import uvicorn
@@ -60,8 +60,22 @@ from dashboard_react.market_screener import ScreenerParams, run_market_screener
 from src.scanners.inefficiency_reclaim import run_inefficiency_reclaim_screener
 from src.storage.inefficiency_reclaim_store import InefficiencyReclaimStore
 from src.decision.audit import DecisionAudit
-from src.decision.models import AgentMode, DecisionAction, DecisionCandidate, DecisionRequest, DecisionSnapshot
-from src.decision.provider import DecisionProviderError, build_provider
+from src.decision.models import AgentMode
+from src.decision.provider_health import run_provider_health_check
+from src.decision.strategy_control import (
+    control_payload,
+    create_run,
+    list_runs,
+    load_control,
+    load_snapshot,
+    manual_status_payload,
+    update_control,
+)
+from src.decision.strategy_sources import DEFAULT_REGISTRY, refresh_current_source_snapshot
+from src.decision.prompt_compiler import compile_decision_prompt
+from src.decision.prompt_presets import disable_preset, duplicate_preset, get_preset, list_presets, save_preset
+from src.decision.strategy_definitions import current_strategy_parameters, get_strategy_definition, list_strategy_definitions
+from src.decision.strategy_sources import StrategySnapshot, snapshot_to_candidate
 
 app = FastAPI(title="Vitaly's Trading Bot Dashboard API", docs_url=None, redoc_url=None)
 app.add_middleware(
@@ -105,60 +119,6 @@ def _set_provider_test_state(**updates: object) -> dict[str, object]:
     with _PROVIDER_TEST_LOCK:
         _PROVIDER_TEST_STATE.update(updates)
         return dict(_PROVIDER_TEST_STATE)
-
-
-def _provider_diagnostic_request(*, provider_name: str, model: str) -> DecisionRequest:
-    """Build a provider-only request that cannot represent an executable trade."""
-    now = datetime.now(timezone.utc)
-    diagnostic = DecisionCandidate(
-        candidate_id="provider-connectivity-diagnostic",
-        created_at=now,
-        asset_class="diagnostic",
-        symbol="TEST",
-        strategy="connectivity_check",
-        direction="none",
-        entry=0.0,
-        stop=0.0,
-        target=0.0,
-        metadata={"diagnostic": True, "non_trading": True},
-    )
-    return DecisionRequest(
-        decision_id="provider-connectivity-diagnostic",
-        agent_id="DECISION_LAB_DIAGNOSTIC",
-        mode=AgentMode.SHADOW,
-        provider=provider_name,
-        model=model,
-        snapshot=DecisionSnapshot.from_candidate(
-            diagnostic,
-            session="provider_connectivity",
-            context={"diagnostic": True, "non_trading": True},
-        ),
-        allowed_actions=(DecisionAction.WAIT.value,),
-    )
-
-
-def _safe_provider_diagnostic_error(error: BaseException) -> str:
-    """Map provider failures to bounded UI-safe categories; never expose transport details."""
-    cause = error.__cause__ or error
-    response = getattr(cause, "response", None)
-    status_code = getattr(response, "status_code", None)
-    if isinstance(status_code, int) and 400 <= status_code <= 599:
-        return f"HTTP {status_code}"
-    error_name = type(cause).__name__.lower()
-    message = str(error).lower()
-    if "timeout" in error_name or "timeout" in message:
-        return "timeout"
-    if "connection" in error_name or "connection" in message or "dns" in message:
-        return "connection refused or network error"
-    if "invalid decision json" in message or "invalid json" in message:
-        return "invalid JSON response"
-    if "invalid decision" in message or "schema" in message:
-        return "schema validation failure"
-    if "model" in message or "required" in message:
-        return "model unavailable or not configured"
-    if isinstance(error, DecisionProviderError):
-        return "provider diagnostic failed"
-    return "provider configuration error"
 
 
 def _decision_lab_warnings(config: object) -> list[str]:
@@ -880,6 +840,7 @@ def api_decision_lab_status():
     }
     status.pop("database", None)
     diagnostic_state = _provider_test_state()
+    _, autonomous_worker = _autonomous_stock_worker_status()
     return {
         "mode": mode,
         "provider": str(config.provider),
@@ -904,7 +865,23 @@ def api_decision_lab_status():
         # inferred from an allowlist or a socket port.
         "paper_account_verified": None if mode == "ibkr_paper_autonomous" else False,
         "paper_account_allowlisted": None if mode == "ibkr_paper_autonomous" else False,
-        "paper_account_status": "not_checked",
+        "paper_account_status": autonomous_worker.get("account_status", "UNKNOWN"),
+        "worker_running": bool(autonomous_worker.get("process_alive") and autonomous_worker.get("status") in {"running", "blocked"}),
+        "worker_state": autonomous_worker.get("state", "STOPPED"),
+        "worker_last_heartbeat": autonomous_worker.get("last_heartbeat"),
+        "broker_status": autonomous_worker.get("broker_status", "UNKNOWN"),
+        "account_status": autonomous_worker.get("account_status", "UNKNOWN"),
+        "allowlist_status": autonomous_worker.get("allowlist_status", "UNKNOWN"),
+        "provider_status": autonomous_worker.get("provider_status", "UNKNOWN"),
+        "provider_last_checked_at": autonomous_worker.get("provider_last_checked_at"),
+        "provider_latency_ms": autonomous_worker.get("provider_latency_ms"),
+        "provider_last_error": autonomous_worker.get("provider_last_error"),
+        "current_session": autonomous_worker.get("current_session", "MARKET CLOSED"),
+        "autonomous_entry_enabled": autonomous_worker.get("autonomous_entry_enabled", False),
+        "blocked_reason": autonomous_worker.get("blocked_reason", "WORKER_HEARTBEAT_UNAVAILABLE"),
+        "last_preflight_at": autonomous_worker.get("last_preflight_at"),
+        "autonomous_stock_worker": autonomous_worker,
+        **manual_status_payload(),
         **status,
     }
 
@@ -915,18 +892,62 @@ def api_decision_lab_decisions(request: Request):
     if audit is None:
         return {"decisions": []}
     query = request.query_params
-    return {"decisions": audit.list_decisions(
+    decisions = audit.list_decisions(
         symbol=query.get("symbol"),
         action=query.get("action"),
         provider=query.get("provider"),
         mode=query.get("mode"),
         limit=int(query.get("limit", "100")),
-    )}
+    )
+    return {"decisions": _decision_table_projection(decisions)}
+
+
+def _decision_table_projection(decisions: list[dict[str, object]]) -> list[dict[str, object]]:
+    """Keep list/run responses lightweight; full prompt bodies require a detail request."""
+    for row in decisions:
+        try:
+            candidate = json.loads(str(row.get("candidate_json") or "{}"))
+        except (TypeError, json.JSONDecodeError):
+            candidate = {}
+        metadata = candidate.get("metadata") if isinstance(candidate, dict) else {}
+        metadata = metadata if isinstance(metadata, dict) else {}
+        row["source"] = metadata.get("strategy_source") or "UNKNOWN"
+        row["source_signal"] = metadata.get("source_signal") or "UNKNOWN"
+        row["candidate_class"] = metadata.get("candidate_class") or "UNKNOWN"
+        row.pop("candidate_json", None)
+        row.pop("risk_reasons", None)
+        row.pop("order_ids_json", None)
+    return decisions
 
 
 @app.get("/api/decision-lab/positions")
 def api_decision_lab_positions():
     return _decision_lab_positions()
+
+
+@app.get("/api/decision-lab/decision/{decision_id}")
+def api_decision_lab_decision(decision_id: str):
+    """Return one sanitized inspector record; this is the only prompt-detail read path."""
+    audit = _decision_lab_audit()
+    if audit is None:
+        raise HTTPException(503, "decision audit unavailable")
+    decision = audit.get_decision(decision_id)
+    if decision is None:
+        raise HTTPException(404, "decision not found")
+    return {"decision": decision}
+
+
+@app.get("/api/decision-lab/run/{run_id}")
+def api_decision_lab_run_detail(run_id: str):
+    """Return run counters plus lightweight decision summaries for the inspector."""
+    audit = _decision_lab_audit()
+    if audit is None:
+        raise HTTPException(503, "decision audit unavailable")
+    run = next((item for item in list_runs(limit=200) if str(item.get("run_id")) == str(run_id)), None)
+    if run is None:
+        raise HTTPException(404, "run not found")
+    decisions = _decision_table_projection(audit.list_decisions_for_run(run_id))
+    return {"run": run, "decisions": decisions, "decision_count": len(decisions)}
 
 
 @app.get("/api/decision-lab/performance")
@@ -941,54 +962,252 @@ def api_decision_lab_providers():
     return {"providers": audit.provider_health() if audit is not None else []}
 
 
+@app.get("/api/decision-lab/strategies")
+def api_decision_lab_strategies():
+    """Return the registry-backed source catalog; no market or broker call."""
+    return {"strategies": DEFAULT_REGISTRY.infos()}
+
+
+@app.get("/api/decision-lab/strategy-definitions")
+def api_decision_lab_strategy_definitions(request: Request):
+    source = str(request.query_params.get("source") or "").strip().lower()
+    if source:
+        definition = get_strategy_definition(source)
+        return {"definitions": [definition.to_dict()], "parameters": current_strategy_parameters(source)}
+    return {"definitions": list_strategy_definitions()}
+
+
+@app.get("/api/decision-lab/prompt-presets")
+def api_decision_lab_prompt_presets(request: Request):
+    source = request.query_params.get("strategy_source")
+    return {"presets": list_presets(source)}
+
+
+@app.post("/api/decision-lab/prompt-presets/duplicate")
+async def api_decision_lab_duplicate_preset(request: Request):
+    body = await request.json()
+    if not isinstance(body, dict):
+        raise HTTPException(400, "request body must be an object")
+    try:
+        return {"preset": duplicate_preset(str(body.get("prompt_id") or ""), name=str(body.get("name") or ""))}
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
+
+
+@app.post("/api/decision-lab/prompt-presets")
+async def api_decision_lab_save_preset(request: Request):
+    body = await request.json()
+    if not isinstance(body, dict):
+        raise HTTPException(400, "request body must be an object")
+    try:
+        return {"preset": save_preset(
+            strategy_source=str(body.get("strategy_source") or ""),
+            name=str(body.get("name") or ""),
+            prompt_text=str(body.get("prompt_text") or ""),
+            description=str(body.get("description") or ""),
+            parent_prompt_id=str(body.get("parent_prompt_id") or "") or None,
+            as_new_version=bool(body.get("as_new_version", False)),
+        )}
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
+
+
+@app.post("/api/decision-lab/prompt-presets/{prompt_id}/disable")
+def api_decision_lab_disable_preset(prompt_id: str):
+    try:
+        return {"preset": disable_preset(prompt_id)}
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
+
+
+def _preview_candidate(source: str) -> tuple[object, tuple[str, ...]]:
+    snapshot = load_snapshot()
+    sources = snapshot.get("sources", {}) if isinstance(snapshot, dict) else {}
+    selected: Mapping[str, object] | None = None
+    if source == "all":
+        for items in sources.values() if isinstance(sources, dict) else ():
+            if isinstance(items, list) and items:
+                selected = items[0]
+                break
+    elif isinstance(sources, dict) and isinstance(sources.get(source), list) and sources[source]:
+        selected = sources[source][0]
+    if not isinstance(selected, Mapping):
+        raise ValueError("no persisted candidate is available for preview")
+    snapshot_obj = StrategySnapshot(
+        scan_id=str(selected.get("scan_id") or snapshot.get("scan_id") or "preview"),
+        source=str(selected.get("source") or source),
+        symbol=str(selected.get("symbol") or "").upper(),
+        strategy=str(selected.get("strategy") or ""),
+        signal_state=str(selected.get("signal_state") or ""),
+        candidate_class=str(selected.get("candidate_class") or "WATCH_CANDIDATE"),
+        price=selected.get("price"), entry=selected.get("entry"), stop=selected.get("stop"), target=selected.get("target"),
+        reward_risk=selected.get("reward_risk"), atr=selected.get("atr"), score=selected.get("score"),
+        source_timestamp=selected.get("source_timestamp"), bar_timestamp=selected.get("bar_timestamp"),
+        direction=str(selected.get("direction") or "none"), metadata=selected.get("metadata") if isinstance(selected.get("metadata"), Mapping) else {},
+    )
+    return snapshot_to_candidate(snapshot_obj)
+
+
+@app.post("/api/decision-lab/prompt-preview")
+async def api_decision_lab_prompt_preview(request: Request):
+    body = await request.json()
+    if not isinstance(body, dict):
+        raise HTTPException(400, "request body must be an object")
+    source = str(body.get("strategy_source") or "").strip().lower()
+    try:
+        candidate, allowed_actions = _preview_candidate(source)
+        preset = get_preset(str(body.get("prompt_id"))) if body.get("prompt_id") else None
+        compiled = compile_decision_prompt(
+            strategy_source=source,
+            candidate=candidate,
+            position_context=_decision_lab_positions().get("positions", []),
+            allowed_actions=allowed_actions,
+            prompt_preset=preset,
+        )
+        config = SETTINGS.decision_agent
+        user_prompt = json.dumps(compiled.user_payload, separators=(",", ":"), ensure_ascii=False)
+        return {
+            "preview": compiled.to_dict(),
+            "provider_request": {
+                "model": str(config.model or config.local_model or ""),
+                "temperature": 0,
+                "max_tokens": int(getattr(config, "max_completion_tokens", 900)),
+                "response_format": {"type": "json_object"},
+                "messages": [
+                    {"role": "system", "content": compiled.system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ],
+            },
+            "provider_called": False,
+        }
+    except (ValueError, KeyError) as exc:
+        raise HTTPException(409, str(exc)) from exc
+
+
+@app.get("/api/decision-lab/control")
+def api_decision_lab_control():
+    """Return control plus the worker's persisted source snapshot.
+
+    The status/read path stays fast and read-only. The persistent worker is
+    responsible for refreshing current source data; the MANUAL run endpoint
+    performs its required current-data validation before queueing a run.
+    """
+    return control_payload(registry=DEFAULT_REGISTRY)
+
+
+@app.post("/api/decision-lab/control")
+async def api_decision_lab_update_control(request: Request):
+    """Persist only the UI control selection; execution remains worker-owned."""
+    try:
+        body = await request.json()
+    except Exception as exc:
+        raise HTTPException(400, "request body must be JSON") from exc
+    if not isinstance(body, dict):
+        raise HTTPException(400, "request body must be an object")
+    try:
+        return update_control(
+            analysis_mode=body.get("analysis_mode"),
+            strategy_source=body.get("strategy_source"),
+            prompt_preset_id=body.get("prompt_preset_id"),
+            updated_by="decision_lab",
+            registry=DEFAULT_REGISTRY,
+        )
+    except (ValueError, KeyError) as exc:
+        raise HTTPException(400, str(exc)) from exc
+
+
+@app.get("/api/decision-lab/runs")
+def api_decision_lab_runs(request: Request):
+    try:
+        limit = int(request.query_params.get("limit", "20"))
+    except ValueError as exc:
+        raise HTTPException(400, "limit must be an integer") from exc
+    return {"runs": list_runs(limit=limit)}
+
+
+@app.post("/api/decision-lab/run")
+async def api_decision_lab_run(request: Request):
+    """Queue one bounded MANUAL run for the persistent worker.
+
+    This endpoint first materializes the current persisted strategy data into
+    an immutable analysis snapshot, then writes a durable request/run record.
+    It never creates a market-data or IBKR client and never executes a broker
+    operation.
+    """
+    try:
+        body = await request.json()
+    except Exception as exc:
+        raise HTTPException(400, "request body must be JSON") from exc
+    if body is None:
+        body = {}
+    if not isinstance(body, dict):
+        raise HTTPException(400, "request body must be an object")
+    control = load_control(registry=DEFAULT_REGISTRY)
+    if control.get("analysis_mode") != "manual":
+        raise HTTPException(409, "RUN ANALYSIS requires MANUAL mode")
+    source = str(body.get("strategy_source") or control.get("strategy_source") or "").strip().lower()
+    try:
+        DEFAULT_REGISTRY.validate_selection(source)
+        refresh_current_source_snapshot(registry=DEFAULT_REGISTRY, force=True)
+        selected_snapshot = control_payload(
+            registry=DEFAULT_REGISTRY,
+            strategy_source=source,
+        ).get("selected_source_snapshot") or {}
+        if not isinstance(selected_snapshot, dict) or not selected_snapshot.get("available"):
+            raise HTTPException(409, {"error": "SOURCE_DATA_UNAVAILABLE", "strategy_source": source})
+        latest_scan_id = str(selected_snapshot.get("scan_id") or "").strip()
+        snapshot_timestamp = str(selected_snapshot.get("snapshot_timestamp") or "").strip()
+        if not latest_scan_id or not snapshot_timestamp:
+            raise HTTPException(409, {"error": "SOURCE_DATA_UNAVAILABLE", "strategy_source": source})
+        run = create_run(
+            analysis_mode="manual",
+            strategy_source=source,
+            prompt_preset_id=str(control.get("prompt_preset_id") or "") or None,
+            scan_id=latest_scan_id,
+            snapshot_timestamp=snapshot_timestamp,
+        )
+    except RuntimeError as exc:
+        raise HTTPException(409, str(exc)) from exc
+    except HTTPException:
+        raise
+    except (ValueError, KeyError) as exc:
+        raise HTTPException(400, str(exc)) from exc
+    return {
+        "run": run,
+        "run_id": run["run_id"],
+        "state": run["status"],
+        "strategy_source": run["strategy_selection"],
+        "scan_id": run["scan_id"],
+        "snapshot_timestamp": run["snapshot_timestamp"],
+        "analysis_snapshot_id": run.get("analysis_snapshot_id", run["scan_id"]),
+        "source_timestamp": selected_snapshot.get("source_timestamp"),
+    }
+
+
 @app.post("/api/decision-lab/test-provider")
 def api_decision_lab_test_provider():
-    """Run a direct configured-provider WAIT diagnostic without trading state."""
+    """Run the shared configured-provider WAIT diagnostic without trading state."""
     config = SETTINGS.decision_agent
-    provider_name = str(config.provider).strip().lower()
-    model = str(config.model or config.local_model or "").strip()
-    started = time.perf_counter()
-    checked_at = datetime.now(timezone.utc).isoformat()
-    try:
-        provider = build_provider(config)
-        provider_name = str(getattr(provider, "provider_name", provider_name)).strip().lower()
-        model = str(getattr(provider, "model", model)).strip()
-        response = provider.decide(_provider_diagnostic_request(provider_name=provider_name, model=model))
-        action = getattr(getattr(response, "action", None), "value", getattr(response, "action", None))
-        if str(action).upper() != DecisionAction.WAIT.value:
-            raise DecisionProviderError("provider diagnostic returned a non-WAIT action")
-        latency_ms = round((time.perf_counter() - started) * 1000.0, 2)
-        state = _set_provider_test_state(
-            connection_status="connected",
-            last_provider_test_status="connected",
-            last_provider_test_at=checked_at,
-            last_provider_latency_ms=latency_ms,
-            last_provider_error=None,
-        )
-        return {
-            "ok": True,
-            "provider": provider_name,
-            "model": model,
-            "message": "Provider connectivity test successful.",
-            **state,
-        }
-    except Exception as exc:
-        latency_ms = round((time.perf_counter() - started) * 1000.0, 2)
-        safe_error = _safe_provider_diagnostic_error(exc)
-        state = _set_provider_test_state(
-            connection_status="error",
-            last_provider_test_status="error",
-            last_provider_test_at=checked_at,
-            last_provider_latency_ms=latency_ms,
-            last_provider_error=safe_error,
-        )
-        return {
-            "ok": False,
-            "provider": provider_name,
-            "model": model,
-            "error": safe_error,
-            **state,
-        }
+    result = run_provider_health_check(config)
+    connection_status = "connected" if result.connected else "error"
+    state = _set_provider_test_state(
+        connection_status=connection_status,
+        last_provider_test_status=connection_status,
+        last_provider_test_at=result.checked_at,
+        last_provider_latency_ms=result.latency_ms,
+        last_provider_error=result.error,
+    )
+    payload = {
+        "ok": result.connected,
+        "provider": result.provider,
+        "model": result.model,
+        **state,
+    }
+    if result.connected:
+        payload["message"] = "Provider connectivity test successful."
+    else:
+        payload["error"] = result.error or "UNKNOWN_PROVIDER_ERROR"
+    return payload
 
 
 @app.post("/api/system/hard-reset")
@@ -1009,6 +1228,30 @@ def api_system_hard_reset():
         return {
             "ok": True,
             "message": "Hard reset started. Dashboard services will close and reopen in a few seconds.",
+        }
+    except Exception as exc:
+        raise HTTPException(500, str(exc))
+
+
+@app.post("/api/system/logout")
+def api_system_logout():
+    """Start the fixed dashboard-service shutdown script for the UI logout action."""
+    stop_script = ROOT / "stop_react_dashboard.cmd"
+    if not stop_script.exists():
+        raise HTTPException(500, f"Stop script not found: {stop_script}")
+    try:
+        flags = getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0) | getattr(subprocess, "CREATE_NO_WINDOW", 0)
+        subprocess.Popen(
+            ["cmd", "/c", str(stop_script), "--no-pause"],
+            cwd=str(ROOT),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            stdin=subprocess.DEVNULL,
+            creationflags=flags,
+        )
+        return {
+            "ok": True,
+            "message": "Dashboard shutdown started. You can close this tab.",
         }
     except Exception as exc:
         raise HTTPException(500, str(exc))
@@ -1445,6 +1688,136 @@ def _premarket_status() -> dict:
     return status
 
 
+def _autonomous_stock_worker_status() -> tuple[dict, dict]:
+    """Return read-only worker service and sanitized lifecycle evidence.
+
+    The dashboard reads this credential-free heartbeat only.  It never creates
+    an IBKR client and never infers broker identity from configuration or port.
+    """
+    unknown = {
+        "service": "autonomous_stock_worker",
+        "state": "STOPPED",
+        "status": "offline",
+        "pid": None,
+        "heartbeat_age_seconds": None,
+        "last_heartbeat": None,
+        "current_session": "MARKET CLOSED",
+        "llm_mode": "off",
+        "provider_status": "UNKNOWN",
+        "provider_last_checked_at": None,
+        "provider_latency_ms": None,
+        "provider_last_error": None,
+        "broker_status": "UNKNOWN",
+        "account_status": "UNKNOWN",
+        "allowlist_status": "UNKNOWN",
+        "broker_positions_readable": False,
+        "broker_open_orders_readable": False,
+        "broker_executions_readable": False,
+        "autonomous_entry_enabled": False,
+        "blocked_reason": "WORKER_HEARTBEAT_UNAVAILABLE",
+        "last_preflight_at": None,
+        "last_error": None,
+        "process_alive": False,
+    }
+    paths = getattr(SETTINGS, "paths", None)
+    if paths is None or not getattr(paths, "runtime_dir", None):
+        service = _service_status(
+            "Autonomous Stock Worker",
+            False,
+            detail="worker heartbeat unavailable in this runtime context",
+            status="offline",
+            icon="bolt",
+        )
+        return service, unknown
+
+    heartbeat_path = paths.runtime_dir / "autonomous_stock_worker.json"
+    heartbeat = _read_json_file(heartbeat_path) or {}
+    if not heartbeat:
+        service = _service_status(
+            "Autonomous Stock Worker",
+            False,
+            detail="worker heartbeat unavailable",
+            status="offline",
+            icon="bolt",
+        )
+        return service, unknown
+
+    age = _iso_age_seconds(heartbeat.get("last_heartbeat"))
+    pid = heartbeat.get("pid")
+    process_alive = _pid_alive(pid)
+    fresh = age is not None and age <= 20.0
+    raw_state = str(heartbeat.get("state") or "STOPPED").upper()
+    if raw_state in {"STOPPED", "STOPPING"} and not process_alive:
+        service_state = "stopped"
+    elif raw_state == "BLOCKED" and process_alive and fresh:
+        service_state = "blocked"
+    elif process_alive and fresh:
+        # MARKET_CLOSED, READY, and DEGRADED all describe a resident worker;
+        # the safety fields below distinguish whether entries are allowed.
+        service_state = "running"
+    else:
+        service_state = "stale"
+    worker_ok = process_alive and fresh and service_state in {"running", "blocked"}
+
+    session = str(heartbeat.get("current_session") or "MARKET CLOSED").upper()
+    mode = str(heartbeat.get("llm_mode") or "off")
+    provider = str(heartbeat.get("provider_status") or "UNKNOWN").upper()
+    broker = str(heartbeat.get("broker_status") or "UNKNOWN").upper()
+    account = str(heartbeat.get("account_status") or "UNKNOWN").upper()
+    allowlist = str(heartbeat.get("allowlist_status") or "UNKNOWN").upper()
+    entries = bool(heartbeat.get("autonomous_entry_enabled", False))
+    blocked_reason = str(heartbeat.get("blocked_reason") or "").upper()
+
+    # A stopped worker cannot provide current safety evidence.  A stale worker
+    # keeps its last categorical evidence only so the UI can mark it STALE.
+    if service_state in {"stopped", "offline"}:
+        provider = broker = account = allowlist = "UNKNOWN"
+        entries = False
+        blocked_reason = "WORKER_STOPPED"
+    elif not blocked_reason:
+        blocked_reason = "" if entries else "PREFLIGHT_BLOCKED"
+
+    entry_text = "new entries enabled" if entries else "new entries blocked"
+    detail = f"{session} - mode {mode} - broker {broker} - provider {provider} - {entry_text}"
+    if blocked_reason:
+        detail += f" - {blocked_reason}"
+    service = _service_status(
+        "Autonomous Stock Worker",
+        worker_ok,
+        age=age,
+        detail=detail,
+        status=service_state,
+        icon="bolt",
+    )
+    evidence = {
+        "service": "autonomous_stock_worker",
+        "state": raw_state if service_state != "stale" else "STALE",
+        "status": service_state,
+        "worker_running": worker_ok,
+        "pid": pid,
+        "heartbeat_age_seconds": None if age is None else round(float(age), 1),
+        "last_heartbeat": heartbeat.get("last_heartbeat"),
+        "current_session": session,
+        "llm_mode": mode,
+        "provider_status": provider,
+        "provider_last_checked_at": heartbeat.get("provider_last_checked_at"),
+        "provider_latency_ms": heartbeat.get("provider_latency_ms"),
+        "provider_last_error": str(heartbeat.get("provider_last_error") or "") or None,
+        "broker_status": broker,
+        "account_status": account,
+        "allowlist_status": allowlist,
+        "broker_positions_readable": bool(heartbeat.get("broker_positions_readable", False)),
+        "broker_open_orders_readable": bool(heartbeat.get("broker_open_orders_readable", False)),
+        "broker_executions_readable": bool(heartbeat.get("broker_executions_readable", False)),
+        "autonomous_entry_enabled": entries,
+        "blocked_reason": blocked_reason,
+        "last_preflight_at": heartbeat.get("last_preflight_at"),
+        "last_error": "worker_error" if heartbeat.get("last_error") else None,
+        "process_alive": process_alive,
+    }
+    return service, evidence
+
+
 @app.get("/api/services")
 def api_services():
     from src.execution import order_requests as oq
@@ -1458,6 +1831,7 @@ def api_services():
     )
     premarket = _premarket_status()
     irs_scheduler = _irs_schedule_status()
+    autonomous_worker, autonomous_evidence = _autonomous_stock_worker_status()
 
     market_lock = SETTINGS.paths.runtime_dir / "market_data_collector.lock"
     _, market_age, market_lock_detail = _lock_status(market_lock, stale_after_seconds=900)
@@ -1522,7 +1896,7 @@ def api_services():
 
     services = [
         _service_status("Dashboard API", True, age=0, detail="FastAPI responding", icon="dashboard"),
-        _service_status("Stock Worker", execute_ok, age=execute_age, detail=execute_detail, icon="bolt"),
+        autonomous_worker,
         _service_status(
             "Pre-Open",
             bool(premarket.get("ok")),
@@ -1539,6 +1913,7 @@ def api_services():
     return {
         "updated_at": datetime.now(ET).isoformat(),
         "services": services,
+        "autonomous_stock_worker": autonomous_evidence,
         "all_ok": all(service["ok"] for service in services),
     }
 

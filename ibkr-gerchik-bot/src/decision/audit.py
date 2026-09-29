@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
-from .models import DecisionCandidate, DecisionRequest, DecisionResponse
+from .models import DecisionCandidate, DecisionRequest, DecisionResponse, sanitize_mapping, sanitize_text
 
 
 SCHEMA = """
@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS decision_snapshots (
 CREATE TABLE IF NOT EXISTS model_decisions (
     decision_id TEXT PRIMARY KEY,
     candidate_id TEXT NOT NULL,
+    run_id TEXT,
     agent_id TEXT NOT NULL,
     provider TEXT NOT NULL,
     model TEXT NOT NULL,
@@ -59,6 +60,26 @@ CREATE TABLE IF NOT EXISTS model_decisions (
     token_usage_json TEXT,
     estimated_cost REAL,
     error TEXT,
+    prompt_version TEXT,
+    strategy_source TEXT,
+    definition_version TEXT,
+    definition_hash TEXT,
+    parameter_snapshot_json TEXT,
+    prompt_id TEXT,
+    prompt_hash TEXT,
+    applicability_json TEXT,
+    compiled_prompt_json TEXT,
+    allowed_actions_json TEXT,
+    prompt_payload_json TEXT,
+    provider_status TEXT,
+    provider_error_category TEXT,
+    provider_finish_reason TEXT,
+    raw_model_text_sanitized TEXT,
+    parsed_response_json TEXT,
+    model_action TEXT,
+    effective_action TEXT,
+    decision_origin TEXT,
+    system_result_json TEXT,
     requested_at TEXT NOT NULL,
     completed_at TEXT NOT NULL,
     FOREIGN KEY(candidate_id) REFERENCES candidates(candidate_id)
@@ -191,6 +212,35 @@ class DecisionAudit:
             ):
                 if name not in existing:
                     connection.execute(f"ALTER TABLE execution_links ADD COLUMN {name} {definition}")
+            decision_columns = {
+                str(row[1])
+                for row in connection.execute("PRAGMA table_info(model_decisions)").fetchall()
+            }
+            for name, definition in (
+                ("run_id", "TEXT"),
+                ("prompt_version", "TEXT"),
+                ("strategy_source", "TEXT"),
+                ("definition_version", "TEXT"),
+                ("definition_hash", "TEXT"),
+                ("parameter_snapshot_json", "TEXT"),
+                ("prompt_id", "TEXT"),
+                ("prompt_hash", "TEXT"),
+                ("applicability_json", "TEXT"),
+                ("compiled_prompt_json", "TEXT"),
+                ("allowed_actions_json", "TEXT"),
+                ("prompt_payload_json", "TEXT"),
+                ("provider_status", "TEXT"),
+                ("provider_error_category", "TEXT"),
+                ("provider_finish_reason", "TEXT"),
+                ("raw_model_text_sanitized", "TEXT"),
+                ("parsed_response_json", "TEXT"),
+                ("model_action", "TEXT"),
+                ("effective_action", "TEXT"),
+                ("decision_origin", "TEXT"),
+                ("system_result_json", "TEXT"),
+            ):
+                if name not in decision_columns:
+                    connection.execute(f"ALTER TABLE model_decisions ADD COLUMN {name} {definition}")
 
     def record_candidate(self, candidate: DecisionCandidate, *, connection: sqlite3.Connection | None = None) -> None:
         owns = connection is None
@@ -256,6 +306,11 @@ class DecisionAudit:
         estimated_cost: float | None = None,
         error: str | None = None,
         status: str | None = None,
+        provider_observation: Mapping[str, object] | None = None,
+        model_action: str | None = None,
+        effective_action: str | None = None,
+        decision_origin: str | None = None,
+        system_result: Mapping[str, object] | None = None,
         connection: sqlite3.Connection | None = None,
     ) -> None:
         owns = connection is None
@@ -263,23 +318,59 @@ class DecisionAudit:
         try:
             self.record_snapshot(request, connection=connection)
             resolved_status = status or ("completed" if response is not None else "failed")
+            observation = dict(provider_observation or {})
+            resolved_model_action = model_action or (None if response is None else response.action.value)
+            resolved_effective_action = effective_action or resolved_model_action or ("NO_ACTION" if response is None else None)
+            resolved_origin = decision_origin or ("MODEL" if response is not None else "PROVIDER_FAILURE")
+            prompt_payload = observation.get("request_payload")
+            parsed_response = observation.get("parsed_response_json")
             connection.execute(
                 """INSERT INTO model_decisions
-                (decision_id, candidate_id, agent_id, provider, model, mode, status,
+                (decision_id, candidate_id, run_id, agent_id, provider, model, mode, status,
                  chosen_action, confidence, ranked_actions_json, reason_codes_json,
                  summary, latency_ms, token_usage_json, estimated_cost, error,
-                 requested_at, completed_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                 prompt_version, strategy_source, definition_version, definition_hash,
+                 parameter_snapshot_json, prompt_id, prompt_hash, applicability_json,
+                 compiled_prompt_json, allowed_actions_json, prompt_payload_json,
+                 provider_status, provider_error_category, provider_finish_reason, raw_model_text_sanitized,
+                 parsed_response_json, model_action, effective_action, decision_origin,
+                 system_result_json, requested_at, completed_at)
+                VALUES (
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                )
                 ON CONFLICT(decision_id) DO UPDATE SET status=excluded.status,
                 chosen_action=excluded.chosen_action, confidence=excluded.confidence,
                 ranked_actions_json=excluded.ranked_actions_json,
                 reason_codes_json=excluded.reason_codes_json, summary=excluded.summary,
                 latency_ms=excluded.latency_ms, token_usage_json=excluded.token_usage_json,
                 estimated_cost=excluded.estimated_cost, error=excluded.error,
+                prompt_version=COALESCE(excluded.prompt_version, model_decisions.prompt_version),
+                strategy_source=COALESCE(excluded.strategy_source, model_decisions.strategy_source),
+                definition_version=COALESCE(excluded.definition_version, model_decisions.definition_version),
+                definition_hash=COALESCE(excluded.definition_hash, model_decisions.definition_hash),
+                parameter_snapshot_json=COALESCE(excluded.parameter_snapshot_json, model_decisions.parameter_snapshot_json),
+                prompt_id=COALESCE(excluded.prompt_id, model_decisions.prompt_id),
+                prompt_hash=COALESCE(excluded.prompt_hash, model_decisions.prompt_hash),
+                applicability_json=COALESCE(excluded.applicability_json, model_decisions.applicability_json),
+                compiled_prompt_json=COALESCE(excluded.compiled_prompt_json, model_decisions.compiled_prompt_json),
+                allowed_actions_json=COALESCE(excluded.allowed_actions_json, model_decisions.allowed_actions_json),
+                prompt_payload_json=COALESCE(excluded.prompt_payload_json, model_decisions.prompt_payload_json),
+                provider_status=COALESCE(excluded.provider_status, model_decisions.provider_status),
+                provider_error_category=COALESCE(excluded.provider_error_category, model_decisions.provider_error_category),
+                provider_finish_reason=COALESCE(excluded.provider_finish_reason, model_decisions.provider_finish_reason),
+                raw_model_text_sanitized=COALESCE(excluded.raw_model_text_sanitized, model_decisions.raw_model_text_sanitized),
+                parsed_response_json=COALESCE(excluded.parsed_response_json, model_decisions.parsed_response_json),
+                model_action=COALESCE(excluded.model_action, model_decisions.model_action),
+                effective_action=COALESCE(excluded.effective_action, model_decisions.effective_action),
+                decision_origin=COALESCE(excluded.decision_origin, model_decisions.decision_origin),
+                system_result_json=COALESCE(excluded.system_result_json, model_decisions.system_result_json),
                 completed_at=excluded.completed_at""",
                 (
                     request.decision_id,
                     request.snapshot.candidate.candidate_id,
+                    request.run_id,
                     request.agent_id,
                     request.provider,
                     request.model,
@@ -294,6 +385,26 @@ class DecisionAudit:
                     _json(token_usage or {}),
                     estimated_cost,
                     error,
+                    request.prompt_version,
+                    request.strategy_source,
+                    request.definition_version,
+                    request.definition_hash,
+                    _json(sanitize_mapping(request.parameter_snapshot or {})),
+                    request.prompt_id,
+                    request.prompt_hash,
+                    _json(sanitize_mapping(request.applicability or {})),
+                    _json(sanitize_mapping(request.compiled_prompt or {})),
+                    _json(list(request.allowed_actions)),
+                    _json(sanitize_mapping(prompt_payload)) if prompt_payload is not None else None,
+                    str(observation.get("provider_status") or ("SUCCESS" if response is not None else "FAILED")),
+                    str(observation.get("provider_error_category") or "") or None,
+                    str(observation.get("finish_reason") or "") or None,
+                    sanitize_text(observation.get("raw_model_text_sanitized")) if observation.get("raw_model_text_sanitized") is not None else None,
+                    _json(sanitize_mapping(parsed_response)) if parsed_response is not None else None,
+                    resolved_model_action,
+                    resolved_effective_action,
+                    resolved_origin,
+                    _json(sanitize_mapping(system_result or {})),
                     request.requested_at.isoformat(),
                     _now(),
                 ),
@@ -303,6 +414,28 @@ class DecisionAudit:
         finally:
             if owns:
                 connection.close()
+
+    def update_decision_outcome(
+        self,
+        *,
+        decision_id: str,
+        effective_action: str,
+        decision_origin: str,
+        system_result: Mapping[str, object] | None = None,
+    ) -> None:
+        """Persist downstream policy outcome without overwriting model output."""
+        with self.connection() as connection:
+            connection.execute(
+                """UPDATE model_decisions
+                   SET effective_action = ?, decision_origin = ?, system_result_json = ?
+                   WHERE decision_id = ?""",
+                (
+                    str(effective_action),
+                    str(decision_origin),
+                    _json(sanitize_mapping(system_result or {})),
+                    str(decision_id),
+                ),
+            )
 
     def record_risk(
         self,
@@ -420,6 +553,7 @@ class DecisionAudit:
         action: str | None = None,
         provider: str | None = None,
         mode: str | None = None,
+        run_id: str | None = None,
         limit: int = 500,
     ) -> list[dict[str, object]]:
         clauses: list[str] = []
@@ -436,10 +570,19 @@ class DecisionAudit:
         if mode:
             clauses.append("m.mode = ?")
             values.append(mode.lower())
+        if run_id:
+            clauses.append("m.run_id = ?")
+            values.append(str(run_id))
         where = f"WHERE {' AND '.join(clauses)}" if clauses else ""
         values.append(max(1, min(int(limit), 1000)))
         query = f"""
-            SELECT m.*, m.chosen_action AS action, c.symbol, c.strategy, c.asset_class, c.direction,
+            SELECT m.decision_id, m.candidate_id, m.run_id, m.agent_id, m.provider, m.model, m.mode,
+                   m.status, m.chosen_action AS action, m.confidence, m.reason_codes_json,
+                   m.summary, m.latency_ms, m.error, m.requested_at, m.completed_at,
+                   m.model_action, m.effective_action, m.decision_origin,
+                   m.provider_status, m.provider_error_category,
+                   m.provider_finish_reason,
+                   c.symbol, c.strategy, c.asset_class, c.direction, c.candidate_json,
                    r.approved AS risk_approved, r.reasons_json AS risk_reasons,
                    e.status AS execution_status, e.mode AS execution_mode,
                    e.agent_id AS execution_agent_id, e.order_ids_json, e.position_id
@@ -457,6 +600,83 @@ class DecisionAudit:
         with self.connection() as connection:
             rows = connection.execute(query, values).fetchall()
         return [dict(row) for row in rows]
+
+    @staticmethod
+    def _decode_json(value: object, default: object) -> object:
+        if value in (None, ""):
+            return default
+        try:
+            return sanitize_mapping(json.loads(str(value)))
+        except (TypeError, ValueError, json.JSONDecodeError):
+            return default
+
+    @staticmethod
+    def _sanitize_inspector(value: object) -> object:
+        """Sanitize both sensitive keys and account-like strings for the UI."""
+        if isinstance(value, Mapping):
+            return {
+                str(key): DecisionAudit._sanitize_inspector(item)
+                for key, item in value.items()
+                if (
+                    str(key).strip().lower() in {"token_usage_json", "parameter_snapshot_json"}
+                    or str(key).strip().lower().endswith("_tokens")
+                    or not any(part in str(key).strip().lower() for part in ("key", "secret", "token", "password", "credential", "account_number", "account_id", "passphrase"))
+                )
+            }
+        if isinstance(value, (list, tuple)):
+            return [DecisionAudit._sanitize_inspector(item) for item in value]
+        if isinstance(value, str):
+            return sanitize_text(value)
+        return value
+
+    def get_decision(self, decision_id: str) -> dict[str, object] | None:
+        """Return one sanitized, read-only inspector record."""
+        with self.connection() as connection:
+            row = connection.execute(
+                """SELECT m.*, c.symbol, c.strategy, c.asset_class, c.direction,
+                          c.candidate_json, s.snapshot_json,
+                          r.approved AS risk_approved, r.reasons_json AS risk_reasons,
+                          r.quantity AS risk_quantity, r.risk_amount,
+                          e.status AS execution_status, e.mode AS execution_mode,
+                          e.agent_id AS execution_agent_id, e.order_ids_json, e.position_id
+                   FROM model_decisions m
+                   JOIN candidates c ON c.candidate_id = m.candidate_id
+                   LEFT JOIN decision_snapshots s ON s.decision_id = m.decision_id
+                   LEFT JOIN risk_decisions r ON r.risk_id = (
+                       SELECT MAX(r2.risk_id) FROM risk_decisions r2 WHERE r2.decision_id = m.decision_id
+                   )
+                   LEFT JOIN execution_links e ON e.execution_id = (
+                       SELECT MAX(e2.execution_id) FROM execution_links e2 WHERE e2.decision_id = m.decision_id
+                   )
+                   WHERE m.decision_id = ?""",
+                (str(decision_id),),
+            ).fetchone()
+        if row is None:
+            return None
+        result = dict(row)
+        for key in (
+            "candidate_json",
+            "snapshot_json",
+            "token_usage_json",
+            "parameter_snapshot_json",
+            "applicability_json",
+            "compiled_prompt_json",
+            "allowed_actions_json",
+            "prompt_payload_json",
+            "parsed_response_json",
+            "ranked_actions_json",
+            "reason_codes_json",
+            "risk_reasons",
+            "order_ids_json",
+            "system_result_json",
+        ):
+            result[key] = self._decode_json(result.get(key), {} if key not in {"allowed_actions_json", "ranked_actions_json", "reason_codes_json", "risk_reasons"} else [])
+        result["raw_model_text_sanitized"] = sanitize_text(result.get("raw_model_text_sanitized") or "") or None
+        result.pop("account_id", None)
+        return self._sanitize_inspector(result)
+
+    def list_decisions_for_run(self, run_id: str, *, limit: int = 1000) -> list[dict[str, object]]:
+        return self.list_decisions(run_id=run_id, limit=limit)
 
     def status(self) -> dict[str, object]:
         tables = (

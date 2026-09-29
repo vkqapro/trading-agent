@@ -7,14 +7,19 @@ an order.
 
 ## Preconditions
 
-1. Keep the existing deterministic stock path available and confirm the
-   dashboard is in its expected read-only operational state.
-2. Use an IBKR Paper TWS/Gateway session and confirm the account shown by the
+1. Start the complete local bundle with `run_react_dashboard.cmd`. It starts
+   market data, the execute-request worker, crypto, the resident Autonomous
+   Stock / LLM worker, and FastAPI. Do not launch separate `open` or
+   `intraday` commands; the resident worker owns those transitions.
+2. Keep the existing deterministic stock path available and confirm the
+   dashboard is in its expected read-only operational state. The worker may
+   show `RUNNING` while new LLM entries remain `BLOCKED`.
+3. Use an IBKR Paper TWS/Gateway session and confirm the account shown by the
    broker API is the intended `DU...` account. The runtime must obtain this
    from account-summary evidence; a port number alone is insufficient.
-3. Add only the intended Paper account ID to
+4. Add only the intended Paper account ID to
    `LLM_IBKR_PAPER_ACCOUNT_ALLOWLIST`. Keep the live allowlist separate.
-4. Initialize or verify the Decision Lab database, then run the read-only
+5. Initialize or verify the Decision Lab database, then run the read-only
    preflight:
 
    ```powershell
@@ -22,7 +27,7 @@ an order.
    python scripts/check_llm_ibkr_paper_ready.py --check-broker --check-provider
    ```
 
-5. The intended controlled-validation configuration is:
+6. The intended controlled-validation configuration is:
 
    ```text
    LLM_AGENT_MODE=ibkr_paper_autonomous
@@ -42,6 +47,14 @@ an order.
    procedure. Do not place these values in a chat message containing secrets.
 
 ## Controlled observation
+
+The worker remains alive overnight, on weekends, and whenever TWS/provider
+dependencies are temporarily unavailable. During those periods the dashboard
+reports `MARKET CLOSED`, `BLOCKED`, or `DEGRADED`; it does not silently exit.
+When the next weekday session becomes eligible it re-runs preflight and
+resumes only after broker/account/reconciliation gates pass. The current
+calendar is weekday/time based and has no exchange holiday data, so holidays
+remain an operator verification limitation.
 
 Before allowing a candidate to reach the worker, record the broker account
 identity, flat positions, no conflicting AAPL/open-entry order state, current

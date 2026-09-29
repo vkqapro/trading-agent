@@ -7,6 +7,7 @@ engine.  They do not calculate indicators, prices, targets, stops or quantity.
 from __future__ import annotations
 
 import math
+import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
@@ -58,6 +59,10 @@ _SENSITIVE_KEY_PARTS = (
 
 def _is_sensitive_key(key: object) -> bool:
     lowered = str(key).strip().lower()
+    # Token counts/usage are diagnostic metadata, not credentials. Preserve
+    # them for the inspector while continuing to redact access tokens.
+    if lowered == "token_usage" or lowered.endswith("_tokens"):
+        return False
     return any(part in lowered for part in _SENSITIVE_KEY_PARTS)
 
 
@@ -76,6 +81,20 @@ def sanitize_mapping(value: object) -> object:
     if isinstance(value, float):
         return value if math.isfinite(value) else None
     return str(value)
+
+
+def sanitize_text(value: object, *, extra_secrets: Sequence[object] = ()) -> str:
+    """Redact credential/account-like values from text before persistence/UI."""
+    text = str(value or "")
+    for secret in extra_secrets:
+        candidate = str(secret or "")
+        if candidate:
+            text = text.replace(candidate, "[REDACTED]")
+    text = re.sub(r"(?i)(authorization\s*[:=]\s*bearer\s+)[^\s,}\]]+", r"\1[REDACTED]", text)
+    text = re.sub(r"(?i)((?:api[_ -]?key|access[_ -]?token|secret|password|credential)\s*[:=]\s*)[^\s,}\]]+", r"\1[REDACTED]", text)
+    text = re.sub(r"\bDU[A-Z0-9]{4,}\b", "[REDACTED_ACCOUNT]", text)
+    text = re.sub(r"\bU\d{4,}\b", "[REDACTED_ACCOUNT]", text)
+    return text
 
 
 def _finite(name: str, value: float | None, *, required: bool = False) -> float | None:
@@ -223,8 +242,33 @@ class DecisionRequest:
     snapshot: DecisionSnapshot
     allowed_actions: tuple[str, ...]
     requested_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    prompt_version: str = "decision-v1"
+    run_id: str | None = None
+    compiled_prompt: Mapping[str, object] = field(default_factory=dict)
+    strategy_source: str | None = None
+    definition_version: str | None = None
+    definition_hash: str | None = None
+    parameter_snapshot: Mapping[str, object] = field(default_factory=dict)
+    prompt_id: str | None = None
+    prompt_hash: str | None = None
+    applicability: Mapping[str, object] = field(default_factory=dict)
 
     def to_prompt_payload(self) -> dict[str, object]:
+        if self.compiled_prompt:
+            return {
+                "decision_id": self.decision_id,
+                "agent_id": self.agent_id,
+                "mode": self.mode.value,
+                "compiled_prompt": sanitize_mapping(self.compiled_prompt),
+                "allowed_actions": list(self.allowed_actions),
+                "prompt_version": self.prompt_version,
+                "strategy_source": self.strategy_source,
+                "definition_version": self.definition_version,
+                "definition_hash": self.definition_hash,
+                "prompt_id": self.prompt_id,
+                "prompt_hash": self.prompt_hash,
+                "applicability": sanitize_mapping(self.applicability),
+            }
         return {
             "decision_id": self.decision_id,
             "agent_id": self.agent_id,
@@ -232,6 +276,7 @@ class DecisionRequest:
             "candidate": self.snapshot.candidate.to_dict(),
             "snapshot": self.snapshot.to_dict(),
             "allowed_actions": list(self.allowed_actions),
+            "prompt_version": self.prompt_version,
         }
 
 
@@ -249,12 +294,14 @@ class DecisionResponse:
         payload: Mapping[str, object],
         *,
         allowed_actions: Sequence[DecisionAction | str],
+        enforce_allowed_actions: bool = True,
     ) -> "DecisionResponse":
         if not isinstance(payload, Mapping):
             raise ValueError("decision response must be an object")
         allowed = {item.value if isinstance(item, DecisionAction) else str(item).upper() for item in allowed_actions}
         raw_action = str(payload.get("action", "")).strip().upper()
-        if raw_action not in allowed:
+        all_actions = {item.value for item in DecisionAction} | {item.value for item in PositionAction}
+        if raw_action not in (allowed if enforce_allowed_actions else all_actions):
             raise ValueError(f"action is not an allowed action: {raw_action or '<empty>'}")
         raw_confidence = payload.get("confidence")
         confidence = _finite("confidence", raw_confidence, required=True)
@@ -276,7 +323,7 @@ class DecisionResponse:
                 if not isinstance(item, (list, tuple)) or len(item) != 2:
                     raise ValueError("ranked_actions entries must be [action, score]")
                 action = str(item[0]).strip().upper()
-                if action not in allowed:
+                if action not in (allowed if enforce_allowed_actions else all_actions):
                     raise ValueError(f"ranked action is not allowed: {action}")
                 score = _finite("ranked action score", item[1], required=True)
                 if not 0.0 <= score <= 1.0:

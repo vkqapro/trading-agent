@@ -18,8 +18,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0run_dashboard_stop_ser
 
 timeout /t 2 /nobreak >nul
 
-REM Reopen the full dashboard bundle: API, market-data collector, execute worker,
-REM and crypto worker. This script returns after launching the new dashboard window.
+REM Reopen the full dashboard bundle: market data, execute worker, crypto,
+REM persistent autonomous stock worker, and API. The worker reconciles before
+REM enabling autonomous entries and preserves open protective orders.
 start "Vitaly's Trading Bot - React Dashboard" cmd /k "%~dp0run_react_dashboard.cmd"
 
 exit /b 0

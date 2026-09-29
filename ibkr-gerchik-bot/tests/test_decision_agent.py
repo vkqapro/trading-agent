@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from datetime import datetime, timezone
 from types import SimpleNamespace
 
@@ -102,6 +103,7 @@ def test_shadow_records_decision_without_paper_or_broker_execution(tmp_path) -> 
 
     assert result.status == "shadow"
     assert result.action == "ENTER"
+    assert result.provider_status == "SUCCESS"
     assert provider.calls == 1
     assert agent.portfolio.state()["positions"] == []
     assert audit.list_decisions()[0]["execution_status"] is None
@@ -121,8 +123,63 @@ def test_paper_autonomous_enters_without_order_manager(tmp_path) -> None:
 
     assert result.status == "paper_simulated"
     assert result.action == "ENTER"
+    assert result.provider_status == "SUCCESS"
     assert len(portfolio.state()["positions"]) == 1
     assert result.execution["owner"] == "LLM_AGENT"
+
+
+def test_analysis_only_candidate_cannot_enter_even_if_provider_returns_enter(tmp_path) -> None:
+    provider = FakeProvider(DecisionAction.ENTER)
+    portfolio = PaperPortfolio(tmp_path / "portfolio.json", starting_equity=50_000.0)
+    agent = AutonomousGerchikAgent(
+        config=_config(tmp_path, AgentMode.PAPER_AUTONOMOUS.value),
+        provider=provider,
+        audit=DecisionAudit(tmp_path / "audit.db"),
+        portfolio=portfolio,
+    )
+
+    candidate = replace(_candidate(), metadata={"execution_eligible": False})
+    result = agent.process_candidate(
+        candidate,
+        context=_context(),
+        allowed_actions=(DecisionAction.WAIT.value, DecisionAction.REJECT.value),
+    )
+
+    assert result.status == "source_action_veto"
+    assert result.action == DecisionAction.REJECT.value
+    assert result.provider_status == "SUCCESS"
+    assert portfolio.state()["positions"] == []
+    detail = agent.audit.get_decision(result.decision_id)
+    assert detail["model_action"] == "ENTER"
+    assert detail["effective_action"] == "NO_ACTION"
+    assert detail["decision_origin"] == "ANALYSIS_ONLY_VETO"
+
+
+def test_position_management_without_matching_position_skips_provider(tmp_path) -> None:
+    provider = FakeProvider()
+    audit = DecisionAudit(tmp_path / "audit.db")
+    agent = AutonomousGerchikAgent(
+        config=_config(tmp_path, AgentMode.SHADOW.value),
+        provider=provider,
+        audit=audit,
+    )
+    candidate = replace(
+        _candidate(),
+        metadata={
+            "strategy_source": "gaussian",
+            "candidate_class": "POSITION_MANAGEMENT_SIGNAL",
+            "source_signal": "GAUSSIAN_LONG_EXIT",
+        },
+    )
+
+    result = agent.process_candidate(candidate, context=_context())
+
+    assert result.status == "not_applicable"
+    assert result.action == "NOT_APPLICABLE"
+    assert provider.calls == 0
+    recorded = audit.list_decisions()[0]
+    assert recorded["decision_origin"] == "SYSTEM_FILTER"
+    assert recorded["effective_action"] == "NOT_APPLICABLE"
 
 
 def test_provider_failure_is_no_action_and_does_not_open_paper_position(tmp_path) -> None:
@@ -145,6 +202,8 @@ def test_provider_failure_is_no_action_and_does_not_open_paper_position(tmp_path
     assert result.action == "NO_ACTION"
     assert portfolio.state()["positions"] == []
     assert agent.audit.list_decisions()[0]["status"] == "provider_error"
+    assert agent.audit.list_decisions()[0]["decision_origin"] == "PROVIDER_FAILURE"
+    assert agent.audit.list_decisions()[0]["effective_action"] == "NO_ACTION"
 
 
 def test_same_candidate_cannot_open_twice(tmp_path) -> None:

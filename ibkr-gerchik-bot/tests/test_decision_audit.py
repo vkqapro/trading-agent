@@ -123,3 +123,39 @@ def test_audit_filters_history_without_exposing_database_path(tmp_path) -> None:
     assert len(rows) == 1
     assert rows[0]["symbol"] == "AAPL"
     assert str(tmp_path) not in str(rows[0])
+
+
+def test_audit_separates_model_and_effective_action_and_keeps_list_lightweight(tmp_path) -> None:
+    audit = DecisionAudit(tmp_path / "decision_lab.db")
+    request = _request()
+    request = DecisionRequest(**{**request.__dict__, "run_id": "run-inspector-1"})
+    audit.record_candidate(request.snapshot.candidate)
+    audit.record_decision(
+        request,
+        DecisionResponse(action=DecisionAction.ENTER, confidence=0.9),
+        provider_observation={
+            "prompt_version": "decision-v1",
+            "request_payload": {
+                "system_prompt": "Do not expose DU5454348",
+                "user_prompt": {"account_id": "DU5454348", "symbol": "AAPL"},
+            },
+            "raw_model_text_sanitized": '{"action":"ENTER"}',
+            "parsed_response_json": {"action": "ENTER"},
+        },
+        model_action="ENTER",
+        effective_action="NO_ACTION",
+        decision_origin="ANALYSIS_ONLY_VETO",
+        system_result={"reason": "analysis_only_source"},
+    )
+
+    rows = audit.list_decisions_for_run("run-inspector-1")
+    assert rows[0]["model_action"] == "ENTER"
+    assert rows[0]["effective_action"] == "NO_ACTION"
+    assert rows[0]["decision_origin"] == "ANALYSIS_ONLY_VETO"
+    assert "prompt_payload_json" not in rows[0]
+    detail = audit.get_decision(request.decision_id)
+    assert detail is not None
+    assert detail["prompt_version"] == "decision-v1"
+    assert detail["effective_action"] == "NO_ACTION"
+    assert detail["prompt_payload_json"]["user_prompt"].get("account_id") is None
+    assert "DU5454348" not in str(detail)

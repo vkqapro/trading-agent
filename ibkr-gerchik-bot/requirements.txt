@@ -5,3 +5,5 @@ requests
 python-dotenv
 slack_sdk
 openpyxl
+mcp>=1.0.0
+uvicorn>=0.30.0
