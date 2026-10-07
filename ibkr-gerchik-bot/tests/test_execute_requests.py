@@ -48,6 +48,208 @@ def _paper(dry_run=False):
     return SimpleNamespace(paper_trading=True, dry_run_mode=dry_run)
 
 
+class ApprovalWorkerTests(unittest.TestCase):
+    def test_reviewed_paper_gate_does_not_run_autonomous_market_quality_checks(self) -> None:
+        candidate = SimpleNamespace(symbol="AAPL", entry=100.0, stop=99.0)
+        settings = SimpleNamespace(
+            risk=SimpleNamespace(risk_per_trade=0.01, max_position_value=25000.0),
+            decision_agent=SimpleNamespace(ibkr_paper_risk_per_trade_pct=0.10),
+        )
+        with patch.object(worker, "SETTINGS", settings), patch.object(
+            worker, "AutonomousRiskGate", side_effect=AssertionError("autonomous gate must not run"), create=True
+        ):
+            result = worker._reviewed_paper_gate(
+                candidate,
+                account_id="DU123",
+                paper_verified=True,
+                account_allowed=True,
+                account_equity=100000.0,
+                cash_available=100000.0,
+            )
+        self.assertTrue(result["approved"])
+        self.assertGreater(result["quantity"], 0)
+        self.assertEqual(result["reasons"], [])
+
+    def test_approved_telegram_rows_enter_existing_intent_pipeline(self) -> None:
+        calls = []
+
+        class Store:
+            def __init__(self, *_args, **_kwargs):
+                pass
+
+            def list_approvals(self, *, status=None):
+                self.status = status
+                return [{"approval_id": "approval_test"}]
+
+            def process_approved(self, approval_id, **kwargs):
+                calls.append((approval_id, kwargs))
+                return SimpleNamespace(status="EXECUTION_READY", message="queued")
+
+        broker = SimpleNamespace(
+            get_account_identity=lambda: {"paper_verified": True, "account_id": "DU123"},
+            is_connected=True,
+        )
+        manager = SimpleNamespace()
+        with patch.object(worker, "ApprovalStore", Store):
+            result = worker.process_approved_once(broker, manager, 100000.0, 100000.0, [])
+        self.assertEqual(result[0]["status"], "EXECUTION_READY")
+        self.assertEqual(calls[0][0], "approval_test")
+        self.assertIn("risk_gate", calls[0][1])
+        self.assertIn("enqueue", calls[0][1])
+
+    def test_immutable_approval_fails_closed_without_verified_paper_identity(self) -> None:
+        request = {"action": "place", "immutable_intent": True, "live": False, "approval_id": "approval_test"}
+        settings = SimpleNamespace(paper_trading=True)
+        with patch.object(worker, "SETTINGS", settings):
+            result = worker._process_one(request, broker=SimpleNamespace(), order_manager=SimpleNamespace(),
+                                         account_equity=100000.0, cash_available=100000.0, tracked_positions=[])
+        self.assertEqual(result["status"], oq.REJECTED)
+        self.assertIn("ACCOUNT_NOT_PAPER", result["message"])
+
+    def test_verified_paper_approval_submits_once_and_persists_actual_statuses(self) -> None:
+        calls = []
+
+        class Store:
+            def __init__(self, *_args, **_kwargs):
+                pass
+
+            def get(self, approval_id):
+                return {"approval_id": approval_id, "status": "EXECUTION_READY", "setup_id": "setup-1",
+                        "plan_hash": "hash-1", "symbol": "AAPL", "direction": "long"}
+
+            def mark_execution(self, approval_id, status, **kwargs):
+                calls.append((approval_id, status, kwargs))
+                return True
+
+        class Manager:
+            dry_run = False
+
+            def execute_manual_order(self, signal, **kwargs):
+                self.signal = signal
+                self.kwargs = kwargs
+                return True, {
+                    "status": "executed", "market_order_id": 101, "stop_order_id": 102,
+                    "limit_order_id": 103, "broker_perm_id": 9001,
+                    "broker_statuses": {"market_order": "PreSubmitted", "stop_order": "Submitted", "limit_order": "Submitted"},
+                }
+
+        request = {"action": "place", "immutable_intent": True, "live": False,
+                   "approval_id": "approval-1", "execution_intent_id": "intent-1",
+                   "setup_id": "setup-1", "plan_hash": "hash-1", "symbol": "AAPL",
+                   "direction": "long", "entry": 100, "stop": 99, "target": 103, "quantity": 5,
+                   "strategy": "PRB1"}
+        settings = SimpleNamespace(
+            paper_trading=True, dry_run_mode=False,
+            decision_agent=SimpleNamespace(database_path="unused"),
+            risk=SimpleNamespace(max_spread_pct=0.01),
+        )
+        broker = SimpleNamespace(get_account_identity=lambda: {"paper_verified": True, "account_id": "DU123"})
+        with patch.object(worker, "SETTINGS", settings), patch.object(worker, "ApprovalStore", Store):
+            result = worker._process_one(request, broker=broker, order_manager=Manager(),
+                                         account_equity=100000.0, cash_available=100000.0, tracked_positions=[])
+        self.assertEqual(result["status"], oq.DONE)
+        self.assertEqual(calls[0][1], "SUBMITTING")
+        self.assertEqual(calls[1][1], "EXECUTED")
+        details = calls[1][2]["broker_details"]
+        self.assertEqual(details["account_id"], "DU123")
+        self.assertEqual(details["perm_id"], 9001)
+        self.assertEqual(details["broker_status"], "PreSubmitted")
+        self.assertEqual(details["stop_order_id"], 102)
+        self.assertEqual(details["limit_order_id"], 103)
+        self.assertTrue(details["outside_rth"])
+        self.assertEqual(details["tif"], "GTC")
+
+    def test_telegram_intent_uses_reviewed_manual_service_not_autonomous_trade(self) -> None:
+        class Store:
+            def __init__(self, *_args, **_kwargs):
+                pass
+
+            def get(self, approval_id):
+                return {"approval_id": approval_id, "status": "EXECUTION_READY", "setup_id": "setup-1",
+                        "plan_hash": "hash-1", "symbol": "AAPL", "direction": "long"}
+
+            def mark_execution(self, *_args, **_kwargs):
+                return True
+
+        class Manager:
+            dry_run = False
+
+            def __init__(self):
+                self.manual_calls = []
+                self.autonomous_calls = []
+
+            def execute_manual_order(self, signal, **kwargs):
+                self.manual_calls.append((signal, kwargs))
+                return True, {"status": "executed", "market_order_id": 1, "stop_order_id": 2,
+                              "limit_order_id": 3, "broker_statuses": {"market_order": "Submitted"}}
+
+            def execute_trade(self, signal, **kwargs):
+                self.autonomous_calls.append((signal, kwargs))
+                raise AssertionError("Telegram approval must not use autonomous execute_trade")
+
+        request = {"action": "place", "immutable_intent": True, "live": False,
+                   "approval_id": "approval-1", "execution_intent_id": "intent-1",
+                   "setup_id": "setup-1", "plan_hash": "hash-1", "symbol": "AAPL",
+                   "direction": "long", "entry": 100, "stop": 99, "target": 103, "quantity": 5,
+                   "strategy": "PRB1", "entry_order_type": "MARKET"}
+        manager = Manager()
+        settings = SimpleNamespace(
+            paper_trading=True, dry_run_mode=False,
+            decision_agent=SimpleNamespace(database_path="unused"),
+        )
+        broker = SimpleNamespace(get_account_identity=lambda: {"paper_verified": True, "account_id": "DU123"})
+        with patch.object(worker, "SETTINGS", settings), patch.object(worker, "ApprovalStore", Store):
+            result = worker._process_one(request, broker=broker, order_manager=manager,
+                                         account_equity=100000.0, cash_available=100000.0, tracked_positions=[])
+        self.assertEqual(result["status"], oq.DONE)
+        self.assertEqual(len(manager.manual_calls), 1)
+        self.assertEqual(manager.manual_calls[0][1]["quantity"], 5)
+        self.assertTrue(manager.manual_calls[0][1]["allow_extended_hours_order"])
+        self.assertEqual(manager.manual_calls[0][1]["time_in_force"], "GTC")
+        self.assertEqual(manager.autonomous_calls, [])
+
+    def test_broker_exception_after_submission_is_unknown_and_not_retried(self) -> None:
+        calls = []
+
+        class Store:
+            def __init__(self, *_args, **_kwargs):
+                pass
+
+            def get(self, approval_id):
+                return {"approval_id": approval_id, "status": "EXECUTION_READY", "setup_id": "setup-1",
+                        "plan_hash": "hash-1", "symbol": "AAPL", "direction": "long"}
+
+            def mark_execution(self, approval_id, status, **kwargs):
+                calls.append((approval_id, status, kwargs))
+                return True
+
+        class Manager:
+            dry_run = False
+
+            def execute_manual_order(self, signal, **kwargs):
+                raise TimeoutError("response lost after send")
+
+        request = {"action": "place", "immutable_intent": True, "live": False,
+                   "approval_id": "approval-1", "execution_intent_id": "intent-1",
+                   "setup_id": "setup-1", "plan_hash": "hash-1", "symbol": "AAPL",
+                   "direction": "long", "entry": 100, "stop": 99, "target": 103, "quantity": 5,
+                   "strategy": "PRB1"}
+        settings = SimpleNamespace(
+            paper_trading=True, dry_run_mode=False,
+            decision_agent=SimpleNamespace(database_path="unused"),
+            risk=SimpleNamespace(max_spread_pct=0.01),
+        )
+        broker = SimpleNamespace(get_account_identity=lambda: {"paper_verified": True, "account_id": "DU123"})
+        with patch.object(worker, "SETTINGS", settings), patch.object(worker, "ApprovalStore", Store):
+            result = worker._process_one(request, broker=broker, order_manager=Manager(),
+                                         account_equity=100000.0, cash_available=100000.0, tracked_positions=[])
+        self.assertEqual(result["status"], oq.ERROR)
+        self.assertIn("SUBMISSION_UNKNOWN", result["message"])
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(calls[-1][1], "EXECUTION_FAILED")
+        self.assertEqual(calls[-1][2]["broker_details"]["submission_outcome"], "UNKNOWN")
+
+
 class OrderRequestQueueTests(unittest.TestCase):
     def setUp(self) -> None:
         self._dir = tempfile.TemporaryDirectory()
@@ -73,6 +275,20 @@ class OrderRequestQueueTests(unittest.TestCase):
         self.assertEqual(oq.claim_pending(), [])
         record = oq.list_requests()[0]
         self.assertEqual(record["status"], oq.PROCESSING)
+
+    def test_telegram_intent_uses_the_shared_place_request_shape(self) -> None:
+        request_id = oq.submit_approval_intent({
+            "approval_id": "approval-1", "execution_intent_id": "intent-1",
+            "setup_id": "setup-1", "plan_hash": "hash-1", "symbol": "AAPL",
+            "direction": "LONG", "entry": 100, "stop": 99, "target": 103,
+            "quantity": 5, "strategy": "PRB1",
+        })
+        record = next(item for item in oq.list_requests() if item["id"] == request_id)
+        self.assertEqual(record["source"], "telegram_approval")
+        self.assertTrue(record["immutable_intent"])
+        self.assertTrue(record["manual_setup"])
+        self.assertEqual(record["entry"], 100)
+        self.assertEqual(record["target"], 103)
 
     def test_update_writes_result_back(self) -> None:
         rid = oq.submit_close("MSFT")

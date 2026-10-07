@@ -5566,6 +5566,14 @@ function TabOrdersJournal({refreshKey=0}) {
   const money = v => v!=null && Number.isFinite(Number(v)) ? `$${Number(v).toFixed(Math.abs(Number(v))>=10?2:4)}` : '—';
   const num = (v,d=2) => v!=null && Number.isFinite(Number(v)) ? Number(v).toFixed(d) : '—';
   const fmtTime = v => v ? String(v).replace('T',' ').replace('+00:00','Z').slice(0,19) : '—';
+  const journalTime = v => {
+    const text=String(v||'').trim();
+    if(!text) return NaN;
+    const compact=text.match(/^(\d{4})(\d{2})(\d{2})[ T](\d{2}:\d{2}(?::\d{2})?)/);
+    const normalized=compact ? `${compact[1]}-${compact[2]}-${compact[3]}T${compact[4]}` : text.replace(' ','T');
+    const parsed=Date.parse(normalized);
+    return Number.isFinite(parsed) ? parsed : NaN;
+  };
 
   const loadJournal = useCallback(()=>{
     fetch(`${API}/orders-journal`,{cache:'no-store'})
@@ -5596,7 +5604,7 @@ function TabOrdersJournal({refreshKey=0}) {
     if(statusFilter==='LOSERS' && !(Number(r.pnl)<0)) return false;
     if(openFromTime!=null || openToTime!=null){
       const activityAt = r.closed_at || r.opened_at || r.created_at;
-      const activityTime = activityAt ? new Date(String(activityAt).replace(' ','T')).getTime() : NaN;
+      const activityTime = journalTime(activityAt);
       if(!Number.isFinite(activityTime)) return false;
       if(openFromTime!=null && activityTime < openFromTime) return false;
       if(openToTime!=null && activityTime > openToTime) return false;

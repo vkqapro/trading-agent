@@ -79,6 +79,7 @@ class OrderResult:
     filled: float = 0.0
     remaining: float = 0.0
     avg_fill_price: float = 0.0
+    perm_id: int = 0
 
 
 def _safe_market_price(value: object) -> float:
@@ -652,6 +653,28 @@ class IBKRClient:
             return ""
         return ""
 
+    @staticmethod
+    def _trade_fill_fields(trade: Any) -> Dict[str, float]:
+        """Capture broker fill state before returning a bracket result.
+
+        A status string is only a snapshot.  The filled/remaining quantities
+        are the facts the execution layer needs when a parent status and its
+        protective children temporarily disagree.
+        """
+        order_status = getattr(trade, "orderStatus", None)
+        def number(name: str) -> float:
+            try:
+                value = float(getattr(order_status, name, 0) or 0)
+                return value if math.isfinite(value) else 0.0
+            except (TypeError, ValueError):
+                return 0.0
+
+        return {
+            "filled": number("filled"),
+            "remaining": number("remaining"),
+            "avg_fill_price": number("avgFillPrice"),
+        }
+
     def _await_order_settled(self, trade: Any, timeout: float = 12.0) -> str:
         """Wait until an order leaves the transient PendingSubmit state.
 
@@ -732,6 +755,10 @@ class IBKRClient:
         # broker rejection (e.g. a precautionary cancel) is reported accurately
         # instead of a premature "submitted".
         self._await_order_settled(parent_trade)
+        # Allow the fill event and protective-child acknowledgements to arrive
+        # before classifying the bracket.  A Cancelled/Submitted mix at this
+        # boundary is not sufficient evidence of a final rejection.
+        self.ib.sleep(1.5)
 
         parent_status = parent_trade.orderStatus.status or "Submitted"
         stop_status = stop_trade.orderStatus.status or "Submitted"
@@ -757,6 +784,8 @@ class IBKRClient:
             order_type="MKT",
             status=parent_status,
             detail=parent_detail,
+            perm_id=int(getattr(parent_order, "permId", 0) or 0),
+            **self._trade_fill_fields(parent_trade),
         )
         stop_result = OrderResult(
             order_id=stop_order.orderId,
@@ -765,6 +794,8 @@ class IBKRClient:
             quantity=quantity,
             order_type="STP",
             status=stop_status,
+            perm_id=int(getattr(stop_order, "permId", 0) or 0),
+            **self._trade_fill_fields(stop_trade),
         )
         limit_result = (
             OrderResult(
@@ -774,6 +805,8 @@ class IBKRClient:
                 quantity=quantity,
                 order_type="LMT",
                 status=limit_status,
+                perm_id=int(getattr(limit_order, "permId", 0) or 0),
+                **self._trade_fill_fields(limit_trade),
             )
             if limit_order is not None
             else None
@@ -860,6 +893,8 @@ class IBKRClient:
             order_type="LMT",
             status=parent_status,
             detail=parent_detail,
+            perm_id=int(getattr(parent_order, "permId", 0) or 0),
+            **self._trade_fill_fields(parent_trade),
         )
         stop_result = OrderResult(
             order_id=stop_order.orderId,
@@ -868,6 +903,8 @@ class IBKRClient:
             quantity=quantity,
             order_type="STP",
             status=stop_status,
+            perm_id=int(getattr(stop_order, "permId", 0) or 0),
+            **self._trade_fill_fields(stop_trade),
         )
         limit_result = (
             OrderResult(
@@ -877,6 +914,8 @@ class IBKRClient:
                 quantity=quantity,
                 order_type="LMT",
                 status=limit_status,
+                perm_id=int(getattr(take_profit_order, "permId", 0) or 0),
+                **self._trade_fill_fields(limit_trade),
             )
             if take_profit_order is not None
             else None
@@ -954,6 +993,7 @@ class IBKRClient:
         stop_trade: Trade = self.ib.placeOrder(contract, protective_stop)
         target_trade: Trade = self.ib.placeOrder(contract, target)
         self._await_order_settled(parent_trade)
+        self.ib.sleep(1.5)
         statuses = [
             parent_trade.orderStatus.status or "Submitted",
             stop_trade.orderStatus.status or "Submitted",
@@ -980,6 +1020,7 @@ class IBKRClient:
                 "STP LMT",
                 statuses[0],
                 detail=detail,
+                **self._trade_fill_fields(parent_trade),
             ),
             OrderResult(
                 protective_stop.orderId,
@@ -988,6 +1029,7 @@ class IBKRClient:
                 quantity,
                 "STP",
                 statuses[1],
+                **self._trade_fill_fields(stop_trade),
             ),
             OrderResult(
                 target.orderId,
@@ -996,6 +1038,7 @@ class IBKRClient:
                 quantity,
                 "LMT",
                 statuses[2],
+                **self._trade_fill_fields(target_trade),
             ),
         )
 

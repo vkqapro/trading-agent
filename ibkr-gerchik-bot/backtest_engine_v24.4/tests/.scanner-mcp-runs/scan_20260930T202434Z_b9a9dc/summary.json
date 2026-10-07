@@ -1,0 +1,48 @@
+{
+  "run_id": "scan_20260930T202434Z_b9a9dc",
+  "symbols_requested": 3,
+  "symbols_available": 3,
+  "symbols_scanned": 3,
+  "symbols_skipped": 0,
+  "strategies": {
+    "lp1": {
+      "evaluated": 3,
+      "entry_signals": 1,
+      "rejected": 0,
+      "no_signal": 2,
+      "insufficient_data": 0,
+      "errors": 0
+    },
+    "lp2": {
+      "evaluated": 3,
+      "entry_signals": 1,
+      "rejected": 0,
+      "no_signal": 2,
+      "insufficient_data": 0,
+      "errors": 0
+    },
+    "prb1": {
+      "evaluated": 3,
+      "entry_signals": 0,
+      "rejected": 0,
+      "no_signal": 3,
+      "insufficient_data": 0,
+      "errors": 0
+    },
+    "prb2": {
+      "evaluated": 3,
+      "entry_signals": 0,
+      "rejected": 0,
+      "no_signal": 3,
+      "insufficient_data": 0,
+      "errors": 0
+    }
+  },
+  "unique_candidate_symbols": 2,
+  "candidate_symbols": [
+    "MAAS",
+    "V"
+  ],
+  "errors": 0,
+  "runtime_seconds": 0.587101
+}

@@ -28,6 +28,7 @@ import pandas as pd
 from src.config import MEMORY_DIR, SETTINGS
 from src.crypto.config import CRYPTO_SETTINGS
 from src.data.bar_store import load_bars
+from src.journal.flex_statement import normalize_trade_timestamp
 
 REVIEWS_PATH = MEMORY_DIR / "order_journal_reviews.json"
 CLOSED_POSITIONS_PATH = MEMORY_DIR / "runtime" / "closed_positions.json"
@@ -296,8 +297,8 @@ def _base_row(
         "status": status,
         "exit_reason": exit_reason,
         "created_at": created_at,
-        "opened_at": opened_at or created_at if opened_at_fallback_to_created else opened_at,
-        "closed_at": closed_at,
+        "opened_at": normalize_trade_timestamp(opened_at or created_at) if opened_at_fallback_to_created else normalize_trade_timestamp(opened_at),
+        "closed_at": normalize_trade_timestamp(closed_at),
         "planned_entry": pe,
         "planned_stop": ps,
         "planned_target": pt,

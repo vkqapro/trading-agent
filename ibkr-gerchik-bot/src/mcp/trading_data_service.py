@@ -15,6 +15,8 @@ from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
 
+import pandas as pd
+
 from dashboard.data_access import load_watchlist
 from src.config import SETTINGS
 from src.data.bar_store import bar_metadata, index_snapshot, load_bars
@@ -224,14 +226,23 @@ def get_symbol_history(symbol: str, timeframe: str = "1D", lookback_days: int | 
         raise DataError("REQUEST_LIMIT_EXCEEDED", f"Maximum candles is {_MAX_CANDLES}")
     if lookback_days is not None and int(lookback_days) < 0:
         raise DataError("INVALID_TIMEFRAME", "lookback_days must be non-negative")
+    def _window_timestamp(value: str) -> pd.Timestamp:
+        parsed = pd.Timestamp(value)
+        frame_tz = getattr(frame["date"].dt, "tz", None)
+        if frame_tz is not None and parsed.tzinfo is None:
+            parsed = parsed.tz_localize(_ET)
+        elif frame_tz is None and parsed.tzinfo is not None:
+            parsed = parsed.tz_localize(None)
+        return parsed
+
     if start:
-        frame = frame[frame["date"] >= start]
+        frame = frame[frame["date"] >= _window_timestamp(start)]
     if end:
-        frame = frame[frame["date"] <= end]
+        frame = frame[frame["date"] <= _window_timestamp(end)]
+    if not include_incomplete:
+        frame = frame[[_frame_closed(value, public_tf) for value in frame["date"]]]
     if lookback_days is not None:
         frame = frame.tail(int(lookback_days))
-    if not include_incomplete:
-        frame = frame[[ _frame_closed(value, public_tf) for value in frame["date"] ]]
     if limit is not None:
         frame = frame.tail(int(limit))
     if len(frame) > _MAX_CANDLES:

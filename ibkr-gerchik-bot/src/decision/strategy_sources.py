@@ -599,11 +599,12 @@ def _gerchik_snapshots(context: StrategyScanContext) -> list[StrategySnapshot]:
 
 
 def _source_signal_id(snapshot: StrategySnapshot) -> str:
+    # scan_id identifies a snapshot batch, not the setup. Excluding it keeps
+    # the canonical setup_id stable when the same source is refreshed.
     raw = "|".join(
         str(value)
         for value in (
             snapshot.source,
-            snapshot.scan_id,
             snapshot.symbol,
             snapshot.strategy,
             snapshot.signal_state,

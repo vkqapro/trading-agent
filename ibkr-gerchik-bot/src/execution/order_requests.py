@@ -40,6 +40,7 @@ DONE = "done"
 SIMULATED = "simulated"
 REJECTED = "rejected"
 ERROR = "error"
+RECONCILIATION_REQUIRED = "reconciliation_required"
 OPEN_STATUSES = {PENDING, PROCESSING}
 
 
@@ -123,17 +124,24 @@ def _mutate(mutator: Callable[[Dict[str, Any]], Any]) -> Any:
         _release_lock(handle)
 
 
-def submit_place(setup: Dict[str, Any], *, live: bool = False) -> str:
-    """Queue a place-order request from a forecast setup. Returns the request id."""
-    request_id = uuid.uuid4().hex[:12]
-    record = {
+def _place_record(
+    setup: Dict[str, Any],
+    *,
+    request_id: str,
+    source: str | None = None,
+    live: bool = False,
+    immutable_intent: bool = False,
+) -> Dict[str, Any]:
+    """Build the durable place-request shape shared by dashboard and approvals."""
+    return {
         "id": request_id,
         "action": "place",
         "status": PENDING,
         "created_at": _now(),
         "updated_at": _now(),
-        "source": setup.get("source") or "dashboard",
+        "source": source or setup.get("source") or "dashboard",
         "live": bool(live),
+        "immutable_intent": bool(immutable_intent),
         "symbol": str(setup.get("symbol", "")).upper(),
         "signal": str(setup.get("signal", "")).upper(),
         "direction": str(setup.get("direction", "")),
@@ -156,8 +164,54 @@ def submit_place(setup: Dict[str, Any], *, live: bool = False) -> str:
         "result": None,
         "message": "Queued for the bot worker.",
     }
+
+
+def submit_place(setup: Dict[str, Any], *, live: bool = False) -> str:
+    """Queue a place-order request from a forecast setup. Returns the request id."""
+    request_id = uuid.uuid4().hex[:12]
+    record = _place_record(setup, request_id=request_id, live=live)
     _mutate(lambda data: data["requests"].append(record))
     LOGGER.info("Queued place request %s for %s (live=%s)", request_id, record["symbol"], live)
+    return request_id
+
+
+def submit_approval_intent(intent: Dict[str, Any]) -> str:
+    """Queue a backend-created immutable intent for the existing worker.
+
+    This is intentionally not exposed as a free-form tool. The approval service
+    supplies the authoritative values only after revalidation and risk approval.
+    """
+    required = ("approval_id", "execution_intent_id", "setup_id", "plan_hash", "symbol", "entry", "stop", "target", "quantity")
+    if any(intent.get(key) in (None, "") for key in required):
+        raise ValueError("incomplete execution intent")
+    if str(intent.get("direction", "")).upper() != "LONG":
+        raise ValueError("telegram approval supports LONG only")
+    request_id = "approval-" + str(intent["execution_intent_id"])[-24:]
+    record = _place_record(
+        {
+            "symbol": intent["symbol"], "signal": "BUY", "direction": "long",
+            "entry": intent["entry"], "stop": intent["stop"], "target": intent["target"],
+            "quantity": int(intent["quantity"]), "strategy": str(intent.get("strategy") or ""),
+            "entry_order_type": "MARKET", "market_only": False, "manual_setup": True,
+        },
+        request_id=request_id,
+        source="telegram_approval",
+        immutable_intent=True,
+    )
+    record.update({
+        "approval_id": str(intent["approval_id"]),
+        "execution_intent_id": str(intent["execution_intent_id"]),
+        "setup_id": str(intent["setup_id"]),
+        "plan_hash": str(intent["plan_hash"]),
+        "message": "Queued immutable Telegram-approved reviewed order.",
+    })
+    def _append(data: Dict[str, Any]) -> None:
+        for existing in data.get("requests", []):
+            if isinstance(existing, dict) and existing.get("execution_intent_id") == record["execution_intent_id"]:
+                return
+        data["requests"].append(record)
+    _mutate(_append)
+    LOGGER.info("Queued immutable approval intent %s", record["execution_intent_id"])
     return request_id
 
 

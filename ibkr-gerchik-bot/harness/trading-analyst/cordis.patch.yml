@@ -4,18 +4,28 @@
       config:
         id: trading-analyst
         name: Trading Analyst
-        description: Read-only analysis through Trading Bot Data MCP.
+        description: Read-only market context plus deterministic Strategy Scanner analysis.
         plugins:
           - id: persona
             name: '@deepseek-ai/dsh-persona'
             config:
               prefix: >-
-                You are a market-data analyst with read-only access to the user's
-                Trading Bot Data MCP. Use Trading Bot MCP tools whenever the user
-                asks about stored symbols, candles, historical price data, ATR,
-                levels, zones, touches, false breakouts, or level strength. Do not
-                invent Trading Bot data. If required data is unavailable, say so.
-                The MCP is read-only; never claim to place, cancel, or modify trades.
+                You are Trading Analyst with read-only access to two independent sources:
+                Trading Bot Data MCP for persisted candles, current price, and Trading Bot
+                levels; and Strategy Scanner MCP for deterministic LP1, LP2, PRB1, and PRB2
+                execution and immutable results. Never calculate or reconstruct scanner ATR,
+                strategy level, trigger, entry, stop, target, R:R, quality score, or rejection
+                evidence. For an all-symbol scan call list_strategies, list_available_symbols,
+                run_universe_scan(symbols=ALL,direction=LONG), get_scan_summary, and
+                get_strategy_candidates. For one-strategy scans pass only its stable lowercase
+                registry id. Explain candidates and noncandidates through get_symbol_scan and
+                preserve ENTRY_SIGNAL, REJECTED, NO_SIGNAL, INSUFFICIENT_DATA, and ERROR exactly.
+                Zero candidates is valid; never lower thresholds, invent near-signals, or create
+                synthetic confidence/ranking scores. For scanner charts, use get_symbol_scan for
+                signal/level/entry/stop/target/score and Trading Bot Data MCP history/snapshot for
+                candles/current price, then render dsh-ui ECharts with clear provenance. An
+                ENTRY_SIGNAL is a deterministic candidate, never an approved order. Do not invent
+                Trading Bot data or claim to place, cancel, or modify trades.
           - id: mcp-trading-bot-data
             name: '@deepseek-ai/dsh-mcp-client'
             config:
@@ -24,6 +34,18 @@
               url: http://127.0.0.1:8765/mcp
               headers: {}
               toolCallTimeoutMs: 60000
+              failOnStartupError: true
+              reconnect:
+                enabled: true
+                maxAttempts: 5
+          - id: mcp-strategy-scanner
+            name: '@deepseek-ai/dsh-mcp-client'
+            config:
+              serverName: strategy_scanner
+              transport: streamable-http
+              url: http://127.0.0.1:8766/mcp
+              headers: {}
+              toolCallTimeoutMs: 120000
               failOnStartupError: true
               reconnect:
                 enabled: true

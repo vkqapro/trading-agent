@@ -38,12 +38,11 @@ data. Missing persisted data returns a stable error.
 
 ## Acceptance status
 
-The implementation provides the five requested tools over Streamable HTTP and
+The implementation provides the six requested tools over Streamable HTTP and
 separate Windows lifecycle scripts. Automated tests cover symbol normalization,
-closed-candle filtering, persisted level parity, level context matching, and
-stable invalid-level errors. A live AAPL parity run requires the local
-repository's persisted AAPL bars/watchlist to be present; no live broker fetch
-is performed.
+closed-candle filtering, persisted level parity, level context matching, price
+semantics, side filtering, chart rendering, mixed PNG responses, and stable
+errors. No live broker fetch is performed.
 
 ## Price and freshness verification
 
@@ -59,6 +58,41 @@ bar closes and the persisted level plan retains its original spacing context.
 Current distance and side filters use `current_price`; level values remain
 unchanged. AAPL still returns 11 consolidated levels and the 327.30 level
 retains its existing metadata.
+
+## Trading Bot Data MCP v0.2 — render_symbol_chart
+
+- Chart library: Pillow, using headless in-memory PNG rendering; no browser or
+  temporary files are required.
+- Data service reuse: `render_symbol_chart` calls the normalized
+  `get_symbol_history`, `get_symbol_levels`, and `get_symbol_snapshot` service
+  methods.
+- Output: MCP `CallToolResult` with JSON metadata text followed by `image/png`
+  content.
+- Defaults: 1400x800 pixels, closed candles only, volume enabled, compact
+  labels, current-price marker enabled.
+- Limits: candle count uses `TRADING_BOT_MCP_MAX_CANDLES`; dimensions are
+  bounded to 800-2000 by 500-1200 pixels.
+- Level filtering: `min_strength`, `level_type`, and `side` are delegated to
+  the existing level service. Side filtering uses `current_price`.
+- Out-of-range levels: zones near the visible candle range are rendered;
+  metadata reports `levels_total`, `levels_rendered`, and
+  `levels_outside_chart`. Labels are thinned to avoid vertical collisions.
+- Current-price marker: authoritative `current_price`, never latest closed or
+  level reference price.
+- Provenance: `level_reference_price` and freshness fields are included in
+  metadata; unavailable generation timestamps remain null.
+
+Live protocol verification succeeded against `http://127.0.0.1:8765/mcp`:
+
+- tool discovery returns 6 tools;
+- AAPL 60-day chart returns 60 closed bars;
+- consolidated chart returns 11 total levels, 3 rendered near the visible
+  range, and 8 outside the chart window;
+- response contains metadata and a valid PNG image.
+
+Harness live image display was not re-run in this execution; the existing
+Harness MCP URL/server name were not changed. The direct Streamable HTTP image
+response is verified and ready for the existing client to rediscover.
 
 ### Final safety answers
 

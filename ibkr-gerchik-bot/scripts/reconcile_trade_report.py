@@ -16,7 +16,7 @@ from src.journal.flex_statement import (
 
 
 def main() -> int:
-    result = run_flex_catch_up(commit=False)
+    result = run_flex_catch_up(commit=False, allow_local_report=True)
     details = (
         reconcile_statement_trades(result.get("trades", []), return_details=True)
         if result.get("status") == "success"

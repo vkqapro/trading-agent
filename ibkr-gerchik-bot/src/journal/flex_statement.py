@@ -18,6 +18,7 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List
+from zoneinfo import ZoneInfo
 
 from src.config import LOGGER, MEMORY_DIR, SETTINGS
 
@@ -25,6 +26,36 @@ FLEX_BASE_URL = "https://ndcdyn.interactivebrokers.com/AccountManagement/FlexWeb
 FLEX_STATE_PATH = MEMORY_DIR / "runtime" / "flex_statement_reconciliation.json"
 FLEX_ARCHIVE_DIR = MEMORY_DIR / "runtime" / "flex_statements"
 FLEX_UNMATCHED_PATH = MEMORY_DIR / "runtime" / "flex_unmatched_trades.json"
+_TRADE_REPORT_TZ = ZoneInfo("America/New_York")
+
+
+def normalize_trade_timestamp(value: Any) -> str:
+    """Normalize broker/report timestamps to ISO-8601 with an explicit offset."""
+    text = str(value or "").strip()
+    if not text:
+        return ""
+    candidates = (text, text.replace(",", " ").strip())
+    for candidate in candidates:
+        for fmt in (
+            "%Y%m%d %H:%M:%S",
+            "%Y%m%d %H:%M",
+            "%Y-%m-%d %H:%M:%S",
+            "%Y-%m-%d %H:%M",
+            "%Y-%m-%d",
+        ):
+            try:
+                parsed = datetime.strptime(candidate, fmt)
+            except ValueError:
+                continue
+            return parsed.replace(tzinfo=_TRADE_REPORT_TZ).isoformat(timespec="seconds")
+        try:
+            parsed = datetime.fromisoformat(candidate.replace("Z", "+00:00"))
+        except ValueError:
+            continue
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=_TRADE_REPORT_TZ)
+        return parsed.isoformat(timespec="seconds")
+    return text
 
 
 def _read_state() -> Dict[str, Any]:
@@ -76,7 +107,7 @@ def parse_flex_trades(xml_bytes: bytes) -> List[Dict[str, Any]]:
                 "commission": float(commission or 0),
                 "fee": float(fee or 0),
                 "realized_pnl": float(realized) if realized else None,
-                "trade_time": _text(node, "tradeDate", "dateTime", "TradeDate"),
+                "trade_time": normalize_trade_timestamp(_text(node, "tradeDate", "dateTime", "TradeDate")),
                 "order_id": _text(node, "ibOrderID", "orderID", "orderId"),
                 "exec_id": _text(node, "ibExecID", "execID", "execId"),
                 "account": _text(node, "accountId", "account", "AcctID"),
@@ -128,6 +159,7 @@ def parse_trade_report_csv(raw: bytes) -> List[Dict[str, Any]]:
         trade_date = value(row, "trade_date")
         if trade_date and trade_time and trade_date != trade_time:
             trade_time = f"{trade_date} {trade_time}"
+        trade_time = normalize_trade_timestamp(trade_time)
         exec_id = value(row, "exec_id")
         if not exec_id:
             # TWS periodic reports often omit Exec ID.  Derive a stable key
@@ -198,7 +230,7 @@ def parse_trade_report_html(raw: bytes) -> List[Dict[str, Any]]:
         quantity = abs(number(field(row, "Quantity")))
         if side not in {"BUY", "BOT", "SELL", "SLD"} or not symbol or not quantity:
             continue
-        trade_time = " ".join(field(row, "Trade Date/Time").replace(",", " ").split())
+        trade_time = normalize_trade_timestamp(field(row, "Trade Date/Time"))
         identity = "|".join((symbol, side, str(quantity), field(row, "Price"), trade_time))
         trades.append({
             "symbol": symbol, "side": side, "quantity": quantity, "price": number(field(row, "Price")),
@@ -269,15 +301,31 @@ def commit_flex_checkpoint(result: Dict[str, Any]) -> None:
     _write_state(state)
 
 
-def run_flex_catch_up(commit: bool = True) -> Dict[str, Any]:
-    """Fetch/archive a statement and return normalized trades plus checkpoint data."""
+def run_flex_catch_up(
+    commit: bool = True,
+    *,
+    allow_local_report: bool = False,
+) -> Dict[str, Any]:
+    """Fetch/archive a statement and return normalized trades plus checkpoint data.
+
+    A TWS trade report is a local, broker-exported execution source and does
+    not require Flex credentials.  Callers that are explicitly reconciling
+    journal data may opt into that source with ``allow_local_report``.  The
+    default remains fail-closed for jobs that require configured Flex access.
+    """
     state = _read_state()
-    if not SETTINGS.flex_statement_enabled or not SETTINGS.flex_statement_token or not SETTINGS.flex_statement_query_id:
+    report_path, report_trades = discover_trade_report()
+    flex_configured = bool(
+        SETTINGS.flex_statement_enabled
+        and SETTINGS.flex_statement_token
+        and SETTINGS.flex_statement_query_id
+    )
+    if not flex_configured and not (allow_local_report and report_trades):
         return {"status": "disabled", "reason": "missing_flex_configuration", "trades": []}
     fetched_at = datetime.now(timezone.utc)
     try:
         previous_success = state.get("last_successful_statement_at")
-        if previous_success:
+        if previous_success and flex_configured:
             previous_dt = datetime.fromisoformat(str(previous_success).replace("Z", "+00:00"))
             gap_days = max(0, (fetched_at.date() - previous_dt.date()).days)
             if gap_days > max(1, int(SETTINGS.flex_statement_lookback_days)):
@@ -289,13 +337,12 @@ def run_flex_catch_up(commit: bool = True) -> Dict[str, Any]:
                     "trades": [],
                     "last_successful_statement_at": previous_success,
                 }
-        report_path, report_trades = discover_trade_report()
         trades = list(report_trades)
         archive_path = report_path
         source_parts = ["tws_trade_report"] if report_trades else []
         # Always supplement the periodically-overwritten TWS file with Flex
         # when configured; this is what recovers executions from prior days.
-        if SETTINGS.flex_statement_enabled and SETTINGS.flex_statement_token and SETTINGS.flex_statement_query_id:
+        if flex_configured:
             try:
                 xml_bytes = fetch_flex_statement()
                 archive_path = archive_statement(xml_bytes, fetched_at)
@@ -429,7 +476,13 @@ def reconcile_statement_trades(trades: Iterable[Dict[str, Any]], return_details:
             "opened_at": opened_at, "closed_at": sell.get("trade_time"),
             "exit_price": exit_price, "exit_quantity": quantity,
             "exit_order_id": sell.get("order_id"), "exit_execution_id": execution_id,
-            "exit_reason": "BRACKET_STOP_FILLED" if str(sell.get("order_id")) == str(result.get("stop_order_id")) else "BRACKET_TARGET_FILLED",
+            "exit_reason": (
+                "BRACKET_STOP_FILLED"
+                if sell.get("order_id") and str(sell.get("order_id")) == str(result.get("stop_order_id"))
+                else "BRACKET_TARGET_FILLED"
+                if sell.get("order_id") and str(sell.get("order_id")) == str(result.get("limit_order_id"))
+                else "BROKER_SELL_EXECUTION"
+            ),
             "market_order_id": result.get("market_order_id"), "stop_order_id": result.get("stop_order_id"),
             "limit_order_id": result.get("limit_order_id"), "request_id": str(request.get("id") or ""),
             "commission": float(sell.get("commission") or 0), "fee": float(sell.get("fee") or 0),

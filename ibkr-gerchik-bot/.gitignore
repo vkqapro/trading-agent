@@ -11,6 +11,8 @@ memory/reports/
 memory/inefficiency_reclaim.db*
 memory/RESEARCH_LOG.md
 tmp/irs_dashboard_*.log
+runtime/strategy_scanner_mcp.pid
+runtime/strategy_scanner_mcp.*.log
 
 # Graphify local-only state; commit graphify-out/graph.json, GRAPH_REPORT.md,
 # graph.html, and manifest.json so the project map is available to the team.

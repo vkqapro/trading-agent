@@ -141,6 +141,47 @@ class MarketDataServiceTests(unittest.TestCase):
         self.assertEqual(len(result), 3)
         self.assertEqual(str(result.iloc[-1]["date"]), "2026-06-23 09:35:00-04:00")
 
+    def test_stale_nasdaq_falls_back_to_fresh_ibkr(self) -> None:
+        nasdaq = _NasdaqProviderStub(intraday=pd.DataFrame([{
+            "date": "2026-09-30 14:40:00-04:00", "open": 1, "high": 2, "low": 1, "close": 1.5, "volume": 10,
+        }]))
+        broker = _BrokerStub(pd.DataFrame([{
+            "date": "2026-09-30 14:55:00-04:00", "open": 2, "high": 3, "low": 2, "close": 2.5, "volume": 11,
+        }]))
+        result = MarketDataService(broker, nasdaq_provider=nasdaq).get_intraday_bars_result(
+            "AAPL", reference_time=pd.Timestamp("2026-09-30 15:00:00-04:00").to_pydatetime()
+        )
+        self.assertEqual(result.source, "IBKR")
+        self.assertEqual(result.freshness_status, "FRESH")
+        self.assertEqual(result.latest_bar_timestamp, "2026-09-30T14:55:00-04:00")
+        self.assertEqual(len(broker.requests), 1)
+
+    def test_fresh_nasdaq_does_not_request_ibkr(self) -> None:
+        nasdaq = _NasdaqProviderStub(intraday=pd.DataFrame([{
+            "date": "2026-09-30 14:55:00-04:00", "open": 1, "high": 2, "low": 1, "close": 1.5, "volume": 10,
+        }]))
+        broker = _BrokerStub(pd.DataFrame())
+        result = MarketDataService(broker, nasdaq_provider=nasdaq).get_intraday_bars_result(
+            "AAPL", reference_time=pd.Timestamp("2026-09-30 15:00:00-04:00").to_pydatetime()
+        )
+        self.assertEqual(result.source, "NASDAQ")
+        self.assertEqual(result.freshness_status, "FRESH")
+        self.assertEqual(broker.requests, [])
+
+    def test_both_stale_selects_newest_and_remains_stale(self) -> None:
+        nasdaq = _NasdaqProviderStub(intraday=pd.DataFrame([{
+            "date": "2026-09-30 14:40:00-04:00", "open": 1, "high": 2, "low": 1, "close": 1.5, "volume": 10,
+        }]))
+        broker = _BrokerStub(pd.DataFrame([{
+            "date": "2026-09-30 14:45:00-04:00", "open": 2, "high": 3, "low": 2, "close": 2.5, "volume": 11,
+        }]))
+        result = MarketDataService(broker, nasdaq_provider=nasdaq).get_intraday_bars_result(
+            "AAPL", reference_time=pd.Timestamp("2026-09-30 15:10:00-04:00").to_pydatetime()
+        )
+        self.assertEqual(result.source, "IBKR")
+        self.assertEqual(result.freshness_status, "STALE")
+        self.assertGreater(result.freshness_seconds, 900)
+
     def test_get_daily_bars_sorts_oldest_to_newest(self) -> None:
         bars = pd.DataFrame(
             [

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 from typing import Dict
@@ -11,6 +12,27 @@ import pandas as pd
 from src.brokers.ibkr import IBKRClient
 from src.config import SETTINGS
 from src.data.nasdaq_data import NasdaqDataClient
+
+
+# Must remain aligned with the canonical live engine's 15-minute safety gate.
+INTRADAY_FRESHNESS_SLA_SECONDS = 900.0
+
+
+@dataclass
+class IntradayDataResult:
+    symbol: str
+    source: str
+    bars: pd.DataFrame
+    request_started_at: str
+    request_completed_at: str
+    latest_bar_timestamp: str | None
+    bar_count: int
+    freshness_seconds: float | None
+    freshness_status: str
+    advanced_since_previous: bool | None = None
+    attempted_sources: tuple[str, ...] = ()
+    warning: str | None = None
+    selection_reason: str | None = None
 
 
 class MarketDataService:
@@ -48,6 +70,122 @@ class MarketDataService:
         )
         return normalized
 
+    def _get_ibkr_intraday_bars(
+        self,
+        symbol: str,
+        duration: str,
+        bar_size: str,
+        include_current_session: bool,
+    ) -> pd.DataFrame:
+        bars = self.broker.get_historical_bars(symbol=symbol, duration=duration, bar_size=bar_size)
+        frames = [bars] if bars is not None and not bars.empty else []
+        # IBKR can omit the current partial session from multi-day requests.
+        if include_current_session and duration.strip().upper() != "1 D":
+            current_session = self.broker.get_historical_bars(
+                symbol=symbol, duration="1 D", bar_size=bar_size
+            )
+            if current_session is not None and not current_session.empty:
+                frames.append(current_session)
+        if not frames:
+            return pd.DataFrame(columns=["date", "open", "high", "low", "close", "volume"])
+        return self._normalize_bars_frame(pd.concat(frames, ignore_index=True))
+
+    @staticmethod
+    def _latest_and_age(bars: pd.DataFrame, reference_time: datetime) -> tuple[pd.Timestamp | None, float | None]:
+        if bars is None or bars.empty or "date" not in bars:
+            return None, None
+        latest_values = pd.to_datetime(bars["date"], errors="coerce")
+        latest_local = latest_values.max()
+        if pd.isna(latest_local):
+            return None, None
+        latest = pd.Timestamp(latest_local)
+        if latest.tzinfo is None:
+            latest = latest.tz_localize("America/New_York")
+        reference = pd.Timestamp(reference_time)
+        if reference.tzinfo is None:
+            reference = reference.tz_localize("America/New_York")
+        age = (reference.tz_convert("UTC") - latest.tz_convert("UTC")).total_seconds()
+        # Future-dated bars are invalid evidence, never fresh evidence.
+        if age < 0:
+            return latest, None
+        return latest, round(age, 3)
+
+    def get_intraday_bars_result(
+        self,
+        symbol: str,
+        duration: str = "5 D",
+        bar_size: str = "5 mins",
+        *,
+        reference_time: datetime | None = None,
+        include_current_session: bool = False,
+    ) -> IntradayDataResult:
+        enforce_freshness = reference_time is not None
+        reference = reference_time or datetime.now(ZoneInfo(SETTINGS.trading_hours.timezone))
+        started = datetime.now(timezone.utc)
+        attempts: list[str] = []
+        candidates: list[tuple[str, pd.DataFrame, float | None, str | None]] = []
+        errors: list[str] = []
+
+        def evaluate(source: str, bars: pd.DataFrame) -> None:
+            normalized = self._normalize_bars_frame(bars)
+            latest, age = self._latest_and_age(normalized, reference)
+            candidates.append((source, normalized, age, latest.isoformat() if latest is not None else None))
+
+        attempts.append("NASDAQ")
+        try:
+            evaluate("NASDAQ", self.nasdaq_provider.get_intraday_bars(symbol, duration=duration, bar_size=bar_size))
+        except Exception as exc:
+            errors.append(f"NASDAQ: {exc}")
+            evaluate("NASDAQ", pd.DataFrame())
+
+        primary = candidates[-1]
+        primary_fresh = bool(primary[2] is not None and primary[2] <= INTRADAY_FRESHNESS_SLA_SECONDS) if enforce_freshness else bool(not primary[1].empty)
+        if not primary_fresh:
+            attempts.append("IBKR")
+            try:
+                evaluate("IBKR", self._get_ibkr_intraday_bars(symbol, duration, bar_size, include_current_session))
+            except Exception as exc:
+                errors.append(f"IBKR: {exc}")
+                evaluate("IBKR", pd.DataFrame())
+
+        available = [item for item in candidates if not item[1].empty]
+        if not available:
+            status = "ERROR" if errors else "NO_DATA"
+            reason = "all sources failed" if errors else "no bars returned"
+            selected_source, selected_bars, age, latest_text = "NONE", pd.DataFrame(), None, None
+        else:
+            fresh = [item for item in available if item[2] is not None and item[2] <= INTRADAY_FRESHNESS_SLA_SECONDS]
+            pool = fresh or available
+            # Prefer the primary source on a freshness tie; otherwise newest bar wins.
+            def candidate_key(item: tuple[str, pd.DataFrame, float | None, str | None]) -> tuple[bool, float, bool]:
+                latest_epoch = pd.Timestamp(item[3]).timestamp() if item[3] else float("-inf")
+                return (
+                    item[2] is not None and item[2] <= INTRADAY_FRESHNESS_SLA_SECONDS,
+                    latest_epoch,
+                    item[0] == "NASDAQ",
+                )
+
+            selected_source, selected_bars, age, latest_text = max(pool, key=candidate_key)
+            status = "FRESH" if fresh else "STALE"
+            reason = "fresh primary" if selected_source == "NASDAQ" and primary_fresh else "freshest available source"
+
+        completed = datetime.now(timezone.utc)
+        warning = "; ".join(errors) if errors else None
+        return IntradayDataResult(
+            symbol=symbol,
+            source=selected_source,
+            bars=selected_bars,
+            request_started_at=started.isoformat(),
+            request_completed_at=completed.isoformat(),
+            latest_bar_timestamp=latest_text,
+            bar_count=len(selected_bars),
+            freshness_seconds=age,
+            freshness_status=status,
+            attempted_sources=tuple(attempts),
+            warning=warning,
+            selection_reason=reason,
+        )
+
     def get_intraday_bars(
         self,
         symbol: str,
@@ -56,32 +194,12 @@ class MarketDataService:
         *,
         include_current_session: bool = False,
     ) -> pd.DataFrame:
-        nasdaq_bars = self.nasdaq_provider.get_intraday_bars(
+        return self.get_intraday_bars_result(
             symbol,
             duration=duration,
             bar_size=bar_size,
-        )
-        if nasdaq_bars is not None and not nasdaq_bars.empty:
-            return self._normalize_bars_frame(nasdaq_bars)
-
-        bars = self.broker.get_historical_bars(symbol=symbol, duration=duration, bar_size=bar_size)
-        frames = [bars] if bars is not None and not bars.empty else []
-
-        # IBKR treats multi-day duration strings as completed trading sessions.
-        # During market hours that response can omit the entire current partial
-        # session, so stitch in a separate one-day request.
-        if include_current_session and duration.strip().upper() != "1 D":
-            current_session = self.broker.get_historical_bars(
-                symbol=symbol,
-                duration="1 D",
-                bar_size=bar_size,
-            )
-            if current_session is not None and not current_session.empty:
-                frames.append(current_session)
-
-        if not frames:
-            return pd.DataFrame(columns=["date", "open", "high", "low", "close", "volume"])
-        return self._normalize_bars_frame(pd.concat(frames, ignore_index=True))
+            include_current_session=include_current_session,
+        ).bars
 
     def get_daily_bars(self, symbol: str, duration: str | None = None) -> pd.DataFrame:
         resolved_duration = duration or f"{SETTINGS.strategy.premarket_daily_lookback_days} D"

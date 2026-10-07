@@ -70,6 +70,35 @@ provenance. Persisted level values themselves are not recalculated or changed.
 Future charts must use the current-price marker from `current_price` while
 retaining level provenance metadata.
 
+## Chart rendering (v0.2)
+
+`render_symbol_chart` returns mixed MCP content: JSON provenance metadata and
+an in-memory PNG image. It renders closed OHLC candles from
+`get_symbol_history` and, when requested, overlays existing zones from
+`get_symbol_levels`. It does not read persistence independently, recalculate
+levels, fetch data, or create signals.
+
+Arguments include `symbol`, `timeframe`, `lookback_days`, `start`, `end`,
+`show_levels`, `level_set`, `min_strength`, `level_type`, `side`,
+`level_labels` (`none`, `compact`, or `full`), `show_current_price`,
+`include_volume`, `width`, and `height`. Dimensions are bounded to 800-2000 by
+500-1200 pixels and candle limits remain governed by
+`TRADING_BOT_MCP_MAX_CANDLES`.
+
+The current-price marker uses `current_price`, never the latest closed price or
+level reference price. Zones are drawn only when they intersect or are near the
+visible candle range; metadata reports `levels_total`, `levels_rendered`, and
+`levels_outside_chart`. Labels are thinned when their vertical positions would
+collide. No temporary chart files are created.
+
+Example Harness prompts:
+
+```text
+Show AAPL for the last 60 closed daily candles.
+Now add the consolidated levels.
+Show only consolidated levels with strength >= 30.
+```
+
 ## Safety boundary
 
 There are no order, position, broker, scanner, candle-fetch, strategy-job, or
@@ -81,7 +110,7 @@ intentionally not changed in v0.1.
 
 ## Future work
 
-`render_symbol_chart` may be added later using the same history and level
-sources. Future Harness integration should point its MCP client at `/mcp` only
+Future chart enhancements may add more persisted timeframes and richer zone
+styling. Future Harness integration should point its MCP client at `/mcp` only
 after independent protocol and data-parity verification. Remote deployment
 requires authentication and an explicit network/security review.

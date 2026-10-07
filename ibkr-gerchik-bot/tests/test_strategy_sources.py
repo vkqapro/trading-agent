@@ -36,6 +36,12 @@ def _snapshot(*, source: str = "gerchik_router", candidate_class: str = "EXECUTA
     )
 
 
+def test_setup_id_is_stable_across_snapshot_refresh_batches():
+    first = _snapshot()
+    second = first.__class__(**{**first.to_dict(), "scan_id": "scan-2"})
+    assert snapshot_to_candidate(first)[0].candidate_id == snapshot_to_candidate(second)[0].candidate_id
+
+
 def test_registry_exposes_four_sources_and_combined_selection():
     assert DEFAULT_REGISTRY.ids() == ("stock_screener", "bmsb", "gaussian", "gerchik_router")
     assert DEFAULT_REGISTRY.selection_ids()[0] == "all"

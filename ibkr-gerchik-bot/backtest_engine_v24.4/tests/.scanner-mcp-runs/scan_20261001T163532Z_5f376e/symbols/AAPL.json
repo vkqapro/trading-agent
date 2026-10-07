@@ -1,0 +1,296 @@
+{
+  "schema_version": "1.1",
+  "run_id": "scan_20261001T163532Z_5f376e",
+  "symbol": "AAPL",
+  "as_of": "2026-09-28 00:00:00",
+  "strategies": {
+    "lp1": {
+      "run_id": "scan_20261001T163532Z_5f376e",
+      "symbol": "AAPL",
+      "strategy_id": "lp1",
+      "strategy_version": "market-screener-lp-prb-strategy-2",
+      "direction": "LONG",
+      "timeframe": "1D",
+      "as_of": "2026-09-28",
+      "status": "NO_SIGNAL",
+      "matched": false,
+      "signal": {
+        "pattern": "LP1",
+        "signal_bar": null,
+        "signal_bar_date": null,
+        "signal_bar_index": null,
+        "triggered": false
+      },
+      "market": {
+        "close": 338.4,
+        "atr": 6.732070352338586
+      },
+      "level": {
+        "price": null,
+        "level_type": null,
+        "zone_low": null,
+        "zone_high": null
+      },
+      "trade_plan": {
+        "entry": null,
+        "stop": null,
+        "target": null,
+        "rr": null,
+        "reward_risk": null
+      },
+      "quality": {
+        "score": null
+      },
+      "evidence": {
+        "canonical_evaluator": "dashboard_react.market_screener._detect_signals"
+      },
+      "pattern_definition": {
+        "strategy": "LP1",
+        "direction": "LONG",
+        "pattern_family": "level_reclaim",
+        "semantic_steps": [
+          "price approaches an eligible level from above",
+          "one bar penetrates below the level and closes back above it",
+          "the reclaim bar passes range, wick, close-position, and volume conditions",
+          "the following signal bar reaches the planned entry trigger"
+        ]
+      },
+      "pattern_bars": {},
+      "trigger_evidence": {},
+      "rejection_evidence": [
+        "no_signal"
+      ],
+      "chart_annotations": [],
+      "reason_codes": [
+        "NO_SIGNAL"
+      ],
+      "rejection_reasons": [],
+      "data": {
+        "first_bar_timestamp": "2024-09-30 00:00:00",
+        "last_bar_timestamp": "2026-09-28 00:00:00",
+        "last_bar_closed": false,
+        "bars_used": 500,
+        "data_source": "Trading Bot persisted bar store (memory/bars via src.mcp.trading_data_service)",
+        "input_hash": "5be1a71ec6d645b44d74930001ee233203f566143e605f38bac82d215924affa"
+      },
+      "warnings": [],
+      "schema_version": "1.1"
+    },
+    "lp2": {
+      "run_id": "scan_20261001T163532Z_5f376e",
+      "symbol": "AAPL",
+      "strategy_id": "lp2",
+      "strategy_version": "market-screener-lp-prb-strategy-2",
+      "direction": "LONG",
+      "timeframe": "1D",
+      "as_of": "2026-09-28",
+      "status": "NO_SIGNAL",
+      "matched": false,
+      "signal": {
+        "pattern": "LP2",
+        "signal_bar": null,
+        "signal_bar_date": null,
+        "signal_bar_index": null,
+        "triggered": false
+      },
+      "market": {
+        "close": 338.4,
+        "atr": 6.732070352338586
+      },
+      "level": {
+        "price": null,
+        "level_type": null,
+        "zone_low": null,
+        "zone_high": null
+      },
+      "trade_plan": {
+        "entry": null,
+        "stop": null,
+        "target": null,
+        "rr": null,
+        "reward_risk": null
+      },
+      "quality": {
+        "score": null
+      },
+      "evidence": {
+        "canonical_evaluator": "dashboard_react.market_screener._detect_signals"
+      },
+      "pattern_definition": {
+        "strategy": "LP2",
+        "direction": "LONG",
+        "pattern_family": "level_reclaim_two_bar",
+        "semantic_steps": [
+          "price approaches an eligible level from above",
+          "the penetration bar trades and closes below the level",
+          "the reclaim bar closes back above the level and passes volume/range conditions",
+          "the following signal bar reaches the planned entry trigger"
+        ]
+      },
+      "pattern_bars": {},
+      "trigger_evidence": {},
+      "rejection_evidence": [
+        "no_signal"
+      ],
+      "chart_annotations": [],
+      "reason_codes": [
+        "NO_SIGNAL"
+      ],
+      "rejection_reasons": [],
+      "data": {
+        "first_bar_timestamp": "2024-09-30 00:00:00",
+        "last_bar_timestamp": "2026-09-28 00:00:00",
+        "last_bar_closed": false,
+        "bars_used": 500,
+        "data_source": "Trading Bot persisted bar store (memory/bars via src.mcp.trading_data_service)",
+        "input_hash": "5be1a71ec6d645b44d74930001ee233203f566143e605f38bac82d215924affa"
+      },
+      "warnings": [],
+      "schema_version": "1.1"
+    },
+    "prb1": {
+      "run_id": "scan_20261001T163532Z_5f376e",
+      "symbol": "AAPL",
+      "strategy_id": "prb1",
+      "strategy_version": "market-screener-lp-prb-strategy-2",
+      "direction": "LONG",
+      "timeframe": "1D",
+      "as_of": "2026-09-28",
+      "status": "NO_SIGNAL",
+      "matched": false,
+      "signal": {
+        "pattern": "PRB1",
+        "signal_bar": null,
+        "signal_bar_date": null,
+        "signal_bar_index": null,
+        "triggered": false
+      },
+      "market": {
+        "close": 338.4,
+        "atr": 6.732070352338586
+      },
+      "level": {
+        "price": null,
+        "level_type": null,
+        "zone_low": null,
+        "zone_high": null
+      },
+      "trade_plan": {
+        "entry": null,
+        "stop": null,
+        "target": null,
+        "rr": null,
+        "reward_risk": null
+      },
+      "quality": {
+        "score": null
+      },
+      "evidence": {
+        "canonical_evaluator": "dashboard_react.market_screener._detect_signals"
+      },
+      "pattern_definition": {
+        "strategy": "PRB1",
+        "direction": "LONG",
+        "pattern_family": "breakout",
+        "semantic_steps": [
+          "price approaches an eligible resistance level from below",
+          "one breakout bar trades and closes above the level with valid volume",
+          "the following signal bar opens holding the level",
+          "the signal bar reaches the planned entry trigger"
+        ]
+      },
+      "pattern_bars": {},
+      "trigger_evidence": {},
+      "rejection_evidence": [
+        "no_signal"
+      ],
+      "chart_annotations": [],
+      "reason_codes": [
+        "NO_SIGNAL"
+      ],
+      "rejection_reasons": [],
+      "data": {
+        "first_bar_timestamp": "2024-09-30 00:00:00",
+        "last_bar_timestamp": "2026-09-28 00:00:00",
+        "last_bar_closed": false,
+        "bars_used": 500,
+        "data_source": "Trading Bot persisted bar store (memory/bars via src.mcp.trading_data_service)",
+        "input_hash": "5be1a71ec6d645b44d74930001ee233203f566143e605f38bac82d215924affa"
+      },
+      "warnings": [],
+      "schema_version": "1.1"
+    },
+    "prb2": {
+      "run_id": "scan_20261001T163532Z_5f376e",
+      "symbol": "AAPL",
+      "strategy_id": "prb2",
+      "strategy_version": "market-screener-lp-prb-strategy-2",
+      "direction": "LONG",
+      "timeframe": "1D",
+      "as_of": "2026-09-28",
+      "status": "NO_SIGNAL",
+      "matched": false,
+      "signal": {
+        "pattern": "PRB2",
+        "signal_bar": null,
+        "signal_bar_date": null,
+        "signal_bar_index": null,
+        "triggered": false
+      },
+      "market": {
+        "close": 338.4,
+        "atr": 6.732070352338586
+      },
+      "level": {
+        "price": null,
+        "level_type": null,
+        "zone_low": null,
+        "zone_high": null
+      },
+      "trade_plan": {
+        "entry": null,
+        "stop": null,
+        "target": null,
+        "rr": null,
+        "reward_risk": null
+      },
+      "quality": {
+        "score": null
+      },
+      "evidence": {
+        "canonical_evaluator": "dashboard_react.market_screener._detect_signals"
+      },
+      "pattern_definition": {
+        "strategy": "PRB2",
+        "direction": "LONG",
+        "pattern_family": "breakout_hold_two_bar",
+        "semantic_steps": [
+          "price approaches an eligible resistance level from below",
+          "the breakout bar trades and closes above the level with valid volume/range",
+          "the hold bar preserves the breakout above the level",
+          "the following signal bar opens holding the level and reaches the planned entry trigger"
+        ]
+      },
+      "pattern_bars": {},
+      "trigger_evidence": {},
+      "rejection_evidence": [
+        "no_signal"
+      ],
+      "chart_annotations": [],
+      "reason_codes": [
+        "NO_SIGNAL"
+      ],
+      "rejection_reasons": [],
+      "data": {
+        "first_bar_timestamp": "2024-09-30 00:00:00",
+        "last_bar_timestamp": "2026-09-28 00:00:00",
+        "last_bar_closed": false,
+        "bars_used": 500,
+        "data_source": "Trading Bot persisted bar store (memory/bars via src.mcp.trading_data_service)",
+        "input_hash": "5be1a71ec6d645b44d74930001ee233203f566143e605f38bac82d215924affa"
+      },
+      "warnings": [],
+      "schema_version": "1.1"
+    }
+  }
+}

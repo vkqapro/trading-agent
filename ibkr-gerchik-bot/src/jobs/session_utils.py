@@ -1229,8 +1229,15 @@ def collect_watchlist_intraday_bars(
     failed: List[Dict[str, str]] = []
     stale: List[Dict[str, str]] = []
     chart_history_blocked: List[Dict[str, object]] = []
+    provenance: List[Dict[str, object]] = []
     persisted = 0
+    received = 0
     advanced = 0
+    fresh = 0
+    stale_count = 0
+    unchanged_but_fresh = 0
+    no_data = 0
+    errors = 0
     now = current_time or session_now()
     market_open = now.replace(
         hour=SETTINGS.trading_hours.market_open_hour,
@@ -1238,21 +1245,23 @@ def collect_watchlist_intraday_bars(
         second=0,
         microsecond=0,
     )
-    completed_intraday_bar_expected = now >= market_open + timedelta(minutes=5)
-
     for symbol in watchlist:
         try:
             chart_history = ensure_required_chart_history(market_data, symbol)
             if not chart_history.get("ready"):
                 bars_by_symbol[symbol] = load_bars(symbol, "intraday_5m")
-                chart_history_blocked.append({
+                blocked = {
                     "symbol": symbol,
                     "missing": chart_history.get("missing", []),
-                })
+                    "status": "CHART_HISTORY_BLOCKED",
+                }
+                chart_history_blocked.append(blocked)
+                provenance.append(blocked)
                 failed.append({
                     "symbol": symbol,
                     "reason": "missing_required_chart_history",
                 })
+                errors += 1
                 continue
 
             existing = load_bars(symbol, "intraday_5m")
@@ -1266,18 +1275,56 @@ def collect_watchlist_intraday_bars(
                 if existing is None or existing.empty
                 else "1 D"
             )
-            bars = market_data.get_intraday_bars(
-                symbol,
-                duration=request_duration,
-                bar_size=SETTINGS.strategy.intraday_bar_size,
-                include_current_session=existing is None or existing.empty,
-            )
+            if hasattr(market_data, "get_intraday_bars_result"):
+                source_result = market_data.get_intraday_bars_result(
+                    symbol,
+                    duration=request_duration,
+                    bar_size=SETTINGS.strategy.intraday_bar_size,
+                    reference_time=now,
+                    include_current_session=existing is None or existing.empty,
+                )
+                bars = source_result.bars
+                source = source_result.source
+                freshness_status = source_result.freshness_status
+                freshness_seconds = source_result.freshness_seconds
+                latest_text = source_result.latest_bar_timestamp
+                attempted_sources = list(source_result.attempted_sources)
+                selection_reason = source_result.selection_reason
+                warning = source_result.warning
+            else:
+                bars = market_data.get_intraday_bars(
+                    symbol,
+                    duration=request_duration,
+                    bar_size=SETTINGS.strategy.intraday_bar_size,
+                    include_current_session=existing is None or existing.empty,
+                )
+                source = "UNKNOWN"
+                freshness_seconds = None
+                latest_text = None
+                attempted_sources = ["UNKNOWN"]
+                selection_reason = "legacy market-data interface"
+                warning = None
+                freshness_status = "NO_DATA" if bars is None or bars.empty else "FRESH"
+
             incoming_latest = (
                 pd.to_datetime(bars["date"], errors="coerce").max()
                 if bars is not None and not bars.empty and "date" in bars
                 else pd.NaT
             )
-            if save_bars(symbol, "intraday_5m", bars) is not None:
+            if bars is not None and not bars.empty:
+                received += 1
+            active_session = market_open <= now <= now.replace(
+                hour=SETTINGS.trading_hours.market_close_hour,
+                minute=SETTINGS.trading_hours.market_close_minute,
+                second=0,
+                microsecond=0,
+            )
+            if source == "UNKNOWN" and active_session and pd.notna(incoming_latest) and incoming_latest.date() != now.date():
+                freshness_status = "STALE"
+            if not active_session and freshness_status in {"FRESH", "STALE"}:
+                freshness_status = "OFF_SESSION"
+            saved_path = save_bars(symbol, "intraday_5m", bars)
+            if saved_path is not None:
                 persisted += 1
                 stored = load_bars(symbol, "intraday_5m")
                 stored_latest = (
@@ -1286,40 +1333,80 @@ def collect_watchlist_intraday_bars(
                     else pd.NaT
                 )
                 bars_by_symbol[symbol] = stored
-                if pd.notna(stored_latest) and (
+                did_advance = pd.notna(stored_latest) and (
                     pd.isna(existing_latest) or stored_latest > existing_latest
-                ):
+                )
+                if did_advance:
                     advanced += 1
-                latest_date = stored_latest.date() if pd.notna(stored_latest) else None
-                if completed_intraday_bar_expected and latest_date != now.date():
-                    stale.append({
-                        "symbol": symbol,
-                        "reason": f"latest_bar={stored_latest}",
-                    })
+                if freshness_status == "FRESH":
+                    fresh += 1
+                    if not did_advance:
+                        unchanged_but_fresh += 1
+                elif freshness_status == "STALE":
+                    stale_count += 1
+                    stale.append({"symbol": symbol, "reason": f"latest_bar={stored_latest or latest_text}", "source": source})
+                elif freshness_status == "NO_DATA":
+                    no_data += 1
+                elif freshness_status == "ERROR":
+                    errors += 1
+                status = (
+                    "ADVANCED" if did_advance and freshness_status in {"FRESH", "OFF_SESSION"}
+                    else "UNCHANGED_BUT_FRESH" if freshness_status == "FRESH"
+                    else "STALE_ADVANCED" if did_advance and freshness_status == "STALE"
+                    else freshness_status
+                )
+                provenance.append({
+                    "symbol": symbol,
+                    "source": source,
+                    "attempted_sources": attempted_sources,
+                    "request_reference_at": now.isoformat(),
+                    "latest_bar_timestamp": latest_text or (str(stored_latest) if pd.notna(stored_latest) else None),
+                    "freshness_seconds": freshness_seconds,
+                    "freshness_status": freshness_status,
+                    "status": status,
+                    "advanced_since_previous": bool(did_advance),
+                    "existing_latest": str(existing_latest) if pd.notna(existing_latest) else None,
+                    "selection_reason": selection_reason,
+                    "warning": warning,
+                })
             elif bars is None or bars.empty:
                 bars_by_symbol[symbol] = existing
-                failed.append({"symbol": symbol, "reason": "empty_bars"})
+                no_data += 1
+                provenance.append({"symbol": symbol, "source": source, "status": "NO_DATA", "attempted_sources": attempted_sources, "warning": warning})
+                failed.append({"symbol": symbol, "reason": warning or "empty_bars"})
             elif pd.isna(incoming_latest):
                 bars_by_symbol[symbol] = existing
+                errors += 1
+                provenance.append({"symbol": symbol, "source": source, "status": "ERROR", "attempted_sources": attempted_sources, "warning": "invalid_bar_timestamps"})
                 failed.append({"symbol": symbol, "reason": "invalid_bar_timestamps"})
             else:
                 bars_by_symbol[symbol] = existing
+                errors += 1
+                provenance.append({"symbol": symbol, "source": source, "status": "ERROR", "attempted_sources": attempted_sources, "warning": "persist_failed"})
                 failed.append({"symbol": symbol, "reason": "persist_failed"})
         except Exception as exc:
             LOGGER.warning("Market-data collection failed for %s: %s", symbol, exc)
             bars_by_symbol[symbol] = pd.DataFrame()
+            provenance.append({"symbol": symbol, "status": "ERROR", "error": str(exc)})
+            errors += 1
             failed.append({"symbol": symbol, "reason": str(exc)})
 
     return {
         "bars_by_symbol": bars_by_symbol,
         "symbols_requested": len(watchlist),
         "symbols_persisted": persisted,
+        "symbols_received": received,
+        "symbols_fresh": fresh,
         "symbols_advanced": advanced,
-        "symbols_stale": len(stale),
+        "symbols_unchanged_but_fresh": unchanged_but_fresh,
+        "symbols_stale": stale_count,
+        "symbols_no_data": no_data,
+        "symbols_errors": errors,
         "symbols_chart_history_blocked": len(chart_history_blocked),
         "chart_history_blocked": chart_history_blocked,
         "stale": stale,
         "failed": failed,
+        "symbol_provenance": provenance,
     }
 
 

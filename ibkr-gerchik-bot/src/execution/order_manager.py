@@ -21,6 +21,72 @@ from src.decision.market import quote_age_seconds, quote_last, quote_spread_pct
 class OrderManager:
     """Execute validated trades and record the resulting actions."""
 
+    _BROKER_FAILURE_STATUSES = {"cancelled", "inactive", "apicancelled", "rejected"}
+    _BROKER_ACTIVE_STATUSES = {
+        "", "submitted", "presubmitted", "pendingsubmit", "apipending",
+        "accepted", "pendingcancel", "pendingreplace", "partiallyfilled",
+        "partially filled", "filled",
+    }
+
+    @classmethod
+    def _classify_bracket_snapshot(
+        cls,
+        entry_order: OrderResult,
+        stop_order: OrderResult,
+        limit_order: OrderResult | None,
+    ) -> str:
+        """Classify a bracket without treating a transient snapshot as truth."""
+        orders = [entry_order, stop_order] + ([limit_order] if limit_order is not None else [])
+        if any(float(getattr(order, "filled", 0) or 0) > 0 for order in orders):
+            return "executed"
+        statuses = {
+            str(getattr(order, "status", "") or "").strip().lower()
+            for order in orders
+        }
+        failures = statuses & cls._BROKER_FAILURE_STATUSES
+        active = statuses & cls._BROKER_ACTIVE_STATUSES
+        if failures and active:
+            return "unknown_requires_reconciliation"
+        if failures:
+            return "broker_rejected"
+        return "executed"
+
+    @classmethod
+    def _bracket_failure_payload(
+        cls,
+        signal: TradeSignal,
+        enriched_signal: Dict[str, object],
+        entry_order: OrderResult,
+        stop_order: OrderResult,
+        limit_order: OrderResult | None,
+        *,
+        entry_order_type: str | None = None,
+    ) -> Dict[str, object]:
+        outcome = cls._classify_bracket_snapshot(entry_order, stop_order, limit_order)
+        if outcome == "executed":
+            raise ValueError("_bracket_failure_payload called for a non-failure snapshot")
+        statuses = {
+            "market_order": entry_order.status,
+            "stop_order": stop_order.status,
+            "limit_order": None if limit_order is None else limit_order.status,
+        }
+        return {
+            "status": outcome,
+            "reasons": [
+                "broker_status_conflict" if outcome == "unknown_requires_reconciliation" else "broker_cancelled_order"
+            ],
+            "signal": enriched_signal,
+            "entry_order_type": entry_order_type,
+            "broker_statuses": statuses,
+            "market_order_id": entry_order.order_id,
+            "broker_perm_id": getattr(entry_order, "perm_id", 0) or 0,
+            "stop_order_id": stop_order.order_id,
+            "limit_order_id": 0 if limit_order is None else limit_order.order_id,
+            "filled": getattr(entry_order, "filled", 0),
+            "remaining": getattr(entry_order, "remaining", 0),
+            "reconciliation_required": outcome == "unknown_requires_reconciliation",
+        }
+
     def __init__(
         self,
         broker: IBKRClient,
@@ -161,21 +227,11 @@ class OrderManager:
             "stop_order": stop_order.status,
             "limit_order": None if limit_order is None else limit_order.status,
         }
-        failure_statuses = {"cancelled", "inactive", "apicancelled"}
-        if any(
-            isinstance(status, str) and status.strip().lower() in failure_statuses
-            for status in broker_statuses.values()
-            if status is not None
-        ):
-            payload = {
-                "status": "broker_rejected",
-                "reasons": ["broker_cancelled_order"],
-                "signal": enriched_signal,
-                "broker_statuses": broker_statuses,
-                "market_order_id": entry_order.order_id,
-                "stop_order_id": stop_order.order_id,
-                "limit_order_id": 0 if limit_order is None else limit_order.order_id,
-            }
+        outcome = self._classify_bracket_snapshot(entry_order, stop_order, limit_order)
+        if outcome != "executed":
+            payload = self._bracket_failure_payload(
+                signal, enriched_signal, entry_order, stop_order, limit_order,
+            )
             LOGGER.warning("Broker cancelled bracket order: %s", payload)
             return False, payload
         trade_payload = self._build_payload(
@@ -187,6 +243,7 @@ class OrderManager:
             status="executed",
         )
         trade_payload["broker_statuses"] = broker_statuses
+        trade_payload["broker_perm_id"] = getattr(entry_order, "perm_id", 0) or 0
         append_markdown_log(SETTINGS.paths.trade_log, f"Trade {signal.symbol}", trade_payload)
         self.alerter.send_trade_executed(trade_payload)
         return True, trade_payload
@@ -314,23 +371,14 @@ class OrderManager:
             "stop_order": stop_order.status,
             "limit_order": None if limit_order is None else limit_order.status,
         }
-        failure_statuses = {"cancelled", "inactive", "apicancelled"}
-        if any(
-            isinstance(status, str) and status.strip().lower() in failure_statuses
-            for status in broker_statuses.values()
-            if status is not None
-        ):
-            reason = getattr(entry_order, "detail", "") or "broker_cancelled_order"
-            payload = {
-                "status": "broker_rejected",
-                "reasons": [reason],
-                "signal": enriched,
-                "entry_order_type": entry_order_type,
-                "broker_statuses": broker_statuses,
-                "market_order_id": entry_order.order_id,
-                "stop_order_id": stop_order.order_id,
-                "limit_order_id": 0 if limit_order is None else limit_order.order_id,
-            }
+        outcome = self._classify_bracket_snapshot(entry_order, stop_order, limit_order)
+        if outcome != "executed":
+            payload = self._bracket_failure_payload(
+                signal, enriched, entry_order, stop_order, limit_order,
+                entry_order_type=entry_order_type,
+            )
+            if getattr(entry_order, "detail", ""):
+                payload["reasons"] = [entry_order.detail]
             LOGGER.warning("Broker cancelled manual bracket order: %s", payload)
             return False, payload
 

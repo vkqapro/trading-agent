@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import unittest
 from datetime import datetime
+from types import SimpleNamespace
 from unittest.mock import patch
 from zoneinfo import ZoneInfo
 
@@ -60,6 +61,31 @@ class MarketDataCollectorTests(unittest.TestCase):
         self.assertEqual(result["symbols_persisted"], 1)
         self.assertEqual(result["symbols_stale"], 1)
         self.assertEqual(result["stale"][0]["symbol"], "AAPL")
+
+    def test_rewrite_without_advance_is_stale_unchanged(self) -> None:
+        bars = pd.DataFrame([{
+            "date": "2026-09-30 14:40:00-04:00", "open": 10, "high": 11, "low": 9, "close": 10.5, "volume": 100,
+        }])
+
+        class MarketDataStub:
+            def get_intraday_bars_result(self, symbol, **_kwargs):
+                return SimpleNamespace(
+                    bars=bars, source="NASDAQ", freshness_status="STALE", freshness_seconds=1200.0,
+                    latest_bar_timestamp="2026-09-30T14:40:00-04:00", attempted_sources=("NASDAQ", "IBKR"),
+                    selection_reason="freshest available source", warning=None,
+                )
+
+        with (
+            patch("src.jobs.session_utils.ensure_required_chart_history", return_value={"ready": True, "missing": []}),
+            patch("src.jobs.session_utils.load_bars", return_value=bars),
+            patch("src.jobs.session_utils.save_bars", return_value=object()),
+        ):
+            result = collect_watchlist_intraday_bars(
+                MarketDataStub(), {"AAPL": {}}, current_time=datetime(2026, 9, 30, 15, 0, tzinfo=TZ)
+            )
+        self.assertEqual(result["symbols_stale"], 1)
+        self.assertEqual(result["symbol_provenance"][0]["status"], "STALE")
+        self.assertFalse(result["symbol_provenance"][0]["advanced_since_previous"])
 
     def test_collection_blocks_symbol_until_required_chart_history_is_ready(self) -> None:
         class MarketDataStub:

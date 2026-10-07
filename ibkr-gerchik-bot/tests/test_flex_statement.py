@@ -27,7 +27,7 @@ class FlexStatementTests(TestCase):
         self.assertEqual(trades[0]["symbol"], "XP")
         self.assertEqual(trades[0]["side"], "BOT")
         self.assertEqual(trades[0]["quantity"], 9.0)
-        self.assertEqual(trades[0]["trade_time"], "20260903 15:43:05")
+        self.assertEqual(trades[0]["trade_time"], "2026-09-03T15:43:05-04:00")
         self.assertTrue(trades[0]["exec_id"].startswith("tws-"))
 
     def test_discover_extensionless_tws_report(self) -> None:
@@ -43,13 +43,34 @@ class FlexStatementTests(TestCase):
         trades = flex_statement.parse_trade_report_html(raw)
         self.assertEqual(len(trades), 1)
         self.assertEqual(trades[0]["symbol"], "PLTR")
-        self.assertEqual(trades[0]["trade_time"], "2026-09-02 09:30:06")
+        self.assertEqual(trades[0]["trade_time"], "2026-09-02T09:30:06-04:00")
 
     def test_disabled_configuration_fails_closed(self) -> None:
-        with patch.object(flex_statement, "SETTINGS", SimpleNamespace(flex_statement_enabled=False, flex_statement_token="", flex_statement_query_id="", flex_statement_lookback_days=7)):
+        with (
+            patch.object(flex_statement, "SETTINGS", SimpleNamespace(flex_statement_enabled=False, flex_statement_token="", flex_statement_query_id="", flex_statement_lookback_days=7)),
+            patch.object(flex_statement, "discover_trade_report", return_value=(None, [])),
+        ):
             result = flex_statement.run_flex_catch_up()
         self.assertEqual(result["status"], "disabled")
         self.assertEqual(result["trades"], [])
+
+    def test_local_trade_report_can_run_without_flex_credentials(self) -> None:
+        local_trades = [{
+            "symbol": "XP",
+            "side": "SLD",
+            "quantity": 9.0,
+            "price": 23.52,
+            "trade_time": "20261005 08:00:01",
+            "exec_id": "tws-xp-close",
+        }]
+        with (
+            patch.object(flex_statement, "SETTINGS", SimpleNamespace(flex_statement_enabled=False, flex_statement_token="", flex_statement_query_id="", flex_statement_lookback_days=7)),
+            patch.object(flex_statement, "discover_trade_report", return_value=(flex_statement.Path("reports/trade_report"), local_trades)),
+        ):
+            result = flex_statement.run_flex_catch_up(commit=False, allow_local_report=True)
+        self.assertEqual(result["status"], "success")
+        self.assertEqual(result["source"], "tws_trade_report")
+        self.assertEqual(result["trades"], local_trades)
 
     def test_catch_up_deduplicates_execution_ids(self) -> None:
         with TemporaryDirectory() as directory:

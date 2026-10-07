@@ -173,7 +173,7 @@ class CryptoManualOrderTests(unittest.TestCase):
         self.assertEqual(plan["effective_min_reward_risk_ratio"], 2.5)
         self.assertEqual(plan["reward_risk_source"], "ui")
 
-    def test_environment_reward_risk_remains_default_without_ui_override(self) -> None:
+    def test_environment_reward_risk_uses_authoritative_two_r_policy_without_ui_override(self) -> None:
         request = CryptoOrderRequest(
             symbol="WLD-USDT",
             side="BUY",
@@ -188,9 +188,9 @@ class CryptoManualOrderTests(unittest.TestCase):
 
         plan = CryptoOrderManager().plan_order(request)
 
-        self.assertFalse(plan["ok"])
-        self.assertIn("reward_risk_too_low", plan["reasons"])
-        self.assertEqual(plan["effective_min_reward_risk_ratio"], 3.0)
+        self.assertTrue(plan["ok"])
+        self.assertNotIn("reward_risk_too_low", plan["reasons"])
+        self.assertEqual(plan["effective_min_reward_risk_ratio"], 2.0)
         self.assertEqual(plan["reward_risk_source"], "environment")
 
 

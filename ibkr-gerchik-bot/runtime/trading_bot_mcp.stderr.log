@@ -1,0 +1,550 @@
+[10/04/26 09:58:49] INFO     Trading Bot Data MCP     trading_bot_server.py:595
+                             server started                                    
+                             transport=streamable-htt                          
+                             p host=127.0.0.1                                  
+                             port=8765 tools=10                                
+INFO:     Started server process [47936]
+INFO:     Waiting for application startup.
+                    INFO     StreamableHTTP      streamable_http_manager.py:144
+                             session manager                                   
+                             started                                           
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8765 (Press CTRL+C to quit)
+[10/04/26 09:59:07] INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListToolsRequest                                  
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             CallToolRequest                                   
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:00:10] INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListToolsRequest                                  
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:00:20] INFO     Processing request of type           server.py:733
+                             CallToolRequest                                   
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:01:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:01:38] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:03:25] INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListToolsRequest                                  
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListPromptsRequest                                
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListResourcesRequest                              
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:04:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:04:38] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:05:34] INFO     Processing request of type           server.py:733
+                             CallToolRequest                                   
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:05:53] INFO     Processing request of type           server.py:733
+                             CallToolRequest                                   
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:06:11] INFO     Processing request of type           server.py:733
+                             CallToolRequest                                   
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:07:00] INFO     Processing request of type           server.py:733
+                             CallToolRequest                                   
+[10/04/26 10:08:00] INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:10:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:11:04] INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListToolsRequest                                  
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:13:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:14:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:16:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:17:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:19:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:20:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:22:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:23:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:25:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:26:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:28:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:29:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:31:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:32:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:34:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:35:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:37:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:38:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:40:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:41:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:43:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:44:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:46:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:47:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:49:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:49:42] INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListToolsRequest                                  
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:52:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:52:42] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:55:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:55:42] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:58:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 10:58:42] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:01:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:01:42] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:04:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:04:42] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:07:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:07:42] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:10:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:10:42] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:13:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:13:42] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:16:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:16:42] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:19:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:19:42] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:22:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:22:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:25:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:25:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:28:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:28:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:31:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:31:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:34:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:34:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:37:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:37:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:40:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:40:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:43:04] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:43:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:46:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:46:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:49:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:49:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:52:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:52:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:55:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:55:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:57:33] INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListToolsRequest                                  
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListPromptsRequest                                
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListResourcesRequest                              
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:58:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 11:58:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:01:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:01:25] INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListToolsRequest                                  
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:01:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:03:48] INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListToolsRequest                                  
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListPromptsRequest                                
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListResourcesRequest                              
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:04:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:04:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:07:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:07:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:09:12] INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListToolsRequest                                  
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListPromptsRequest                                
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListResourcesRequest                              
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:10:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:10:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:13:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:13:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:16:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:16:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:17:12] INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListToolsRequest                                  
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListPromptsRequest                                
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListResourcesRequest                              
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:19:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:19:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:22:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:22:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:25:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:25:12] INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListToolsRequest                                  
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListPromptsRequest                                
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListResourcesRequest                              
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:25:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:28:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:28:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:31:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:31:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:33:12] INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListToolsRequest                                  
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListPromptsRequest                                
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListResourcesRequest                              
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:34:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:34:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:37:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:37:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:40:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:40:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:41:12] INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListToolsRequest                                  
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListPromptsRequest                                
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListResourcesRequest                              
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:43:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:43:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:46:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:46:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:49:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:49:12] INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListToolsRequest                                  
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListPromptsRequest                                
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListResourcesRequest                              
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:49:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:52:05] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:52:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:54:41] INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListToolsRequest                                  
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListPromptsRequest                                
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListResourcesRequest                              
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:55:05] INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListToolsRequest                                  
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListPromptsRequest                                
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             ListResourcesRequest                              
+                    INFO     Terminating session: None   streamable_http.py:788
+                    INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788
+[10/04/26 12:55:43] INFO     Processing request of type           server.py:733
+                             PingRequest                                       
+                    INFO     Terminating session: None   streamable_http.py:788

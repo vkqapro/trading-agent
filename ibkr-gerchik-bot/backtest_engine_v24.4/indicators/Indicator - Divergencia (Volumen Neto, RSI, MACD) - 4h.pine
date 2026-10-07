@@ -1,0 +1,115 @@
+//@version=6
+indicator("Divergencia (Volumen Neto, RSI, MACD)", overlay=true, max_bars_back=500)
+
+// ── Parámetros configurables ──────────────────────────────────────────────────
+grp_buy  = "Señal Compradora"
+grp_sell = "Señal Vendedora"
+grp_vol  = "Filtro de Volumen Neto"
+grp_rsi  = "RSI"
+grp_macd = "MACD"
+
+// Compra
+i_buy_threshold = input.float(0.1,    "Umbral mínimo ratio",  minval=0.01, maxval=0.99, step=0.05, group=grp_buy, tooltip="0–1. Mayor = más exigente.")
+i_buy_text      = input.string("Compra",    "Texto etiqueta",                                       group=grp_buy)
+i_buy_color     = input.color(color.rgb(118, 230, 0), "Color",                                      group=grp_buy)
+i_buy_shape     = input.string("Triángulo", "Forma",
+  options=["Flecha","Triángulo","Círculo","Diamante","Cruz","Etiqueta"],                             group=grp_buy)
+
+// Venta
+i_sell_threshold = input.float(0.15,   "Umbral mínimo ratio", minval=0.01, maxval=0.99, step=0.05, group=grp_sell, tooltip="0–1. Mayor = más exigente.")
+i_sell_text      = input.string("Venta",    "Texto etiqueta",                                       group=grp_sell)
+i_sell_color     = input.color(color.red, "Color",                                                  group=grp_sell)
+i_sell_shape     = input.string("Triángulo", "Forma",
+  options=["Flecha","Triángulo","Círculo","Diamante","Cruz","Etiqueta"],                             group=grp_sell)
+
+// Volumen
+i_vol_pct = input.float(0.1, "Volumen mínimo (% sobre media 20)", minval=0.0, maxval=3.0, step=0.10, group=grp_vol)
+
+// RSI
+i_rsi_period   = input.int(9,    "Período RSI",                    minval=2,  maxval=50,  group=grp_rsi)
+i_rsi_buy_max  = input.float(30, "RSI máximo — Compra (≤ valor)",  minval=1,  maxval=49, step=1, group=grp_rsi, tooltip="Compra solo si RSI ≤ este valor. Ej: 30 = solo compra en sobreventa.")
+i_rsi_sell_min = input.float(70, "RSI mínimo — Venta (≥ valor)",   minval=51, maxval=99, step=1, group=grp_rsi, tooltip="Venta solo si RSI ≥ este valor. Ej: 70 = solo vende en sobrecompra.")
+
+// MACD
+i_macd_fast     = input.int(12,  "MACD Rápida",                      minval=1, maxval=100, group=grp_macd)
+i_macd_slow     = input.int(26,  "MACD Lenta",                       minval=1, maxval=200, group=grp_macd)
+i_macd_signal   = input.int(9,   "MACD Señal",                       minval=1, maxval=100, group=grp_macd)
+i_macd_buy_max  = input.float(0, "MACD máximo — Compra (≤ valor)",   step=0.1, group=grp_macd, tooltip="Compra solo si histograma MACD ≤ este valor. Ej: -250 = solo compra si MACD es muy negativo.")
+i_macd_sell_min = input.float(0, "MACD mínimo — Venta (≥ valor)",    step=0.1, group=grp_macd, tooltip="Venta solo si histograma MACD ≥ este valor. Ej: 250 = solo vende si MACD es muy positivo.")
+
+// ── Fecha de inicio = barra más a la izquierda visible ────────────────────────
+start_date = chart.left_visible_bar_time
+
+// ── Datos REALES (no Heikin-Ashi) ────────────────────────────────────────────
+real_open  = request.security(syminfo.tickerid, timeframe.period, open,  lookahead=barmerge.lookahead_off)
+real_high  = request.security(syminfo.tickerid, timeframe.period, high,  lookahead=barmerge.lookahead_off)
+real_low   = request.security(syminfo.tickerid, timeframe.period, low,   lookahead=barmerge.lookahead_off)
+real_close = request.security(syminfo.tickerid, timeframe.period, close, lookahead=barmerge.lookahead_off)
+
+// ── RSI ───────────────────────────────────────────────────────────────────────
+rsi = ta.rsi(real_close, i_rsi_period)
+
+// ── MACD ──────────────────────────────────────────────────────────────────────
+[macd_line, signal_line, macd_hist] = ta.macd(real_close, i_macd_fast, i_macd_slow, i_macd_signal)
+
+// ── Ratio normalizado de volumen neto (−1 a +1) ───────────────────────────────
+hl_range = real_high - real_low
+nv_ratio = hl_range > 0 ? (2.0 * real_close - real_high - real_low) / hl_range : 0.0
+
+// ── Filtro de volumen ─────────────────────────────────────────────────────────
+avg_vol       = ta.sma(volume, 20)
+vol_relevante = volume >= avg_vol * i_vol_pct
+
+// ── Condiciones ───────────────────────────────────────────────────────────────
+in_range     = not na(start_date) and time >= start_date
+red_candle   = real_close < real_open
+green_candle = real_close > real_open
+
+div_bull = in_range and red_candle   and nv_ratio >  i_buy_threshold  and vol_relevante
+         and rsi <= i_rsi_buy_max and macd_hist <= i_macd_buy_max
+
+div_bear = in_range and green_candle and nv_ratio < -i_sell_threshold and vol_relevante
+         and rsi >= i_rsi_sell_min and macd_hist >= i_macd_sell_min
+
+// ── Forma → estilo label ──────────────────────────────────────────────────────
+f_style_up(s) =>
+    switch s
+        "Flecha"    => label.style_arrowup
+        "Triángulo" => label.style_triangleup
+        "Círculo"   => label.style_circle
+        "Diamante"  => label.style_diamond
+        "Cruz"      => label.style_xcross
+        => label.style_label_up
+
+f_style_down(s) =>
+    switch s
+        "Flecha"    => label.style_arrowdown
+        "Triángulo" => label.style_triangledown
+        "Círculo"   => label.style_circle
+        "Diamante"  => label.style_diamond
+        "Cruz"      => label.style_xcross
+        => label.style_label_down
+
+// ── Dibujar etiquetas ─────────────────────────────────────────────────────────
+if div_bull
+    label.new(bar_index, low,
+      i_buy_text
+      + "\nRSI "  + str.tostring(math.round(rsi,       1))
+      + "  MACD " + str.tostring(math.round(macd_hist, 2)),
+      style     = f_style_up(i_buy_shape),
+      color     = color.new(i_buy_color, 20),
+      textcolor = color.white,
+      size      = size.small,
+      yloc      = yloc.belowbar)
+
+if div_bear
+    label.new(bar_index, high,
+      i_sell_text
+      + "\nRSI "  + str.tostring(math.round(rsi,       1))
+      + "  MACD " + str.tostring(math.round(macd_hist, 2)),
+      style     = f_style_down(i_sell_shape),
+      color     = color.new(i_sell_color, 20),
+      textcolor = color.white,
+      size      = size.small,
+      yloc      = yloc.abovebar)
+// Fin script

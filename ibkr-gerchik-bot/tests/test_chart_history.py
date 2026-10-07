@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 import pandas as pd
 
-from src.data.chart_history import ChartHistorySpec, ensure_required_chart_history
+from src.data.chart_history import ChartHistorySpec, build_partial_daily_frame, ensure_required_chart_history
 
 
 def _bars(rows: int) -> pd.DataFrame:
@@ -21,6 +21,20 @@ def _bars(rows: int) -> pd.DataFrame:
 
 
 class ChartHistoryTests(unittest.TestCase):
+    def test_partial_daily_frame_replaces_stored_current_day_and_honors_as_of(self) -> None:
+        daily = pd.DataFrame([{
+            "date": "2026-10-01", "open": 100.0, "high": 101.0,
+            "low": 99.0, "close": 100.5, "volume": 1_000,
+        }])
+        intraday = pd.DataFrame([
+            {"date": "2026-10-01T13:30:00Z", "open": 100.0, "high": 102.0, "low": 99.5, "close": 101.5, "volume": 100},
+            {"date": "2026-10-01T13:35:00Z", "open": 101.5, "high": 103.0, "low": 101.0, "close": 102.5, "volume": 200},
+            {"date": "2026-10-01T13:40:00Z", "open": 102.5, "high": 104.0, "low": 102.0, "close": 103.5, "volume": 300},
+        ])
+        frame = build_partial_daily_frame(daily, intraday, as_of="2026-10-01T13:36:00Z")
+        row = frame.iloc[-1]
+        self.assertEqual((row["open"], row["high"], row["low"], row["close"], row["volume"]), (100.0, 103.0, 99.5, 102.5, 300.0))
+
     def test_ensure_required_chart_history_fetches_missing_timeframes(self) -> None:
         class MarketDataStub:
             def get_daily_bars(self, symbol, duration=None):

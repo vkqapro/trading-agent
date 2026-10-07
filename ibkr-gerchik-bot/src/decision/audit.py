@@ -34,6 +34,16 @@ CREATE TABLE IF NOT EXISTS candidates (
     candidate_json TEXT NOT NULL,
     source_signal_id TEXT
 );
+CREATE TABLE IF NOT EXISTS candidate_revisions (
+    revision_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    candidate_id TEXT NOT NULL,
+    plan_hash TEXT NOT NULL,
+    candidate_json TEXT NOT NULL,
+    scanner_run_id TEXT,
+    recorded_at TEXT NOT NULL,
+    UNIQUE(candidate_id, plan_hash),
+    FOREIGN KEY(candidate_id) REFERENCES candidates(candidate_id)
+);
 CREATE TABLE IF NOT EXISTS decision_snapshots (
     decision_id TEXT PRIMARY KEY,
     candidate_id TEXT NOT NULL,
@@ -241,6 +251,37 @@ class DecisionAudit:
             ):
                 if name not in decision_columns:
                     connection.execute(f"ALTER TABLE model_decisions ADD COLUMN {name} {definition}")
+
+    def record_candidate_revision(
+        self,
+        candidate: DecisionCandidate,
+        plan_hash: str,
+        *,
+        scanner_run_id: str | None = None,
+        connection: sqlite3.Connection | None = None,
+    ) -> None:
+        """Persist one immutable canonical setup revision in DecisionAudit."""
+        owns = connection is None
+        connection = connection or self.connection()
+        try:
+            connection.execute(
+                """INSERT INTO candidate_revisions
+                (candidate_id, plan_hash, candidate_json, scanner_run_id, recorded_at)
+                VALUES (?, ?, ?, ?, ?)
+                ON CONFLICT(candidate_id, plan_hash) DO NOTHING""",
+                (
+                    candidate.candidate_id,
+                    str(plan_hash),
+                    _json(candidate.to_dict()),
+                    scanner_run_id,
+                    _now(),
+                ),
+            )
+            if owns:
+                connection.commit()
+        finally:
+            if owns:
+                connection.close()
 
     def record_candidate(self, candidate: DecisionCandidate, *, connection: sqlite3.Connection | None = None) -> None:
         owns = connection is None

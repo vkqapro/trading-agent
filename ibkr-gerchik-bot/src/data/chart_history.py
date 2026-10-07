@@ -116,6 +116,68 @@ def daily_bars_from_intraday(intraday_bars: pd.DataFrame) -> pd.DataFrame:
     return daily[columns]
 
 
+def build_partial_daily_frame(
+    daily_bars: pd.DataFrame | None,
+    intraday_bars: pd.DataFrame | None,
+    *,
+    as_of: object | None = None,
+) -> pd.DataFrame:
+    """Build the canonical daily frame, replacing a live day from 5-minute bars.
+
+    Stored daily history is retained for dates without intraday coverage.  Any
+    date represented by intraday bars is authoritative, including the current
+    incomplete session.  ``as_of`` is applied before aggregation so Web and MCP
+    evaluate the identical candle snapshot.
+    """
+    columns = ["date", "open", "high", "low", "close", "volume"]
+    daily = daily_bars.copy() if daily_bars is not None else pd.DataFrame(columns=columns)
+    if not daily.empty:
+        if "timestamp" in daily.columns and "date" not in daily.columns:
+            daily = daily.rename(columns={"timestamp": "date"})
+        daily = daily[[column for column in columns if column in daily.columns]].copy()
+        for column in columns:
+            if column not in daily:
+                daily[column] = 0.0 if column == "volume" else pd.NA
+        def session_date(value: object) -> pd.Timestamp:
+            parsed = pd.Timestamp(value)
+            if parsed.tzinfo is not None:
+                parsed = parsed.tz_convert(SETTINGS.trading_hours.timezone)
+            return parsed.tz_localize(None).normalize() if parsed.tzinfo is not None else parsed.normalize()
+
+        daily["date"] = pd.to_datetime(
+            [session_date(value) if pd.notna(value) else pd.NaT for value in daily["date"]],
+            errors="coerce",
+        )
+        for column in columns[1:]:
+            daily[column] = pd.to_numeric(daily[column], errors="coerce")
+        daily = daily.dropna(subset=["date", "open", "high", "low", "close"]).loc[:, columns]
+    else:
+        daily = pd.DataFrame(columns=columns)
+
+    intraday = intraday_bars.copy() if intraday_bars is not None else pd.DataFrame()
+    if not intraday.empty and "timestamp" in intraday.columns and "date" not in intraday.columns:
+        intraday = intraday.rename(columns={"timestamp": "date"})
+    if as_of is not None and not intraday.empty and "date" in intraday.columns:
+        cutoff = pd.Timestamp(as_of)
+        cutoff = cutoff.tz_localize("UTC") if cutoff.tzinfo is None else cutoff.tz_convert("UTC")
+        parsed = pd.to_datetime(intraday["date"], errors="coerce", utc=True)
+        intraday = intraday.loc[parsed <= cutoff]
+    derived = daily_bars_from_intraday(intraday)
+    if derived.empty:
+        return daily.sort_values("date").drop_duplicates("date", keep="last").reset_index(drop=True)
+    derived["date"] = pd.to_datetime(derived["date"], errors="coerce").dt.normalize()
+    # Only the latest intraday session is developing.  Historical daily rows
+    # remain authoritative; overlaying every 5m-covered date would rewrite
+    # closed candles and make an as_of snapshot depend on old intraday files.
+    requested_date = pd.Timestamp(as_of).date() if as_of is not None else None
+    if requested_date is not None and requested_date not in set(derived["date"].dt.date):
+        return daily.sort_values("date").drop_duplicates("date", keep="last").reset_index(drop=True)
+    latest_date = derived["date"].max() if requested_date is None else pd.Timestamp(requested_date)
+    latest = derived.loc[derived["date"] == latest_date, columns]
+    merged = pd.concat([daily, latest], ignore_index=True)
+    return merged.sort_values("date").drop_duplicates("date", keep="last").reset_index(drop=True)
+
+
 def backfill_daily_from_intraday(symbol: str, session_date: object | None = None) -> Dict[str, object]:
     """Persist missing daily rows for ``symbol`` from saved 5-minute bars."""
     intraday = load_bars(symbol, "intraday_5m")

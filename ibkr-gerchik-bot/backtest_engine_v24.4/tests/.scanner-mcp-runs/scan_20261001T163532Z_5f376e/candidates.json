@@ -1,0 +1,83 @@
+{
+  "run_id": "scan_20261001T163532Z_5f376e",
+  "candidates": [
+    {
+      "run_id": "scan_20261001T163532Z_5f376e",
+      "symbol": "V",
+      "strategy_id": "lp1",
+      "strategy_version": "market-screener-lp-prb-strategy-2",
+      "direction": "LONG",
+      "timeframe": "1D",
+      "as_of": "2026-09-28",
+      "status": "ENTRY_SIGNAL",
+      "matched": true,
+      "signal": {
+        "pattern": "LP1",
+        "signal_bar": "2026-09-25",
+        "signal_bar_date": "2026-09-25",
+        "signal_bar_index": -2,
+        "triggered": true
+      },
+      "market": {
+        "close": 367.74,
+        "atr": 5.8154
+      },
+      "level": {
+        "price": 365.08,
+        "level_type": "support",
+        "zone_low": null,
+        "zone_high": null
+      },
+      "trade_plan": {
+        "entry": 367.9877,
+        "stop": 362.3361,
+        "target": 379.2909,
+        "rr": 2.0,
+        "reward_risk": 2.0
+      },
+      "quality": {
+        "score": 0.7623
+      },
+      "evidence": {
+        "canonical_evaluator": "dashboard_react.market_screener._detect_signals",
+        "entry_day_status": "IN_PROGRESS"
+      },
+      "pattern_definition": {
+        "strategy": "LP1",
+        "direction": "LONG",
+        "pattern_family": "level_reclaim",
+        "semantic_steps": [
+          "price approaches an eligible level from above",
+          "one bar penetrates below the level and closes back above it",
+          "the reclaim bar passes range, wick, close-position, and volume conditions",
+          "the following signal bar reaches the planned entry trigger"
+        ]
+      },
+      "pattern_bars": {
+        "bar_1": {
+          "date": "2026-09-25"
+        }
+      },
+      "trigger_evidence": {
+        "entry_triggered": true,
+        "entry_gap_atr": 0.072,
+        "entry_chase_atr": -0.221,
+        "volume_filter_pass": true
+      },
+      "rejection_evidence": [],
+      "chart_annotations": [],
+      "reason_codes": [],
+      "rejection_reasons": [
+        "first_bar_timestamp",
+        "last_bar_timestamp",
+        "last_bar_closed",
+        "bars_used",
+        "data_source",
+        "input_hash"
+      ],
+      "data": [],
+      "warnings": [],
+      "schema_version": "1.1"
+    }
+  ]
+}

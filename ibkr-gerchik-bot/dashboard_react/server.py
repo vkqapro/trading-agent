@@ -39,7 +39,7 @@ from zoneinfo import ZoneInfo
 
 from dashboard import data_access as da, forecast as fc
 from src.config import SETTINGS
-from src.data.chart_history import daily_bars_from_intraday
+from src.data.chart_history import build_partial_daily_frame, daily_bars_from_intraday
 from src.crypto.analysis import run_crypto_analysis
 from src.crypto.config import CRYPTO_SETTINGS
 from src.crypto.manual_order import execute_manual_demo_order, load_manual_order_state
@@ -54,6 +54,11 @@ from src.crypto.tradingview_webhook import (
 from src.config import fx_pair_components
 from src.forex.tradingview_webhook import handle_forex_tradingview_webhook, load_forex_tradingview_state
 from src.journal.broker_reconcile import reconcile_ibkr_open_orders
+from src.journal.flex_statement import (
+    commit_flex_checkpoint,
+    reconcile_statement_trades,
+    run_flex_catch_up,
+)
 from src.journal.order_journal import load_order_journal, save_review
 from src.stocks.tradingview_webhook import handle_stock_tradingview_webhook, load_stock_tradingview_state
 from dashboard_react.market_screener import ScreenerParams, run_market_screener
@@ -418,18 +423,7 @@ def _daily_live_frame(symbol: str, asset: str = "stock") -> pd.DataFrame:
     if intraday.empty:
         return daily
 
-    derived_daily = daily_bars_from_intraday(intraday)
-    if derived_daily.empty:
-        return daily
-    if daily.empty:
-        return derived_daily
-
-    derived_dates = pd.to_datetime(derived_daily["date"], errors="coerce").dt.date
-    historical_dates = set(pd.to_datetime(daily["date"], errors="coerce").dropna().dt.date)
-    missing_or_live = derived_daily.loc[~derived_dates.isin(historical_dates)]
-    if missing_or_live.empty:
-        return daily
-    return pd.concat([daily, missing_or_live], ignore_index=True).sort_values("date")
+    return build_partial_daily_frame(daily, intraday)
 
 
 def _weekly_live_frame(symbol: str, asset: str = "stock") -> pd.DataFrame:
@@ -3494,9 +3488,28 @@ def api_trades():
 def api_orders_journal(limit: int = 500):
     try:
         broker_sync = reconcile_ibkr_open_orders()
+        # reqExecutions() normally exposes only the current day's fills.  Use
+        # the locally exported TWS trade report as a historical catch-up source
+        # so a close such as yesterday's XP sell is not lost after midnight.
+        historical = run_flex_catch_up(commit=False, allow_local_report=True)
+        historical_details = {"added": 0, "unmatched": 0}
+        if historical.get("status") == "success":
+            historical_details = reconcile_statement_trades(
+                historical.get("trades", []),
+                return_details=True,
+            )
+            if historical_details.get("unmatched", 0) == 0:
+                commit_flex_checkpoint(historical.get("checkpoint", {}))
         payload = load_order_journal(limit=max(1, min(1000, int(limit or 500))))
         if isinstance(payload, dict):
             payload["broker_sync"] = broker_sync
+            payload["historical_reconciliation"] = {
+                "status": historical.get("status"),
+                "source": historical.get("source"),
+                "reconciled": historical_details.get("added", 0),
+                "unmatched": historical_details.get("unmatched", 0),
+                "reason": historical.get("reason"),
+            }
         return payload
     except Exception as exc:
         raise HTTPException(500, str(exc))
