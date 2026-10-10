@@ -112,7 +112,7 @@ class OrderJournalTests(TestCase):
             rows = order_journal._rows_from_order_requests({})
 
         self.assertEqual(rows[0]["status"], "UNFILLED")
-        self.assertIsNone(rows[0]["closed_at"])
+        self.assertEqual(rows[0]["closed_at"], "")
         self.assertIsNone(rows[0]["actual_entry"])
 
     def test_real_order_without_close_event_does_not_infer_exit_from_bars(self) -> None:
@@ -144,7 +144,7 @@ class OrderJournalTests(TestCase):
 
         infer_exit.assert_not_called()
         self.assertEqual(rows[0]["status"], "CLOSED_UNKNOWN")
-        self.assertIsNone(rows[0]["closed_at"])
+        self.assertEqual(rows[0]["closed_at"], "")
         self.assertEqual(rows[0]["exit_reason"], "UNKNOWN_OR_BROKER")
 
     def test_tradingview_round_trip_is_one_canonical_filled_row(self) -> None:
@@ -430,7 +430,7 @@ class OrderJournalTests(TestCase):
         rows = [row for row in payload["rows"] if row["symbol"] == "LIN"]
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]["status"], "CLOSED_OBSERVED")
-        self.assertEqual(rows[0]["opened_at"], "2026-08-24")
+        self.assertEqual(rows[0]["opened_at"], "2026-08-24T00:00:00-04:00")
         self.assertEqual(rows[0]["closed_at"], "2026-08-27T13:31:07+00:00")
         self.assertEqual(rows[0]["actual_exit"], 531.25)
         self.assertEqual(rows[0]["quantity"], 2)
@@ -493,4 +493,4 @@ class OrderJournalTests(TestCase):
         self.assertEqual(len(closed_today), 1)
         self.assertEqual(closed_today[0]["id"], "stock:broker:mrsh-today")
         self.assertEqual(closed_today[0]["quantity"], 5)
-        self.assertIsNone(closed_today[0]["opened_at"])
+        self.assertEqual(closed_today[0]["opened_at"], "")
