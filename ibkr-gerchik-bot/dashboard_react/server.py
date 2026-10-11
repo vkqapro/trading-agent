@@ -39,7 +39,8 @@ from zoneinfo import ZoneInfo
 
 from dashboard import data_access as da, forecast as fc
 from src.config import SETTINGS
-from src.data.chart_history import build_partial_daily_frame, daily_bars_from_intraday
+from src.data.bar_store import load_bars
+from src.data.chart_history import REQUIRED_CHART_HISTORY, build_partial_daily_frame, daily_bars_from_intraday
 from src.crypto.analysis import run_crypto_analysis
 from src.crypto.config import CRYPTO_SETTINGS
 from src.crypto.manual_order import execute_manual_demo_order, load_manual_order_state
@@ -384,6 +385,20 @@ def _queue_bulk_stock_onboarding(symbols: list[str]) -> dict:
             creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
         )
     return {"pid": process.pid, "log": str(log_path), "queue_file": str(queue_path)}
+
+
+def _stock_symbols_missing_chart_history(symbols: list[str]) -> list[str]:
+    missing: list[str] = []
+    for symbol in symbols:
+        for spec in REQUIRED_CHART_HISTORY:
+            bars = _safe(lambda s=symbol, tf=spec.timeframe: load_bars(s, tf), pd.DataFrame())
+            rows = 0 if bars is None or bars.empty else int(len(bars))
+            if rows < int(spec.min_rows):
+                missing.append(symbol)
+                break
+    return missing
+
+
 BMSB_NEAR_CROSS_THRESHOLD_PCT = 0.75
 BMSB_RECENT_CROSS_DAYS = 2
 BMSB2_RECLAIM_TOLERANCE_PCT = 0.5
@@ -2434,6 +2449,33 @@ async def api_watchlist_bulk_add(body: dict):
         "message": " ".join(message_parts) or "No new symbols to onboard.",
     }
 
+
+@app.post("/api/watchlist/fetch-missing")
+async def api_watchlist_fetch_missing():
+    from src.symbol_universe import load_stock_symbols
+
+    configured = _safe(load_stock_symbols, []) or []
+    symbols = sorted({str(symbol).strip().upper() for symbol in configured if str(symbol).strip()})
+    missing = _stock_symbols_missing_chart_history(symbols)
+    queue = _queue_bulk_stock_onboarding(missing) if missing else {"pid": None, "log": None, "queue_file": None}
+    if missing:
+        message = (
+            f"Queued onboarding fetch for {len(missing)} configured symbol"
+            f"{'s' if len(missing) != 1 else ''} missing chart data."
+        )
+    elif symbols:
+        message = "All configured stock symbols already have the required chart data."
+    else:
+        message = "No configured stock symbols to fetch."
+    return {
+        "ok": True,
+        "requested": len(symbols),
+        "queued": missing,
+        "pid": queue.get("pid"),
+        "log": queue.get("log"),
+        "queue_file": queue.get("queue_file"),
+        "message": message,
+    }
 
 @app.post("/api/watchlist/remove")
 async def api_watchlist_remove(body: dict):

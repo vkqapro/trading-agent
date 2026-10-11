@@ -2210,6 +2210,7 @@ function TabStrategy({refreshKey=0, asset='stock'}) {
   const [bulkUploadText, setBulkUploadText] = useState('');
   const [bulkUploadName, setBulkUploadName] = useState('');
   const [bulkUploadBusy, setBulkUploadBusy] = useState(false);
+  const [bulkFetchBusy, setBulkFetchBusy] = useState(false);
   const [bulkUploadResult, setBulkUploadResult] = useState(null);
   const [strategyRemoveConfirm, setStrategyRemoveConfirm] = useState(null);
   const [strategyWatchSymbols, setStrategyWatchSymbols] = useState(()=>{
@@ -2375,6 +2376,29 @@ function TabStrategy({refreshKey=0, asset='stock'}) {
       setBulkUploadBusy(false);
     }
   },[bulkUploadText, loadStrategy, isCrypto]);
+  const fetchMissingStockSymbols = useCallback(async()=>{
+    if(isCrypto) return;
+    setBulkFetchBusy(true);
+    setBulkUploadResult(null);
+    try {
+      const r = await fetch(`${API}/watchlist/fetch-missing`, {method:'POST'});
+      const d = await r.json();
+      if(r.status===404) {
+        setBulkUploadResult({
+          ok:false,
+          message:'Fetch endpoint is not loaded on the running dashboard server. Restart the dashboard on port 8550, then click Fetch Missing again.',
+        });
+        return;
+      }
+      if(!r.ok || !d.ok) throw new Error(d.detail || d.message || 'Fetch request failed');
+      setBulkUploadResult(d);
+      loadStrategy();
+    } catch(e) {
+      setBulkUploadResult({ok:false,message:String(e.message||e)});
+    } finally {
+      setBulkFetchBusy(false);
+    }
+  },[loadStrategy, isCrypto]);
   const submitStrategySymbolRemove = useCallback(async()=>{
     const symbol = String(strategyRemoveConfirm?.symbol || '').trim().toUpperCase();
     if(!symbol) return;
@@ -2619,6 +2643,12 @@ function TabStrategy({refreshKey=0, asset='stock'}) {
               style={{padding:'8px 13px',borderRadius:8,cursor:bulkUploadBusy?'wait':'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:900,color:bulkUploadBusy||!bulkUploadText.trim()?C.outline:C.lime,background:bulkUploadBusy||!bulkUploadText.trim()?R(C.outline,0.08):R(C.lime,0.10),border:`1px solid ${R(bulkUploadBusy||!bulkUploadText.trim()?C.outline:C.lime,0.28)}`}}>
               {bulkUploadBusy?'QUEUING':'QUEUE NEW'}
             </button>
+            {!isCrypto && (
+              <button onClick={fetchMissingStockSymbols} disabled={bulkFetchBusy}
+                style={{padding:'8px 13px',borderRadius:8,cursor:bulkFetchBusy?'wait':'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:900,color:bulkFetchBusy?C.outline:C.cyan,background:bulkFetchBusy?R(C.outline,0.08):R(C.cyan,0.10),border:`1px solid ${R(bulkFetchBusy?C.outline:C.cyan,0.28)}`}}>
+                {bulkFetchBusy?'FETCHING':'FETCH MISSING'}
+              </button>
+            )}
           </div>
         </div>
         {bulkUploadOpen && (
@@ -2630,6 +2660,7 @@ function TabStrategy({refreshKey=0, asset='stock'}) {
             <Icon n={bulkUploadResult.ok===false?'error':'task_alt'} size={16} color={bulkUploadResult.ok===false?C.err:C.lime}/>
             <span style={{fontFamily:"'Inter',sans-serif",fontSize:12,color:bulkUploadResult.ok===false?C.err:C.onVar}}>{bulkUploadResult.message}</span>
             {Array.isArray(bulkUploadResult.added) && <Pill text={`${bulkUploadResult.added.length} NEW`} color={bulkUploadResult.added.length?C.lime:C.outline}/>}
+            {Array.isArray(bulkUploadResult.queued) && <Pill text={`${bulkUploadResult.queued.length} FETCH`} color={bulkUploadResult.queued.length?C.cyan:C.outline}/>}
             {Array.isArray(bulkUploadResult.duplicates) && bulkUploadResult.duplicates.length>0 && <Pill text={`${bulkUploadResult.duplicates.length} DUP`} color={C.outline}/>}
             {Array.isArray(bulkUploadResult.invalid) && bulkUploadResult.invalid.length>0 && <Pill text={`${bulkUploadResult.invalid.length} BAD`} color={C.err}/>}
           </div>
