@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
@@ -6958,11 +6958,195 @@ function TabDecisionLab({refreshKey}) {
   </div>;
 }
 
+const radarFiniteNumber = value => {
+  if(value===null || value===undefined || String(value).trim()==='') return null;
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+};
+const radarMetric = (value, digits=2) => {
+  const number = radarFiniteNumber(value);
+  return number === null ? '\u2014' : number.toFixed(digits);
+};
+const radarSide = signal => String(signal?.side || signal?.direction || '').trim().toUpperCase();
+const radarDirectionConflict = (trend, signal) => {
+  if(typeof signal?.direction_conflict === 'boolean') return signal.direction_conflict;
+  const normalizedTrend = String(trend || '').trim().toUpperCase();
+  const side = radarSide(signal);
+  return (normalizedTrend==='GREEN' && side==='SHORT') || (normalizedTrend==='RED' && side==='LONG');
+};
+const radarQualityMissing = (payload, signal) => {
+  const missing = signal?.missing_quality_data || payload?.missing_quality_data || [];
+  return Array.isArray(missing) ? [...new Set(missing.map(item=>String(item).trim()).filter(Boolean))] : [];
+};
+const radarQualityComplete = (payload, signal) => signal?.data_quality_complete ?? payload?.data_quality_complete ?? true;
+const radarLabel = value => String(value || '').replaceAll('_',' ');
+function TabTrendRadar({refreshKey=0}) {
+  const [rows,setRows] = useState([]);
+  const [selected,setSelected] = useState(null);
+  const [history,setHistory] = useState([]);
+  const [scanner,setScanner] = useState(null);
+  const [selectedSymbols,setSelectedSymbols] = useState([]);
+  const [scannerStates,setScannerStates] = useState({});
+  const [batchBusy,setBatchBusy] = useState(false);
+  const [batchProgress,setBatchProgress] = useState(null);
+  const [filter,setFilter] = useState('ALL');
+  const [query,setQuery] = useState('');
+  const [busy,setBusy] = useState(false);
+  const [scanBusy,setScanBusy] = useState(false);
+  const [error,setError] = useState('');
+
+  const loadRadar = useCallback(()=>{
+    setBusy(true);
+    return fetch(`${API}/radar?limit=1000`,{cache:'no-store'})
+      .then(response=>response.ok?response.json():response.json().then(body=>Promise.reject(new Error(body.detail||'Radar request failed'))))
+      .then(body=>{setRows(Array.isArray(body.results)?body.results:[]);setError('');})
+      .catch(err=>setError(err.message||'Radar request failed'))
+      .finally(()=>setBusy(false));
+  },[]);
+  useEffect(()=>{loadRadar();},[refreshKey,loadRadar]);
+
+  const refreshRadar = async()=>{
+    if(busy) return;
+    setBusy(true); setError('');
+    try {
+      const response = await fetch(`${API}/radar/refresh`,{method:'POST'});
+      const body = await response.json().catch(()=>({}));
+      if(!response.ok) throw new Error(body.detail||'Radar refresh failed');
+      setRows(Array.isArray(body.results)?body.results:[]);
+    } catch(err) { setError(err.message||'Radar refresh failed'); }
+    finally { setBusy(false); }
+  };
+
+  const openResult = async(row)=>{
+    const prior = scannerStates[row.symbol];
+    setSelected(row);
+    setScanner(prior?.payload || (prior?.error ? {error:prior.error} : null));
+    try {
+      const response = await fetch(`${API}/radar/${encodeURIComponent(row.symbol)}`,{cache:'no-store'});
+      const body = await response.json();
+      if(response.ok){ setSelected(body.result||row); setHistory(Array.isArray(body.history)?body.history:[]); }
+    } catch(err) { setError(err.message||'Radar detail failed'); }
+  };
+
+  const runScanner = async()=>{
+    if(!selected||scanBusy) return;
+    setScanBusy(true); setScanner(null);
+    try {
+      const response = await fetch(`${API}/radar/${encodeURIComponent(selected.symbol)}/scan`,{method:'POST'});
+      const body = await response.json().catch(()=>({}));
+      if(!response.ok) throw new Error(body.detail||'Scanner request failed');
+      setScanner(body);
+      const first = body.signals?.[0] || {};
+      const label = body.scanner_status==='CANDIDATE' ? `${first.strategy||'CANDIDATE'} ${first.side||first.direction||''}`.trim() : (body.scanner_status||'NO_SETUP');
+      setScannerStates(previous=>({...previous,[selected.symbol]:{status:body.scanner_status||'ERROR',label,signals:body.signals||[],payload:body}}));
+    } catch(err) { setScanner({error:err.message||'Scanner request failed'}); }
+    finally { setScanBusy(false); }
+  };
+
+  const runBatch = async(symbols)=>{
+    const unique = [...new Set((symbols||[]).map(symbol=>String(symbol||'').toUpperCase()).filter(Boolean))];
+    if(!unique.length || batchBusy) return;
+    setBatchBusy(true); setBatchProgress({done:0,total:unique.length});
+    setScannerStates(previous=>({...previous,...Object.fromEntries(unique.map(symbol=>[symbol,{status:'SCANNING',label:'SCANNING'}]))}));
+    try {
+      const response = await fetch(`${API}/radar/batch-scan`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({symbols:unique,max_workers:3})});
+      const body = await response.json().catch(()=>({}));
+      if(!response.ok) throw new Error(body.detail||'Batch scanner request failed');
+      const next = {};
+      (body.results||[]).forEach(item=>{next[item.symbol]={status:item.status||'ERROR',label:item.label||item.status||'ERROR',signals:item.signals||[],error:item.error||null,payload:item.scanner||null};});
+      setScannerStates(previous=>({...previous,...next}));
+      if(selected && next[selected.symbol]) setScanner(next[selected.symbol].payload || (next[selected.symbol].error ? {error:next[selected.symbol].error} : null));
+      setBatchProgress({done:body.completed||unique.length,total:unique.length});
+    } catch(err) {
+      const failure = err.message||'Batch scanner request failed';
+      setScannerStates(previous=>({...previous,...Object.fromEntries(unique.map(symbol=>[symbol,{status:'ERROR',label:'ERROR',error:failure}]))}));
+      if(selected && unique.includes(selected.symbol)) setScanner({error:failure});
+      setBatchProgress({done:unique.length,total:unique.length});
+    } finally { setBatchBusy(false); }
+  };
+
+  const filtered = rows.filter(row=>{
+    const matchesQuery = !query.trim() || String(row.symbol||'').includes(query.trim().toUpperCase());
+    const matchesFilter = filter==='ALL' || (filter==='GREEN'&&row.trend==='GREEN') || (filter==='RED'&&row.trend==='RED') || (filter==='BREAKOUT'&&row.breakout) || (filter==='FLIP'&&row.trend_flip);
+    return matchesQuery && matchesFilter;
+  });
+  const trendColor = value=>value==='GREEN'?C.lime:value==='RED'?C.chartDown:C.lemon;
+  const score = value=>value===null||value===undefined?'—':Number(value).toFixed(1);
+  const card={padding:18,borderRadius:12,background:R(C.surf,0.55),border:`1px solid ${R(C.outline,0.18)}`};
+
+  return <div style={{display:'flex',flexDirection:'column',gap:18}}>
+    <div style={{display:'flex',flexWrap:'wrap',alignItems:'center',justifyContent:'space-between',gap:12}}>
+      <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
+        {['ALL','GREEN','RED','BREAKOUT','FLIP'].map(item=><button key={item} onClick={()=>setFilter(item)} style={{padding:'8px 12px',borderRadius:8,cursor:'pointer',color:filter===item?C.bg:C.onVar,background:filter===item?C.cyan:R(C.surfLow,0.8),border:`1px solid ${R(filter===item?C.cyan:C.outline,0.25)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>{item==='BREAKOUT'?'BREAKOUTS':item==='FLIP'?'TREND FLIPS':item}</button>)}
+      </div>
+      <div style={{display:'flex',flexWrap:'wrap',gap:8,alignItems:'center'}}>
+        <input value={query} onChange={event=>setQuery(event.target.value)} placeholder="Search ticker" style={{width:150,padding:'9px 10px',borderRadius:8,color:C.onSurf,background:C.surfLowest,border:`1px solid ${R(C.outline,0.24)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10}}/>
+        <button onClick={()=>runBatch(selectedSymbols)} disabled={batchBusy||!selectedSymbols.length} style={{padding:'9px 11px',borderRadius:8,cursor:batchBusy||!selectedSymbols.length?'not-allowed':'pointer',color:batchBusy||!selectedSymbols.length?C.outline:C.cyan,background:R(batchBusy||!selectedSymbols.length?C.outline:C.cyan,0.08),border:`1px solid ${R(batchBusy||!selectedSymbols.length?C.outline:C.cyan,0.3)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>SCAN SELECTED ({selectedSymbols.length})</button>
+        <button onClick={()=>runBatch(rows.slice(0,10).map(row=>row.symbol))} disabled={batchBusy||!rows.length} style={{padding:'9px 11px',borderRadius:8,cursor:batchBusy||!rows.length?'not-allowed':'pointer',color:batchBusy||!rows.length?C.outline:C.lemon,background:R(batchBusy||!rows.length?C.outline:C.lemon,0.08),border:`1px solid ${R(batchBusy||!rows.length?C.outline:C.lemon,0.3)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>SCAN TOP 10</button>
+        <button onClick={()=>runBatch(rows.filter(row=>row.breakout).map(row=>row.symbol))} disabled={batchBusy||!rows.some(row=>row.breakout)} style={{padding:'9px 11px',borderRadius:8,cursor:batchBusy?'not-allowed':'pointer',color:C.lime,background:R(C.lime,0.08),border:`1px solid ${R(C.lime,0.25)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>SCAN BREAKOUTS</button>
+        <button onClick={()=>runBatch(rows.filter(row=>row.trend_flip).map(row=>row.symbol))} disabled={batchBusy||!rows.some(row=>row.trend_flip)} style={{padding:'9px 11px',borderRadius:8,cursor:batchBusy?'not-allowed':'pointer',color:C.magenta,background:R(C.magenta,0.08),border:`1px solid ${R(C.magenta,0.25)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>SCAN FRESH FLIPS</button>
+        <button onClick={refreshRadar} disabled={busy} style={{padding:'9px 13px',borderRadius:8,cursor:busy?'wait':'pointer',color:busy?C.outline:C.lime,background:R(C.lime,0.08),border:`1px solid ${R(busy?C.outline:C.lime,0.3)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>{busy?'REFRESHING…':'REFRESH RADAR'}</button>
+      </div>
+    </div>
+    {batchProgress&&<div style={{...card,padding:'10px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:batchBusy?C.cyan:C.lime}}>{batchBusy?'SCANNING': 'BATCH COMPLETE'} · {batchProgress.done}/{batchProgress.total} symbols · authoritative production scanner · orders submitted: 0</div>}
+    {error&&<div style={{...card,color:C.err,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}>{error}</div>}
+    <div style={{display:'grid',gridTemplateColumns:selected?'minmax(0,1.55fr) minmax(300px,.85fr)':'1fr',gap:18,alignItems:'start'}}>
+      <div style={{...card,padding:0,overflow:'hidden'}}>
+        <PanelHeader icon="radar" title="Trend Radar" badge={`${filtered.length} assets`}/>
+        <div style={{overflowX:'auto'}}><table style={{width:'100%',borderCollapse:'collapse',minWidth:820}}><thead><tr>{['','Symbol','Trend','Radar','Breakout','Momentum','Volume','Scanner'].map(label=><th key={label} style={{padding:'11px 14px',textAlign:'left',fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.06em',color:C.outline,borderBottom:`1px solid ${R(C.outline,0.14)}`}}>{label}</th>)}</tr></thead><tbody>{filtered.map(row=>{const scan=scannerStates[row.symbol]; const checked=selectedSymbols.includes(row.symbol); return <tr key={`${row.symbol}-${row.as_of}`} onClick={()=>openResult(row)} style={{cursor:'pointer',background:selected?.symbol===row.symbol?R(C.cyan,0.08):'transparent'}} onMouseEnter={event=>event.currentTarget.style.background=R(C.onSurf,0.04)} onMouseLeave={event=>event.currentTarget.style.background=selected?.symbol===row.symbol?R(C.cyan,0.08):'transparent'}><td style={{padding:'12px 14px'}}><input type="checkbox" checked={checked} onChange={event=>{event.stopPropagation();setSelectedSymbols(previous=>event.target.checked?[...previous,row.symbol]:previous.filter(symbol=>symbol!==row.symbol));}} onClick={event=>event.stopPropagation()} aria-label={`Select ${row.symbol}`}/></td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onSurf,fontWeight:800}}>{row.symbol}</td><td style={{padding:'12px 14px'}}><Pill text={row.trend} color={trendColor(row.trend)}/>{row.trend_flip&&<span style={{marginLeft:6,color:C.cyan,fontSize:10}}>FLIP</span>}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.cyan}}>{score(row.radar_score)}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:row.breakout?C.lime:C.outline}}>{row.breakout?`${row.breakout_direction} · ${score(row.breakout_score)}`:'—'}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar}}>{score(row.momentum_score)}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar}}>{Number(row.volume_ratio||0).toFixed(2)}x</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:scan?.status==='CANDIDATE'?C.lime:scan?.status==='ERROR'?C.err:scan?.status==='SCANNING'?C.cyan:C.outline}}>{scan?.label||scan?.status||row.scanner_status||'NOT_SCANNED'}</td></tr>;})}</tbody></table></div>
+        {!filtered.length&&<div style={{padding:28,color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}>No persisted Radar observations match this view. Use REFRESH RADAR after daily bars are available.</div>}
+      </div>
+      {selected&&<div style={{...card,display:'flex',flexDirection:'column',gap:15}}>
+        <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:12}}><div><div style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:25,fontWeight:600,color:C.onSurf}}>{selected.symbol}</div><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,marginTop:5}}>AS OF {selected.as_of} · CLOSED DAILY DATA</div></div><Pill text={selected.trend} color={trendColor(selected.trend)}/></div>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(2,minmax(0,1fr))',gap:8}}>{[['RADAR SCORE',score(selected.radar_score),C.cyan],['TREND SCORE',score(selected.trend_score),trendColor(selected.trend)],['MOMENTUM',score(selected.momentum_score),C.onVar],['BREAKOUT',selected.breakout?score(selected.breakout_score):'NONE',selected.breakout?C.lime:C.outline],['PRICE',radarMetric(selected.close_price ?? selected.price,2),C.onVar],['AVG $ VOL',selected.avg_dollar_volume?`$${(selected.avg_dollar_volume/1000000).toFixed(1)}M`:'\u2014',C.onVar]].map(item=><div key={item[0]} style={{padding:'10px 11px',borderRadius:8,background:R(C.surfLowest,0.45),border:`1px solid ${R(C.outline,0.12)}`}}><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:9,color:C.outline}}>{item[0]}</div><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:16,color:item[2],marginTop:6}}>{item[1]}</div></div>)}</div>
+        <div><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.cyan,letterSpacing:'0.07em',marginBottom:8}}>WHY THIS RANKED</div><div style={{display:'flex',flexWrap:'wrap',gap:6}}>{(selected.reasons||[]).map(reason=><Pill key={reason} text={radarLabel(reason)} color={C.onVar}/>)}</div></div>
+        <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,lineHeight:1.7}}>Range {radarMetric(selected.range_low)} - {radarMetric(selected.range_high)} Â· ATR {radarMetric(selected.atr)} ({radarMetric(selected.atr_pct)}%) Â· volume {radarMetric(selected.volume_ratio)}x</div>
+        <button onClick={runScanner} disabled={scanBusy} style={{padding:'10px 12px',borderRadius:8,cursor:scanBusy?'wait':'pointer',color:scanBusy?C.outline:C.cyan,background:R(C.cyan,0.08),border:`1px solid ${R(scanBusy?C.outline:C.cyan,0.3)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>{scanBusy?'RUNNING AUTHORITATIVE SCANNER...':'RUN SCANNER'}</button>
+        {(() => {
+          const activeScanner = scanner || scannerStates[selected.symbol]?.payload;
+          const activeError = activeScanner?.error || scannerStates[selected.symbol]?.error;
+          const signals = Array.isArray(activeScanner?.signals) ? activeScanner.signals : [];
+          if(!activeScanner && !activeError) return null;
+          return <div style={{padding:12,borderRadius:8,background:R(C.surfLowest,0.5),border:`1px solid ${R(activeError?C.err:C.lime,0.25)}`}}>
+            {activeError ? <div style={{color:C.err,fontFamily:"'JetBrains Mono',monospace",fontSize:10}}>ERROR Â· {activeError}</div> : <>
+              <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:activeScanner.scanner_status==='CANDIDATE'?C.lime:C.lemon,fontWeight:800}}>{activeScanner.scanner_status||'NO_SETUP'} Â· {activeScanner.signals_found||signals.length} signal(s)</div>
+              <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,marginTop:7}}>Production path: run_market_screener Â· no order submitted</div>
+              {signals.length===0&&<div style={{marginTop:12,fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.outline}}>NO SETUP</div>}
+              {signals.map((signal,index)=>{
+                const side = radarSide(signal);
+                const strategy = String(signal.strategy||'SCANNER').toUpperCase();
+                const conflict = radarDirectionConflict(selected.trend, signal);
+                const qualityComplete = radarQualityComplete(activeScanner, signal);
+                const missing = radarQualityMissing(activeScanner, signal);
+                const triggered = signal.entry_triggered === true;
+                const entryStatus = triggered ? 'ENTRY TRIGGERED' : 'WAITING FOR ENTRY TRIGGER';
+                const positionSize = signal.position_size_shares ?? signal.position_size_units;
+                return <div key={`${strategy}-${side}-${index}`} style={{marginTop:12,padding:12,borderRadius:8,border:`1px solid ${R(C.outline,0.18)}`,background:R(C.surf,0.3)}}>
+                  <div style={{display:'flex',justifyContent:'space-between',gap:8,flexWrap:'wrap',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:800,color:C.onSurf}}><span>{strategy} {side} Â· CANDIDATE</span><span style={{color:triggered?C.lime:C.lemon}}>{entryStatus}</span></div>
+                  <div style={{display:'grid',gridTemplateColumns:'repeat(3,minmax(0,1fr))',gap:8,marginTop:10}}>{[
+                    ['STATUS',signal.status||activeScanner.scanner_status||'CANDIDATE'],['LEVEL',`${radarMetric(signal.level_price)} ${radarLabel(signal.level_type)}`],['PLANNED ENTRY',radarMetric(signal.planned_entry_price)],['STOP',radarMetric(signal.stop_price)],['TARGET',radarMetric(signal.take_profit_price)],['R:R',radarMetric(signal.rr)],['SCORE',radarMetric(signal.score,4)],['PATTERN QUALITY',radarMetric(signal.pattern_quality,3)],['POSITION SIZE',positionSize===null||positionSize===undefined?'\u2014':`${radarMetric(positionSize,2)} shares`],['RISK / SHARE',radarMetric(signal.sized_risk_per_share)],['RISK / TRADE',signal.risk_per_trade_pct===null||signal.risk_per_trade_pct===undefined?'\u2014':`${radarMetric(signal.risk_per_trade_pct,2)}%`],['APPROACH',radarLabel(signal.approach_direction)]
+                  ].map(item=><div key={item[0]} style={{padding:'8px',borderRadius:6,background:R(C.surfLowest,0.35)}}><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:8,color:C.outline}}>{item[0]}</div><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar,marginTop:4,wordBreak:'break-word'}}>{item[1]||'\u2014'}</div></div>)}</div>
+                  {signal.reasoning&&<div style={{marginTop:10,fontFamily:"'JetBrains Mono',monospace",fontSize:10,lineHeight:1.5,color:C.onVar}}>Reasoning: {String(signal.reasoning)}</div>}
+                  {conflict&&<div style={{marginTop:10,padding:9,borderRadius:6,background:R(C.lemon,0.09),border:`1px solid ${R(C.lemon,0.3)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.lemon}}>WARN Â· COUNTER-TREND SETUP<br/>Radar: {selected.trend} Â· {radarMetric(selected.trend_score,1)} &nbsp;|&nbsp; Scanner: {side}<br/><span style={{color:C.onVar}}>Informational only; the scanner setup remains a candidate.</span></div>}
+                  {!qualityComplete&&<div style={{marginTop:10,padding:9,borderRadius:6,background:R(C.lemon,0.07),border:`1px solid ${R(C.lemon,0.24)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.lemon}}>WARN Â· DATA QUALITY PARTIAL<br/><span style={{color:C.onVar}}>Missing: {missing.length?missing.map(radarLabel).join(', '):'quality fields unavailable'}</span>{(signal.spread_filter_status||signal.corporate_action_filter_status)&&<><br/><span style={{color:C.outline}}>Filter status: {signal.spread_filter_status||'unknown'} Â· {signal.corporate_action_filter_status||'unknown'}</span></>}</div>}
+                </div>;
+              })}
+              <details style={{marginTop:12}}><summary style={{cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.cyan}}>VIEW RAW SCANNER JSON</summary><pre style={{marginTop:8,whiteSpace:'pre-wrap',maxHeight:260,overflowY:'auto',fontFamily:"'JetBrains Mono',monospace",fontSize:9,color:C.onVar}}>{JSON.stringify(activeScanner,null,2)}</pre></details>
+            </>}
+          </div>;
+        })()}
+        {history.length>1&&<div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>History persisted: {history.length} snapshot(s)</div>}
+      </div>}
+    </div>
+  </div>;
+}
+
 const NAV = [
   {id:'dashboard',  label:'Dashboard',          icon:'space_dashboard'},
   {id:'watchlist',  label:'Watchlist',          icon:'visibility'},
   {id:'preopen',    label:'Pre-Open',            icon:'wb_twilight'},
   {id:'screener',   label:'Screener Stocks',     icon:'radar'},
+  {id:'radar',      label:'Trend Radar',         icon:'radar'},
   {id:'crypto_screener',label:'Screener Crypto', icon:'track_changes'},
   {id:'irs',        label:'Inefficiency Reclaim',icon:'deployed_code'},
   {id:'intraday',   label:'Intraday',            icon:'monitoring'},
@@ -6982,6 +7166,7 @@ const PAGE_META = {
   watchlist: {title:'Watchlist',              sub:'Current stock symbols · live-saved candles · daily change map', crumb:'Watchlist'},
   preopen:   {title:'Pre-Open Briefing',      sub:'Watchlist scanned · levels mapped · awaiting the open', crumb:'Pre-Open'},
   screener:  {title:'Market Screener Stocks', sub:'LP1 / LP2 / PRB1 / PRB2 patterns · saved stock OHLCV · IBKR paper flow', crumb:'Screener Stocks'},
+  radar:     {title:'Trend Radar',              sub:'Deterministic daily trend discovery · ranked market candidates · read-only', crumb:'Trend Radar'},
   crypto_screener:{title:'Market Screener Crypto',sub:'LP1 / LP2 / PRB1 / PRB2 patterns · OKX 24/7 candles · OKX Paper/Demo orders',crumb:'Screener Crypto'},
   irs:       {title:'Inefficiency Reclaim',   sub:'1H displacement · 15m reclaim · deterministic paper controls', crumb:'IRS'},
   intraday:  {title:'Intraday Monitor',       sub:'Live decision loop · paper execution', crumb:'Intraday'},
@@ -7277,6 +7462,7 @@ function App() {
               {tab==='watchlist' && <TabWatchlist refreshKey={refreshKey}/>}
               {tab==='preopen'   && <TabPreOpen refreshKey={refreshKey}/>}
               {tab==='screener'  && <TabMarketScreener refreshKey={refreshKey} asset="stock"/>}
+              {tab==='radar'     && <TabTrendRadar refreshKey={refreshKey}/>}
               {tab==='crypto_screener' && <TabMarketScreener refreshKey={refreshKey} asset="crypto"/>}
               {tab==='irs'       && <TabInefficiencyReclaim refreshKey={refreshKey}/>}
               {tab==='intraday'  && <TabIntraday refreshKey={refreshKey}/>}

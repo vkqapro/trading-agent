@@ -63,6 +63,7 @@ from src.journal.flex_statement import (
 from src.journal.order_journal import load_order_journal, save_review
 from src.stocks.tradingview_webhook import handle_stock_tradingview_webhook, load_stock_tradingview_state
 from dashboard_react.market_screener import ScreenerParams, run_market_screener
+from src.radar.service import RadarService
 from src.scanners.inefficiency_reclaim import run_inefficiency_reclaim_screener
 from src.storage.inefficiency_reclaim_store import InefficiencyReclaimStore
 from src.decision.audit import DecisionAudit
@@ -2118,6 +2119,28 @@ def _screener_frame(symbol: str, timeframe: str, asset: str = "stock") -> pd.Dat
     return _daily_live_frame(symbol, selected_asset)
 
 
+def _run_authoritative_radar_scanner(symbol: str) -> dict[str, Any]:
+    """Run one symbol through the existing production market screener.
+
+    Trend Radar only supplies discovery context.  This callback deliberately
+    invokes the same ``run_market_screener`` function and frame loader used by
+    ``/api/market-screener``; it contains no strategy or order logic of its own.
+    """
+    watchlist = _safe(da.load_watchlist, {})
+    return run_market_screener(
+        symbols=[symbol],
+        bars_loader=lambda selected_symbol, selected_timeframe: _screener_frame(
+            selected_symbol, selected_timeframe, "stock"
+        ),
+        watchlist=watchlist if isinstance(watchlist, dict) else {},
+        params=ScreenerParams(asset_class="stock", timeframe="1D"),
+    )
+
+
+def _radar_service() -> RadarService:
+    return RadarService(scanner_runner=_run_authoritative_radar_scanner)
+
+
 @app.get("/api/market-screener")
 @app.get("/api/crypto/market-screener")
 def api_market_screener(
@@ -2235,6 +2258,96 @@ def api_market_screener(
         watchlist=watchlist if isinstance(watchlist, dict) else {},
         params=params,
     )
+
+
+@app.get("/api/radar")
+def api_radar(
+    trend: str = "",
+    min_radar_score: float = 0.0,
+    min_trend_score: float = 0.0,
+    breakout: bool | None = None,
+    breakout_direction: str = "",
+    trend_flip: bool | None = None,
+    symbol: str = "",
+    limit: int = 100,
+):
+    service = _radar_service()
+    rows = service.list_results(
+        limit=limit,
+        filters={
+            "trend": trend,
+            "min_radar_score": min_radar_score,
+            "min_trend_score": min_trend_score,
+            "breakout": breakout,
+            "breakout_direction": breakout_direction,
+            "trend_flip": trend_flip,
+            "symbol": symbol,
+        },
+    )
+    return {
+        "results": rows,
+        "count": len(rows),
+        "updated_at": max((row.get("created_at") or row.get("as_of") or "" for row in rows), default=None),
+        "enabled": bool(getattr(SETTINGS.radar, "enabled", True)),
+    }
+
+
+@app.get("/api/radar/top")
+def api_radar_top(limit: int = 25):
+    return api_radar(limit=limit)
+
+
+@app.get("/api/radar/breakouts")
+def api_radar_breakouts(limit: int = 100, direction: str = ""):
+    return api_radar(limit=limit, breakout=True, breakout_direction=direction)
+
+
+@app.get("/api/radar/flips")
+def api_radar_flips(limit: int = 100, trend: str = ""):
+    return api_radar(limit=limit, trend_flip=True, trend=trend)
+
+
+@app.post("/api/radar/refresh")
+def api_radar_refresh():
+    return _radar_service().refresh()
+
+
+@app.post("/api/radar/batch-scan")
+def api_radar_batch_scan(body: dict):
+    if not isinstance(body, dict):
+        raise HTTPException(400, "Batch Radar scan payload must be an object")
+    raw_symbols = body.get("symbols")
+    if isinstance(raw_symbols, str):
+        symbols = [item for item in raw_symbols.split(",") if item.strip()]
+    elif isinstance(raw_symbols, list):
+        symbols = raw_symbols
+    else:
+        raise HTTPException(400, "Batch Radar scan requires a symbols list")
+    try:
+        max_workers = int(body.get("max_workers", 3))
+        return _radar_service().scan_symbols(symbols, max_workers=max_workers)
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
+
+
+@app.post("/api/radar/{symbol}/scan")
+def api_radar_scan(symbol: str):
+    try:
+        return _radar_service().scan_symbol(symbol)
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
+    except RuntimeError as exc:
+        raise HTTPException(503, str(exc)) from exc
+
+
+@app.get("/api/radar/{symbol}")
+def api_radar_symbol(symbol: str):
+    service = _radar_service()
+    result = service.get(symbol)
+    if result is None:
+        raise HTTPException(404, f"No Radar snapshot found for {symbol.upper()}")
+    history = [item.to_dict() for item in service.store.snapshots(symbol=symbol, limit=90)]
+    return {"result": result, "history": history}
 
 
 @app.get("/api/inefficiency-reclaim/settings")

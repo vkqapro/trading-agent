@@ -1,0 +1,270 @@
+"""Application service for Trend Radar.
+
+The service coordinates universe loading, persisted daily candles, pure
+calculations, and snapshot persistence.  It intentionally has no broker or
+order-manager dependency.
+"""
+
+from __future__ import annotations
+
+from datetime import datetime, timezone
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from dataclasses import replace
+from pathlib import Path
+from typing import Any, Callable, Iterable
+
+import pandas as pd
+
+from src.config import SETTINGS
+from src.data.bar_store import index_snapshot, load_bars
+from src.symbol_universe import load_stock_symbols
+from src.storage.trend_radar_store import TrendRadarStore
+
+from .engine import analyze_daily_bars
+from .models import RadarResult, RadarSettings
+
+
+BarsLoader = Callable[[str, str], pd.DataFrame]
+UniverseLoader = Callable[[], Iterable[str]]
+ScannerRunner = Callable[[str], dict[str, Any]]
+
+
+def direction_conflict(radar_trend: str | None, scanner_side: str | None) -> bool:
+    """Return whether a scanner side opposes a directional Radar regime.
+
+    Radar GREEN/RED are the only directional regimes. GREY is intentionally
+    neutral. The function is presentation metadata only; it never changes
+    scanner status, candidate creation, approval, or execution.
+    """
+    trend = str(radar_trend or "").strip().upper()
+    side = str(scanner_side or "").strip().upper()
+    return (trend == "GREEN" and side == "SHORT") or (trend == "RED" and side == "LONG")
+
+
+class RadarService:
+    def __init__(
+        self,
+        *,
+        store: TrendRadarStore | None = None,
+        settings: RadarSettings | None = None,
+        bars_loader: BarsLoader | None = None,
+        universe_loader: UniverseLoader | None = None,
+        scanner_runner: ScannerRunner | None = None,
+    ) -> None:
+        self.settings = settings or getattr(SETTINGS, "radar", RadarSettings())
+        self.store = store or TrendRadarStore(getattr(self.settings, "database_path", SETTINGS.decision_agent.database_path))
+        self.bars_loader = bars_loader or load_bars
+        self.universe_loader = universe_loader or self._default_universe
+        self.scanner_runner = scanner_runner
+
+    def _default_universe(self) -> list[str]:
+        configured = list(load_stock_symbols())
+        indexed = list(index_snapshot().keys())
+        symbols = sorted({str(item).strip().upper() for item in [*configured, *indexed] if str(item).strip()})
+        return symbols[: self.settings.max_universe_size]
+
+    def universe(self) -> list[str]:
+        return sorted({str(item).strip().upper() for item in self.universe_loader() if str(item).strip()})[: self.settings.max_universe_size]
+
+    def refresh(self) -> dict[str, Any]:
+        started = datetime.now(timezone.utc)
+        results: list[dict[str, Any]] = []
+        skipped: list[dict[str, str]] = []
+        if not self.settings.enabled:
+            return {"enabled": False, "results": [], "skipped": [], "updated_at": started.isoformat()}
+
+        universe = self.universe()
+        for symbol in universe:
+            try:
+                bars = self.bars_loader(symbol, "daily")
+                result = analyze_daily_bars(symbol, bars, previous_trend=None, settings=self.settings)
+                if result is None:
+                    skipped.append({"symbol": symbol, "reason": "insufficient_history"})
+                    continue
+                if result.avg_dollar_volume < self.settings.min_avg_dollar_volume:
+                    skipped.append({"symbol": symbol, "reason": "illiquid"})
+                    continue
+                if (result.price or 0) < self.settings.min_price:
+                    skipped.append({"symbol": symbol, "reason": "invalid_price"})
+                    continue
+                previous = self.store.previous_trend(symbol, result.as_of)
+                if previous is not None:
+                    result = analyze_daily_bars(symbol, bars, previous_trend=previous, settings=self.settings)
+                if result is None:
+                    skipped.append({"symbol": symbol, "reason": "calculation_failed"})
+                    continue
+                self.store.upsert(result)
+                results.append(result.to_dict())
+            except Exception as exc:  # one bad symbol must not abort a broad scan
+                skipped.append({"symbol": symbol, "reason": f"error:{type(exc).__name__}"})
+
+        return {
+            "enabled": True,
+            "results": sorted(results, key=lambda row: (-float(row.get("radar_score") or 0), str(row.get("symbol")))),
+            "skipped": skipped,
+            "universe_size": len(universe),
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        }
+
+    def list_results(self, *, limit: int = 1000, filters: dict[str, Any] | None = None) -> list[dict[str, Any]]:
+        selected = filters or {}
+        # The table does not need to hydrate legacy prices for every symbol.
+        # Selected-detail reads call ``get()``, which backfills one snapshot
+        # from the authoritative closed daily bar when necessary.
+        results = self.store.latest_results(limit=max(limit, 1000))
+        symbol = str(selected.get("symbol") or "").strip().upper()
+        trend = str(selected.get("trend") or "").strip().upper()
+        direction = str(selected.get("breakout_direction") or "").strip().upper()
+        min_radar = float(selected.get("min_radar_score") or 0)
+        min_trend = float(selected.get("min_trend_score") or 0)
+        breakout = selected.get("breakout")
+        flip = selected.get("trend_flip")
+        rows: list[dict[str, Any]] = []
+        for result in results:
+            if symbol and result.symbol != symbol:
+                continue
+            if trend and result.trend != trend:
+                continue
+            if direction and result.breakout_direction != direction:
+                continue
+            if result.radar_score < min_radar or result.trend_score < min_trend:
+                continue
+            if breakout is not None and bool(result.breakout) != bool(breakout):
+                continue
+            if flip is not None and bool(result.trend_flip) != bool(flip):
+                continue
+            rows.append(result.to_dict())
+        return rows[: max(1, min(int(limit), 5000))]
+
+    def get(self, symbol: str) -> dict[str, Any] | None:
+        result = self.store.latest(str(symbol).upper())
+        result = self._with_closed_price(result) if result else None
+        return result.to_dict() if result else None
+
+    def _with_closed_price(self, result: RadarResult) -> RadarResult:
+        """Backfill legacy snapshots that predate serialized ``price``.
+
+        The value is read from the same daily-bar authority used by the Radar
+        engine, at the persisted snapshot date. It is never a live quote and
+        does not recalculate or alter any Radar score.
+        """
+        if result.price is not None:
+            try:
+                if pd.notna(float(result.price)) and float(result.price) > 0:
+                    return result
+            except (TypeError, ValueError):
+                pass
+        try:
+            bars = self.bars_loader(result.symbol, "daily")
+            if not isinstance(bars, pd.DataFrame) or bars.empty or "close" not in bars or "date" not in bars:
+                return result
+            dates = pd.to_datetime(bars["date"], errors="coerce").dt.date.astype("string")
+            closes = pd.to_numeric(bars["close"], errors="coerce")
+            matches = closes[(dates == result.as_of) & closes.notna() & (closes > 0)]
+            if matches.empty:
+                return result
+            enriched = replace(result, price=round(float(matches.iloc[-1]), 4))
+            self.store.upsert(enriched)
+            return enriched
+        except Exception:
+            return result
+
+    def scan_symbol(self, symbol: str) -> dict[str, Any]:
+        if self.scanner_runner is None:
+            raise RuntimeError("authoritative scanner is not configured")
+        normalized = str(symbol or "").strip().upper()
+        if not normalized or normalized == "ALL":
+            raise ValueError("A single stock symbol is required")
+        payload = self.scanner_runner(normalized)
+        if not isinstance(payload, dict):
+            raise RuntimeError("authoritative scanner returned an invalid response")
+        signals = payload.get("signals") or []
+        payload = dict(payload)
+        radar_result = self.store.latest(normalized)
+        radar_trend = radar_result.trend if radar_result else None
+        annotated_signals: list[dict[str, Any]] = []
+        for signal in signals:
+            if not isinstance(signal, dict):
+                annotated_signals.append(signal)
+                continue
+            annotated = dict(signal)
+            side = annotated.get("side") or annotated.get("direction")
+            annotated["direction_conflict"] = direction_conflict(radar_trend, side)
+            annotated_signals.append(annotated)
+        payload["signals"] = annotated_signals
+        payload["scanner_status"] = "CANDIDATE" if signals else "NO_SETUP"
+        payload["radar_symbol"] = normalized
+        payload["radar_trend"] = radar_trend
+        return payload
+
+    def scan_symbols(self, symbols: Iterable[str], *, max_workers: int = 3) -> dict[str, Any]:
+        """Run a bounded batch through the same authoritative scanner callback.
+
+        The callback is the only scanner integration point.  A worker failure is
+        converted to that symbol's ``ERROR`` result so other symbols continue;
+        this method never imports or calls broker/order code.
+        """
+        normalized: list[str] = []
+        seen: set[str] = set()
+        for raw in symbols:
+            symbol = str(raw or "").strip().upper()
+            if not symbol or symbol == "ALL" or symbol in seen:
+                continue
+            seen.add(symbol)
+            normalized.append(symbol)
+        if not normalized:
+            raise ValueError("At least one stock symbol is required")
+        normalized = normalized[:100]
+        workers = max(1, min(int(max_workers), 5, len(normalized)))
+
+        def run_one(symbol: str) -> dict[str, Any]:
+            try:
+                payload = self.scan_symbol(symbol)
+                signals = payload.get("signals") or []
+                first = signals[0] if signals else {}
+                strategy = str(first.get("strategy") or "").strip().upper()
+                side = str(first.get("side") or first.get("direction") or "").strip().upper()
+                label = " ".join(item for item in (strategy, side) if item) or ("CANDIDATE" if signals else "NO_SETUP")
+                return {
+                    "symbol": symbol,
+                    "status": payload.get("scanner_status", "NO_SETUP"),
+                    "label": label,
+                    "signals_found": int(payload.get("signals_found") or len(signals)),
+                    "signals": signals,
+                    "scanner": payload,
+                }
+            except Exception as exc:  # isolate one symbol from the batch
+                return {
+                    "symbol": symbol,
+                    "status": "ERROR",
+                    "label": "ERROR",
+                    "signals_found": 0,
+                    "signals": [],
+                    "error": str(exc) or type(exc).__name__,
+                }
+
+        results_by_symbol: dict[str, dict[str, Any]] = {}
+        with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="trend-radar-scan") as executor:
+            futures = {executor.submit(run_one, symbol): symbol for symbol in normalized}
+            for future in as_completed(futures):
+                symbol = futures[future]
+                try:
+                    results_by_symbol[symbol] = future.result()
+                except Exception as exc:  # defensive: run_one already isolates expected failures
+                    results_by_symbol[symbol] = {
+                        "symbol": symbol,
+                        "status": "ERROR",
+                        "label": "ERROR",
+                        "signals_found": 0,
+                        "signals": [],
+                        "error": str(exc) or type(exc).__name__,
+                    }
+        results = [results_by_symbol[symbol] for symbol in normalized]
+        return {
+            "requested": len(normalized),
+            "completed": len(results),
+            "max_workers": workers,
+            "results": results,
+            "statuses": {item["symbol"]: item["status"] for item in results},
+            "orders_submitted": 0,
+        }

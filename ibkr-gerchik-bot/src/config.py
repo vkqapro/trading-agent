@@ -495,6 +495,33 @@ class NasdaqDataConfig:
 
 
 @dataclass(frozen=True)
+class RadarConfig:
+    """Deterministic, daily-data market discovery settings.
+
+    The database defaults to the existing Decision Lab SQLite database so
+    Radar adds a table to an established persistence layer rather than
+    creating a second database family.
+    """
+
+    enabled: bool = _env_bool("RADAR_ENABLED", True)
+    min_price: float = _env_float("RADAR_MIN_PRICE", 5.0)
+    min_avg_dollar_volume: float = _env_float("RADAR_MIN_AVG_DOLLAR_VOLUME", 20_000_000.0)
+    lookback_days: int = _env_int("RADAR_LOOKBACK_DAYS", 250)
+    min_history_days: int = _env_int("RADAR_MIN_HISTORY_DAYS", 120)
+    max_universe_size: int = _env_int("RADAR_MAX_UNIVERSE_SIZE", 1000)
+    trend_green_threshold: float = _env_float("RADAR_TREND_GREEN_THRESHOLD", 60.0)
+    trend_red_threshold: float = _env_float("RADAR_TREND_RED_THRESHOLD", 40.0)
+    compression_threshold: float = _env_float("RADAR_COMPRESSION_THRESHOLD", 45.0)
+    range_window: int = _env_int("RADAR_RANGE_WINDOW", 20)
+    slope_window: int = _env_int("RADAR_SLOPE_WINDOW", 20)
+    database_path: Path = field(
+        default_factory=lambda: _resolve_env_path(
+            _env_str("RADAR_DATABASE_PATH", "memory/decision_lab.db")
+        )
+    )
+
+
+@dataclass(frozen=True)
 class TradingHours:
     timezone: str = _env_str("TRADING_TIMEZONE", "America/New_York")
     market_open_hour: int = _env_int("MARKET_OPEN_HOUR", 9)
@@ -594,6 +621,7 @@ class Settings:
     decision_agent: DecisionAgentConfig = field(default_factory=DecisionAgentConfig)
     strategy: StrategyConfig = field(default_factory=StrategyConfig)
     inefficiency_reclaim: InefficiencyReclaimSettings = field(default_factory=InefficiencyReclaimSettings)
+    radar: RadarConfig = field(default_factory=RadarConfig)
     nasdaq_data: NasdaqDataConfig = field(default_factory=NasdaqDataConfig)
     trading_hours: TradingHours = field(default_factory=TradingHours)
     news: NewsConfig = field(default_factory=NewsConfig)

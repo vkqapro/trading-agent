@@ -90,9 +90,9 @@
     "semantic_hash": ""
   },
   "dashboard_react/server.py": {
-    "mtime": 1791688953.7134905,
-    "seen": 1791689279.6064181,
-    "ast_hash": "4d26ee92a31d4755c529d3769c3a257f",
+    "mtime": 1791694790.0103686,
+    "seen": 1791695004.992148,
+    "ast_hash": "8c1c744f1bd42df11a7554f5f5628d1c",
     "semantic_hash": ""
   },
   "design_handoff/trading-bot-dashboard/project/ibkr-gerchik-bot/dashboard/app.py": {
@@ -162,8 +162,8 @@
     "semantic_hash": "a47f92efff8d7a388062745b50785c68"
   },
   "memory/order_requests.json": {
-    "mtime": 1791688558.6619878,
-    "seen": 1791689279.609375,
+    "mtime": 1791729410.1824312,
+    "seen": 1791729413.8502047,
     "ast_hash": "4147978db899d992d3ea29f1409371e3",
     "semantic_hash": ""
   },
@@ -240,9 +240,9 @@
     "semantic_hash": ""
   },
   "src/config.py": {
-    "mtime": 1791133243.8578315,
-    "seen": 1791133383.9040673,
-    "ast_hash": "bb73e326692fe342b2b977a20cd9f7a5",
+    "mtime": 1791694597.6292953,
+    "seen": 1791695004.9976482,
+    "ast_hash": "bfe61f6ee3d8b886239424ae18184736",
     "semantic_hash": ""
   },
   "src/crypto/__init__.py": {
@@ -1194,9 +1194,9 @@
     "semantic_hash": ""
   },
   "dashboard_react/index.html": {
-    "mtime": 1791688977.7389126,
-    "seen": 1791689279.672868,
-    "ast_hash": "f9d4762b11a9032e42f7d66bb181fc38",
+    "mtime": 1791729094.482933,
+    "seen": 1791729271.2958932,
+    "ast_hash": "a2112bc9bf1a6943e42e1e5079b905c3",
     "semantic_hash": ""
   },
   "design_handoff/trading-bot-dashboard/README.md": {
@@ -1224,9 +1224,9 @@
     "semantic_hash": ""
   },
   "memory/LEVELS_LOG.md": {
-    "mtime": 1791688641.7003145,
-    "seen": 1791689279.68039,
-    "ast_hash": "a26fb92784b038a16797bfb4d397429a",
+    "mtime": 1791692461.7267654,
+    "seen": 1791695005.0663328,
+    "ast_hash": "ffadc389bc8875c1811b43cb9f483a2f",
     "semantic_hash": ""
   },
   "memory/TRADE_LOG.md": {
@@ -1608,9 +1608,9 @@
     "semantic_hash": ""
   },
   "memory/RESEARCH_LOG.md": {
-    "mtime": 1791688642.1576135,
-    "seen": 1791689279.6803942,
-    "ast_hash": "4ae90a4f58fe7b20bb4d85c32d6405cc",
+    "mtime": 1791692462.3101633,
+    "seen": 1791695005.0663364,
+    "ast_hash": "00ce2371b7086a11051dd6188db96d60",
     "semantic_hash": ""
   },
   "src/crypto/manual_order.py": {
@@ -4347,6 +4347,48 @@
     "mtime": 1791607604.3366024,
     "seen": 1791607739.8265524,
     "ast_hash": "d42e3f19833722ca2c9ebb01fe20e969",
+    "semantic_hash": ""
+  },
+  "src/radar/__init__.py": {
+    "mtime": 1791694590.3095932,
+    "seen": 1791695005.0118306,
+    "ast_hash": "a7c074a41928b52e9fbcf947cf43f303",
+    "semantic_hash": ""
+  },
+  "src/radar/engine.py": {
+    "mtime": 1791694597.6267807,
+    "seen": 1791695005.0118341,
+    "ast_hash": "08fba84ff206aeaa0e35a7e0f6da67b3",
+    "semantic_hash": ""
+  },
+  "src/radar/models.py": {
+    "mtime": 1791728744.6137798,
+    "seen": 1791729271.2575514,
+    "ast_hash": "79a7843398e83fa515ab2fc697bccf61",
+    "semantic_hash": ""
+  },
+  "src/radar/service.py": {
+    "mtime": 1791729351.1417022,
+    "seen": 1791729413.8734155,
+    "ast_hash": "30d163ca3815ae393fb6eb602513289a",
+    "semantic_hash": ""
+  },
+  "src/storage/trend_radar_store.py": {
+    "mtime": 1791694590.3140385,
+    "seen": 1791695005.0159404,
+    "ast_hash": "04f5088329281c36b731b3a698c91fdb",
+    "semantic_hash": ""
+  },
+  "tests/test_trend_radar.py": {
+    "mtime": 1791729183.9830906,
+    "seen": 1791729271.2820683,
+    "ast_hash": "285cc6c4ecfdb6e5a1a442cbe76e29fe",
+    "semantic_hash": ""
+  },
+  "docs/TREND_RADAR_V1.md": {
+    "mtime": 1791694745.455636,
+    "seen": 1791695005.0652258,
+    "ast_hash": "3d005ed8cd722c0306a469219dec9e9b",
     "semantic_hash": ""
   }
 }
