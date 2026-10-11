@@ -137,6 +137,11 @@ def _wilder(values: pd.Series, period: int) -> pd.Series:
 
 def _add_metrics(frame: pd.DataFrame) -> pd.DataFrame:
     data = frame.copy()
+    chronology_provenance = data.attrs.get("intraday_bars")
+    # Keep pandas internals free of nested market-data metadata while metrics
+    # create/concatenate Series. The provenance is restored for lifecycle
+    # evaluation after the numeric work is complete.
+    data.attrs = {}
     prev_close = data["close"].shift(1)
     tr = pd.concat(
         [
@@ -170,6 +175,9 @@ def _add_metrics(frame: pd.DataFrame) -> pd.DataFrame:
     else:
         data["signal_spread_pct"] = None
     data["median_spread_pct_20"] = pd.to_numeric(data["signal_spread_pct"], errors="coerce").rolling(20, min_periods=1).median()
+    if chronology_provenance is not None:
+        data.attrs["intraday_bars"] = chronology_provenance
+        data.attrs["intraday_timeframe"] = "5m"
     return data
 
 
@@ -216,6 +224,28 @@ def _has_event_in_window(latest_date: pd.Timestamp, dates: list[pd.Timestamp], b
 
 
 def _pivot_levels(
+    data: pd.DataFrame,
+    *,
+    k: int,
+    min_touches: int,
+    tolerance_atr: float = 0.10,
+) -> list[dict[str, Any]]:
+    # ``build_partial_daily_frame`` attaches exact 5m records to ``attrs`` for
+    # lifecycle chronology.  Pandas deep-copies attrs whenever ``iloc``
+    # materializes a row; this hot loop materializes thousands of rows and
+    # would therefore copy the same immutable intraday provenance thousands of
+    # times.  Pivot construction never reads that provenance, so temporarily
+    # remove only the metadata while preserving the original frame and attrs
+    # for the later lifecycle resolver.
+    original_attrs = data.attrs
+    data.attrs = {}
+    try:
+        return _pivot_levels_without_attrs(data, k=k, min_touches=min_touches, tolerance_atr=tolerance_atr)
+    finally:
+        data.attrs = original_attrs
+
+
+def _pivot_levels_without_attrs(
     data: pd.DataFrame,
     *,
     k: int,
@@ -484,6 +514,190 @@ def _execution_details(
     }
 
 
+def _intraday_event_order(
+    *,
+    entry_day: Any,
+    side: str,
+    planned_entry: float | None,
+    stop_price: float | None,
+    intraday_bars: pd.DataFrame | list[dict[str, Any]] | None,
+) -> dict[str, Any]:
+    """Resolve entry/stop order from the exact 5m rows when available.
+
+    OHLC does not reveal ordering inside one candle.  If both thresholds are
+    touched by the same 5m bar, the result is explicitly ambiguous and the
+    lifecycle takes the conservative no-trade path.
+    """
+    fallback = {
+        "source": "daily_ohlc_fallback",
+        "event": "UNAVAILABLE",
+        "entry_touch_time": None,
+        "invalidation_touch_time": None,
+    }
+    if planned_entry is None or stop_price is None or intraday_bars is None:
+        return fallback
+    if not isinstance(intraday_bars, pd.DataFrame):
+        intraday_bars = pd.DataFrame(intraday_bars)
+    if intraday_bars.empty:
+        return fallback
+    if "date" not in intraday_bars.columns and "timestamp" not in intraday_bars.columns:
+        return fallback
+
+    bars = intraday_bars.copy()
+    if "timestamp" in bars.columns and "date" not in bars.columns:
+        bars = bars.rename(columns={"timestamp": "date"})
+    required = {"date", "high", "low"}
+    if not required.issubset(bars.columns):
+        return fallback
+    timestamps = pd.to_datetime(bars["date"], errors="coerce", utc=True)
+    entry_date = pd.to_datetime(entry_day.get("date"), errors="coerce")
+    if pd.isna(entry_date):
+        return fallback
+    day_mask = timestamps.dt.date == entry_date.date()
+    bars = bars.loc[day_mask].copy()
+    timestamps = timestamps.loc[day_mask]
+    if bars.empty:
+        return fallback
+    bars["_event_timestamp"] = timestamps
+    bars["high"] = pd.to_numeric(bars["high"], errors="coerce")
+    bars["low"] = pd.to_numeric(bars["low"], errors="coerce")
+    bars = bars.dropna(subset=["_event_timestamp", "high", "low"]).sort_values("_event_timestamp")
+    if bars.empty:
+        return fallback
+
+    if side == "LONG":
+        entry_hits = bars["high"] >= float(planned_entry)
+        invalidation_hits = bars["low"] <= float(stop_price)
+    else:
+        entry_hits = bars["low"] <= float(planned_entry)
+        invalidation_hits = bars["high"] >= float(stop_price)
+    entry_times = bars.loc[entry_hits, "_event_timestamp"]
+    invalidation_times = bars.loc[invalidation_hits, "_event_timestamp"]
+    first_entry = entry_times.iloc[0] if not entry_times.empty else None
+    first_invalidation = invalidation_times.iloc[0] if not invalidation_times.empty else None
+    result = {
+        "source": "intraday_5m",
+        "event": "NEITHER",
+        "entry_touch_time": first_entry.isoformat() if first_entry is not None else None,
+        "invalidation_touch_time": first_invalidation.isoformat() if first_invalidation is not None else None,
+    }
+    if first_entry is not None and first_invalidation is not None:
+        if first_entry == first_invalidation:
+            result["event"] = "AMBIGUOUS_INTRABAR_ORDER"
+        elif first_entry < first_invalidation:
+            result["event"] = "ENTRY_FIRST"
+        else:
+            result["event"] = "INVALIDATION_FIRST"
+    elif first_entry is not None:
+        result["event"] = "ENTRY_ONLY"
+    elif first_invalidation is not None:
+        result["event"] = "INVALIDATION_ONLY"
+    return result
+
+
+def _finalize_candidate_lifecycle(
+    *,
+    execution: dict[str, Any],
+    entry_row: pd.Series,
+    side: str,
+    stop_price: float | None,
+    entry_day_partial: bool,
+    planned_entry_price: float | None = None,
+    intraday_bars: pd.DataFrame | list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """Finalize the existing execution result without changing detection rules.
+
+    The screener evaluates exactly one entry day: the latest row in its
+    authoritative daily/partial-daily frame.  ``pending_entry`` is therefore
+    still valid while that row is an in-progress session.  Once the row is a
+    completed entry day, an untriggered setup is either structurally broken by
+    the selected stop boundary or has simply missed its entry window.
+
+    Structural invalidation intentionally uses the existing selected stop. If
+    the exact 5m rows for the entry day are attached to the canonical partial
+    frame, their chronology wins over daily high/low. A same-5m-bar collision
+    is explicit ambiguity, never an invented event order.
+    """
+    status = str(execution.get("status") or "")
+    triggered = bool(execution.get("entry_triggered"))
+    lifecycle_status = "ENTRY_TRIGGERED" if triggered else "REJECTED"
+    lifecycle_reason = "entry_triggered" if triggered else "existing_execution_rejection"
+    invalidation_breached = False
+    chronology = _intraday_event_order(
+        entry_day=entry_row,
+        side=side,
+        planned_entry=planned_entry_price,
+        stop_price=stop_price,
+        intraday_bars=intraday_bars,
+    )
+
+    if chronology["source"] == "intraday_5m" and status in {"pending_entry", "READY"}:
+        event = chronology["event"]
+        if event == "AMBIGUOUS_INTRABAR_ORDER":
+            status = "ambiguous_intrabar_order"
+            lifecycle_status = "AMBIGUOUS_INTRABAR_ORDER"
+            lifecycle_reason = "entry_and_invalidation_same_5m_bar"
+            invalidation_breached = True
+            triggered = False
+        elif event in {"ENTRY_FIRST", "ENTRY_ONLY"}:
+            status = "READY"
+            lifecycle_status = "ENTRY_TRIGGERED"
+            lifecycle_reason = "entry_triggered_before_invalidation" if event == "ENTRY_FIRST" else "entry_triggered"
+            triggered = True
+            invalidation_breached = event == "ENTRY_FIRST"
+        elif event in {"INVALIDATION_FIRST", "INVALIDATION_ONLY"}:
+            status = "invalidated"
+            lifecycle_status = "INVALIDATED"
+            lifecycle_reason = "pre_entry_structure_broken"
+            invalidation_breached = True
+            triggered = False
+        elif event == "NEITHER":
+            # The 5m session is authoritative when present. This branch is
+            # deterministic even if a malformed aggregate claimed a touch.
+            triggered = False
+            if entry_day_partial:
+                status = "pending_entry"
+                lifecycle_status = "PENDING_ENTRY"
+                lifecycle_reason = "waiting_for_entry"
+            else:
+                status = "expired"
+                lifecycle_status = "EXPIRED"
+                lifecycle_reason = "entry_window_closed"
+
+    if chronology["source"] != "intraday_5m" and not triggered and status == "pending_entry":
+        if stop_price is not None:
+            if side == "LONG":
+                invalidation_breached = float(entry_row["low"]) <= float(stop_price)
+            else:
+                invalidation_breached = float(entry_row["high"]) >= float(stop_price)
+        if invalidation_breached:
+            status = "invalidated"
+            lifecycle_status = "INVALIDATED"
+            lifecycle_reason = "pre_entry_structure_broken"
+        elif entry_day_partial:
+            lifecycle_status = "PENDING_ENTRY"
+            lifecycle_reason = "waiting_for_entry"
+        else:
+            status = "expired"
+            lifecycle_status = "EXPIRED"
+            lifecycle_reason = "entry_window_closed"
+
+    return {
+        "status": status,
+        "lifecycle_status": lifecycle_status,
+        "lifecycle_reason": lifecycle_reason,
+        "invalidation_breached": invalidation_breached,
+        "trade_occurred": triggered,
+        "entry_triggered": triggered,
+        "realized_pnl": 0.0 if not triggered else None,
+        "realized_r": 0.0 if not triggered else None,
+        "chronology_source": chronology["source"],
+        "chronology_event": chronology["event"],
+        "entry_touch_time": chronology["entry_touch_time"],
+        "invalidation_touch_time": chronology["invalidation_touch_time"],
+    }
+
+
 def _make_signal(
     *,
     symbol: str,
@@ -556,6 +770,15 @@ def _make_signal(
         status = "invalid_stop"
     elif status == "READY" and params.require_complete_quality and metrics and not metrics.get("data_quality_complete", False):
         status = "review_required"
+    lifecycle = _finalize_candidate_lifecycle(
+        execution={**execution, "status": status},
+        entry_row=latest,
+        side=side,
+        stop_price=stop,
+        entry_day_partial=entry_day_partial,
+        planned_entry_price=planned_entry,
+        intraday_bars=data.attrs.get("intraday_bars"),
+    )
     median_spread = metrics.get("median_spread_pct_20") if metrics else None
     signal_spread = metrics.get("signal_spread_pct") if metrics else None
     spread_ok = metrics.get("spread_ok") if metrics else None
@@ -584,7 +807,7 @@ def _make_signal(
         "entry_price": _round(entry),
         "planned_entry_price": _round(planned_entry),
         "entry_atr_pct": params.entry_atr_pct,
-        "entry_triggered": bool(execution["entry_triggered"]),
+        "entry_triggered": lifecycle["entry_triggered"],
         "entry_gap_atr": _round(execution["gap_atr"], 3),
         "entry_chase_atr": _round(execution["chase_atr"], 3),
         "stop_variant": stop_variant,
@@ -616,7 +839,17 @@ def _make_signal(
         "pattern_quality": _round(pattern_quality, 3),
         "expected_R_multiple": params.rr,
         "liquidity_quality": min(1.0, (_num(latest.get("median_dollar_volume_20")) or 0.0) / 50_000_000),
-        "status": status,
+        "status": lifecycle["status"],
+        "lifecycle_status": lifecycle["lifecycle_status"],
+        "lifecycle_reason": lifecycle["lifecycle_reason"],
+        "invalidation_breached": lifecycle["invalidation_breached"],
+        "trade_occurred": lifecycle["trade_occurred"],
+        "realized_pnl": lifecycle["realized_pnl"],
+        "realized_r": lifecycle["realized_r"],
+        "chronology_source": lifecycle["chronology_source"],
+        "chronology_event": lifecycle["chronology_event"],
+        "entry_touch_time": lifecycle["entry_touch_time"],
+        "invalidation_touch_time": lifecycle["invalidation_touch_time"],
         "approach_direction": (approach or {}).get("direction"),
         "approach_change_atr": _round((approach or {}).get("change_atr"), 3),
         "reasoning": reasoning,

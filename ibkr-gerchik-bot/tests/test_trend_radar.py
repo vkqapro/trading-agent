@@ -137,6 +137,40 @@ def test_scanner_signals_receive_per_signal_direction_conflict_metadata(tmp_path
     assert payload["scanner_status"] == "CANDIDATE"
 
 
+def test_terminal_scanner_lifecycle_is_exposed_by_single_and_batch_radar_scans(tmp_path) -> None:
+    def scanner(_symbol: str) -> dict:
+        return {
+            "signals_found": 1,
+            "signals": [{
+                "strategy": "LP2",
+                "side": "SHORT",
+                "status": "invalidated",
+                "lifecycle_status": "INVALIDATED",
+                "lifecycle_reason": "pre_entry_structure_broken",
+                "entry_triggered": False,
+                "trade_occurred": False,
+                "realized_pnl": 0.0,
+                "realized_r": 0.0,
+            }],
+        }
+
+    service = RadarService(
+        store=TrendRadarStore(tmp_path / "decision.db"),
+        settings=RadarSettings(min_avg_dollar_volume=1_000_000),
+        scanner_runner=scanner,
+    )
+
+    single = service.scan_symbol("AMZN")
+    batch = service.scan_symbols(["AMZN"], max_workers=1)
+
+    assert single["scanner_status"] == "INVALIDATED"
+    assert single["signals"][0]["lifecycle_status"] == "INVALIDATED"
+    assert single["signals"][0]["trade_occurred"] is False
+    assert batch["statuses"] == {"AMZN": "INVALIDATED"}
+    assert batch["results"][0]["label"] == "LP2 SHORT · INVALIDATED"
+    assert batch["orders_submitted"] == 0
+
+
 def test_batch_scan_isolated_results_and_no_order_submission(tmp_path) -> None:
     calls: list[str] = []
 

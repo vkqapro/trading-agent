@@ -20,6 +20,9 @@ from src.data.bar_store import index_snapshot, load_bars
 from src.symbol_universe import load_stock_symbols
 from src.storage.trend_radar_store import TrendRadarStore
 
+
+_FINALIZED_LIFECYCLE_STATUSES = {"INVALIDATED", "EXPIRED", "AMBIGUOUS_INTRABAR_ORDER"}
+
 from .engine import analyze_daily_bars
 from .models import RadarResult, RadarSettings
 
@@ -192,7 +195,21 @@ class RadarService:
             annotated["direction_conflict"] = direction_conflict(radar_trend, side)
             annotated_signals.append(annotated)
         payload["signals"] = annotated_signals
-        payload["scanner_status"] = "CANDIDATE" if signals else "NO_SETUP"
+        lifecycle_statuses = {
+            str(signal.get("lifecycle_status") or "").upper()
+            for signal in annotated_signals
+            if isinstance(signal, dict)
+        }
+        if not annotated_signals:
+            payload["scanner_status"] = "NO_SETUP"
+        elif lifecycle_statuses and lifecycle_statuses.issubset(_FINALIZED_LIFECYCLE_STATUSES):
+            payload["scanner_status"] = (
+                next(iter(lifecycle_statuses))
+                if len(lifecycle_statuses) == 1
+                else "FINALIZED"
+            )
+        else:
+            payload["scanner_status"] = "CANDIDATE"
         payload["radar_symbol"] = normalized
         payload["radar_trend"] = radar_trend
         return payload
@@ -224,7 +241,10 @@ class RadarService:
                 first = signals[0] if signals else {}
                 strategy = str(first.get("strategy") or "").strip().upper()
                 side = str(first.get("side") or first.get("direction") or "").strip().upper()
+                lifecycle = str(first.get("lifecycle_status") or "").strip().upper()
                 label = " ".join(item for item in (strategy, side) if item) or ("CANDIDATE" if signals else "NO_SETUP")
+                if lifecycle in _FINALIZED_LIFECYCLE_STATUSES:
+                    label = " · ".join(item for item in (label, lifecycle) if item)
                 return {
                     "symbol": symbol,
                     "status": payload.get("scanner_status", "NO_SETUP"),

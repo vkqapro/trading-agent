@@ -46,5 +46,8 @@ def test_web_and_mcp_share_prb1_evaluator_for_same_partial_snapshot() -> None:
     mcp = mcp_signals[0]
     assert (web["status"], web["side"]) == ("READY", "LONG")
     assert (mcp["status"], mcp["side"]) == ("READY", "LONG")
+    assert web["lifecycle_status"] == "ENTRY_TRIGGERED"
+    assert mcp["lifecycle_status"] == web["lifecycle_status"]
+    assert mcp["trade_occurred"] is True
     for key in ("level_price", "entry_price", "stop_price", "take_profit_price", "atr_clean_14"):
         assert mcp[key] == web[key]

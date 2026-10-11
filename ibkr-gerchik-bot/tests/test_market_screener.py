@@ -8,6 +8,7 @@ from dashboard_react.market_screener import (
     ScreenerParams,
     _add_metrics,
     _detect_signals,
+    _finalize_candidate_lifecycle,
     _passes_filters,
     _pivot_levels,
     run_market_screener,
@@ -23,7 +24,251 @@ def _frame(rows: list[dict[str, object]]) -> pd.DataFrame:
     return frame
 
 
+def _intraday(rows: list[dict[str, object]]) -> pd.DataFrame:
+    return pd.DataFrame(rows)
+
+
 class MarketScreenerTests(TestCase):
+    def test_pivot_levels_does_not_deepcopy_intraday_provenance(self) -> None:
+        class NoDeepcopyProvenance(list):
+            def __deepcopy__(self, memo):  # pragma: no cover - failure guard
+                raise AssertionError("pivot construction copied lifecycle provenance")
+
+        frame = _frame(
+            [
+                {
+                    "date": str(date.date()),
+                    "open": 20.0,
+                    "high": 20.5 if index % 6 == 0 else 20.2,
+                    "low": 19.5 if index % 7 == 0 else 19.8,
+                    "close": 20.0,
+                    "volume": 1_500_000,
+                }
+                for index, date in enumerate(pd.bdate_range("2026-01-01", periods=45))
+            ]
+        )
+        provenance = NoDeepcopyProvenance(
+            [{"date": "2026-01-30T15:00:00Z", "high": 20.5, "low": 19.5}]
+        )
+        frame.attrs["intraday_bars"] = provenance
+        frame.attrs["intraday_timeframe"] = "5m"
+
+        _pivot_levels(frame, k=2, min_touches=2)
+
+        self.assertIs(frame.attrs["intraday_bars"], provenance)
+        self.assertEqual(frame.attrs["intraday_timeframe"], "5m")
+
+    def test_short_entry_first_5m_chronology_preserves_triggered_lifecycle(self) -> None:
+        lifecycle = _finalize_candidate_lifecycle(
+            execution={"status": "pending_entry", "entry_triggered": False},
+            entry_row=pd.Series({"date": "2026-07-06", "high": 263.0, "low": 254.0}),
+            side="SHORT",
+            planned_entry_price=255.0,
+            stop_price=262.0,
+            entry_day_partial=False,
+            intraday_bars=_intraday([
+                {"date": "2026-07-06T09:45:00-04:00", "high": 256.0, "low": 254.8},
+                {"date": "2026-07-06T11:30:00-04:00", "high": 262.5, "low": 260.0},
+            ]),
+        )
+
+        self.assertEqual(lifecycle["chronology_event"], "ENTRY_FIRST")
+        self.assertEqual(lifecycle["status"], "READY")
+        self.assertEqual(lifecycle["lifecycle_status"], "ENTRY_TRIGGERED")
+        self.assertTrue(lifecycle["entry_triggered"])
+        self.assertTrue(lifecycle["trade_occurred"])
+        self.assertTrue(lifecycle["invalidation_breached"])
+
+    def test_short_invalidation_first_5m_chronology_blocks_later_entry(self) -> None:
+        lifecycle = _finalize_candidate_lifecycle(
+            execution={"status": "READY", "entry_triggered": True},
+            entry_row=pd.Series({"date": "2026-07-06", "high": 263.0, "low": 254.0}),
+            side="SHORT",
+            planned_entry_price=255.0,
+            stop_price=262.0,
+            entry_day_partial=False,
+            intraday_bars=_intraday([
+                {"date": "2026-07-06T09:45:00-04:00", "high": 262.5, "low": 260.0},
+                {"date": "2026-07-06T11:30:00-04:00", "high": 256.0, "low": 254.8},
+            ]),
+        )
+
+        self.assertEqual(lifecycle["chronology_event"], "INVALIDATION_FIRST")
+        self.assertEqual(lifecycle["lifecycle_status"], "INVALIDATED")
+        self.assertFalse(lifecycle["entry_triggered"])
+        self.assertFalse(lifecycle["trade_occurred"])
+
+    def test_long_entry_first_5m_chronology_preserves_triggered_lifecycle(self) -> None:
+        lifecycle = _finalize_candidate_lifecycle(
+            execution={"status": "pending_entry", "entry_triggered": False},
+            entry_row=pd.Series({"date": "2026-07-06", "high": 106.0, "low": 97.0}),
+            side="LONG",
+            planned_entry_price=105.0,
+            stop_price=98.0,
+            entry_day_partial=False,
+            intraday_bars=_intraday([
+                {"date": "2026-07-06T09:45:00-04:00", "high": 105.2, "low": 104.0},
+                {"date": "2026-07-06T11:30:00-04:00", "high": 101.0, "low": 97.5},
+            ]),
+        )
+
+        self.assertEqual(lifecycle["chronology_event"], "ENTRY_FIRST")
+        self.assertEqual(lifecycle["lifecycle_status"], "ENTRY_TRIGGERED")
+        self.assertTrue(lifecycle["entry_triggered"])
+        self.assertTrue(lifecycle["trade_occurred"])
+
+    def test_long_invalidation_first_5m_chronology_blocks_later_entry(self) -> None:
+        lifecycle = _finalize_candidate_lifecycle(
+            execution={"status": "READY", "entry_triggered": True},
+            entry_row=pd.Series({"date": "2026-07-06", "high": 106.0, "low": 97.0}),
+            side="LONG",
+            planned_entry_price=105.0,
+            stop_price=98.0,
+            entry_day_partial=False,
+            intraday_bars=_intraday([
+                {"date": "2026-07-06T09:45:00-04:00", "high": 101.0, "low": 97.5},
+                {"date": "2026-07-06T11:30:00-04:00", "high": 105.2, "low": 104.0},
+            ]),
+        )
+
+        self.assertEqual(lifecycle["chronology_event"], "INVALIDATION_FIRST")
+        self.assertEqual(lifecycle["lifecycle_status"], "INVALIDATED")
+        self.assertFalse(lifecycle["entry_triggered"])
+        self.assertFalse(lifecycle["trade_occurred"])
+
+    def test_same_5m_bar_is_explicitly_ambiguous_and_no_trade(self) -> None:
+        lifecycle = _finalize_candidate_lifecycle(
+            execution={"status": "READY", "entry_triggered": True},
+            entry_row=pd.Series({"date": "2026-07-06", "high": 263.0, "low": 254.0}),
+            side="SHORT",
+            planned_entry_price=255.0,
+            stop_price=262.0,
+            entry_day_partial=False,
+            intraday_bars=_intraday([
+                {"date": "2026-07-06T09:45:00-04:00", "high": 263.0, "low": 254.0},
+            ]),
+        )
+
+        self.assertEqual(lifecycle["chronology_source"], "intraday_5m")
+        self.assertEqual(lifecycle["chronology_event"], "AMBIGUOUS_INTRABAR_ORDER")
+        self.assertEqual(lifecycle["lifecycle_status"], "AMBIGUOUS_INTRABAR_ORDER")
+        self.assertFalse(lifecycle["entry_triggered"])
+        self.assertFalse(lifecycle["trade_occurred"])
+        self.assertEqual(lifecycle["realized_pnl"], 0.0)
+
+    def test_daily_only_fallback_is_explicit_and_deterministic(self) -> None:
+        lifecycle = _finalize_candidate_lifecycle(
+            execution={"status": "pending_entry", "entry_triggered": False},
+            entry_row=pd.Series({"date": "2026-07-06", "high": 263.0, "low": 254.0}),
+            side="SHORT",
+            planned_entry_price=255.0,
+            stop_price=262.0,
+            entry_day_partial=False,
+        )
+
+        self.assertEqual(lifecycle["chronology_source"], "daily_ohlc_fallback")
+        self.assertEqual(lifecycle["lifecycle_status"], "INVALIDATED")
+        self.assertFalse(lifecycle["trade_occurred"])
+
+    def test_pending_short_is_invalidated_by_structural_high_breach(self) -> None:
+        lifecycle = _finalize_candidate_lifecycle(
+            execution={"status": "pending_entry", "entry_triggered": False},
+            entry_row=pd.Series({"high": 262.4, "low": 254.0}),
+            side="SHORT",
+            stop_price=261.601,
+            entry_day_partial=False,
+        )
+
+        self.assertEqual(lifecycle["status"], "invalidated")
+        self.assertEqual(lifecycle["lifecycle_status"], "INVALIDATED")
+        self.assertEqual(lifecycle["lifecycle_reason"], "pre_entry_structure_broken")
+        self.assertFalse(lifecycle["trade_occurred"])
+        self.assertEqual(lifecycle["realized_pnl"], 0.0)
+        self.assertEqual(lifecycle["realized_r"], 0.0)
+
+    def test_pending_long_is_invalidated_by_structural_low_breach(self) -> None:
+        lifecycle = _finalize_candidate_lifecycle(
+            execution={"status": "pending_entry", "entry_triggered": False},
+            entry_row=pd.Series({"high": 106.0, "low": 97.5}),
+            side="LONG",
+            stop_price=98.0,
+            entry_day_partial=True,
+        )
+
+        self.assertEqual(lifecycle["status"], "invalidated")
+        self.assertEqual(lifecycle["lifecycle_status"], "INVALIDATED")
+        self.assertTrue(lifecycle["invalidation_breached"])
+        self.assertFalse(lifecycle["trade_occurred"])
+
+    def test_pending_short_expires_when_completed_entry_window_closes_cleanly(self) -> None:
+        lifecycle = _finalize_candidate_lifecycle(
+            execution={"status": "pending_entry", "entry_triggered": False},
+            entry_row=pd.Series({"high": 105.0, "low": 99.0}),
+            side="SHORT",
+            stop_price=106.0,
+            entry_day_partial=False,
+        )
+
+        self.assertEqual(lifecycle["status"], "expired")
+        self.assertEqual(lifecycle["lifecycle_status"], "EXPIRED")
+        self.assertEqual(lifecycle["lifecycle_reason"], "entry_window_closed")
+        self.assertFalse(lifecycle["trade_occurred"])
+        self.assertEqual(lifecycle["realized_pnl"], 0.0)
+
+    def test_pending_long_expires_when_completed_entry_window_closes_cleanly(self) -> None:
+        lifecycle = _finalize_candidate_lifecycle(
+            execution={"status": "pending_entry", "entry_triggered": False},
+            entry_row=pd.Series({"high": 105.0, "low": 99.0}),
+            side="LONG",
+            stop_price=98.0,
+            entry_day_partial=False,
+        )
+
+        self.assertEqual(lifecycle["status"], "expired")
+        self.assertEqual(lifecycle["lifecycle_status"], "EXPIRED")
+        self.assertFalse(lifecycle["trade_occurred"])
+
+    def test_open_session_pending_setup_remains_pending(self) -> None:
+        lifecycle = _finalize_candidate_lifecycle(
+            execution={"status": "pending_entry", "entry_triggered": False},
+            entry_row=pd.Series({"high": 104.0, "low": 99.0}),
+            side="LONG",
+            stop_price=98.0,
+            entry_day_partial=True,
+        )
+
+        self.assertEqual(lifecycle["status"], "pending_entry")
+        self.assertEqual(lifecycle["lifecycle_status"], "PENDING_ENTRY")
+        self.assertEqual(lifecycle["lifecycle_reason"], "waiting_for_entry")
+        self.assertFalse(lifecycle["trade_occurred"])
+
+    def test_triggered_trade_preserves_triggered_state(self) -> None:
+        lifecycle = _finalize_candidate_lifecycle(
+            execution={"status": "READY", "entry_triggered": True},
+            entry_row=pd.Series({"high": 105.0, "low": 97.0}),
+            side="LONG",
+            stop_price=98.0,
+            entry_day_partial=False,
+        )
+
+        self.assertEqual(lifecycle["status"], "READY")
+        self.assertEqual(lifecycle["lifecycle_status"], "ENTRY_TRIGGERED")
+        self.assertTrue(lifecycle["trade_occurred"])
+
+    def test_amzn_lp2_short_completed_dead_candidate_is_invalidated(self) -> None:
+        lifecycle = _finalize_candidate_lifecycle(
+            execution={"status": "pending_entry", "entry_triggered": False},
+            entry_row=pd.Series({"high": 262.4, "low": 254.2, "close": 262.4}),
+            side="SHORT",
+            stop_price=261.601,
+            entry_day_partial=False,
+        )
+
+        self.assertEqual(lifecycle["status"], "invalidated")
+        self.assertEqual(lifecycle["lifecycle_status"], "INVALIDATED")
+        self.assertEqual(lifecycle["lifecycle_reason"], "pre_entry_structure_broken")
+        self.assertFalse(lifecycle["trade_occurred"])
+
     def test_lp1_long_detects_support_reclaim(self) -> None:
         rows = []
         for index in range(30):
@@ -103,6 +348,35 @@ class MarketScreenerTests(TestCase):
         self.assertEqual(signals[0]["pattern_bar_dates"], ["2026-07-02", "2026-07-03"])
         self.assertEqual(signals[0]["entry_day"], "2026-07-06")
         self.assertEqual(signals[0]["stop_variant"], "behind_two_bar_structure")
+
+    def test_lp2_short_completed_entry_day_is_invalidated_in_authoritative_detector(self) -> None:
+        rows = [
+            {"date": "2026-06-29", "open": 98.0, "high": 98.3, "low": 97.8, "close": 98.0, "volume": 1_000_000},
+            {"date": "2026-06-30", "open": 98.3, "high": 98.6, "low": 98.1, "close": 98.4, "volume": 1_000_000},
+            {"date": "2026-07-01", "open": 98.7, "high": 99.0, "low": 98.5, "close": 98.8, "volume": 1_000_000},
+            {"date": "2026-07-02", "open": 99.5, "high": 100.8, "low": 99.2, "close": 100.3, "volume": 1_100_000},
+            {"date": "2026-07-03", "open": 100.2, "high": 100.5, "low": 99.0, "close": 99.2, "volume": 1_300_000},
+            # The entry remains above the short trigger, but the structural
+            # stop is breached. This is the AMZN lifecycle shape.
+            {"date": "2026-07-06", "open": 99.7, "high": 102.0, "low": 99.6, "close": 101.8, "volume": 1_100_000},
+        ]
+
+        signals = _detect_signals(
+            "AMZN",
+            _frame(rows),
+            [{"price": 100.0, "kind": "support", "touches": 3, "strength": 0.8, "tolerance": 0.2}],
+            ScreenerParams(strategies=("LP2",)),
+            entry_day_partial=False,
+        )
+
+        self.assertEqual(len(signals), 1)
+        self.assertEqual(signals[0]["side"], "SHORT")
+        self.assertFalse(signals[0]["entry_triggered"])
+        self.assertEqual(signals[0]["status"], "invalidated")
+        self.assertEqual(signals[0]["lifecycle_status"], "INVALIDATED")
+        self.assertEqual(signals[0]["lifecycle_reason"], "pre_entry_structure_broken")
+        self.assertFalse(signals[0]["trade_occurred"])
+        self.assertEqual(signals[0]["realized_pnl"], 0.0)
 
     def test_all_four_strategies_detect_the_short_side(self) -> None:
         cases = {

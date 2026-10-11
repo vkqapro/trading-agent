@@ -4907,7 +4907,7 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
     </span>
   );
   const statusOptions = ['ALL',...new Set(signals.map(row=>row.status).filter(Boolean))];
-  const statusColor = status => status==='READY' ? C.lime : ['pending_entry','review_required','IN_PROGRESS'].includes(status) ? C.cyan : C.err;
+  const statusColor = status => ['READY','ENTRY_TRIGGERED'].includes(status) ? C.lime : ['pending_entry','PENDING_ENTRY','review_required','IN_PROGRESS'].includes(status) ? C.cyan : ['expired','EXPIRED','invalidated','INVALIDATED'].includes(status) ? C.outline : C.err;
   const levelLabel = row => {
     const effective = row.level_type || 'level';
     const origin = row.level_origin_type;
@@ -7061,13 +7061,24 @@ function TabTrendRadar({refreshKey=0}) {
       const failure = err.message||'Batch scanner request failed';
       setScannerStates(previous=>({...previous,...Object.fromEntries(unique.map(symbol=>[symbol,{status:'ERROR',label:'ERROR',error:failure}]))}));
       if(selected && unique.includes(selected.symbol)) setScanner({error:failure});
-      setBatchProgress({done:unique.length,total:unique.length});
+      setBatchProgress({done:unique.length,total:unique.length,state:'error',error:failure});
     } finally { setBatchBusy(false); }
+  };
+
+  const isFreshTrendFlip = row => row?.trend_flip === true;
+  const runFreshFlipBatch = ()=>{
+    if(batchBusy) return;
+    const symbols = rows.filter(isFreshTrendFlip).map(row=>row.symbol);
+    if(!symbols.length){
+      setBatchProgress({done:0,total:0,state:'empty',message:'NO FRESH TREND FLIPS TO SCAN · 0 eligible fresh-flip symbols · orders submitted: 0'});
+      return;
+    }
+    runBatch(symbols);
   };
 
   const filtered = rows.filter(row=>{
     const matchesQuery = !query.trim() || String(row.symbol||'').includes(query.trim().toUpperCase());
-    const matchesFilter = filter==='ALL' || (filter==='GREEN'&&row.trend==='GREEN') || (filter==='RED'&&row.trend==='RED') || (filter==='BREAKOUT'&&row.breakout) || (filter==='FLIP'&&row.trend_flip);
+    const matchesFilter = filter==='ALL' || (filter==='GREEN'&&row.trend==='GREEN') || (filter==='RED'&&row.trend==='RED') || (filter==='BREAKOUT'&&row.breakout) || (filter==='FLIP'&&isFreshTrendFlip(row));
     return matchesQuery && matchesFilter;
   });
   const trendColor = value=>value==='GREEN'?C.lime:value==='RED'?C.chartDown:C.lemon;
@@ -7084,11 +7095,11 @@ function TabTrendRadar({refreshKey=0}) {
         <button onClick={()=>runBatch(selectedSymbols)} disabled={batchBusy||!selectedSymbols.length} style={{padding:'9px 11px',borderRadius:8,cursor:batchBusy||!selectedSymbols.length?'not-allowed':'pointer',color:batchBusy||!selectedSymbols.length?C.outline:C.cyan,background:R(batchBusy||!selectedSymbols.length?C.outline:C.cyan,0.08),border:`1px solid ${R(batchBusy||!selectedSymbols.length?C.outline:C.cyan,0.3)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>SCAN SELECTED ({selectedSymbols.length})</button>
         <button onClick={()=>runBatch(rows.slice(0,10).map(row=>row.symbol))} disabled={batchBusy||!rows.length} style={{padding:'9px 11px',borderRadius:8,cursor:batchBusy||!rows.length?'not-allowed':'pointer',color:batchBusy||!rows.length?C.outline:C.lemon,background:R(batchBusy||!rows.length?C.outline:C.lemon,0.08),border:`1px solid ${R(batchBusy||!rows.length?C.outline:C.lemon,0.3)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>SCAN TOP 10</button>
         <button onClick={()=>runBatch(rows.filter(row=>row.breakout).map(row=>row.symbol))} disabled={batchBusy||!rows.some(row=>row.breakout)} style={{padding:'9px 11px',borderRadius:8,cursor:batchBusy?'not-allowed':'pointer',color:C.lime,background:R(C.lime,0.08),border:`1px solid ${R(C.lime,0.25)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>SCAN BREAKOUTS</button>
-        <button onClick={()=>runBatch(rows.filter(row=>row.trend_flip).map(row=>row.symbol))} disabled={batchBusy||!rows.some(row=>row.trend_flip)} style={{padding:'9px 11px',borderRadius:8,cursor:batchBusy?'not-allowed':'pointer',color:C.magenta,background:R(C.magenta,0.08),border:`1px solid ${R(C.magenta,0.25)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>SCAN FRESH FLIPS</button>
+        <button onClick={runFreshFlipBatch} disabled={batchBusy} style={{padding:'9px 11px',borderRadius:8,cursor:batchBusy?'not-allowed':'pointer',color:batchBusy?C.outline:C.magenta,background:R(batchBusy?C.outline:C.magenta,0.08),border:`1px solid ${R(batchBusy?C.outline:C.magenta,0.25)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>SCAN FRESH FLIPS</button>
         <button onClick={refreshRadar} disabled={busy} style={{padding:'9px 13px',borderRadius:8,cursor:busy?'wait':'pointer',color:busy?C.outline:C.lime,background:R(C.lime,0.08),border:`1px solid ${R(busy?C.outline:C.lime,0.3)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>{busy?'REFRESHING…':'REFRESH RADAR'}</button>
       </div>
     </div>
-    {batchProgress&&<div style={{...card,padding:'10px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:batchBusy?C.cyan:C.lime}}>{batchBusy?'SCANNING': 'BATCH COMPLETE'} · {batchProgress.done}/{batchProgress.total} symbols · authoritative production scanner · orders submitted: 0</div>}
+    {batchProgress&&<div style={{...card,padding:'10px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:batchProgress.state==='error'?C.err:batchBusy?C.cyan:C.lime}}>{batchProgress.message || (batchProgress.state==='error' ? `BATCH SCAN FAILED · ${batchProgress.error||'request failed'}` : `${batchBusy?'SCANNING': 'BATCH COMPLETE'} · ${batchProgress.done}/${batchProgress.total} symbols · authoritative production scanner · orders submitted: 0`)}</div>}
     {error&&<div style={{...card,color:C.err,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}>{error}</div>}
     <div style={{display:'grid',gridTemplateColumns:selected?'minmax(0,1.55fr) minmax(300px,.85fr)':'1fr',gap:18,alignItems:'start'}}>
       <div style={{...card,padding:0,overflow:'hidden'}}>
@@ -7119,15 +7130,17 @@ function TabTrendRadar({refreshKey=0}) {
                 const qualityComplete = radarQualityComplete(activeScanner, signal);
                 const missing = radarQualityMissing(activeScanner, signal);
                 const triggered = signal.entry_triggered === true;
-                const entryStatus = triggered ? 'ENTRY TRIGGERED' : 'WAITING FOR ENTRY TRIGGER';
+                const lifecycle = String(signal.lifecycle_status||'').toUpperCase();
+                const finalized = lifecycle === 'INVALIDATED' || lifecycle === 'EXPIRED';
+                const entryStatus = lifecycle === 'INVALIDATED' ? 'INVALIDATED · NO TRADE' : lifecycle === 'EXPIRED' ? 'EXPIRED · NO TRADE' : lifecycle === 'ENTRY_TRIGGERED' || triggered ? 'ENTRY TRIGGERED' : 'WAITING FOR ENTRY TRIGGER';
                 const positionSize = signal.position_size_shares ?? signal.position_size_units;
                 return <div key={`${strategy}-${side}-${index}`} style={{marginTop:12,padding:12,borderRadius:8,border:`1px solid ${R(C.outline,0.18)}`,background:R(C.surf,0.3)}}>
-                  <div style={{display:'flex',justifyContent:'space-between',gap:8,flexWrap:'wrap',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:800,color:C.onSurf}}><span>{strategy} {side} Â· CANDIDATE</span><span style={{color:triggered?C.lime:C.lemon}}>{entryStatus}</span></div>
+                  <div style={{display:'flex',justifyContent:'space-between',gap:8,flexWrap:'wrap',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:800,color:C.onSurf}}><span>{strategy} {side} Â· {finalized?lifecycle:'CANDIDATE'}</span><span style={{color:finalized?C.outline:triggered?C.lime:C.lemon}}>{entryStatus}</span></div>
                   <div style={{display:'grid',gridTemplateColumns:'repeat(3,minmax(0,1fr))',gap:8,marginTop:10}}>{[
                     ['STATUS',signal.status||activeScanner.scanner_status||'CANDIDATE'],['LEVEL',`${radarMetric(signal.level_price)} ${radarLabel(signal.level_type)}`],['PLANNED ENTRY',radarMetric(signal.planned_entry_price)],['STOP',radarMetric(signal.stop_price)],['TARGET',radarMetric(signal.take_profit_price)],['R:R',radarMetric(signal.rr)],['SCORE',radarMetric(signal.score,4)],['PATTERN QUALITY',radarMetric(signal.pattern_quality,3)],['POSITION SIZE',positionSize===null||positionSize===undefined?'\u2014':`${radarMetric(positionSize,2)} shares`],['RISK / SHARE',radarMetric(signal.sized_risk_per_share)],['RISK / TRADE',signal.risk_per_trade_pct===null||signal.risk_per_trade_pct===undefined?'\u2014':`${radarMetric(signal.risk_per_trade_pct,2)}%`],['APPROACH',radarLabel(signal.approach_direction)]
                   ].map(item=><div key={item[0]} style={{padding:'8px',borderRadius:6,background:R(C.surfLowest,0.35)}}><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:8,color:C.outline}}>{item[0]}</div><div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar,marginTop:4,wordBreak:'break-word'}}>{item[1]||'\u2014'}</div></div>)}</div>
                   {signal.reasoning&&<div style={{marginTop:10,fontFamily:"'JetBrains Mono',monospace",fontSize:10,lineHeight:1.5,color:C.onVar}}>Reasoning: {String(signal.reasoning)}</div>}
-                  {conflict&&<div style={{marginTop:10,padding:9,borderRadius:6,background:R(C.lemon,0.09),border:`1px solid ${R(C.lemon,0.3)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.lemon}}>WARN Â· COUNTER-TREND SETUP<br/>Radar: {selected.trend} Â· {radarMetric(selected.trend_score,1)} &nbsp;|&nbsp; Scanner: {side}<br/><span style={{color:C.onVar}}>Informational only; the scanner setup remains a candidate.</span></div>}
+                  {conflict&&<div style={{marginTop:10,padding:9,borderRadius:6,background:R(C.lemon,0.09),border:`1px solid ${R(C.lemon,0.3)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.lemon}}>{finalized?'COUNTER-TREND CONTEXT':'WARN Â· COUNTER-TREND SETUP'}<br/>Radar: {selected.trend} Â· {radarMetric(selected.trend_score,1)} &nbsp;|&nbsp; Scanner: {side}<br/><span style={{color:C.onVar}}>{finalized?'The setup is no longer active.':'Informational only; the scanner setup remains a candidate.'}</span></div>}
                   {!qualityComplete&&<div style={{marginTop:10,padding:9,borderRadius:6,background:R(C.lemon,0.07),border:`1px solid ${R(C.lemon,0.24)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.lemon}}>WARN Â· DATA QUALITY PARTIAL<br/><span style={{color:C.onVar}}>Missing: {missing.length?missing.map(radarLabel).join(', '):'quality fields unavailable'}</span>{(signal.spread_filter_status||signal.corporate_action_filter_status)&&<><br/><span style={{color:C.outline}}>Filter status: {signal.spread_filter_status||'unknown'} Â· {signal.corporate_action_filter_status||'unknown'}</span></>}</div>}
                 </div>;
               })}

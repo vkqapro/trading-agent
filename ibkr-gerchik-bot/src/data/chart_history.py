@@ -162,20 +162,50 @@ def build_partial_daily_frame(
         cutoff = cutoff.tz_localize("UTC") if cutoff.tzinfo is None else cutoff.tz_convert("UTC")
         parsed = pd.to_datetime(intraday["date"], errors="coerce", utc=True)
         intraday = intraday.loc[parsed <= cutoff]
+
+    def with_intraday_provenance(frame: pd.DataFrame) -> pd.DataFrame:
+        """Keep the exact 5m rows beside the aggregate for lifecycle chronology.
+
+        The aggregate remains the scanner input.  This in-memory provenance is
+        deliberately attached to that same frame so lifecycle evaluation can
+        distinguish entry-first from invalidation-first days without creating a
+        second market-data path.
+        """
+        result = frame.copy()
+        result.attrs = dict(getattr(daily, "attrs", {}))
+        chronology_bars = intraday
+        if not chronology_bars.empty and "date" in chronology_bars.columns:
+            chronology_dates = pd.to_datetime(chronology_bars["date"], errors="coerce", utc=True)
+            latest_intraday_date = chronology_dates.dt.date.max()
+            chronology_bars = chronology_bars.loc[chronology_dates.dt.date == latest_intraday_date]
+        # Store records rather than a DataFrame: pandas compares attrs during
+        # concat/rolling operations, and DataFrame equality is ambiguous.
+        # Only the latest intraday session is needed for lifecycle chronology;
+        # retaining all historical 5m rows would make pandas metadata costly.
+        result.attrs["intraday_bars"] = chronology_bars.to_dict("records")
+        result.attrs["intraday_timeframe"] = "5m"
+        return result
+
     derived = daily_bars_from_intraday(intraday)
     if derived.empty:
-        return daily.sort_values("date").drop_duplicates("date", keep="last").reset_index(drop=True)
+        return with_intraday_provenance(
+            daily.sort_values("date").drop_duplicates("date", keep="last").reset_index(drop=True)
+        )
     derived["date"] = pd.to_datetime(derived["date"], errors="coerce").dt.normalize()
     # Only the latest intraday session is developing.  Historical daily rows
     # remain authoritative; overlaying every 5m-covered date would rewrite
     # closed candles and make an as_of snapshot depend on old intraday files.
     requested_date = pd.Timestamp(as_of).date() if as_of is not None else None
     if requested_date is not None and requested_date not in set(derived["date"].dt.date):
-        return daily.sort_values("date").drop_duplicates("date", keep="last").reset_index(drop=True)
+        return with_intraday_provenance(
+            daily.sort_values("date").drop_duplicates("date", keep="last").reset_index(drop=True)
+        )
     latest_date = derived["date"].max() if requested_date is None else pd.Timestamp(requested_date)
     latest = derived.loc[derived["date"] == latest_date, columns]
     merged = pd.concat([daily, latest], ignore_index=True)
-    return merged.sort_values("date").drop_duplicates("date", keep="last").reset_index(drop=True)
+    return with_intraday_provenance(
+        merged.sort_values("date").drop_duplicates("date", keep="last").reset_index(drop=True)
+    )
 
 
 def backfill_daily_from_intraday(symbol: str, session_date: object | None = None) -> Dict[str, object]:
