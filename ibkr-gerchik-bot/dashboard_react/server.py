@@ -25,7 +25,7 @@ if str(ROOT) not in sys.path:
 
 from dataclasses import asdict, replace
 from datetime import datetime, timedelta, timezone
-from typing import Any, Mapping
+from typing import Any, Literal, Mapping
 
 import pandas as pd
 import uvicorn
@@ -35,6 +35,7 @@ from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font, PatternFill
+from pydantic import BaseModel, Field
 from zoneinfo import ZoneInfo
 
 from dashboard import data_access as da, forecast as fc
@@ -63,6 +64,8 @@ from src.journal.flex_statement import (
 from src.journal.order_journal import load_order_journal, save_review
 from src.stocks.tradingview_webhook import handle_stock_tradingview_webhook, load_stock_tradingview_state
 from dashboard_react.market_screener import ScreenerParams, run_market_screener
+from src.daily_trader import DailyTraderScanRequest, DailyTraderService
+from src.pre_trade_reviewer import router as pre_trade_reviewer_router
 from src.radar.service import RadarService
 from src.scanners.inefficiency_reclaim import run_inefficiency_reclaim_screener
 from src.storage.inefficiency_reclaim_store import InefficiencyReclaimStore
@@ -85,6 +88,7 @@ from src.decision.strategy_definitions import current_strategy_parameters, get_s
 from src.decision.strategy_sources import StrategySnapshot, snapshot_to_candidate
 
 app = FastAPI(title="Vitaly's Trading Bot Dashboard API", docs_url=None, redoc_url=None)
+app.include_router(pre_trade_reviewer_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -2141,6 +2145,158 @@ def _radar_service() -> RadarService:
     return RadarService(scanner_runner=_run_authoritative_radar_scanner)
 
 
+class DailyTraderScanBody(BaseModel):
+    """Stable, bounded request model for the read-only Daily Trader API."""
+
+    mode: Literal["scheduled", "top", "breakouts", "fresh_flips"] = "scheduled"
+    top_n: int = Field(default=10, ge=0, le=100)
+    include_breakouts: bool = True
+    include_fresh_flips: bool = True
+    max_symbols: int = Field(default=30, ge=1, le=100)
+
+
+class DailyTraderScannerCounts(BaseModel):
+    requested: int
+    completed: int
+    failed: int
+
+
+class DailyTraderSummary(BaseModel):
+    active_candidates: int
+    entry_triggered: int
+    pending_entry: int
+    invalidated: int
+    expired: int
+    ambiguous: int
+    no_setup: int
+    errors: int
+
+
+class DailyTraderSetup(BaseModel):
+    symbol: str
+    radar: dict[str, Any] | None = None
+    scanner: dict[str, Any]
+
+
+class DailyTraderNoSetup(BaseModel):
+    symbol: str
+    radar: dict[str, Any] | None = None
+
+
+class DailyTraderError(BaseModel):
+    symbol: str
+    error: str
+
+
+class DailyTraderScanResponse(BaseModel):
+    scan_id: str
+    scan_timestamp: str
+    market_status: Literal["OPEN", "CLOSED"]
+    mode: Literal["scheduled", "top", "breakouts", "fresh_flips"]
+    read_only: bool
+    orders_submitted: int
+    radar_as_of: str | None = None
+    selection: dict[str, int]
+    scanner: DailyTraderScannerCounts
+    summary: DailyTraderSummary
+    active: list[DailyTraderSetup]
+    terminal: list[DailyTraderSetup]
+    no_setup: list[DailyTraderNoSetup]
+    errors: list[DailyTraderError]
+
+
+class DailyTraderSymbolResponse(BaseModel):
+    scan_id: str
+    scan_timestamp: str
+    market_status: Literal["OPEN", "CLOSED"]
+    symbol: str
+    radar: dict[str, Any] | None = None
+    scanner_status: str
+    read_only: bool
+    orders_submitted: int
+    summary: DailyTraderSummary
+    active: list[DailyTraderSetup]
+    terminal: list[DailyTraderSetup]
+    no_setup: list[DailyTraderNoSetup]
+    errors: list[DailyTraderError]
+
+
+class DailyTraderHealthResponse(BaseModel):
+    status: Literal["ok", "degraded"]
+    read_only: bool
+    orders_submitted: int
+    radar_available: bool
+    scanner_available: bool
+    latest_radar_as_of: str | None = None
+
+
+def _production_scanner_health() -> dict[str, Any]:
+    """Read-only, bounded health check for the production scanner.
+
+    This deliberately does not call ``run_market_screener`` or the scanner
+    runner. The market-screener endpoint is a full universe analysis route,
+    not a liveness probe. Health only imports scanner contracts, reads the
+    persisted universe, and inspects the newest immutable scan artifact.
+    """
+    engine_root = ROOT / "backtest_engine_v24.4"
+    if str(engine_root) not in sys.path:
+        sys.path.insert(0, str(engine_root))
+
+    from scanner.data_adapter import available_daily_symbols, configured_symbols, universe_source
+    from scanner.registry import list_strategy_specs
+
+    configured = list(configured_symbols())
+    available = list(available_daily_symbols(configured))
+    strategies = [spec.strategy_id for spec in list_strategy_specs() if spec.production_enabled]
+
+    runs_root = engine_root / "scanner" / "runs"
+    latest: dict[str, Any] | None = None
+    run_dirs = sorted(runs_root.glob("scan_*"), key=lambda path: path.stat().st_mtime, reverse=True) if runs_root.exists() else []
+    for run_dir in run_dirs:
+        if not run_dir.is_dir():
+            continue
+        try:
+            manifest = json.loads((run_dir / "manifest.json").read_text(encoding="utf-8"))
+            summary = json.loads((run_dir / "summary.json").read_text(encoding="utf-8"))
+        except (OSError, ValueError, TypeError):
+            continue
+        if not isinstance(manifest, dict) or not isinstance(summary, dict):
+            continue
+        errors = int(summary.get("errors") or 0)
+        latest = {
+            "run_id": run_dir.name,
+            "last_scan_at": manifest.get("completed_at") or manifest.get("started_at"),
+            "last_scan_status": "COMPLETED_WITH_ERRORS" if errors else "COMPLETED",
+            "symbols_scanned": summary.get("symbols_scanned"),
+            "candidate_count": sum(int(item.get("entry_signals", 0)) for item in (summary.get("strategies") or {}).values() if isinstance(item, dict)),
+            "error_count": errors,
+        }
+        break
+
+    return {
+        "status": "ok",
+        "read_only": True,
+        "scanner_available": True,
+        "scanner_module_loaded": True,
+        "required_data_source_reachable": True,
+        "data_source": universe_source(),
+        "configured_symbol_count": len(configured),
+        "available_daily_symbol_count": len(available),
+        "production_strategy_count": len(strategies),
+        "production_strategies": strategies,
+        "latest_artifact_readable": latest is not None,
+        "last_scan_at": latest.get("last_scan_at") if latest else None,
+        "last_scan_status": latest.get("last_scan_status") if latest else "NO_ARTIFACT",
+        "latest_scan": latest,
+        "orders_submitted": 0,
+    }
+
+
+def _daily_trader_service() -> DailyTraderService:
+    """Build Daily Trader on the existing Radar/scanner seam only."""
+    return DailyTraderService(radar_service=_radar_service())
+
+
 @app.get("/api/market-screener")
 @app.get("/api/crypto/market-screener")
 def api_market_screener(
@@ -2260,6 +2416,30 @@ def api_market_screener(
     )
 
 
+@app.get("/api/market-screener/health")
+def api_market_screener_health():
+    """Lightweight production-scanner liveness/readiness probe.
+
+    No universe scan, market-data fetch, scanner artifact write, approval, or
+    broker operation is performed here.
+    """
+    try:
+        return _production_scanner_health()
+    except Exception as exc:
+        LOGGER.exception("Production scanner health check failed")
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "status": "unavailable",
+                "read_only": True,
+                "scanner_available": False,
+                "reason_code": "SCANNER_HEALTH_CHECK_FAILED",
+                "reason": type(exc).__name__,
+                "orders_submitted": 0,
+            },
+        ) from exc
+
+
 @app.get("/api/radar")
 def api_radar(
     trend: str = "",
@@ -2348,6 +2528,32 @@ def api_radar_symbol(symbol: str):
         raise HTTPException(404, f"No Radar snapshot found for {symbol.upper()}")
     history = [item.to_dict() for item in service.store.snapshots(symbol=symbol, limit=90)]
     return {"result": result, "history": history}
+
+
+@app.post("/api/daily-trader/scan", response_model=DailyTraderScanResponse)
+def api_daily_trader_scan(body: DailyTraderScanBody):
+    try:
+        values = body.model_dump() if hasattr(body, "model_dump") else body.dict()
+        return _daily_trader_service().scan(DailyTraderScanRequest.from_mapping(values))
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
+    except RuntimeError as exc:
+        raise HTTPException(503, str(exc)) from exc
+
+
+@app.get("/api/daily-trader/health", response_model=DailyTraderHealthResponse)
+def api_daily_trader_health():
+    return _daily_trader_service().health()
+
+
+@app.get("/api/daily-trader/symbol/{symbol}", response_model=DailyTraderSymbolResponse)
+def api_daily_trader_symbol(symbol: str):
+    try:
+        return _daily_trader_service().symbol(symbol)
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
+    except RuntimeError as exc:
+        raise HTTPException(503, str(exc)) from exc
 
 
 @app.get("/api/inefficiency-reclaim/settings")

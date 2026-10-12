@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import sys
+import time
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import patch
@@ -21,6 +22,45 @@ def _request() -> Request:
         "query_string": b"timeframe=1D&strategies=PRB1&side=LONG&anchor_date=2026-10-01",
         "headers": [], "scheme": "http", "server": ("test", 80), "client": ("test", 1),
     })
+
+
+def test_production_scanner_health_is_lightweight_and_never_runs_universe_scan(monkeypatch) -> None:
+    def fail_scan(*args, **kwargs):
+        raise AssertionError("health probe must not run the production universe scan")
+
+    monkeypatch.setattr(server, "run_market_screener", fail_scan)
+    started = time.perf_counter()
+    payload = server.api_market_screener_health()
+    elapsed = time.perf_counter() - started
+
+    assert elapsed < 2.0
+    assert payload["status"] == "ok"
+    assert payload["read_only"] is True
+    assert payload["scanner_available"] is True
+    assert payload["orders_submitted"] == 0
+    assert payload["latest_artifact_readable"] is True
+
+
+def test_no_setup_scan_status_is_still_scanner_healthy(monkeypatch) -> None:
+    from ops.trading_platform_ops import Supervisor
+
+    monkeypatch.setattr(
+        "ops.trading_platform_ops._get_json",
+        lambda url: {
+            "status": "ok",
+            "read_only": True,
+            "scanner_available": True,
+            "last_scan_status": "NO_SETUP",
+            "orders_submitted": 0,
+        },
+    )
+    result = Supervisor(sleep=lambda _: None)._api(
+        "http://127.0.0.1:8550/api/market-screener/health", "Production Scanner"
+    )
+
+    assert result["status"] == "HEALTHY"
+    assert result["response"]["scanner_available"] is True
+    assert result["response"]["last_scan_status"] == "NO_SETUP"
 
 
 def test_production_web_endpoint_and_mcp_runner_share_snapshot() -> None:

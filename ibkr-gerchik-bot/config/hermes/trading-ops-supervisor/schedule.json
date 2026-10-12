@@ -1,0 +1,9 @@
+{
+  "name": "Trading Morning Startup",
+  "schedule": "0 7 * * 1-5",
+  "timezone": "America/New_York",
+  "profile": "trading-ops-supervisor",
+  "skill": "trading-platform-morning-startup",
+  "deliver": "local",
+  "telegram": false
+}

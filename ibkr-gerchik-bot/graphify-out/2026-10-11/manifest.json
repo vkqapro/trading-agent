@@ -90,9 +90,9 @@
     "semantic_hash": ""
   },
   "dashboard_react/server.py": {
-    "mtime": 1791694790.0103686,
-    "seen": 1791695004.992148,
-    "ast_hash": "8c1c744f1bd42df11a7554f5f5628d1c",
+    "mtime": 1791738645.7151878,
+    "seen": 1791738969.0451677,
+    "ast_hash": "1abfc0f1e0ba5ca8659cc31557b1d715",
     "semantic_hash": ""
   },
   "design_handoff/trading-bot-dashboard/project/ibkr-gerchik-bot/dashboard/app.py": {
@@ -162,8 +162,8 @@
     "semantic_hash": "a47f92efff8d7a388062745b50785c68"
   },
   "memory/order_requests.json": {
-    "mtime": 1791734563.8512125,
-    "seen": 1791736177.4055114,
+    "mtime": 1791739162.8357906,
+    "seen": 1791739167.8683684,
     "ast_hash": "4147978db899d992d3ea29f1409371e3",
     "semantic_hash": ""
   },
@@ -1194,9 +1194,9 @@
     "semantic_hash": ""
   },
   "dashboard_react/index.html": {
-    "mtime": 1791732952.8333576,
-    "seen": 1791733341.1347008,
-    "ast_hash": "a5c9dcfb3e9695214e22638bd3a77253",
+    "mtime": 1791737862.7063591,
+    "seen": 1791738021.0987482,
+    "ast_hash": "b93bbee79da0a755d81c723f3b9c294e",
     "semantic_hash": ""
   },
   "design_handoff/trading-bot-dashboard/README.md": {
@@ -4380,8 +4380,8 @@
     "semantic_hash": ""
   },
   "tests/test_trend_radar.py": {
-    "mtime": 1791731569.920842,
-    "seen": 1791731728.7311227,
+    "mtime": 1791737881.059337,
+    "seen": 1791738021.086486,
     "ast_hash": "53d50f8be8bc2d9887d57479db9dbca1",
     "semantic_hash": ""
   },
@@ -4395,6 +4395,36 @@
     "mtime": 1791736405.9881408,
     "seen": 1791736472.8280473,
     "ast_hash": "4d9563d506312b7e4a3f70dc410fff1c",
+    "semantic_hash": ""
+  },
+  "tests/test_trend_radar_fresh_flips.py": {
+    "mtime": 1791737902.3570185,
+    "seen": 1791738021.0864892,
+    "ast_hash": "7f648d2f8a42865a96eb80818cc9ebc3",
+    "semantic_hash": ""
+  },
+  "src/daily_trader.py": {
+    "mtime": 1791739094.5479906,
+    "seen": 1791739167.8748338,
+    "ast_hash": "0fbda831cfe2459fc84489ffbc87b9fc",
+    "semantic_hash": ""
+  },
+  "tests/test_daily_trader.py": {
+    "mtime": 1791738703.8775263,
+    "seen": 1791738969.0788374,
+    "ast_hash": "77b0a4bdbf58e2ace36ca13fac0f82ba",
+    "semantic_hash": ""
+  },
+  "tools/daily_trader_api.py": {
+    "mtime": 1791738736.4191406,
+    "seen": 1791738969.0954149,
+    "ast_hash": "4d8e3c3ef7278976e13be32424705a2b",
+    "semantic_hash": ""
+  },
+  "docs/DAILY_TRADER_V1.md": {
+    "mtime": 1791738792.7617915,
+    "seen": 1791738969.1120827,
+    "ast_hash": "d7ab8f2a1e9f3ef0ad586336ea145d7b",
     "semantic_hash": ""
   }
 }

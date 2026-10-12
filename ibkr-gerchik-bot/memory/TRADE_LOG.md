@@ -182129,3 +182129,24 @@ Reasons:
   }
 }
 ```
+
+## Manual Trade SNAP (2026-10-12T11:46:19)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: SNAP
+- **strategy**: market_screener_prb1_manual_setup
+- **level_type**: resistance
+- **direction**: long
+- **signal**: BUY
+- **entry**: 6.38
+- **stop_loss**: 6.1342
+- **target**: 6.9945
+- **reward_risk**: 2.5000000000000018
+- **partial_targets**: []
+- **quantity**: 109
+- **market_order_id**: 1001
+- **stop_order_id**: 1002
+- **limit_order_id**: 1003
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}

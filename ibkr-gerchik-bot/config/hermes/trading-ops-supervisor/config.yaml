@@ -1,0 +1,15 @@
+_config_version: 49
+model:
+  default: AtomicChat/Ornith-1.5-35B-A3B-GGUF:IQ3_XXS
+  provider: unslouth
+  base_url: http://localhost:8888/v1
+  api_mode: chat_completions
+  key_env: HERMES_CUSTOM_UNSLOUTH_API_KEY
+providers:
+  unslouth:
+    name: Unslouth
+    base_url: http://localhost:8888/v1
+    model: AtomicChat/Ornith-1.5-35B-A3B-GGUF:IQ3_XXS
+    discover_models: true
+    context_length: 120000
+    key_env: HERMES_CUSTOM_UNSLOUTH_API_KEY
