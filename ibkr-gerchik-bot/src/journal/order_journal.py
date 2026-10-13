@@ -22,6 +22,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 
@@ -33,6 +34,7 @@ from src.journal.flex_statement import normalize_trade_timestamp
 REVIEWS_PATH = MEMORY_DIR / "order_journal_reviews.json"
 CLOSED_POSITIONS_PATH = MEMORY_DIR / "runtime" / "closed_positions.json"
 MAX_ROWS = 500
+ET = ZoneInfo("America/New_York")
 
 
 def _now() -> str:
@@ -123,6 +125,18 @@ def _order_request_ids() -> set[str]:
     }
 
 
+def _order_requests_by_id() -> Dict[str, Dict[str, Any]]:
+    data = _read_json(MEMORY_DIR / "order_requests.json", {"requests": []})
+    requests = data.get("requests") if isinstance(data, dict) else []
+    if not isinstance(requests, list):
+        return {}
+    return {
+        str(request.get("id")): request
+        for request in requests
+        if isinstance(request, dict) and request.get("id")
+    }
+
+
 def _upper(value: Any) -> str:
     return str(value or "").strip().upper()
 
@@ -134,7 +148,7 @@ def _parse_dt(value: Any) -> datetime | None:
         text = str(value).strip().replace("Z", "+00:00")
         parsed = datetime.fromisoformat(text)
         if parsed.tzinfo is None:
-            parsed = parsed.replace(tzinfo=timezone.utc)
+            parsed = parsed.replace(tzinfo=ET)
         return parsed.astimezone(timezone.utc)
     except Exception:
         return None
@@ -437,6 +451,11 @@ def _position_opened_near_request(position: Dict[str, Any], request: Dict[str, A
 
 
 def _observed_close_matches_request(position: Dict[str, Any], request: Dict[str, Any], result: Dict[str, Any]) -> bool:
+    requested = _parse_dt(request.get("updated_at") or request.get("created_at"))
+    closed = _parse_dt(position.get("closed_at"))
+    if requested and closed and closed < requested:
+        return False
+
     recorded_request_id = str(position.get("request_id") or "")
     if recorded_request_id:
         return recorded_request_id == str(request.get("id") or "")
@@ -450,13 +469,34 @@ def _observed_close_matches_request(position: Dict[str, Any], request: Dict[str,
         return bool(pos_order_ids & req_order_ids)
 
     opened = _parse_dt(position.get("opened_at"))
-    requested = _parse_dt(request.get("updated_at") or request.get("created_at"))
-    closed = _parse_dt(position.get("closed_at"))
     if requested and opened and abs((opened - requested).total_seconds()) <= 24 * 60 * 60:
         return True
     if requested and closed and closed >= requested:
         return True
     return not pos_order_ids and not req_order_ids
+
+
+def _broker_pnl_is_usable(broker_pnl: float | None, calculated_pnl: float | None) -> bool:
+    if broker_pnl is None:
+        return False
+    if calculated_pnl is None:
+        return True
+    # IBKR may initially expose an execution before the commission report has a
+    # realized P&L value. Older imports stored that missing value as 0.0; avoid
+    # letting that placeholder erase a non-zero price-based close.
+    return not (abs(broker_pnl) < 0.005 and abs(calculated_pnl) >= 0.005)
+
+
+def _valid_observed_opened_at(position: Dict[str, Any]) -> Any:
+    closed = _parse_dt(position.get("closed_at"))
+    for key in ("opened_at", "first_seen_at"):
+        value = position.get(key)
+        opened = _parse_dt(value)
+        if opened is None:
+            continue
+        if closed is None or opened <= closed:
+            return value
+    return None
 
 
 def _rows_from_order_requests(open_positions: Dict[str, Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -597,7 +637,7 @@ def _rows_from_order_requests(open_positions: Dict[str, Dict[str, Any]]) -> List
                 message=str(req.get("message") or ""),
                 raw=req,
             )
-        if observed_broker_pnl is not None:
+        if _broker_pnl_is_usable(observed_broker_pnl, row.get("pnl")):
             row["pnl"] = observed_broker_pnl
             row["r_multiple"] = _r_multiple(
                 observed_broker_pnl,
@@ -675,10 +715,17 @@ def _rows_from_unlinked_broker_closes() -> List[Dict[str, Any]]:
     positions = data.get("positions") if isinstance(data, dict) else []
     if not isinstance(positions, list):
         return []
+    requests_by_id = _order_requests_by_id()
     rows: List[Dict[str, Any]] = []
     for position in positions:
-        if not isinstance(position, dict) or position.get("request_id"):
+        if not isinstance(position, dict):
             continue
+        request_id = str(position.get("request_id") or "")
+        if request_id:
+            request = requests_by_id.get(request_id)
+            result = request.get("result") if isinstance(request, dict) and isinstance(request.get("result"), dict) else {}
+            if isinstance(request, dict) and _observed_close_matches_request(position, request, result):
+                continue
         execution_id = str(position.get("exit_execution_id") or "")
         if not execution_id:
             continue
@@ -689,33 +736,41 @@ def _rows_from_unlinked_broker_closes() -> List[Dict[str, Any]]:
         planned_stop = position.get("planned_stop_loss") or position.get("stop_loss")
         current_target = position.get("current_target") or position.get("target")
         planned_target = position.get("planned_target") or position.get("target")
-        rows.append(
-            _base_row(
-                journal_id=f"stock:broker:{execution_id}",
-                symbol=_upper(position.get("symbol")),
-                market="STOCK",
-                source=str(position.get("source") or "IBKR"),
-                side=side,
-                status="CLOSED_OBSERVED",
-                created_at=position.get("closed_at"),
-                opened_at=position.get("opened_at") or position.get("first_seen_at"),
-                closed_at=position.get("closed_at"),
-                planned_entry=entry,
-                planned_stop=planned_stop,
-                planned_target=planned_target,
-                current_stop=current_stop,
-                current_target=current_target,
-                actual_entry=position.get("avg_cost") or position.get("entry"),
-                actual_exit=position.get("exit_price") or position.get("actual_exit"),
-                qty=position.get("exit_quantity") or position.get("quantity"),
-                strategy=position.get("strategy") or "broker_observed",
-                exit_reason=position.get("exit_reason") or "BROKER_SELL_EXECUTION",
-                execution_id=execution_id,
-                message="Broker execution observed without a matching local entry request.",
-                raw=position,
-                opened_at_fallback_to_created=False,
-            )
+        row = _base_row(
+            journal_id=f"stock:broker:{execution_id}",
+            symbol=_upper(position.get("symbol")),
+            market="STOCK",
+            source=str(position.get("source") or "IBKR"),
+            side=side,
+            status="CLOSED_OBSERVED",
+            created_at=position.get("closed_at"),
+            opened_at=_valid_observed_opened_at(position),
+            closed_at=position.get("closed_at"),
+            planned_entry=entry,
+            planned_stop=planned_stop,
+            planned_target=planned_target,
+            current_stop=current_stop,
+            current_target=current_target,
+            actual_entry=position.get("avg_cost") or position.get("entry"),
+            actual_exit=position.get("exit_price") or position.get("actual_exit"),
+            qty=position.get("exit_quantity") or position.get("quantity"),
+            strategy=position.get("strategy") or "broker_observed",
+            exit_reason=position.get("exit_reason") or "BROKER_SELL_EXECUTION",
+            execution_id=execution_id,
+            message="Broker execution observed without a matching local entry request.",
+            raw=position,
+            opened_at_fallback_to_created=False,
         )
+        broker_pnl = _f(position.get("broker_realized_pnl"))
+        if _broker_pnl_is_usable(broker_pnl, row.get("pnl")):
+            row["pnl"] = broker_pnl
+            row["r_multiple"] = _r_multiple(
+                broker_pnl,
+                row.get("planned_entry"),
+                row.get("planned_stop"),
+                row.get("quantity"),
+            )
+        rows.append(row)
     return rows
 
 

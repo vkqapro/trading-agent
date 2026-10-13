@@ -15,6 +15,7 @@ from dataclasses import replace
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict
+from zoneinfo import ZoneInfo
 
 from src.brokers.ibkr import IBKRClient
 from src.config import LOGGER, MEMORY_DIR, SETTINGS
@@ -24,6 +25,7 @@ from src.journal.position_history import archive_positions, load_position_histor
 SYNC_STATUS_PATH = MEMORY_DIR / "runtime" / "broker_order_sync.json"
 CLOSED_POSITIONS_PATH = MEMORY_DIR / "runtime" / "closed_positions.json"
 SYNC_TTL_SECONDS = float(os.getenv("ORDER_JOURNAL_BROKER_SYNC_TTL_SECONDS", "15") or 15)
+ET = ZoneInfo("America/New_York")
 
 
 def _read_json(path: Path, default: Any) -> Any:
@@ -55,9 +57,90 @@ def _parse_dt(value: Any) -> datetime | None:
         return None
     try:
         parsed = datetime.fromisoformat(str(value).strip().replace("Z", "+00:00"))
-        return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=ET)
+        return parsed.astimezone(timezone.utc)
     except (TypeError, ValueError):
         return None
+
+
+def _execution_time(execution: Dict[str, Any]) -> datetime | None:
+    return _parse_dt(execution.get("time"))
+
+
+def _request_opened_at(request: Dict[str, Any]) -> datetime | None:
+    return _parse_dt(request.get("updated_at") or request.get("created_at"))
+
+
+def _position_opened_at(position: Dict[str, Any] | None) -> datetime | None:
+    if not position:
+        return None
+    return _parse_dt(position.get("opened_at") or position.get("first_seen_at"))
+
+
+def _execution_can_close_opened_at(execution: Dict[str, Any], opened_at: datetime | None) -> bool:
+    execution_at = _execution_time(execution)
+    if execution_at is None or opened_at is None:
+        return True
+    return execution_at >= opened_at
+
+
+def _execution_can_close_request(execution: Dict[str, Any], request: Dict[str, Any] | None) -> bool:
+    if not request:
+        return True
+    return _execution_can_close_opened_at(execution, _request_opened_at(request))
+
+
+def _execution_can_close_position(execution: Dict[str, Any], position: Dict[str, Any] | None) -> bool:
+    return _execution_can_close_opened_at(execution, _position_opened_at(position))
+
+
+def _has_value(value: Any) -> bool:
+    return value not in (None, "", 0, "0")
+
+
+def _merge_closed_record(existing: Dict[str, Any], incoming: Dict[str, Any]) -> bool:
+    """Merge a refreshed execution without erasing richer local lifecycle data."""
+    execution_fact_keys = {
+        "symbol",
+        "quantity",
+        "closed_at",
+        "exit_price",
+        "exit_quantity",
+        "exit_order_id",
+        "exit_perm_id",
+        "exit_execution_id",
+        "exit_reason",
+    }
+    optional_execution_fact_keys = {"commission", "broker_realized_pnl"}
+    changed = False
+    if (
+        str(existing.get("exit_execution_id") or "") == str(incoming.get("exit_execution_id") or "")
+        and _has_value(existing.get("request_id"))
+        and not _has_value(incoming.get("request_id"))
+        and _has_value(incoming.get("quantity"))
+        and _has_value(existing.get("quantity"))
+        and float(existing.get("quantity") or 0) != float(incoming.get("quantity") or 0)
+    ):
+        existing["request_id"] = ""
+        changed = True
+    for key, value in incoming.items():
+        old = existing.get(key)
+        if key in execution_fact_keys and value is not None:
+            if old != value:
+                existing[key] = value
+                changed = True
+        elif key in optional_execution_fact_keys and _has_value(value):
+            if old != value:
+                existing[key] = value
+                changed = True
+        elif _has_value(value) and not _has_value(old):
+            existing[key] = value
+            changed = True
+        elif key not in existing and value is not None:
+            existing[key] = value
+            changed = True
+    return changed
 
 
 def _order_ids(payload: Dict[str, Any]) -> set[str]:
@@ -88,6 +171,8 @@ def _place_requests() -> list[Dict[str, Any]]:
 
 def _execution_matches_request(execution: Dict[str, Any], request: Dict[str, Any]) -> bool:
     if _upper(execution.get("symbol")) != _upper(request.get("symbol")):
+        return False
+    if not _execution_can_close_request(execution, request):
         return False
     result = request.get("result") if isinstance(request.get("result"), dict) else {}
     execution_order_id = str(execution.get("order_id") or "")
@@ -180,6 +265,8 @@ def _record_closed_positions(
         request = next((item for item in _place_requests() if _execution_matches_request(execution, item)), None)
         symbol = _upper(execution.get("symbol"))
         prior_position = before.get(symbol)
+        if prior_position and not _execution_can_close_position(execution, prior_position):
+            prior_position = None
         if request is None and prior_position:
             # Auto-management exits are standalone market orders, so their
             # order id is not one of the entry/bracket ids in order_requests.
@@ -190,6 +277,7 @@ def _record_closed_positions(
                     item
                     for item in _place_requests()
                     if _upper(item.get("symbol")) == symbol
+                    and _execution_can_close_request(execution, item)
                     and prior_ids.intersection(
                         _order_ids(item.get("result") if isinstance(item.get("result"), dict) else {})
                     )
@@ -211,6 +299,7 @@ def _record_closed_positions(
                     item
                     for item in _place_requests()
                     if _upper(item.get("symbol")) == symbol
+                    and _execution_can_close_request(execution, item)
                     and open_ids.intersection(
                         _order_ids(item.get("result") if isinstance(item.get("result"), dict) else {})
                     )
@@ -242,22 +331,21 @@ def _record_closed_positions(
                 and _upper(item.get("symbol")) == symbol
                 and request_ids
                 and request_ids.intersection(_order_ids(item))
+                and _execution_can_close_opened_at(execution, _position_opened_at(item))
             ),
             None,
         )
-        record = _execution_closed_record(execution, request, prior_position or before.get(symbol))
+        record = _execution_closed_record(execution, request, prior_position)
         if matching is None:
             positions.append(record)
             added += 1
             changed = True
         elif matching_by_execution is matching:
-            if matching != record:
-                matching.clear()
-                matching.update(record)
+            if _merge_closed_record(matching, record):
                 changed = True
         else:
             for key, value in record.items():
-                if matching.get(key) in (None, "", 0, "0") and value not in (None, "", 0, "0"):
+                if not _has_value(matching.get(key)) and _has_value(value):
                     matching[key] = value
                     changed = True
 

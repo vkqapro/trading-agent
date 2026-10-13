@@ -40,11 +40,60 @@ def _safe_print(payload: dict) -> None:
         pass
 
 
+def _pid_alive(pid: object) -> bool:
+    try:
+        pid_int = int(pid)
+    except (TypeError, ValueError):
+        return False
+    if pid_int <= 0:
+        return False
+    if os.name == "nt":
+        import ctypes
+
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        process_query_limited_information = 0x1000
+        still_active = 259
+        handle = kernel32.OpenProcess(process_query_limited_information, False, pid_int)
+        if not handle:
+            return ctypes.get_last_error() == 5
+        try:
+            exit_code = ctypes.c_ulong()
+            if not kernel32.GetExitCodeProcess(handle, ctypes.byref(exit_code)):
+                return ctypes.get_last_error() == 5
+            return exit_code.value == still_active
+        finally:
+            kernel32.CloseHandle(handle)
+    try:
+        os.kill(pid_int, 0)
+        return True
+    except PermissionError:
+        return True
+    except OSError:
+        return False
+
+
+def _lock_owner() -> dict:
+    try:
+        payload = json.loads(LOCK_PATH.read_text(encoding="utf-8"))
+        return payload if isinstance(payload, dict) else {}
+    except (OSError, ValueError, TypeError):
+        return {}
+
+
+def _lock_owned_by_current_process() -> bool:
+    return _lock_owner().get("pid") == os.getpid()
+
+
 @contextmanager
 def _single_worker_lock(stale_after_seconds: int) -> Iterator[bool]:
     ensure_crypto_directories()
     now = time.time()
     if LOCK_PATH.exists():
+        owner = _lock_owner()
+        owner_pid = owner.get("pid")
+        if _pid_alive(owner_pid):
+            yield False
+            return
         try:
             age = now - LOCK_PATH.stat().st_mtime
             if age > stale_after_seconds:
@@ -61,7 +110,7 @@ def _single_worker_lock(stale_after_seconds: int) -> Iterator[bool]:
     try:
         yield acquired
     finally:
-        if acquired:
+        if acquired and _lock_owned_by_current_process():
             try:
                 LOCK_PATH.unlink()
             except OSError:

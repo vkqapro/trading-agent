@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
 
-from ops.trading_platform_ops import ProcessInfo, Supervisor
+from ops.trading_platform_ops import ProcessInfo, Supervisor, human_report
 
 
 def _market_data_spec(tmp_path: Path):
@@ -18,6 +18,11 @@ def _market_data_spec(tmp_path: Path):
 def _write_market_data_status(spec, *, age_seconds=30, market_data_status="healthy", **quality):
     stamp = datetime.now(timezone.utc) - timedelta(seconds=age_seconds)
     payload = {
+        "status": quality.pop("status", "CYCLE_COMPLETE"),
+        "state": quality.pop("state", "CYCLE_COMPLETE"),
+        "pid": quality.pop("pid", 11),
+        "last_heartbeat": quality.pop("last_heartbeat", stamp.isoformat()),
+        "current_session": quality.pop("current_session", "ACTIVE_SESSION"),
         "market_data_status": market_data_status,
         "last_cycle_at": stamp.isoformat(),
         "latest_fresh_cycle_at": stamp.isoformat(),
@@ -25,6 +30,24 @@ def _write_market_data_status(spec, *, age_seconds=30, market_data_status="healt
         "health": {"requested": 194, "received": 194, "fresh": 194, "advanced": 194, "stale": 0, "no_data": 0, "errors": 0},
     }
     payload["health"].update(quality)
+    spec.heartbeat.write_text(json.dumps(payload), encoding="utf-8")
+
+
+def _write_market_data_waiting_status(spec, *, session="PRE_SESSION", heartbeat_age_seconds=30, cycle_age_seconds=3600, pid=11):
+    heartbeat = datetime.now(timezone.utc) - timedelta(seconds=heartbeat_age_seconds)
+    cycle = datetime.now(timezone.utc) - timedelta(seconds=cycle_age_seconds)
+    payload = {
+        "status": "WAITING_FOR_SESSION",
+        "state": "WAITING_FOR_SESSION",
+        "pid": pid,
+        "last_heartbeat": heartbeat.isoformat(),
+        "current_session": session,
+        "market_data_status": "healthy",
+        "last_cycle_at": cycle.isoformat(),
+        "latest_fresh_cycle_at": None,
+        "cycle": 1,
+        "health": {"requested": 1, "received": 0, "fresh": 0, "advanced": 1, "stale": 0, "no_data": 0, "errors": 0},
+    }
     spec.heartbeat.write_text(json.dumps(payload), encoding="utf-8")
 
 
@@ -166,6 +189,217 @@ def test_market_data_stale_status_is_unavailable(tmp_path, monkeypatch):
     assert row["status"] == "UNAVAILABLE"
 
 
+def test_market_data_pre_session_waiting_is_healthy_with_fresh_runtime_heartbeat(tmp_path, monkeypatch):
+    from ops.trading_platform_ops import Supervisor
+
+    spec = _market_data_spec(tmp_path)
+    _write_market_data_waiting_status(spec, session="PRE_SESSION", heartbeat_age_seconds=20, cycle_age_seconds=12 * 3600)
+    monkeypatch.setattr("ops.trading_platform_ops.ROOT", tmp_path)
+    monkeypatch.setattr("ops.trading_platform_ops.RUNTIME", spec.heartbeat.parent)
+
+    row = Supervisor(sleep=lambda _: None)._service(spec, start_missing=False, processes=[ProcessInfo(11, "--job market_data")], actions=[])
+
+    assert row["status"] == "WAITING_FOR_SESSION"
+    assert row["operational_state"] == "HEALTHY"
+    assert row["heartbeat"]["session_state"] == "PRE_SESSION"
+    assert row["heartbeat"]["runtime_fresh"] is True
+
+
+def test_market_data_post_session_waiting_is_healthy_with_fresh_runtime_heartbeat(tmp_path, monkeypatch):
+    from ops.trading_platform_ops import Supervisor
+
+    spec = _market_data_spec(tmp_path)
+    _write_market_data_waiting_status(spec, session="POST_SESSION", heartbeat_age_seconds=20, cycle_age_seconds=3600)
+    monkeypatch.setattr("ops.trading_platform_ops.ROOT", tmp_path)
+    monkeypatch.setattr("ops.trading_platform_ops.RUNTIME", spec.heartbeat.parent)
+
+    row = Supervisor(sleep=lambda _: None)._service(spec, start_missing=False, processes=[ProcessInfo(11, "--job market_data")], actions=[])
+
+    assert row["status"] == "WAITING_FOR_SESSION"
+    assert row["operational_state"] == "HEALTHY"
+    assert row["heartbeat"]["session_state"] == "POST_SESSION"
+
+
+def test_market_data_weekend_waiting_is_healthy_with_fresh_runtime_heartbeat(tmp_path, monkeypatch):
+    from ops.trading_platform_ops import Supervisor
+
+    spec = _market_data_spec(tmp_path)
+    _write_market_data_waiting_status(spec, session="WEEKEND_OR_HOLIDAY", heartbeat_age_seconds=20, cycle_age_seconds=48 * 3600)
+    monkeypatch.setattr("ops.trading_platform_ops.ROOT", tmp_path)
+    monkeypatch.setattr("ops.trading_platform_ops.RUNTIME", spec.heartbeat.parent)
+
+    row = Supervisor(sleep=lambda _: None)._service(spec, start_missing=False, processes=[ProcessInfo(11, "--job market_data")], actions=[])
+
+    assert row["status"] == "WAITING_FOR_SESSION"
+    assert row["operational_state"] == "HEALTHY"
+    assert row["heartbeat"]["session_state"] == "WEEKEND_OR_HOLIDAY"
+
+
+def test_market_data_active_session_with_stale_cycle_and_fresh_runtime_is_unavailable(tmp_path, monkeypatch):
+    from ops.trading_platform_ops import Supervisor
+
+    spec = _market_data_spec(tmp_path)
+    _write_market_data_status(spec, age_seconds=1200, last_heartbeat=(datetime.now(timezone.utc) - timedelta(seconds=20)).isoformat())
+    monkeypatch.setattr("ops.trading_platform_ops.ROOT", tmp_path)
+    monkeypatch.setattr("ops.trading_platform_ops.RUNTIME", spec.heartbeat.parent)
+
+    row = Supervisor(sleep=lambda _: None)._service(spec, start_missing=False, processes=[ProcessInfo(11, "--job market_data")], actions=[])
+
+    assert row["status"] == "UNAVAILABLE"
+    assert row["operational_state"] == "UNHEALTHY"
+    assert row["reason_code"] == "MARKET_DATA_CYCLE_STALE"
+
+
+def test_market_data_dead_process_with_stale_heartbeat_is_missing(tmp_path, monkeypatch):
+    from ops.trading_platform_ops import Supervisor
+
+    spec = _market_data_spec(tmp_path)
+    _write_market_data_waiting_status(spec, session="PRE_SESSION", heartbeat_age_seconds=1200, cycle_age_seconds=12 * 3600)
+    monkeypatch.setattr("ops.trading_platform_ops.ROOT", tmp_path)
+    monkeypatch.setattr("ops.trading_platform_ops.RUNTIME", spec.heartbeat.parent)
+
+    row = Supervisor(sleep=lambda _: None)._service(spec, start_missing=False, processes=[], actions=[])
+
+    assert row["status"] == "MISSING"
+    assert row["operational_state"] == "STOPPED"
+
+
+def test_market_data_lock_owner_child_of_root_is_not_mismatch(tmp_path, monkeypatch):
+    from ops.trading_platform_ops import Supervisor
+
+    spec = _market_data_spec(tmp_path)
+    _write_market_data_status(spec, pid=43332)
+    lock = spec.heartbeat.with_name("market_data_collector.lock")
+    lock.write_text("43332|2026-10-12T10:54:14", encoding="utf-8")
+    monkeypatch.setattr("ops.trading_platform_ops.ROOT", tmp_path)
+    monkeypatch.setattr("ops.trading_platform_ops.RUNTIME", spec.heartbeat.parent)
+    processes = [
+        ProcessInfo(25624, '"..\\.venv\\Scripts\\python.exe" -m src.main --job market_data --client-id 17', 48176),
+        ProcessInfo(43332, '"Python312\\python.exe" -m src.main --job market_data --client-id 17', 25624),
+    ]
+
+    row = Supervisor(sleep=lambda _: None)._service(spec, start_missing=False, processes=processes, actions=[])
+
+    assert row["status"] == "HEALTHY"
+    assert row["logical_instances"] == 1
+    assert row["root_pids"] == [25624]
+    assert row["lock"]["owner_pid"] == 43332
+    assert row["lock"]["owner_matches_process_tree"] is True
+
+
+def test_market_data_lock_owner_mismatch_is_unknown(tmp_path, monkeypatch):
+    from ops.trading_platform_ops import Supervisor
+
+    spec = _market_data_spec(tmp_path)
+    _write_market_data_status(spec)
+    lock = spec.heartbeat.with_name("market_data_collector.lock")
+    lock.write_text("43332|2026-10-12T10:54:14", encoding="utf-8")
+    monkeypatch.setattr("ops.trading_platform_ops.ROOT", tmp_path)
+    monkeypatch.setattr("ops.trading_platform_ops.RUNTIME", spec.heartbeat.parent)
+
+    row = Supervisor(sleep=lambda _: None)._service(spec, start_missing=False, processes=[ProcessInfo(25624, "--job market_data")], actions=[])
+
+    assert row["status"] == "UNKNOWN"
+    assert row["operational_state"] == "UNKNOWN"
+    assert row["reason_code"] == "MARKET_DATA_LOCK_OWNER_MISMATCH"
+
+
+def test_market_data_repeated_launcher_invocation_does_not_start_duplicate(tmp_path, monkeypatch):
+    from ops.trading_platform_ops import Supervisor
+
+    spec = _market_data_spec(tmp_path)
+    _write_market_data_waiting_status(spec, session="PRE_SESSION")
+    monkeypatch.setattr("ops.trading_platform_ops.ROOT", tmp_path)
+    monkeypatch.setattr("ops.trading_platform_ops.RUNTIME", spec.heartbeat.parent)
+    launches = []
+    monkeypatch.setattr("ops.trading_platform_ops._start", lambda spec: launches.append(spec.key))
+    sup = Supervisor(process_provider=lambda: [ProcessInfo(11, "--job market_data")], sleep=lambda _: None)
+
+    first = sup._service(spec, start_missing=True, processes=[ProcessInfo(11, "--job market_data")], actions=[])
+    second = sup._service(spec, start_missing=True, processes=[ProcessInfo(11, "--job market_data")], actions=[])
+
+    assert first["status"] == "WAITING_FOR_SESSION"
+    assert second["status"] == "WAITING_FOR_SESSION"
+    assert launches == []
+
+
+def test_market_data_after_close_cycle_is_degraded_not_unavailable(tmp_path, monkeypatch):
+    from ops.trading_platform_ops import Supervisor
+
+    spec = _market_data_spec(tmp_path)
+    stamp = datetime(2026, 10, 12, 17, 26, tzinfo=timezone.utc)
+    payload = {
+        "market_data_status": "degraded",
+        "last_cycle_at": stamp.isoformat(),
+        "latest_fresh_cycle_at": stamp.isoformat(),
+        "cycle": 80,
+        "health": {
+            "requested": 194,
+            "received": 193,
+            "fresh": 0,
+            "advanced": 1,
+            "stale": 0,
+            "no_data": 1,
+            "errors": 0,
+        },
+    }
+    spec.heartbeat.write_text(json.dumps(payload), encoding="utf-8")
+    monkeypatch.setattr("ops.trading_platform_ops.ROOT", tmp_path)
+    monkeypatch.setattr(
+        "ops.trading_platform_ops._market_data_now",
+        lambda tz: datetime(2026, 10, 12, 20, 30, tzinfo=tz),
+    )
+
+    row = Supervisor(sleep=lambda _: None)._service(spec, start_missing=False, processes=[ProcessInfo(11, "--job market_data")], actions=[])
+
+    assert row["status"] == "DEGRADED"
+    assert row["operational_state"] == "HEALTHY"
+    assert row["heartbeat"]["session_state"] == "OFF_SESSION_RECENT_CLOSE"
+
+
+def test_strategy_scanner_requires_application_readiness(monkeypatch):
+    from ops.trading_platform_ops import ServiceSpec, Supervisor
+
+    spec = ServiceSpec(
+        "strategy_scanner_mcp",
+        "Strategy Scanner MCP",
+        ("scanner_mcp.server",),
+        "start-strategy-scanner-mcp.cmd",
+        port=8766,
+        readiness_url="http://127.0.0.1:8766/health",
+    )
+    monkeypatch.setattr("ops.trading_platform_ops._port", lambda port: {"checked": True, "reachable": True, "host": "127.0.0.1", "port": port})
+    sup = Supervisor(sleep=lambda _: None)
+    monkeypatch.setattr(sup, "_api", lambda url, label, method="GET": {"service": label, "status": "UNAVAILABLE", "reason_code": "API_UNAVAILABLE"})
+
+    row = sup._service(spec, start_missing=False, processes=[ProcessInfo(66, "python -m scanner_mcp.server")], actions=[])
+
+    assert row["status"] == "UNAVAILABLE"
+    assert row["reason_code"] == "READINESS_UNAVAILABLE"
+
+
+def test_strategy_scanner_recovers_process_from_verified_port_owner(monkeypatch):
+    from ops.trading_platform_ops import ServiceSpec, Supervisor
+
+    spec = ServiceSpec(
+        "strategy_scanner_mcp",
+        "Strategy Scanner MCP",
+        ("scanner_mcp.server",),
+        "start-strategy-scanner-mcp.cmd",
+        port=8766,
+        readiness_url="http://127.0.0.1:8766/health",
+    )
+    monkeypatch.setattr("ops.trading_platform_ops._port", lambda port: {"checked": True, "reachable": True, "host": "127.0.0.1", "port": port})
+    monkeypatch.setattr("ops.trading_platform_ops._port_owner", lambda port: 87660)
+    sup = Supervisor(sleep=lambda _: None)
+    monkeypatch.setattr(sup, "_api", lambda url, label, method="GET": {"service": label, "status": "HEALTHY", "read_only": True})
+
+    row = sup._service(spec, start_missing=False, processes=[], actions=[])
+
+    assert row["status"] == "HEALTHY"
+    assert row["pids"] == [87660]
+
+
 def test_market_data_malformed_status_fails_closed(tmp_path, monkeypatch):
     from ops.trading_platform_ops import Supervisor
 
@@ -236,7 +470,6 @@ def test_transient_api_failure_is_bounded(monkeypatch):
     calls = []
     responses = [
         {"status": "UNAVAILABLE", "reason": "timeout"},
-        {"status": "UNAVAILABLE", "reason": "timeout"},
         {"status": "ok", "read_only": True},
     ]
     monkeypatch.setattr("ops.trading_platform_ops._get_json", lambda url: calls.append(url) or responses.pop(0))
@@ -244,7 +477,104 @@ def test_transient_api_failure_is_bounded(monkeypatch):
     sup = Supervisor(sleep=lambda _: None)
     result = sup._api("http://127.0.0.1/health", "health")
     assert result["status"] == "HEALTHY"
-    assert len(calls) == 3
+    assert len(calls) == 2
+
+
+def test_http_service_healthy_with_denied_process_visibility(monkeypatch):
+    from ops.trading_platform_ops import ServiceSpec, Supervisor
+
+    spec = ServiceSpec(
+        "strategy_scanner_mcp",
+        "Strategy Scanner MCP",
+        ("scanner_mcp.server",),
+        "start-strategy-scanner-mcp.cmd",
+        port=8766,
+        readiness_url="http://127.0.0.1:8766/health",
+    )
+    monkeypatch.setattr("ops.trading_platform_ops._port", lambda port: {"checked": True, "reachable": True, "host": "127.0.0.1", "port": port})
+    monkeypatch.setattr("ops.trading_platform_ops._port_owner", lambda port: 87660)
+    sup = Supervisor(sleep=lambda _: None)
+    monkeypatch.setattr(sup, "_api", lambda url, label, method="GET": {"service": label, "status": "HEALTHY", "operational_state": "HEALTHY", "read_only": True})
+
+    row = sup._service(spec, start_missing=True, processes=[], actions=[], process_visibility="unavailable", process_visibility_reason="PermissionDenied")
+
+    assert row["status"] == "HEALTHY"
+    assert row["operational_state"] == "HEALTHY"
+    assert row["process_visibility"]["status"] == "unavailable"
+
+
+def test_fresh_worker_heartbeat_is_healthy_with_denied_process_visibility(tmp_path, monkeypatch):
+    from ops.trading_platform_ops import ServiceSpec, Supervisor
+
+    heartbeat = tmp_path / "execute_worker.json"
+    heartbeat.write_text(json.dumps({"pid": 123, "ts": 1}), encoding="utf-8")
+    spec = ServiceSpec("execute_worker", "Execute Worker", ("execute_requests",), "run_execute_worker.cmd", heartbeat, 30.0)
+    row = Supervisor(sleep=lambda _: None)._service(
+        spec,
+        start_missing=True,
+        processes=[],
+        actions=[],
+        process_visibility="unavailable",
+        process_visibility_reason="PermissionDenied",
+    )
+
+    assert row["status"] == "HEALTHY"
+    assert row["operational_state"] == "HEALTHY"
+    assert row["process_running"] is True
+
+
+def test_stale_worker_heartbeat_is_unknown_when_process_visibility_denied(tmp_path):
+    from ops.trading_platform_ops import ServiceSpec, Supervisor
+
+    heartbeat = tmp_path / "execute_worker.json"
+    heartbeat.write_text(json.dumps({"pid": 123, "ts": 1}), encoding="utf-8")
+    old = datetime.now(timezone.utc).timestamp() - 120
+    import os
+    os.utime(heartbeat, (old, old))
+    spec = ServiceSpec("execute_worker", "Execute Worker", ("execute_requests",), "run_execute_worker.cmd", heartbeat, 30.0)
+    row = Supervisor(sleep=lambda _: None)._service(
+        spec,
+        start_missing=True,
+        processes=[],
+        actions=[],
+        process_visibility="unavailable",
+        process_visibility_reason="PermissionDenied",
+    )
+
+    assert row["status"] == "UNKNOWN"
+    assert row["operational_state"] == "UNKNOWN"
+    assert row["reason_code"] == "PROCESS_VISIBILITY_UNAVAILABLE"
+
+
+def test_missing_service_is_stopped_when_process_visibility_available(monkeypatch):
+    from ops.trading_platform_ops import ServiceSpec
+
+    specs = (ServiceSpec("execute_worker", "Execute Worker", ("execute_requests",), "run_execute_worker.cmd"),)
+    sup = _supervisor(monkeypatch, [], services=specs)
+    result = sup.run(start_missing=False)
+    row = result["services"]["execute_worker"]
+    assert row["status"] == "MISSING"
+    assert row["operational_state"] == "STOPPED"
+
+
+def test_startup_timeout_uses_only_two_launch_attempts(monkeypatch):
+    from ops.trading_platform_ops import ServiceSpec
+
+    specs = (ServiceSpec("execute_worker", "Execute Worker", ("execute_requests",), "run_execute_worker.cmd"),)
+    launches = []
+    sup = _supervisor(monkeypatch, [], services=specs)
+    monkeypatch.setattr("ops.trading_platform_ops._start", lambda spec: launches.append(spec.key) or None)
+
+    result = sup.run(start_missing=True)
+    row = result["services"]["execute_worker"]
+
+    assert launches == ["execute_worker", "execute_worker"]
+    assert row["status"] == "ACTION_REQUIRED"
+    assert row["operational_state"] == "UNHEALTHY"
+    assert row["reason_code"] == "START_VERIFICATION_FAILED"
+    assert result["orders_submitted"] == 0
+    assert result["approvals_created"] == 0
+    assert result["execution_intents_created"] == 0
 
 
 def test_production_scanner_health_failure_remains_action_required(monkeypatch):
@@ -285,3 +615,88 @@ def test_execution_boundary_reads_ambiguous_reservation_without_mutating(tmp_pat
     assert result["safe_to_start"] is False
     assert result["reason_code"] == "ACTIVE_EXECUTION_STATE"
 
+
+def test_human_report_uses_required_morning_startup_sections():
+    result = {
+        "overall_status": "WAITING_FOR_IBKR",
+        "broker": {"status": "WAITING_FOR_IBKR", "reason_code": "IBKR_LOGIN_REQUIRED"},
+        "services": {
+            "trading_bot_mcp": {"status": "HEALTHY", "operational_state": "HEALTHY"},
+            "strategy_scanner_mcp": {"status": "HEALTHY", "operational_state": "HEALTHY"},
+            "dashboard": {"status": "HEALTHY", "operational_state": "HEALTHY"},
+            "market_data": {
+                "status": "UNKNOWN",
+                "operational_state": "UNKNOWN",
+                "label": "Market Data",
+                "required": True,
+                "reason_code": "PROCESS_VISIBILITY_UNAVAILABLE",
+                "heartbeat": {
+                    "age_seconds": 1200.0,
+                    "fresh": False,
+                    "path": "memory/runtime/market_data_collector_status.json",
+                },
+            },
+            "execute_worker": {"status": "HEALTHY", "operational_state": "HEALTHY"},
+            "autonomous_worker": {"status": "HEALTHY", "operational_state": "HEALTHY"},
+            "crypto_worker": {"status": "HEALTHY", "operational_state": "HEALTHY"},
+        },
+        "apis": {
+            "trend_radar": {"service": "Trend Radar", "status": "HEALTHY"},
+            "production_scanner": {"service": "Production Scanner", "status": "HEALTHY"},
+            "daily_trader": {"service": "Daily Trader", "status": "HEALTHY"},
+            "pre_trade_reviewer": {"service": "Pre-Trade Reviewer", "status": "HEALTHY"},
+        },
+        "safety": {
+            "status": "SAFE_FOR_PAPER_EXECUTION",
+            "paper_trading": True,
+            "dry_run_mode": False,
+            "live_trading_enabled": False,
+        },
+        "execution_boundary": {"safe_to_start": True, "status": "SAFE_TO_START"},
+        "orders_submitted": 0,
+        "approvals_created": 0,
+        "execution_intents_created": 0,
+        "action_required": ["PROCESS_VISIBILITY_UNAVAILABLE"],
+    }
+
+    report = human_report(result)
+
+    assert report.startswith("TRADING PLATFORM - MORNING STARTUP")
+    assert "Overall: WAITING_FOR_IBKR" in report
+    assert "Market Data: UNKNOWN" in report
+    assert "heartbeat_age_seconds=1200.0" in report
+    assert "Trading Actions: orders_submitted=0, approvals_created=0, execution_intents_created=0" in report
+    assert "READY_FOR_MARKET_OPEN" not in report
+
+
+def test_human_report_only_claims_ready_when_overall_is_ready():
+    result = {
+        "overall_status": "READY_FOR_MARKET_OPEN",
+        "broker": {"status": "HEALTHY", "account": {"account_id": "DU123", "environment": "paper"}},
+        "services": {
+            "trading_bot_mcp": {"status": "HEALTHY", "operational_state": "HEALTHY"},
+            "strategy_scanner_mcp": {"status": "HEALTHY", "operational_state": "HEALTHY"},
+            "dashboard": {"status": "HEALTHY", "operational_state": "HEALTHY"},
+            "market_data": {"status": "HEALTHY", "operational_state": "HEALTHY", "heartbeat": {"age_seconds": 5.0}},
+            "execute_worker": {"status": "HEALTHY", "operational_state": "HEALTHY"},
+            "autonomous_worker": {"status": "HEALTHY", "operational_state": "HEALTHY"},
+            "crypto_worker": {"status": "HEALTHY", "operational_state": "HEALTHY"},
+        },
+        "apis": {},
+        "safety": {
+            "status": "SAFE_FOR_PAPER_EXECUTION",
+            "paper_trading": True,
+            "dry_run_mode": False,
+            "live_trading_enabled": False,
+        },
+        "execution_boundary": {"safe_to_start": True, "status": "SAFE_TO_START"},
+        "orders_submitted": 0,
+        "approvals_created": 0,
+        "execution_intents_created": 0,
+        "action_required": [],
+    }
+
+    report = human_report(result)
+
+    assert "Issues:\n- None" in report
+    assert report.endswith("READY_FOR_MARKET_OPEN")

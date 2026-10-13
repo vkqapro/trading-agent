@@ -62,6 +62,94 @@ class OrderJournalTests(TestCase):
         self.assertEqual(rows[0]["closed_at"], "2026-07-15T14:30:00+00:00")
         self.assertEqual(rows[0]["exit_reason"], "BROKER_POSITION_CLOSED")
 
+    def test_zero_broker_pnl_does_not_override_nonzero_price_pnl(self) -> None:
+        order_requests = {
+            "requests": [
+                {
+                    "id": "snap-entry",
+                    "action": "place",
+                    "status": "done",
+                    "created_at": "2026-10-13T09:30:00",
+                    "updated_at": "2026-10-13T09:30:05",
+                    "source": "MARKET_SCREENER_MANUAL",
+                    "symbol": "SNAP",
+                    "signal": "BUY",
+                    "entry": 6.38,
+                    "stop": 6.13,
+                    "target": 6.99,
+                    "quantity": 109,
+                    "result": {"market_order_id": 1001, "quantity": 109, "price": 6.40917705},
+                }
+            ]
+        }
+        closed_positions = {
+            "positions": [
+                {
+                    "symbol": "SNAP",
+                    "market_order_id": 1001,
+                    "avg_cost": 6.40917705,
+                    "closed_at": "2026-10-13T13:54:45+00:00",
+                    "exit_price": 6.64,
+                    "exit_quantity": 109,
+                    "exit_execution_id": "snap-exec",
+                    "broker_realized_pnl": 0.0,
+                    "request_id": "snap-entry",
+                }
+            ]
+        }
+
+        with patch(
+            "src.journal.order_journal._read_json",
+            side_effect=self._read_json(order_requests, closed_positions),
+        ):
+            rows = order_journal._rows_from_order_requests({})
+
+        self.assertEqual(rows[0]["status"], "CLOSED_OBSERVED")
+        self.assertAlmostEqual(rows[0]["pnl"], 25.15970155)
+
+    def test_observed_close_before_request_is_not_linked_by_request_id(self) -> None:
+        order_requests = {
+            "requests": [
+                {
+                    "id": "snap-later",
+                    "action": "place",
+                    "status": "done",
+                    "created_at": "2026-10-13T10:38:07",
+                    "updated_at": "2026-10-13T10:38:09",
+                    "source": "MARKET_SCREENER_MANUAL",
+                    "symbol": "SNAP",
+                    "signal": "BUY",
+                    "entry": 6.49,
+                    "stop": 6.1983,
+                    "target": 7.21925,
+                    "quantity": 77,
+                    "result": {"market_order_id": 1032, "stop_order_id": 1033, "limit_order_id": 1034},
+                }
+            ]
+        }
+        closed_positions = {
+            "positions": [
+                {
+                    "symbol": "SNAP",
+                    "market_order_id": 1032,
+                    "closed_at": "2026-10-13T13:54:45+00:00",
+                    "exit_price": 6.64,
+                    "exit_quantity": 109,
+                    "exit_execution_id": "snap-earlier",
+                    "request_id": "snap-later",
+                }
+            ]
+        }
+
+        with patch(
+            "src.journal.order_journal._read_json",
+            side_effect=self._read_json(order_requests, closed_positions),
+        ):
+            rows = order_journal._rows_from_order_requests({})
+
+        self.assertNotEqual(rows[0]["status"], "CLOSED_OBSERVED")
+        self.assertEqual(rows[0]["closed_at"], "")
+
     def test_unverified_broker_position_close_is_ignored(self) -> None:
         order_requests = {
             "requests": [

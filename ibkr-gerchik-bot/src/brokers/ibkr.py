@@ -98,6 +98,19 @@ def _safe_market_price(value: object) -> float:
     return numeric
 
 
+def _safe_optional_market_price(value: object) -> float | None:
+    """Normalize optional broker values without turning missing data into zero."""
+    if value in (None, ""):
+        return None
+    try:
+        numeric = float(value)
+    except (TypeError, ValueError):
+        return None
+    if not math.isfinite(numeric) or abs(numeric) > 1e20:
+        return None
+    return numeric
+
+
 class IBKRClient:
     """Thin broker adapter responsible for connectivity and core order actions."""
 
@@ -440,7 +453,7 @@ class IBKRClient:
                     "exchange": str(getattr(execution, "exchange", "") or ""),
                     "account": str(getattr(execution, "acctNumber", "") or ""),
                     "commission": _safe_market_price(getattr(commission_report, "commission", 0.0)),
-                    "realized_pnl": _safe_market_price(getattr(commission_report, "realizedPNL", 0.0)),
+                    "realized_pnl": _safe_optional_market_price(getattr(commission_report, "realizedPNL", None)),
                 }
             )
         return executions

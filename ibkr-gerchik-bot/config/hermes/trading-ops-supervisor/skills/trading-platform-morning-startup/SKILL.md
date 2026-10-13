@@ -21,3 +21,29 @@ services again. Preserve every `ACTION_REQUIRED`, `DUPLICATE_PROCESS`, and
 `SAFETY_CONFIGURATION_MISMATCH` result. Never call an order, approval, scanner
 refresh, Radar refresh, or notification integration. If TWS needs authentication,
 stop at `WAITING_FOR_IBKR`; after manual login use the readiness-recheck skill.
+
+Use `operational_state` for exact service classification and preserve `status`
+only as the backward-compatible label. A zero exit code is not readiness; only
+the authoritative `overall_status` can support `READY_FOR_MARKET_OPEN`.
+
+Report in this concise shape:
+
+```text
+TRADING PLATFORM - MORNING STARTUP
+
+Overall: [overall_status]
+Broker: [status/account readiness]
+Market Data: [status/freshness]
+Scanner MCP: [status]
+Trading Bot MCP: [status]
+Dashboard: [status]
+Other Services: [summary]
+Safety: [paper/live/safety status]
+Trading Actions: orders_submitted=0, approvals_created=0, execution_intents_created=0
+
+Issues:
+[Only unresolved conditions]
+
+Required Action:
+[Specific operator action or Codex escalation]
+```

@@ -2,12 +2,16 @@ from __future__ import annotations
 
 import unittest
 from datetime import datetime
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from types import SimpleNamespace
 from unittest.mock import patch
 from zoneinfo import ZoneInfo
 
 import pandas as pd
 
+from src.config import SETTINGS as APP_SETTINGS
+from src.jobs import market_data_collector as collector_module
 from src.jobs.market_data_collector import run_market_data_collector
 from src.jobs.session_utils import collect_watchlist_intraday_bars
 
@@ -16,6 +20,23 @@ TZ = ZoneInfo("America/New_York")
 
 
 class MarketDataCollectorTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self._runtime_dir = TemporaryDirectory()
+        runtime = Path(self._runtime_dir.name)
+        self._settings_patch = patch.object(
+            collector_module,
+            "SETTINGS",
+            SimpleNamespace(
+                paths=SimpleNamespace(runtime_dir=runtime),
+                trading_hours=APP_SETTINGS.trading_hours,
+            ),
+        )
+        self._settings_patch.start()
+
+    def tearDown(self) -> None:
+        self._settings_patch.stop()
+        self._runtime_dir.cleanup()
+
     def test_collection_persists_symbols_without_trading_checks(self) -> None:
         bars = pd.DataFrame([
             {"date": "2026-06-22 09:30:00-04:00", "open": 10, "high": 11, "low": 9, "close": 10.5, "volume": 100},

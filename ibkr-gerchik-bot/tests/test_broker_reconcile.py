@@ -236,6 +236,143 @@ class BrokerReconcileTests(TestCase):
         self.assertEqual(record["commission"], 1.0)
         self.assertEqual(record["broker_realized_pnl"], 14.5)
 
+    def test_execution_before_request_is_not_linked_to_later_position(self) -> None:
+        order_requests = {
+            "requests": [
+                {
+                    "id": "snap-later",
+                    "action": "place",
+                    "status": "done",
+                    "created_at": "2026-10-13T10:38:07",
+                    "updated_at": "2026-10-13T10:38:09",
+                    "source": "MARKET_SCREENER_MANUAL",
+                    "symbol": "SNAP",
+                    "signal": "BUY",
+                    "entry": 6.49,
+                    "quantity": 77,
+                    "result": {
+                        "status": "executed",
+                        "quantity": 77,
+                        "market_order_id": 1032,
+                        "stop_order_id": 1033,
+                        "limit_order_id": 1034,
+                    },
+                }
+            ]
+        }
+        writes: list[dict] = []
+
+        def fake_read(path, default):
+            if str(path).endswith("order_requests.json"):
+                return order_requests
+            return {"positions": []}
+
+        with (
+            patch("src.journal.broker_reconcile._read_json", side_effect=fake_read),
+            patch("src.journal.broker_reconcile._write_json", side_effect=lambda _path, payload: writes.append(payload)),
+        ):
+            added = broker_reconcile._record_closed_positions(
+                before={
+                    "SNAP": {
+                        "symbol": "SNAP",
+                        "quantity": 9,
+                        "avg_cost": 6.40917705,
+                        "opened_at": "2026-10-13T10:38:09",
+                        "market_order_id": 1032,
+                        "stop_order_id": 1033,
+                        "limit_order_id": 1034,
+                    }
+                },
+                synced=[],
+                executions=[
+                    {
+                        "symbol": "SNAP",
+                        "order_id": 10893,
+                        "perm_id": 1196543062,
+                        "exec_id": "snap-earlier",
+                        "side": "SLD",
+                        "shares": 109,
+                        "price": 6.64,
+                        "time": "2026-10-13T13:54:45+00:00",
+                        "realized_pnl": None,
+                    }
+                ],
+                open_orders=[
+                    {"symbol": "SNAP", "order_id": 1033, "action": "SELL", "type": "STP"},
+                    {"symbol": "SNAP", "order_id": 1034, "action": "SELL", "type": "LMT"},
+                ],
+            )
+
+        self.assertEqual(added, 1)
+        record = writes[0]["positions"][0]
+        self.assertEqual(record["symbol"], "SNAP")
+        self.assertEqual(record["quantity"], 109)
+        self.assertEqual(record["exit_quantity"], 109)
+        self.assertEqual(record["request_id"], "")
+        self.assertEqual(record["source"], "IBKR")
+        self.assertEqual(record["entry_price_source"], "unavailable")
+        self.assertIsNone(record["broker_realized_pnl"])
+
+    def test_execution_refresh_preserves_existing_entry_details(self) -> None:
+        existing = {
+            "positions": [
+                {
+                    "symbol": "SNAP",
+                    "quantity": 100,
+                    "entry": 6.40917705,
+                    "avg_cost": 6.40917705,
+                    "opened_at": "2026-10-12T11:46:19",
+                    "side": "BUY",
+                    "direction": "long",
+                    "source": "MARKET_SCREENER_MANUAL",
+                    "exit_price": 6.64,
+                    "exit_quantity": 100,
+                    "exit_execution_id": "snap-fill",
+                    "request_id": "",
+                    "entry_price_source": "broker_position",
+                }
+            ]
+        }
+        writes: list[dict] = []
+
+        def fake_read(path, default):
+            if str(path).endswith("order_requests.json"):
+                return {"requests": []}
+            return existing
+
+        with (
+            patch("src.journal.broker_reconcile._read_json", side_effect=fake_read),
+            patch("src.journal.broker_reconcile._write_json", side_effect=lambda _path, payload: writes.append(payload)),
+        ):
+            added = broker_reconcile._record_closed_positions(
+                before={},
+                synced=[],
+                executions=[
+                    {
+                        "symbol": "SNAP",
+                        "order_id": 10893,
+                        "perm_id": 1196543062,
+                        "exec_id": "snap-fill",
+                        "side": "SLD",
+                        "shares": 100,
+                        "price": 6.64,
+                        "time": "2026-10-13T13:54:45+00:00",
+                        "realized_pnl": None,
+                    }
+                ],
+            )
+
+        self.assertEqual(added, 0)
+        self.assertEqual(len(writes), 1)
+        record = existing["positions"][0]
+        self.assertEqual(record["avg_cost"], 6.40917705)
+        self.assertEqual(record["opened_at"], "2026-10-12T11:46:19")
+        self.assertEqual(record["side"], "BUY")
+        self.assertEqual(record["source"], "MARKET_SCREENER_MANUAL")
+        self.assertEqual(record["exit_quantity"], 100)
+        self.assertEqual(record["closed_at"], "2026-10-13T13:54:45+00:00")
+        self.assertEqual(record["exit_order_id"], 10893)
+
     def test_ambiguous_historical_requests_do_not_override_execution_facts(self) -> None:
         order_requests = {
             "requests": [

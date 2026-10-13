@@ -14,7 +14,6 @@ from src.jobs.session_utils import (
     collect_watchlist_intraday_bars,
     next_scan_time,
     session_now,
-    sleep_until,
 )
 
 
@@ -40,6 +39,17 @@ def _collector_session_is_open(now: datetime) -> bool:
         return False
     start, end = _collector_session_bounds(now)
     return start <= now <= end
+
+
+def _collector_session_state(now: datetime) -> str:
+    if now.weekday() >= 5:
+        return "WEEKEND_OR_HOLIDAY"
+    start, end = _collector_session_bounds(now)
+    if now < start:
+        return "PRE_SESSION"
+    if now <= end:
+        return "ACTIVE_SESSION"
+    return "POST_SESSION"
 
 
 def _next_collector_open(now: datetime) -> datetime:
@@ -73,6 +83,73 @@ def _write_status_artifact(payload: Dict[str, object]) -> None:
             pass
 
 
+def _status_payload(
+    totals: Dict[str, object],
+    *,
+    state: str,
+    session_state: str,
+    next_run_at: datetime | None = None,
+    next_session_at: datetime | None = None,
+    cycle_health: Dict[str, object] | None = None,
+) -> Dict[str, object]:
+    payload: Dict[str, object] = {
+        "status": state,
+        "state": state,
+        "pid": os.getpid(),
+        "last_heartbeat": datetime.now().astimezone().isoformat(),
+        "current_session": session_state,
+        "market_data_status": (cycle_health or {}).get("health", "unknown"),
+        "last_cycle_at": (totals.get("last_cycle") or {}).get("completed_at") if isinstance(totals.get("last_cycle"), dict) else None,
+        "latest_fresh_cycle_at": totals.get("latest_fresh_cycle_at"),
+        "cycle": totals.get("cycles", 0),
+        "health": cycle_health or (totals.get("last_cycle") if isinstance(totals.get("last_cycle"), dict) else None),
+    }
+    if next_run_at is not None:
+        payload["next_run_at"] = next_run_at.isoformat()
+    if next_session_at is not None:
+        payload["next_session_at"] = next_session_at.isoformat()
+    return payload
+
+
+def _write_runtime_status(
+    totals: Dict[str, object],
+    *,
+    state: str,
+    now: datetime,
+    next_run_at: datetime | None = None,
+    next_session_at: datetime | None = None,
+    cycle_health: Dict[str, object] | None = None,
+) -> None:
+    _write_status_artifact(
+        _status_payload(
+            totals,
+            state=state,
+            session_state=_collector_session_state(now),
+            next_run_at=next_run_at,
+            next_session_at=next_session_at,
+            cycle_health=cycle_health,
+        )
+    )
+
+
+def _sleep_until_with_status(
+    target: datetime,
+    now_fn: Callable[[], datetime],
+    sleep_fn: Callable[[float], None],
+    heartbeat: Callable[[datetime], None],
+    *,
+    heartbeat_seconds: float = 60.0,
+) -> None:
+    """Sleep in bounded chunks so waiting collectors keep proving liveness."""
+    while True:
+        current = now_fn()
+        remaining = (target - current).total_seconds()
+        if remaining <= 0:
+            return
+        heartbeat(current)
+        sleep_fn(min(max(remaining, 0.0), heartbeat_seconds))
+
+
 def run_market_data_collector(
     market_data: MarketDataService,
     watchlist: Dict[str, object],
@@ -102,19 +179,32 @@ def run_market_data_collector(
         "last_cycle": None,
         "latest_fresh_cycle_at": None,
     }
+    _write_runtime_status(totals, state="STARTING", now=now_fn())
 
     while True:
         now = now_fn()
         if not force and not _collector_session_is_open(now):
+            next_open = _next_collector_open(now)
+            _write_runtime_status(totals, state="WAITING_FOR_SESSION", now=now, next_session_at=next_open)
             if once:
                 break
-            next_open = _next_collector_open(now)
             LOGGER.info("Market-data collector waiting until %s", next_open.isoformat())
-            sleep_until(next_open, now_fn, sleep_fn)
+            _sleep_until_with_status(
+                next_open,
+                now_fn,
+                sleep_fn,
+                lambda current: _write_runtime_status(
+                    totals,
+                    state="WAITING_FOR_SESSION",
+                    now=current,
+                    next_session_at=next_open,
+                ),
+            )
             continue
         if force:
             LOGGER.info("Market-data collector force cycle requested outside normal session window check.")
 
+        _write_runtime_status(totals, state="COLLECTING", now=now)
         result = collect_watchlist_intraday_bars(
             market_data,
             watchlist,
@@ -168,13 +258,7 @@ def run_market_data_collector(
         totals["last_cycle"] = {"completed_at": cycle_at, **cycle_health}
         if cycle_health["fresh"]:
             totals["latest_fresh_cycle_at"] = cycle_at
-        _write_status_artifact({
-            "market_data_status": cycle_health["health"],
-            "last_cycle_at": cycle_at,
-            "latest_fresh_cycle_at": totals["latest_fresh_cycle_at"],
-            "cycle": totals["cycles"],
-            "health": cycle_health,
-        })
+        _write_runtime_status(totals, state="CYCLE_COMPLETE", now=now, cycle_health=cycle_health)
         LOGGER.info(
             "Market-data cycle %s requested=%s received=%s fresh=%s advanced=%s fresh_unchanged=%s stale=%s no_data=%s errors=%s stale_symbols=%s",
             totals["cycles"], cycle_health["requested"], cycle_health["received"], cycle_health["fresh"],
@@ -185,6 +269,18 @@ def run_market_data_collector(
             break
 
         next_run = next_scan_time(now, max(60, int(interval_seconds)))
-        sleep_until(next_run, now_fn, sleep_fn)
+        _write_runtime_status(totals, state="WAITING_NEXT_CYCLE", now=now, next_run_at=next_run, cycle_health=cycle_health)
+        _sleep_until_with_status(
+            next_run,
+            now_fn,
+            sleep_fn,
+            lambda current: _write_runtime_status(
+                totals,
+                state="WAITING_NEXT_CYCLE",
+                now=current,
+                next_run_at=next_run,
+                cycle_health=cycle_health,
+            ),
+        )
 
     return totals

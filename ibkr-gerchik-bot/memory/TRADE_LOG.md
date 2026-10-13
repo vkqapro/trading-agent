@@ -182150,3 +182150,905 @@ Reasons:
 - **manual_override**: True
 - **entry_order_type**: LIMIT
 - **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## End Of Day (2026-10-12T16:10:16)
+- **summary**: {'date': '2026-10-12', 'daily_pnl': 0.0, 'daily_pnl_pct': 0.0, 'total_tickers_scanned': 0, 'valid_setups': 0, 'trades_taken': 0, 'skipped': 0, 'top_rejection_reasons': []}
+- **report**: 
+No ticker decisions recorded today.
+
+## Workflow EOD (2026-10-12T16:10:16)
+- **stage**: EOD
+- **summary**: {'date': '2026-10-12', 'daily_pnl': 0.0, 'daily_pnl_pct': 0.0, 'positions': [{'symbol': 'WMT', 'quantity': 9, 'entry': 110.8411111, 'avg_cost': 110.8411111, 'direction': 'long', 'sec_type': 'STK', 'protection_policy': 'manual_unmanaged', 'stop_order_id': 987, 'current_stop_order_status': 'PreSubmitted', 'stop_loss': 110.99, 'current_stop_loss': 110.99, 'limit_order_id': 988, 'current_target_order_status': 'Submitted', 'target': 114.73, 'current_target': 114.73, 'planned_stop_loss': 109.13, 'planned_target': 114.73}, {'symbol': 'GSHD', 'quantity': 21, 'entry': 46.10762205, 'avg_cost': 46.1076238, 'direction': 'long', 'sec_type': 'STK', 'protection_policy': 'manual_unmanaged', 'stop_order_id': 924, 'current_stop_order_status': 'PreSubmitted', 'stop_loss': 42.83, 'current_stop_loss': 42.83, 'limit_order_id': 925, 'current_target_order_status': 'Submitted', 'target': 50.0, 'current_target': 50.0, 'planned_stop_loss': 44.09, 'planned_target': 50.0}, {'symbol': 'MRSH', 'quantity': 5, 'entry': 176.07, 'avg_cost': 176.07, 'direction': 'long', 'sec_type': 'STK', 'protection_policy': 'manual_unmanaged', 'stop_order_id': 991, 'current_stop_order_status': 'PreSubmitted', 'stop_loss': 173.3, 'current_stop_loss': 173.3, 'limit_order_id': 992, 'current_target_order_status': 'Submitted', 'target': 182.33, 'current_target': 182.33, 'planned_stop_loss': 173.3, 'planned_target': 182.33}, {'symbol': 'SNAP', 'quantity': 109, 'entry': 6.38, 'stop_loss': 6.13, 'target': 6.99, 'side': 'BUY', 'strategy': 'market_screener_prb1_manual_setup', 'source': 'MARKET_SCREENER_MANUAL', 'market_only': False, 'protection_policy': 'bracket_managed', 'opened_at': '2026-10-12T11:46:19', 'market_order_id': 1001, 'stop_order_id': 1002, 'limit_order_id': 1003, 'avg_cost': 6.40917705, 'direction': 'long', 'sec_type': 'STK', 'current_stop_order_status': 'PreSubmitted', 'planned_stop_loss': 6.1342, 'current_stop_loss': 6.13, 'current_target_order_status': 'Submitted', 'planned_target': 6.9945, 'current_target': 6.99}], 'account_snapshot': {'account': [{'account': 'DU5454348', 'tag': 'AccountType', 'value': 'INDIVIDUAL', 'currency': ''}, {'account': 'DU5454348', 'tag': 'Cushion', 'value': '1', 'currency': ''}, {'account': 'DU5454348', 'tag': 'LookAheadNextChange', 'value': '1791898200', 'currency': ''}, {'account': 'DU5454348', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'AvailableFunds', 'value': '3838.26', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'BuyingPower', 'value': '15353.05', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'EquityWithLoanValue', 'value': '4926.35', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'ExcessLiquidity', 'value': '3941.37', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullAvailableFunds', 'value': '3838.26', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullExcessLiquidity', 'value': '3941.37', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullInitMarginReq', 'value': '1088.09', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullMaintMarginReq', 'value': '984.98', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'GrossPositionValue', 'value': '3536.71', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'InitMarginReq', 'value': '1088.09', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadAvailableFunds', 'value': '3838.26', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadExcessLiquidity', 'value': '3941.37', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadInitMarginReq', 'value': '1088.09', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadMaintMarginReq', 'value': '984.98', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'MaintMarginReq', 'value': '984.98', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'NetLiquidation', 'value': '4926.35', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTEquity', 'value': '4926.35', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTMargin', 'value': '1768.36', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'SMA', 'value': '5131.05', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'TotalCashValue', 'value': '1389.64', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'CashBalance', 'value': '1389.6397', 'currency': 'USD'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '1389.6397', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '3536.71', 'currency': 'USD'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '4926.3497', 'currency': 'USD'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '-8.07', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CashBalance', 'value': '1389.6397', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '1389.6397', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '3536.71', 'currency': 'BASE'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '4926.3497', 'currency': 'BASE'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '-8.07', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'BASE'}], 'positions': [{'symbol': 'WMT', 'currency': 'USD', 'local_symbol': 'WMT', 'position': 9.0, 'avg_cost': 110.8411111, 'sec_type': 'STK'}, {'symbol': 'GSHD', 'currency': 'USD', 'local_symbol': 'GSHD', 'position': 21.0, 'avg_cost': 46.1076238, 'sec_type': 'STK'}, {'symbol': 'MRSH', 'currency': 'USD', 'local_symbol': 'MRSH', 'position': 5.0, 'avg_cost': 176.07, 'sec_type': 'STK'}, {'symbol': 'SNAP', 'currency': 'USD', 'local_symbol': 'SNAP', 'position': 109.0, 'avg_cost': 6.40917705, 'sec_type': 'STK'}], 'open_orders': [{'symbol': 'GSHD', 'order_id': 925, 'perm_id': 1087357359, 'parent_id': 0, 'action': 'SELL', 'quantity': 21.0, 'type': 'LMT', 'status': 'Submitted', 'aux_price': 0.0, 'stop_price': 0.0, 'limit_price': 50.0, 'filled': 0.0, 'remaining': 21.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': True}, {'symbol': 'MRSH', 'order_id': 991, 'perm_id': 144245433, 'parent_id': 0, 'action': 'SELL', 'quantity': 5.0, 'type': 'STP', 'status': 'PreSubmitted', 'aux_price': 173.3, 'stop_price': 173.3, 'limit_price': 0.0, 'filled': 0.0, 'remaining': 5.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': False}, {'symbol': 'GSHD', 'order_id': 924, 'perm_id': 1087357358, 'parent_id': 0, 'action': 'SELL', 'quantity': 21.0, 'type': 'STP', 'status': 'PreSubmitted', 'aux_price': 42.83, 'stop_price': 42.83, 'limit_price': 0.0, 'filled': 0.0, 'remaining': 21.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': False}, {'symbol': 'SNAP', 'order_id': 1003, 'perm_id': 1880948940, 'parent_id': 1001, 'action': 'SELL', 'quantity': 109.0, 'type': 'LMT', 'status': 'Submitted', 'aux_price': 0.0, 'stop_price': 0.0, 'limit_price': 6.99, 'filled': 0.0, 'remaining': 109.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': True}, {'symbol': 'MRSH', 'order_id': 992, 'perm_id': 144245434, 'parent_id': 0, 'action': 'SELL', 'quantity': 5.0, 'type': 'LMT', 'status': 'Submitted', 'aux_price': 0.0, 'stop_price': 0.0, 'limit_price': 182.33, 'filled': 0.0, 'remaining': 5.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': True}, {'symbol': 'SNAP', 'order_id': 1002, 'perm_id': 1880948939, 'parent_id': 1001, 'action': 'SELL', 'quantity': 109.0, 'type': 'STP', 'status': 'PreSubmitted', 'aux_price': 6.13, 'stop_price': 6.13, 'limit_price': 0.0, 'filled': 0.0, 'remaining': 109.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': False}, {'symbol': 'WMT', 'order_id': 988, 'perm_id': 144245431, 'parent_id': 0, 'action': 'SELL', 'quantity': 9.0, 'type': 'LMT', 'status': 'Submitted', 'aux_price': 0.0, 'stop_price': 0.0, 'limit_price': 114.73, 'filled': 0.0, 'remaining': 9.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': True}, {'symbol': 'WMT', 'order_id': 987, 'perm_id': 144245430, 'parent_id': 0, 'action': 'SELL', 'quantity': 9.0, 'type': 'STP', 'status': 'PreSubmitted', 'aux_price': 110.99, 'stop_price': 110.99, 'limit_price': 0.0, 'filled': 0.0, 'remaining': 9.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': False}]}, 'blocked': False, 'reasons': [], 'decision_summary': {'total_tickers_scanned': 0, 'valid_setups': 0, 'trades_taken': 0, 'skipped': 0, 'top_rejection_reasons': [], 'open_symbols': ['GSHD', 'MRSH', 'SNAP', 'WMT'], 'ticker_sections': []}, 'report_text': 'No ticker decisions recorded today.'}
+```json
+{
+  "stage": "EOD",
+  "payload": {
+    "summary": {
+      "date": "2026-10-12",
+      "daily_pnl": 0.0,
+      "daily_pnl_pct": 0.0,
+      "positions": [
+        {
+          "symbol": "WMT",
+          "quantity": 9,
+          "entry": 110.8411111,
+          "avg_cost": 110.8411111,
+          "direction": "long",
+          "sec_type": "STK",
+          "protection_policy": "manual_unmanaged",
+          "stop_order_id": 987,
+          "current_stop_order_status": "PreSubmitted",
+          "stop_loss": 110.99,
+          "current_stop_loss": 110.99,
+          "limit_order_id": 988,
+          "current_target_order_status": "Submitted",
+          "target": 114.73,
+          "current_target": 114.73,
+          "planned_stop_loss": 109.13,
+          "planned_target": 114.73
+        },
+        {
+          "symbol": "GSHD",
+          "quantity": 21,
+          "entry": 46.10762205,
+          "avg_cost": 46.1076238,
+          "direction": "long",
+          "sec_type": "STK",
+          "protection_policy": "manual_unmanaged",
+          "stop_order_id": 924,
+          "current_stop_order_status": "PreSubmitted",
+          "stop_loss": 42.83,
+          "current_stop_loss": 42.83,
+          "limit_order_id": 925,
+          "current_target_order_status": "Submitted",
+          "target": 50.0,
+          "current_target": 50.0,
+          "planned_stop_loss": 44.09,
+          "planned_target": 50.0
+        },
+        {
+          "symbol": "MRSH",
+          "quantity": 5,
+          "entry": 176.07,
+          "avg_cost": 176.07,
+          "direction": "long",
+          "sec_type": "STK",
+          "protection_policy": "manual_unmanaged",
+          "stop_order_id": 991,
+          "current_stop_order_status": "PreSubmitted",
+          "stop_loss": 173.3,
+          "current_stop_loss": 173.3,
+          "limit_order_id": 992,
+          "current_target_order_status": "Submitted",
+          "target": 182.33,
+          "current_target": 182.33,
+          "planned_stop_loss": 173.3,
+          "planned_target": 182.33
+        },
+        {
+          "symbol": "SNAP",
+          "quantity": 109,
+          "entry": 6.38,
+          "stop_loss": 6.13,
+          "target": 6.99,
+          "side": "BUY",
+          "strategy": "market_screener_prb1_manual_setup",
+          "source": "MARKET_SCREENER_MANUAL",
+          "market_only": false,
+          "protection_policy": "bracket_managed",
+          "opened_at": "2026-10-12T11:46:19",
+          "market_order_id": 1001,
+          "stop_order_id": 1002,
+          "limit_order_id": 1003,
+          "avg_cost": 6.40917705,
+          "direction": "long",
+          "sec_type": "STK",
+          "current_stop_order_status": "PreSubmitted",
+          "planned_stop_loss": 6.1342,
+          "current_stop_loss": 6.13,
+          "current_target_order_status": "Submitted",
+          "planned_target": 6.9945,
+          "current_target": 6.99
+        }
+      ],
+      "account_snapshot": {
+        "account": [
+          {
+            "account": "DU5454348",
+            "tag": "AccountType",
+            "value": "INDIVIDUAL",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "Cushion",
+            "value": "1",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadNextChange",
+            "value": "1791898200",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "AccruedCash",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "AvailableFunds",
+            "value": "3838.26",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "BuyingPower",
+            "value": "15353.05",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "EquityWithLoanValue",
+            "value": "4926.35",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "ExcessLiquidity",
+            "value": "3941.37",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullAvailableFunds",
+            "value": "3838.26",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullExcessLiquidity",
+            "value": "3941.37",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullInitMarginReq",
+            "value": "1088.09",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullMaintMarginReq",
+            "value": "984.98",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "GrossPositionValue",
+            "value": "3536.71",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "InitMarginReq",
+            "value": "1088.09",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadAvailableFunds",
+            "value": "3838.26",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadExcessLiquidity",
+            "value": "3941.37",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadInitMarginReq",
+            "value": "1088.09",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadMaintMarginReq",
+            "value": "984.98",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "MaintMarginReq",
+            "value": "984.98",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "NetLiquidation",
+            "value": "4926.35",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "RegTEquity",
+            "value": "4926.35",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "RegTMargin",
+            "value": "1768.36",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "SMA",
+            "value": "5131.05",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "TotalCashValue",
+            "value": "1389.64",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "Currency",
+            "value": "USD",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "CashBalance",
+            "value": "1389.6397",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "TotalCashBalance",
+            "value": "1389.6397",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "AccruedCash",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "StockMarketValue",
+            "value": "3536.71",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "OptionMarketValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FutureOptionValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FuturesPNL",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "NetLiquidationByCurrency",
+            "value": "4926.3497",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "UnrealizedPnL",
+            "value": "-8.07",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "RealizedPnL",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "ExchangeRate",
+            "value": "1.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FundValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "NetDividend",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "MutualFundValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "MoneyMarketFundValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "CorporateBondValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "TBondValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "TBillValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "WarrantValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FxCashBalance",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "AccountOrGroup",
+            "value": "All",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "RealCurrency",
+            "value": "USD",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "IssuerOptionValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "Cryptocurrency",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "Currency",
+            "value": "BASE",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "CashBalance",
+            "value": "1389.6397",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "TotalCashBalance",
+            "value": "1389.6397",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "AccruedCash",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "StockMarketValue",
+            "value": "3536.71",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "OptionMarketValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FutureOptionValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FuturesPNL",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "NetLiquidationByCurrency",
+            "value": "4926.3497",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "UnrealizedPnL",
+            "value": "-8.07",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "RealizedPnL",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "ExchangeRate",
+            "value": "1.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FundValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "NetDividend",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "MutualFundValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "MoneyMarketFundValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "CorporateBondValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "TBondValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "TBillValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "WarrantValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FxCashBalance",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "AccountOrGroup",
+            "value": "All",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "RealCurrency",
+            "value": "BASE",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "IssuerOptionValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "Cryptocurrency",
+            "value": "0.00",
+            "currency": "BASE"
+          }
+        ],
+        "positions": [
+          {
+            "symbol": "WMT",
+            "currency": "USD",
+            "local_symbol": "WMT",
+            "position": 9.0,
+            "avg_cost": 110.8411111,
+            "sec_type": "STK"
+          },
+          {
+            "symbol": "GSHD",
+            "currency": "USD",
+            "local_symbol": "GSHD",
+            "position": 21.0,
+            "avg_cost": 46.1076238,
+            "sec_type": "STK"
+          },
+          {
+            "symbol": "MRSH",
+            "currency": "USD",
+            "local_symbol": "MRSH",
+            "position": 5.0,
+            "avg_cost": 176.07,
+            "sec_type": "STK"
+          },
+          {
+            "symbol": "SNAP",
+            "currency": "USD",
+            "local_symbol": "SNAP",
+            "position": 109.0,
+            "avg_cost": 6.40917705,
+            "sec_type": "STK"
+          }
+        ],
+        "open_orders": [
+          {
+            "symbol": "GSHD",
+            "order_id": 925,
+            "perm_id": 1087357359,
+            "parent_id": 0,
+            "action": "SELL",
+            "quantity": 21.0,
+            "type": "LMT",
+            "status": "Submitted",
+            "aux_price": 0.0,
+            "stop_price": 0.0,
+            "limit_price": 50.0,
+            "filled": 0.0,
+            "remaining": 21.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": true
+          },
+          {
+            "symbol": "MRSH",
+            "order_id": 991,
+            "perm_id": 144245433,
+            "parent_id": 0,
+            "action": "SELL",
+            "quantity": 5.0,
+            "type": "STP",
+            "status": "PreSubmitted",
+            "aux_price": 173.3,
+            "stop_price": 173.3,
+            "limit_price": 0.0,
+            "filled": 0.0,
+            "remaining": 5.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": false
+          },
+          {
+            "symbol": "GSHD",
+            "order_id": 924,
+            "perm_id": 1087357358,
+            "parent_id": 0,
+            "action": "SELL",
+            "quantity": 21.0,
+            "type": "STP",
+            "status": "PreSubmitted",
+            "aux_price": 42.83,
+            "stop_price": 42.83,
+            "limit_price": 0.0,
+            "filled": 0.0,
+            "remaining": 21.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": false
+          },
+          {
+            "symbol": "SNAP",
+            "order_id": 1003,
+            "perm_id": 1880948940,
+            "parent_id": 1001,
+            "action": "SELL",
+            "quantity": 109.0,
+            "type": "LMT",
+            "status": "Submitted",
+            "aux_price": 0.0,
+            "stop_price": 0.0,
+            "limit_price": 6.99,
+            "filled": 0.0,
+            "remaining": 109.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": true
+          },
+          {
+            "symbol": "MRSH",
+            "order_id": 992,
+            "perm_id": 144245434,
+            "parent_id": 0,
+            "action": "SELL",
+            "quantity": 5.0,
+            "type": "LMT",
+            "status": "Submitted",
+            "aux_price": 0.0,
+            "stop_price": 0.0,
+            "limit_price": 182.33,
+            "filled": 0.0,
+            "remaining": 5.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": true
+          },
+          {
+            "symbol": "SNAP",
+            "order_id": 1002,
+            "perm_id": 1880948939,
+            "parent_id": 1001,
+            "action": "SELL",
+            "quantity": 109.0,
+            "type": "STP",
+            "status": "PreSubmitted",
+            "aux_price": 6.13,
+            "stop_price": 6.13,
+            "limit_price": 0.0,
+            "filled": 0.0,
+            "remaining": 109.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": false
+          },
+          {
+            "symbol": "WMT",
+            "order_id": 988,
+            "perm_id": 144245431,
+            "parent_id": 0,
+            "action": "SELL",
+            "quantity": 9.0,
+            "type": "LMT",
+            "status": "Submitted",
+            "aux_price": 0.0,
+            "stop_price": 0.0,
+            "limit_price": 114.73,
+            "filled": 0.0,
+            "remaining": 9.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": true
+          },
+          {
+            "symbol": "WMT",
+            "order_id": 987,
+            "perm_id": 144245430,
+            "parent_id": 0,
+            "action": "SELL",
+            "quantity": 9.0,
+            "type": "STP",
+            "status": "PreSubmitted",
+            "aux_price": 110.99,
+            "stop_price": 110.99,
+            "limit_price": 0.0,
+            "filled": 0.0,
+            "remaining": 9.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": false
+          }
+        ]
+      },
+      "blocked": false,
+      "reasons": [],
+      "decision_summary": {
+        "total_tickers_scanned": 0,
+        "valid_setups": 0,
+        "trades_taken": 0,
+        "skipped": 0,
+        "top_rejection_reasons": [],
+        "open_symbols": [
+          "GSHD",
+          "MRSH",
+          "SNAP",
+          "WMT"
+        ],
+        "ticker_sections": []
+      },
+      "report_text": "No ticker decisions recorded today."
+    }
+  }
+}
+```
+
+## Workflow EOD Flex Reconciliation (2026-10-12T16:10:16)
+- **stage**: EOD Flex Reconciliation
+- **summary**: {'status': 'disabled', 'reconciled': 0, 'archive': None, 'reason': 'missing_flex_configuration', 'unmatched': 0}
+```json
+{
+  "stage": "EOD Flex Reconciliation",
+  "payload": {
+    "summary": {
+      "status": "disabled",
+      "reconciled": 0,
+      "archive": null,
+      "reason": "missing_flex_configuration",
+      "unmatched": 0
+    }
+  }
+}
+```
+
+## Manual Trade OXY (2026-10-13T10:27:25)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: OXY
+- **strategy**: strategy_manual_setup
+- **level_type**: dashboard_manual
+- **direction**: long
+- **signal**: BUY
+- **entry**: 60.71
+- **stop_loss**: 57.81929
+- **target**: 67.936775
+- **reward_risk**: 2.5
+- **partial_targets**: []
+- **quantity**: 8
+- **market_order_id**: 1012
+- **stop_order_id**: 1013
+- **limit_order_id**: 1014
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Manual Trade KO (2026-10-13T10:28:39)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: KO
+- **strategy**: strategy_manual_setup
+- **level_type**: dashboard_manual
+- **direction**: long
+- **signal**: BUY
+- **entry**: 89.78
+- **stop_loss**: 87.60022
+- **target**: 95.22945000000001
+- **reward_risk**: 2.499999999999997
+- **partial_targets**: []
+- **quantity**: 5
+- **market_order_id**: 1016
+- **stop_order_id**: 1017
+- **limit_order_id**: 1018
+- **manual_override**: True
+- **entry_order_type**: MARKET
+- **broker_statuses**: {'market_order': 'Filled', 'stop_order': 'PreSubmitted', 'limit_order': 'Submitted'}
+
+## Manual Trade EOG (2026-10-13T10:29:13)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: EOG
+- **strategy**: strategy_manual_setup
+- **level_type**: dashboard_manual
+- **direction**: long
+- **signal**: BUY
+- **entry**: 151.29
+- **stop_loss**: 148.0482
+- **target**: 159.39449999999994
+- **reward_risk**: 2.4999999999999956
+- **partial_targets**: []
+- **quantity**: 3
+- **market_order_id**: 1020
+- **stop_order_id**: 1021
+- **limit_order_id**: 1022
+- **manual_override**: True
+- **entry_order_type**: MARKET
+- **broker_statuses**: {'market_order': 'Filled', 'stop_order': 'PreSubmitted', 'limit_order': 'Submitted'}
+
+## Manual Trade AMGN (2026-10-13T10:30:18)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: AMGN
+- **strategy**: strategy_manual_setup
+- **level_type**: dashboard_manual
+- **direction**: long
+- **signal**: BUY
+- **entry**: 416.99
+- **stop_loss**: 413.889
+- **target**: 426.293
+- **reward_risk**: 3.0
+- **partial_targets**: []
+- **quantity**: 2
+- **market_order_id**: 1024
+- **stop_order_id**: 1025
+- **limit_order_id**: 1026
+- **manual_override**: True
+- **entry_order_type**: MARKET
+- **broker_statuses**: {'market_order': 'Filled', 'stop_order': 'PreSubmitted', 'limit_order': 'Submitted'}
+
+## Manual Trade ICE (2026-10-13T10:31:28)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: ICE
+- **strategy**: strategy_manual_setup
+- **level_type**: dashboard_manual
+- **direction**: long
+- **signal**: BUY
+- **entry**: 157.49
+- **stop_loss**: 156.6448
+- **target**: 160.02560000000003
+- **reward_risk**: 3.0
+- **partial_targets**: []
+- **quantity**: 6
+- **market_order_id**: 1028
+- **stop_order_id**: 1029
+- **limit_order_id**: 1030
+- **manual_override**: True
+- **entry_order_type**: MARKET
+- **broker_statuses**: {'market_order': 'Filled', 'stop_order': 'PreSubmitted', 'limit_order': 'Submitted'}
+
+## Manual Trade SNAP (2026-10-13T10:38:08)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: SNAP
+- **strategy**: market_screener_prb2_manual_setup
+- **level_type**: resistance
+- **direction**: long
+- **signal**: BUY
+- **entry**: 6.49
+- **stop_loss**: 6.1983
+- **target**: 7.2192500000000015
+- **reward_risk**: 2.5
+- **partial_targets**: []
+- **quantity**: 77
+- **market_order_id**: 1032
+- **stop_order_id**: 1033
+- **limit_order_id**: 1034
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}

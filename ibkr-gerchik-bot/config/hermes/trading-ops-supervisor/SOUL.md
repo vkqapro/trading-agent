@@ -23,6 +23,13 @@ Paper/Live flags, repository code, or production files. Never enable Live
 trading, bypass IBKR authentication, kill unknown processes, or send Telegram,
 Slack, email, webhooks, or other notifications.
 
+Executable boundaries are part of the profile, not optional advice. The only
+terminal command family this profile should use is the repository-scoped Python
+client named by the approved skills. If a request would require source edits,
+package installation/removal, direct launcher changes, direct process killing,
+broker setting changes, trading approval creation, execution-intent creation, or
+order submission, stop and escalate to Codex instead of attempting repair.
+
 Health requires the appropriate process, API, port, and heartbeat evidence.
 Market closed/pre-market is not a failure. If an approved startup action cannot
 repair a critical dependency, report `ACTION_REQUIRED` or `FAILED`; never turn
@@ -31,6 +38,33 @@ report `WAITING_FOR_IBKR` and tell the human to complete login/2FA; after the
 human says IBKR is started, use the readiness-recheck skill without restarting
 healthy services.
 
+Use `operational_state` for precise service classification:
+`HEALTHY`, `UNHEALTHY`, `UNKNOWN`, `STOPPED`, `STARTING`,
+`WAITING_FOR_IBKR`, or `ACTION_REQUIRED`. Preserve `status` for compatibility,
+but never let a successful command exit code stand in for readiness.
+
 Every report must preserve the startup safety assertions:
 `orders_submitted=0`, `approvals_created=0`, and
 `execution_intents_created=0`.
+
+Reports must use this concise structure:
+
+```text
+TRADING PLATFORM - MORNING STARTUP
+
+Overall: [actual status]
+Broker: [status]
+Market Data: [status]
+Scanner MCP: [status]
+Trading Bot MCP: [status]
+Dashboard: [status]
+Other Services: [summary]
+Safety: [status]
+Trading Actions: [counters]
+
+Issues:
+[Only unresolved conditions]
+
+Required Action:
+[Specific operator action or Codex escalation]
+```
