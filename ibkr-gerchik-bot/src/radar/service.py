@@ -24,7 +24,7 @@ from src.storage.trend_radar_store import TrendRadarStore
 _FINALIZED_LIFECYCLE_STATUSES = {"INVALIDATED", "EXPIRED", "AMBIGUOUS_INTRABAR_ORDER"}
 
 from .engine import analyze_daily_bars
-from .models import RadarResult, RadarSettings
+from .models import RadarResult, RadarScannerResult, RadarSettings
 
 
 BarsLoader = Callable[[str, str], pd.DataFrame]
@@ -122,6 +122,7 @@ class RadarService:
         min_trend = float(selected.get("min_trend_score") or 0)
         breakout = selected.get("breakout")
         flip = selected.get("trend_flip")
+        hydrated_by_as_of: dict[str, dict[str, RadarScannerResult]] = {}
         rows: list[dict[str, Any]] = []
         for result in results:
             if symbol and result.symbol != symbol:
@@ -136,7 +137,26 @@ class RadarService:
                 continue
             if flip is not None and bool(result.trend_flip) != bool(flip):
                 continue
-            rows.append(result.to_dict())
+            row = result.to_dict()
+            if result.as_of not in hydrated_by_as_of:
+                symbols = [item.symbol for item in results if item.as_of == result.as_of]
+                hydrated_by_as_of[result.as_of] = self.store.latest_scanner_results(result.as_of, symbols)
+            scanner_result = hydrated_by_as_of[result.as_of].get(result.symbol)
+            if scanner_result is not None:
+                row.update(
+                    {
+                        "scanner_status": scanner_result.scanner_status,
+                        "scanner_label": scanner_result.scanner_label,
+                        "scanner_strategy": scanner_result.strategy,
+                        "scanner_side": scanner_result.side,
+                        "scanner_signals_found": scanner_result.signals_found,
+                        "scanner_scan_timestamp": scanner_result.scan_timestamp,
+                        "scanner_source_scan_id": scanner_result.source_scan_id,
+                        "scanner_error": scanner_result.error,
+                        "scanner_result": scanner_result.to_dict(),
+                    }
+                )
+            rows.append(row)
         return rows[: max(1, min(int(limit), 5000))]
 
     def get(self, symbol: str) -> dict[str, Any] | None:
@@ -178,12 +198,38 @@ class RadarService:
         normalized = str(symbol or "").strip().upper()
         if not normalized or normalized == "ALL":
             raise ValueError("A single stock symbol is required")
-        payload = self.scanner_runner(normalized)
+        radar_result = self.store.latest(normalized)
+        scan_timestamp = datetime.now(timezone.utc).isoformat()
+        try:
+            payload = self.scanner_runner(normalized)
+        except Exception as exc:
+            self._persist_scanner_payload(
+                normalized,
+                radar_result,
+                {
+                    "scanner_status": "ERROR",
+                    "signals": [],
+                    "signals_found": 0,
+                    "scan_timestamp": scan_timestamp,
+                    "error": str(exc) or type(exc).__name__,
+                },
+            )
+            raise
         if not isinstance(payload, dict):
+            self._persist_scanner_payload(
+                normalized,
+                radar_result,
+                {
+                    "scanner_status": "ERROR",
+                    "signals": [],
+                    "signals_found": 0,
+                    "scan_timestamp": scan_timestamp,
+                    "error": "authoritative scanner returned an invalid response",
+                },
+            )
             raise RuntimeError("authoritative scanner returned an invalid response")
         signals = payload.get("signals") or []
         payload = dict(payload)
-        radar_result = self.store.latest(normalized)
         radar_trend = radar_result.trend if radar_result else None
         annotated_signals: list[dict[str, Any]] = []
         for signal in signals:
@@ -212,7 +258,56 @@ class RadarService:
             payload["scanner_status"] = "CANDIDATE"
         payload["radar_symbol"] = normalized
         payload["radar_trend"] = radar_trend
+        payload.setdefault("scan_timestamp", scan_timestamp)
+        self._persist_scanner_payload(normalized, radar_result, payload)
         return payload
+
+    @staticmethod
+    def _scanner_identity(payload: dict[str, Any]) -> tuple[str | None, str | None, str]:
+        signals = payload.get("signals") or []
+        first = signals[0] if signals and isinstance(signals[0], dict) else {}
+        strategy = str(first.get("strategy") or "").strip().upper() or None
+        side = str(first.get("side") or first.get("direction") or "").strip().upper() or None
+        status = str(payload.get("scanner_status") or "").strip().upper()
+        label = " ".join(item for item in (strategy, side) if item)
+        if not label:
+            label = status or "NO_SETUP"
+        lifecycle = str(first.get("lifecycle_status") or "").strip().upper()
+        if lifecycle in _FINALIZED_LIFECYCLE_STATUSES:
+            label = " · ".join(item for item in (label, lifecycle) if item)
+        return strategy, side, label
+
+    def _persist_scanner_payload(
+        self,
+        symbol: str,
+        radar_result: RadarResult | None,
+        payload: dict[str, Any],
+    ) -> None:
+        if radar_result is None:
+            return
+        status = str(payload.get("scanner_status") or "ERROR").strip().upper()
+        scan_timestamp = str(payload.get("scan_timestamp") or datetime.now(timezone.utc).isoformat())
+        strategy, side, label = self._scanner_identity(payload)
+        source_scan_id = str(
+            payload.get("source_scan_id")
+            or payload.get("scan_id")
+            or f"radar:{radar_result.as_of}:{scan_timestamp}:{symbol}"
+        )
+        self.store.upsert_scanner_result(
+            RadarScannerResult(
+                symbol=symbol,
+                radar_as_of=radar_result.as_of,
+                source_scan_id=source_scan_id,
+                scan_timestamp=scan_timestamp,
+                scanner_status=status,
+                scanner_label=str(payload.get("scanner_label") or label),
+                strategy=strategy,
+                side=side,
+                signals_found=int(payload.get("signals_found") or len(payload.get("signals") or [])),
+                payload=dict(payload),
+                error=str(payload.get("error")) if payload.get("error") else None,
+            )
+        )
 
     def scan_symbols(self, symbols: Iterable[str], *, max_workers: int = 3) -> dict[str, Any]:
         """Run a bounded batch through the same authoritative scanner callback.

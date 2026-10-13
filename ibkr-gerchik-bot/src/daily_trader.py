@@ -25,6 +25,7 @@ TERMINAL_LIFECYCLE_STATUSES = {
     "EXPIRED",
     "AMBIGUOUS_INTRABAR_ORDER",
 }
+VALID_SETUP_SIDES = {"LONG", "SHORT"}
 
 
 @dataclass(frozen=True)
@@ -246,7 +247,12 @@ class DailyTraderService:
         self,
         results: Iterable[Mapping[str, Any]],
         radar_by_symbol: Mapping[str, Mapping[str, Any]],
+        *,
+        side: str | None = None,
     ) -> dict[str, Any]:
+        side_filter = str(side or "").strip().upper()
+        if side_filter and side_filter not in VALID_SETUP_SIDES:
+            raise ValueError("side must be LONG or SHORT")
         active: list[dict[str, Any]] = []
         terminal: list[dict[str, Any]] = []
         no_setup: list[dict[str, Any]] = []
@@ -277,6 +283,9 @@ class DailyTraderService:
                 continue
             for signal in signals:
                 setup = self._setup(symbol, radar_by_symbol.get(symbol), signal)
+                setup_side = str(setup["scanner"].get("side") or "").strip().upper()
+                if side_filter and setup_side != side_filter:
+                    continue
                 lifecycle = str(setup["scanner"].get("lifecycle_status") or "UNKNOWN").upper()
                 if lifecycle in ACTIVE_LIFECYCLE_STATUSES:
                     active.append(setup)
@@ -300,6 +309,77 @@ class DailyTraderService:
             "terminal": terminal,
             "no_setup": no_setup,
             "errors": errors,
+        }
+
+    def radar_rows(self, *, flips_only: bool = False, limit: int = 20) -> dict[str, Any]:
+        rows = self._radar_rows()
+        if rows:
+            latest_as_of = max((str(row.get("as_of") or "") for row in rows), default="")
+            rows = [row for row in rows if str(row.get("as_of") or "") == latest_as_of]
+        if flips_only:
+            rows = [row for row in rows if row.get("trend_flip") is True]
+        rows = sorted(rows, key=self._radar_sort_key)[: max(1, min(int(limit), 100))]
+        now = self._now()
+        if now.tzinfo is None:
+            now = now.replace(tzinfo=ZoneInfo("America/New_York"))
+        return {
+            "scan_timestamp": now.astimezone(ZoneInfo("America/New_York")).isoformat(timespec="seconds"),
+            "market_status": self._market_status(now),
+            "mode": "fresh_flips" if flips_only else "radar",
+            "read_only": True,
+            "orders_submitted": 0,
+            "radar_as_of": max((str(row.get("as_of")) for row in rows if row.get("as_of")), default=None),
+            "count": len(rows),
+            "results": [self._radar_context(row) for row in rows],
+        }
+
+    def persisted_setups(self, *, side: str | None = None) -> dict[str, Any]:
+        rows = self._radar_rows()
+        radar_by_symbol = {
+            str(row.get("symbol") or "").strip().upper(): row
+            for row in rows
+            if str(row.get("symbol") or "").strip()
+        }
+        results: list[dict[str, Any]] = []
+        for row in rows:
+            symbol = str(row.get("symbol") or "").strip().upper()
+            scanner_result = row.get("scanner_result")
+            if not symbol or not isinstance(scanner_result, Mapping):
+                continue
+            payload = scanner_result.get("payload")
+            payload = dict(payload) if isinstance(payload, Mapping) else {}
+            results.append(
+                {
+                    "symbol": symbol,
+                    "status": scanner_result.get("scanner_status") or payload.get("scanner_status"),
+                    "signals": payload.get("signals") or [],
+                    "error": scanner_result.get("error") or payload.get("error"),
+                }
+            )
+        assembled = self._assemble_results(results, radar_by_symbol, side=side)
+        now = self._now()
+        if now.tzinfo is None:
+            now = now.replace(tzinfo=ZoneInfo("America/New_York"))
+        return {
+            "scan_id": "persisted",
+            "scan_timestamp": now.astimezone(ZoneInfo("America/New_York")).isoformat(timespec="seconds"),
+            "market_status": self._market_status(now),
+            "mode": "persisted_setups",
+            "side": str(side or "ALL").strip().upper() or "ALL",
+            "read_only": True,
+            "orders_submitted": 0,
+            "radar_as_of": max((str(row.get("as_of")) for row in rows if row.get("as_of")), default=None),
+            "selection": {
+                "persisted_scanner_results": len(results),
+                "unique_symbols": len({item["symbol"] for item in results}),
+                "max_symbols": len(results),
+            },
+            "scanner": {
+                "requested": 0,
+                "completed": len(results),
+                "failed": len(assembled["errors"]),
+            },
+            **assembled,
         }
 
     def scan(self, request: DailyTraderScanRequest | None = None) -> dict[str, Any]:

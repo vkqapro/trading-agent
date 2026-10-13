@@ -3,13 +3,16 @@ from __future__ import annotations
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
+import pytest
 from fastapi.testclient import TestClient
 
 from dashboard_react import server
 from src.daily_trader import DailyTraderScanRequest, DailyTraderService
 from src.radar.models import RadarResult, RadarSettings
+from src.radar.models import RadarScannerResult
 from src.radar.service import RadarService
 from src.storage.trend_radar_store import TrendRadarStore
+from tools import daily_trader_api
 
 
 ET = ZoneInfo("America/New_York")
@@ -153,6 +156,181 @@ def test_health_is_read_only_and_reports_latest_radar(tmp_path):
         "scanner_available": True,
         "latest_radar_as_of": "2026-10-09",
     }
+
+
+def test_persisted_setups_reads_scanner_store_without_scanning(tmp_path):
+    calls: list[str] = []
+
+    def scanner(symbol: str):
+        calls.append(symbol)
+        return {"signals": []}
+
+    service = _service(tmp_path, scanner)
+    service.radar.store.upsert_scanner_result(
+        RadarScannerResult(
+            symbol="AAA",
+            radar_as_of="2026-10-09",
+            source_scan_id="persisted-1",
+            scan_timestamp="2026-10-12T14:00:00+00:00",
+            scanner_status="CANDIDATE",
+            scanner_label="LP1 LONG",
+            strategy="LP1",
+            side="LONG",
+            signals_found=1,
+            payload={
+                "scanner_status": "CANDIDATE",
+                "signals": [
+                    {
+                        "strategy": "LP1",
+                        "side": "LONG",
+                        "lifecycle_status": "PENDING_ENTRY",
+                        "planned_entry_price": 101.0,
+                    }
+                ],
+            },
+        )
+    )
+
+    result = service.persisted_setups(side="LONG")
+
+    assert calls == []
+    assert result["read_only"] is True
+    assert result["orders_submitted"] == 0
+    assert result["scanner"]["requested"] == 0
+    assert result["summary"]["active_candidates"] == 1
+    assert [item["symbol"] for item in result["active"]] == ["AAA"]
+
+
+def test_daily_trader_api_setups_wraps_existing_radar_endpoint(monkeypatch):
+    def fake_raw(path: str):
+        assert path == "/api/radar?limit=5000"
+        return {
+            "updated_at": "2026-10-12T14:00:00+00:00",
+            "results": [
+                {
+                    "symbol": "AAA",
+                    "scanner_result": {
+                        "scanner_status": "CANDIDATE",
+                        "scanner_label": "LP1 LONG",
+                        "scan_timestamp": "2026-10-12T14:00:00+00:00",
+                        "source_scan_id": "persisted-1",
+                        "payload": {
+                            "signals": [
+                                {
+                                    "strategy": "LP1",
+                                    "side": "LONG",
+                                    "lifecycle_status": "PENDING_ENTRY",
+                                }
+                            ]
+                        },
+                    },
+                },
+                {
+                    "symbol": "BBB",
+                    "scanner_result": {
+                        "scanner_status": "CANDIDATE",
+                        "payload": {"signals": [{"strategy": "PRB1", "side": "SHORT"}]},
+                    },
+                },
+            ],
+        }
+
+    monkeypatch.setattr(daily_trader_api, "_raw_request", fake_raw)
+
+    result = daily_trader_api._setups("LONG")
+
+    assert result["read_only"] is True
+    assert result["orders_submitted"] == 0
+    assert result["side"] == "LONG"
+    assert result["summary"]["active_candidates"] == 1
+    assert [item["symbol"] for item in result["active"]] == ["AAA"]
+
+
+def test_daily_trader_report_preserves_authoritative_tickers_and_source_fields():
+    result = {
+        "mode": "persisted_setups",
+        "side": "LONG",
+        "read_only": True,
+        "orders_submitted": 0,
+        "updated_at": "2026-10-12T14:00:00+00:00",
+        "summary": {"active_candidates": 2, "terminal": 2, "persisted_setups": 4},
+        "active": [
+            {
+                "symbol": "VEEV",
+                "radar": {"trend": "GREEN", "radar_score": 91.2},
+                "scanner": {
+                    "strategy": "LP1",
+                    "side": "LONG",
+                    "status": "READY",
+                    "lifecycle_status": "PENDING_ENTRY",
+                    "scanner_status": "CANDIDATE",
+                    "scanner_label": "LP1 LONG",
+                    "planned_entry_price": 101.23,
+                    "entry_price": 101.45,
+                    "stop_price": 98.0,
+                    "take_profit_price": 108.0,
+                    "rr": 2.5,
+                },
+            },
+            {
+                "symbol": "BRK.B",
+                "radar": {"trend": "GREEN", "radar_score": 88.0},
+                "scanner": {
+                    "strategy": "LP2",
+                    "side": "LONG",
+                    "status": "READY",
+                    "lifecycle_status": "ENTRY_TRIGGERED",
+                    "scanner_status": "READY",
+                    "planned_entry_price": 500.01,
+                    "entry_price": 500.25,
+                },
+            },
+        ],
+        "terminal": [
+            {
+                "symbol": "BF.B",
+                "radar": {"trend": "RED", "radar_score": 72.0},
+                "scanner": {
+                    "strategy": "PRB1",
+                    "side": "LONG",
+                    "status": "INVALIDATED",
+                    "lifecycle_status": "INVALIDATED",
+                    "scanner_status": "CANDIDATE",
+                },
+            },
+            {
+                "symbol": "AB12",
+                "radar": {"trend": "GREEN", "radar_score": 61.0},
+                "scanner": {
+                    "strategy": "LP1",
+                    "side": "LONG",
+                    "status": "EXPIRED",
+                    "lifecycle_status": "EXPIRED",
+                    "scanner_status": "CANDIDATE",
+                },
+            },
+        ],
+    }
+
+    report = daily_trader_api._render_setups_report(result)
+
+    assert "symbol=VEEV" in report
+    assert "symbol=VEV" not in report
+    assert "symbol=BRK.B" in report
+    assert "symbol=BF.B" in report
+    assert "symbol=AB12" in report
+    assert "planned_entry_price=101.23" in report
+    assert "entry_price=101.45" in report
+    assert "lifecycle_status=PENDING_ENTRY" in report
+    assert "scanner_trade_status=READY" in report
+    assert "ticker_integrity=validated_against_source_json" in report
+
+
+def test_daily_trader_report_validation_rejects_rendered_ticker_drift():
+    rendered = "active:\nsymbol=VEV | lifecycle_status=PENDING_ENTRY"
+
+    with pytest.raises(RuntimeError, match="Rendered ticker integrity check failed"):
+        daily_trader_api._validate_rendered_symbols(rendered, ["VEEV"])
 
 
 def test_fastapi_contract_exposes_daily_trader_routes(tmp_path, monkeypatch):

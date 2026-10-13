@@ -102,3 +102,45 @@ class RadarResult:
         values = dict(row)
         values["reasons"] = tuple(str(item) for item in (values.get("reasons") or ()))
         return cls(**{field: values.get(field) for field in cls.__dataclass_fields__})
+
+
+@dataclass(frozen=True)
+class RadarScannerResult:
+    symbol: str
+    radar_as_of: str
+    source_scan_id: str
+    scan_timestamp: str
+    scanner_status: str
+    scanner_label: str = ""
+    strategy: str | None = None
+    side: str | None = None
+    signals_found: int = 0
+    payload: dict[str, Any] = field(default_factory=dict)
+    error: str | None = None
+    created_at: str | None = None
+    updated_at: str | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "symbol": self.symbol,
+            "radar_as_of": self.radar_as_of,
+            "source_scan_id": self.source_scan_id,
+            "scan_timestamp": self.scan_timestamp,
+            "scanner_status": self.scanner_status,
+            "scanner_label": self.scanner_label,
+            "strategy": self.strategy,
+            "side": self.side,
+            "signals_found": self.signals_found,
+            "payload": dict(self.payload or {}),
+            "error": self.error,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
+        }
+
+    @classmethod
+    def from_mapping(cls, row: dict[str, Any]) -> "RadarScannerResult":
+        values = dict(row)
+        payload = values.get("payload") or {}
+        values["payload"] = payload if isinstance(payload, dict) else {}
+        values["signals_found"] = int(values.get("signals_found") or 0)
+        return cls(**{field: values.get(field) for field in cls.__dataclass_fields__})

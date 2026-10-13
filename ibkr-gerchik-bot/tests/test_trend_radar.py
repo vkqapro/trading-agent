@@ -6,7 +6,7 @@ from dataclasses import replace
 import pandas as pd
 
 from src.radar.engine import analyze_daily_bars
-from src.radar.models import RadarSettings
+from src.radar.models import RadarScannerResult, RadarSettings
 from src.radar.service import RadarService, direction_conflict
 from src.storage.trend_radar_store import TrendRadarStore
 
@@ -196,3 +196,133 @@ def test_batch_scan_isolated_results_and_no_order_submission(tmp_path) -> None:
     assert by_symbol["NONE"]["status"] == "NO_SETUP"
     assert by_symbol["FAIL"]["status"] == "ERROR"
     assert set(calls) == {"GOOD", "NONE", "FAIL"}
+
+
+def test_single_scanner_result_persists_and_hydrates_after_reload(tmp_path) -> None:
+    store = TrendRadarStore(tmp_path / "decision.db")
+    radar = analyze_daily_bars("GOOD", _bars(), settings=RadarSettings(min_avg_dollar_volume=1_000_000))
+    assert radar is not None
+    store.upsert(radar)
+    service = RadarService(
+        store=store,
+        settings=RadarSettings(min_avg_dollar_volume=1_000_000),
+        scanner_runner=lambda _symbol: {
+            "scan_timestamp": "2026-10-12T21:20:00+00:00",
+            "signals_found": 1,
+            "signals": [{"strategy": "PRB2", "side": "LONG"}],
+        },
+    )
+
+    payload = service.scan_symbol("GOOD")
+    reloaded = RadarService(store=TrendRadarStore(tmp_path / "decision.db")).list_results(limit=10)
+
+    assert payload["scanner_status"] == "CANDIDATE"
+    row = next(item for item in reloaded if item["symbol"] == "GOOD")
+    assert row["scanner_status"] == "CANDIDATE"
+    assert row["scanner_label"] == "PRB2 LONG"
+    assert row["scanner_strategy"] == "PRB2"
+    assert row["scanner_side"] == "LONG"
+    assert row["scanner_scan_timestamp"] == "2026-10-12T21:20:00+00:00"
+
+
+def test_no_setup_persists_and_supersedes_older_positive_result(tmp_path) -> None:
+    store = TrendRadarStore(tmp_path / "decision.db")
+    radar = analyze_daily_bars("GOOD", _bars(), settings=RadarSettings(min_avg_dollar_volume=1_000_000))
+    assert radar is not None
+    store.upsert(radar)
+    store.upsert_scanner_result(
+        RadarScannerResult(
+            symbol="GOOD",
+            radar_as_of=radar.as_of,
+            source_scan_id="old-positive",
+            scan_timestamp="2026-10-12T20:00:00+00:00",
+            scanner_status="CANDIDATE",
+            scanner_label="PRB2 LONG",
+            strategy="PRB2",
+            side="LONG",
+            signals_found=1,
+            payload={"scanner_status": "CANDIDATE"},
+        )
+    )
+    service = RadarService(
+        store=store,
+        settings=RadarSettings(min_avg_dollar_volume=1_000_000),
+        scanner_runner=lambda _symbol: {
+            "scan_timestamp": "2026-10-12T21:00:00+00:00",
+            "signals_found": 0,
+            "signals": [],
+        },
+    )
+
+    service.scan_symbol("GOOD")
+    row = next(item for item in service.list_results(limit=10) if item["symbol"] == "GOOD")
+
+    assert row["scanner_status"] == "NO_SETUP"
+    assert row["scanner_label"] == "NO_SETUP"
+    assert row["scanner_scan_timestamp"] == "2026-10-12T21:00:00+00:00"
+
+
+def test_out_of_order_scanner_completion_does_not_replace_newer_result(tmp_path) -> None:
+    store = TrendRadarStore(tmp_path / "decision.db")
+    radar = analyze_daily_bars("GOOD", _bars(), settings=RadarSettings(min_avg_dollar_volume=1_000_000))
+    assert radar is not None
+    store.upsert(radar)
+    newer = RadarScannerResult(
+        symbol="GOOD",
+        radar_as_of=radar.as_of,
+        source_scan_id="newer",
+        scan_timestamp="2026-10-12T21:00:00+00:00",
+        scanner_status="NO_SETUP",
+        scanner_label="NO_SETUP",
+        signals_found=0,
+        payload={"scanner_status": "NO_SETUP"},
+    )
+    older = RadarScannerResult(
+        symbol="GOOD",
+        radar_as_of=radar.as_of,
+        source_scan_id="older",
+        scan_timestamp="2026-10-12T20:00:00+00:00",
+        scanner_status="CANDIDATE",
+        scanner_label="PRB2 LONG",
+        strategy="PRB2",
+        side="LONG",
+        signals_found=1,
+        payload={"scanner_status": "CANDIDATE"},
+    )
+
+    store.upsert_scanner_result(newer)
+    store.upsert_scanner_result(older)
+    row = next(item for item in RadarService(store=store).list_results(limit=10) if item["symbol"] == "GOOD")
+
+    assert row["scanner_status"] == "NO_SETUP"
+    assert row["scanner_source_scan_id"] == "newer"
+
+
+def test_same_day_radar_refresh_preserves_scanner_result_and_new_day_excludes_it(tmp_path) -> None:
+    store = TrendRadarStore(tmp_path / "decision.db")
+    radar = analyze_daily_bars("GOOD", _bars(), settings=RadarSettings(min_avg_dollar_volume=1_000_000))
+    assert radar is not None
+    store.upsert(radar)
+    store.upsert_scanner_result(
+        RadarScannerResult(
+            symbol="GOOD",
+            radar_as_of=radar.as_of,
+            source_scan_id="same-day",
+            scan_timestamp="2026-10-12T21:00:00+00:00",
+            scanner_status="CANDIDATE",
+            scanner_label="PRB2 LONG",
+            strategy="PRB2",
+            side="LONG",
+            signals_found=1,
+            payload={"scanner_status": "CANDIDATE"},
+        )
+    )
+    store.upsert(replace(radar, radar_score=radar.radar_score - 1.0))
+    same_day = next(item for item in RadarService(store=store).list_results(limit=10) if item["symbol"] == "GOOD")
+    store.upsert(replace(radar, as_of="2026-10-13"))
+    new_day = next(item for item in RadarService(store=store).list_results(limit=10) if item["symbol"] == "GOOD")
+
+    assert same_day["scanner_status"] == "CANDIDATE"
+    assert same_day["scanner_label"] == "PRB2 LONG"
+    assert new_day["scanner_status"] == "NOT_SCANNED"
+    assert "scanner_label" not in new_day

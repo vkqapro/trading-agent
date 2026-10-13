@@ -2145,6 +2145,140 @@ def _radar_service() -> RadarService:
     return RadarService(scanner_runner=_run_authoritative_radar_scanner)
 
 
+_RADAR_SETUP_VALID_STATUSES = {"CANDIDATE", "READY", "PENDING_ENTRY", "ENTRY_TRIGGERED"}
+_RADAR_SETUP_EXCLUDED_STATUSES = {
+    "",
+    "NO_SETUP",
+    "NO_SCAN",
+    "NOT_SCANNED",
+    "ERROR",
+    "UNAVAILABLE",
+    "INVALID",
+    "INVALIDATED",
+    "EXPIRED",
+    "FINALIZED",
+    "AMBIGUOUS_INTRABAR_ORDER",
+}
+
+
+def _normalize_scan_universe(value: str | None) -> str:
+    normalized = str(value or "all").strip().lower().replace("-", "_").replace(" ", "_")
+    if normalized in {"all", "all_universe", "universe"}:
+        return "ALL_UNIVERSE"
+    if normalized in {"radar", "radar_setups", "trend_radar"}:
+        return "RADAR_SETUPS"
+    raise HTTPException(400, f"Unsupported scan universe: {value}")
+
+
+def _radar_setup_universe() -> dict[str, Any]:
+    """Read the latest persisted Radar scanner setup statuses without scanning."""
+    service = _radar_service()
+    try:
+        rows = service.list_results(limit=5000)
+    except Exception as exc:
+        return {
+            "source": "RADAR_SETUPS",
+            "available": False,
+            "valid": False,
+            "reason_code": "RADAR_SOURCE_UNAVAILABLE",
+            "reason": f"Trend Radar snapshots could not be read: {type(exc).__name__}",
+            "orders_submitted": 0,
+        }
+
+    normalized_rows = [dict(row) for row in rows if isinstance(row, Mapping)]
+    if not normalized_rows:
+        return {
+            "source": "RADAR_SETUPS",
+            "available": False,
+            "valid": False,
+            "reason_code": "RADAR_EMPTY",
+            "reason": "Trend Radar has no persisted snapshot rows.",
+            "orders_submitted": 0,
+        }
+
+    snapshot_as_of = max((str(row.get("as_of") or "") for row in normalized_rows), default="")
+    snapshot_created_at = max((str(row.get("created_at") or "") for row in normalized_rows), default="")
+    if not snapshot_as_of or not snapshot_created_at:
+        return {
+            "source": "RADAR_SETUPS",
+            "available": True,
+            "valid": False,
+            "reason_code": "RADAR_SNAPSHOT_INVALID",
+            "reason": "Trend Radar snapshot is missing an identifiable as_of or created_at timestamp.",
+            "snapshot_as_of": snapshot_as_of or None,
+            "snapshot_timestamp": snapshot_created_at or None,
+            "orders_submitted": 0,
+        }
+
+    current_rows = [row for row in normalized_rows if str(row.get("as_of") or "") == snapshot_as_of]
+    stale_count = len(normalized_rows) - len(current_rows)
+    symbols: list[str] = []
+    selected: list[dict[str, Any]] = []
+    excluded: dict[str, int] = {}
+    seen: set[str] = set()
+    for row in current_rows:
+        symbol = str(row.get("symbol") or "").strip().upper()
+        status = str(row.get("scanner_status") or "").strip().upper()
+        if not symbol:
+            excluded["missing_symbol"] = excluded.get("missing_symbol", 0) + 1
+            continue
+        if status in _RADAR_SETUP_VALID_STATUSES:
+            if symbol not in seen:
+                seen.add(symbol)
+                symbols.append(symbol)
+                selected.append(
+                    {
+                        "symbol": symbol,
+                        "scanner_status": status,
+                        "scanner_label": row.get("scanner_label"),
+                        "strategy": row.get("scanner_strategy"),
+                        "side": row.get("scanner_side"),
+                        "as_of": row.get("as_of"),
+                        "created_at": row.get("created_at"),
+                        "scan_timestamp": row.get("scanner_scan_timestamp"),
+                        "source_scan_id": row.get("scanner_source_scan_id"),
+                    }
+                )
+            continue
+        reason = status if status in _RADAR_SETUP_EXCLUDED_STATUSES else "UNKNOWN_STATUS"
+        excluded[reason or "EMPTY_STATUS"] = excluded.get(reason or "EMPTY_STATUS", 0) + 1
+
+    valid = bool(symbols)
+    return {
+        "source": "RADAR_SETUPS",
+        "available": True,
+        "valid": valid,
+        "reason_code": None if valid else "RADAR_NO_ELIGIBLE_SETUPS",
+        "reason": None
+        if valid
+        else "Trend Radar snapshot is available, but it contains no eligible scanner setup statuses.",
+        "snapshot_as_of": snapshot_as_of,
+        "snapshot_timestamp": snapshot_created_at,
+        "source_scan_id": f"radar:{snapshot_as_of}:{snapshot_created_at}",
+        "eligible_symbol_count": len(symbols),
+        "selected_symbols": symbols,
+        "selected": selected,
+        "excluded_status_counts": excluded,
+        "stale_symbol_count": stale_count,
+        "total_snapshot_rows": len(current_rows),
+        "orders_submitted": 0,
+    }
+
+
+def _radar_universe_failure(metadata: Mapping[str, Any]) -> HTTPException:
+    return HTTPException(
+        status_code=409,
+        detail={
+            "status": "blocked",
+            "universe_source": "RADAR_SETUPS",
+            "reason_code": metadata.get("reason_code") or "RADAR_UNIVERSE_INVALID",
+            "reason": metadata.get("reason") or "Trend Radar setup universe is not available.",
+            "radar_universe": dict(metadata),
+            "orders_submitted": 0,
+        },
+    )
+
+
 class DailyTraderScanBody(BaseModel):
     """Stable, bounded request model for the read-only Daily Trader API."""
 
@@ -2335,11 +2469,25 @@ def api_market_screener(
     slippage_per_share: float = 0.01,
     fees_per_share: float = 0.005,
     require_complete_quality: bool = False,
+    scan_universe: str = "all",
 ):
     from src.symbol_universe import load_stock_symbols
 
+    started = time.perf_counter()
     selected_asset = "crypto" if request.url.path.startswith("/api/crypto/") else "stock"
+    universe_source = _normalize_scan_universe(scan_universe)
     if selected_asset == "crypto":
+        if universe_source == "RADAR_SETUPS":
+            raise HTTPException(
+                status_code=400,
+                detail={
+                    "status": "blocked",
+                    "universe_source": "RADAR_SETUPS",
+                    "reason_code": "RADAR_UNIVERSE_STOCKS_ONLY",
+                    "reason": "Trend Radar setup universe is only available for Market Screener Stocks.",
+                    "orders_submitted": 0,
+                },
+            )
         crypto_state = _safe(da.load_crypto_dashboard_state, {})
         watchlist = crypto_state.get("watchlist", {}) if isinstance(crypto_state, dict) else {}
         configured = _safe(da.load_crypto_symbols, [])
@@ -2352,10 +2500,26 @@ def api_market_screener(
             symbols = sorted(set(configured_symbols))
         else:
             symbols = sorted(set(configured_symbols) | set((_safe(da.crypto_bars_index, {}) or {}).keys()))
+        universe_metadata: dict[str, Any] = {
+            "source": "ALL_UNIVERSE",
+            "eligible_symbol_count": len(symbols),
+            "selected_symbols": symbols,
+        }
     else:
         watchlist = _safe(da.load_watchlist, {})
         configured_symbols = _safe(load_stock_symbols, [])
         symbols = sorted(set(configured_symbols or []) | set((watchlist or {}).keys()))
+        if universe_source == "RADAR_SETUPS":
+            universe_metadata = _radar_setup_universe()
+            if not universe_metadata.get("valid"):
+                raise _radar_universe_failure(universe_metadata)
+            symbols = list(universe_metadata.get("selected_symbols") or [])
+        else:
+            universe_metadata = {
+                "source": "ALL_UNIVERSE",
+                "eligible_symbol_count": len(symbols),
+                "selected_symbols": symbols,
+            }
     selected_strategies = tuple(
         strategy
         for strategy in (item.strip().upper() for item in str(strategies or "").split(","))
@@ -2408,12 +2572,35 @@ def api_market_screener(
         fees_per_share=max(0.0, min(5.0, float(fees_per_share or 0.0))),
         require_complete_quality=bool(require_complete_quality),
     )
-    return run_market_screener(
+    result = run_market_screener(
         symbols=symbols,
         bars_loader=lambda symbol, selected_timeframe: _screener_frame(symbol, selected_timeframe, selected_asset),
         watchlist=watchlist if isinstance(watchlist, dict) else {},
         params=params,
     )
+    result["universe_source"] = universe_source
+    result["eligible_symbol_count"] = len(symbols)
+    result["actual_scanned_symbol_count"] = len(symbols)
+    result["scan_duration_ms"] = round((time.perf_counter() - started) * 1000.0, 2)
+    result["ready_count"] = sum(
+        1 for row in (result.get("signals") or []) if str(row.get("status") or "").upper() == "READY"
+    )
+    result["rejected_count"] = len(result.get("rejected") or [])
+    result["near_miss_count"] = len(result.get("near_misses") or [])
+    result["radar_universe"] = universe_metadata if universe_source == "RADAR_SETUPS" else None
+    result["orders_submitted"] = 0
+    return result
+
+
+@app.get("/api/market-screener/radar-universe")
+def api_market_screener_radar_universe():
+    metadata = _radar_setup_universe()
+    return {
+        "status": "ok" if metadata.get("valid") else "blocked",
+        "universe_source": "RADAR_SETUPS",
+        "radar_universe": metadata,
+        "orders_submitted": 0,
+    }
 
 
 @app.get("/api/market-screener/health")

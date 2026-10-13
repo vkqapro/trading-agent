@@ -4729,6 +4729,9 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
   const todayKey = new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
   const emptyScreener = {asset_class:asset,signals:[],rejected:[],near_misses:[],reason_counts:{},reason_log:[],signals_found:0,universe_size:0,timeframe:'1D',anchor_date:todayKey,idle:true};
   const [data,setData]=useState(emptyScreener);
+  const [scanUniverse,setScanUniverse]=useState('ALL_UNIVERSE');
+  const [radarUniverse,setRadarUniverse]=useState(null);
+  const [radarUniverseBusy,setRadarUniverseBusy]=useState(false);
   const [tf,setTf]=useState('1D');
   const [anchorDate,setAnchorDate]=useState(todayKey);
   const [side,setSide]=useState('ALL');
@@ -4821,8 +4824,26 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
   };
   const setScanParam = (key,value) => setScanParams(current=>({...current,[key]:value}));
   const scanParamKey = JSON.stringify(scanParams);
+  const radarMeta = radarUniverse?.radar_universe || data.radar_universe || null;
+  const radarSymbols = radarMeta?.selected_symbols || [];
+  const radarSnapshot = radarMeta?.snapshot_timestamp ? new Date(radarMeta.snapshot_timestamp).toLocaleString('en-US',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',timeZoneName:'short'}) : '—';
+  const radarBlocked = !isCrypto && scanUniverse==='RADAR_SETUPS' && (!radarMeta || radarMeta.valid===false || !radarSymbols.length);
+  const scanUniverseLabel = scanUniverse==='RADAR_SETUPS' ? `RADAR SETUPS (${radarSymbols.length})` : 'ALL UNIVERSE';
+
+  useEffect(()=>{
+    if(isCrypto || scanUniverse!=='RADAR_SETUPS') return;
+    let cancelled = false;
+    setRadarUniverseBusy(true);
+    fetch(`${API}/market-screener/radar-universe`,{cache:'no-store'})
+      .then(response=>response.json())
+      .then(payload=>{if(!cancelled) setRadarUniverse(payload);})
+      .catch(error=>{if(!cancelled) setRadarUniverse({status:'blocked',radar_universe:{valid:false,reason:error.message||'Radar setup universe unavailable',selected_symbols:[]}});})
+      .finally(()=>{if(!cancelled) setRadarUniverseBusy(false);});
+    return ()=>{cancelled=true;};
+  },[isCrypto,scanUniverse,refreshKey]);
 
   const loadScreener = useCallback(()=>{
+    if(radarBlocked) return;
     setBusy(true);
     const query = new URLSearchParams({
       timeframe:tf,
@@ -4857,18 +4878,20 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
       slippage_per_share:String(scanParams.slippagePerShare),
       fees_per_share:String(scanParams.feesPerShare),
       require_complete_quality:String(scanParams.requireCompleteQuality),
+      scan_universe:scanUniverse==='RADAR_SETUPS'?'radar_setups':'all_universe',
     });
     if(anchorDate) query.set('anchor_date', anchorDate);
     fetch(`${screenerApi}?${query.toString()}`,{cache:'no-store'})
-      .then(r=>r.json())
+      .then(async r=>{const d=await r.json(); if(!r.ok) throw new Error(d?.detail?.reason||d?.detail||'Failed to load screener'); return d;})
       .then(d=>{
         setData(d);
+        if(d.radar_universe) setRadarUniverse({status:'ok',radar_universe:d.radar_universe});
         const first = (d.signals||[])[0];
         setSelectedSignalKey(first ? signalKey(first) : null);
       })
-      .catch(()=>{setData({...emptyScreener,anchor_date:anchorDate,timeframe:tf,error:'Failed to load screener',idle:false}); setSelectedSignalKey(null);})
+      .catch(error=>{setData({...emptyScreener,anchor_date:anchorDate,timeframe:tf,error:error.message||'Failed to load screener',idle:false,universe_source:scanUniverse}); setSelectedSignalKey(null);})
       .finally(()=>setBusy(false));
-  },[tf,anchorDate,side,strategies.join(','),minScore,rr,riskPct,scanParamKey,screenerApi,asset]);
+  },[tf,anchorDate,side,strategies.join(','),minScore,rr,riskPct,scanParamKey,screenerApi,asset,scanUniverse,radarBlocked]);
 
   const toggleStrategy = strategy => {
     setStrategies(current=>{
@@ -5174,11 +5197,11 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
   return (
     <div style={{display:'flex',flexDirection:'column',gap:22}}>
       <MetricGrid items={[
-        {label:'Universe',icon:'radar',value:data.universe_size??0,sub:data.idle?'idle':`${data.timeframe||tf} ${isCrypto?'OKX crypto':'stock'} scan`,valueColor:C.cyan},
+        {label:'Universe',icon:'radar',value:data.eligible_symbol_count??data.universe_size??0,sub:data.idle?'idle':`${data.universe_source==='RADAR_SETUPS'?'Radar setups':'All universe'} · ${data.actual_scanned_symbol_count??data.universe_size??0} scanned`,valueColor:C.cyan},
         {label:'Signals',icon:'bolt',value:data.signals_found??0,sub:'LP / PRB matches',valueColor:(data.signals_found||0)>0?C.lime:C.outline},
-        {label:'Ready',icon:'task_alt',value:readyCount,sub:'position size valid',valueColor:C.lime},
-        {label:'Rejected',icon:'filter_alt',value:rejected.length,sub:'quality / data filters',valueColor:C.err},
-        {label:'Near Misses',icon:'adjust',value:nearMisses.length,sub:'levels found, pattern incomplete',valueColor:C.cyan},
+        {label:'Ready',icon:'task_alt',value:data.ready_count??readyCount,sub:'position size valid',valueColor:C.lime},
+        {label:'Rejected',icon:'filter_alt',value:data.rejected_count??rejected.length,sub:'quality / data filters',valueColor:C.err},
+        {label:'Near Misses',icon:'adjust',value:data.near_miss_count??nearMisses.length,sub:'levels found, pattern incomplete',valueColor:C.cyan},
         {label:'Anchor',icon:'event',value:data.anchor_date||anchorDate,sub:'entry / decision day',valueColor:C.cyan},
       ]}/>
 
@@ -5199,14 +5222,27 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
             <select value={side} onChange={e=>setSide(e.target.value)} style={{...controlsShell,color:C.onSurf,outline:0}}>
               {['ALL','LONG','SHORT'].map(item=><option key={item}>{item}</option>)}
             </select>
+            {!isCrypto&&<div style={{display:'flex',alignItems:'stretch',height:36,border:`1px solid ${R(C.outline,0.22)}`,borderRadius:8,overflow:'hidden',background:R(C.surfLowest,0.72)}}>
+              {[
+                ['ALL_UNIVERSE','ALL UNIVERSE'],
+                ['RADAR_SETUPS','RADAR SETUPS'],
+              ].map(([value,label])=>{
+                const active=scanUniverse===value;
+                return <button key={value} type="button" onClick={()=>setScanUniverse(value)}
+                  style={{padding:'0 10px',border:0,borderRight:value==='ALL_UNIVERSE'?`1px solid ${R(C.outline,0.18)}`:0,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:900,letterSpacing:0,background:active?R(value==='RADAR_SETUPS'?C.lime:C.cyan,0.14):'transparent',color:active?(value==='RADAR_SETUPS'?C.lime:C.cyan):C.onVar}}>
+                  {label}
+                </button>;
+              })}
+            </div>}
           </div>
           <div style={{display:'flex',gap:8,alignItems:'center'}}>
             <button type="button" onClick={()=>setShowScreenerAdvanced(value=>!value)} title="Screener parameters"
               style={{width:36,height:36,borderRadius:8,cursor:'pointer',display:'inline-flex',alignItems:'center',justifyContent:'center',border:`1px solid ${R(showScreenerAdvanced?C.cyan:C.outline,showScreenerAdvanced?0.4:0.2)}`,background:showScreenerAdvanced?R(C.cyan,0.11):R(C.surfLowest,0.55),color:showScreenerAdvanced?C.cyan:C.onVar}}>
               <Icon n="tune" size={17} color="inherit"/>
             </button>
-            <button onClick={loadScreener} disabled={busy}
-              style={{padding:'9px 14px',borderRadius:8,cursor:busy?'wait':'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:900,border:`1px solid ${R(C.cyan,0.35)}`,background:R(C.cyan,0.11),color:C.cyan,display:'flex',alignItems:'center',gap:7}}>
+            <button onClick={loadScreener} disabled={busy||radarBlocked||radarUniverseBusy}
+              title={`Scan ${scanUniverseLabel}`}
+              style={{padding:'9px 14px',borderRadius:8,cursor:busy||radarUniverseBusy?'wait':radarBlocked?'not-allowed':'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:900,border:`1px solid ${R(radarBlocked?C.err:C.cyan,0.35)}`,background:R(radarBlocked?C.err:C.cyan,0.11),color:radarBlocked?C.err:C.cyan,display:'flex',alignItems:'center',gap:7}}>
               <Icon n="refresh" size={15} color="inherit" style={{animation:busy?'spin .8s linear infinite':undefined}}/>
               {busy?'SCANNING':'SCAN'}
             </button>
@@ -5273,6 +5309,23 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
                 <Toggle on={scanParams.requireCompleteQuality} label="Strict data" onChange={value=>setScanParam('requireCompleteQuality',value)}/>
               </div>
             </div>
+          </div>
+        )}
+        {!isCrypto&&scanUniverse==='RADAR_SETUPS'&&(
+          <div style={{marginTop:14,padding:'10px 12px',borderRadius:8,border:`1px solid ${R(radarBlocked?C.err:C.lime,0.24)}`,background:R(radarBlocked?C.err:C.lime,0.07),display:'flex',flexDirection:'column',gap:8}}>
+            <div style={{display:'flex',alignItems:'center',gap:10,flexWrap:'wrap'}}>
+              <Pill text={`Radar candidates: ${radarSymbols.length} symbols`} color={radarBlocked?C.err:C.lime}/>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.onVar}}>Source: Trend Radar</span>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.onVar}}>Snapshot: {radarSnapshot}</span>
+              {radarUniverseBusy&&<span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.cyan}}>LOADING</span>}
+            </div>
+            {radarMeta?.reason&&<div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.err}}>{radarMeta.reason}</div>}
+            <details style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.onVar}}>
+              <summary style={{cursor:'pointer',color:C.cyan}}>Eligible ticker list</summary>
+              <div style={{marginTop:7,display:'flex',gap:6,flexWrap:'wrap'}}>
+                {radarSymbols.length?radarSymbols.map(symbol=><Pill key={symbol} text={symbol} color={C.cyan}/>):<span style={{color:C.outline}}>No eligible Radar setup symbols.</span>}
+              </div>
+            </details>
           </div>
         )}
       </GlassCard>
@@ -6991,6 +7044,17 @@ const radarQualityMissing = (payload, signal) => {
 };
 const radarQualityComplete = (payload, signal) => signal?.data_quality_complete ?? payload?.data_quality_complete ?? true;
 const radarLabel = value => String(value || '').replaceAll('_',' ');
+const RADAR_SCANNER_NO_SETUP = 'NO_SETUP';
+const RADAR_SCANNER_NO_SCAN = 'NO_SCAN';
+const RADAR_SCANNER_ALL_STRATEGIES = 'ALL_STRATEGIES';
+const radarScannerNormalize = value => String(value ?? '').trim().replace(/\s+/g,' ').toUpperCase();
+const radarScannerOptionKey = value => radarScannerNormalize(value).replaceAll(' ','_');
+const radarScannerNoScanStates = new Set(['NOT_SCANNED','NO_SCAN','NO SCAN']);
+const radarScannerNonStrategyStates = new Set([
+  '', RADAR_SCANNER_NO_SETUP, RADAR_SCANNER_NO_SCAN, 'NOT_SCANNED', 'NO SCAN',
+  'SCANNING', 'ERROR', 'CANDIDATE', 'INVALIDATED', 'EXPIRED', 'FINALIZED',
+  'AMBIGUOUS_INTRABAR_ORDER', 'DATA_ERROR'
+]);
 function TabTrendRadar({refreshKey=0}) {
   const [rows,setRows] = useState([]);
   const [selected,setSelected] = useState(null);
@@ -7001,6 +7065,7 @@ function TabTrendRadar({refreshKey=0}) {
   const [batchBusy,setBatchBusy] = useState(false);
   const [batchProgress,setBatchProgress] = useState(null);
   const [filter,setFilter] = useState('ALL');
+  const [scannerFilters,setScannerFilters] = useState([]);
   const [query,setQuery] = useState('');
   const [busy,setBusy] = useState(false);
   const [scanBusy,setScanBusy] = useState(false);
@@ -7049,7 +7114,7 @@ function TabTrendRadar({refreshKey=0}) {
       setScanner(body);
       const first = body.signals?.[0] || {};
       const label = body.scanner_status==='CANDIDATE' ? `${first.strategy||'CANDIDATE'} ${first.side||first.direction||''}`.trim() : (body.scanner_status||'NO_SETUP');
-      setScannerStates(previous=>({...previous,[selected.symbol]:{status:body.scanner_status||'ERROR',label,signals:body.signals||[],payload:body}}));
+      setScannerStates(previous=>({...previous,[selected.symbol]:{status:body.scanner_status||'ERROR',label,signals:body.signals||[],payload:body,scan_timestamp:body.scan_timestamp||body.scanner_scan_timestamp}}));
     } catch(err) { setScanner({error:err.message||'Scanner request failed'}); }
     finally { setScanBusy(false); }
   };
@@ -7077,6 +7142,42 @@ function TabTrendRadar({refreshKey=0}) {
   };
 
   const isFreshTrendFlip = row => row?.trend_flip === true;
+  const scannerColumn = row => {
+    const scan = scannerStates[row.symbol];
+    const status = radarScannerNormalize(scan?.status || row.scanner_status || 'NOT_SCANNED');
+    const label = String(scan?.label || row.scanner_label || scan?.status || row.scanner_status || 'NOT_SCANNED').trim();
+    const strategyLabel = status==='CANDIDATE' ? label : '';
+    const timestamp = scan?.scan_timestamp || row.scanner_scan_timestamp || row.scanner_result?.scan_timestamp || '';
+    return {status,label:label || 'NOT_SCANNED',strategyLabel,optionKey:radarScannerOptionKey(strategyLabel),timestamp};
+  };
+  const scannerStrategyOptions = useMemo(()=>{
+    const found = new Map();
+    rows.forEach(row=>{
+      const column = scannerColumn(row);
+      if(column.status !== 'CANDIDATE') return;
+      const normalized = column.optionKey;
+      if(!normalized || radarScannerNonStrategyStates.has(normalized)) return;
+      if(!found.has(normalized)) found.set(normalized,column.strategyLabel);
+    });
+    return [...found.entries()].map(([key,label])=>({key,label})).sort((a,b)=>a.label.localeCompare(b.label));
+  },[rows,scannerStates]);
+  const scannerFilterSet = useMemo(()=>new Set(scannerFilters),[scannerFilters]);
+  const scannerFilterActive = scannerFilters.length > 0;
+  const scannerFilterLabel = !scannerFilterActive
+    ? 'ALL SCANNER VALUES'
+    : scannerFilters.includes(RADAR_SCANNER_ALL_STRATEGIES) && scannerFilters.length===1
+      ? 'ALL STRATEGIES'
+      : `${scannerFilters.length} SELECTED`;
+  const toggleScannerFilter = key => setScannerFilters(previous=>previous.includes(key) ? previous.filter(item=>item!==key) : [...previous,key]);
+  const matchesScannerFilter = row => {
+    if(!scannerFilterActive) return true;
+    const column = scannerColumn(row);
+    const status = radarScannerNormalize(column.status);
+    if(scannerFilterSet.has(RADAR_SCANNER_NO_SETUP) && status===RADAR_SCANNER_NO_SETUP) return true;
+    if(scannerFilterSet.has(RADAR_SCANNER_NO_SCAN) && radarScannerNoScanStates.has(status)) return true;
+    if(scannerFilterSet.has(RADAR_SCANNER_ALL_STRATEGIES) && status==='CANDIDATE' && column.optionKey && !radarScannerNonStrategyStates.has(column.optionKey)) return true;
+    return status==='CANDIDATE' && column.optionKey && scannerFilterSet.has(column.optionKey);
+  };
   const runFreshFlipBatch = ()=>{
     if(batchBusy) return;
     const symbols = rows.filter(isFreshTrendFlip).map(row=>row.symbol);
@@ -7090,7 +7191,7 @@ function TabTrendRadar({refreshKey=0}) {
   const filtered = rows.filter(row=>{
     const matchesQuery = !query.trim() || String(row.symbol||'').includes(query.trim().toUpperCase());
     const matchesFilter = filter==='ALL' || (filter==='GREEN'&&row.trend==='GREEN') || (filter==='RED'&&row.trend==='RED') || (filter==='BREAKOUT'&&row.breakout) || (filter==='FLIP'&&isFreshTrendFlip(row));
-    return matchesQuery && matchesFilter;
+    return matchesQuery && matchesFilter && matchesScannerFilter(row);
   });
   const trendColor = value=>value==='GREEN'?C.lime:value==='RED'?C.chartDown:C.lemon;
   const score = value=>value===null||value===undefined?'—':Number(value).toFixed(1);
@@ -7103,6 +7204,15 @@ function TabTrendRadar({refreshKey=0}) {
       </div>
       <div style={{display:'flex',flexWrap:'wrap',gap:8,alignItems:'center'}}>
         <input value={query} onChange={event=>setQuery(event.target.value)} placeholder="Search ticker" style={{width:150,padding:'9px 10px',borderRadius:8,color:C.onSurf,background:C.surfLowest,border:`1px solid ${R(C.outline,0.24)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10}}/>
+        <details style={{position:'relative'}}>
+          <summary style={{listStyle:'none',padding:'9px 11px',borderRadius:8,cursor:'pointer',color:scannerFilterActive?C.cyan:C.onVar,background:R(scannerFilterActive?C.cyan:C.surfLow,scannerFilterActive?0.09:0.8),border:`1px solid ${R(scannerFilterActive?C.cyan:C.outline,0.28)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>SCANNER · {scannerFilterLabel}</summary>
+          <div style={{position:'absolute',right:0,top:'calc(100% + 6px)',zIndex:20,minWidth:260,maxHeight:360,overflowY:'auto',padding:10,borderRadius:8,background:C.surf,border:`1px solid ${R(C.outline,0.22)}`,boxShadow:`0 18px 35px ${R('#000',0.35)}`}}>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:10,marginBottom:8}}><span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:9,color:C.outline,letterSpacing:'0.06em'}}>SCANNER FILTER</span><button onClick={()=>setScannerFilters([])} style={{padding:'5px 7px',borderRadius:6,cursor:'pointer',color:C.cyan,background:R(C.cyan,0.08),border:`1px solid ${R(C.cyan,0.24)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:8,fontWeight:800}}>CLEAR</button></div>
+            {[{key:RADAR_SCANNER_ALL_STRATEGIES,label:'ALL STRATEGIES'},{key:RADAR_SCANNER_NO_SETUP,label:'NO_SETUP'},{key:RADAR_SCANNER_NO_SCAN,label:'NO_SCAN'},...scannerStrategyOptions].map(option=><label key={option.key} style={{display:'flex',alignItems:'center',gap:8,padding:'7px 6px',borderRadius:6,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.onVar}}><input type="checkbox" checked={scannerFilters.includes(option.key)} onChange={()=>toggleScannerFilter(option.key)}/><span>{option.label}</span></label>)}
+            {!scannerStrategyOptions.length&&<div style={{padding:'7px 6px',fontFamily:"'JetBrains Mono',monospace",fontSize:9,color:C.outline}}>No strategy labels loaded yet.</div>}
+          </div>
+        </details>
+        <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>{filtered.length} / {rows.length} ROWS</span>
         <button onClick={()=>runBatch(selectedSymbols)} disabled={batchBusy||!selectedSymbols.length} style={{padding:'9px 11px',borderRadius:8,cursor:batchBusy||!selectedSymbols.length?'not-allowed':'pointer',color:batchBusy||!selectedSymbols.length?C.outline:C.cyan,background:R(batchBusy||!selectedSymbols.length?C.outline:C.cyan,0.08),border:`1px solid ${R(batchBusy||!selectedSymbols.length?C.outline:C.cyan,0.3)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>SCAN SELECTED ({selectedSymbols.length})</button>
         <button onClick={()=>runBatch(rows.slice(0,10).map(row=>row.symbol))} disabled={batchBusy||!rows.length} style={{padding:'9px 11px',borderRadius:8,cursor:batchBusy||!rows.length?'not-allowed':'pointer',color:batchBusy||!rows.length?C.outline:C.lemon,background:R(batchBusy||!rows.length?C.outline:C.lemon,0.08),border:`1px solid ${R(batchBusy||!rows.length?C.outline:C.lemon,0.3)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>SCAN TOP 10</button>
         <button onClick={()=>runBatch(rows.filter(row=>row.breakout).map(row=>row.symbol))} disabled={batchBusy||!rows.some(row=>row.breakout)} style={{padding:'9px 11px',borderRadius:8,cursor:batchBusy?'not-allowed':'pointer',color:C.lime,background:R(C.lime,0.08),border:`1px solid ${R(C.lime,0.25)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:10,fontWeight:800}}>SCAN BREAKOUTS</button>
@@ -7115,7 +7225,7 @@ function TabTrendRadar({refreshKey=0}) {
     <div style={{display:'grid',gridTemplateColumns:selected?'minmax(0,1.55fr) minmax(300px,.85fr)':'1fr',gap:18,alignItems:'start'}}>
       <div style={{...card,padding:0,overflow:'hidden'}}>
         <PanelHeader icon="radar" title="Trend Radar" badge={`${filtered.length} assets`}/>
-        <div style={{overflowX:'auto'}}><table style={{width:'100%',borderCollapse:'collapse',minWidth:820}}><thead><tr>{['','Symbol','Trend','Radar','Breakout','Momentum','Volume','Scanner'].map(label=><th key={label} style={{padding:'11px 14px',textAlign:'left',fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.06em',color:C.outline,borderBottom:`1px solid ${R(C.outline,0.14)}`}}>{label}</th>)}</tr></thead><tbody>{filtered.map(row=>{const scan=scannerStates[row.symbol]; const checked=selectedSymbols.includes(row.symbol); return <tr key={`${row.symbol}-${row.as_of}`} onClick={()=>openResult(row)} style={{cursor:'pointer',background:selected?.symbol===row.symbol?R(C.cyan,0.08):'transparent'}} onMouseEnter={event=>event.currentTarget.style.background=R(C.onSurf,0.04)} onMouseLeave={event=>event.currentTarget.style.background=selected?.symbol===row.symbol?R(C.cyan,0.08):'transparent'}><td style={{padding:'12px 14px'}}><input type="checkbox" checked={checked} onChange={event=>{event.stopPropagation();setSelectedSymbols(previous=>event.target.checked?[...previous,row.symbol]:previous.filter(symbol=>symbol!==row.symbol));}} onClick={event=>event.stopPropagation()} aria-label={`Select ${row.symbol}`}/></td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onSurf,fontWeight:800}}>{row.symbol}</td><td style={{padding:'12px 14px'}}><Pill text={row.trend} color={trendColor(row.trend)}/>{row.trend_flip&&<span style={{marginLeft:6,color:C.cyan,fontSize:10}}>FLIP</span>}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.cyan}}>{score(row.radar_score)}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:row.breakout?C.lime:C.outline}}>{row.breakout?`${row.breakout_direction} · ${score(row.breakout_score)}`:'—'}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar}}>{score(row.momentum_score)}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar}}>{Number(row.volume_ratio||0).toFixed(2)}x</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:scan?.status==='CANDIDATE'?C.lime:scan?.status==='ERROR'?C.err:scan?.status==='SCANNING'?C.cyan:C.outline}}>{scan?.label||scan?.status||row.scanner_status||'NOT_SCANNED'}</td></tr>;})}</tbody></table></div>
+        <div style={{overflowX:'auto'}}><table style={{width:'100%',borderCollapse:'collapse',minWidth:820}}><thead><tr>{['','Symbol','Trend','Radar','Breakout','Momentum','Volume','Scanner'].map(label=><th key={label} style={{padding:'11px 14px',textAlign:'left',fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.06em',color:C.outline,borderBottom:`1px solid ${R(C.outline,0.14)}`}}>{label}</th>)}</tr></thead><tbody>{filtered.map(row=>{const scan=scannerStates[row.symbol]; const scanColumn=scannerColumn(row); const scanStatus=radarScannerNormalize(scan?.status||row.scanner_status); const checked=selectedSymbols.includes(row.symbol); return <tr key={`${row.symbol}-${row.as_of}`} onClick={()=>openResult(row)} style={{cursor:'pointer',background:selected?.symbol===row.symbol?R(C.cyan,0.08):'transparent'}} onMouseEnter={event=>event.currentTarget.style.background=R(C.onSurf,0.04)} onMouseLeave={event=>event.currentTarget.style.background=selected?.symbol===row.symbol?R(C.cyan,0.08):'transparent'}><td style={{padding:'12px 14px'}}><input type="checkbox" checked={checked} onChange={event=>{event.stopPropagation();setSelectedSymbols(previous=>event.target.checked?[...previous,row.symbol]:previous.filter(symbol=>symbol!==row.symbol));}} onClick={event=>event.stopPropagation()} aria-label={`Select ${row.symbol}`}/></td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onSurf,fontWeight:800}}>{row.symbol}</td><td style={{padding:'12px 14px'}}><Pill text={row.trend} color={trendColor(row.trend)}/>{row.trend_flip&&<span style={{marginLeft:6,color:C.cyan,fontSize:10}}>FLIP</span>}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.cyan}}>{score(row.radar_score)}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:row.breakout?C.lime:C.outline}}>{row.breakout?`${row.breakout_direction} · ${score(row.breakout_score)}`:'—'}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar}}>{score(row.momentum_score)}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar}}>{Number(row.volume_ratio||0).toFixed(2)}x</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:scanStatus==='CANDIDATE'?C.lime:scanStatus==='ERROR'?C.err:scanStatus==='SCANNING'?C.cyan:C.outline}}><div>{scanColumn.label}</div>{scanColumn.timestamp&&<div style={{marginTop:3,fontSize:9,color:C.onVar}}>{String(scanColumn.timestamp).slice(0,16).replace('T',' ')}</div>}</td></tr>;})}</tbody></table></div>
         {!filtered.length&&<div style={{padding:28,color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}>No persisted Radar observations match this view. Use REFRESH RADAR after daily bars are available.</div>}
       </div>
       {selected&&<div style={{...card,display:'flex',flexDirection:'column',gap:15}}>

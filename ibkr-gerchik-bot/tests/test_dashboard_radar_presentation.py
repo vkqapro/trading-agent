@@ -44,11 +44,37 @@ def test_counter_trend_warning_is_informational_and_green_long_is_not_conflictin
 
 
 def test_scanner_state_and_lifecycle_contracts_are_not_rewritten_by_the_ui_copy() -> None:
-    assert "setScannerStates(previous=>({...previous,[selected.symbol]:{status:body.scanner_status||'ERROR',label,signals:body.signals||[],payload:body}}))" in RADAR_UI
+    assert "setScannerStates(previous=>({...previous,[selected.symbol]:{status:body.scanner_status||'ERROR',label,signals:body.signals||[],payload:body,scan_timestamp:body.scan_timestamp||body.scanner_scan_timestamp}}))" in RADAR_UI
     assert "setScannerStates(previous=>({...previous,...next}))" in RADAR_UI
     assert "CANDIDATE" in RADAR_UI
     assert "entry_triggered === true" in RADAR_UI
     assert "approve_setup" not in RADAR_UI
+
+
+def test_scanner_column_filter_is_client_side_and_additive() -> None:
+    assert "const [scannerFilters,setScannerFilters] = useState([]);" in RADAR_UI
+    assert "const matchesScannerFilter = row => {" in RADAR_UI
+    assert "return matchesQuery && matchesFilter && matchesScannerFilter(row);" in RADAR_UI
+    assert "SCANNER · {scannerFilterLabel}" in RADAR_UI
+    assert "{filtered.length} / {rows.length} ROWS" in RADAR_UI
+    assert "onClick={()=>setScannerFilters([])}" in RADAR_UI
+
+
+def test_scanner_filter_discovers_strategies_from_displayed_scanner_data() -> None:
+    assert "const scannerColumn = row => {" in RADAR_UI
+    assert "const scannerStrategyOptions = useMemo(()=>{" in RADAR_UI
+    assert "if(column.status !== 'CANDIDATE') return;" in RADAR_UI
+    assert "found.set(normalized,column.strategyLabel)" in RADAR_UI
+    assert "RADAR_SCANNER_ALL_STRATEGIES" in RADAR_UI
+    assert "radarScannerNonStrategyStates.has(column.optionKey)" in RADAR_UI
+    assert "RADAR_SCANNER_NO_SETUP" in RADAR_UI
+    assert "RADAR_SCANNER_NO_SCAN" in RADAR_UI
+
+
+def test_scanner_filter_does_not_add_scanner_backend_calls() -> None:
+    assert RADAR_UI.count("/radar/${encodeURIComponent(selected.symbol)}/scan") == 1
+    assert RADAR_UI.count("/radar/batch-scan") == 1
+    assert "/api/market-screener" not in RADAR_UI
 
 
 def test_radar_thresholds_and_direction_conflict_authority_remain_unchanged() -> None:
