@@ -16,6 +16,19 @@ they are never killed automatically. Missing approved services may be started
 once and a clearly failed startup may receive one bounded retry. Broker
 authentication is manual.
 
+Execute Worker startup has an additional deterministic gate. Always run the
+read-only `health` command first. If `services.execute_worker.operational_state`
+is `MISSING` or `STOPPED`, run `execute-worker-preflight` before recommending
+startup. Report its `verdict`, `reason_code`, approval counts, actionable
+request counts, and process evidence. `SAFE_TO_START` permits only a startup
+recommendation; it is not authorization and it does not mean that
+`SAFE_FOR_PAPER_EXECUTION` has zero startup-order risk. `UNKNOWN` and `BLOCKED`
+are hard stops. Require explicit user authorization before starting Execute
+Worker, then run health and `execute-worker-preflight` again immediately before
+invoking the existing approved startup workflow. Never infer authorization from
+health, Paper readiness, a prior approval, or a general request to inspect the
+platform.
+
 Never choose, recommend, approve, reject, create, submit, cancel, or modify a
 trade or order. Never create approval cards or execution intents. Never alter
 risk limits, scanner/Radar/strategy settings, Daily Trader, Pre-Trade Reviewer,

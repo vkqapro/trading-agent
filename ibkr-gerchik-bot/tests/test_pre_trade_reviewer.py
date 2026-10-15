@@ -1,7 +1,14 @@
+import sys
+from types import SimpleNamespace
+
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
+
 from src.pre_trade_reviewer import (
     REVIEW_CAUTION,
     REVIEW_ELIGIBLE,
     REVIEW_NOT_ELIGIBLE,
+    router,
     review_symbol_payload,
 )
 
@@ -96,3 +103,33 @@ def test_safety_contract_is_hard_rule():
     result = review_symbol_payload(payload)[0]
     assert result.review_status == REVIEW_NOT_ELIGIBLE
     assert result.approval_created is False
+
+
+def test_health_route_is_static_endpoint_not_symbol_review(monkeypatch):
+    class DailyTraderStub:
+        def health(self):
+            return {"status": "ok", "read_only": True, "orders_submitted": 0}
+
+        def symbol(self, symbol):
+            raise AssertionError(f"health route was treated as symbol {symbol}")
+
+    monkeypatch.setitem(
+        sys.modules,
+        "dashboard_react.server",
+        SimpleNamespace(_daily_trader_service=lambda: DailyTraderStub()),
+    )
+    app = FastAPI()
+    app.include_router(router)
+    client = TestClient(app)
+
+    response = client.get("/api/pre-trade-review/health")
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "status": "ok",
+        "read_only": True,
+        "orders_submitted": 0,
+        "approval_created": False,
+        "reviewer": "pre-trade-reviewer",
+    }
+    assert client.get("/api/pre-trade-reviewer/health").status_code == 404

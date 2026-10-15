@@ -8,8 +8,12 @@ execution module is imported here.
 
 from __future__ import annotations
 
+import hashlib
+import json
+import threading
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Callable, Iterable, Mapping
 from uuid import uuid4
 from zoneinfo import ZoneInfo
@@ -37,6 +41,8 @@ class DailyTraderScanRequest:
     include_breakouts: bool = True
     include_fresh_flips: bool = True
     max_symbols: int = 30
+    idempotency_key: str | None = None
+    trigger_source: str = "manual"
 
     @classmethod
     def from_mapping(cls, body: Mapping[str, Any] | None) -> "DailyTraderScanRequest":
@@ -65,13 +71,36 @@ class DailyTraderScanRequest:
                 return False
             raise ValueError(f"{name} must be a boolean")
 
+        idempotency_key = str(values.get("idempotency_key") or "").strip() or None
+        trigger_source = str(values.get("trigger_source") or "manual").strip().lower() or "manual"
+        if trigger_source not in {"manual", "scheduled"}:
+            raise ValueError("trigger_source must be manual or scheduled")
+
         return cls(
             mode=mode,
             top_n=integer("top_n", cls.top_n, 0, 100),
             include_breakouts=boolean("include_breakouts", cls.include_breakouts),
             include_fresh_flips=boolean("include_fresh_flips", cls.include_fresh_flips),
             max_symbols=integer("max_symbols", cls.max_symbols, 1, 100),
+            idempotency_key=idempotency_key,
+            trigger_source=trigger_source,
         )
+
+    def normalized_payload(self) -> dict[str, Any]:
+        return {
+            "mode": self.mode,
+            "top_n": self.top_n,
+            "include_breakouts": self.include_breakouts,
+            "include_fresh_flips": self.include_fresh_flips,
+            "max_symbols": self.max_symbols,
+            "trigger_source": self.trigger_source,
+        }
+
+    def request_key(self) -> str:
+        payload = dict(self.normalized_payload())
+        payload.pop("trigger_source", None)
+        encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        return hashlib.sha256(encoded).hexdigest()
 
 
 class DailyTraderService:
@@ -120,9 +149,20 @@ class DailyTraderService:
         rows = self.radar.list_results(limit=5000)
         return [dict(row) for row in rows if isinstance(row, Mapping)]
 
+    @staticmethod
+    def _latest_as_of(rows: Iterable[Mapping[str, Any]]) -> str:
+        return max((str(row.get("as_of") or "") for row in rows), default="")
+
+    def _current_radar_rows(self) -> list[dict[str, Any]]:
+        rows = self._radar_rows()
+        latest_as_of = self._latest_as_of(rows)
+        if not latest_as_of:
+            return []
+        return [row for row in rows if str(row.get("as_of") or "") == latest_as_of]
+
     def select_symbols(self, request: DailyTraderScanRequest) -> tuple[list[str], dict[str, Any], dict[str, dict[str, Any]]]:
         """Select from the latest persisted Radar snapshot without recalculating it."""
-        rows = sorted(self._radar_rows(), key=self._radar_sort_key)
+        rows = sorted(self._current_radar_rows(), key=self._radar_sort_key)
         top = rows[: request.top_n]
         breakouts = [row for row in rows if row.get("breakout") is True]
         fresh_flips = [row for row in rows if row.get("trend_flip") is True]
@@ -181,6 +221,8 @@ class DailyTraderService:
             "trend_flip",
             "trend_flip_from",
             "trend_flip_to",
+            "trend_flip_date",
+            "trend_flip_age_days",
             "price",
             "close_price",
             "reasons",
@@ -210,15 +252,23 @@ class DailyTraderService:
             "strategy": signal.get("strategy"),
             "side": signal.get("side") or signal.get("direction"),
             "status": signal.get("status"),
+            "scanner_status": signal.get("scanner_status"),
+            "scanner_label": signal.get("scanner_label"),
+            "scan_timestamp": signal.get("scan_timestamp"),
+            "source_scan_id": signal.get("source_scan_id"),
             "lifecycle_status": lifecycle,
             "lifecycle_reason": signal.get("lifecycle_reason"),
             "entry_triggered": signal.get("entry_triggered"),
             "level": signal.get("level_price"),
             "level_type": signal.get("level_type"),
             "planned_entry": signal.get("planned_entry_price"),
+            "planned_entry_price": signal.get("planned_entry_price"),
             "entry": signal.get("entry_price"),
+            "entry_price": signal.get("entry_price"),
             "stop": signal.get("stop_price"),
+            "stop_price": signal.get("stop_price"),
             "target": signal.get("take_profit_price"),
+            "take_profit_price": signal.get("take_profit_price"),
             "rr": signal.get("rr"),
             "score": signal.get("score"),
             "pattern_quality": signal.get("pattern_quality"),
@@ -312,10 +362,7 @@ class DailyTraderService:
         }
 
     def radar_rows(self, *, flips_only: bool = False, limit: int = 20) -> dict[str, Any]:
-        rows = self._radar_rows()
-        if rows:
-            latest_as_of = max((str(row.get("as_of") or "") for row in rows), default="")
-            rows = [row for row in rows if str(row.get("as_of") or "") == latest_as_of]
+        rows = self._current_radar_rows()
         if flips_only:
             rows = [row for row in rows if row.get("trend_flip") is True]
         rows = sorted(rows, key=self._radar_sort_key)[: max(1, min(int(limit), 100))]
@@ -334,7 +381,7 @@ class DailyTraderService:
         }
 
     def persisted_setups(self, *, side: str | None = None) -> dict[str, Any]:
-        rows = self._radar_rows()
+        rows = self._current_radar_rows()
         radar_by_symbol = {
             str(row.get("symbol") or "").strip().upper(): row
             for row in rows
@@ -348,11 +395,21 @@ class DailyTraderService:
                 continue
             payload = scanner_result.get("payload")
             payload = dict(payload) if isinstance(payload, Mapping) else {}
+            signals: list[dict[str, Any]] = []
+            for signal in payload.get("signals") or []:
+                if not isinstance(signal, Mapping):
+                    continue
+                enriched = dict(signal)
+                enriched.setdefault("scanner_status", scanner_result.get("scanner_status") or payload.get("scanner_status"))
+                enriched.setdefault("scanner_label", scanner_result.get("scanner_label"))
+                enriched.setdefault("scan_timestamp", scanner_result.get("scan_timestamp"))
+                enriched.setdefault("source_scan_id", scanner_result.get("source_scan_id"))
+                signals.append(enriched)
             results.append(
                 {
                     "symbol": symbol,
                     "status": scanner_result.get("scanner_status") or payload.get("scanner_status"),
-                    "signals": payload.get("signals") or [],
+                    "signals": signals,
                     "error": scanner_result.get("error") or payload.get("error"),
                 }
             )
@@ -362,13 +419,13 @@ class DailyTraderService:
             now = now.replace(tzinfo=ZoneInfo("America/New_York"))
         return {
             "scan_id": "persisted",
-            "scan_timestamp": now.astimezone(ZoneInfo("America/New_York")).isoformat(timespec="seconds"),
+            "generated_at": now.astimezone(ZoneInfo("America/New_York")).isoformat(timespec="seconds"),
             "market_status": self._market_status(now),
             "mode": "persisted_setups",
             "side": str(side or "ALL").strip().upper() or "ALL",
             "read_only": True,
             "orders_submitted": 0,
-            "radar_as_of": max((str(row.get("as_of")) for row in rows if row.get("as_of")), default=None),
+            "radar_as_of": self._latest_as_of(rows) or None,
             "selection": {
                 "persisted_scanner_results": len(results),
                 "unique_symbols": len({item["symbol"] for item in results}),
@@ -382,7 +439,7 @@ class DailyTraderService:
             **assembled,
         }
 
-    def scan(self, request: DailyTraderScanRequest | None = None) -> dict[str, Any]:
+    def scan(self, request: DailyTraderScanRequest | None = None, *, scan_id: str | None = None) -> dict[str, Any]:
         scan_request = request or DailyTraderScanRequest()
         symbols, selection, radar_by_symbol = self.select_symbols(scan_request)
         batch = self.radar.scan_symbols(symbols, max_workers=min(5, max(1, len(symbols)))) if symbols else {
@@ -395,14 +452,22 @@ class DailyTraderService:
         if now.tzinfo is None:
             now = now.replace(tzinfo=ZoneInfo("America/New_York"))
         radar_dates = [str(row.get("as_of")) for row in radar_by_symbol.values() if row.get("as_of")]
+        radar_as_of = max(radar_dates) if radar_dates else None
+        persisted_result_count = 0
+        if radar_as_of:
+            persisted_result_count = len(self.radar.store.latest_scanner_results(radar_as_of, symbols))
         return {
-            "scan_id": str(uuid4()),
+            "scan_id": str(scan_id or uuid4()),
             "scan_timestamp": now.astimezone(ZoneInfo("America/New_York")).isoformat(timespec="seconds"),
             "market_status": self._market_status(now),
             "mode": scan_request.mode,
             "read_only": True,
             "orders_submitted": 0,
-            "radar_as_of": max(radar_dates) if radar_dates else None,
+            "approvals_created": 0,
+            "execution_intents_created": 0,
+            "radar_as_of": radar_as_of,
+            "processed_count": int(batch.get("completed") or 0),
+            "persisted_result_count": persisted_result_count,
             "selection": selection,
             "scanner": {
                 "requested": int(batch.get("requested") or 0),
@@ -439,6 +504,7 @@ class DailyTraderService:
 
     def health(self) -> dict[str, Any]:
         rows = self._radar_rows()
+        current_rows = self._current_radar_rows()
         radar_enabled = bool(getattr(self.radar.settings, "enabled", True))
         radar_available = radar_enabled and bool(rows)
         scanner_available = self.radar.scanner_runner is not None
@@ -448,5 +514,184 @@ class DailyTraderService:
             "orders_submitted": 0,
             "radar_available": radar_available,
             "scanner_available": scanner_available,
-            "latest_radar_as_of": max((str(row.get("as_of")) for row in rows if row.get("as_of")), default=None),
+            "latest_radar_as_of": self._latest_as_of(rows) or None,
+            "current_radar_row_count": len(current_rows),
         }
+
+    def market_report(
+        self,
+        *,
+        dashboard_api: Mapping[str, Any] | None = None,
+        production_scanner: Mapping[str, Any] | None = None,
+        radar_universe: Mapping[str, Any] | None = None,
+        market_screener: Mapping[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        """Assemble Daily Trader platform health without running a scan."""
+        rows = self._radar_rows()
+        current_rows = self._current_radar_rows()
+        latest_as_of = self._latest_as_of(rows) or None
+        persisted_count = sum(1 for row in current_rows if isinstance(row.get("scanner_result"), Mapping))
+        now = self._now()
+        if now.tzinfo is None:
+            now = now.replace(tzinfo=ZoneInfo("America/New_York"))
+        warnings: list[str] = []
+        if not rows:
+            warnings.append("RADAR_EMPTY")
+        if rows and not current_rows:
+            warnings.append("RADAR_CURRENT_SNAPSHOT_EMPTY")
+        if latest_as_of is None:
+            warnings.append("RADAR_AS_OF_MISSING")
+        if persisted_count == 0:
+            warnings.append("PERSISTED_SCANNER_RESULTS_EMPTY")
+
+        scanner_available = bool((production_scanner or {}).get("scanner_available", self.radar.scanner_runner is not None))
+        if not scanner_available:
+            warnings.append("PRODUCTION_SCANNER_UNAVAILABLE")
+        radar_universe_valid = bool((radar_universe or {}).get("valid"))
+        if radar_universe and not radar_universe_valid:
+            warnings.append(str(radar_universe.get("reason_code") or "RADAR_SETUPS_UNAVAILABLE"))
+
+        dashboard_status = dict(dashboard_api or {"status": "ok", "api_available": True})
+        screener_status = dict(market_screener or production_scanner or {})
+        return {
+            "status": "ok" if dashboard_status.get("api_available", True) and latest_as_of and scanner_available else "degraded",
+            "read_only": True,
+            "orders_submitted": 0,
+            "approvals_created": 0,
+            "execution_intents_created": 0,
+            "generated_at": now.astimezone(ZoneInfo("America/New_York")).isoformat(timespec="seconds"),
+            "market_session": self._market_status(now),
+            "dashboard_api": dashboard_status,
+            "radar": {
+                "available": bool(rows),
+                "as_of": latest_as_of,
+                "current_row_count": len(current_rows),
+                "total_latest_symbol_rows": len(rows),
+            },
+            "production_scanner": dict(production_scanner or {"scanner_available": self.radar.scanner_runner is not None}),
+            "persisted_scanner_results": {
+                "available": persisted_count > 0,
+                "current_result_count": persisted_count,
+                "radar_as_of": latest_as_of,
+            },
+            "radar_setups": {
+                "available": bool(radar_universe and radar_universe.get("available")),
+                "valid": radar_universe_valid,
+                "eligible_count": int((radar_universe or {}).get("eligible_symbol_count") or 0),
+                "reason_code": (radar_universe or {}).get("reason_code"),
+                "snapshot_as_of": (radar_universe or {}).get("snapshot_as_of"),
+            },
+            "market_screener": screener_status,
+            "warnings": warnings,
+        }
+
+
+class DailyTraderScanJobManager:
+    """Persistent async wrapper around the existing synchronous scan path."""
+
+    def __init__(
+        self,
+        *,
+        service_factory: Callable[[], DailyTraderService],
+        max_workers: int = 1,
+    ) -> None:
+        self._service_factory = service_factory
+        self._executor = ThreadPoolExecutor(max_workers=max(1, int(max_workers)), thread_name_prefix="daily-trader-scan")
+        self._lock = threading.Lock()
+        self._reconciled = False
+
+    def _store(self):
+        return self._service_factory().radar.store
+
+    @staticmethod
+    def _status_payload(job: Mapping[str, Any]) -> dict[str, Any]:
+        request = job.get("request") if isinstance(job.get("request"), Mapping) else {}
+        result = job.get("result") if isinstance(job.get("result"), Mapping) else None
+        error = job.get("error") if isinstance(job.get("error"), Mapping) else None
+        payload = {
+            "scan_id": job.get("scan_id"),
+            "status": job.get("status"),
+            "radar_as_of": job.get("radar_as_of") or (result or {}).get("radar_as_of"),
+            "mode": request.get("mode"),
+            "top_n": request.get("top_n"),
+            "max_symbols": request.get("max_symbols"),
+            "include_breakouts": request.get("include_breakouts"),
+            "include_fresh_flips": request.get("include_fresh_flips"),
+            "trigger_source": job.get("trigger_source") or request.get("trigger_source"),
+            "started_at": job.get("started_at"),
+            "completed_at": job.get("completed_at"),
+            "processed_count": int(job.get("processed_count") or (result or {}).get("processed_count") or 0),
+            "persisted_result_count": int(job.get("persisted_result_count") or (result or {}).get("persisted_result_count") or 0),
+            "error": error,
+            "read_only": True,
+            "orders_submitted": 0,
+            "approvals_created": 0,
+            "execution_intents_created": 0,
+        }
+        if result is not None:
+            payload["result"] = result
+        return payload
+
+    def _reconcile_once(self) -> None:
+        if self._reconciled:
+            return
+        with self._lock:
+            if not self._reconciled:
+                self._store().reconcile_interrupted_daily_trader_scan_jobs()
+                self._reconciled = True
+
+    def submit(self, request: DailyTraderScanRequest) -> dict[str, Any]:
+        self._reconcile_once()
+        service = self._service_factory()
+        symbols, _selection, radar_by_symbol = service.select_symbols(request)
+        radar_as_of = service._latest_as_of(radar_by_symbol.values()) or None
+        scan_id = str(uuid4())
+        with self._lock:
+            job, created = service.radar.store.create_or_reuse_daily_trader_scan_job(
+                scan_id=scan_id,
+                request_key=request.request_key(),
+                request=request.normalized_payload(),
+                idempotency_key=request.idempotency_key,
+                trigger_source=request.trigger_source,
+                radar_as_of=radar_as_of,
+            )
+            if created:
+                self._executor.submit(self._run, str(job["scan_id"]), request)
+        return self._status_payload(job)
+
+    def status(self, scan_id: str) -> dict[str, Any] | None:
+        self._reconcile_once()
+        job = self._store().get_daily_trader_scan_job(str(scan_id))
+        if job is None:
+            return None
+        return self._status_payload(job)
+
+    def latest_completed(self) -> dict[str, Any] | None:
+        job = self._store().get_latest_completed_daily_trader_scan_job()
+        if job is None:
+            return None
+        return self._status_payload(job)
+
+    def _run(self, scan_id: str, request: DailyTraderScanRequest) -> None:
+        service = self._service_factory()
+        store = service.radar.store
+        store.mark_daily_trader_scan_job_running(scan_id)
+        try:
+            result = service.scan(request, scan_id=scan_id)
+            store.complete_daily_trader_scan_job(
+                scan_id,
+                result=result,
+                processed_count=int(result.get("processed_count") or 0),
+                persisted_result_count=int(result.get("persisted_result_count") or 0),
+                radar_as_of=result.get("radar_as_of"),
+            )
+        except Exception as exc:
+            store.fail_daily_trader_scan_job(
+                scan_id,
+                error={
+                    "reason_code": "DAILY_TRADER_SCAN_FAILED",
+                    "type": type(exc).__name__,
+                    "message": str(exc) or type(exc).__name__,
+                    "failed_at": datetime.now(timezone.utc).isoformat(),
+                },
+            )

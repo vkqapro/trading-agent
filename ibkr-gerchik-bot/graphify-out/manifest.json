@@ -90,9 +90,9 @@
     "semantic_hash": ""
   },
   "dashboard_react/server.py": {
-    "mtime": 1791919149.5959928,
-    "seen": 1791919412.320701,
-    "ast_hash": "df2f6ffa170322f8c38bee189d1812b0",
+    "mtime": 1792007623.6625414,
+    "seen": 1792007767.3329268,
+    "ast_hash": "2ac00951772444015a42bcdbfe06100a",
     "semantic_hash": ""
   },
   "design_handoff/trading-bot-dashboard/project/ibkr-gerchik-bot/dashboard/app.py": {
@@ -162,9 +162,9 @@
     "semantic_hash": "a47f92efff8d7a388062745b50785c68"
   },
   "memory/order_requests.json": {
-    "mtime": 1791923007.9818087,
-    "seen": 1791923008.9431496,
-    "ast_hash": "1e743a98fa06e4c816d20f52b6ab96ba",
+    "mtime": 1792036735.256899,
+    "seen": 1792067400.408252,
+    "ast_hash": "52951a2f3f053c1e26493d242915e7ab",
     "semantic_hash": ""
   },
   "migrations/001_inefficiency_reclaim_down.sql": {
@@ -1224,15 +1224,15 @@
     "semantic_hash": ""
   },
   "memory/LEVELS_LOG.md": {
-    "mtime": 1791909307.1379762,
-    "seen": 1791916419.6764944,
-    "ast_hash": "6001eb33db94b57e4d722c7759f5a19c",
+    "mtime": 1791981687.1946523,
+    "seen": 1791983291.7932968,
+    "ast_hash": "752a744ad00c7648e65d2bce107b0351",
     "semantic_hash": ""
   },
   "memory/TRADE_LOG.md": {
-    "mtime": 1791922234.4648798,
-    "seen": 1791923009.0097897,
-    "ast_hash": "a80b08b9dcf3a567534e3cf4f590cb3c",
+    "mtime": 1792008604.786698,
+    "seen": 1792009007.3731682,
+    "ast_hash": "04d3abe8f50a8f3531fd0ee7d53e4d43",
     "semantic_hash": ""
   },
   "memory/TRADING_STRATEGY.md": {
@@ -4368,9 +4368,9 @@
     "semantic_hash": ""
   },
   "src/storage/trend_radar_store.py": {
-    "mtime": 1791919073.4538622,
-    "seen": 1791919412.3420527,
-    "ast_hash": "f127a9f7e46702b406f565ec501c9f66",
+    "mtime": 1792007709.0053222,
+    "seen": 1792007767.3555992,
+    "ast_hash": "0dbe92b4941eba04e660ac8d218854a2",
     "semantic_hash": ""
   },
   "tests/test_trend_radar.py": {
@@ -4398,21 +4398,21 @@
     "semantic_hash": ""
   },
   "src/daily_trader.py": {
-    "mtime": 1791922571.5104935,
-    "seen": 1791923008.9490712,
-    "ast_hash": "4c6b301f185e137b96791aa38ef36e5a",
+    "mtime": 1792007618.0141153,
+    "seen": 1792007767.3409994,
+    "ast_hash": "838c5d0ec8de88646f4aa9958a113d29",
     "semantic_hash": ""
   },
   "tests/test_daily_trader.py": {
-    "mtime": 1791922718.42881,
-    "seen": 1791923008.972923,
-    "ast_hash": "b0bd1e33f847dc4c1ab001c4beb214df",
+    "mtime": 1792031182.7135053,
+    "seen": 1792031327.4255853,
+    "ast_hash": "afccebba6f765ab3b1efc8e2c7208283",
     "semantic_hash": ""
   },
   "tools/daily_trader_api.py": {
-    "mtime": 1791922694.3916848,
-    "seen": 1791923008.9880013,
-    "ast_hash": "c2f21f5ecb86fb9870a026f624fccca5",
+    "mtime": 1792031034.0058086,
+    "seen": 1792031327.4413476,
+    "ast_hash": "62eafd517ebee94b1a0e321ae6d7836b",
     "semantic_hash": ""
   },
   "docs/DAILY_TRADER_V1.md": {
@@ -4434,33 +4434,33 @@
     "semantic_hash": ""
   },
   "ops/trading_platform_ops.py": {
-    "mtime": 1791895494.914476,
-    "seen": 1791895582.6326096,
-    "ast_hash": "6c8138bfcd08fe1b97d666bfbf5bbaf8",
+    "mtime": 1792067342.389486,
+    "seen": 1792067400.4090328,
+    "ast_hash": "3772a60acbd72a8137bf501629ca56b4",
     "semantic_hash": ""
   },
   "src/pre_trade_reviewer.py": {
-    "mtime": 1791746975.6967626,
-    "seen": 1791813905.0828342,
-    "ast_hash": "a2ba066be26d9a69891a7f76e1b3ea08",
+    "mtime": 1791984022.5404952,
+    "seen": 1791984091.6765873,
+    "ast_hash": "c5db460a02b2cd905c292aa3418756d7",
     "semantic_hash": ""
   },
   "tests/test_pre_trade_reviewer.py": {
-    "mtime": 1791747018.4269538,
-    "seen": 1791813905.1049242,
-    "ast_hash": "a6dea7a7398b83df067ac6a24c8f5a58",
+    "mtime": 1791984032.2233472,
+    "seen": 1791984091.6971414,
+    "ast_hash": "b720a396fa67a49ec8bb26d49dc633e2",
     "semantic_hash": ""
   },
   "tests/test_trading_platform_ops.py": {
-    "mtime": 1791895472.1186574,
-    "seen": 1791895582.668288,
-    "ast_hash": "a21624a10c36c82db5a95c2a73a768a8",
+    "mtime": 1792067300.9413984,
+    "seen": 1792067400.47038,
+    "ast_hash": "8e5bead1dc08d54a6aa3acd927b20929",
     "semantic_hash": ""
   },
   "tools/pre_trade_reviewer_api.py": {
-    "mtime": 1791747196.2402987,
-    "seen": 1791813905.1111596,
-    "ast_hash": "bee0e642ab1a8e5656460ba0d8f8cb6f",
+    "mtime": 1792027885.4929855,
+    "seen": 1792027962.2915308,
+    "ast_hash": "8a8d03c7819fd1feb73b56425535c99a",
     "semantic_hash": ""
   },
   "tools/trading_platform_ops.py": {
@@ -4470,9 +4470,9 @@
     "semantic_hash": ""
   },
   "config/hermes/pre-trade-reviewer/SOUL.md": {
-    "mtime": 1791746781.9702492,
-    "seen": 1791813905.126402,
-    "ast_hash": "6642ab8e5f2bcbc8c3562697b3826373",
+    "mtime": 1792009942.6727674,
+    "seen": 1792010042.2160418,
+    "ast_hash": "0fb5189fb3438abdd7080b40618b35ee",
     "semantic_hash": ""
   },
   "config/hermes/pre-trade-reviewer/config.yaml": {
@@ -4494,9 +4494,9 @@
     "semantic_hash": ""
   },
   "config/hermes/pre-trade-reviewer/skills/pre-trade-review/SKILL.md": {
-    "mtime": 1791746787.7171712,
-    "seen": 1791813905.126413,
-    "ast_hash": "9c552ee93c751fd14fab7a370b65e419",
+    "mtime": 1792009942.6727674,
+    "seen": 1792010042.2165682,
+    "ast_hash": "89393dab495256f85ef46173747544a4",
     "semantic_hash": ""
   },
   "config/hermes/trading-ops-supervisor/SOUL.md": {
@@ -4565,12 +4565,6 @@
     "ast_hash": "33057951ce4d581c3d86d1638a035416",
     "semantic_hash": ""
   },
-  "memory/RESEARCH_LOG.md": {
-    "mtime": 1791921000.9836795,
-    "seen": 1791923009.0097873,
-    "ast_hash": "6e07f0ab4bc04651bba3e92285f16d1b",
-    "semantic_hash": ""
-  },
   "tests/test_crypto_worker.py": {
     "mtime": 1791857710.188184,
     "seen": 1791858086.9108431,
@@ -4605,6 +4599,114 @@
     "mtime": 1791918445.3675945,
     "seen": 1791919412.3811786,
     "ast_hash": "267564afa95a05d404827eef8619658b",
+    "semantic_hash": ""
+  },
+  ".tmp/hermes-flips-invoke.txt": {
+    "mtime": 1791931741.3529792,
+    "seen": 1791942079.789116,
+    "ast_hash": "cf378ae4cecd3f9a0bb1e4c0c41d679a",
+    "semantic_hash": ""
+  },
+  "memory/RESEARCH_LOG.md": {
+    "mtime": 1792008013.8618536,
+    "seen": 1792009007.3731654,
+    "ast_hash": "8a73a303a4eaf0b8453bdc2197b70866",
+    "semantic_hash": ""
+  },
+  "scripts/start_detached_python_service.ps1": {
+    "mtime": 1791981262.9537864,
+    "seen": 1791981618.135982,
+    "ast_hash": "0a63f82c5a86374af7a3920068de764a",
+    "semantic_hash": ""
+  },
+  "tests/test_detached_launcher_contract.py": {
+    "mtime": 1791983093.440356,
+    "seen": 1791983291.7607675,
+    "ast_hash": "211cd86c8f6aa2e2ffe7385717de86f6",
+    "semantic_hash": ""
+  },
+  "tests/test_pre_trade_reviewer_candidate.py": {
+    "mtime": 1792027265.5189695,
+    "seen": 1792027962.2840054,
+    "ast_hash": "d3439e6e3bba596379f028bd3724606e",
+    "semantic_hash": ""
+  },
+  "config/hermes/pre-trade-reviewer/skills/pre-trade-review-candidate/SKILL.md": {
+    "mtime": 1792027249.9084969,
+    "seen": 1792027962.3058987,
+    "ast_hash": "f0d09a621cf2ea14b475d97b8574732d",
+    "semantic_hash": ""
+  },
+  "tests/test_daily_trader_latest_scan.py": {
+    "mtime": 1792007712.1658514,
+    "seen": 1792007767.3635373,
+    "ast_hash": "695670f304daa3ded2af4a3f5c9366eb",
+    "semantic_hash": ""
+  },
+  "scripts/dashboard_api_lifecycle.ps1": {
+    "mtime": 1792008915.9515805,
+    "seen": 1792009007.3072574,
+    "ast_hash": "a76d8407ac3c53b88e8074283993e1d4",
+    "semantic_hash": ""
+  },
+  "tests/test_pre_trade_reviewer_routing.py": {
+    "mtime": 1792027277.6885073,
+    "seen": 1792027962.2840092,
+    "ast_hash": "dc017bd3553774a68fee5f837e310a3a",
+    "semantic_hash": ""
+  },
+  "tests/test_trading_orchestrator_contract.py": {
+    "mtime": 1792031598.110575,
+    "seen": 1792032032.826752,
+    "ast_hash": "0c66ad31e4a73b2277194c1de93d3bb8",
+    "semantic_hash": ""
+  },
+  "config/hermes/trading-orchestrator/SOUL.md": {
+    "mtime": 1792011755.1279826,
+    "seen": 1792011864.925893,
+    "ast_hash": "5f39de4718ba48bf53155eb3eb6b5c24",
+    "semantic_hash": ""
+  },
+  "config/hermes/trading-orchestrator/config.yaml": {
+    "mtime": 1792033156.6710474,
+    "seen": 1792067400.4952974,
+    "ast_hash": "51f06167d274b9578475bd8a0823fa05",
+    "semantic_hash": ""
+  },
+  "config/hermes/trading-orchestrator/profile.yaml": {
+    "mtime": 1792011755.1269772,
+    "seen": 1792011864.9258974,
+    "ast_hash": "4c69359b2744116a03121786ab777f67",
+    "semantic_hash": ""
+  },
+  "config/hermes/trading-orchestrator/skills/trading-readiness-orchestrator/SKILL.md": {
+    "mtime": 1792031598.109525,
+    "seen": 1792032032.8464155,
+    "ast_hash": "a10ce8aa3d9a4e4088f5ad65137ce273",
+    "semantic_hash": ""
+  },
+  "docs/TRADING_ORCHESTRATOR_A2A.md": {
+    "mtime": 1792012412.8581629,
+    "seen": 1792012471.5656981,
+    "ast_hash": "abcbb2728108e242b9812c5d926dd6f1",
+    "semantic_hash": ""
+  },
+  "src/trading_orchestrator_contract.py": {
+    "mtime": 1792011913.876776,
+    "seen": 1792011948.40591,
+    "ast_hash": "34ba7b182dd44b7d959ca9688b308035",
+    "semantic_hash": ""
+  },
+  "tests/test_trading_orchestrator_contract_validation.py": {
+    "mtime": 1792011892.2887168,
+    "seen": 1792011948.4249907,
+    "ast_hash": "b83bc7e8b03df1896e70f71e55e8c3d1",
+    "semantic_hash": ""
+  },
+  "config/hermes/daily-trader/skills/daily-trader-latest-scan/SKILL.md": {
+    "mtime": 1792031182.7104754,
+    "seen": 1792031327.453103,
+    "ast_hash": "d3bcd21d72f86a4cc34e99a7dd85356d",
     "semantic_hash": ""
   }
 }

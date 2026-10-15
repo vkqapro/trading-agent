@@ -1237,3 +1237,16 @@ TimeoutError
 2026-10-06 15:53:24 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
 2026-10-06 15:53:24 | INFO | ibkr-gerchik-bot | Connected to IBKR.
 2026-10-06 15:53:25 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+INFO:     Started server process [33400]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [39304]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-10-14 09:55:06 | INFO | ibkr-gerchik-bot | Queued place request 866f5a57093b for KDP (live=False)
+INFO:     Started server process [18540]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)

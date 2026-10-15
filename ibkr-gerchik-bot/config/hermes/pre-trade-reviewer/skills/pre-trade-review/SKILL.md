@@ -1,9 +1,18 @@
 ---
 name: pre-trade-review
-description: Review one existing production candidate through the read-only Daily Trader API.
+description: Legacy exact single-candidate review through the read-only Daily Trader API; do not use for natural-language latest, all-candidate, or symbol-only requests.
 ---
 
-# Single-candidate pre-trade review
+# Legacy Single-candidate Review
+
+This is not the natural-language dispatcher for `Review latest scan`,
+`Review all candidates`, or `Review SYMBOL`. Those requests must use the
+`pre-trade-review-candidate` skill and the persisted latest-scan batch path.
+In particular, never resolve a symbol-only request through this skill's
+single-symbol endpoint and never ask the user to choose an ordinal for it.
+
+Use this skill only when the caller explicitly requests the legacy exact
+single-symbol API behavior.
 
 For `Review GSHD`, call the approved client from the repository using the
 loopback API only:

@@ -24,6 +24,10 @@ from typing import Any, Callable, Iterable
 from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
+# Keep direct ``python ops/trading_platform_ops.py`` invocation aligned with
+# module/test execution, where the repository root is already importable.
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 RUNTIME = ROOT / "memory" / "runtime"
 MARKET_DATA_STATUS_MAX_AGE = 900.0
 API_TIMEOUT_SECONDS = 2.0
@@ -53,6 +57,7 @@ class ServiceSpec:
     port: int | None = None
     required: bool = True
     readiness_url: str | None = None
+    detached_launcher: bool = False
 
 
 @dataclass(frozen=True)
@@ -97,9 +102,9 @@ def _market_data_now(tz: timezone | None) -> datetime:
 
 def _specs() -> tuple[ServiceSpec, ...]:
     return (
-        ServiceSpec("trading_bot_mcp", "Trading Bot MCP", ("src.mcp.trading_bot_server",), "run_trading_bot_mcp.cmd", port=8765, required=True, readiness_url="http://127.0.0.1:8765/health"),
-        ServiceSpec("strategy_scanner_mcp", "Strategy Scanner MCP", ("scanner_mcp.server",), "start-strategy-scanner-mcp.cmd", port=8766, required=True, readiness_url="http://127.0.0.1:8766/health"),
-        ServiceSpec("dashboard", "Dashboard", ("dashboard_react.server:app",), "run_react_dashboard.cmd", port=8550, readiness_url="http://127.0.0.1:8550/api/radar/top?limit=1"),
+        ServiceSpec("trading_bot_mcp", "Trading Bot MCP", ("src.mcp.trading_bot_server",), "run_trading_bot_mcp.cmd", port=8765, required=True, readiness_url="http://127.0.0.1:8765/health", detached_launcher=True),
+        ServiceSpec("strategy_scanner_mcp", "Strategy Scanner MCP", ("scanner_mcp.server",), "start-strategy-scanner-mcp.cmd", port=8766, required=True, readiness_url="http://127.0.0.1:8766/health", detached_launcher=True),
+        ServiceSpec("dashboard", "Dashboard", ("dashboard_react.server:app",), "run_dashboard_api.cmd", port=8550, readiness_url="http://127.0.0.1:8550/api/radar/top?limit=1", detached_launcher=True),
         ServiceSpec(
             "market_data",
             "Market Data",
@@ -320,13 +325,182 @@ def _get_json(url: str, timeout: float = API_TIMEOUT_SECONDS) -> dict[str, Any]:
         return {"status": "UNAVAILABLE", "reason": type(exc).__name__}
 
 
-def _start(spec: ServiceSpec) -> str | None:
+def _execute_worker_paths() -> tuple[Path, Path]:
+    """Resolve the same durable stores used by the production worker."""
+    from src.config import SETTINGS
+    from src.execution.order_requests import ORDER_REQUESTS_PATH
+
+    return Path(SETTINGS.decision_agent.database_path), Path(ORDER_REQUESTS_PATH)
+
+
+def _read_execute_worker_preflight(
+    *,
+    database_path: Path | None = None,
+    queue_path: Path | None = None,
+    processes: list[ProcessInfo] | None = None,
+    process_visibility: str = "available",
+    process_visibility_reason: str | None = None,
+) -> dict[str, Any]:
+    """Inspect Execute Worker startup inputs without opening a writable store.
+
+    The production worker processes approvals first and then claims pending
+    order requests on every poll.  This function deliberately uses SQLite's
+    read-only URI and direct JSON parsing so preflight cannot migrate, expire,
+    claim, update, or otherwise mutate trading state.
+    """
+    result: dict[str, Any] = {
+        "command": "execute-worker-preflight",
+        "verdict": "UNKNOWN",
+        "read_only": True,
+        "worker_startup_behavior": {
+            "approval_phase": "process_approved_once before process_pending_once",
+            "approved_unconsumed_behavior": "may revalidate, create an execution intent, enqueue a request, and reach broker processing on the same tick",
+            "pending_request_behavior": "claim_pending marks pending requests PROCESSING before broker processing",
+        },
+        "counts": {
+            "approved_unconsumed": None,
+            "approved_with_execution_intent": None,
+            "approval_jobs_pending": None,
+            "approval_jobs_processing": None,
+            "pending_actionable_requests": None,
+            "processing_actionable_requests": None,
+            "actionable_execution_requests": None,
+        },
+        "evidence": {},
+        "errors": [],
+        "orders_submitted": 0,
+        "approvals_created": 0,
+        "execution_intents_created": 0,
+    }
+    try:
+        resolved_db, resolved_queue = _execute_worker_paths()
+        db = Path(database_path or resolved_db)
+        queue = Path(queue_path or resolved_queue)
+    except Exception as exc:
+        result["errors"].append({"source": "runtime_configuration", "reason_code": "CONFIGURATION_UNAVAILABLE", "error": type(exc).__name__})
+        result["reason_code"] = "PREFLIGHT_EVIDENCE_INCOMPLETE"
+        return result
+
+    result["evidence"]["approval_database"] = {"path": str(db), "source": "SETTINGS.decision_agent.database_path"}
+    result["evidence"]["execution_queue"] = {"path": str(queue), "source": "src.execution.order_requests.ORDER_REQUESTS_PATH"}
+
+    try:
+        import sqlite3
+
+        if not db.exists():
+            raise FileNotFoundError(str(db))
+        with sqlite3.connect(f"file:{db}?mode=ro", uri=True, timeout=1) as conn:
+            conn.row_factory = sqlite3.Row
+            tables = {str(row[0]) for row in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+            required = {"trade_approvals", "trade_execution_intents", "trade_approval_jobs"}
+            missing = sorted(required - tables)
+            if missing:
+                raise RuntimeError("missing_tables:" + ",".join(missing))
+            approved = int(conn.execute("SELECT COUNT(*) FROM trade_approvals WHERE status='APPROVED'").fetchone()[0])
+            with_intent = int(conn.execute(
+                "SELECT COUNT(*) FROM trade_approvals a "
+                "JOIN trade_execution_intents i ON i.approval_id=a.approval_id "
+                "WHERE a.status='APPROVED'"
+            ).fetchone()[0])
+            jobs_pending = int(conn.execute("SELECT COUNT(*) FROM trade_approval_jobs WHERE status='PENDING'").fetchone()[0])
+            jobs_processing = int(conn.execute("SELECT COUNT(*) FROM trade_approval_jobs WHERE status='PROCESSING'").fetchone()[0])
+        result["counts"].update(
+            approved_unconsumed=max(0, approved - with_intent),
+            approved_with_execution_intent=with_intent,
+            approval_jobs_pending=jobs_pending,
+            approval_jobs_processing=jobs_processing,
+        )
+        result["evidence"]["approval_database"].update({"readable": True, "required_tables_present": True})
+    except Exception as exc:
+        result["errors"].append({"source": "approval_database", "reason_code": "DATABASE_ACCESS_FAILED", "error": type(exc).__name__})
+
+    try:
+        if not queue.exists():
+            records: list[Any] = []
+        else:
+            payload = json.loads(queue.read_text(encoding="utf-8"))
+            if not isinstance(payload, dict) or not isinstance(payload.get("requests"), list):
+                raise ValueError("invalid_queue_shape")
+            records = payload["requests"]
+        pending = [row for row in records if isinstance(row, dict) and row.get("status") == "pending"]
+        processing = [row for row in records if isinstance(row, dict) and row.get("status") == "processing"]
+        result["counts"].update(
+            pending_actionable_requests=len(pending),
+            processing_actionable_requests=len(processing),
+            actionable_execution_requests=len(pending) + len(processing),
+        )
+        result["evidence"]["execution_queue"].update({"readable": True, "record_count": len(records), "pending_statuses": ["pending", "processing"]})
+    except Exception as exc:
+        result["errors"].append({"source": "execution_queue", "reason_code": "QUEUE_ACCESS_FAILED", "error": type(exc).__name__})
+
+    observed = list(processes if processes is not None else _processes())
+    matches = _matching(ServiceSpec("execute_worker", "Execute Worker", ("--job execute_requests",), None), observed)
+    roots = _logical_roots(matches, observed)
+    result["evidence"]["processes"] = {
+        "visibility": {"status": process_visibility, "reason": process_visibility_reason},
+        "matching_pids": [p.pid for p in matches],
+        "logical_root_pids": [p.pid for p in roots],
+        "logical_instance_count": len(roots),
+    }
+    if process_visibility != "available":
+        result["errors"].append({"source": "process_inspection", "reason_code": "PROCESS_VISIBILITY_UNAVAILABLE"})
+    elif len(roots) > 1:
+        result["errors"].append({"source": "process_inspection", "reason_code": "DUPLICATE_EXECUTE_WORKER"})
+    elif len(roots) == 1:
+        result["errors"].append({"source": "process_inspection", "reason_code": "EXECUTE_WORKER_ALREADY_RUNNING"})
+
+    counts = result["counts"]
+    evidence_complete = not result["errors"] or all(
+        error["reason_code"] in {"EXECUTE_WORKER_ALREADY_RUNNING", "DUPLICATE_EXECUTE_WORKER"}
+        for error in result["errors"]
+    )
+    startup_order_risk = (
+        (counts["approved_unconsumed"] or 0) > 0
+        or (counts["approval_jobs_pending"] or 0) > 0
+        or (counts["approval_jobs_processing"] or 0) > 0
+        or (counts["actionable_execution_requests"] or 0) > 0
+    )
+    result["could_submit_ibkr_paper_orders_on_startup"] = startup_order_risk
+    result["safe_for_paper_execution_is_not_startup_empty"] = True
+    if not evidence_complete:
+        result["verdict"] = "UNKNOWN"
+        result["reason_code"] = "PREFLIGHT_EVIDENCE_INCOMPLETE"
+    elif len(roots) == 1:
+        result["verdict"] = "BLOCKED"
+        result["reason_code"] = "EXECUTE_WORKER_ALREADY_RUNNING"
+    elif len(roots) > 1 or startup_order_risk:
+        result["verdict"] = "BLOCKED"
+        result["reason_code"] = "STARTUP_ORDER_RISK" if startup_order_risk else "DUPLICATE_EXECUTE_WORKER"
+    else:
+        result["verdict"] = "SAFE_TO_START"
+        result["reason_code"] = "NO_APPROVED_OR_ACTIONABLE_WORK"
+    return result
+
+
+def _start(spec: ServiceSpec) -> dict[str, Any]:
     if not spec.launcher:
-        return "no_approved_launcher"
+        return {"ok": False, "reason": "no_approved_launcher"}
     path = ROOT / spec.launcher
     if not path.exists():
-        return f"launcher_missing:{path}"
+        return {"ok": False, "reason": "launcher_missing", "path": str(path)}
     try:
+        if spec.detached_launcher:
+            completed = subprocess.run(
+                ["cmd.exe", "/d", "/c", str(path)],
+                cwd=str(ROOT),
+                text=True,
+                capture_output=True,
+                timeout=30,
+            )
+            output = (completed.stdout or "").strip()
+            error = (completed.stderr or "").strip()
+            return {
+                "ok": completed.returncode == 0,
+                "exit_code": completed.returncode,
+                "stdout_tail": output[-1200:] if output else "",
+                "stderr_tail": error[-1200:] if error else "",
+                "reason": None if completed.returncode == 0 else "launcher_exit_nonzero",
+            }
         subprocess.Popen(
             ["cmd.exe", "/d", "/c", str(path)],
             cwd=str(ROOT),
@@ -335,9 +509,16 @@ def _start(spec: ServiceSpec) -> str | None:
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         )
-        return None
+        return {"ok": True}
+    except subprocess.TimeoutExpired as exc:
+        return {
+            "ok": False,
+            "reason": "launcher_timeout",
+            "stdout_tail": (exc.stdout or "")[-1200:] if isinstance(exc.stdout, str) else "",
+            "stderr_tail": (exc.stderr or "")[-1200:] if isinstance(exc.stderr, str) else "",
+        }
     except OSError as exc:
-        return f"launcher_failed:{type(exc).__name__}"
+        return {"ok": False, "reason": f"launcher_failed:{type(exc).__name__}"}
 
 
 class Supervisor:
@@ -359,6 +540,15 @@ class Supervisor:
 
     def _current_processes(self) -> list[ProcessInfo]:
         return self._process_snapshot().processes
+
+    def execute_worker_preflight(self) -> dict[str, Any]:
+        """Return a read-only, fail-closed Execute Worker startup verdict."""
+        snapshot = self._process_snapshot()
+        return _read_execute_worker_preflight(
+            processes=snapshot.processes,
+            process_visibility=snapshot.visibility,
+            process_visibility_reason=snapshot.reason,
+        )
 
     def _database(self) -> dict[str, Any]:
         db = ROOT / "memory" / "decision_lab.db"
@@ -473,7 +663,7 @@ class Supervisor:
         except subprocess.TimeoutExpired as exc:
             raise TimeoutError("IBKR identity lookup timed out") from exc
 
-    def _service(self, spec: ServiceSpec, *, start_missing: bool, processes: list[ProcessInfo], actions: list[str], process_visibility: str = "available", process_visibility_reason: str | None = None) -> dict[str, Any]:
+    def _service(self, spec: ServiceSpec, *, start_missing: bool, processes: list[ProcessInfo], actions: list[Any], process_visibility: str = "available", process_visibility_reason: str | None = None) -> dict[str, Any]:
         matches = _matching(spec, processes)
         roots = _logical_roots(matches, processes)
         row: dict[str, Any] = {
@@ -490,21 +680,47 @@ class Supervisor:
             row.update(status="DUPLICATE_PROCESS", reason_code="DUPLICATE_PROCESS_DETECTED", safe_auto_repair=False,
                         recommended_action="Stop one root only after confirming no active execution state.")
             return row
+        if not roots and spec.port:
+            pre_start_port = _port(spec.port)
+            if pre_start_port.get("reachable"):
+                pre_start_readiness = self._api(spec.readiness_url, spec.label) if spec.readiness_url else {"status": "HEALTHY"}
+                owner = _port_owner(spec.port)
+                row["port"] = pre_start_port
+                row["readiness"] = pre_start_readiness
+                if pre_start_readiness.get("status") == "HEALTHY" and owner is not None:
+                    row.update(observed_count=1, logical_instances=1, root_pids=[owner], pids=[owner], process_running=True, port_owner_pid=owner, port_identity_verified=True)
+                elif pre_start_readiness.get("status") == "HEALTHY" and process_visibility == "unavailable":
+                    row.update(process_running=True, port_identity_verified=True)
+                else:
+                    row.update(
+                        status="ACTION_REQUIRED" if start_missing else "UNKNOWN",
+                        operational_state="UNKNOWN",
+                        reason_code="PORT_OWNERSHIP_AMBIGUOUS",
+                        port_owner_pid=owner,
+                        port_identity_verified=False,
+                        recommended_action=f"Inspect PID {owner or 'UNKNOWN'} on port {spec.port} before starting {spec.label}.",
+                        safe_auto_repair=False,
+                    )
+                    return row
+        if row.get("process_running"):
+            start_missing = False
         if not roots and start_missing and process_visibility == "available":
             if spec.key == "execute_worker":
                 boundary = self._execution_boundary()
                 if not boundary.get("safe_to_start"):
                     row.update(status="ACTION_REQUIRED", reason_code=boundary.get("reason_code"), action_required=boundary.get("action_required"), recommended_action=boundary.get("action_required"), safe_auto_repair=False, execution_boundary=boundary)
                     return row
-            # The aggregate dashboard launcher is safe only when no worker is already present.
-            if spec.key == "dashboard" and any(_matching(other, processes) for other in _specs() if other.key != "dashboard"):
-                row.update(status="ACTION_REQUIRED", reason_code="DASHBOARD_LAUNCHER_WOULD_COLLIDE", action_required="Dashboard is down while worker services exist; start dashboard through the approved launcher after resolving the partial stack.", recommended_action="Resolve the partial aggregate-launcher state before starting Dashboard.", safe_auto_repair=False)
-                return row
-            error = _start(spec)
-            if error:
-                row.update(status="FAILED", reason_code="START_FAILED", reason=error, recommended_action="Inspect the approved launcher and its runtime log.")
+            start_result = _start(spec)
+            if start_result is None:
+                start_result = {"ok": True}
+            elif isinstance(start_result, str):
+                start_result = {"ok": False, "reason": start_result}
+            elif not isinstance(start_result, dict):
+                start_result = {"ok": True}
+            if not start_result.get("ok"):
+                row.update(status="FAILED", reason_code="START_FAILED", launcher_result=start_result, reason=start_result.get("reason"), recommended_action="Inspect the approved launcher and its runtime log.")
             else:
-                actions.append(f"Started {spec.label} via {spec.launcher}")
+                actions.append({"action": "start", "service": spec.key, "label": spec.label, "launcher": spec.launcher, "result": "STARTED", "launcher_result": start_result})
                 row.update(status="STARTING", operational_state="STARTING")
                 refreshed_all = processes
                 refreshed: list[ProcessInfo] = []
@@ -520,10 +736,16 @@ class Supervisor:
                 if not refreshed_roots:
                     # Second and final bounded start attempt. Never retry an
                     # ambiguous or live execution state.
-                    retry_error = _start(spec)
-                    actions.append(f"Retried {spec.label} via {spec.launcher}")
-                    if retry_error:
-                        row.update(status="ACTION_REQUIRED", operational_state="UNHEALTHY", reason_code="START_RETRY_FAILED", reason=retry_error, recommended_action="Inspect the approved launcher and its runtime log.")
+                    retry_result = _start(spec)
+                    if retry_result is None:
+                        retry_result = {"ok": True}
+                    elif isinstance(retry_result, str):
+                        retry_result = {"ok": False, "reason": retry_result}
+                    elif not isinstance(retry_result, dict):
+                        retry_result = {"ok": True}
+                    actions.append({"action": "retry_start", "service": spec.key, "label": spec.label, "launcher": spec.launcher, "result": "STARTED" if retry_result.get("ok") else "FAILED", "launcher_result": retry_result})
+                    if not retry_result.get("ok"):
+                        row.update(status="ACTION_REQUIRED", operational_state="UNHEALTHY", reason_code="START_RETRY_FAILED", launcher_result=retry_result, reason=retry_result.get("reason"), recommended_action="Inspect the approved launcher and its runtime log.")
                     else:
                         for _ in range(STARTUP_VERIFY_POLLS):
                             self.sleep(STARTUP_VERIFY_INTERVAL_SECONDS)
@@ -587,7 +809,7 @@ class Supervisor:
             elif process_visibility == "unavailable":
                 row.update(process_running=True)
         row["api_status"] = None
-        row["action_taken"] = actions[-1] if actions and spec.label in actions[-1] else None
+        row["action_taken"] = next((action for action in reversed(actions) if isinstance(action, dict) and action.get("service") == spec.key), None)
         healthy_hb = (
             hb.get("available") and hb.get("fresh")
             if spec.key == "market_data"
@@ -637,7 +859,7 @@ class Supervisor:
         started = self.now().isoformat()
         snapshot = self._process_snapshot()
         processes = snapshot.processes
-        actions: list[str] = []
+        actions: list[Any] = []
         services: dict[str, Any] = {}
         for spec in _specs():
             services[spec.key] = self._service(spec, start_missing=start_missing, processes=processes, actions=actions, process_visibility=snapshot.visibility, process_visibility_reason=snapshot.reason)
@@ -850,9 +1072,13 @@ def human_report(result: dict[str, Any]) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Deterministic local trading-platform operations")
-    parser.add_argument("command", choices=("health", "morning", "readiness-recheck", "service-status"))
+    parser.add_argument("command", choices=("health", "morning", "readiness-recheck", "service-status", "execute-worker-preflight"))
     parser.add_argument("service", nargs="?")
     args = parser.parse_args(argv)
+    if args.command == "execute-worker-preflight":
+        result = Supervisor().execute_worker_preflight()
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["verdict"] == "SAFE_TO_START" else 2
     result = Supervisor().run(start_missing=args.command == "morning")
     if args.command == "service-status" and args.service:
         result["services"] = {args.service: result.get("services", {}).get(args.service, {"service": args.service, "status": "MISSING", "reason_code": "UNKNOWN_SERVICE"})}

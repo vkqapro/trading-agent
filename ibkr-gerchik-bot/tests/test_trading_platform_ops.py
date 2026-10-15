@@ -400,6 +400,166 @@ def test_strategy_scanner_recovers_process_from_verified_port_owner(monkeypatch)
     assert row["pids"] == [87660]
 
 
+def test_dashboard_missing_uses_api_only_launcher_while_workers_remain_healthy(monkeypatch):
+    from ops.trading_platform_ops import ServiceSpec
+
+    specs = (
+        ServiceSpec(
+            "dashboard",
+            "Dashboard",
+            ("dashboard_react.server:app",),
+            "run_dashboard_api.cmd",
+            port=8550,
+            readiness_url="http://127.0.0.1:8550/api/radar/top?limit=1",
+            detached_launcher=True,
+        ),
+        ServiceSpec("execute_worker", "Execute Worker", ("execute_requests",), None),
+        ServiceSpec("crypto_worker", "Crypto Worker", ("src.crypto.main --job worker",), None, required=False),
+    )
+    processes = [
+        ProcessInfo(12, "python -m src.main --job execute_requests --client-id 11"),
+        ProcessInfo(13, "python -m src.crypto.main --job worker"),
+    ]
+    launches = []
+    sup = _supervisor(monkeypatch, processes, services=specs)
+    monkeypatch.setattr(
+        "ops.trading_platform_ops._port",
+        lambda port: {"checked": False} if port is None else {"checked": True, "reachable": False, "host": "127.0.0.1", "port": port},
+    )
+    monkeypatch.setattr("ops.trading_platform_ops._start", lambda spec: launches.append(spec.launcher) or {"ok": True})
+
+    result = sup.run(start_missing=True)
+
+    assert launches == ["run_dashboard_api.cmd", "run_dashboard_api.cmd"]
+    assert result["services"]["dashboard"]["reason_code"] == "START_VERIFICATION_FAILED"
+    assert result["services"]["execute_worker"]["status"] == "HEALTHY"
+    assert result["services"]["crypto_worker"]["status"] == "HEALTHY"
+    assert result["orders_submitted"] == 0
+    assert result["approvals_created"] == 0
+    assert result["execution_intents_created"] == 0
+
+
+def test_dashboard_already_running_is_adopted_from_verified_port_owner(monkeypatch):
+    from ops.trading_platform_ops import ServiceSpec, Supervisor
+
+    spec = ServiceSpec(
+        "dashboard",
+        "Dashboard",
+        ("dashboard_react.server:app",),
+        "run_dashboard_api.cmd",
+        port=8550,
+        readiness_url="http://127.0.0.1:8550/api/radar/top?limit=1",
+        detached_launcher=True,
+    )
+    monkeypatch.setattr("ops.trading_platform_ops._port", lambda port: {"checked": True, "reachable": True, "host": "127.0.0.1", "port": port})
+    monkeypatch.setattr("ops.trading_platform_ops._port_owner", lambda port: 85500)
+    monkeypatch.setattr("ops.trading_platform_ops._start", lambda spec: (_ for _ in ()).throw(AssertionError("started existing dashboard")))
+    sup = Supervisor(sleep=lambda _: None)
+    monkeypatch.setattr(sup, "_api", lambda url, label, method="GET": {"service": label, "status": "HEALTHY", "read_only": True})
+
+    row = sup._service(spec, start_missing=True, processes=[], actions=[])
+
+    assert row["status"] == "HEALTHY"
+    assert row["pids"] == [85500]
+    assert row["port_identity_verified"] is True
+
+
+def test_port_occupied_by_unrelated_process_refuses_recovery(monkeypatch):
+    from ops.trading_platform_ops import ServiceSpec, Supervisor
+
+    spec = ServiceSpec(
+        "dashboard",
+        "Dashboard",
+        ("dashboard_react.server:app",),
+        "run_dashboard_api.cmd",
+        port=8550,
+        readiness_url="http://127.0.0.1:8550/api/radar/top?limit=1",
+        detached_launcher=True,
+    )
+    monkeypatch.setattr("ops.trading_platform_ops._port", lambda port: {"checked": True, "reachable": True, "host": "127.0.0.1", "port": port})
+    monkeypatch.setattr("ops.trading_platform_ops._port_owner", lambda port: 99999)
+    monkeypatch.setattr("ops.trading_platform_ops._start", lambda spec: (_ for _ in ()).throw(AssertionError("started ambiguous port")))
+    sup = Supervisor(sleep=lambda _: None)
+    monkeypatch.setattr(sup, "_api", lambda url, label, method="GET": {"service": label, "status": "UNAVAILABLE", "reason_code": "API_UNAVAILABLE"})
+
+    row = sup._service(spec, start_missing=True, processes=[], actions=[])
+
+    assert row["status"] == "ACTION_REQUIRED"
+    assert row["reason_code"] == "PORT_OWNERSHIP_AMBIGUOUS"
+    assert row["safe_auto_repair"] is False
+
+
+def test_detached_launcher_failure_is_actionable(monkeypatch):
+    from ops.trading_platform_ops import ServiceSpec, Supervisor
+
+    spec = ServiceSpec(
+        "trading_bot_mcp",
+        "Trading Bot MCP",
+        ("src.mcp.trading_bot_server",),
+        "run_trading_bot_mcp.cmd",
+        port=8765,
+        readiness_url="http://127.0.0.1:8765/health",
+        detached_launcher=True,
+    )
+    monkeypatch.setattr("ops.trading_platform_ops._port", lambda port: {"checked": True, "reachable": False, "host": "127.0.0.1", "port": port})
+    monkeypatch.setattr(
+        "ops.trading_platform_ops._start",
+        lambda spec: {"ok": False, "reason": "launcher_exit_nonzero", "exit_code": 1, "stderr_tail": "Missing required dependencies"},
+    )
+    row = Supervisor(sleep=lambda _: None)._service(spec, start_missing=True, processes=[], actions=[])
+
+    assert row["status"] == "FAILED"
+    assert row["reason_code"] == "START_FAILED"
+    assert row["launcher_result"]["stderr_tail"] == "Missing required dependencies"
+
+
+def test_successful_bounded_recovery_records_structured_actions(monkeypatch):
+    from ops.trading_platform_ops import ServiceSpec
+
+    spec = ServiceSpec(
+        "trading_bot_mcp",
+        "Trading Bot MCP",
+        ("src.mcp.trading_bot_server",),
+        "run_trading_bot_mcp.cmd",
+        port=8765,
+        readiness_url="http://127.0.0.1:8765/health",
+        detached_launcher=True,
+    )
+    process_sets = [[], [ProcessInfo(87650, "python -m src.mcp.trading_bot_server")]]
+    sup = _supervisor(monkeypatch, [], services=(spec,))
+    sup.process_provider = lambda: process_sets.pop(0) if process_sets else [ProcessInfo(87650, "python -m src.mcp.trading_bot_server")]
+    monkeypatch.setattr("ops.trading_platform_ops._port", lambda port: {"checked": True, "reachable": bool(process_sets == []), "host": "127.0.0.1", "port": port})
+    monkeypatch.setattr("ops.trading_platform_ops._start", lambda spec: {"ok": True, "stdout_tail": "started"})
+
+    result = sup.run(start_missing=True)
+
+    assert result["services"]["trading_bot_mcp"]["status"] == "HEALTHY"
+    assert result["actions_taken"][0]["service"] == "trading_bot_mcp"
+    assert result["actions_taken"][0]["launcher"] == "run_trading_bot_mcp.cmd"
+
+
+def test_api_health_check_failure_after_process_start_is_unavailable(monkeypatch):
+    from ops.trading_platform_ops import ServiceSpec, Supervisor
+
+    spec = ServiceSpec(
+        "trading_bot_mcp",
+        "Trading Bot MCP",
+        ("src.mcp.trading_bot_server",),
+        "run_trading_bot_mcp.cmd",
+        port=8765,
+        readiness_url="http://127.0.0.1:8765/health",
+        detached_launcher=True,
+    )
+    monkeypatch.setattr("ops.trading_platform_ops._port", lambda port: {"checked": True, "reachable": True, "host": "127.0.0.1", "port": port})
+    sup = Supervisor(sleep=lambda _: None)
+    monkeypatch.setattr(sup, "_api", lambda url, label, method="GET": {"service": label, "status": "UNAVAILABLE", "reason_code": "API_UNAVAILABLE"})
+
+    row = sup._service(spec, start_missing=False, processes=[ProcessInfo(87650, "python -m src.mcp.trading_bot_server")], actions=[])
+
+    assert row["status"] == "UNAVAILABLE"
+    assert row["reason_code"] == "READINESS_UNAVAILABLE"
+
+
 def test_market_data_malformed_status_fails_closed(tmp_path, monkeypatch):
     from ops.trading_platform_ops import Supervisor
 
@@ -592,6 +752,33 @@ def test_production_scanner_health_failure_remains_action_required(monkeypatch):
     assert result["reason_code"] == "API_UNAVAILABLE"
 
 
+def test_pre_trade_reviewer_health_uses_dashboard_route(monkeypatch):
+    from ops.trading_platform_ops import Supervisor
+
+    calls = []
+
+    def fake_api(self, url, label, method="GET"):
+        calls.append((label, url, method))
+        return {"service": label, "status": "HEALTHY", "read_only": True}
+
+    monkeypatch.setattr("ops.trading_platform_ops._specs", lambda: ())
+    monkeypatch.setattr(Supervisor, "_api", fake_api)
+    monkeypatch.setattr(Supervisor, "_broker", lambda self: {"status": "HEALTHY"})
+    monkeypatch.setattr(Supervisor, "_database", lambda self: {"status": "HEALTHY"})
+    monkeypatch.setattr(Supervisor, "_safety", lambda self: {"status": "SAFE_FOR_PAPER_EXECUTION"})
+    monkeypatch.setattr(Supervisor, "_execution_boundary", lambda self: {"safe_to_start": True, "status": "SAFE_TO_START"})
+
+    result = Supervisor(process_provider=lambda: [], sleep=lambda _: None).run(start_missing=False)
+
+    assert result["apis"]["pre_trade_reviewer"]["status"] == "HEALTHY"
+    assert (
+        "Pre-Trade Reviewer",
+        "http://127.0.0.1:8550/api/pre-trade-review/health",
+        "GET",
+    ) in calls
+    assert all("/api/pre-trade-reviewer/health" not in url for _, url, _ in calls)
+
+
 def test_execution_boundary_reads_ambiguous_reservation_without_mutating(tmp_path, monkeypatch):
     import sqlite3
     from ops.trading_platform_ops import Supervisor
@@ -607,7 +794,6 @@ def test_execution_boundary_reads_ambiguous_reservation_without_mutating(tmp_pat
     result = Supervisor()._execution_boundary()
     assert result["safe_to_start"] is False
     assert result["reason_code"] == "ACTIVE_EXECUTION_STATE"
-
     with sqlite3.connect(memory / "decision_lab.db") as conn:
         conn.execute("UPDATE execution_reservations SET state='SUBMITTING'")
         conn.commit()
@@ -615,6 +801,108 @@ def test_execution_boundary_reads_ambiguous_reservation_without_mutating(tmp_pat
     assert result["safe_to_start"] is False
     assert result["reason_code"] == "ACTIVE_EXECUTION_STATE"
 
+
+def _preflight_db(path, *, approvals=(), intents=(), jobs=()):
+    import sqlite3
+
+    with sqlite3.connect(path) as conn:
+        conn.executescript(
+            """
+            CREATE TABLE trade_approvals (approval_id TEXT PRIMARY KEY, status TEXT NOT NULL);
+            CREATE TABLE trade_execution_intents (execution_intent_id TEXT PRIMARY KEY, approval_id TEXT NOT NULL);
+            CREATE TABLE trade_approval_jobs (job_id TEXT PRIMARY KEY, approval_id TEXT NOT NULL, status TEXT NOT NULL);
+            """
+        )
+        conn.executemany("INSERT INTO trade_approvals VALUES (?, ?)", approvals)
+        conn.executemany("INSERT INTO trade_execution_intents VALUES (?, ?)", intents)
+        conn.executemany("INSERT INTO trade_approval_jobs VALUES (?, ?, ?)", jobs)
+        conn.commit()
+
+
+def test_execute_worker_preflight_empty_stores_is_safe_to_start(tmp_path):
+    from ops.trading_platform_ops import _read_execute_worker_preflight
+
+    db = tmp_path / "decision_lab.db"
+    queue = tmp_path / "order_requests.json"
+    _preflight_db(db)
+    queue.write_text(json.dumps({"requests": []}), encoding="utf-8")
+
+    result = _read_execute_worker_preflight(database_path=db, queue_path=queue, processes=[])
+
+    assert result["verdict"] == "SAFE_TO_START"
+    assert result["could_submit_ibkr_paper_orders_on_startup"] is False
+    assert result["counts"]["approved_unconsumed"] == 0
+    assert result["counts"]["actionable_execution_requests"] == 0
+    assert result["read_only"] is True
+
+
+def test_execute_worker_preflight_pending_approval_blocks_start(tmp_path):
+    from ops.trading_platform_ops import _read_execute_worker_preflight
+
+    db = tmp_path / "decision_lab.db"
+    queue = tmp_path / "order_requests.json"
+    _preflight_db(db, approvals=[("approval-1", "APPROVED")], jobs=[("job-1", "approval-1", "PENDING")])
+    queue.write_text(json.dumps({"requests": []}), encoding="utf-8")
+
+    result = _read_execute_worker_preflight(database_path=db, queue_path=queue, processes=[])
+
+    assert result["verdict"] == "BLOCKED"
+    assert result["reason_code"] == "STARTUP_ORDER_RISK"
+    assert result["could_submit_ibkr_paper_orders_on_startup"] is True
+    assert result["counts"]["approved_unconsumed"] == 1
+    assert result["counts"]["approval_jobs_pending"] == 1
+
+
+def test_execute_worker_preflight_pending_request_blocks_start(tmp_path):
+    from ops.trading_platform_ops import _read_execute_worker_preflight
+
+    db = tmp_path / "decision_lab.db"
+    queue = tmp_path / "order_requests.json"
+    _preflight_db(db)
+    queue.write_text(json.dumps({"requests": [{"id": "req-1", "status": "pending", "action": "place"}]}), encoding="utf-8")
+
+    result = _read_execute_worker_preflight(database_path=db, queue_path=queue, processes=[])
+
+    assert result["verdict"] == "BLOCKED"
+    assert result["counts"]["pending_actionable_requests"] == 1
+    assert result["counts"]["actionable_execution_requests"] == 1
+
+
+def test_execute_worker_preflight_unknown_on_incomplete_or_unreadable_state(tmp_path):
+    from ops.trading_platform_ops import _read_execute_worker_preflight
+
+    queue = tmp_path / "order_requests.json"
+    queue.write_text(json.dumps({"requests": []}), encoding="utf-8")
+    result = _read_execute_worker_preflight(database_path=tmp_path / "missing.db", queue_path=queue, processes=[])
+
+    assert result["verdict"] == "UNKNOWN"
+    assert result["reason_code"] == "PREFLIGHT_EVIDENCE_INCOMPLETE"
+    assert any(error["reason_code"] == "DATABASE_ACCESS_FAILED" for error in result["errors"])
+
+    db = tmp_path / "incomplete.db"
+    db.touch()
+    result = _read_execute_worker_preflight(database_path=db, queue_path=queue, processes=[])
+    assert result["verdict"] == "UNKNOWN"
+    assert result["reason_code"] == "PREFLIGHT_EVIDENCE_INCOMPLETE"
+
+
+def test_execute_worker_preflight_detects_duplicate_instances_without_mutating(tmp_path):
+    from ops.trading_platform_ops import ProcessInfo, _read_execute_worker_preflight
+
+    db = tmp_path / "decision_lab.db"
+    queue = tmp_path / "order_requests.json"
+    _preflight_db(db)
+    queue.write_text(json.dumps({"requests": []}), encoding="utf-8")
+    processes = [
+        ProcessInfo(11, "python -m src.main --job execute_requests"),
+        ProcessInfo(12, "python -m src.main --job execute_requests"),
+    ]
+
+    result = _read_execute_worker_preflight(database_path=db, queue_path=queue, processes=processes)
+
+    assert result["verdict"] == "BLOCKED"
+    assert result["reason_code"] == "DUPLICATE_EXECUTE_WORKER"
+    assert result["evidence"]["processes"]["logical_instance_count"] == 2
 
 def test_human_report_uses_required_morning_startup_sections():
     result = {

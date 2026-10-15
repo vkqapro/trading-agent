@@ -187646,3 +187646,8299 @@ Reasons:
   }
 }
 ```
+
+## Market Open (2026-10-14T09:52:54)
+- **executed**: none
+- **skipped**: [{'symbol': 'PFE', 'reason': 'no_signal'}, {'symbol': 'PH', 'reason': 'no_signal'}, {'symbol': 'URI', 'reason': 'no_signal'}, {'symbol': 'PINS', 'reason': 'no_signal'}, {'symbol': 'CSX', 'reason': 'no_signal'}, {'symbol': 'PNC', 'reason': 'no_signal'}, {'symbol': 'LMT', 'reason': 'no_signal'}, {'symbol': 'NOC', 'reason': 'no_signal'}, {'symbol': 'PSX', 'reason': 'no_signal'}, {'symbol': 'GD', 'reason': 'no_signal'}, {'symbol': 'RBLX', 'reason': 'no_signal'}, {'symbol': 'RDDT', 'reason': 'no_signal'}, {'symbol': 'CARR', 'reason': 'no_signal'}, {'symbol': 'REGN', 'reason': 'no_signal'}, {'symbol': 'NKE', 'reason': 'no_signal'}, {'symbol': 'ROST', 'reason': 'no_signal'}, {'symbol': 'SBUX', 'reason': 'no_signal'}, {'symbol': 'LOW', 'reason': 'no_signal'}, {'symbol': 'SCHW', 'reason': 'no_signal'}, {'symbol': 'SHOP', 'reason': ['technical_atr_too_low', 'atr_travel_exhausted']}, {'symbol': 'TJX', 'reason': 'no_signal'}, {'symbol': 'BKNG', 'reason': 'no_signal'}, {'symbol': 'MAR', 'reason': 'no_signal'}, {'symbol': 'CMG', 'reason': ['technical_atr_too_low', 'atr_travel_exhausted']}, {'symbol': 'ORLY', 'reason': 'no_signal'}, {'symbol': 'TGT', 'reason': 'no_signal'}, {'symbol': 'PEP', 'reason': 'no_signal'}, {'symbol': 'MDLZ', 'reason': 'no_signal'}, {'symbol': 'CL', 'reason': 'no_signal'}, {'symbol': 'KHC', 'reason': 'no_signal'}, {'symbol': 'GIS', 'reason': 'no_signal'}, {'symbol': 'KR', 'reason': 'no_signal'}, {'symbol': 'EL', 'reason': 'no_signal'}, {'symbol': 'SLB', 'reason': 'no_signal'}, {'symbol': 'SNAP', 'reason': 'no_signal'}, {'symbol': 'OXY', 'reason': 'no_signal'}, {'symbol': 'SNOW', 'reason': 'no_signal'}, {'symbol': 'MPC', 'reason': 'no_signal'}, {'symbol': 'SYK', 'reason': 'no_signal'}, {'symbol': 'TEAM', 'reason': 'no_signal'}, {'symbol': 'VLO', 'reason': 'no_signal'}, {'symbol': 'TFC', 'reason': 'no_signal'}, {'symbol': 'HAL', 'reason': 'no_signal'}, {'symbol': 'FCX', 'reason': 'no_signal'}, {'symbol': 'NUE', 'reason': 'no_signal'}, {'symbol': 'TMUS', 'reason': 'no_signal'}, {'symbol': 'APD', 'reason': 'no_signal'}, {'symbol': 'TSM', 'reason': 'no_signal'}, {'symbol': 'DUK', 'reason': 'no_signal'}, {'symbol': 'UNH', 'reason': 'no_signal'}, {'symbol': 'UBER', 'reason': 'no_signal'}, {'symbol': 'AEP', 'reason': 'no_signal'}, {'symbol': 'UPS', 'reason': 'no_signal'}, {'symbol': 'CCI', 'reason': 'no_signal'}, {'symbol': 'EQIX', 'reason': 'no_signal'}, {'symbol': 'USB', 'reason': 'no_signal'}, {'symbol': 'VRTX', 'reason': 'no_signal'}, {'symbol': 'ZS', 'reason': 'no_signal'}, {'symbol': 'WMT', 'reason': 'no_signal'}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'missing_live_data'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'no_signal'}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'no_signal'}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'no_signal'}, {'symbol': 'PDD', 'reason': 'no_signal'}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'NVDA', 'reason': 'no_signal'}, {'symbol': 'MU', 'reason': 'no_signal'}, {'symbol': 'PLTR', 'reason': 'no_signal'}, {'symbol': 'BRKH', 'reason': 'no_signal'}, {'symbol': 'NXTC', 'reason': 'no_signal'}, {'symbol': 'TGHL', 'reason': 'no_signal'}, {'symbol': 'MRAI', 'reason': 'missing_live_data'}, {'symbol': 'CPHI', 'reason': 'no_signal'}, {'symbol': 'MAAS', 'reason': 'no_signal'}, {'symbol': 'LEDS', 'reason': 'no_signal'}, {'symbol': 'APLM', 'reason': 'no_signal'}, {'symbol': 'PYPG', 'reason': 'no_signal'}, {'symbol': 'VEEE', 'reason': 'no_signal'}, {'symbol': 'EAF', 'reason': 'no_signal'}, {'symbol': 'YYAI', 'reason': 'no_signal'}, {'symbol': 'TOP', 'reason': 'no_signal'}, {'symbol': 'RCEL', 'reason': 'no_signal'}, {'symbol': 'SYRA', 'reason': 'missing_live_data'}, {'symbol': 'CRMT', 'reason': 'no_signal'}, {'symbol': 'NAKA', 'reason': 'no_signal'}, {'symbol': 'MAN', 'reason': 'no_signal'}, {'symbol': 'GOOGL', 'reason': 'no_signal'}, {'symbol': 'JPM', 'reason': 'no_signal'}, {'symbol': 'BAC', 'reason': 'no_signal'}, {'symbol': 'GS', 'reason': 'no_signal'}, {'symbol': 'V', 'reason': 'no_signal'}, {'symbol': 'LLY', 'reason': 'no_signal'}, {'symbol': 'JNJ', 'reason': 'no_signal'}, {'symbol': 'ABBV', 'reason': 'no_signal'}, {'symbol': 'TMO', 'reason': 'no_signal'}, {'symbol': 'CAT', 'reason': 'no_signal'}, {'symbol': 'GE', 'reason': 'no_signal'}, {'symbol': 'RTX', 'reason': 'no_signal'}, {'symbol': 'ETN', 'reason': 'no_signal'}, {'symbol': 'COST', 'reason': 'no_signal'}, {'symbol': 'PG', 'reason': 'no_signal'}, {'symbol': 'XOM', 'reason': 'no_signal'}, {'symbol': 'CVX', 'reason': 'no_signal'}, {'symbol': 'COP', 'reason': 'no_signal'}, {'symbol': 'NEE', 'reason': 'no_signal'}, {'symbol': 'SO', 'reason': 'no_signal'}, {'symbol': 'PLD', 'reason': 'no_signal'}, {'symbol': 'AMT', 'reason': 'no_signal'}, {'symbol': 'LIN', 'reason': 'no_signal'}, {'symbol': 'SHW', 'reason': 'no_signal'}, {'symbol': 'HD', 'reason': 'no_signal'}, {'symbol': 'MCD', 'reason': 'no_signal'}, {'symbol': 'META', 'reason': 'no_signal'}, {'symbol': 'NFLX', 'reason': 'no_signal'}, {'symbol': 'AVGO', 'reason': 'no_signal'}, {'symbol': 'ORCL', 'reason': 'no_signal'}, {'symbol': 'AMD', 'reason': 'no_signal'}, {'symbol': 'INTC', 'reason': 'no_signal'}, {'symbol': 'QCOM', 'reason': 'no_signal'}, {'symbol': 'ASML', 'reason': 'no_signal'}, {'symbol': 'KLAC', 'reason': ['technical_atr_too_low', 'atr_travel_exhausted']}, {'symbol': 'LRCX', 'reason': 'no_signal'}, {'symbol': 'MRVL', 'reason': 'no_signal'}, {'symbol': 'ADI', 'reason': 'no_signal'}, {'symbol': 'NXPI', 'reason': 'no_signal'}, {'symbol': 'ON', 'reason': 'no_signal'}, {'symbol': 'MCHP', 'reason': 'no_signal'}, {'symbol': 'CRM', 'reason': 'no_signal'}, {'symbol': 'NOW', 'reason': 'no_signal'}, {'symbol': 'PANW', 'reason': 'no_signal'}, {'symbol': 'CRWD', 'reason': 'no_signal'}, {'symbol': 'DDOG', 'reason': 'no_signal'}, {'symbol': 'NET', 'reason': 'no_signal'}, {'symbol': 'MDB', 'reason': 'no_signal'}, {'symbol': 'FTNT', 'reason': 'no_signal'}, {'symbol': 'APP', 'reason': 'no_signal'}, {'symbol': 'ABNB', 'reason': 'no_signal'}, {'symbol': 'DASH', 'reason': 'no_signal'}, {'symbol': 'C', 'reason': 'no_signal'}, {'symbol': 'MS', 'reason': 'no_signal'}, {'symbol': 'AXP', 'reason': 'no_signal'}, {'symbol': 'MA', 'reason': 'no_signal'}, {'symbol': 'COF', 'reason': 'no_signal'}, {'symbol': 'BLK', 'reason': 'no_signal'}, {'symbol': 'CME', 'reason': 'no_signal'}, {'symbol': 'ICE', 'reason': 'no_signal'}, {'symbol': 'MRK', 'reason': 'no_signal'}, {'symbol': 'ABT', 'reason': 'no_signal'}, {'symbol': 'MDT', 'reason': 'no_signal'}, {'symbol': 'ISRG', 'reason': 'no_signal'}, {'symbol': 'GILD', 'reason': 'no_signal'}, {'symbol': 'AMGN', 'reason': 'no_signal'}, {'symbol': 'BSX', 'reason': 'no_signal'}, {'symbol': 'BA', 'reason': 'no_signal'}, {'symbol': 'DE', 'reason': 'no_signal'}, {'symbol': 'HON', 'reason': 'no_signal'}, {'symbol': 'FDX', 'reason': 'no_signal'}, {'symbol': 'EOG', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'GOOG', 'reason': 'no_signal'}, {'symbol': 'CSCO', 'reason': 'no_signal'}, {'symbol': 'PM', 'reason': 'no_signal'}, {'symbol': 'GEV', 'reason': 'no_signal'}, {'symbol': 'TXN', 'reason': 'no_signal'}, {'symbol': 'WFC', 'reason': 'no_signal'}, {'symbol': 'ANET', 'reason': 'no_signal'}, {'symbol': 'SNDK', 'reason': 'no_signal'}, {'symbol': 'IBM', 'reason': 'no_signal'}, {'symbol': 'APH', 'reason': 'no_signal'}, {'symbol': 'DIS', 'reason': 'no_signal'}, {'symbol': 'VZ', 'reason': 'no_signal'}, {'symbol': 'DELL', 'reason': 'no_signal'}, {'symbol': 'STX', 'reason': 'no_signal'}, {'symbol': 'UNP', 'reason': 'no_signal'}, {'symbol': 'WELL', 'reason': 'no_signal'}, {'symbol': 'T', 'reason': 'no_signal'}, {'symbol': 'WDC', 'reason': 'no_signal'}, {'symbol': 'DHR', 'reason': 'no_signal'}, {'symbol': 'ACN', 'reason': 'no_signal'}, {'symbol': 'PGR', 'reason': 'no_signal'}, {'symbol': 'SPGI', 'reason': 'no_signal'}, {'symbol': 'NEM', 'reason': 'no_signal'}, {'symbol': 'CB', 'reason': 'no_signal'}, {'symbol': 'MO', 'reason': 'no_signal'}, {'symbol': 'BMY', 'reason': 'no_signal'}, {'symbol': 'GLW', 'reason': 'no_signal'}, {'symbol': 'CVS', 'reason': 'no_signal'}, {'symbol': 'MCK', 'reason': 'no_signal'}, {'symbol': 'ADP', 'reason': 'no_signal'}, {'symbol': 'TT', 'reason': 'no_signal'}, {'symbol': 'PWR', 'reason': 'no_signal'}, {'symbol': 'CEG', 'reason': 'no_signal'}, {'symbol': 'BNY', 'reason': 'no_signal'}, {'symbol': 'SNPS', 'reason': 'no_signal'}, {'symbol': 'CDNS', 'reason': 'no_signal'}, {'symbol': 'ADBE', 'reason': 'no_signal'}, {'symbol': 'JCI', 'reason': 'no_signal'}, {'symbol': 'HPE', 'reason': 'no_signal'}, {'symbol': 'VRT', 'reason': 'no_signal'}, {'symbol': 'ELV', 'reason': 'no_signal'}, {'symbol': 'WMB', 'reason': 'no_signal'}, {'symbol': 'EMR', 'reason': 'no_signal'}, {'symbol': 'LITE', 'reason': 'no_signal'}, {'symbol': 'HWM', 'reason': 'no_signal'}, {'symbol': 'HOOD', 'reason': 'no_signal'}, {'symbol': 'BX', 'reason': 'no_signal'}, {'symbol': 'INTU', 'reason': 'no_signal'}, {'symbol': 'MMM', 'reason': 'no_signal'}, {'symbol': 'MRNA', 'reason': 'no_signal'}, {'symbol': 'WM', 'reason': 'no_signal'}, {'symbol': 'TRV', 'reason': 'no_signal'}, {'symbol': 'BE', 'reason': 'no_signal'}, {'symbol': 'CI', 'reason': 'no_signal'}, {'symbol': 'MSI', 'reason': 'no_signal'}, {'symbol': 'HLT', 'reason': 'no_signal'}, {'symbol': 'CMCSA', 'reason': 'no_signal'}, {'symbol': 'CMI', 'reason': 'no_signal'}, {'symbol': 'GM', 'reason': 'no_signal'}, {'symbol': 'NSC', 'reason': 'no_signal'}, {'symbol': 'ECL', 'reason': 'no_signal'}, {'symbol': 'CTAS', 'reason': 'no_signal'}, {'symbol': 'MCO', 'reason': 'no_signal'}, {'symbol': 'RCL', 'reason': 'no_signal'}, {'symbol': 'ITW', 'reason': 'no_signal'}, {'symbol': 'HCA', 'reason': 'no_signal'}, {'symbol': 'SPG', 'reason': 'no_signal'}, {'symbol': 'MPWR', 'reason': 'no_signal'}, {'symbol': 'KMI', 'reason': 'no_signal'}, {'symbol': 'KEYS', 'reason': 'no_signal'}, {'symbol': 'KKR', 'reason': 'no_signal'}, {'symbol': 'DLR', 'reason': 'no_signal'}, {'symbol': 'TEL', 'reason': 'no_signal'}, {'symbol': 'MNST', 'reason': 'no_signal'}, {'symbol': 'TRGP', 'reason': 'no_signal'}, {'symbol': 'COR', 'reason': 'no_signal'}, {'symbol': 'TDG', 'reason': 'no_signal'}, {'symbol': 'TER', 'reason': 'no_signal'}, {'symbol': 'AJG', 'reason': 'no_signal'}, {'symbol': 'FAST', 'reason': 'no_signal'}, {'symbol': 'ALL', 'reason': 'no_signal'}, {'symbol': 'AON', 'reason': 'no_signal'}, {'symbol': 'OKE', 'reason': 'no_signal'}, {'symbol': 'FIX', 'reason': 'no_signal'}, {'symbol': 'AME', 'reason': 'no_signal'}, {'symbol': 'CIEN', 'reason': 'no_signal'}, {'symbol': 'PCAR', 'reason': 'no_signal'}, {'symbol': 'GWW', 'reason': 'no_signal'}, {'symbol': 'COHR', 'reason': 'no_signal'}, {'symbol': 'APO', 'reason': 'no_signal'}, {'symbol': 'BKR', 'reason': 'no_signal'}, {'symbol': 'CAH', 'reason': 'no_signal'}, {'symbol': 'D', 'reason': 'no_signal'}, {'symbol': 'CRH', 'reason': 'no_signal'}, {'symbol': 'DVN', 'reason': 'no_signal'}, {'symbol': 'SRE', 'reason': 'no_signal'}, {'symbol': 'MET', 'reason': 'no_signal'}, {'symbol': 'HUM', 'reason': 'no_signal'}, {'symbol': 'O', 'reason': 'no_signal'}, {'symbol': 'AFL', 'reason': 'no_signal'}, {'symbol': 'P', 'reason': 'no_signal'}, {'symbol': 'BDX', 'reason': 'no_signal'}, {'symbol': 'VYLR', 'reason': 'missing_required_chart_history', 'missing': ['daily', 'weekly', 'intraday_4h']}, {'symbol': 'HONA', 'reason': 'no_signal'}, {'symbol': 'VST', 'reason': 'no_signal'}, {'symbol': 'EW', 'reason': 'no_signal'}, {'symbol': 'ADSK', 'reason': 'no_signal'}, {'symbol': 'PSA', 'reason': 'no_signal'}, {'symbol': 'A', 'reason': 'no_signal'}, {'symbol': 'ETR', 'reason': 'no_signal'}, {'symbol': 'ROK', 'reason': 'no_signal'}, {'symbol': 'WAB', 'reason': 'no_signal'}, {'symbol': 'STT', 'reason': 'no_signal'}, {'symbol': 'PYPL', 'reason': 'no_signal'}, {'symbol': 'AZO', 'reason': 'no_signal'}, {'symbol': 'F', 'reason': 'no_signal'}, {'symbol': 'NTAP', 'reason': 'no_signal'}, {'symbol': 'XEL', 'reason': 'no_signal'}, {'symbol': 'FITB', 'reason': 'no_signal'}, {'symbol': 'EBAY', 'reason': 'no_signal'}, {'symbol': 'KDP', 'reason': 'no_signal'}, {'symbol': 'LHX', 'reason': 'no_signal'}, {'symbol': 'GRMN', 'reason': 'no_signal'}, {'symbol': 'VEEV', 'reason': 'no_signal'}, {'symbol': 'VMRK', 'reason': 'no_signal'}, {'symbol': 'TWLO', 'reason': 'no_signal'}, {'symbol': 'EXC', 'reason': 'no_signal'}, {'symbol': 'FLEX', 'reason': 'no_signal'}, {'symbol': 'IQV', 'reason': 'no_signal'}, {'symbol': 'RSG', 'reason': 'no_signal'}, {'symbol': 'VTR', 'reason': 'no_signal'}, {'symbol': 'CVNA', 'reason': 'no_signal'}, {'symbol': 'FERG', 'reason': 'no_signal'}, {'symbol': 'WAT', 'reason': 'no_signal'}, {'symbol': 'ILMN', 'reason': 'no_signal'}, {'symbol': 'NDAQ', 'reason': 'technical_atr_too_low'}, {'symbol': 'XYZ', 'reason': 'no_signal'}, {'symbol': 'MSCI', 'reason': 'no_signal'}, {'symbol': 'IDXX', 'reason': 'no_signal'}, {'symbol': 'AIG', 'reason': 'no_signal'}, {'symbol': 'COIN', 'reason': 'no_signal'}, {'symbol': 'YUM', 'reason': 'no_signal'}, {'symbol': 'FANG', 'reason': 'no_signal'}, {'symbol': 'IBKR', 'reason': 'no_signal'}, {'symbol': 'ED', 'reason': 'no_signal'}, {'symbol': 'PRU', 'reason': 'no_signal'}, {'symbol': 'ADM', 'reason': 'no_signal'}, {'symbol': 'SYY', 'reason': 'no_signal'}, {'symbol': 'WDAY', 'reason': 'no_signal'}, {'symbol': 'CBRE', 'reason': 'no_signal'}, {'symbol': 'TTWO', 'reason': 'no_signal'}, {'symbol': 'ROP', 'reason': 'no_signal'}, {'symbol': 'PEG', 'reason': 'no_signal'}, {'symbol': 'HIG', 'reason': 'no_signal'}, {'symbol': 'EME', 'reason': 'no_signal'}, {'symbol': 'IRM', 'reason': 'no_signal'}, {'symbol': 'KVUE', 'reason': 'no_signal'}, {'symbol': 'WEC', 'reason': 'no_signal'}, {'symbol': 'DHI', 'reason': 'no_signal'}, {'symbol': 'BIIB', 'reason': 'no_signal'}, {'symbol': 'UAL', 'reason': 'no_signal'}, {'symbol': 'ODFL', 'reason': 'no_signal'}, {'symbol': 'RMD', 'reason': 'no_signal'}, {'symbol': 'CCL', 'reason': 'no_signal'}, {'symbol': 'AXON', 'reason': 'no_signal'}, {'symbol': 'PAYX', 'reason': 'no_signal'}, {'symbol': 'EQT', 'reason': 'no_signal'}, {'symbol': 'CNC', 'reason': 'no_signal'}, {'symbol': 'ACGL', 'reason': 'no_signal'}, {'symbol': 'KMB', 'reason': 'no_signal'}, {'symbol': 'JBL', 'reason': 'no_signal'}, {'symbol': 'DXCM', 'reason': 'no_signal'}, {'symbol': 'STLD', 'reason': 'no_signal'}, {'symbol': 'VMC', 'reason': 'no_signal'}, {'symbol': 'MTB', 'reason': 'no_signal'}, {'symbol': 'MTD', 'reason': 'no_signal'}, {'symbol': 'HBAN', 'reason': 'no_signal'}, {'symbol': 'ZTS', 'reason': 'no_signal'}, {'symbol': 'CBOE', 'reason': 'no_signal'}, {'symbol': 'NTRS', 'reason': 'no_signal'}, {'symbol': 'EXPE', 'reason': 'no_signal'}, {'symbol': 'GEHC', 'reason': 'no_signal'}, {'symbol': 'PCG', 'reason': 'no_signal'}, {'symbol': 'MLM', 'reason': 'no_signal'}, {'symbol': 'AEE', 'reason': 'no_signal'}, {'symbol': 'TDY', 'reason': 'no_signal'}, {'symbol': 'EXR', 'reason': 'no_signal'}, {'symbol': 'WSM', 'reason': 'no_signal'}, {'symbol': 'DG', 'reason': 'no_signal'}, {'symbol': 'WTW', 'reason': 'no_signal'}, {'symbol': 'RJF', 'reason': 'no_signal'}, {'symbol': 'ATO', 'reason': 'no_signal'}, {'symbol': 'HPQ', 'reason': 'no_signal'}, {'symbol': 'IR', 'reason': 'no_signal'}, {'symbol': 'CFG', 'reason': 'no_signal'}, {'symbol': 'LYV', 'reason': 'no_signal'}, {'symbol': 'CTSH', 'reason': 'no_signal'}, {'symbol': 'FFIV', 'reason': 'no_signal'}, {'symbol': 'DTE', 'reason': 'no_signal'}]
+- **manual_candidates**: none
+- **scan_count**: 1
+- **skip_reason_summary**: {'no_signal': 385, 'technical_atr_too_low, atr_travel_exhausted': 3, 'missing_live_data': 3, 'missing_required_chart_history': 1, 'technical_atr_too_low': 1}
+
+## Manual Trade KDP (2026-10-14T09:55:07)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: KDP
+- **strategy**: market_screener_prb2_manual_setup
+- **level_type**: resistance
+- **direction**: long
+- **signal**: BUY
+- **entry**: 32.87
+- **stop_loss**: 32.3
+- **target**: 34.295
+- **reward_risk**: 2.500000000000006
+- **partial_targets**: []
+- **quantity**: 30
+- **market_order_id**: 1062
+- **stop_order_id**: 1063
+- **limit_order_id**: 1064
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'Filled', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Manual Trade SO (2026-10-14T13:16:48)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: SO
+- **strategy**: market_screener_prb1_manual_setup
+- **level_type**: resistance
+- **direction**: long
+- **signal**: BUY
+- **entry**: 88.29
+- **stop_loss**: 87.1
+- **target**: 91.26500000000004
+- **reward_risk**: 2.5000000000000058
+- **partial_targets**: []
+- **quantity**: 11
+- **market_order_id**: 1076
+- **stop_order_id**: 1077
+- **limit_order_id**: 1078
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Intraday Actions (2026-10-14T16:00:13)
+- **actions**: none
+- **executed**: none
+- **skipped**: [{'symbol': 'PFE', 'reason': 'no_signal'}, {'symbol': 'PH', 'reason': 'no_signal'}, {'symbol': 'URI', 'reason': 'no_signal'}, {'symbol': 'PINS', 'reason': 'no_signal'}, {'symbol': 'CSX', 'reason': 'no_signal'}, {'symbol': 'PNC', 'reason': 'no_signal'}, {'symbol': 'LMT', 'reason': 'no_signal'}, {'symbol': 'NOC', 'reason': 'no_signal'}, {'symbol': 'PSX', 'reason': 'no_signal'}, {'symbol': 'GD', 'reason': 'no_signal'}, {'symbol': 'RBLX', 'reason': 'no_signal'}, {'symbol': 'RDDT', 'reason': 'no_signal'}, {'symbol': 'CARR', 'reason': 'no_signal'}, {'symbol': 'REGN', 'reason': 'no_signal'}, {'symbol': 'NKE', 'reason': 'no_signal'}, {'symbol': 'ROST', 'reason': 'no_signal'}, {'symbol': 'SBUX', 'reason': 'no_signal'}, {'symbol': 'LOW', 'reason': 'no_signal'}, {'symbol': 'SCHW', 'reason': 'no_signal'}, {'symbol': 'SHOP', 'reason': 'no_signal'}, {'symbol': 'TJX', 'reason': 'no_signal'}, {'symbol': 'BKNG', 'reason': 'no_signal'}, {'symbol': 'MAR', 'reason': 'no_signal'}, {'symbol': 'CMG', 'reason': 'no_signal'}, {'symbol': 'ORLY', 'reason': 'no_signal'}, {'symbol': 'TGT', 'reason': 'no_signal'}, {'symbol': 'PEP', 'reason': 'no_signal'}, {'symbol': 'MDLZ', 'reason': 'no_signal'}, {'symbol': 'CL', 'reason': 'no_signal'}, {'symbol': 'KHC', 'reason': 'no_signal'}, {'symbol': 'GIS', 'reason': 'no_signal'}, {'symbol': 'KR', 'reason': 'no_signal'}, {'symbol': 'EL', 'reason': 'no_signal'}, {'symbol': 'SLB', 'reason': 'no_signal'}, {'symbol': 'SNAP', 'reason': 'no_signal'}, {'symbol': 'OXY', 'reason': 'no_signal'}, {'symbol': 'SNOW', 'reason': 'no_signal'}, {'symbol': 'MPC', 'reason': 'no_signal'}, {'symbol': 'SYK', 'reason': 'no_signal'}, {'symbol': 'TEAM', 'reason': 'no_signal'}, {'symbol': 'VLO', 'reason': 'no_signal'}, {'symbol': 'TFC', 'reason': 'no_signal'}, {'symbol': 'HAL', 'reason': 'no_signal'}, {'symbol': 'FCX', 'reason': 'no_signal'}, {'symbol': 'NUE', 'reason': 'no_signal'}, {'symbol': 'TMUS', 'reason': 'no_signal'}, {'symbol': 'APD', 'reason': 'no_signal'}, {'symbol': 'TSM', 'reason': 'no_signal'}, {'symbol': 'DUK', 'reason': 'no_signal'}, {'symbol': 'UNH', 'reason': 'no_signal'}, {'symbol': 'UBER', 'reason': 'no_signal'}, {'symbol': 'AEP', 'reason': 'no_signal'}, {'symbol': 'UPS', 'reason': 'no_signal'}, {'symbol': 'CCI', 'reason': 'no_signal'}, {'symbol': 'EQIX', 'reason': 'no_signal'}, {'symbol': 'USB', 'reason': 'no_signal'}, {'symbol': 'VRTX', 'reason': ['agent_decision_scheduled'], 'source': 'LLM_AGENT'}, {'symbol': 'ZS', 'reason': 'no_signal'}, {'symbol': 'WMT', 'reason': 'missing_live_data'}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'no_signal'}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'no_signal'}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'no_signal'}, {'symbol': 'PDD', 'reason': 'no_signal'}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'NVDA', 'reason': 'no_signal'}, {'symbol': 'MU', 'reason': 'no_signal'}, {'symbol': 'PLTR', 'reason': 'no_signal'}, {'symbol': 'BRKH', 'reason': 'no_signal'}, {'symbol': 'NXTC', 'reason': 'no_signal'}, {'symbol': 'TGHL', 'reason': 'no_signal'}, {'symbol': 'MRAI', 'reason': 'missing_live_data'}, {'symbol': 'CPHI', 'reason': 'no_signal'}, {'symbol': 'MAAS', 'reason': 'no_signal'}, {'symbol': 'LEDS', 'reason': 'no_signal'}, {'symbol': 'APLM', 'reason': 'no_signal'}, {'symbol': 'PYPG', 'reason': 'no_signal'}, {'symbol': 'VEEE', 'reason': 'no_signal'}, {'symbol': 'EAF', 'reason': 'no_signal'}, {'symbol': 'YYAI', 'reason': 'no_signal'}, {'symbol': 'TOP', 'reason': 'no_signal'}, {'symbol': 'RCEL', 'reason': 'no_signal'}, {'symbol': 'SYRA', 'reason': 'missing_live_data'}, {'symbol': 'CRMT', 'reason': 'no_signal'}, {'symbol': 'NAKA', 'reason': 'no_signal'}, {'symbol': 'MAN', 'reason': 'no_signal'}, {'symbol': 'GOOGL', 'reason': 'no_signal'}, {'symbol': 'JPM', 'reason': 'no_signal'}, {'symbol': 'BAC', 'reason': 'no_signal'}, {'symbol': 'GS', 'reason': 'no_signal'}, {'symbol': 'V', 'reason': 'no_signal'}, {'symbol': 'LLY', 'reason': 'no_signal'}, {'symbol': 'JNJ', 'reason': 'no_signal'}, {'symbol': 'ABBV', 'reason': 'no_signal'}, {'symbol': 'TMO', 'reason': 'no_signal'}, {'symbol': 'CAT', 'reason': 'no_signal'}, {'symbol': 'GE', 'reason': 'no_signal'}, {'symbol': 'RTX', 'reason': 'no_signal'}, {'symbol': 'ETN', 'reason': 'no_signal'}, {'symbol': 'COST', 'reason': 'no_signal'}, {'symbol': 'PG', 'reason': 'no_signal'}, {'symbol': 'XOM', 'reason': 'technical_atr_too_low'}, {'symbol': 'CVX', 'reason': 'no_signal'}, {'symbol': 'COP', 'reason': 'no_signal'}, {'symbol': 'NEE', 'reason': 'no_signal'}, {'symbol': 'SO', 'reason': 'no_signal'}, {'symbol': 'PLD', 'reason': 'no_signal'}, {'symbol': 'AMT', 'reason': 'no_signal'}, {'symbol': 'LIN', 'reason': 'no_signal'}, {'symbol': 'SHW', 'reason': 'no_signal'}, {'symbol': 'HD', 'reason': 'no_signal'}, {'symbol': 'MCD', 'reason': 'no_signal'}, {'symbol': 'META', 'reason': 'no_signal'}, {'symbol': 'NFLX', 'reason': 'no_signal'}, {'symbol': 'AVGO', 'reason': 'no_signal'}, {'symbol': 'ORCL', 'reason': 'no_signal'}, {'symbol': 'AMD', 'reason': 'no_signal'}, {'symbol': 'INTC', 'reason': 'no_signal'}, {'symbol': 'QCOM', 'reason': 'no_signal'}, {'symbol': 'ASML', 'reason': 'no_signal'}, {'symbol': 'KLAC', 'reason': 'no_signal'}, {'symbol': 'LRCX', 'reason': 'no_signal'}, {'symbol': 'MRVL', 'reason': 'no_signal'}, {'symbol': 'ADI', 'reason': 'no_signal'}, {'symbol': 'NXPI', 'reason': 'no_signal'}, {'symbol': 'ON', 'reason': 'no_signal'}, {'symbol': 'MCHP', 'reason': 'no_signal'}, {'symbol': 'CRM', 'reason': 'no_signal'}, {'symbol': 'NOW', 'reason': 'no_signal'}, {'symbol': 'PANW', 'reason': 'no_signal'}, {'symbol': 'CRWD', 'reason': 'no_signal'}, {'symbol': 'DDOG', 'reason': 'no_signal'}, {'symbol': 'NET', 'reason': 'no_signal'}, {'symbol': 'MDB', 'reason': 'no_signal'}, {'symbol': 'FTNT', 'reason': 'no_signal'}, {'symbol': 'APP', 'reason': 'no_signal'}, {'symbol': 'ABNB', 'reason': 'no_signal'}, {'symbol': 'DASH', 'reason': 'no_signal'}, {'symbol': 'C', 'reason': 'no_signal'}, {'symbol': 'MS', 'reason': 'no_signal'}, {'symbol': 'AXP', 'reason': 'no_signal'}, {'symbol': 'MA', 'reason': 'no_signal'}, {'symbol': 'COF', 'reason': 'no_signal'}, {'symbol': 'BLK', 'reason': 'no_signal'}, {'symbol': 'CME', 'reason': 'no_signal'}, {'symbol': 'ICE', 'reason': 'no_signal'}, {'symbol': 'MRK', 'reason': 'no_signal'}, {'symbol': 'ABT', 'reason': 'no_signal'}, {'symbol': 'MDT', 'reason': 'no_signal'}, {'symbol': 'ISRG', 'reason': 'no_signal'}, {'symbol': 'GILD', 'reason': 'no_signal'}, {'symbol': 'AMGN', 'reason': 'no_signal'}, {'symbol': 'BSX', 'reason': 'no_signal'}, {'symbol': 'BA', 'reason': 'no_signal'}, {'symbol': 'DE', 'reason': 'no_signal'}, {'symbol': 'HON', 'reason': 'no_signal'}, {'symbol': 'FDX', 'reason': 'no_signal'}, {'symbol': 'EOG', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'GOOG', 'reason': 'no_signal'}, {'symbol': 'CSCO', 'reason': 'no_signal'}, {'symbol': 'PM', 'reason': 'no_signal'}, {'symbol': 'GEV', 'reason': 'no_signal'}, {'symbol': 'TXN', 'reason': 'no_signal'}, {'symbol': 'WFC', 'reason': 'no_signal'}, {'symbol': 'ANET', 'reason': 'no_signal'}, {'symbol': 'SNDK', 'reason': 'no_signal'}, {'symbol': 'IBM', 'reason': 'technical_atr_too_low'}, {'symbol': 'APH', 'reason': 'no_signal'}, {'symbol': 'DIS', 'reason': 'no_signal'}, {'symbol': 'VZ', 'reason': 'no_signal'}, {'symbol': 'DELL', 'reason': 'no_signal'}, {'symbol': 'STX', 'reason': 'no_signal'}, {'symbol': 'UNP', 'reason': 'no_signal'}, {'symbol': 'WELL', 'reason': 'no_signal'}, {'symbol': 'T', 'reason': 'no_signal'}, {'symbol': 'WDC', 'reason': 'no_signal'}, {'symbol': 'DHR', 'reason': 'no_signal'}, {'symbol': 'ACN', 'reason': 'no_signal'}, {'symbol': 'PGR', 'reason': 'no_signal'}, {'symbol': 'SPGI', 'reason': 'no_signal'}, {'symbol': 'NEM', 'reason': 'no_signal'}, {'symbol': 'CB', 'reason': 'no_signal'}, {'symbol': 'MO', 'reason': 'no_signal'}, {'symbol': 'BMY', 'reason': 'no_signal'}, {'symbol': 'GLW', 'reason': 'no_signal'}, {'symbol': 'CVS', 'reason': 'no_signal'}, {'symbol': 'MCK', 'reason': 'no_signal'}, {'symbol': 'ADP', 'reason': 'no_signal'}, {'symbol': 'TT', 'reason': 'no_signal'}, {'symbol': 'PWR', 'reason': 'no_signal'}, {'symbol': 'CEG', 'reason': 'no_signal'}, {'symbol': 'BNY', 'reason': 'no_signal'}, {'symbol': 'SNPS', 'reason': 'no_signal'}, {'symbol': 'CDNS', 'reason': 'no_signal'}, {'symbol': 'ADBE', 'reason': 'no_signal'}, {'symbol': 'JCI', 'reason': 'no_signal'}, {'symbol': 'HPE', 'reason': 'no_signal'}, {'symbol': 'VRT', 'reason': 'no_signal'}, {'symbol': 'ELV', 'reason': 'no_signal'}, {'symbol': 'WMB', 'reason': 'no_signal'}, {'symbol': 'EMR', 'reason': 'no_signal'}, {'symbol': 'LITE', 'reason': 'no_signal'}, {'symbol': 'HWM', 'reason': 'no_signal'}, {'symbol': 'HOOD', 'reason': 'no_signal'}, {'symbol': 'BX', 'reason': 'no_signal'}, {'symbol': 'INTU', 'reason': 'no_signal'}, {'symbol': 'MMM', 'reason': 'no_signal'}, {'symbol': 'MRNA', 'reason': 'no_signal'}, {'symbol': 'WM', 'reason': 'no_signal'}, {'symbol': 'TRV', 'reason': 'no_signal'}, {'symbol': 'BE', 'reason': 'no_signal'}, {'symbol': 'CI', 'reason': 'no_signal'}, {'symbol': 'MSI', 'reason': 'no_signal'}, {'symbol': 'HLT', 'reason': 'no_signal'}, {'symbol': 'CMCSA', 'reason': 'no_signal'}, {'symbol': 'CMI', 'reason': 'no_signal'}, {'symbol': 'GM', 'reason': 'no_signal'}, {'symbol': 'NSC', 'reason': 'no_signal'}, {'symbol': 'ECL', 'reason': 'no_signal'}, {'symbol': 'CTAS', 'reason': 'no_signal'}, {'symbol': 'MCO', 'reason': 'no_signal'}, {'symbol': 'RCL', 'reason': 'no_signal'}, {'symbol': 'ITW', 'reason': 'no_signal'}, {'symbol': 'HCA', 'reason': 'no_signal'}, {'symbol': 'SPG', 'reason': 'no_signal'}, {'symbol': 'MPWR', 'reason': 'no_signal'}, {'symbol': 'KMI', 'reason': 'no_signal'}, {'symbol': 'KEYS', 'reason': 'no_signal'}, {'symbol': 'KKR', 'reason': 'no_signal'}, {'symbol': 'DLR', 'reason': 'no_signal'}, {'symbol': 'TEL', 'reason': 'no_signal'}, {'symbol': 'MNST', 'reason': 'no_signal'}, {'symbol': 'TRGP', 'reason': 'no_signal'}, {'symbol': 'COR', 'reason': 'no_signal'}, {'symbol': 'TDG', 'reason': 'no_signal'}, {'symbol': 'TER', 'reason': 'no_signal'}, {'symbol': 'AJG', 'reason': 'no_signal'}, {'symbol': 'FAST', 'reason': 'no_signal'}, {'symbol': 'ALL', 'reason': 'no_signal'}, {'symbol': 'AON', 'reason': 'no_signal'}, {'symbol': 'OKE', 'reason': 'no_signal'}, {'symbol': 'FIX', 'reason': 'no_signal'}, {'symbol': 'AME', 'reason': 'no_signal'}, {'symbol': 'CIEN', 'reason': 'no_signal'}, {'symbol': 'PCAR', 'reason': 'no_signal'}, {'symbol': 'GWW', 'reason': 'no_signal'}, {'symbol': 'COHR', 'reason': 'no_signal'}, {'symbol': 'APO', 'reason': 'no_signal'}, {'symbol': 'BKR', 'reason': 'no_signal'}, {'symbol': 'CAH', 'reason': 'no_signal'}, {'symbol': 'D', 'reason': 'no_signal'}, {'symbol': 'CRH', 'reason': 'technical_atr_too_low'}, {'symbol': 'DVN', 'reason': 'no_signal'}, {'symbol': 'SRE', 'reason': 'no_signal'}, {'symbol': 'MET', 'reason': 'no_signal'}, {'symbol': 'HUM', 'reason': 'no_signal'}, {'symbol': 'O', 'reason': 'no_signal'}, {'symbol': 'AFL', 'reason': 'no_signal'}, {'symbol': 'P', 'reason': 'no_signal'}, {'symbol': 'BDX', 'reason': 'no_signal'}, {'symbol': 'VYLR', 'reason': 'missing_required_chart_history', 'missing': ['daily', 'weekly', 'intraday_4h']}, {'symbol': 'HONA', 'reason': 'no_signal'}, {'symbol': 'VST', 'reason': 'no_signal'}, {'symbol': 'EW', 'reason': 'no_signal'}, {'symbol': 'ADSK', 'reason': 'no_signal'}, {'symbol': 'PSA', 'reason': 'no_signal'}, {'symbol': 'A', 'reason': 'no_signal'}, {'symbol': 'ETR', 'reason': 'no_signal'}, {'symbol': 'ROK', 'reason': 'no_signal'}, {'symbol': 'WAB', 'reason': 'no_signal'}, {'symbol': 'STT', 'reason': 'no_signal'}, {'symbol': 'PYPL', 'reason': 'no_signal'}, {'symbol': 'AZO', 'reason': 'no_signal'}, {'symbol': 'F', 'reason': 'no_signal'}, {'symbol': 'NTAP', 'reason': 'no_signal'}, {'symbol': 'XEL', 'reason': 'no_signal'}, {'symbol': 'FITB', 'reason': 'no_signal'}, {'symbol': 'EBAY', 'reason': 'no_signal'}, {'symbol': 'KDP', 'reason': 'no_signal'}, {'symbol': 'LHX', 'reason': 'no_signal'}, {'symbol': 'GRMN', 'reason': 'no_signal'}, {'symbol': 'VEEV', 'reason': 'no_signal'}, {'symbol': 'VMRK', 'reason': 'no_signal'}, {'symbol': 'TWLO', 'reason': 'no_signal'}, {'symbol': 'EXC', 'reason': 'no_signal'}, {'symbol': 'FLEX', 'reason': 'no_signal'}, {'symbol': 'IQV', 'reason': 'no_signal'}, {'symbol': 'RSG', 'reason': 'no_signal'}, {'symbol': 'VTR', 'reason': 'no_signal'}, {'symbol': 'CVNA', 'reason': 'no_signal'}, {'symbol': 'FERG', 'reason': 'no_signal'}, {'symbol': 'WAT', 'reason': 'no_signal'}, {'symbol': 'ILMN', 'reason': 'no_signal'}, {'symbol': 'NDAQ', 'reason': 'no_signal'}, {'symbol': 'XYZ', 'reason': 'no_signal'}, {'symbol': 'MSCI', 'reason': 'no_signal'}, {'symbol': 'IDXX', 'reason': 'no_signal'}, {'symbol': 'AIG', 'reason': 'no_signal'}, {'symbol': 'COIN', 'reason': 'no_signal'}, {'symbol': 'YUM', 'reason': 'no_signal'}, {'symbol': 'FANG', 'reason': 'no_signal'}, {'symbol': 'IBKR', 'reason': 'no_signal'}, {'symbol': 'ED', 'reason': 'no_signal'}, {'symbol': 'PRU', 'reason': 'no_signal'}, {'symbol': 'ADM', 'reason': 'no_signal'}, {'symbol': 'SYY', 'reason': 'no_signal'}, {'symbol': 'WDAY', 'reason': 'no_signal'}, {'symbol': 'CBRE', 'reason': 'no_signal'}, {'symbol': 'TTWO', 'reason': 'no_signal'}, {'symbol': 'ROP', 'reason': 'no_signal'}, {'symbol': 'PEG', 'reason': 'no_signal'}, {'symbol': 'HIG', 'reason': 'no_signal'}, {'symbol': 'EME', 'reason': 'no_signal'}, {'symbol': 'IRM', 'reason': 'no_signal'}, {'symbol': 'KVUE', 'reason': 'no_signal'}, {'symbol': 'WEC', 'reason': 'no_signal'}, {'symbol': 'DHI', 'reason': 'no_signal'}, {'symbol': 'BIIB', 'reason': 'no_signal'}, {'symbol': 'UAL', 'reason': 'no_signal'}, {'symbol': 'ODFL', 'reason': 'no_signal'}, {'symbol': 'RMD', 'reason': 'no_signal'}, {'symbol': 'CCL', 'reason': 'no_signal'}, {'symbol': 'AXON', 'reason': 'no_signal'}, {'symbol': 'PAYX', 'reason': 'no_signal'}, {'symbol': 'EQT', 'reason': 'no_signal'}, {'symbol': 'CNC', 'reason': 'no_signal'}, {'symbol': 'ACGL', 'reason': 'no_signal'}, {'symbol': 'KMB', 'reason': 'no_signal'}, {'symbol': 'JBL', 'reason': 'no_signal'}, {'symbol': 'DXCM', 'reason': 'no_signal'}, {'symbol': 'STLD', 'reason': 'no_signal'}, {'symbol': 'VMC', 'reason': 'no_signal'}, {'symbol': 'MTB', 'reason': 'no_signal'}, {'symbol': 'MTD', 'reason': 'no_signal'}, {'symbol': 'HBAN', 'reason': 'no_signal'}, {'symbol': 'ZTS', 'reason': 'no_signal'}, {'symbol': 'CBOE', 'reason': 'no_signal'}, {'symbol': 'NTRS', 'reason': 'no_signal'}, {'symbol': 'EXPE', 'reason': 'no_signal'}, {'symbol': 'GEHC', 'reason': 'no_signal'}, {'symbol': 'PCG', 'reason': 'no_signal'}, {'symbol': 'MLM', 'reason': 'no_signal'}, {'symbol': 'AEE', 'reason': 'no_signal'}, {'symbol': 'TDY', 'reason': 'no_signal'}, {'symbol': 'EXR', 'reason': 'no_signal'}, {'symbol': 'WSM', 'reason': 'no_signal'}, {'symbol': 'DG', 'reason': 'no_signal'}, {'symbol': 'WTW', 'reason': 'no_signal'}, {'symbol': 'RJF', 'reason': 'no_signal'}, {'symbol': 'ATO', 'reason': 'no_signal'}, {'symbol': 'HPQ', 'reason': 'no_signal'}, {'symbol': 'IR', 'reason': 'no_signal'}, {'symbol': 'CFG', 'reason': 'no_signal'}, {'symbol': 'LYV', 'reason': 'no_signal'}, {'symbol': 'CTSH', 'reason': 'no_signal'}, {'symbol': 'FFIV', 'reason': 'no_signal'}, {'symbol': 'DTE', 'reason': 'no_signal'}, {'symbol': 'PFE', 'reason': 'no_signal'}, {'symbol': 'PH', 'reason': 'no_signal'}, {'symbol': 'URI', 'reason': 'no_signal'}, {'symbol': 'PINS', 'reason': 'no_signal'}, {'symbol': 'CSX', 'reason': 'no_signal'}, {'symbol': 'PNC', 'reason': 'no_signal'}, {'symbol': 'LMT', 'reason': 'no_signal'}, {'symbol': 'NOC', 'reason': ['agent_decision_scheduled'], 'source': 'LLM_AGENT'}, {'symbol': 'PSX', 'reason': 'no_signal'}, {'symbol': 'GD', 'reason': 'no_signal'}, {'symbol': 'RBLX', 'reason': 'no_signal'}, {'symbol': 'RDDT', 'reason': 'no_signal'}, {'symbol': 'CARR', 'reason': 'no_signal'}, {'symbol': 'REGN', 'reason': 'no_signal'}, {'symbol': 'NKE', 'reason': 'no_signal'}, {'symbol': 'ROST', 'reason': 'no_signal'}, {'symbol': 'SBUX', 'reason': 'no_signal'}, {'symbol': 'LOW', 'reason': 'no_signal'}, {'symbol': 'SCHW', 'reason': 'no_signal'}, {'symbol': 'SHOP', 'reason': 'no_signal'}, {'symbol': 'TJX', 'reason': 'no_signal'}, {'symbol': 'BKNG', 'reason': 'no_signal'}, {'symbol': 'MAR', 'reason': 'no_signal'}, {'symbol': 'CMG', 'reason': 'no_signal'}, {'symbol': 'ORLY', 'reason': 'no_signal'}, {'symbol': 'TGT', 'reason': 'no_signal'}, {'symbol': 'PEP', 'reason': 'no_signal'}, {'symbol': 'MDLZ', 'reason': 'no_signal'}, {'symbol': 'CL', 'reason': 'no_signal'}, {'symbol': 'KHC', 'reason': 'no_signal'}, {'symbol': 'GIS', 'reason': 'no_signal'}, {'symbol': 'KR', 'reason': 'no_signal'}, {'symbol': 'EL', 'reason': 'no_signal'}, {'symbol': 'SLB', 'reason': 'no_signal'}, {'symbol': 'SNAP', 'reason': 'no_signal'}, {'symbol': 'OXY', 'reason': 'no_signal'}, {'symbol': 'SNOW', 'reason': 'no_signal'}, {'symbol': 'MPC', 'reason': 'no_signal'}, {'symbol': 'SYK', 'reason': 'no_signal'}, {'symbol': 'TEAM', 'reason': 'no_signal'}, {'symbol': 'VLO', 'reason': 'no_signal'}, {'symbol': 'TFC', 'reason': 'no_signal'}, {'symbol': 'HAL', 'reason': 'no_signal'}, {'symbol': 'FCX', 'reason': 'no_signal'}, {'symbol': 'NUE', 'reason': 'no_signal'}, {'symbol': 'TMUS', 'reason': 'no_signal'}, {'symbol': 'APD', 'reason': 'no_signal'}, {'symbol': 'TSM', 'reason': 'no_signal'}, {'symbol': 'DUK', 'reason': 'no_signal'}, {'symbol': 'UNH', 'reason': 'no_signal'}, {'symbol': 'UBER', 'reason': 'no_signal'}, {'symbol': 'AEP', 'reason': 'no_signal'}, {'symbol': 'UPS', 'reason': 'no_signal'}, {'symbol': 'CCI', 'reason': 'no_signal'}, {'symbol': 'EQIX', 'reason': 'no_signal'}, {'symbol': 'USB', 'reason': 'no_signal'}, {'symbol': 'VRTX', 'reason': 'no_signal'}, {'symbol': 'ZS', 'reason': 'no_signal'}, {'symbol': 'WMT', 'reason': 'missing_live_data'}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'no_signal'}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'no_signal'}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'no_signal'}, {'symbol': 'PDD', 'reason': 'no_signal'}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'NVDA', 'reason': 'no_signal'}, {'symbol': 'MU', 'reason': 'no_signal'}, {'symbol': 'PLTR', 'reason': 'no_signal'}, {'symbol': 'BRKH', 'reason': 'no_signal'}, {'symbol': 'NXTC', 'reason': 'no_signal'}, {'symbol': 'TGHL', 'reason': 'no_signal'}, {'symbol': 'MRAI', 'reason': 'missing_live_data'}, {'symbol': 'CPHI', 'reason': 'no_signal'}, {'symbol': 'MAAS', 'reason': 'no_signal'}, {'symbol': 'LEDS', 'reason': 'no_signal'}, {'symbol': 'APLM', 'reason': 'no_signal'}, {'symbol': 'PYPG', 'reason': 'no_signal'}, {'symbol': 'VEEE', 'reason': 'no_signal'}, {'symbol': 'EAF', 'reason': 'no_signal'}, {'symbol': 'YYAI', 'reason': 'no_signal'}, {'symbol': 'TOP', 'reason': 'no_signal'}, {'symbol': 'RCEL', 'reason': 'no_signal'}, {'symbol': 'SYRA', 'reason': 'missing_live_data'}, {'symbol': 'CRMT', 'reason': 'no_signal'}, {'symbol': 'NAKA', 'reason': 'no_signal'}, {'symbol': 'MAN', 'reason': 'no_signal'}, {'symbol': 'GOOGL', 'reason': 'no_signal'}, {'symbol': 'JPM', 'reason': 'no_signal'}, {'symbol': 'BAC', 'reason': 'no_signal'}, {'symbol': 'GS', 'reason': 'no_signal'}, {'symbol': 'V', 'reason': 'no_signal'}, {'symbol': 'LLY', 'reason': 'no_signal'}, {'symbol': 'JNJ', 'reason': 'no_signal'}, {'symbol': 'ABBV', 'reason': 'no_signal'}, {'symbol': 'TMO', 'reason': 'no_signal'}, {'symbol': 'CAT', 'reason': 'no_signal'}, {'symbol': 'GE', 'reason': 'no_signal'}, {'symbol': 'RTX', 'reason': 'no_signal'}, {'symbol': 'ETN', 'reason': 'no_signal'}, {'symbol': 'COST', 'reason': 'no_signal'}, {'symbol': 'PG', 'reason': 'no_signal'}, {'symbol': 'XOM', 'reason': 'no_signal'}, {'symbol': 'CVX', 'reason': 'no_signal'}, {'symbol': 'COP', 'reason': 'no_signal'}, {'symbol': 'NEE', 'reason': 'no_signal'}, {'symbol': 'SO', 'reason': 'no_signal'}, {'symbol': 'PLD', 'reason': 'no_signal'}, {'symbol': 'AMT', 'reason': 'missing_live_data'}, {'symbol': 'LIN', 'reason': 'no_signal'}, {'symbol': 'SHW', 'reason': 'no_signal'}, {'symbol': 'HD', 'reason': 'no_signal'}, {'symbol': 'MCD', 'reason': 'no_signal'}, {'symbol': 'META', 'reason': 'no_signal'}, {'symbol': 'NFLX', 'reason': 'no_signal'}, {'symbol': 'AVGO', 'reason': ['agent_decision_scheduled'], 'source': 'LLM_AGENT'}, {'symbol': 'ORCL', 'reason': 'no_signal'}, {'symbol': 'AMD', 'reason': 'no_signal'}, {'symbol': 'INTC', 'reason': ['agent_decision_scheduled'], 'source': 'LLM_AGENT'}, {'symbol': 'QCOM', 'reason': 'no_signal'}, {'symbol': 'ASML', 'reason': 'no_signal'}, {'symbol': 'KLAC', 'reason': 'no_signal'}, {'symbol': 'LRCX', 'reason': 'no_signal'}, {'symbol': 'MRVL', 'reason': 'no_signal'}, {'symbol': 'ADI', 'reason': 'no_signal'}, {'symbol': 'NXPI', 'reason': 'no_signal'}, {'symbol': 'ON', 'reason': 'no_signal'}, {'symbol': 'MCHP', 'reason': 'no_signal'}, {'symbol': 'CRM', 'reason': 'no_signal'}, {'symbol': 'NOW', 'reason': 'no_signal'}, {'symbol': 'PANW', 'reason': 'no_signal'}, {'symbol': 'CRWD', 'reason': 'no_signal'}, {'symbol': 'DDOG', 'reason': 'no_signal'}, {'symbol': 'NET', 'reason': 'no_signal'}, {'symbol': 'MDB', 'reason': 'no_signal'}, {'symbol': 'FTNT', 'reason': 'no_signal'}, {'symbol': 'APP', 'reason': 'no_signal'}, {'symbol': 'ABNB', 'reason': 'no_signal'}, {'symbol': 'DASH', 'reason': 'no_signal'}, {'symbol': 'C', 'reason': 'no_signal'}, {'symbol': 'MS', 'reason': 'no_signal'}, {'symbol': 'AXP', 'reason': 'no_signal'}, {'symbol': 'MA', 'reason': 'no_signal'}, {'symbol': 'COF', 'reason': 'no_signal'}, {'symbol': 'BLK', 'reason': 'no_signal'}, {'symbol': 'CME', 'reason': 'no_signal'}, {'symbol': 'ICE', 'reason': 'no_signal'}, {'symbol': 'MRK', 'reason': 'no_signal'}, {'symbol': 'ABT', 'reason': 'no_signal'}, {'symbol': 'MDT', 'reason': 'no_signal'}, {'symbol': 'ISRG', 'reason': 'no_signal'}, {'symbol': 'GILD', 'reason': 'no_signal'}, {'symbol': 'AMGN', 'reason': 'no_signal'}, {'symbol': 'BSX', 'reason': 'no_signal'}, {'symbol': 'BA', 'reason': 'no_signal'}, {'symbol': 'DE', 'reason': 'no_signal'}, {'symbol': 'HON', 'reason': 'no_signal'}, {'symbol': 'FDX', 'reason': 'no_signal'}, {'symbol': 'EOG', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'GOOG', 'reason': 'no_signal'}, {'symbol': 'CSCO', 'reason': 'no_signal'}, {'symbol': 'PM', 'reason': 'no_signal'}, {'symbol': 'GEV', 'reason': 'no_signal'}, {'symbol': 'TXN', 'reason': ['agent_decision_scheduled'], 'source': 'LLM_AGENT'}, {'symbol': 'WFC', 'reason': 'no_signal'}, {'symbol': 'ANET', 'reason': 'no_signal'}, {'symbol': 'SNDK', 'reason': 'no_signal'}, {'symbol': 'IBM', 'reason': 'no_signal'}, {'symbol': 'APH', 'reason': 'no_signal'}, {'symbol': 'DIS', 'reason': 'no_signal'}, {'symbol': 'VZ', 'reason': 'no_signal'}, {'symbol': 'DELL', 'reason': 'no_signal'}, {'symbol': 'STX', 'reason': 'no_signal'}, {'symbol': 'UNP', 'reason': 'no_signal'}, {'symbol': 'WELL', 'reason': 'no_signal'}, {'symbol': 'T', 'reason': 'no_signal'}, {'symbol': 'WDC', 'reason': 'no_signal'}, {'symbol': 'DHR', 'reason': 'no_signal'}, {'symbol': 'ACN', 'reason': 'no_signal'}, {'symbol': 'PGR', 'reason': 'no_signal'}, {'symbol': 'SPGI', 'reason': 'no_signal'}, {'symbol': 'NEM', 'reason': 'no_signal'}, {'symbol': 'CB', 'reason': 'no_signal'}, {'symbol': 'MO', 'reason': 'no_signal'}, {'symbol': 'BMY', 'reason': 'no_signal'}, {'symbol': 'GLW', 'reason': 'no_signal'}, {'symbol': 'CVS', 'reason': 'no_signal'}, {'symbol': 'MCK', 'reason': 'no_signal'}, {'symbol': 'ADP', 'reason': 'no_signal'}, {'symbol': 'TT', 'reason': 'no_signal'}, {'symbol': 'PWR', 'reason': 'no_signal'}, {'symbol': 'CEG', 'reason': 'no_signal'}, {'symbol': 'BNY', 'reason': 'no_signal'}, {'symbol': 'SNPS', 'reason': 'no_signal'}, {'symbol': 'CDNS', 'reason': 'no_signal'}, {'symbol': 'ADBE', 'reason': 'no_signal'}, {'symbol': 'JCI', 'reason': 'no_signal'}, {'symbol': 'HPE', 'reason': 'no_signal'}, {'symbol': 'VRT', 'reason': 'no_signal'}, {'symbol': 'ELV', 'reason': 'no_signal'}, {'symbol': 'WMB', 'reason': 'no_signal'}, {'symbol': 'EMR', 'reason': 'no_signal'}, {'symbol': 'LITE', 'reason': 'no_signal'}, {'symbol': 'HWM', 'reason': 'no_signal'}, {'symbol': 'HOOD', 'reason': 'no_signal'}, {'symbol': 'BX', 'reason': 'no_signal'}, {'symbol': 'INTU', 'reason': 'no_signal'}, {'symbol': 'MMM', 'reason': 'no_signal'}, {'symbol': 'MRNA', 'reason': 'no_signal'}, {'symbol': 'WM', 'reason': 'no_signal'}, {'symbol': 'TRV', 'reason': 'no_signal'}, {'symbol': 'BE', 'reason': ['agent_decision_scheduled'], 'source': 'LLM_AGENT'}, {'symbol': 'CI', 'reason': 'no_signal'}, {'symbol': 'MSI', 'reason': 'no_signal'}, {'symbol': 'HLT', 'reason': 'no_signal'}, {'symbol': 'CMCSA', 'reason': 'no_signal'}, {'symbol': 'CMI', 'reason': 'no_signal'}, {'symbol': 'GM', 'reason': 'no_signal'}, {'symbol': 'NSC', 'reason': 'no_signal'}, {'symbol': 'ECL', 'reason': 'no_signal'}, {'symbol': 'CTAS', 'reason': 'no_signal'}, {'symbol': 'MCO', 'reason': 'no_signal'}, {'symbol': 'RCL', 'reason': 'no_signal'}, {'symbol': 'ITW', 'reason': 'no_signal'}, {'symbol': 'HCA', 'reason': 'no_signal'}, {'symbol': 'SPG', 'reason': 'no_signal'}, {'symbol': 'MPWR', 'reason': 'no_signal'}, {'symbol': 'KMI', 'reason': 'no_signal'}, {'symbol': 'KEYS', 'reason': 'no_signal'}, {'symbol': 'KKR', 'reason': 'no_signal'}, {'symbol': 'DLR', 'reason': 'no_signal'}, {'symbol': 'TEL', 'reason': 'no_signal'}, {'symbol': 'MNST', 'reason': 'no_signal'}, {'symbol': 'TRGP', 'reason': 'no_signal'}, {'symbol': 'COR', 'reason': 'no_signal'}, {'symbol': 'TDG', 'reason': 'no_signal'}, {'symbol': 'TER', 'reason': 'no_signal'}, {'symbol': 'AJG', 'reason': 'no_signal'}, {'symbol': 'FAST', 'reason': 'no_signal'}, {'symbol': 'ALL', 'reason': 'no_signal'}, {'symbol': 'AON', 'reason': 'no_signal'}, {'symbol': 'OKE', 'reason': 'no_signal'}, {'symbol': 'FIX', 'reason': 'no_signal'}, {'symbol': 'AME', 'reason': 'no_signal'}, {'symbol': 'CIEN', 'reason': 'no_signal'}, {'symbol': 'PCAR', 'reason': 'no_signal'}, {'symbol': 'GWW', 'reason': 'no_signal'}, {'symbol': 'COHR', 'reason': 'no_signal'}, {'symbol': 'APO', 'reason': 'no_signal'}, {'symbol': 'BKR', 'reason': 'no_signal'}, {'symbol': 'CAH', 'reason': 'no_signal'}, {'symbol': 'D', 'reason': 'no_signal'}, {'symbol': 'CRH', 'reason': 'no_signal'}, {'symbol': 'DVN', 'reason': 'no_signal'}, {'symbol': 'SRE', 'reason': 'no_signal'}, {'symbol': 'MET', 'reason': 'no_signal'}, {'symbol': 'HUM', 'reason': 'no_signal'}, {'symbol': 'O', 'reason': 'no_signal'}, {'symbol': 'AFL', 'reason': 'no_signal'}, {'symbol': 'P', 'reason': 'no_signal'}, {'symbol': 'BDX', 'reason': 'no_signal'}, {'symbol': 'VYLR', 'reason': 'missing_required_chart_history', 'missing': ['daily', 'weekly', 'intraday_4h']}, {'symbol': 'HONA', 'reason': 'no_signal'}, {'symbol': 'VST', 'reason': 'no_signal'}, {'symbol': 'EW', 'reason': 'technical_atr_too_low'}, {'symbol': 'ADSK', 'reason': 'no_signal'}, {'symbol': 'PSA', 'reason': 'no_signal'}, {'symbol': 'A', 'reason': 'no_signal'}, {'symbol': 'ETR', 'reason': 'no_signal'}, {'symbol': 'ROK', 'reason': 'no_signal'}, {'symbol': 'WAB', 'reason': 'no_signal'}, {'symbol': 'STT', 'reason': 'no_signal'}, {'symbol': 'PYPL', 'reason': 'no_signal'}, {'symbol': 'AZO', 'reason': 'no_signal'}, {'symbol': 'F', 'reason': 'no_signal'}, {'symbol': 'NTAP', 'reason': 'no_signal'}, {'symbol': 'XEL', 'reason': 'no_signal'}, {'symbol': 'FITB', 'reason': 'no_signal'}, {'symbol': 'EBAY', 'reason': 'no_signal'}, {'symbol': 'KDP', 'reason': 'no_signal'}, {'symbol': 'LHX', 'reason': 'no_signal'}, {'symbol': 'GRMN', 'reason': 'no_signal'}, {'symbol': 'VEEV', 'reason': 'no_signal'}, {'symbol': 'VMRK', 'reason': 'no_signal'}, {'symbol': 'TWLO', 'reason': 'no_signal'}, {'symbol': 'EXC', 'reason': 'no_signal'}, {'symbol': 'FLEX', 'reason': 'no_signal'}, {'symbol': 'IQV', 'reason': 'no_signal'}, {'symbol': 'RSG', 'reason': 'no_signal'}, {'symbol': 'VTR', 'reason': 'no_signal'}, {'symbol': 'CVNA', 'reason': 'no_signal'}, {'symbol': 'FERG', 'reason': 'no_signal'}, {'symbol': 'WAT', 'reason': 'no_signal'}, {'symbol': 'ILMN', 'reason': 'no_signal'}, {'symbol': 'NDAQ', 'reason': 'no_signal'}, {'symbol': 'XYZ', 'reason': 'no_signal'}, {'symbol': 'MSCI', 'reason': 'no_signal'}, {'symbol': 'IDXX', 'reason': ['agent_decision_scheduled'], 'source': 'LLM_AGENT'}, {'symbol': 'AIG', 'reason': 'no_signal'}, {'symbol': 'COIN', 'reason': 'no_signal'}, {'symbol': 'YUM', 'reason': 'no_signal'}, {'symbol': 'FANG', 'reason': 'no_signal'}, {'symbol': 'IBKR', 'reason': 'no_signal'}, {'symbol': 'ED', 'reason': 'technical_atr_too_low'}, {'symbol': 'PRU', 'reason': 'no_signal'}, {'symbol': 'ADM', 'reason': 'no_signal'}, {'symbol': 'SYY', 'reason': 'no_signal'}, {'symbol': 'WDAY', 'reason': 'no_signal'}, {'symbol': 'CBRE', 'reason': 'no_signal'}, {'symbol': 'TTWO', 'reason': 'no_signal'}, {'symbol': 'ROP', 'reason': 'no_signal'}, {'symbol': 'PEG', 'reason': 'no_signal'}, {'symbol': 'HIG', 'reason': 'no_signal'}, {'symbol': 'EME', 'reason': 'no_signal'}, {'symbol': 'IRM', 'reason': 'no_signal'}, {'symbol': 'KVUE', 'reason': 'no_signal'}, {'symbol': 'WEC', 'reason': 'no_signal'}, {'symbol': 'DHI', 'reason': 'no_signal'}, {'symbol': 'BIIB', 'reason': 'no_signal'}, {'symbol': 'UAL', 'reason': 'no_signal'}, {'symbol': 'ODFL', 'reason': 'no_signal'}, {'symbol': 'RMD', 'reason': 'no_signal'}, {'symbol': 'CCL', 'reason': 'no_signal'}, {'symbol': 'AXON', 'reason': 'no_signal'}, {'symbol': 'PAYX', 'reason': 'no_signal'}, {'symbol': 'EQT', 'reason': 'no_signal'}, {'symbol': 'CNC', 'reason': 'no_signal'}, {'symbol': 'ACGL', 'reason': 'no_signal'}, {'symbol': 'KMB', 'reason': 'no_signal'}, {'symbol': 'JBL', 'reason': 'no_signal'}, {'symbol': 'DXCM', 'reason': 'no_signal'}, {'symbol': 'STLD', 'reason': 'no_signal'}, {'symbol': 'VMC', 'reason': 'no_signal'}, {'symbol': 'MTB', 'reason': 'no_signal'}, {'symbol': 'MTD', 'reason': 'no_signal'}, {'symbol': 'HBAN', 'reason': 'no_signal'}, {'symbol': 'ZTS', 'reason': 'no_signal'}, {'symbol': 'CBOE', 'reason': 'no_signal'}, {'symbol': 'NTRS', 'reason': 'no_signal'}, {'symbol': 'EXPE', 'reason': 'no_signal'}, {'symbol': 'GEHC', 'reason': 'no_signal'}, {'symbol': 'PCG', 'reason': 'no_signal'}, {'symbol': 'MLM', 'reason': 'no_signal'}, {'symbol': 'AEE', 'reason': 'no_signal'}, {'symbol': 'TDY', 'reason': 'no_signal'}, {'symbol': 'EXR', 'reason': 'no_signal'}, {'symbol': 'WSM', 'reason': 'no_signal'}, {'symbol': 'DG', 'reason': 'no_signal'}, {'symbol': 'WTW', 'reason': 'no_signal'}, {'symbol': 'RJF', 'reason': 'no_signal'}, {'symbol': 'ATO', 'reason': 'no_signal'}, {'symbol': 'HPQ', 'reason': 'no_signal'}, {'symbol': 'IR', 'reason': 'no_signal'}, {'symbol': 'CFG', 'reason': 'no_signal'}, {'symbol': 'LYV', 'reason': 'no_signal'}, {'symbol': 'CTSH', 'reason': 'no_signal'}, {'symbol': 'FFIV', 'reason': 'no_signal'}, {'symbol': 'DTE', 'reason': 'no_signal'}, {'symbol': 'PFE', 'reason': 'no_signal'}, {'symbol': 'PH', 'reason': 'no_signal'}, {'symbol': 'URI', 'reason': 'no_signal'}, {'symbol': 'PINS', 'reason': 'no_signal'}, {'symbol': 'CSX', 'reason': 'no_signal'}, {'symbol': 'PNC', 'reason': 'no_signal'}, {'symbol': 'LMT', 'reason': 'no_signal'}, {'symbol': 'NOC', 'reason': 'no_signal'}, {'symbol': 'PSX', 'reason': 'no_signal'}, {'symbol': 'GD', 'reason': 'no_signal'}, {'symbol': 'RBLX', 'reason': 'no_signal'}, {'symbol': 'RDDT', 'reason': 'no_signal'}, {'symbol': 'CARR', 'reason': 'no_signal'}, {'symbol': 'REGN', 'reason': 'no_signal'}, {'symbol': 'NKE', 'reason': 'no_signal'}, {'symbol': 'ROST', 'reason': 'no_signal'}, {'symbol': 'SBUX', 'reason': 'no_signal'}, {'symbol': 'LOW', 'reason': 'no_signal'}, {'symbol': 'SCHW', 'reason': 'no_signal'}, {'symbol': 'SHOP', 'reason': 'no_signal'}, {'symbol': 'TJX', 'reason': 'no_signal'}, {'symbol': 'BKNG', 'reason': 'no_signal'}, {'symbol': 'MAR', 'reason': 'no_signal'}, {'symbol': 'CMG', 'reason': 'no_signal'}, {'symbol': 'ORLY', 'reason': 'no_signal'}, {'symbol': 'TGT', 'reason': 'no_signal'}, {'symbol': 'PEP', 'reason': 'no_signal'}, {'symbol': 'MDLZ', 'reason': 'no_signal'}, {'symbol': 'CL', 'reason': 'no_signal'}, {'symbol': 'KHC', 'reason': 'no_signal'}, {'symbol': 'GIS', 'reason': 'no_signal'}, {'symbol': 'KR', 'reason': 'no_signal'}, {'symbol': 'EL', 'reason': 'no_signal'}, {'symbol': 'SLB', 'reason': 'no_signal'}, {'symbol': 'SNAP', 'reason': 'no_signal'}, {'symbol': 'OXY', 'reason': 'no_signal'}, {'symbol': 'SNOW', 'reason': 'no_signal'}, {'symbol': 'MPC', 'reason': 'no_signal'}, {'symbol': 'SYK', 'reason': 'no_signal'}, {'symbol': 'TEAM', 'reason': 'no_signal'}, {'symbol': 'VLO', 'reason': 'no_signal'}, {'symbol': 'TFC', 'reason': 'no_signal'}, {'symbol': 'HAL', 'reason': 'no_signal'}, {'symbol': 'FCX', 'reason': 'no_signal'}, {'symbol': 'NUE', 'reason': 'no_signal'}, {'symbol': 'TMUS', 'reason': 'no_signal'}, {'symbol': 'APD', 'reason': 'no_signal'}, {'symbol': 'TSM', 'reason': 'no_signal'}, {'symbol': 'DUK', 'reason': 'no_signal'}, {'symbol': 'UNH', 'reason': 'no_signal'}, {'symbol': 'UBER', 'reason': 'no_signal'}, {'symbol': 'AEP', 'reason': 'no_signal'}, {'symbol': 'UPS', 'reason': 'no_signal'}, {'symbol': 'CCI', 'reason': 'no_signal'}, {'symbol': 'EQIX', 'reason': 'no_signal'}, {'symbol': 'USB', 'reason': 'no_signal'}, {'symbol': 'VRTX', 'reason': 'no_signal'}, {'symbol': 'ZS', 'reason': 'no_signal'}, {'symbol': 'WMT', 'reason': 'missing_live_data'}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'no_signal'}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'no_signal'}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'no_signal'}, {'symbol': 'PDD', 'reason': 'no_signal'}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'NVDA', 'reason': 'no_signal'}, {'symbol': 'MU', 'reason': 'no_signal'}, {'symbol': 'PLTR', 'reason': 'no_signal'}, {'symbol': 'BRKH', 'reason': 'no_signal'}, {'symbol': 'NXTC', 'reason': 'no_signal'}, {'symbol': 'TGHL', 'reason': 'no_signal'}, {'symbol': 'MRAI', 'reason': 'missing_live_data'}, {'symbol': 'CPHI', 'reason': 'no_signal'}, {'symbol': 'MAAS', 'reason': 'no_signal'}, {'symbol': 'LEDS', 'reason': 'no_signal'}, {'symbol': 'APLM', 'reason': 'no_signal'}, {'symbol': 'PYPG', 'reason': 'no_signal'}, {'symbol': 'VEEE', 'reason': 'no_signal'}, {'symbol': 'EAF', 'reason': 'no_signal'}, {'symbol': 'YYAI', 'reason': 'no_signal'}, {'symbol': 'TOP', 'reason': 'no_signal'}, {'symbol': 'RCEL', 'reason': 'no_signal'}, {'symbol': 'SYRA', 'reason': 'missing_live_data'}, {'symbol': 'CRMT', 'reason': 'no_signal'}, {'symbol': 'NAKA', 'reason': 'no_signal'}, {'symbol': 'MAN', 'reason': 'no_signal'}, {'symbol': 'GOOGL', 'reason': 'no_signal'}, {'symbol': 'JPM', 'reason': 'no_signal'}, {'symbol': 'BAC', 'reason': 'no_signal'}, {'symbol': 'GS', 'reason': 'no_signal'}, {'symbol': 'V', 'reason': 'no_signal'}, {'symbol': 'LLY', 'reason': 'no_signal'}, {'symbol': 'JNJ', 'reason': 'no_signal'}, {'symbol': 'ABBV', 'reason': 'no_signal'}, {'symbol': 'TMO', 'reason': 'no_signal'}, {'symbol': 'CAT', 'reason': 'no_signal'}, {'symbol': 'GE', 'reason': 'no_signal'}, {'symbol': 'RTX', 'reason': 'no_signal'}, {'symbol': 'ETN', 'reason': 'no_signal'}, {'symbol': 'COST', 'reason': 'no_signal'}, {'symbol': 'PG', 'reason': 'no_signal'}, {'symbol': 'XOM', 'reason': 'no_signal'}, {'symbol': 'CVX', 'reason': 'no_signal'}, {'symbol': 'COP', 'reason': 'no_signal'}, {'symbol': 'NEE', 'reason': 'no_signal'}, {'symbol': 'SO', 'reason': 'no_signal'}, {'symbol': 'PLD', 'reason': 'no_signal'}, {'symbol': 'AMT', 'reason': 'missing_live_data'}, {'symbol': 'LIN', 'reason': 'no_signal'}, {'symbol': 'SHW', 'reason': 'no_signal'}, {'symbol': 'HD', 'reason': 'no_signal'}, {'symbol': 'MCD', 'reason': 'no_signal'}, {'symbol': 'META', 'reason': 'no_signal'}, {'symbol': 'NFLX', 'reason': 'no_signal'}, {'symbol': 'AVGO', 'reason': 'missing_live_data'}, {'symbol': 'ORCL', 'reason': 'no_signal'}, {'symbol': 'AMD', 'reason': 'no_signal'}, {'symbol': 'INTC', 'reason': 'no_signal'}, {'symbol': 'QCOM', 'reason': 'no_signal'}, {'symbol': 'ASML', 'reason': 'no_signal'}, {'symbol': 'KLAC', 'reason': 'no_signal'}, {'symbol': 'LRCX', 'reason': 'no_signal'}, {'symbol': 'MRVL', 'reason': 'no_signal'}, {'symbol': 'ADI', 'reason': 'no_signal'}, {'symbol': 'NXPI', 'reason': 'no_signal'}, {'symbol': 'ON', 'reason': 'no_signal'}, {'symbol': 'MCHP', 'reason': 'no_signal'}, {'symbol': 'CRM', 'reason': 'no_signal'}, {'symbol': 'NOW', 'reason': 'no_signal'}, {'symbol': 'PANW', 'reason': 'no_signal'}, {'symbol': 'CRWD', 'reason': 'no_signal'}, {'symbol': 'DDOG', 'reason': 'no_signal'}, {'symbol': 'NET', 'reason': 'no_signal'}, {'symbol': 'MDB', 'reason': 'no_signal'}, {'symbol': 'FTNT', 'reason': 'no_signal'}, {'symbol': 'APP', 'reason': 'no_signal'}, {'symbol': 'ABNB', 'reason': 'no_signal'}, {'symbol': 'DASH', 'reason': 'no_signal'}, {'symbol': 'C', 'reason': 'no_signal'}, {'symbol': 'MS', 'reason': 'no_signal'}, {'symbol': 'AXP', 'reason': 'no_signal'}, {'symbol': 'MA', 'reason': 'no_signal'}, {'symbol': 'COF', 'reason': 'no_signal'}, {'symbol': 'BLK', 'reason': 'no_signal'}, {'symbol': 'CME', 'reason': 'no_signal'}, {'symbol': 'ICE', 'reason': 'missing_live_data'}, {'symbol': 'MRK', 'reason': 'no_signal'}, {'symbol': 'ABT', 'reason': 'no_signal'}, {'symbol': 'MDT', 'reason': 'no_signal'}, {'symbol': 'ISRG', 'reason': 'no_signal'}, {'symbol': 'GILD', 'reason': 'no_signal'}, {'symbol': 'AMGN', 'reason': 'missing_live_data'}, {'symbol': 'BSX', 'reason': 'no_signal'}, {'symbol': 'BA', 'reason': 'no_signal'}, {'symbol': 'DE', 'reason': 'no_signal'}, {'symbol': 'HON', 'reason': 'no_signal'}, {'symbol': 'FDX', 'reason': 'no_signal'}, {'symbol': 'EOG', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'GOOG', 'reason': 'no_signal'}, {'symbol': 'CSCO', 'reason': 'no_signal'}, {'symbol': 'PM', 'reason': 'no_signal'}, {'symbol': 'GEV', 'reason': 'no_signal'}, {'symbol': 'TXN', 'reason': 'no_signal'}, {'symbol': 'WFC', 'reason': 'no_signal'}, {'symbol': 'ANET', 'reason': 'no_signal'}, {'symbol': 'SNDK', 'reason': 'no_signal'}, {'symbol': 'IBM', 'reason': 'no_signal'}, {'symbol': 'APH', 'reason': 'no_signal'}, {'symbol': 'DIS', 'reason': 'no_signal'}, {'symbol': 'VZ', 'reason': 'no_signal'}, {'symbol': 'DELL', 'reason': 'no_signal'}, {'symbol': 'STX', 'reason': 'no_signal'}, {'symbol': 'UNP', 'reason': 'no_signal'}, {'symbol': 'WELL', 'reason': 'no_signal'}, {'symbol': 'T', 'reason': 'no_signal'}, {'symbol': 'WDC', 'reason': 'no_signal'}, {'symbol': 'DHR', 'reason': 'no_signal'}, {'symbol': 'ACN', 'reason': 'no_signal'}, {'symbol': 'PGR', 'reason': 'no_signal'}, {'symbol': 'SPGI', 'reason': 'no_signal'}, {'symbol': 'NEM', 'reason': 'no_signal'}, {'symbol': 'CB', 'reason': 'no_signal'}, {'symbol': 'MO', 'reason': 'no_signal'}, {'symbol': 'BMY', 'reason': 'no_signal'}, {'symbol': 'GLW', 'reason': 'no_signal'}, {'symbol': 'CVS', 'reason': 'no_signal'}, {'symbol': 'MCK', 'reason': 'no_signal'}, {'symbol': 'ADP', 'reason': 'no_signal'}, {'symbol': 'TT', 'reason': 'no_signal'}, {'symbol': 'PWR', 'reason': 'no_signal'}, {'symbol': 'CEG', 'reason': 'no_signal'}, {'symbol': 'BNY', 'reason': 'no_signal'}, {'symbol': 'SNPS', 'reason': 'no_signal'}, {'symbol': 'CDNS', 'reason': 'no_signal'}, {'symbol': 'ADBE', 'reason': 'no_signal'}, {'symbol': 'JCI', 'reason': 'no_signal'}, {'symbol': 'HPE', 'reason': 'no_signal'}, {'symbol': 'VRT', 'reason': 'no_signal'}, {'symbol': 'ELV', 'reason': 'no_signal'}, {'symbol': 'WMB', 'reason': 'no_signal'}, {'symbol': 'EMR', 'reason': 'no_signal'}, {'symbol': 'LITE', 'reason': 'no_signal'}, {'symbol': 'HWM', 'reason': 'no_signal'}, {'symbol': 'HOOD', 'reason': 'no_signal'}, {'symbol': 'BX', 'reason': 'no_signal'}, {'symbol': 'INTU', 'reason': 'no_signal'}, {'symbol': 'MMM', 'reason': 'no_signal'}, {'symbol': 'MRNA', 'reason': 'no_signal'}, {'symbol': 'WM', 'reason': 'no_signal'}, {'symbol': 'TRV', 'reason': 'no_signal'}, {'symbol': 'BE', 'reason': 'no_signal'}, {'symbol': 'CI', 'reason': 'no_signal'}, {'symbol': 'MSI', 'reason': 'no_signal'}, {'symbol': 'HLT', 'reason': 'no_signal'}, {'symbol': 'CMCSA', 'reason': 'no_signal'}, {'symbol': 'CMI', 'reason': 'no_signal'}, {'symbol': 'GM', 'reason': 'no_signal'}, {'symbol': 'NSC', 'reason': 'no_signal'}, {'symbol': 'ECL', 'reason': 'no_signal'}, {'symbol': 'CTAS', 'reason': 'no_signal'}, {'symbol': 'MCO', 'reason': 'no_signal'}, {'symbol': 'RCL', 'reason': 'no_signal'}, {'symbol': 'ITW', 'reason': 'no_signal'}, {'symbol': 'HCA', 'reason': 'no_signal'}, {'symbol': 'SPG', 'reason': 'no_signal'}, {'symbol': 'MPWR', 'reason': 'no_signal'}, {'symbol': 'KMI', 'reason': 'no_signal'}, {'symbol': 'KEYS', 'reason': 'no_signal'}, {'symbol': 'KKR', 'reason': 'no_signal'}, {'symbol': 'DLR', 'reason': 'no_signal'}, {'symbol': 'TEL', 'reason': 'no_signal'}, {'symbol': 'MNST', 'reason': 'no_signal'}, {'symbol': 'TRGP', 'reason': 'no_signal'}, {'symbol': 'COR', 'reason': 'no_signal'}, {'symbol': 'TDG', 'reason': 'no_signal'}, {'symbol': 'TER', 'reason': 'no_signal'}, {'symbol': 'AJG', 'reason': 'no_signal'}, {'symbol': 'FAST', 'reason': 'no_signal'}, {'symbol': 'ALL', 'reason': 'no_signal'}, {'symbol': 'AON', 'reason': 'no_signal'}, {'symbol': 'OKE', 'reason': 'no_signal'}, {'symbol': 'FIX', 'reason': 'no_signal'}, {'symbol': 'AME', 'reason': 'no_signal'}, {'symbol': 'CIEN', 'reason': 'no_signal'}, {'symbol': 'PCAR', 'reason': 'no_signal'}, {'symbol': 'GWW', 'reason': 'no_signal'}, {'symbol': 'COHR', 'reason': 'no_signal'}, {'symbol': 'APO', 'reason': 'no_signal'}, {'symbol': 'BKR', 'reason': 'no_signal'}, {'symbol': 'CAH', 'reason': 'no_signal'}, {'symbol': 'D', 'reason': 'no_signal'}, {'symbol': 'CRH', 'reason': 'no_signal'}, {'symbol': 'DVN', 'reason': 'no_signal'}, {'symbol': 'SRE', 'reason': 'no_signal'}, {'symbol': 'MET', 'reason': 'no_signal'}, {'symbol': 'HUM', 'reason': 'no_signal'}, {'symbol': 'O', 'reason': 'no_signal'}, {'symbol': 'AFL', 'reason': 'no_signal'}, {'symbol': 'P', 'reason': 'no_signal'}, {'symbol': 'BDX', 'reason': 'no_signal'}, {'symbol': 'VYLR', 'reason': 'missing_required_chart_history', 'missing': ['daily', 'weekly', 'intraday_4h']}, {'symbol': 'HONA', 'reason': 'no_signal'}, {'symbol': 'VST', 'reason': 'no_signal'}, {'symbol': 'EW', 'reason': 'no_signal'}, {'symbol': 'ADSK', 'reason': 'no_signal'}, {'symbol': 'PSA', 'reason': 'no_signal'}, {'symbol': 'A', 'reason': 'no_signal'}, {'symbol': 'ETR', 'reason': 'no_signal'}, {'symbol': 'ROK', 'reason': 'no_signal'}, {'symbol': 'WAB', 'reason': 'no_signal'}, {'symbol': 'STT', 'reason': 'no_signal'}, {'symbol': 'PYPL', 'reason': 'no_signal'}, {'symbol': 'AZO', 'reason': 'no_signal'}, {'symbol': 'F', 'reason': 'no_signal'}, {'symbol': 'NTAP', 'reason': 'no_signal'}, {'symbol': 'XEL', 'reason': 'no_signal'}, {'symbol': 'FITB', 'reason': 'no_signal'}, {'symbol': 'EBAY', 'reason': 'no_signal'}, {'symbol': 'KDP', 'reason': 'no_signal'}, {'symbol': 'LHX', 'reason': 'no_signal'}, {'symbol': 'GRMN', 'reason': 'no_signal'}, {'symbol': 'VEEV', 'reason': 'no_signal'}, {'symbol': 'VMRK', 'reason': 'no_signal'}, {'symbol': 'TWLO', 'reason': 'no_signal'}, {'symbol': 'EXC', 'reason': 'no_signal'}, {'symbol': 'FLEX', 'reason': 'no_signal'}, {'symbol': 'IQV', 'reason': 'no_signal'}, {'symbol': 'RSG', 'reason': 'no_signal'}, {'symbol': 'VTR', 'reason': 'no_signal'}, {'symbol': 'CVNA', 'reason': 'no_signal'}, {'symbol': 'FERG', 'reason': 'no_signal'}, {'symbol': 'WAT', 'reason': 'no_signal'}, {'symbol': 'ILMN', 'reason': 'no_signal'}, {'symbol': 'NDAQ', 'reason': 'no_signal'}, {'symbol': 'XYZ', 'reason': 'no_signal'}, {'symbol': 'MSCI', 'reason': 'no_signal'}, {'symbol': 'IDXX', 'reason': 'no_signal'}, {'symbol': 'AIG', 'reason': 'no_signal'}, {'symbol': 'COIN', 'reason': 'no_signal'}, {'symbol': 'YUM', 'reason': 'no_signal'}, {'symbol': 'FANG', 'reason': 'no_signal'}, {'symbol': 'IBKR', 'reason': 'no_signal'}, {'symbol': 'ED', 'reason': 'no_signal'}, {'symbol': 'PRU', 'reason': 'no_signal'}, {'symbol': 'ADM', 'reason': 'no_signal'}, {'symbol': 'SYY', 'reason': 'no_signal'}, {'symbol': 'WDAY', 'reason': 'no_signal'}, {'symbol': 'CBRE', 'reason': 'no_signal'}, {'symbol': 'TTWO', 'reason': 'no_signal'}, {'symbol': 'ROP', 'reason': 'no_signal'}, {'symbol': 'PEG', 'reason': 'no_signal'}, {'symbol': 'HIG', 'reason': 'no_signal'}, {'symbol': 'EME', 'reason': 'no_signal'}, {'symbol': 'IRM', 'reason': 'no_signal'}, {'symbol': 'KVUE', 'reason': 'no_signal'}, {'symbol': 'WEC', 'reason': 'no_signal'}, {'symbol': 'DHI', 'reason': 'no_signal'}, {'symbol': 'BIIB', 'reason': 'no_signal'}, {'symbol': 'UAL', 'reason': 'no_signal'}, {'symbol': 'ODFL', 'reason': 'no_signal'}, {'symbol': 'RMD', 'reason': 'no_signal'}, {'symbol': 'CCL', 'reason': 'no_signal'}, {'symbol': 'AXON', 'reason': 'no_signal'}, {'symbol': 'PAYX', 'reason': 'no_signal'}, {'symbol': 'EQT', 'reason': 'no_signal'}, {'symbol': 'CNC', 'reason': 'no_signal'}, {'symbol': 'ACGL', 'reason': 'no_signal'}, {'symbol': 'KMB', 'reason': 'no_signal'}, {'symbol': 'JBL', 'reason': 'no_signal'}, {'symbol': 'DXCM', 'reason': 'no_signal'}, {'symbol': 'STLD', 'reason': 'no_signal'}, {'symbol': 'VMC', 'reason': 'no_signal'}, {'symbol': 'MTB', 'reason': 'no_signal'}, {'symbol': 'MTD', 'reason': 'no_signal'}, {'symbol': 'HBAN', 'reason': 'no_signal'}, {'symbol': 'ZTS', 'reason': 'no_signal'}, {'symbol': 'CBOE', 'reason': 'no_signal'}, {'symbol': 'NTRS', 'reason': 'no_signal'}, {'symbol': 'EXPE', 'reason': 'no_signal'}, {'symbol': 'GEHC', 'reason': 'no_signal'}, {'symbol': 'PCG', 'reason': 'no_signal'}, {'symbol': 'MLM', 'reason': 'no_signal'}, {'symbol': 'AEE', 'reason': 'no_signal'}, {'symbol': 'TDY', 'reason': 'no_signal'}, {'symbol': 'EXR', 'reason': 'no_signal'}, {'symbol': 'WSM', 'reason': 'no_signal'}, {'symbol': 'DG', 'reason': 'no_signal'}, {'symbol': 'WTW', 'reason': 'no_signal'}, {'symbol': 'RJF', 'reason': 'no_signal'}, {'symbol': 'ATO', 'reason': 'no_signal'}, {'symbol': 'HPQ', 'reason': 'no_signal'}, {'symbol': 'IR', 'reason': 'no_signal'}, {'symbol': 'CFG', 'reason': 'no_signal'}, {'symbol': 'LYV', 'reason': 'no_signal'}, {'symbol': 'CTSH', 'reason': 'no_signal'}, {'symbol': 'FFIV', 'reason': 'no_signal'}, {'symbol': 'DTE', 'reason': 'no_signal'}, {'symbol': 'PFE', 'reason': 'no_signal'}, {'symbol': 'PH', 'reason': 'no_signal'}, {'symbol': 'URI', 'reason': 'no_signal'}, {'symbol': 'PINS', 'reason': 'no_signal'}, {'symbol': 'CSX', 'reason': 'no_signal'}, {'symbol': 'PNC', 'reason': 'no_signal'}, {'symbol': 'LMT', 'reason': 'no_signal'}, {'symbol': 'NOC', 'reason': 'no_signal'}, {'symbol': 'PSX', 'reason': 'no_signal'}, {'symbol': 'GD', 'reason': 'no_signal'}, {'symbol': 'RBLX', 'reason': 'no_signal'}, {'symbol': 'RDDT', 'reason': 'no_signal'}, {'symbol': 'CARR', 'reason': 'no_signal'}, {'symbol': 'REGN', 'reason': 'no_signal'}, {'symbol': 'NKE', 'reason': 'no_signal'}, {'symbol': 'ROST', 'reason': 'no_signal'}, {'symbol': 'SBUX', 'reason': 'no_signal'}, {'symbol': 'LOW', 'reason': 'no_signal'}, {'symbol': 'SCHW', 'reason': 'no_signal'}, {'symbol': 'SHOP', 'reason': 'no_signal'}, {'symbol': 'TJX', 'reason': 'no_signal'}, {'symbol': 'BKNG', 'reason': 'no_signal'}, {'symbol': 'MAR', 'reason': 'no_signal'}, {'symbol': 'CMG', 'reason': 'no_signal'}, {'symbol': 'ORLY', 'reason': 'no_signal'}, {'symbol': 'TGT', 'reason': 'no_signal'}, {'symbol': 'PEP', 'reason': 'no_signal'}, {'symbol': 'MDLZ', 'reason': 'no_signal'}, {'symbol': 'CL', 'reason': 'no_signal'}, {'symbol': 'KHC', 'reason': 'no_signal'}, {'symbol': 'GIS', 'reason': 'no_signal'}, {'symbol': 'KR', 'reason': 'no_signal'}, {'symbol': 'EL', 'reason': 'no_signal'}, {'symbol': 'SLB', 'reason': 'no_signal'}, {'symbol': 'SNAP', 'reason': 'no_signal'}, {'symbol': 'OXY', 'reason': 'no_signal'}, {'symbol': 'SNOW', 'reason': 'no_signal'}, {'symbol': 'MPC', 'reason': 'no_signal'}, {'symbol': 'SYK', 'reason': 'no_signal'}, {'symbol': 'TEAM', 'reason': 'no_signal'}, {'symbol': 'VLO', 'reason': 'no_signal'}, {'symbol': 'TFC', 'reason': 'no_signal'}, {'symbol': 'HAL', 'reason': 'no_signal'}, {'symbol': 'FCX', 'reason': 'no_signal'}, {'symbol': 'NUE', 'reason': 'no_signal'}, {'symbol': 'TMUS', 'reason': 'no_signal'}, {'symbol': 'APD', 'reason': 'no_signal'}, {'symbol': 'TSM', 'reason': 'no_signal'}, {'symbol': 'DUK', 'reason': 'no_signal'}, {'symbol': 'UNH', 'reason': 'no_signal'}, {'symbol': 'UBER', 'reason': 'no_signal'}, {'symbol': 'AEP', 'reason': 'no_signal'}, {'symbol': 'UPS', 'reason': 'no_signal'}, {'symbol': 'CCI', 'reason': 'no_signal'}, {'symbol': 'EQIX', 'reason': 'no_signal'}, {'symbol': 'USB', 'reason': 'no_signal'}, {'symbol': 'VRTX', 'reason': 'no_signal'}, {'symbol': 'ZS', 'reason': 'no_signal'}, {'symbol': 'WMT', 'reason': 'missing_live_data'}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'no_signal'}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'no_signal'}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'no_signal'}, {'symbol': 'PDD', 'reason': 'no_signal'}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'NVDA', 'reason': 'no_signal'}, {'symbol': 'MU', 'reason': 'no_signal'}, {'symbol': 'PLTR', 'reason': 'no_signal'}, {'symbol': 'BRKH', 'reason': 'no_signal'}, {'symbol': 'NXTC', 'reason': 'no_signal'}, {'symbol': 'TGHL', 'reason': 'no_signal'}, {'symbol': 'MRAI', 'reason': 'missing_live_data'}, {'symbol': 'CPHI', 'reason': 'no_signal'}, {'symbol': 'MAAS', 'reason': 'no_signal'}, {'symbol': 'LEDS', 'reason': 'no_signal'}, {'symbol': 'APLM', 'reason': 'no_signal'}, {'symbol': 'PYPG', 'reason': 'no_signal'}, {'symbol': 'VEEE', 'reason': 'no_signal'}, {'symbol': 'EAF', 'reason': 'no_signal'}, {'symbol': 'YYAI', 'reason': 'no_signal'}, {'symbol': 'TOP', 'reason': 'no_signal'}, {'symbol': 'RCEL', 'reason': 'no_signal'}, {'symbol': 'SYRA', 'reason': 'missing_live_data'}, {'symbol': 'CRMT', 'reason': 'no_signal'}, {'symbol': 'NAKA', 'reason': 'no_signal'}, {'symbol': 'MAN', 'reason': 'no_signal'}, {'symbol': 'GOOGL', 'reason': 'no_signal'}, {'symbol': 'JPM', 'reason': 'no_signal'}, {'symbol': 'BAC', 'reason': 'no_signal'}, {'symbol': 'GS', 'reason': 'no_signal'}, {'symbol': 'V', 'reason': 'no_signal'}, {'symbol': 'LLY', 'reason': 'no_signal'}, {'symbol': 'JNJ', 'reason': 'no_signal'}, {'symbol': 'ABBV', 'reason': 'no_signal'}, {'symbol': 'TMO', 'reason': 'no_signal'}, {'symbol': 'CAT', 'reason': 'no_signal'}, {'symbol': 'GE', 'reason': 'no_signal'}, {'symbol': 'RTX', 'reason': 'no_signal'}, {'symbol': 'ETN', 'reason': 'no_signal'}, {'symbol': 'COST', 'reason': 'no_signal'}, {'symbol': 'PG', 'reason': 'no_signal'}, {'symbol': 'XOM', 'reason': 'no_signal'}, {'symbol': 'CVX', 'reason': 'no_signal'}, {'symbol': 'COP', 'reason': 'no_signal'}, {'symbol': 'NEE', 'reason': 'no_signal'}, {'symbol': 'SO', 'reason': 'no_signal'}, {'symbol': 'PLD', 'reason': 'no_signal'}, {'symbol': 'AMT', 'reason': 'missing_live_data'}, {'symbol': 'LIN', 'reason': 'no_signal'}, {'symbol': 'SHW', 'reason': 'no_signal'}, {'symbol': 'HD', 'reason': 'no_signal'}, {'symbol': 'MCD', 'reason': 'no_signal'}, {'symbol': 'META', 'reason': 'no_signal'}, {'symbol': 'NFLX', 'reason': 'no_signal'}, {'symbol': 'AVGO', 'reason': 'missing_live_data'}, {'symbol': 'ORCL', 'reason': 'no_signal'}, {'symbol': 'AMD', 'reason': 'no_signal'}, {'symbol': 'INTC', 'reason': 'no_signal'}, {'symbol': 'QCOM', 'reason': 'no_signal'}, {'symbol': 'ASML', 'reason': 'no_signal'}, {'symbol': 'KLAC', 'reason': 'no_signal'}, {'symbol': 'LRCX', 'reason': 'no_signal'}, {'symbol': 'MRVL', 'reason': 'no_signal'}, {'symbol': 'ADI', 'reason': 'no_signal'}, {'symbol': 'NXPI', 'reason': 'no_signal'}, {'symbol': 'ON', 'reason': 'no_signal'}, {'symbol': 'MCHP', 'reason': 'no_signal'}, {'symbol': 'CRM', 'reason': 'no_signal'}, {'symbol': 'NOW', 'reason': 'no_signal'}, {'symbol': 'PANW', 'reason': 'no_signal'}, {'symbol': 'CRWD', 'reason': 'no_signal'}, {'symbol': 'DDOG', 'reason': 'no_signal'}, {'symbol': 'NET', 'reason': 'no_signal'}, {'symbol': 'MDB', 'reason': 'no_signal'}, {'symbol': 'FTNT', 'reason': 'no_signal'}, {'symbol': 'APP', 'reason': 'no_signal'}, {'symbol': 'ABNB', 'reason': 'no_signal'}, {'symbol': 'DASH', 'reason': 'no_signal'}, {'symbol': 'C', 'reason': 'no_signal'}, {'symbol': 'MS', 'reason': 'no_signal'}, {'symbol': 'AXP', 'reason': 'no_signal'}, {'symbol': 'MA', 'reason': 'no_signal'}, {'symbol': 'COF', 'reason': 'no_signal'}, {'symbol': 'BLK', 'reason': 'no_signal'}, {'symbol': 'CME', 'reason': 'no_signal'}, {'symbol': 'ICE', 'reason': 'missing_live_data'}, {'symbol': 'MRK', 'reason': 'no_signal'}, {'symbol': 'ABT', 'reason': 'no_signal'}, {'symbol': 'MDT', 'reason': 'no_signal'}, {'symbol': 'ISRG', 'reason': 'no_signal'}, {'symbol': 'GILD', 'reason': 'no_signal'}, {'symbol': 'AMGN', 'reason': 'missing_live_data'}, {'symbol': 'BSX', 'reason': 'no_signal'}, {'symbol': 'BA', 'reason': 'no_signal'}, {'symbol': 'DE', 'reason': 'no_signal'}, {'symbol': 'HON', 'reason': 'no_signal'}, {'symbol': 'FDX', 'reason': 'no_signal'}, {'symbol': 'EOG', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'GOOG', 'reason': 'no_signal'}, {'symbol': 'CSCO', 'reason': 'no_signal'}, {'symbol': 'PM', 'reason': 'no_signal'}, {'symbol': 'GEV', 'reason': 'no_signal'}, {'symbol': 'TXN', 'reason': 'no_signal'}, {'symbol': 'WFC', 'reason': 'no_signal'}, {'symbol': 'ANET', 'reason': 'no_signal'}, {'symbol': 'SNDK', 'reason': 'no_signal'}, {'symbol': 'IBM', 'reason': 'no_signal'}, {'symbol': 'APH', 'reason': 'no_signal'}, {'symbol': 'DIS', 'reason': 'no_signal'}, {'symbol': 'VZ', 'reason': 'no_signal'}, {'symbol': 'DELL', 'reason': 'no_signal'}, {'symbol': 'STX', 'reason': 'no_signal'}, {'symbol': 'UNP', 'reason': 'no_signal'}, {'symbol': 'WELL', 'reason': 'no_signal'}, {'symbol': 'T', 'reason': 'no_signal'}, {'symbol': 'WDC', 'reason': 'no_signal'}, {'symbol': 'DHR', 'reason': 'no_signal'}, {'symbol': 'ACN', 'reason': 'no_signal'}, {'symbol': 'PGR', 'reason': 'no_signal'}, {'symbol': 'SPGI', 'reason': 'no_signal'}, {'symbol': 'NEM', 'reason': 'no_signal'}, {'symbol': 'CB', 'reason': 'no_signal'}, {'symbol': 'MO', 'reason': 'no_signal'}, {'symbol': 'BMY', 'reason': 'no_signal'}, {'symbol': 'GLW', 'reason': 'no_signal'}, {'symbol': 'CVS', 'reason': 'no_signal'}, {'symbol': 'MCK', 'reason': 'no_signal'}, {'symbol': 'ADP', 'reason': 'no_signal'}, {'symbol': 'TT', 'reason': 'no_signal'}, {'symbol': 'PWR', 'reason': 'no_signal'}, {'symbol': 'CEG', 'reason': 'no_signal'}, {'symbol': 'BNY', 'reason': 'no_signal'}, {'symbol': 'SNPS', 'reason': 'no_signal'}, {'symbol': 'CDNS', 'reason': 'no_signal'}, {'symbol': 'ADBE', 'reason': 'no_signal'}, {'symbol': 'JCI', 'reason': ['agent_decision_scheduled'], 'source': 'LLM_AGENT'}, {'symbol': 'HPE', 'reason': 'no_signal'}, {'symbol': 'VRT', 'reason': 'no_signal'}, {'symbol': 'ELV', 'reason': 'no_signal'}, {'symbol': 'WMB', 'reason': 'no_signal'}, {'symbol': 'EMR', 'reason': 'no_signal'}, {'symbol': 'LITE', 'reason': 'no_signal'}, {'symbol': 'HWM', 'reason': 'no_signal'}, {'symbol': 'HOOD', 'reason': 'no_signal'}, {'symbol': 'BX', 'reason': 'no_signal'}, {'symbol': 'INTU', 'reason': 'no_signal'}, {'symbol': 'MMM', 'reason': 'no_signal'}, {'symbol': 'MRNA', 'reason': 'no_signal'}, {'symbol': 'WM', 'reason': 'no_signal'}, {'symbol': 'TRV', 'reason': 'no_signal'}, {'symbol': 'BE', 'reason': 'no_signal'}, {'symbol': 'CI', 'reason': 'no_signal'}, {'symbol': 'MSI', 'reason': 'no_signal'}, {'symbol': 'HLT', 'reason': 'no_signal'}, {'symbol': 'CMCSA', 'reason': 'no_signal'}, {'symbol': 'CMI', 'reason': 'no_signal'}, {'symbol': 'GM', 'reason': 'no_signal'}, {'symbol': 'NSC', 'reason': 'no_signal'}, {'symbol': 'ECL', 'reason': 'no_signal'}, {'symbol': 'CTAS', 'reason': 'no_signal'}, {'symbol': 'MCO', 'reason': 'no_signal'}, {'symbol': 'RCL', 'reason': 'no_signal'}, {'symbol': 'ITW', 'reason': 'no_signal'}, {'symbol': 'HCA', 'reason': 'no_signal'}, {'symbol': 'SPG', 'reason': 'no_signal'}, {'symbol': 'MPWR', 'reason': 'no_signal'}, {'symbol': 'KMI', 'reason': 'no_signal'}, {'symbol': 'KEYS', 'reason': 'no_signal'}, {'symbol': 'KKR', 'reason': 'no_signal'}, {'symbol': 'DLR', 'reason': 'no_signal'}, {'symbol': 'TEL', 'reason': 'no_signal'}, {'symbol': 'MNST', 'reason': 'no_signal'}, {'symbol': 'TRGP', 'reason': 'no_signal'}, {'symbol': 'COR', 'reason': 'no_signal'}, {'symbol': 'TDG', 'reason': 'no_signal'}, {'symbol': 'TER', 'reason': 'no_signal'}, {'symbol': 'AJG', 'reason': 'no_signal'}, {'symbol': 'FAST', 'reason': 'no_signal'}, {'symbol': 'ALL', 'reason': 'no_signal'}, {'symbol': 'AON', 'reason': 'no_signal'}, {'symbol': 'OKE', 'reason': 'no_signal'}, {'symbol': 'FIX', 'reason': 'no_signal'}, {'symbol': 'AME', 'reason': 'no_signal'}, {'symbol': 'CIEN', 'reason': 'no_signal'}, {'symbol': 'PCAR', 'reason': 'no_signal'}, {'symbol': 'GWW', 'reason': 'no_signal'}, {'symbol': 'COHR', 'reason': 'no_signal'}, {'symbol': 'APO', 'reason': 'no_signal'}, {'symbol': 'BKR', 'reason': 'no_signal'}, {'symbol': 'CAH', 'reason': 'no_signal'}, {'symbol': 'D', 'reason': 'no_signal'}, {'symbol': 'CRH', 'reason': 'no_signal'}, {'symbol': 'DVN', 'reason': 'no_signal'}, {'symbol': 'SRE', 'reason': 'no_signal'}, {'symbol': 'MET', 'reason': 'no_signal'}, {'symbol': 'HUM', 'reason': 'no_signal'}, {'symbol': 'O', 'reason': 'no_signal'}, {'symbol': 'AFL', 'reason': 'no_signal'}, {'symbol': 'P', 'reason': 'no_signal'}, {'symbol': 'BDX', 'reason': 'no_signal'}, {'symbol': 'VYLR', 'reason': 'missing_required_chart_history', 'missing': ['daily', 'weekly', 'intraday_4h']}, {'symbol': 'HONA', 'reason': 'no_signal'}, {'symbol': 'VST', 'reason': 'no_signal'}, {'symbol': 'EW', 'reason': 'no_signal'}, {'symbol': 'ADSK', 'reason': 'no_signal'}, {'symbol': 'PSA', 'reason': 'no_signal'}, {'symbol': 'A', 'reason': 'no_signal'}, {'symbol': 'ETR', 'reason': 'no_signal'}, {'symbol': 'ROK', 'reason': 'no_signal'}, {'symbol': 'WAB', 'reason': 'no_signal'}, {'symbol': 'STT', 'reason': 'no_signal'}, {'symbol': 'PYPL', 'reason': 'no_signal'}, {'symbol': 'AZO', 'reason': 'no_signal'}, {'symbol': 'F', 'reason': 'no_signal'}, {'symbol': 'NTAP', 'reason': ['agent_decision_scheduled'], 'source': 'LLM_AGENT'}, {'symbol': 'XEL', 'reason': 'no_signal'}, {'symbol': 'FITB', 'reason': 'no_signal'}, {'symbol': 'EBAY', 'reason': 'no_signal'}, {'symbol': 'KDP', 'reason': 'no_signal'}, {'symbol': 'LHX', 'reason': 'no_signal'}, {'symbol': 'GRMN', 'reason': 'no_signal'}, {'symbol': 'VEEV', 'reason': 'no_signal'}, {'symbol': 'VMRK', 'reason': 'no_signal'}, {'symbol': 'TWLO', 'reason': 'no_signal'}, {'symbol': 'EXC', 'reason': 'no_signal'}, {'symbol': 'FLEX', 'reason': 'no_signal'}, {'symbol': 'IQV', 'reason': 'no_signal'}, {'symbol': 'RSG', 'reason': 'no_signal'}, {'symbol': 'VTR', 'reason': 'no_signal'}, {'symbol': 'CVNA', 'reason': 'no_signal'}, {'symbol': 'FERG', 'reason': 'no_signal'}, {'symbol': 'WAT', 'reason': 'no_signal'}, {'symbol': 'ILMN', 'reason': 'no_signal'}, {'symbol': 'NDAQ', 'reason': 'no_signal'}, {'symbol': 'XYZ', 'reason': 'no_signal'}, {'symbol': 'MSCI', 'reason': 'no_signal'}, {'symbol': 'IDXX', 'reason': 'no_signal'}, {'symbol': 'AIG', 'reason': 'no_signal'}, {'symbol': 'COIN', 'reason': 'no_signal'}, {'symbol': 'YUM', 'reason': 'no_signal'}, {'symbol': 'FANG', 'reason': 'no_signal'}, {'symbol': 'IBKR', 'reason': 'no_signal'}, {'symbol': 'ED', 'reason': 'no_signal'}, {'symbol': 'PRU', 'reason': 'no_signal'}, {'symbol': 'ADM', 'reason': 'no_signal'}, {'symbol': 'SYY', 'reason': 'no_signal'}, {'symbol': 'WDAY', 'reason': 'no_signal'}, {'symbol': 'CBRE', 'reason': 'no_signal'}, {'symbol': 'TTWO', 'reason': 'no_signal'}, {'symbol': 'ROP', 'reason': 'no_signal'}, {'symbol': 'PEG', 'reason': 'no_signal'}, {'symbol': 'HIG', 'reason': 'no_signal'}, {'symbol': 'EME', 'reason': 'no_signal'}, {'symbol': 'IRM', 'reason': 'no_signal'}, {'symbol': 'KVUE', 'reason': 'no_signal'}, {'symbol': 'WEC', 'reason': 'no_signal'}, {'symbol': 'DHI', 'reason': 'no_signal'}, {'symbol': 'BIIB', 'reason': 'no_signal'}, {'symbol': 'UAL', 'reason': 'no_signal'}, {'symbol': 'ODFL', 'reason': 'no_signal'}, {'symbol': 'RMD', 'reason': 'no_signal'}, {'symbol': 'CCL', 'reason': 'no_signal'}, {'symbol': 'AXON', 'reason': 'no_signal'}, {'symbol': 'PAYX', 'reason': 'no_signal'}, {'symbol': 'EQT', 'reason': 'no_signal'}, {'symbol': 'CNC', 'reason': 'no_signal'}, {'symbol': 'ACGL', 'reason': 'no_signal'}, {'symbol': 'KMB', 'reason': 'no_signal'}, {'symbol': 'JBL', 'reason': 'no_signal'}, {'symbol': 'DXCM', 'reason': 'no_signal'}, {'symbol': 'STLD', 'reason': 'no_signal'}, {'symbol': 'VMC', 'reason': 'no_signal'}, {'symbol': 'MTB', 'reason': 'no_signal'}, {'symbol': 'MTD', 'reason': 'no_signal'}, {'symbol': 'HBAN', 'reason': 'no_signal'}, {'symbol': 'ZTS', 'reason': 'no_signal'}, {'symbol': 'CBOE', 'reason': 'no_signal'}, {'symbol': 'NTRS', 'reason': 'no_signal'}, {'symbol': 'EXPE', 'reason': 'no_signal'}, {'symbol': 'GEHC', 'reason': 'no_signal'}, {'symbol': 'PCG', 'reason': 'no_signal'}, {'symbol': 'MLM', 'reason': 'no_signal'}, {'symbol': 'AEE', 'reason': 'no_signal'}, {'symbol': 'TDY', 'reason': 'no_signal'}, {'symbol': 'EXR', 'reason': 'no_signal'}, {'symbol': 'WSM', 'reason': 'no_signal'}, {'symbol': 'DG', 'reason': 'no_signal'}, {'symbol': 'WTW', 'reason': 'no_signal'}, {'symbol': 'RJF', 'reason': 'no_signal'}, {'symbol': 'ATO', 'reason': 'no_signal'}, {'symbol': 'HPQ', 'reason': 'no_signal'}, {'symbol': 'IR', 'reason': 'no_signal'}, {'symbol': 'CFG', 'reason': 'no_signal'}, {'symbol': 'LYV', 'reason': 'no_signal'}, {'symbol': 'CTSH', 'reason': 'no_signal'}, {'symbol': 'FFIV', 'reason': 'no_signal'}, {'symbol': 'DTE', 'reason': 'no_signal'}, {'symbol': 'PFE', 'reason': 'no_signal'}, {'symbol': 'PH', 'reason': 'no_signal'}, {'symbol': 'URI', 'reason': 'no_signal'}, {'symbol': 'PINS', 'reason': 'no_signal'}, {'symbol': 'CSX', 'reason': 'no_signal'}, {'symbol': 'PNC', 'reason': 'no_signal'}, {'symbol': 'LMT', 'reason': 'no_signal'}, {'symbol': 'NOC', 'reason': 'no_signal'}, {'symbol': 'PSX', 'reason': 'no_signal'}, {'symbol': 'GD', 'reason': 'no_signal'}, {'symbol': 'RBLX', 'reason': 'no_signal'}, {'symbol': 'RDDT', 'reason': 'no_signal'}, {'symbol': 'CARR', 'reason': 'no_signal'}, {'symbol': 'REGN', 'reason': 'no_signal'}, {'symbol': 'NKE', 'reason': 'no_signal'}, {'symbol': 'ROST', 'reason': 'no_signal'}, {'symbol': 'SBUX', 'reason': 'no_signal'}, {'symbol': 'LOW', 'reason': 'no_signal'}, {'symbol': 'SCHW', 'reason': 'no_signal'}, {'symbol': 'SHOP', 'reason': 'no_signal'}, {'symbol': 'TJX', 'reason': 'no_signal'}, {'symbol': 'BKNG', 'reason': 'no_signal'}, {'symbol': 'MAR', 'reason': 'no_signal'}, {'symbol': 'CMG', 'reason': 'no_signal'}, {'symbol': 'ORLY', 'reason': 'no_signal'}, {'symbol': 'TGT', 'reason': 'no_signal'}, {'symbol': 'PEP', 'reason': 'no_signal'}, {'symbol': 'MDLZ', 'reason': 'no_signal'}, {'symbol': 'CL', 'reason': 'no_signal'}, {'symbol': 'KHC', 'reason': 'no_signal'}, {'symbol': 'GIS', 'reason': 'no_signal'}, {'symbol': 'KR', 'reason': 'no_signal'}, {'symbol': 'EL', 'reason': 'no_signal'}, {'symbol': 'SLB', 'reason': 'no_signal'}, {'symbol': 'SNAP', 'reason': 'no_signal'}, {'symbol': 'OXY', 'reason': 'no_signal'}, {'symbol': 'SNOW', 'reason': 'no_signal'}, {'symbol': 'MPC', 'reason': 'no_signal'}, {'symbol': 'SYK', 'reason': 'no_signal'}, {'symbol': 'TEAM', 'reason': 'no_signal'}, {'symbol': 'VLO', 'reason': 'no_signal'}, {'symbol': 'TFC', 'reason': 'no_signal'}, {'symbol': 'HAL', 'reason': 'no_signal'}, {'symbol': 'FCX', 'reason': 'no_signal'}, {'symbol': 'NUE', 'reason': 'no_signal'}, {'symbol': 'TMUS', 'reason': 'no_signal'}, {'symbol': 'APD', 'reason': 'no_signal'}, {'symbol': 'TSM', 'reason': 'no_signal'}, {'symbol': 'DUK', 'reason': 'no_signal'}, {'symbol': 'UNH', 'reason': 'no_signal'}, {'symbol': 'UBER', 'reason': 'no_signal'}, {'symbol': 'AEP', 'reason': 'no_signal'}, {'symbol': 'UPS', 'reason': 'no_signal'}, {'symbol': 'CCI', 'reason': 'no_signal'}, {'symbol': 'EQIX', 'reason': 'no_signal'}, {'symbol': 'USB', 'reason': 'no_signal'}, {'symbol': 'VRTX', 'reason': 'no_signal'}, {'symbol': 'ZS', 'reason': 'no_signal'}, {'symbol': 'WMT', 'reason': 'missing_live_data'}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': ['agent_decision_scheduled'], 'source': 'LLM_AGENT'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'no_signal'}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'no_signal'}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'no_signal'}, {'symbol': 'PDD', 'reason': 'no_signal'}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'NVDA', 'reason': 'no_signal'}, {'symbol': 'MU', 'reason': 'no_signal'}, {'symbol': 'PLTR', 'reason': 'no_signal'}, {'symbol': 'BRKH', 'reason': 'no_signal'}, {'symbol': 'NXTC', 'reason': 'no_signal'}, {'symbol': 'TGHL', 'reason': 'no_signal'}, {'symbol': 'MRAI', 'reason': 'missing_live_data'}, {'symbol': 'CPHI', 'reason': 'no_signal'}, {'symbol': 'MAAS', 'reason': 'no_signal'}, {'symbol': 'LEDS', 'reason': 'no_signal'}, {'symbol': 'APLM', 'reason': 'no_signal'}, {'symbol': 'PYPG', 'reason': 'no_signal'}, {'symbol': 'VEEE', 'reason': 'no_signal'}, {'symbol': 'EAF', 'reason': 'no_signal'}, {'symbol': 'YYAI', 'reason': 'no_signal'}, {'symbol': 'TOP', 'reason': 'no_signal'}, {'symbol': 'RCEL', 'reason': 'no_signal'}, {'symbol': 'SYRA', 'reason': 'missing_live_data'}, {'symbol': 'CRMT', 'reason': 'no_signal'}, {'symbol': 'NAKA', 'reason': 'no_signal'}, {'symbol': 'MAN', 'reason': 'no_signal'}, {'symbol': 'GOOGL', 'reason': 'no_signal'}, {'symbol': 'JPM', 'reason': 'no_signal'}, {'symbol': 'BAC', 'reason': ['agent_decision_scheduled'], 'source': 'LLM_AGENT'}, {'symbol': 'GS', 'reason': 'no_signal'}, {'symbol': 'V', 'reason': 'no_signal'}, {'symbol': 'LLY', 'reason': 'no_signal'}, {'symbol': 'JNJ', 'reason': 'no_signal'}, {'symbol': 'ABBV', 'reason': 'no_signal'}, {'symbol': 'TMO', 'reason': 'no_signal'}, {'symbol': 'CAT', 'reason': 'no_signal'}, {'symbol': 'GE', 'reason': 'no_signal'}, {'symbol': 'RTX', 'reason': 'no_signal'}, {'symbol': 'ETN', 'reason': 'no_signal'}, {'symbol': 'COST', 'reason': 'no_signal'}, {'symbol': 'PG', 'reason': 'no_signal'}, {'symbol': 'XOM', 'reason': 'no_signal'}, {'symbol': 'CVX', 'reason': 'no_signal'}, {'symbol': 'COP', 'reason': 'no_signal'}, {'symbol': 'NEE', 'reason': 'no_signal'}, {'symbol': 'SO', 'reason': 'no_signal'}, {'symbol': 'PLD', 'reason': 'no_signal'}, {'symbol': 'AMT', 'reason': 'missing_live_data'}, {'symbol': 'LIN', 'reason': 'no_signal'}, {'symbol': 'SHW', 'reason': 'no_signal'}, {'symbol': 'HD', 'reason': 'no_signal'}, {'symbol': 'MCD', 'reason': 'no_signal'}, {'symbol': 'META', 'reason': 'no_signal'}, {'symbol': 'NFLX', 'reason': 'no_signal'}, {'symbol': 'AVGO', 'reason': 'missing_live_data'}, {'symbol': 'ORCL', 'reason': 'no_signal'}, {'symbol': 'AMD', 'reason': 'no_signal'}, {'symbol': 'INTC', 'reason': 'no_signal'}, {'symbol': 'QCOM', 'reason': 'no_signal'}, {'symbol': 'ASML', 'reason': 'no_signal'}, {'symbol': 'KLAC', 'reason': 'no_signal'}, {'symbol': 'LRCX', 'reason': 'no_signal'}, {'symbol': 'MRVL', 'reason': 'no_signal'}, {'symbol': 'ADI', 'reason': 'no_signal'}, {'symbol': 'NXPI', 'reason': 'no_signal'}, {'symbol': 'ON', 'reason': 'no_signal'}, {'symbol': 'MCHP', 'reason': 'no_signal'}, {'symbol': 'CRM', 'reason': 'no_signal'}, {'symbol': 'NOW', 'reason': 'no_signal'}, {'symbol': 'PANW', 'reason': 'no_signal'}, {'symbol': 'CRWD', 'reason': 'no_signal'}, {'symbol': 'DDOG', 'reason': 'no_signal'}, {'symbol': 'NET', 'reason': 'no_signal'}, {'symbol': 'MDB', 'reason': 'no_signal'}, {'symbol': 'FTNT', 'reason': 'no_signal'}, {'symbol': 'APP', 'reason': 'no_signal'}, {'symbol': 'ABNB', 'reason': 'no_signal'}, {'symbol': 'DASH', 'reason': 'no_signal'}, {'symbol': 'C', 'reason': 'no_signal'}, {'symbol': 'MS', 'reason': 'no_signal'}, {'symbol': 'AXP', 'reason': 'no_signal'}, {'symbol': 'MA', 'reason': 'no_signal'}, {'symbol': 'COF', 'reason': 'no_signal'}, {'symbol': 'BLK', 'reason': 'no_signal'}, {'symbol': 'CME', 'reason': 'no_signal'}, {'symbol': 'ICE', 'reason': 'missing_live_data'}, {'symbol': 'MRK', 'reason': 'no_signal'}, {'symbol': 'ABT', 'reason': 'no_signal'}, {'symbol': 'MDT', 'reason': 'no_signal'}, {'symbol': 'ISRG', 'reason': 'no_signal'}, {'symbol': 'GILD', 'reason': 'no_signal'}, {'symbol': 'AMGN', 'reason': 'missing_live_data'}, {'symbol': 'BSX', 'reason': 'no_signal'}, {'symbol': 'BA', 'reason': 'no_signal'}, {'symbol': 'DE', 'reason': 'no_signal'}, {'symbol': 'HON', 'reason': 'no_signal'}, {'symbol': 'FDX', 'reason': 'no_signal'}, {'symbol': 'EOG', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'GOOG', 'reason': 'no_signal'}, {'symbol': 'CSCO', 'reason': 'no_signal'}, {'symbol': 'PM', 'reason': 'no_signal'}, {'symbol': 'GEV', 'reason': 'no_signal'}, {'symbol': 'TXN', 'reason': 'no_signal'}, {'symbol': 'WFC', 'reason': 'no_signal'}, {'symbol': 'ANET', 'reason': 'no_signal'}, {'symbol': 'SNDK', 'reason': 'no_signal'}, {'symbol': 'IBM', 'reason': 'no_signal'}, {'symbol': 'APH', 'reason': 'no_signal'}, {'symbol': 'DIS', 'reason': 'no_signal'}, {'symbol': 'VZ', 'reason': 'no_signal'}, {'symbol': 'DELL', 'reason': 'no_signal'}, {'symbol': 'STX', 'reason': 'no_signal'}, {'symbol': 'UNP', 'reason': 'no_signal'}, {'symbol': 'WELL', 'reason': 'no_signal'}, {'symbol': 'T', 'reason': 'no_signal'}, {'symbol': 'WDC', 'reason': 'no_signal'}, {'symbol': 'DHR', 'reason': 'no_signal'}, {'symbol': 'ACN', 'reason': 'no_signal'}, {'symbol': 'PGR', 'reason': 'no_signal'}, {'symbol': 'SPGI', 'reason': 'no_signal'}, {'symbol': 'NEM', 'reason': 'no_signal'}, {'symbol': 'CB', 'reason': 'no_signal'}, {'symbol': 'MO', 'reason': 'no_signal'}, {'symbol': 'BMY', 'reason': 'no_signal'}, {'symbol': 'GLW', 'reason': 'no_signal'}, {'symbol': 'CVS', 'reason': 'no_signal'}, {'symbol': 'MCK', 'reason': 'no_signal'}, {'symbol': 'ADP', 'reason': 'no_signal'}, {'symbol': 'TT', 'reason': 'no_signal'}, {'symbol': 'PWR', 'reason': 'no_signal'}, {'symbol': 'CEG', 'reason': 'no_signal'}, {'symbol': 'BNY', 'reason': 'no_signal'}, {'symbol': 'SNPS', 'reason': 'no_signal'}, {'symbol': 'CDNS', 'reason': 'no_signal'}, {'symbol': 'ADBE', 'reason': 'no_signal'}, {'symbol': 'JCI', 'reason': 'no_signal'}, {'symbol': 'HPE', 'reason': 'no_signal'}, {'symbol': 'VRT', 'reason': 'no_signal'}, {'symbol': 'ELV', 'reason': 'no_signal'}, {'symbol': 'WMB', 'reason': 'no_signal'}, {'symbol': 'EMR', 'reason': 'no_signal'}, {'symbol': 'LITE', 'reason': 'no_signal'}, {'symbol': 'HWM', 'reason': 'no_signal'}, {'symbol': 'HOOD', 'reason': 'no_signal'}, {'symbol': 'BX', 'reason': 'no_signal'}, {'symbol': 'INTU', 'reason': 'no_signal'}, {'symbol': 'MMM', 'reason': 'no_signal'}, {'symbol': 'MRNA', 'reason': 'no_signal'}, {'symbol': 'WM', 'reason': 'no_signal'}, {'symbol': 'TRV', 'reason': 'no_signal'}, {'symbol': 'BE', 'reason': 'no_signal'}, {'symbol': 'CI', 'reason': 'no_signal'}, {'symbol': 'MSI', 'reason': 'no_signal'}, {'symbol': 'HLT', 'reason': 'no_signal'}, {'symbol': 'CMCSA', 'reason': 'no_signal'}, {'symbol': 'CMI', 'reason': 'no_signal'}, {'symbol': 'GM', 'reason': 'no_signal'}, {'symbol': 'NSC', 'reason': 'no_signal'}, {'symbol': 'ECL', 'reason': 'no_signal'}, {'symbol': 'CTAS', 'reason': 'no_signal'}, {'symbol': 'MCO', 'reason': 'no_signal'}, {'symbol': 'RCL', 'reason': 'no_signal'}, {'symbol': 'ITW', 'reason': 'no_signal'}, {'symbol': 'HCA', 'reason': 'no_signal'}, {'symbol': 'SPG', 'reason': 'no_signal'}, {'symbol': 'MPWR', 'reason': 'no_signal'}, {'symbol': 'KMI', 'reason': 'no_signal'}, {'symbol': 'KEYS', 'reason': 'no_signal'}, {'symbol': 'KKR', 'reason': 'no_signal'}, {'symbol': 'DLR', 'reason': 'no_signal'}, {'symbol': 'TEL', 'reason': 'no_signal'}, {'symbol': 'MNST', 'reason': 'no_signal'}, {'symbol': 'TRGP', 'reason': 'no_signal'}, {'symbol': 'COR', 'reason': 'no_signal'}, {'symbol': 'TDG', 'reason': 'no_signal'}, {'symbol': 'TER', 'reason': 'no_signal'}, {'symbol': 'AJG', 'reason': 'no_signal'}, {'symbol': 'FAST', 'reason': 'no_signal'}, {'symbol': 'ALL', 'reason': 'no_signal'}, {'symbol': 'AON', 'reason': 'no_signal'}, {'symbol': 'OKE', 'reason': 'no_signal'}, {'symbol': 'FIX', 'reason': 'no_signal'}, {'symbol': 'AME', 'reason': 'no_signal'}, {'symbol': 'CIEN', 'reason': 'no_signal'}, {'symbol': 'PCAR', 'reason': 'no_signal'}, {'symbol': 'GWW', 'reason': 'no_signal'}, {'symbol': 'COHR', 'reason': 'no_signal'}, {'symbol': 'APO', 'reason': 'no_signal'}, {'symbol': 'BKR', 'reason': 'no_signal'}, {'symbol': 'CAH', 'reason': 'no_signal'}, {'symbol': 'D', 'reason': 'no_signal'}, {'symbol': 'CRH', 'reason': 'no_signal'}, {'symbol': 'DVN', 'reason': 'no_signal'}, {'symbol': 'SRE', 'reason': 'no_signal'}, {'symbol': 'MET', 'reason': 'no_signal'}, {'symbol': 'HUM', 'reason': 'no_signal'}, {'symbol': 'O', 'reason': 'no_signal'}, {'symbol': 'AFL', 'reason': 'no_signal'}, {'symbol': 'P', 'reason': 'no_signal'}, {'symbol': 'BDX', 'reason': 'no_signal'}, {'symbol': 'VYLR', 'reason': 'missing_required_chart_history', 'missing': ['daily', 'weekly', 'intraday_4h']}, {'symbol': 'HONA', 'reason': 'no_signal'}, {'symbol': 'VST', 'reason': 'no_signal'}, {'symbol': 'EW', 'reason': 'no_signal'}, {'symbol': 'ADSK', 'reason': 'no_signal'}, {'symbol': 'PSA', 'reason': 'no_signal'}, {'symbol': 'A', 'reason': 'no_signal'}, {'symbol': 'ETR', 'reason': 'no_signal'}, {'symbol': 'ROK', 'reason': 'no_signal'}, {'symbol': 'WAB', 'reason': 'no_signal'}, {'symbol': 'STT', 'reason': 'no_signal'}, {'symbol': 'PYPL', 'reason': 'no_signal'}, {'symbol': 'AZO', 'reason': 'no_signal'}, {'symbol': 'F', 'reason': 'no_signal'}, {'symbol': 'NTAP', 'reason': 'no_signal'}, {'symbol': 'XEL', 'reason': 'no_signal'}, {'symbol': 'FITB', 'reason': 'no_signal'}, {'symbol': 'EBAY', 'reason': 'no_signal'}, {'symbol': 'KDP', 'reason': 'no_signal'}, {'symbol': 'LHX', 'reason': 'no_signal'}, {'symbol': 'GRMN', 'reason': 'no_signal'}, {'symbol': 'VEEV', 'reason': 'no_signal'}, {'symbol': 'VMRK', 'reason': 'no_signal'}, {'symbol': 'TWLO', 'reason': 'no_signal'}, {'symbol': 'EXC', 'reason': 'no_signal'}, {'symbol': 'FLEX', 'reason': 'no_signal'}, {'symbol': 'IQV', 'reason': 'no_signal'}, {'symbol': 'RSG', 'reason': 'no_signal'}, {'symbol': 'VTR', 'reason': 'no_signal'}, {'symbol': 'CVNA', 'reason': 'no_signal'}, {'symbol': 'FERG', 'reason': 'no_signal'}, {'symbol': 'WAT', 'reason': 'no_signal'}, {'symbol': 'ILMN', 'reason': 'no_signal'}, {'symbol': 'NDAQ', 'reason': 'no_signal'}, {'symbol': 'XYZ', 'reason': 'no_signal'}, {'symbol': 'MSCI', 'reason': 'no_signal'}, {'symbol': 'IDXX', 'reason': ['agent_decision_scheduled'], 'source': 'LLM_AGENT'}, {'symbol': 'AIG', 'reason': 'no_signal'}, {'symbol': 'COIN', 'reason': 'no_signal'}, {'symbol': 'YUM', 'reason': 'no_signal'}, {'symbol': 'FANG', 'reason': 'no_signal'}, {'symbol': 'IBKR', 'reason': 'missing_live_data'}, {'symbol': 'ED', 'reason': 'missing_live_data'}, {'symbol': 'PRU', 'reason': 'no_signal'}, {'symbol': 'ADM', 'reason': 'no_signal'}, {'symbol': 'SYY', 'reason': 'no_signal'}, {'symbol': 'WDAY', 'reason': 'no_signal'}, {'symbol': 'CBRE', 'reason': 'no_signal'}, {'symbol': 'TTWO', 'reason': 'no_signal'}, {'symbol': 'ROP', 'reason': 'no_signal'}, {'symbol': 'PEG', 'reason': 'no_signal'}, {'symbol': 'HIG', 'reason': 'no_signal'}, {'symbol': 'EME', 'reason': 'no_signal'}, {'symbol': 'IRM', 'reason': 'no_signal'}, {'symbol': 'KVUE', 'reason': 'no_signal'}, {'symbol': 'WEC', 'reason': 'no_signal'}, {'symbol': 'DHI', 'reason': 'no_signal'}, {'symbol': 'BIIB', 'reason': 'no_signal'}, {'symbol': 'UAL', 'reason': 'no_signal'}, {'symbol': 'ODFL', 'reason': 'no_signal'}, {'symbol': 'RMD', 'reason': 'no_signal'}, {'symbol': 'CCL', 'reason': 'no_signal'}, {'symbol': 'AXON', 'reason': 'no_signal'}, {'symbol': 'PAYX', 'reason': 'no_signal'}, {'symbol': 'EQT', 'reason': 'no_signal'}, {'symbol': 'CNC', 'reason': 'no_signal'}, {'symbol': 'ACGL', 'reason': 'no_signal'}, {'symbol': 'KMB', 'reason': 'no_signal'}, {'symbol': 'JBL', 'reason': 'no_signal'}, {'symbol': 'DXCM', 'reason': 'no_signal'}, {'symbol': 'STLD', 'reason': 'no_signal'}, {'symbol': 'VMC', 'reason': 'no_signal'}, {'symbol': 'MTB', 'reason': 'no_signal'}, {'symbol': 'MTD', 'reason': 'no_signal'}, {'symbol': 'HBAN', 'reason': 'no_signal'}, {'symbol': 'ZTS', 'reason': 'no_signal'}, {'symbol': 'CBOE', 'reason': 'no_signal'}, {'symbol': 'NTRS', 'reason': 'no_signal'}, {'symbol': 'EXPE', 'reason': 'no_signal'}, {'symbol': 'GEHC', 'reason': 'no_signal'}, {'symbol': 'PCG', 'reason': 'no_signal'}, {'symbol': 'MLM', 'reason': 'no_signal'}, {'symbol': 'AEE', 'reason': 'no_signal'}, {'symbol': 'TDY', 'reason': 'no_signal'}, {'symbol': 'EXR', 'reason': 'no_signal'}, {'symbol': 'WSM', 'reason': 'no_signal'}, {'symbol': 'DG', 'reason': 'no_signal'}, {'symbol': 'WTW', 'reason': 'no_signal'}, {'symbol': 'RJF', 'reason': 'no_signal'}, {'symbol': 'ATO', 'reason': 'no_signal'}, {'symbol': 'HPQ', 'reason': 'no_signal'}, {'symbol': 'IR', 'reason': 'no_signal'}, {'symbol': 'CFG', 'reason': 'no_signal'}, {'symbol': 'LYV', 'reason': 'no_signal'}, {'symbol': 'CTSH', 'reason': 'no_signal'}, {'symbol': 'FFIV', 'reason': 'no_signal'}, {'symbol': 'DTE', 'reason': 'no_signal'}, {'symbol': 'PFE', 'reason': 'no_signal'}, {'symbol': 'PH', 'reason': 'no_signal'}, {'symbol': 'URI', 'reason': 'no_signal'}, {'symbol': 'PINS', 'reason': 'no_signal'}, {'symbol': 'CSX', 'reason': 'no_signal'}, {'symbol': 'PNC', 'reason': 'no_signal'}, {'symbol': 'LMT', 'reason': 'no_signal'}, {'symbol': 'NOC', 'reason': 'no_signal'}, {'symbol': 'PSX', 'reason': 'no_signal'}, {'symbol': 'GD', 'reason': 'no_signal'}, {'symbol': 'RBLX', 'reason': 'no_signal'}, {'symbol': 'RDDT', 'reason': 'no_signal'}, {'symbol': 'CARR', 'reason': 'no_signal'}, {'symbol': 'REGN', 'reason': 'no_signal'}, {'symbol': 'NKE', 'reason': 'no_signal'}, {'symbol': 'ROST', 'reason': 'no_signal'}, {'symbol': 'SBUX', 'reason': 'no_signal'}, {'symbol': 'LOW', 'reason': 'no_signal'}, {'symbol': 'SCHW', 'reason': 'no_signal'}, {'symbol': 'SHOP', 'reason': 'no_signal'}, {'symbol': 'TJX', 'reason': 'no_signal'}, {'symbol': 'BKNG', 'reason': 'no_signal'}, {'symbol': 'MAR', 'reason': 'no_signal'}, {'symbol': 'CMG', 'reason': 'no_signal'}, {'symbol': 'ORLY', 'reason': 'no_signal'}, {'symbol': 'TGT', 'reason': 'no_signal'}, {'symbol': 'PEP', 'reason': 'no_signal'}, {'symbol': 'MDLZ', 'reason': 'no_signal'}, {'symbol': 'CL', 'reason': 'no_signal'}, {'symbol': 'KHC', 'reason': 'no_signal'}, {'symbol': 'GIS', 'reason': 'no_signal'}, {'symbol': 'KR', 'reason': 'no_signal'}, {'symbol': 'EL', 'reason': 'no_signal'}, {'symbol': 'SLB', 'reason': 'no_signal'}, {'symbol': 'SNAP', 'reason': 'no_signal'}, {'symbol': 'OXY', 'reason': 'no_signal'}, {'symbol': 'SNOW', 'reason': 'no_signal'}, {'symbol': 'MPC', 'reason': 'no_signal'}, {'symbol': 'SYK', 'reason': 'no_signal'}, {'symbol': 'TEAM', 'reason': 'no_signal'}, {'symbol': 'VLO', 'reason': 'no_signal'}, {'symbol': 'TFC', 'reason': 'no_signal'}, {'symbol': 'HAL', 'reason': 'no_signal'}, {'symbol': 'FCX', 'reason': 'no_signal'}, {'symbol': 'NUE', 'reason': 'no_signal'}, {'symbol': 'TMUS', 'reason': 'no_signal'}, {'symbol': 'APD', 'reason': 'no_signal'}, {'symbol': 'TSM', 'reason': 'no_signal'}, {'symbol': 'DUK', 'reason': 'no_signal'}, {'symbol': 'UNH', 'reason': 'no_signal'}, {'symbol': 'UBER', 'reason': 'no_signal'}, {'symbol': 'AEP', 'reason': 'no_signal'}, {'symbol': 'UPS', 'reason': 'no_signal'}, {'symbol': 'CCI', 'reason': 'no_signal'}, {'symbol': 'EQIX', 'reason': 'no_signal'}, {'symbol': 'USB', 'reason': 'no_signal'}, {'symbol': 'VRTX', 'reason': 'no_signal'}, {'symbol': 'ZS', 'reason': 'no_signal'}, {'symbol': 'WMT', 'reason': 'no_signal'}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': ['agent_decision_scheduled'], 'source': 'LLM_AGENT'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'no_signal'}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'no_signal'}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'no_signal'}, {'symbol': 'PDD', 'reason': 'no_signal'}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'NVDA', 'reason': 'no_signal'}, {'symbol': 'MU', 'reason': ['agent_decision_scheduled'], 'source': 'LLM_AGENT'}, {'symbol': 'PLTR', 'reason': 'no_signal'}, {'symbol': 'BRKH', 'reason': 'no_signal'}, {'symbol': 'NXTC', 'reason': 'no_signal'}, {'symbol': 'TGHL', 'reason': 'no_signal'}, {'symbol': 'MRAI', 'reason': 'missing_live_data'}, {'symbol': 'CPHI', 'reason': 'no_signal'}, {'symbol': 'MAAS', 'reason': 'no_signal'}, {'symbol': 'LEDS', 'reason': 'no_signal'}, {'symbol': 'APLM', 'reason': 'no_signal'}, {'symbol': 'PYPG', 'reason': 'no_signal'}, {'symbol': 'VEEE', 'reason': 'no_signal'}, {'symbol': 'EAF', 'reason': 'no_signal'}, {'symbol': 'YYAI', 'reason': 'no_signal'}, {'symbol': 'TOP', 'reason': 'no_signal'}, {'symbol': 'RCEL', 'reason': 'no_signal'}, {'symbol': 'SYRA', 'reason': 'missing_live_data'}, {'symbol': 'CRMT', 'reason': 'no_signal'}, {'symbol': 'NAKA', 'reason': 'no_signal'}, {'symbol': 'MAN', 'reason': 'no_signal'}, {'symbol': 'GOOGL', 'reason': 'no_signal'}, {'symbol': 'JPM', 'reason': 'no_signal'}, {'symbol': 'BAC', 'reason': 'no_signal'}, {'symbol': 'GS', 'reason': 'no_signal'}, {'symbol': 'V', 'reason': 'no_signal'}, {'symbol': 'LLY', 'reason': 'no_signal'}, {'symbol': 'JNJ', 'reason': 'no_signal'}, {'symbol': 'ABBV', 'reason': 'no_signal'}, {'symbol': 'TMO', 'reason': 'no_signal'}, {'symbol': 'CAT', 'reason': 'no_signal'}, {'symbol': 'GE', 'reason': 'no_signal'}, {'symbol': 'RTX', 'reason': 'no_signal'}, {'symbol': 'ETN', 'reason': 'no_signal'}, {'symbol': 'COST', 'reason': 'no_signal'}, {'symbol': 'PG', 'reason': 'no_signal'}, {'symbol': 'XOM', 'reason': 'no_signal'}, {'symbol': 'CVX', 'reason': 'no_signal'}, {'symbol': 'COP', 'reason': 'no_signal'}, {'symbol': 'NEE', 'reason': 'no_signal'}, {'symbol': 'SO', 'reason': 'no_signal'}, {'symbol': 'PLD', 'reason': 'no_signal'}, {'symbol': 'AMT', 'reason': 'no_signal'}, {'symbol': 'LIN', 'reason': 'no_signal'}, {'symbol': 'SHW', 'reason': 'no_signal'}, {'symbol': 'HD', 'reason': 'no_signal'}, {'symbol': 'MCD', 'reason': 'no_signal'}, {'symbol': 'META', 'reason': 'no_signal'}, {'symbol': 'NFLX', 'reason': 'no_signal'}, {'symbol': 'AVGO', 'reason': 'missing_live_data'}, {'symbol': 'ORCL', 'reason': 'no_signal'}, {'symbol': 'AMD', 'reason': 'no_signal'}, {'symbol': 'INTC', 'reason': 'no_signal'}, {'symbol': 'QCOM', 'reason': 'no_signal'}, {'symbol': 'ASML', 'reason': 'no_signal'}, {'symbol': 'KLAC', 'reason': 'no_signal'}, {'symbol': 'LRCX', 'reason': 'no_signal'}, {'symbol': 'MRVL', 'reason': 'no_signal'}, {'symbol': 'ADI', 'reason': 'no_signal'}, {'symbol': 'NXPI', 'reason': 'no_signal'}, {'symbol': 'ON', 'reason': 'no_signal'}, {'symbol': 'MCHP', 'reason': 'no_signal'}, {'symbol': 'CRM', 'reason': 'no_signal'}, {'symbol': 'NOW', 'reason': 'no_signal'}, {'symbol': 'PANW', 'reason': 'no_signal'}, {'symbol': 'CRWD', 'reason': 'no_signal'}, {'symbol': 'DDOG', 'reason': 'no_signal'}, {'symbol': 'NET', 'reason': 'no_signal'}, {'symbol': 'MDB', 'reason': 'no_signal'}, {'symbol': 'FTNT', 'reason': 'no_signal'}, {'symbol': 'APP', 'reason': 'no_signal'}, {'symbol': 'ABNB', 'reason': 'no_signal'}, {'symbol': 'DASH', 'reason': 'no_signal'}, {'symbol': 'C', 'reason': 'no_signal'}, {'symbol': 'MS', 'reason': 'no_signal'}, {'symbol': 'AXP', 'reason': 'no_signal'}, {'symbol': 'MA', 'reason': 'no_signal'}, {'symbol': 'COF', 'reason': 'no_signal'}, {'symbol': 'BLK', 'reason': 'no_signal'}, {'symbol': 'CME', 'reason': 'no_signal'}, {'symbol': 'ICE', 'reason': 'no_signal'}, {'symbol': 'MRK', 'reason': 'no_signal'}, {'symbol': 'ABT', 'reason': 'no_signal'}, {'symbol': 'MDT', 'reason': 'no_signal'}, {'symbol': 'ISRG', 'reason': 'no_signal'}, {'symbol': 'GILD', 'reason': 'no_signal'}, {'symbol': 'AMGN', 'reason': 'no_signal'}, {'symbol': 'BSX', 'reason': 'no_signal'}, {'symbol': 'BA', 'reason': 'no_signal'}, {'symbol': 'DE', 'reason': 'no_signal'}, {'symbol': 'HON', 'reason': 'no_signal'}, {'symbol': 'FDX', 'reason': 'no_signal'}, {'symbol': 'EOG', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'GOOG', 'reason': 'no_signal'}, {'symbol': 'CSCO', 'reason': 'no_signal'}, {'symbol': 'PM', 'reason': 'no_signal'}, {'symbol': 'GEV', 'reason': 'no_signal'}, {'symbol': 'TXN', 'reason': 'no_signal'}, {'symbol': 'WFC', 'reason': 'no_signal'}, {'symbol': 'ANET', 'reason': 'no_signal'}, {'symbol': 'SNDK', 'reason': 'no_signal'}, {'symbol': 'IBM', 'reason': 'no_signal'}, {'symbol': 'APH', 'reason': 'no_signal'}, {'symbol': 'DIS', 'reason': 'no_signal'}, {'symbol': 'VZ', 'reason': 'no_signal'}, {'symbol': 'DELL', 'reason': 'no_signal'}, {'symbol': 'STX', 'reason': 'no_signal'}, {'symbol': 'UNP', 'reason': 'no_signal'}, {'symbol': 'WELL', 'reason': 'no_signal'}, {'symbol': 'T', 'reason': 'no_signal'}, {'symbol': 'WDC', 'reason': 'no_signal'}, {'symbol': 'DHR', 'reason': 'no_signal'}, {'symbol': 'ACN', 'reason': 'no_signal'}, {'symbol': 'PGR', 'reason': 'no_signal'}, {'symbol': 'SPGI', 'reason': 'no_signal'}, {'symbol': 'NEM', 'reason': 'no_signal'}, {'symbol': 'CB', 'reason': 'no_signal'}, {'symbol': 'MO', 'reason': 'no_signal'}, {'symbol': 'BMY', 'reason': 'no_signal'}, {'symbol': 'GLW', 'reason': 'no_signal'}, {'symbol': 'CVS', 'reason': 'no_signal'}, {'symbol': 'MCK', 'reason': 'no_signal'}, {'symbol': 'ADP', 'reason': 'no_signal'}, {'symbol': 'TT', 'reason': 'no_signal'}, {'symbol': 'PWR', 'reason': 'no_signal'}, {'symbol': 'CEG', 'reason': 'no_signal'}, {'symbol': 'BNY', 'reason': 'no_signal'}, {'symbol': 'SNPS', 'reason': 'no_signal'}, {'symbol': 'CDNS', 'reason': 'no_signal'}, {'symbol': 'ADBE', 'reason': 'no_signal'}, {'symbol': 'JCI', 'reason': 'no_signal'}, {'symbol': 'HPE', 'reason': 'no_signal'}, {'symbol': 'VRT', 'reason': 'no_signal'}, {'symbol': 'ELV', 'reason': 'no_signal'}, {'symbol': 'WMB', 'reason': 'no_signal'}, {'symbol': 'EMR', 'reason': 'no_signal'}, {'symbol': 'LITE', 'reason': 'no_signal'}, {'symbol': 'HWM', 'reason': 'no_signal'}, {'symbol': 'HOOD', 'reason': 'no_signal'}, {'symbol': 'BX', 'reason': 'no_signal'}, {'symbol': 'INTU', 'reason': 'no_signal'}, {'symbol': 'MMM', 'reason': 'no_signal'}, {'symbol': 'MRNA', 'reason': 'no_signal'}, {'symbol': 'WM', 'reason': 'no_signal'}, {'symbol': 'TRV', 'reason': 'no_signal'}, {'symbol': 'BE', 'reason': 'no_signal'}, {'symbol': 'CI', 'reason': 'no_signal'}, {'symbol': 'MSI', 'reason': 'no_signal'}, {'symbol': 'HLT', 'reason': 'no_signal'}, {'symbol': 'CMCSA', 'reason': 'no_signal'}, {'symbol': 'CMI', 'reason': 'no_signal'}, {'symbol': 'GM', 'reason': 'no_signal'}, {'symbol': 'NSC', 'reason': 'no_signal'}, {'symbol': 'ECL', 'reason': 'no_signal'}, {'symbol': 'CTAS', 'reason': 'no_signal'}, {'symbol': 'MCO', 'reason': 'no_signal'}, {'symbol': 'RCL', 'reason': 'no_signal'}, {'symbol': 'ITW', 'reason': 'no_signal'}, {'symbol': 'HCA', 'reason': 'no_signal'}, {'symbol': 'SPG', 'reason': 'no_signal'}, {'symbol': 'MPWR', 'reason': 'no_signal'}, {'symbol': 'KMI', 'reason': 'no_signal'}, {'symbol': 'KEYS', 'reason': 'no_signal'}, {'symbol': 'KKR', 'reason': 'no_signal'}, {'symbol': 'DLR', 'reason': 'no_signal'}, {'symbol': 'TEL', 'reason': 'no_signal'}, {'symbol': 'MNST', 'reason': 'no_signal'}, {'symbol': 'TRGP', 'reason': 'no_signal'}, {'symbol': 'COR', 'reason': 'no_signal'}, {'symbol': 'TDG', 'reason': 'no_signal'}, {'symbol': 'TER', 'reason': 'no_signal'}, {'symbol': 'AJG', 'reason': 'no_signal'}, {'symbol': 'FAST', 'reason': 'no_signal'}, {'symbol': 'ALL', 'reason': 'no_signal'}, {'symbol': 'AON', 'reason': 'no_signal'}, {'symbol': 'OKE', 'reason': 'no_signal'}, {'symbol': 'FIX', 'reason': 'no_signal'}, {'symbol': 'AME', 'reason': 'no_signal'}, {'symbol': 'CIEN', 'reason': 'no_signal'}, {'symbol': 'PCAR', 'reason': 'no_signal'}, {'symbol': 'GWW', 'reason': 'no_signal'}, {'symbol': 'COHR', 'reason': 'no_signal'}, {'symbol': 'APO', 'reason': 'no_signal'}, {'symbol': 'BKR', 'reason': 'no_signal'}, {'symbol': 'CAH', 'reason': 'no_signal'}, {'symbol': 'D', 'reason': 'no_signal'}, {'symbol': 'CRH', 'reason': 'no_signal'}, {'symbol': 'DVN', 'reason': 'no_signal'}, {'symbol': 'SRE', 'reason': 'no_signal'}, {'symbol': 'MET', 'reason': 'no_signal'}, {'symbol': 'HUM', 'reason': 'no_signal'}, {'symbol': 'O', 'reason': 'no_signal'}, {'symbol': 'AFL', 'reason': 'no_signal'}, {'symbol': 'P', 'reason': 'no_signal'}, {'symbol': 'BDX', 'reason': 'no_signal'}, {'symbol': 'VYLR', 'reason': 'missing_required_chart_history', 'missing': ['daily', 'weekly', 'intraday_4h']}, {'symbol': 'HONA', 'reason': 'no_signal'}, {'symbol': 'VST', 'reason': 'no_signal'}, {'symbol': 'EW', 'reason': 'no_signal'}, {'symbol': 'ADSK', 'reason': 'no_signal'}, {'symbol': 'PSA', 'reason': 'no_signal'}, {'symbol': 'A', 'reason': 'no_signal'}, {'symbol': 'ETR', 'reason': 'no_signal'}, {'symbol': 'ROK', 'reason': 'no_signal'}, {'symbol': 'WAB', 'reason': 'no_signal'}, {'symbol': 'STT', 'reason': 'no_signal'}, {'symbol': 'PYPL', 'reason': 'no_signal'}, {'symbol': 'AZO', 'reason': 'no_signal'}, {'symbol': 'F', 'reason': 'no_signal'}, {'symbol': 'NTAP', 'reason': 'no_signal'}, {'symbol': 'XEL', 'reason': 'no_signal'}, {'symbol': 'FITB', 'reason': 'no_signal'}, {'symbol': 'EBAY', 'reason': 'no_signal'}, {'symbol': 'KDP', 'reason': 'no_signal'}, {'symbol': 'LHX', 'reason': 'no_signal'}, {'symbol': 'GRMN', 'reason': 'no_signal'}, {'symbol': 'VEEV', 'reason': 'no_signal'}, {'symbol': 'VMRK', 'reason': 'no_signal'}, {'symbol': 'TWLO', 'reason': 'no_signal'}, {'symbol': 'EXC', 'reason': 'no_signal'}, {'symbol': 'FLEX', 'reason': 'no_signal'}, {'symbol': 'IQV', 'reason': 'no_signal'}, {'symbol': 'RSG', 'reason': 'no_signal'}, {'symbol': 'VTR', 'reason': 'no_signal'}, {'symbol': 'CVNA', 'reason': 'no_signal'}, {'symbol': 'FERG', 'reason': 'no_signal'}, {'symbol': 'WAT', 'reason': 'no_signal'}, {'symbol': 'ILMN', 'reason': 'no_signal'}, {'symbol': 'NDAQ', 'reason': 'no_signal'}, {'symbol': 'XYZ', 'reason': 'no_signal'}, {'symbol': 'MSCI', 'reason': 'no_signal'}, {'symbol': 'IDXX', 'reason': 'no_signal'}, {'symbol': 'AIG', 'reason': 'no_signal'}, {'symbol': 'COIN', 'reason': 'no_signal'}, {'symbol': 'YUM', 'reason': 'no_signal'}, {'symbol': 'FANG', 'reason': 'no_signal'}, {'symbol': 'IBKR', 'reason': 'no_signal'}, {'symbol': 'ED', 'reason': 'no_signal'}, {'symbol': 'PRU', 'reason': 'no_signal'}, {'symbol': 'ADM', 'reason': 'no_signal'}, {'symbol': 'SYY', 'reason': 'no_signal'}, {'symbol': 'WDAY', 'reason': 'no_signal'}, {'symbol': 'CBRE', 'reason': 'no_signal'}, {'symbol': 'TTWO', 'reason': 'no_signal'}, {'symbol': 'ROP', 'reason': 'no_signal'}, {'symbol': 'PEG', 'reason': 'no_signal'}, {'symbol': 'HIG', 'reason': 'no_signal'}, {'symbol': 'EME', 'reason': 'no_signal'}, {'symbol': 'IRM', 'reason': 'no_signal'}, {'symbol': 'KVUE', 'reason': 'no_signal'}, {'symbol': 'WEC', 'reason': 'no_signal'}, {'symbol': 'DHI', 'reason': 'no_signal'}, {'symbol': 'BIIB', 'reason': 'no_signal'}, {'symbol': 'UAL', 'reason': 'no_signal'}, {'symbol': 'ODFL', 'reason': 'no_signal'}, {'symbol': 'RMD', 'reason': 'no_signal'}, {'symbol': 'CCL', 'reason': 'no_signal'}, {'symbol': 'AXON', 'reason': 'no_signal'}, {'symbol': 'PAYX', 'reason': 'no_signal'}, {'symbol': 'EQT', 'reason': 'no_signal'}, {'symbol': 'CNC', 'reason': 'no_signal'}, {'symbol': 'ACGL', 'reason': 'no_signal'}, {'symbol': 'KMB', 'reason': 'no_signal'}, {'symbol': 'JBL', 'reason': 'no_signal'}, {'symbol': 'DXCM', 'reason': 'no_signal'}, {'symbol': 'STLD', 'reason': 'no_signal'}, {'symbol': 'VMC', 'reason': 'no_signal'}, {'symbol': 'MTB', 'reason': 'no_signal'}, {'symbol': 'MTD', 'reason': 'no_signal'}, {'symbol': 'HBAN', 'reason': 'no_signal'}, {'symbol': 'ZTS', 'reason': 'no_signal'}, {'symbol': 'CBOE', 'reason': 'no_signal'}, {'symbol': 'NTRS', 'reason': 'no_signal'}, {'symbol': 'EXPE', 'reason': 'no_signal'}, {'symbol': 'GEHC', 'reason': 'no_signal'}, {'symbol': 'PCG', 'reason': 'no_signal'}, {'symbol': 'MLM', 'reason': 'no_signal'}, {'symbol': 'AEE', 'reason': 'no_signal'}, {'symbol': 'TDY', 'reason': 'no_signal'}, {'symbol': 'EXR', 'reason': 'no_signal'}, {'symbol': 'WSM', 'reason': 'no_signal'}, {'symbol': 'DG', 'reason': 'no_signal'}, {'symbol': 'WTW', 'reason': 'no_signal'}, {'symbol': 'RJF', 'reason': 'no_signal'}, {'symbol': 'ATO', 'reason': 'no_signal'}, {'symbol': 'HPQ', 'reason': 'no_signal'}, {'symbol': 'IR', 'reason': 'no_signal'}, {'symbol': 'CFG', 'reason': 'no_signal'}, {'symbol': 'LYV', 'reason': 'no_signal'}, {'symbol': 'CTSH', 'reason': 'no_signal'}, {'symbol': 'FFIV', 'reason': 'no_signal'}, {'symbol': 'DTE', 'reason': 'no_signal'}, {'symbol': 'PFE', 'reason': 'no_signal'}, {'symbol': 'PH', 'reason': 'no_signal'}, {'symbol': 'URI', 'reason': 'no_signal'}, {'symbol': 'PINS', 'reason': 'no_signal'}, {'symbol': 'CSX', 'reason': 'no_signal'}, {'symbol': 'PNC', 'reason': 'no_signal'}, {'symbol': 'LMT', 'reason': 'no_signal'}, {'symbol': 'NOC', 'reason': 'no_signal'}, {'symbol': 'PSX', 'reason': 'no_signal'}, {'symbol': 'GD', 'reason': 'no_signal'}, {'symbol': 'RBLX', 'reason': 'no_signal'}, {'symbol': 'RDDT', 'reason': 'no_signal'}, {'symbol': 'CARR', 'reason': 'no_signal'}, {'symbol': 'REGN', 'reason': 'no_signal'}, {'symbol': 'NKE', 'reason': 'no_signal'}, {'symbol': 'ROST', 'reason': 'no_signal'}, {'symbol': 'SBUX', 'reason': 'no_signal'}, {'symbol': 'LOW', 'reason': 'no_signal'}, {'symbol': 'SCHW', 'reason': 'no_signal'}, {'symbol': 'SHOP', 'reason': 'no_signal'}, {'symbol': 'TJX', 'reason': 'no_signal'}, {'symbol': 'BKNG', 'reason': 'no_signal'}, {'symbol': 'MAR', 'reason': 'no_signal'}, {'symbol': 'CMG', 'reason': 'no_signal'}, {'symbol': 'ORLY', 'reason': 'no_signal'}, {'symbol': 'TGT', 'reason': 'no_signal'}, {'symbol': 'PEP', 'reason': 'no_signal'}, {'symbol': 'MDLZ', 'reason': 'no_signal'}, {'symbol': 'CL', 'reason': 'no_signal'}, {'symbol': 'KHC', 'reason': 'no_signal'}, {'symbol': 'GIS', 'reason': 'no_signal'}, {'symbol': 'KR', 'reason': 'no_signal'}, {'symbol': 'EL', 'reason': 'no_signal'}, {'symbol': 'SLB', 'reason': 'no_signal'}, {'symbol': 'SNAP', 'reason': 'no_signal'}, {'symbol': 'OXY', 'reason': 'no_signal'}, {'symbol': 'SNOW', 'reason': 'no_signal'}, {'symbol': 'MPC', 'reason': 'no_signal'}, {'symbol': 'SYK', 'reason': 'no_signal'}, {'symbol': 'TEAM', 'reason': 'no_signal'}, {'symbol': 'VLO', 'reason': 'no_signal'}, {'symbol': 'TFC', 'reason': 'no_signal'}, {'symbol': 'HAL', 'reason': 'no_signal'}, {'symbol': 'FCX', 'reason': 'no_signal'}, {'symbol': 'NUE', 'reason': 'no_signal'}, {'symbol': 'TMUS', 'reason': 'no_signal'}, {'symbol': 'APD', 'reason': 'no_signal'}, {'symbol': 'TSM', 'reason': 'no_signal'}, {'symbol': 'DUK', 'reason': 'no_signal'}, {'symbol': 'UNH', 'reason': 'no_signal'}, {'symbol': 'UBER', 'reason': 'no_signal'}, {'symbol': 'AEP', 'reason': 'no_signal'}, {'symbol': 'UPS', 'reason': 'no_signal'}, {'symbol': 'CCI', 'reason': 'no_signal'}, {'symbol': 'EQIX', 'reason': 'no_signal'}, {'symbol': 'USB', 'reason': 'no_signal'}, {'symbol': 'VRTX', 'reason': 'no_signal'}, {'symbol': 'ZS', 'reason': 'no_signal'}, {'symbol': 'WMT', 'reason': 'no_signal'}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'no_signal'}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'no_signal'}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'no_signal'}, {'symbol': 'PDD', 'reason': 'no_signal'}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'NVDA', 'reason': 'no_signal'}, {'symbol': 'MU', 'reason': 'no_signal'}, {'symbol': 'PLTR', 'reason': 'no_signal'}, {'symbol': 'BRKH', 'reason': 'no_signal'}, {'symbol': 'NXTC', 'reason': 'no_signal'}, {'symbol': 'TGHL', 'reason': 'no_signal'}, {'symbol': 'MRAI', 'reason': 'missing_live_data'}, {'symbol': 'CPHI', 'reason': 'no_signal'}, {'symbol': 'MAAS', 'reason': 'no_signal'}, {'symbol': 'LEDS', 'reason': 'no_signal'}, {'symbol': 'APLM', 'reason': 'no_signal'}, {'symbol': 'PYPG', 'reason': 'no_signal'}, {'symbol': 'VEEE', 'reason': 'no_signal'}, {'symbol': 'EAF', 'reason': 'no_signal'}, {'symbol': 'YYAI', 'reason': 'no_signal'}, {'symbol': 'TOP', 'reason': 'no_signal'}, {'symbol': 'RCEL', 'reason': 'no_signal'}, {'symbol': 'SYRA', 'reason': 'missing_live_data'}, {'symbol': 'CRMT', 'reason': 'no_signal'}, {'symbol': 'NAKA', 'reason': 'no_signal'}, {'symbol': 'MAN', 'reason': 'no_signal'}, {'symbol': 'GOOGL', 'reason': 'no_signal'}, {'symbol': 'JPM', 'reason': 'no_signal'}, {'symbol': 'BAC', 'reason': 'no_signal'}, {'symbol': 'GS', 'reason': 'no_signal'}, {'symbol': 'V', 'reason': 'no_signal'}, {'symbol': 'LLY', 'reason': 'no_signal'}, {'symbol': 'JNJ', 'reason': 'no_signal'}, {'symbol': 'ABBV', 'reason': 'no_signal'}, {'symbol': 'TMO', 'reason': 'no_signal'}, {'symbol': 'CAT', 'reason': 'no_signal'}, {'symbol': 'GE', 'reason': 'no_signal'}, {'symbol': 'RTX', 'reason': 'no_signal'}, {'symbol': 'ETN', 'reason': 'no_signal'}, {'symbol': 'COST', 'reason': 'no_signal'}, {'symbol': 'PG', 'reason': 'no_signal'}, {'symbol': 'XOM', 'reason': 'no_signal'}, {'symbol': 'CVX', 'reason': 'no_signal'}, {'symbol': 'COP', 'reason': 'no_signal'}, {'symbol': 'NEE', 'reason': 'no_signal'}, {'symbol': 'SO', 'reason': 'no_signal'}, {'symbol': 'PLD', 'reason': 'no_signal'}, {'symbol': 'AMT', 'reason': 'no_signal'}, {'symbol': 'LIN', 'reason': 'no_signal'}, {'symbol': 'SHW', 'reason': 'no_signal'}, {'symbol': 'HD', 'reason': 'no_signal'}, {'symbol': 'MCD', 'reason': 'no_signal'}, {'symbol': 'META', 'reason': 'no_signal'}, {'symbol': 'NFLX', 'reason': 'no_signal'}, {'symbol': 'AVGO', 'reason': 'missing_live_data'}, {'symbol': 'ORCL', 'reason': 'no_signal'}, {'symbol': 'AMD', 'reason': 'no_signal'}, {'symbol': 'INTC', 'reason': 'no_signal'}, {'symbol': 'QCOM', 'reason': 'no_signal'}, {'symbol': 'ASML', 'reason': 'no_signal'}, {'symbol': 'KLAC', 'reason': 'no_signal'}, {'symbol': 'LRCX', 'reason': 'no_signal'}, {'symbol': 'MRVL', 'reason': 'no_signal'}, {'symbol': 'ADI', 'reason': 'no_signal'}, {'symbol': 'NXPI', 'reason': 'no_signal'}, {'symbol': 'ON', 'reason': 'no_signal'}, {'symbol': 'MCHP', 'reason': 'no_signal'}, {'symbol': 'CRM', 'reason': 'no_signal'}, {'symbol': 'NOW', 'reason': 'no_signal'}, {'symbol': 'PANW', 'reason': 'no_signal'}, {'symbol': 'CRWD', 'reason': 'no_signal'}, {'symbol': 'DDOG', 'reason': 'no_signal'}, {'symbol': 'NET', 'reason': 'no_signal'}, {'symbol': 'MDB', 'reason': 'no_signal'}, {'symbol': 'FTNT', 'reason': 'no_signal'}, {'symbol': 'APP', 'reason': 'no_signal'}, {'symbol': 'ABNB', 'reason': 'no_signal'}, {'symbol': 'DASH', 'reason': 'no_signal'}, {'symbol': 'C', 'reason': 'no_signal'}, {'symbol': 'MS', 'reason': 'no_signal'}, {'symbol': 'AXP', 'reason': 'no_signal'}, {'symbol': 'MA', 'reason': 'no_signal'}, {'symbol': 'COF', 'reason': 'no_signal'}, {'symbol': 'BLK', 'reason': 'no_signal'}, {'symbol': 'CME', 'reason': 'no_signal'}, {'symbol': 'ICE', 'reason': 'no_signal'}, {'symbol': 'MRK', 'reason': 'no_signal'}, {'symbol': 'ABT', 'reason': 'no_signal'}, {'symbol': 'MDT', 'reason': 'no_signal'}, {'symbol': 'ISRG', 'reason': 'no_signal'}, {'symbol': 'GILD', 'reason': 'no_signal'}, {'symbol': 'AMGN', 'reason': 'no_signal'}, {'symbol': 'BSX', 'reason': 'no_signal'}, {'symbol': 'BA', 'reason': 'no_signal'}, {'symbol': 'DE', 'reason': 'no_signal'}, {'symbol': 'HON', 'reason': 'no_signal'}, {'symbol': 'FDX', 'reason': 'no_signal'}, {'symbol': 'EOG', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'GOOG', 'reason': 'no_signal'}, {'symbol': 'CSCO', 'reason': 'no_signal'}, {'symbol': 'PM', 'reason': 'no_signal'}, {'symbol': 'GEV', 'reason': 'no_signal'}, {'symbol': 'TXN', 'reason': 'no_signal'}, {'symbol': 'WFC', 'reason': 'no_signal'}, {'symbol': 'ANET', 'reason': 'no_signal'}, {'symbol': 'SNDK', 'reason': 'no_signal'}, {'symbol': 'IBM', 'reason': 'no_signal'}, {'symbol': 'APH', 'reason': 'no_signal'}, {'symbol': 'DIS', 'reason': 'no_signal'}, {'symbol': 'VZ', 'reason': 'no_signal'}, {'symbol': 'DELL', 'reason': 'no_signal'}, {'symbol': 'STX', 'reason': 'no_signal'}, {'symbol': 'UNP', 'reason': 'no_signal'}, {'symbol': 'WELL', 'reason': 'no_signal'}, {'symbol': 'T', 'reason': 'no_signal'}, {'symbol': 'WDC', 'reason': 'no_signal'}, {'symbol': 'DHR', 'reason': 'no_signal'}, {'symbol': 'ACN', 'reason': 'no_signal'}, {'symbol': 'PGR', 'reason': 'no_signal'}, {'symbol': 'SPGI', 'reason': 'no_signal'}, {'symbol': 'NEM', 'reason': 'no_signal'}, {'symbol': 'CB', 'reason': 'no_signal'}, {'symbol': 'MO', 'reason': 'no_signal'}, {'symbol': 'BMY', 'reason': 'no_signal'}, {'symbol': 'GLW', 'reason': 'no_signal'}, {'symbol': 'CVS', 'reason': 'no_signal'}, {'symbol': 'MCK', 'reason': 'no_signal'}, {'symbol': 'ADP', 'reason': 'no_signal'}, {'symbol': 'TT', 'reason': 'no_signal'}, {'symbol': 'PWR', 'reason': 'no_signal'}, {'symbol': 'CEG', 'reason': 'no_signal'}, {'symbol': 'BNY', 'reason': 'no_signal'}, {'symbol': 'SNPS', 'reason': 'no_signal'}, {'symbol': 'CDNS', 'reason': 'no_signal'}, {'symbol': 'ADBE', 'reason': 'no_signal'}, {'symbol': 'JCI', 'reason': 'no_signal'}, {'symbol': 'HPE', 'reason': 'no_signal'}, {'symbol': 'VRT', 'reason': 'no_signal'}, {'symbol': 'ELV', 'reason': 'no_signal'}, {'symbol': 'WMB', 'reason': 'no_signal'}, {'symbol': 'EMR', 'reason': 'no_signal'}, {'symbol': 'LITE', 'reason': 'no_signal'}, {'symbol': 'HWM', 'reason': 'no_signal'}, {'symbol': 'HOOD', 'reason': 'no_signal'}, {'symbol': 'BX', 'reason': 'no_signal'}, {'symbol': 'INTU', 'reason': 'no_signal'}, {'symbol': 'MMM', 'reason': 'no_signal'}, {'symbol': 'MRNA', 'reason': 'no_signal'}, {'symbol': 'WM', 'reason': 'no_signal'}, {'symbol': 'TRV', 'reason': 'no_signal'}, {'symbol': 'BE', 'reason': 'no_signal'}, {'symbol': 'CI', 'reason': 'no_signal'}, {'symbol': 'MSI', 'reason': 'no_signal'}, {'symbol': 'HLT', 'reason': 'no_signal'}, {'symbol': 'CMCSA', 'reason': 'no_signal'}, {'symbol': 'CMI', 'reason': 'no_signal'}, {'symbol': 'GM', 'reason': 'no_signal'}, {'symbol': 'NSC', 'reason': 'no_signal'}, {'symbol': 'ECL', 'reason': 'no_signal'}, {'symbol': 'CTAS', 'reason': 'no_signal'}, {'symbol': 'MCO', 'reason': 'no_signal'}, {'symbol': 'RCL', 'reason': 'no_signal'}, {'symbol': 'ITW', 'reason': 'no_signal'}, {'symbol': 'HCA', 'reason': 'no_signal'}, {'symbol': 'SPG', 'reason': 'no_signal'}, {'symbol': 'MPWR', 'reason': 'no_signal'}, {'symbol': 'KMI', 'reason': 'no_signal'}, {'symbol': 'KEYS', 'reason': 'no_signal'}, {'symbol': 'KKR', 'reason': 'no_signal'}, {'symbol': 'DLR', 'reason': 'no_signal'}, {'symbol': 'TEL', 'reason': 'no_signal'}, {'symbol': 'MNST', 'reason': 'no_signal'}, {'symbol': 'TRGP', 'reason': 'no_signal'}, {'symbol': 'COR', 'reason': 'no_signal'}, {'symbol': 'TDG', 'reason': 'no_signal'}, {'symbol': 'TER', 'reason': 'no_signal'}, {'symbol': 'AJG', 'reason': 'no_signal'}, {'symbol': 'FAST', 'reason': 'no_signal'}, {'symbol': 'ALL', 'reason': 'no_signal'}, {'symbol': 'AON', 'reason': 'no_signal'}, {'symbol': 'OKE', 'reason': 'no_signal'}, {'symbol': 'FIX', 'reason': 'no_signal'}, {'symbol': 'AME', 'reason': 'no_signal'}, {'symbol': 'CIEN', 'reason': 'no_signal'}, {'symbol': 'PCAR', 'reason': 'no_signal'}, {'symbol': 'GWW', 'reason': 'no_signal'}, {'symbol': 'COHR', 'reason': 'no_signal'}, {'symbol': 'APO', 'reason': 'no_signal'}, {'symbol': 'BKR', 'reason': 'no_signal'}, {'symbol': 'CAH', 'reason': 'no_signal'}, {'symbol': 'D', 'reason': 'no_signal'}, {'symbol': 'CRH', 'reason': 'no_signal'}, {'symbol': 'DVN', 'reason': 'no_signal'}, {'symbol': 'SRE', 'reason': 'no_signal'}, {'symbol': 'MET', 'reason': 'no_signal'}, {'symbol': 'HUM', 'reason': 'no_signal'}, {'symbol': 'O', 'reason': 'no_signal'}, {'symbol': 'AFL', 'reason': 'no_signal'}, {'symbol': 'P', 'reason': 'no_signal'}, {'symbol': 'BDX', 'reason': 'no_signal'}, {'symbol': 'VYLR', 'reason': 'missing_required_chart_history', 'missing': ['daily', 'weekly']}, {'symbol': 'HONA', 'reason': 'no_signal'}, {'symbol': 'VST', 'reason': 'no_signal'}, {'symbol': 'EW', 'reason': 'no_signal'}, {'symbol': 'ADSK', 'reason': 'no_signal'}, {'symbol': 'PSA', 'reason': 'no_signal'}, {'symbol': 'A', 'reason': 'no_signal'}, {'symbol': 'ETR', 'reason': 'no_signal'}, {'symbol': 'ROK', 'reason': 'no_signal'}, {'symbol': 'WAB', 'reason': 'no_signal'}, {'symbol': 'STT', 'reason': 'no_signal'}, {'symbol': 'PYPL', 'reason': 'no_signal'}, {'symbol': 'AZO', 'reason': 'no_signal'}, {'symbol': 'F', 'reason': 'no_signal'}, {'symbol': 'NTAP', 'reason': 'no_signal'}, {'symbol': 'XEL', 'reason': 'no_signal'}, {'symbol': 'FITB', 'reason': 'no_signal'}, {'symbol': 'EBAY', 'reason': 'no_signal'}, {'symbol': 'KDP', 'reason': 'no_signal'}, {'symbol': 'LHX', 'reason': 'no_signal'}, {'symbol': 'GRMN', 'reason': 'no_signal'}, {'symbol': 'VEEV', 'reason': 'no_signal'}, {'symbol': 'VMRK', 'reason': 'no_signal'}, {'symbol': 'TWLO', 'reason': 'no_signal'}, {'symbol': 'EXC', 'reason': 'no_signal'}, {'symbol': 'FLEX', 'reason': 'no_signal'}, {'symbol': 'IQV', 'reason': 'no_signal'}, {'symbol': 'RSG', 'reason': 'no_signal'}, {'symbol': 'VTR', 'reason': 'no_signal'}, {'symbol': 'CVNA', 'reason': 'no_signal'}, {'symbol': 'FERG', 'reason': 'no_signal'}, {'symbol': 'WAT', 'reason': 'no_signal'}, {'symbol': 'ILMN', 'reason': 'no_signal'}, {'symbol': 'NDAQ', 'reason': 'no_signal'}, {'symbol': 'XYZ', 'reason': 'no_signal'}, {'symbol': 'MSCI', 'reason': 'no_signal'}, {'symbol': 'IDXX', 'reason': 'no_signal'}, {'symbol': 'AIG', 'reason': 'no_signal'}, {'symbol': 'COIN', 'reason': 'no_signal'}, {'symbol': 'YUM', 'reason': 'no_signal'}, {'symbol': 'FANG', 'reason': 'no_signal'}, {'symbol': 'IBKR', 'reason': 'no_signal'}, {'symbol': 'ED', 'reason': 'no_signal'}, {'symbol': 'PRU', 'reason': 'no_signal'}, {'symbol': 'ADM', 'reason': 'no_signal'}, {'symbol': 'SYY', 'reason': 'no_signal'}, {'symbol': 'WDAY', 'reason': 'no_signal'}, {'symbol': 'CBRE', 'reason': 'no_signal'}, {'symbol': 'TTWO', 'reason': 'no_signal'}, {'symbol': 'ROP', 'reason': 'no_signal'}, {'symbol': 'PEG', 'reason': 'no_signal'}, {'symbol': 'HIG', 'reason': 'no_signal'}, {'symbol': 'EME', 'reason': 'no_signal'}, {'symbol': 'IRM', 'reason': 'no_signal'}, {'symbol': 'KVUE', 'reason': 'no_signal'}, {'symbol': 'WEC', 'reason': 'no_signal'}, {'symbol': 'DHI', 'reason': 'no_signal'}, {'symbol': 'BIIB', 'reason': 'no_signal'}, {'symbol': 'UAL', 'reason': 'no_signal'}, {'symbol': 'ODFL', 'reason': 'no_signal'}, {'symbol': 'RMD', 'reason': 'no_signal'}, {'symbol': 'CCL', 'reason': 'no_signal'}, {'symbol': 'AXON', 'reason': 'no_signal'}, {'symbol': 'PAYX', 'reason': 'no_signal'}, {'symbol': 'EQT', 'reason': 'no_signal'}, {'symbol': 'CNC', 'reason': 'no_signal'}, {'symbol': 'ACGL', 'reason': 'no_signal'}, {'symbol': 'KMB', 'reason': 'no_signal'}, {'symbol': 'JBL', 'reason': 'no_signal'}, {'symbol': 'DXCM', 'reason': 'no_signal'}, {'symbol': 'STLD', 'reason': 'no_signal'}, {'symbol': 'VMC', 'reason': 'no_signal'}, {'symbol': 'MTB', 'reason': 'no_signal'}, {'symbol': 'MTD', 'reason': 'no_signal'}, {'symbol': 'HBAN', 'reason': 'no_signal'}, {'symbol': 'ZTS', 'reason': 'no_signal'}, {'symbol': 'CBOE', 'reason': 'no_signal'}, {'symbol': 'NTRS', 'reason': 'no_signal'}, {'symbol': 'EXPE', 'reason': 'no_signal'}, {'symbol': 'GEHC', 'reason': 'no_signal'}, {'symbol': 'PCG', 'reason': 'no_signal'}, {'symbol': 'MLM', 'reason': 'no_signal'}, {'symbol': 'AEE', 'reason': 'no_signal'}, {'symbol': 'TDY', 'reason': 'no_signal'}, {'symbol': 'EXR', 'reason': 'no_signal'}, {'symbol': 'WSM', 'reason': 'no_signal'}, {'symbol': 'DG', 'reason': 'no_signal'}, {'symbol': 'WTW', 'reason': 'no_signal'}, {'symbol': 'RJF', 'reason': 'no_signal'}, {'symbol': 'ATO', 'reason': 'no_signal'}, {'symbol': 'HPQ', 'reason': 'no_signal'}, {'symbol': 'IR', 'reason': 'no_signal'}, {'symbol': 'CFG', 'reason': 'no_signal'}, {'symbol': 'LYV', 'reason': 'no_signal'}, {'symbol': 'CTSH', 'reason': 'no_signal'}, {'symbol': 'FFIV', 'reason': 'no_signal'}, {'symbol': 'DTE', 'reason': 'no_signal'}, {'symbol': 'PFE', 'reason': 'no_signal'}, {'symbol': 'PH', 'reason': 'no_signal'}, {'symbol': 'URI', 'reason': 'no_signal'}, {'symbol': 'PINS', 'reason': 'no_signal'}, {'symbol': 'CSX', 'reason': 'no_signal'}, {'symbol': 'PNC', 'reason': 'no_signal'}, {'symbol': 'LMT', 'reason': 'no_signal'}, {'symbol': 'NOC', 'reason': 'no_signal'}, {'symbol': 'PSX', 'reason': 'no_signal'}, {'symbol': 'GD', 'reason': 'no_signal'}, {'symbol': 'RBLX', 'reason': 'no_signal'}, {'symbol': 'RDDT', 'reason': 'no_signal'}, {'symbol': 'CARR', 'reason': 'no_signal'}, {'symbol': 'REGN', 'reason': 'no_signal'}, {'symbol': 'NKE', 'reason': 'no_signal'}, {'symbol': 'ROST', 'reason': 'no_signal'}, {'symbol': 'SBUX', 'reason': 'no_signal'}, {'symbol': 'LOW', 'reason': 'no_signal'}, {'symbol': 'SCHW', 'reason': 'no_signal'}, {'symbol': 'SHOP', 'reason': 'no_signal'}, {'symbol': 'TJX', 'reason': 'no_signal'}, {'symbol': 'BKNG', 'reason': 'no_signal'}, {'symbol': 'MAR', 'reason': 'no_signal'}, {'symbol': 'CMG', 'reason': 'no_signal'}, {'symbol': 'ORLY', 'reason': 'no_signal'}, {'symbol': 'TGT', 'reason': 'no_signal'}, {'symbol': 'PEP', 'reason': 'no_signal'}, {'symbol': 'MDLZ', 'reason': 'no_signal'}, {'symbol': 'CL', 'reason': 'no_signal'}, {'symbol': 'KHC', 'reason': 'no_signal'}, {'symbol': 'GIS', 'reason': 'no_signal'}, {'symbol': 'KR', 'reason': 'no_signal'}, {'symbol': 'EL', 'reason': 'no_signal'}, {'symbol': 'SLB', 'reason': 'no_signal'}, {'symbol': 'SNAP', 'reason': 'no_signal'}, {'symbol': 'OXY', 'reason': 'no_signal'}, {'symbol': 'SNOW', 'reason': 'no_signal'}, {'symbol': 'MPC', 'reason': 'no_signal'}, {'symbol': 'SYK', 'reason': 'no_signal'}, {'symbol': 'TEAM', 'reason': 'no_signal'}, {'symbol': 'VLO', 'reason': 'no_signal'}, {'symbol': 'TFC', 'reason': 'no_signal'}, {'symbol': 'HAL', 'reason': 'no_signal'}, {'symbol': 'FCX', 'reason': 'no_signal'}, {'symbol': 'NUE', 'reason': 'no_signal'}, {'symbol': 'TMUS', 'reason': 'no_signal'}, {'symbol': 'APD', 'reason': 'no_signal'}, {'symbol': 'TSM', 'reason': 'no_signal'}, {'symbol': 'DUK', 'reason': 'no_signal'}, {'symbol': 'UNH', 'reason': 'no_signal'}, {'symbol': 'UBER', 'reason': 'no_signal'}, {'symbol': 'AEP', 'reason': 'no_signal'}, {'symbol': 'UPS', 'reason': 'no_signal'}, {'symbol': 'CCI', 'reason': 'no_signal'}, {'symbol': 'EQIX', 'reason': 'no_signal'}, {'symbol': 'USB', 'reason': 'no_signal'}, {'symbol': 'VRTX', 'reason': 'no_signal'}, {'symbol': 'ZS', 'reason': 'no_signal'}, {'symbol': 'WMT', 'reason': 'no_signal'}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'no_signal'}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'no_signal'}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'no_signal'}, {'symbol': 'PDD', 'reason': 'no_signal'}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'NVDA', 'reason': 'no_signal'}, {'symbol': 'MU', 'reason': 'no_signal'}, {'symbol': 'PLTR', 'reason': 'no_signal'}, {'symbol': 'BRKH', 'reason': 'no_signal'}, {'symbol': 'NXTC', 'reason': 'no_signal'}, {'symbol': 'TGHL', 'reason': 'no_signal'}, {'symbol': 'MRAI', 'reason': 'missing_live_data'}, {'symbol': 'CPHI', 'reason': 'no_signal'}, {'symbol': 'MAAS', 'reason': 'no_signal'}, {'symbol': 'LEDS', 'reason': 'no_signal'}, {'symbol': 'APLM', 'reason': 'no_signal'}, {'symbol': 'PYPG', 'reason': 'no_signal'}, {'symbol': 'VEEE', 'reason': 'no_signal'}, {'symbol': 'EAF', 'reason': 'no_signal'}, {'symbol': 'YYAI', 'reason': 'no_signal'}, {'symbol': 'TOP', 'reason': 'no_signal'}, {'symbol': 'RCEL', 'reason': 'no_signal'}, {'symbol': 'SYRA', 'reason': 'missing_live_data'}, {'symbol': 'CRMT', 'reason': 'no_signal'}, {'symbol': 'NAKA', 'reason': 'no_signal'}, {'symbol': 'MAN', 'reason': 'no_signal'}, {'symbol': 'GOOGL', 'reason': 'no_signal'}, {'symbol': 'JPM', 'reason': 'no_signal'}, {'symbol': 'BAC', 'reason': 'no_signal'}, {'symbol': 'GS', 'reason': 'no_signal'}, {'symbol': 'V', 'reason': 'no_signal'}, {'symbol': 'LLY', 'reason': 'no_signal'}, {'symbol': 'JNJ', 'reason': 'no_signal'}, {'symbol': 'ABBV', 'reason': 'no_signal'}, {'symbol': 'TMO', 'reason': 'no_signal'}, {'symbol': 'CAT', 'reason': 'no_signal'}, {'symbol': 'GE', 'reason': 'no_signal'}, {'symbol': 'RTX', 'reason': 'no_signal'}, {'symbol': 'ETN', 'reason': 'no_signal'}, {'symbol': 'COST', 'reason': 'no_signal'}, {'symbol': 'PG', 'reason': 'no_signal'}, {'symbol': 'XOM', 'reason': 'no_signal'}, {'symbol': 'CVX', 'reason': 'no_signal'}, {'symbol': 'COP', 'reason': 'no_signal'}, {'symbol': 'NEE', 'reason': 'no_signal'}, {'symbol': 'SO', 'reason': 'no_signal'}, {'symbol': 'PLD', 'reason': 'no_signal'}, {'symbol': 'AMT', 'reason': 'no_signal'}, {'symbol': 'LIN', 'reason': 'no_signal'}, {'symbol': 'SHW', 'reason': 'no_signal'}, {'symbol': 'HD', 'reason': 'no_signal'}, {'symbol': 'MCD', 'reason': 'no_signal'}, {'symbol': 'META', 'reason': 'no_signal'}, {'symbol': 'NFLX', 'reason': 'no_signal'}, {'symbol': 'AVGO', 'reason': 'missing_live_data'}, {'symbol': 'ORCL', 'reason': 'no_signal'}, {'symbol': 'AMD', 'reason': 'no_signal'}, {'symbol': 'INTC', 'reason': 'no_signal'}, {'symbol': 'QCOM', 'reason': 'no_signal'}, {'symbol': 'ASML', 'reason': 'no_signal'}, {'symbol': 'KLAC', 'reason': 'no_signal'}, {'symbol': 'LRCX', 'reason': 'no_signal'}, {'symbol': 'MRVL', 'reason': 'no_signal'}, {'symbol': 'ADI', 'reason': 'no_signal'}, {'symbol': 'NXPI', 'reason': 'no_signal'}, {'symbol': 'ON', 'reason': 'no_signal'}, {'symbol': 'MCHP', 'reason': 'no_signal'}, {'symbol': 'CRM', 'reason': 'no_signal'}, {'symbol': 'NOW', 'reason': 'no_signal'}, {'symbol': 'PANW', 'reason': 'no_signal'}, {'symbol': 'CRWD', 'reason': 'no_signal'}, {'symbol': 'DDOG', 'reason': 'no_signal'}, {'symbol': 'NET', 'reason': 'no_signal'}, {'symbol': 'MDB', 'reason': 'no_signal'}, {'symbol': 'FTNT', 'reason': 'no_signal'}, {'symbol': 'APP', 'reason': 'no_signal'}, {'symbol': 'ABNB', 'reason': 'no_signal'}, {'symbol': 'DASH', 'reason': 'no_signal'}, {'symbol': 'C', 'reason': 'no_signal'}, {'symbol': 'MS', 'reason': 'no_signal'}, {'symbol': 'AXP', 'reason': 'no_signal'}, {'symbol': 'MA', 'reason': 'no_signal'}, {'symbol': 'COF', 'reason': 'no_signal'}, {'symbol': 'BLK', 'reason': 'no_signal'}, {'symbol': 'CME', 'reason': 'no_signal'}, {'symbol': 'ICE', 'reason': 'no_signal'}, {'symbol': 'MRK', 'reason': 'no_signal'}, {'symbol': 'ABT', 'reason': 'no_signal'}, {'symbol': 'MDT', 'reason': 'no_signal'}, {'symbol': 'ISRG', 'reason': 'no_signal'}, {'symbol': 'GILD', 'reason': 'no_signal'}, {'symbol': 'AMGN', 'reason': 'no_signal'}, {'symbol': 'BSX', 'reason': 'no_signal'}, {'symbol': 'BA', 'reason': 'no_signal'}, {'symbol': 'DE', 'reason': 'no_signal'}, {'symbol': 'HON', 'reason': 'no_signal'}, {'symbol': 'FDX', 'reason': 'no_signal'}, {'symbol': 'EOG', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'GOOG', 'reason': 'no_signal'}, {'symbol': 'CSCO', 'reason': 'no_signal'}, {'symbol': 'PM', 'reason': 'no_signal'}, {'symbol': 'GEV', 'reason': 'no_signal'}, {'symbol': 'TXN', 'reason': 'no_signal'}, {'symbol': 'WFC', 'reason': 'no_signal'}, {'symbol': 'ANET', 'reason': 'no_signal'}, {'symbol': 'SNDK', 'reason': 'no_signal'}, {'symbol': 'IBM', 'reason': 'no_signal'}, {'symbol': 'APH', 'reason': 'no_signal'}, {'symbol': 'DIS', 'reason': 'no_signal'}, {'symbol': 'VZ', 'reason': 'no_signal'}, {'symbol': 'DELL', 'reason': 'no_signal'}, {'symbol': 'STX', 'reason': 'no_signal'}, {'symbol': 'UNP', 'reason': 'no_signal'}, {'symbol': 'WELL', 'reason': 'no_signal'}, {'symbol': 'T', 'reason': 'no_signal'}, {'symbol': 'WDC', 'reason': 'no_signal'}, {'symbol': 'DHR', 'reason': 'no_signal'}, {'symbol': 'ACN', 'reason': 'no_signal'}, {'symbol': 'PGR', 'reason': 'no_signal'}, {'symbol': 'SPGI', 'reason': 'no_signal'}, {'symbol': 'NEM', 'reason': 'no_signal'}, {'symbol': 'CB', 'reason': 'no_signal'}, {'symbol': 'MO', 'reason': 'no_signal'}, {'symbol': 'BMY', 'reason': 'no_signal'}, {'symbol': 'GLW', 'reason': 'no_signal'}, {'symbol': 'CVS', 'reason': 'no_signal'}, {'symbol': 'MCK', 'reason': 'no_signal'}, {'symbol': 'ADP', 'reason': 'no_signal'}, {'symbol': 'TT', 'reason': 'no_signal'}, {'symbol': 'PWR', 'reason': 'no_signal'}, {'symbol': 'CEG', 'reason': 'no_signal'}, {'symbol': 'BNY', 'reason': 'no_signal'}, {'symbol': 'SNPS', 'reason': 'no_signal'}, {'symbol': 'CDNS', 'reason': 'no_signal'}, {'symbol': 'ADBE', 'reason': 'no_signal'}, {'symbol': 'JCI', 'reason': 'no_signal'}, {'symbol': 'HPE', 'reason': 'no_signal'}, {'symbol': 'VRT', 'reason': 'no_signal'}, {'symbol': 'ELV', 'reason': 'no_signal'}, {'symbol': 'WMB', 'reason': 'no_signal'}, {'symbol': 'EMR', 'reason': 'no_signal'}, {'symbol': 'LITE', 'reason': 'no_signal'}, {'symbol': 'HWM', 'reason': 'no_signal'}, {'symbol': 'HOOD', 'reason': 'no_signal'}, {'symbol': 'BX', 'reason': 'no_signal'}, {'symbol': 'INTU', 'reason': 'no_signal'}, {'symbol': 'MMM', 'reason': 'no_signal'}, {'symbol': 'MRNA', 'reason': 'no_signal'}, {'symbol': 'WM', 'reason': 'no_signal'}, {'symbol': 'TRV', 'reason': 'no_signal'}, {'symbol': 'BE', 'reason': 'no_signal'}, {'symbol': 'CI', 'reason': 'no_signal'}, {'symbol': 'MSI', 'reason': 'no_signal'}, {'symbol': 'HLT', 'reason': 'no_signal'}, {'symbol': 'CMCSA', 'reason': 'no_signal'}, {'symbol': 'CMI', 'reason': 'no_signal'}, {'symbol': 'GM', 'reason': 'no_signal'}, {'symbol': 'NSC', 'reason': 'no_signal'}, {'symbol': 'ECL', 'reason': 'no_signal'}, {'symbol': 'CTAS', 'reason': 'no_signal'}, {'symbol': 'MCO', 'reason': 'no_signal'}, {'symbol': 'RCL', 'reason': 'no_signal'}, {'symbol': 'ITW', 'reason': 'no_signal'}, {'symbol': 'HCA', 'reason': 'no_signal'}, {'symbol': 'SPG', 'reason': 'no_signal'}, {'symbol': 'MPWR', 'reason': 'no_signal'}, {'symbol': 'KMI', 'reason': 'no_signal'}, {'symbol': 'KEYS', 'reason': 'no_signal'}, {'symbol': 'KKR', 'reason': 'no_signal'}, {'symbol': 'DLR', 'reason': 'no_signal'}, {'symbol': 'TEL', 'reason': 'no_signal'}, {'symbol': 'MNST', 'reason': 'no_signal'}, {'symbol': 'TRGP', 'reason': 'no_signal'}, {'symbol': 'COR', 'reason': 'no_signal'}, {'symbol': 'TDG', 'reason': 'no_signal'}, {'symbol': 'TER', 'reason': 'no_signal'}, {'symbol': 'AJG', 'reason': 'no_signal'}, {'symbol': 'FAST', 'reason': 'no_signal'}, {'symbol': 'ALL', 'reason': 'no_signal'}, {'symbol': 'AON', 'reason': 'no_signal'}, {'symbol': 'OKE', 'reason': 'no_signal'}, {'symbol': 'FIX', 'reason': 'no_signal'}, {'symbol': 'AME', 'reason': 'no_signal'}, {'symbol': 'CIEN', 'reason': 'no_signal'}, {'symbol': 'PCAR', 'reason': 'no_signal'}, {'symbol': 'GWW', 'reason': 'no_signal'}, {'symbol': 'COHR', 'reason': 'no_signal'}, {'symbol': 'APO', 'reason': 'no_signal'}, {'symbol': 'BKR', 'reason': 'no_signal'}, {'symbol': 'CAH', 'reason': 'no_signal'}, {'symbol': 'D', 'reason': 'no_signal'}, {'symbol': 'CRH', 'reason': 'no_signal'}, {'symbol': 'DVN', 'reason': 'no_signal'}, {'symbol': 'SRE', 'reason': 'no_signal'}, {'symbol': 'MET', 'reason': 'no_signal'}, {'symbol': 'HUM', 'reason': 'no_signal'}, {'symbol': 'O', 'reason': 'no_signal'}, {'symbol': 'AFL', 'reason': 'no_signal'}, {'symbol': 'P', 'reason': 'no_signal'}, {'symbol': 'BDX', 'reason': 'no_signal'}, {'symbol': 'VYLR', 'reason': 'missing_required_chart_history', 'missing': ['daily', 'weekly']}, {'symbol': 'HONA', 'reason': 'no_signal'}, {'symbol': 'VST', 'reason': 'no_signal'}, {'symbol': 'EW', 'reason': 'no_signal'}, {'symbol': 'ADSK', 'reason': 'no_signal'}, {'symbol': 'PSA', 'reason': 'no_signal'}, {'symbol': 'A', 'reason': 'no_signal'}, {'symbol': 'ETR', 'reason': 'no_signal'}, {'symbol': 'ROK', 'reason': 'no_signal'}, {'symbol': 'WAB', 'reason': 'no_signal'}, {'symbol': 'STT', 'reason': 'no_signal'}, {'symbol': 'PYPL', 'reason': 'no_signal'}, {'symbol': 'AZO', 'reason': 'no_signal'}, {'symbol': 'F', 'reason': 'no_signal'}, {'symbol': 'NTAP', 'reason': 'no_signal'}, {'symbol': 'XEL', 'reason': 'no_signal'}, {'symbol': 'FITB', 'reason': 'no_signal'}, {'symbol': 'EBAY', 'reason': 'no_signal'}, {'symbol': 'KDP', 'reason': 'no_signal'}, {'symbol': 'LHX', 'reason': 'no_signal'}, {'symbol': 'GRMN', 'reason': 'no_signal'}, {'symbol': 'VEEV', 'reason': 'no_signal'}, {'symbol': 'VMRK', 'reason': 'no_signal'}, {'symbol': 'TWLO', 'reason': 'no_signal'}, {'symbol': 'EXC', 'reason': 'no_signal'}, {'symbol': 'FLEX', 'reason': 'no_signal'}, {'symbol': 'IQV', 'reason': 'no_signal'}, {'symbol': 'RSG', 'reason': 'no_signal'}, {'symbol': 'VTR', 'reason': 'no_signal'}, {'symbol': 'CVNA', 'reason': 'no_signal'}, {'symbol': 'FERG', 'reason': 'no_signal'}, {'symbol': 'WAT', 'reason': 'no_signal'}, {'symbol': 'ILMN', 'reason': 'no_signal'}, {'symbol': 'NDAQ', 'reason': 'no_signal'}, {'symbol': 'XYZ', 'reason': 'no_signal'}, {'symbol': 'MSCI', 'reason': 'no_signal'}, {'symbol': 'IDXX', 'reason': 'no_signal'}, {'symbol': 'AIG', 'reason': 'no_signal'}, {'symbol': 'COIN', 'reason': 'no_signal'}, {'symbol': 'YUM', 'reason': 'no_signal'}, {'symbol': 'FANG', 'reason': 'no_signal'}, {'symbol': 'IBKR', 'reason': 'no_signal'}, {'symbol': 'ED', 'reason': 'no_signal'}, {'symbol': 'PRU', 'reason': 'no_signal'}, {'symbol': 'ADM', 'reason': 'no_signal'}, {'symbol': 'SYY', 'reason': 'no_signal'}, {'symbol': 'WDAY', 'reason': 'no_signal'}, {'symbol': 'CBRE', 'reason': 'no_signal'}, {'symbol': 'TTWO', 'reason': 'no_signal'}, {'symbol': 'ROP', 'reason': 'no_signal'}, {'symbol': 'PEG', 'reason': 'no_signal'}, {'symbol': 'HIG', 'reason': 'no_signal'}, {'symbol': 'EME', 'reason': 'no_signal'}, {'symbol': 'IRM', 'reason': 'no_signal'}, {'symbol': 'KVUE', 'reason': 'no_signal'}, {'symbol': 'WEC', 'reason': 'no_signal'}, {'symbol': 'DHI', 'reason': 'no_signal'}, {'symbol': 'BIIB', 'reason': 'no_signal'}, {'symbol': 'UAL', 'reason': 'no_signal'}, {'symbol': 'ODFL', 'reason': 'no_signal'}, {'symbol': 'RMD', 'reason': 'no_signal'}, {'symbol': 'CCL', 'reason': 'no_signal'}, {'symbol': 'AXON', 'reason': 'no_signal'}, {'symbol': 'PAYX', 'reason': 'no_signal'}, {'symbol': 'EQT', 'reason': 'no_signal'}, {'symbol': 'CNC', 'reason': 'no_signal'}, {'symbol': 'ACGL', 'reason': 'no_signal'}, {'symbol': 'KMB', 'reason': 'no_signal'}, {'symbol': 'JBL', 'reason': 'no_signal'}, {'symbol': 'DXCM', 'reason': 'no_signal'}, {'symbol': 'STLD', 'reason': 'no_signal'}, {'symbol': 'VMC', 'reason': 'no_signal'}, {'symbol': 'MTB', 'reason': 'no_signal'}, {'symbol': 'MTD', 'reason': 'no_signal'}, {'symbol': 'HBAN', 'reason': 'no_signal'}, {'symbol': 'ZTS', 'reason': 'no_signal'}, {'symbol': 'CBOE', 'reason': ['agent_decision_scheduled'], 'source': 'LLM_AGENT'}, {'symbol': 'NTRS', 'reason': 'no_signal'}, {'symbol': 'EXPE', 'reason': 'no_signal'}, {'symbol': 'GEHC', 'reason': 'no_signal'}, {'symbol': 'PCG', 'reason': 'no_signal'}, {'symbol': 'MLM', 'reason': 'no_signal'}, {'symbol': 'AEE', 'reason': 'no_signal'}, {'symbol': 'TDY', 'reason': 'no_signal'}, {'symbol': 'EXR', 'reason': 'no_signal'}, {'symbol': 'WSM', 'reason': 'no_signal'}, {'symbol': 'DG', 'reason': 'no_signal'}, {'symbol': 'WTW', 'reason': 'no_signal'}, {'symbol': 'RJF', 'reason': 'no_signal'}, {'symbol': 'ATO', 'reason': 'no_signal'}, {'symbol': 'HPQ', 'reason': 'no_signal'}, {'symbol': 'IR', 'reason': 'no_signal'}, {'symbol': 'CFG', 'reason': 'no_signal'}, {'symbol': 'LYV', 'reason': 'no_signal'}, {'symbol': 'CTSH', 'reason': 'no_signal'}, {'symbol': 'FFIV', 'reason': 'no_signal'}, {'symbol': 'DTE', 'reason': 'no_signal'}, {'symbol': 'PFE', 'reason': 'no_signal'}, {'symbol': 'PH', 'reason': 'no_signal'}, {'symbol': 'URI', 'reason': 'no_signal'}, {'symbol': 'PINS', 'reason': 'no_signal'}, {'symbol': 'CSX', 'reason': 'no_signal'}, {'symbol': 'PNC', 'reason': 'no_signal'}, {'symbol': 'LMT', 'reason': 'no_signal'}, {'symbol': 'NOC', 'reason': 'no_signal'}, {'symbol': 'PSX', 'reason': 'no_signal'}, {'symbol': 'GD', 'reason': 'no_signal'}, {'symbol': 'RBLX', 'reason': 'no_signal'}, {'symbol': 'RDDT', 'reason': 'no_signal'}, {'symbol': 'CARR', 'reason': 'no_signal'}, {'symbol': 'REGN', 'reason': 'no_signal'}, {'symbol': 'NKE', 'reason': 'no_signal'}, {'symbol': 'ROST', 'reason': 'no_signal'}, {'symbol': 'SBUX', 'reason': 'no_signal'}, {'symbol': 'LOW', 'reason': 'no_signal'}, {'symbol': 'SCHW', 'reason': 'no_signal'}, {'symbol': 'SHOP', 'reason': 'no_signal'}, {'symbol': 'TJX', 'reason': 'no_signal'}, {'symbol': 'BKNG', 'reason': 'no_signal'}, {'symbol': 'MAR', 'reason': 'no_signal'}, {'symbol': 'CMG', 'reason': 'no_signal'}, {'symbol': 'ORLY', 'reason': 'no_signal'}, {'symbol': 'TGT', 'reason': 'no_signal'}, {'symbol': 'PEP', 'reason': 'no_signal'}, {'symbol': 'MDLZ', 'reason': 'no_signal'}, {'symbol': 'CL', 'reason': 'no_signal'}, {'symbol': 'KHC', 'reason': 'no_signal'}, {'symbol': 'GIS', 'reason': 'no_signal'}, {'symbol': 'KR', 'reason': 'no_signal'}, {'symbol': 'EL', 'reason': 'no_signal'}, {'symbol': 'SLB', 'reason': 'no_signal'}, {'symbol': 'SNAP', 'reason': 'no_signal'}, {'symbol': 'OXY', 'reason': 'no_signal'}, {'symbol': 'SNOW', 'reason': 'no_signal'}, {'symbol': 'MPC', 'reason': 'no_signal'}, {'symbol': 'SYK', 'reason': 'no_signal'}, {'symbol': 'TEAM', 'reason': 'no_signal'}, {'symbol': 'VLO', 'reason': 'no_signal'}, {'symbol': 'TFC', 'reason': 'no_signal'}, {'symbol': 'HAL', 'reason': 'no_signal'}, {'symbol': 'FCX', 'reason': 'no_signal'}, {'symbol': 'NUE', 'reason': 'no_signal'}, {'symbol': 'TMUS', 'reason': 'no_signal'}, {'symbol': 'APD', 'reason': 'no_signal'}, {'symbol': 'TSM', 'reason': 'no_signal'}, {'symbol': 'DUK', 'reason': 'no_signal'}, {'symbol': 'UNH', 'reason': 'no_signal'}, {'symbol': 'UBER', 'reason': 'no_signal'}, {'symbol': 'AEP', 'reason': 'no_signal'}, {'symbol': 'UPS', 'reason': 'no_signal'}, {'symbol': 'CCI', 'reason': 'no_signal'}, {'symbol': 'EQIX', 'reason': 'no_signal'}, {'symbol': 'USB', 'reason': 'no_signal'}, {'symbol': 'VRTX', 'reason': 'no_signal'}, {'symbol': 'ZS', 'reason': 'no_signal'}, {'symbol': 'WMT', 'reason': 'no_signal'}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'no_signal'}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'no_signal'}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'no_signal'}, {'symbol': 'PDD', 'reason': 'no_signal'}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'NVDA', 'reason': 'no_signal'}, {'symbol': 'MU', 'reason': 'no_signal'}, {'symbol': 'PLTR', 'reason': 'no_signal'}, {'symbol': 'BRKH', 'reason': 'no_signal'}, {'symbol': 'NXTC', 'reason': 'no_signal'}, {'symbol': 'TGHL', 'reason': 'no_signal'}, {'symbol': 'MRAI', 'reason': 'missing_live_data'}, {'symbol': 'CPHI', 'reason': 'no_signal'}, {'symbol': 'MAAS', 'reason': 'no_signal'}, {'symbol': 'LEDS', 'reason': 'no_signal'}, {'symbol': 'APLM', 'reason': 'no_signal'}, {'symbol': 'PYPG', 'reason': 'no_signal'}, {'symbol': 'VEEE', 'reason': 'no_signal'}, {'symbol': 'EAF', 'reason': 'no_signal'}, {'symbol': 'YYAI', 'reason': 'no_signal'}, {'symbol': 'TOP', 'reason': 'no_signal'}, {'symbol': 'RCEL', 'reason': 'no_signal'}, {'symbol': 'SYRA', 'reason': 'missing_live_data'}, {'symbol': 'CRMT', 'reason': 'no_signal'}, {'symbol': 'NAKA', 'reason': 'no_signal'}, {'symbol': 'MAN', 'reason': 'no_signal'}, {'symbol': 'GOOGL', 'reason': 'no_signal'}, {'symbol': 'JPM', 'reason': 'no_signal'}, {'symbol': 'BAC', 'reason': 'no_signal'}, {'symbol': 'GS', 'reason': 'no_signal'}, {'symbol': 'V', 'reason': 'no_signal'}, {'symbol': 'LLY', 'reason': 'no_signal'}, {'symbol': 'JNJ', 'reason': 'no_signal'}, {'symbol': 'ABBV', 'reason': 'no_signal'}, {'symbol': 'TMO', 'reason': 'no_signal'}, {'symbol': 'CAT', 'reason': 'no_signal'}, {'symbol': 'GE', 'reason': 'no_signal'}, {'symbol': 'RTX', 'reason': 'no_signal'}, {'symbol': 'ETN', 'reason': 'no_signal'}, {'symbol': 'COST', 'reason': 'no_signal'}, {'symbol': 'PG', 'reason': 'no_signal'}, {'symbol': 'XOM', 'reason': 'no_signal'}, {'symbol': 'CVX', 'reason': 'no_signal'}, {'symbol': 'COP', 'reason': 'no_signal'}, {'symbol': 'NEE', 'reason': 'no_signal'}, {'symbol': 'SO', 'reason': 'no_signal'}, {'symbol': 'PLD', 'reason': 'no_signal'}, {'symbol': 'AMT', 'reason': 'no_signal'}, {'symbol': 'LIN', 'reason': 'no_signal'}, {'symbol': 'SHW', 'reason': 'no_signal'}, {'symbol': 'HD', 'reason': 'no_signal'}, {'symbol': 'MCD', 'reason': 'no_signal'}, {'symbol': 'META', 'reason': 'no_signal'}, {'symbol': 'NFLX', 'reason': 'no_signal'}, {'symbol': 'AVGO', 'reason': 'missing_live_data'}, {'symbol': 'ORCL', 'reason': 'no_signal'}, {'symbol': 'AMD', 'reason': 'no_signal'}, {'symbol': 'INTC', 'reason': 'no_signal'}, {'symbol': 'QCOM', 'reason': 'no_signal'}, {'symbol': 'ASML', 'reason': 'no_signal'}, {'symbol': 'KLAC', 'reason': 'no_signal'}, {'symbol': 'LRCX', 'reason': 'no_signal'}, {'symbol': 'MRVL', 'reason': 'no_signal'}, {'symbol': 'ADI', 'reason': 'no_signal'}, {'symbol': 'NXPI', 'reason': 'no_signal'}, {'symbol': 'ON', 'reason': 'no_signal'}, {'symbol': 'MCHP', 'reason': 'no_signal'}, {'symbol': 'CRM', 'reason': 'no_signal'}, {'symbol': 'NOW', 'reason': 'no_signal'}, {'symbol': 'PANW', 'reason': 'no_signal'}, {'symbol': 'CRWD', 'reason': 'no_signal'}, {'symbol': 'DDOG', 'reason': 'no_signal'}, {'symbol': 'NET', 'reason': 'no_signal'}, {'symbol': 'MDB', 'reason': 'no_signal'}, {'symbol': 'FTNT', 'reason': 'no_signal'}, {'symbol': 'APP', 'reason': 'no_signal'}, {'symbol': 'ABNB', 'reason': 'no_signal'}, {'symbol': 'DASH', 'reason': 'no_signal'}, {'symbol': 'C', 'reason': 'no_signal'}, {'symbol': 'MS', 'reason': 'no_signal'}, {'symbol': 'AXP', 'reason': 'no_signal'}, {'symbol': 'MA', 'reason': 'no_signal'}, {'symbol': 'COF', 'reason': 'no_signal'}, {'symbol': 'BLK', 'reason': 'no_signal'}, {'symbol': 'CME', 'reason': 'no_signal'}, {'symbol': 'ICE', 'reason': 'no_signal'}, {'symbol': 'MRK', 'reason': 'no_signal'}, {'symbol': 'ABT', 'reason': 'no_signal'}, {'symbol': 'MDT', 'reason': 'no_signal'}, {'symbol': 'ISRG', 'reason': 'no_signal'}, {'symbol': 'GILD', 'reason': 'no_signal'}, {'symbol': 'AMGN', 'reason': 'no_signal'}, {'symbol': 'BSX', 'reason': 'no_signal'}, {'symbol': 'BA', 'reason': 'no_signal'}, {'symbol': 'DE', 'reason': 'no_signal'}, {'symbol': 'HON', 'reason': 'no_signal'}, {'symbol': 'FDX', 'reason': 'no_signal'}, {'symbol': 'EOG', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'GOOG', 'reason': 'no_signal'}, {'symbol': 'CSCO', 'reason': 'no_signal'}, {'symbol': 'PM', 'reason': 'no_signal'}, {'symbol': 'GEV', 'reason': 'no_signal'}, {'symbol': 'TXN', 'reason': 'no_signal'}, {'symbol': 'WFC', 'reason': 'no_signal'}, {'symbol': 'ANET', 'reason': 'no_signal'}, {'symbol': 'SNDK', 'reason': 'no_signal'}, {'symbol': 'IBM', 'reason': 'no_signal'}, {'symbol': 'APH', 'reason': 'no_signal'}, {'symbol': 'DIS', 'reason': 'no_signal'}, {'symbol': 'VZ', 'reason': 'no_signal'}, {'symbol': 'DELL', 'reason': 'no_signal'}, {'symbol': 'STX', 'reason': 'no_signal'}, {'symbol': 'UNP', 'reason': 'no_signal'}, {'symbol': 'WELL', 'reason': 'no_signal'}, {'symbol': 'T', 'reason': 'no_signal'}, {'symbol': 'WDC', 'reason': 'no_signal'}, {'symbol': 'DHR', 'reason': 'no_signal'}, {'symbol': 'ACN', 'reason': 'no_signal'}, {'symbol': 'PGR', 'reason': 'no_signal'}, {'symbol': 'SPGI', 'reason': 'no_signal'}, {'symbol': 'NEM', 'reason': 'no_signal'}, {'symbol': 'CB', 'reason': 'no_signal'}, {'symbol': 'MO', 'reason': 'no_signal'}, {'symbol': 'BMY', 'reason': 'no_signal'}, {'symbol': 'GLW', 'reason': 'no_signal'}, {'symbol': 'CVS', 'reason': 'no_signal'}, {'symbol': 'MCK', 'reason': 'no_signal'}, {'symbol': 'ADP', 'reason': 'no_signal'}, {'symbol': 'TT', 'reason': 'no_signal'}, {'symbol': 'PWR', 'reason': 'no_signal'}, {'symbol': 'CEG', 'reason': 'no_signal'}, {'symbol': 'BNY', 'reason': 'no_signal'}, {'symbol': 'SNPS', 'reason': 'no_signal'}, {'symbol': 'CDNS', 'reason': 'no_signal'}, {'symbol': 'ADBE', 'reason': 'no_signal'}, {'symbol': 'JCI', 'reason': 'no_signal'}, {'symbol': 'HPE', 'reason': 'no_signal'}, {'symbol': 'VRT', 'reason': 'no_signal'}, {'symbol': 'ELV', 'reason': 'no_signal'}, {'symbol': 'WMB', 'reason': 'no_signal'}, {'symbol': 'EMR', 'reason': 'no_signal'}, {'symbol': 'LITE', 'reason': 'no_signal'}, {'symbol': 'HWM', 'reason': 'no_signal'}, {'symbol': 'HOOD', 'reason': 'no_signal'}, {'symbol': 'BX', 'reason': 'no_signal'}, {'symbol': 'INTU', 'reason': 'no_signal'}, {'symbol': 'MMM', 'reason': 'no_signal'}, {'symbol': 'MRNA', 'reason': 'no_signal'}, {'symbol': 'WM', 'reason': 'no_signal'}, {'symbol': 'TRV', 'reason': 'no_signal'}, {'symbol': 'BE', 'reason': 'no_signal'}, {'symbol': 'CI', 'reason': 'no_signal'}, {'symbol': 'MSI', 'reason': 'no_signal'}, {'symbol': 'HLT', 'reason': 'no_signal'}, {'symbol': 'CMCSA', 'reason': 'no_signal'}, {'symbol': 'CMI', 'reason': 'no_signal'}, {'symbol': 'GM', 'reason': 'no_signal'}, {'symbol': 'NSC', 'reason': 'no_signal'}, {'symbol': 'ECL', 'reason': 'no_signal'}, {'symbol': 'CTAS', 'reason': 'no_signal'}, {'symbol': 'MCO', 'reason': 'no_signal'}, {'symbol': 'RCL', 'reason': 'no_signal'}, {'symbol': 'ITW', 'reason': 'no_signal'}, {'symbol': 'HCA', 'reason': 'no_signal'}, {'symbol': 'SPG', 'reason': 'no_signal'}, {'symbol': 'MPWR', 'reason': 'no_signal'}, {'symbol': 'KMI', 'reason': 'no_signal'}, {'symbol': 'KEYS', 'reason': 'no_signal'}, {'symbol': 'KKR', 'reason': 'no_signal'}, {'symbol': 'DLR', 'reason': 'no_signal'}, {'symbol': 'TEL', 'reason': 'no_signal'}, {'symbol': 'MNST', 'reason': 'no_signal'}, {'symbol': 'TRGP', 'reason': 'no_signal'}, {'symbol': 'COR', 'reason': 'no_signal'}, {'symbol': 'TDG', 'reason': 'no_signal'}, {'symbol': 'TER', 'reason': 'no_signal'}, {'symbol': 'AJG', 'reason': 'no_signal'}, {'symbol': 'FAST', 'reason': 'no_signal'}, {'symbol': 'ALL', 'reason': 'no_signal'}, {'symbol': 'AON', 'reason': 'no_signal'}, {'symbol': 'OKE', 'reason': 'no_signal'}, {'symbol': 'FIX', 'reason': 'no_signal'}, {'symbol': 'AME', 'reason': 'no_signal'}, {'symbol': 'CIEN', 'reason': 'no_signal'}, {'symbol': 'PCAR', 'reason': 'no_signal'}, {'symbol': 'GWW', 'reason': 'no_signal'}, {'symbol': 'COHR', 'reason': 'no_signal'}, {'symbol': 'APO', 'reason': 'no_signal'}, {'symbol': 'BKR', 'reason': 'no_signal'}, {'symbol': 'CAH', 'reason': 'no_signal'}, {'symbol': 'D', 'reason': 'no_signal'}, {'symbol': 'CRH', 'reason': 'no_signal'}, {'symbol': 'DVN', 'reason': 'no_signal'}, {'symbol': 'SRE', 'reason': 'no_signal'}, {'symbol': 'MET', 'reason': 'no_signal'}, {'symbol': 'HUM', 'reason': 'no_signal'}, {'symbol': 'O', 'reason': 'no_signal'}, {'symbol': 'AFL', 'reason': 'no_signal'}, {'symbol': 'P', 'reason': 'no_signal'}, {'symbol': 'BDX', 'reason': 'no_signal'}, {'symbol': 'VYLR', 'reason': 'missing_required_chart_history', 'missing': ['daily', 'weekly']}, {'symbol': 'HONA', 'reason': 'no_signal'}, {'symbol': 'VST', 'reason': 'no_signal'}, {'symbol': 'EW', 'reason': 'no_signal'}, {'symbol': 'ADSK', 'reason': 'no_signal'}, {'symbol': 'PSA', 'reason': 'no_signal'}, {'symbol': 'A', 'reason': 'no_signal'}, {'symbol': 'ETR', 'reason': 'no_signal'}, {'symbol': 'ROK', 'reason': 'no_signal'}, {'symbol': 'WAB', 'reason': 'no_signal'}, {'symbol': 'STT', 'reason': 'no_signal'}, {'symbol': 'PYPL', 'reason': 'no_signal'}, {'symbol': 'AZO', 'reason': 'no_signal'}, {'symbol': 'F', 'reason': 'no_signal'}, {'symbol': 'NTAP', 'reason': 'no_signal'}, {'symbol': 'XEL', 'reason': 'no_signal'}, {'symbol': 'FITB', 'reason': 'no_signal'}, {'symbol': 'EBAY', 'reason': 'no_signal'}, {'symbol': 'KDP', 'reason': 'no_signal'}, {'symbol': 'LHX', 'reason': 'no_signal'}, {'symbol': 'GRMN', 'reason': 'no_signal'}, {'symbol': 'VEEV', 'reason': 'no_signal'}, {'symbol': 'VMRK', 'reason': 'no_signal'}, {'symbol': 'TWLO', 'reason': 'no_signal'}, {'symbol': 'EXC', 'reason': 'no_signal'}, {'symbol': 'FLEX', 'reason': 'no_signal'}, {'symbol': 'IQV', 'reason': 'no_signal'}, {'symbol': 'RSG', 'reason': 'no_signal'}, {'symbol': 'VTR', 'reason': 'no_signal'}, {'symbol': 'CVNA', 'reason': 'no_signal'}, {'symbol': 'FERG', 'reason': 'no_signal'}, {'symbol': 'WAT', 'reason': 'no_signal'}, {'symbol': 'ILMN', 'reason': 'no_signal'}, {'symbol': 'NDAQ', 'reason': 'no_signal'}, {'symbol': 'XYZ', 'reason': 'no_signal'}, {'symbol': 'MSCI', 'reason': 'no_signal'}, {'symbol': 'IDXX', 'reason': 'no_signal'}, {'symbol': 'AIG', 'reason': 'no_signal'}, {'symbol': 'COIN', 'reason': 'no_signal'}, {'symbol': 'YUM', 'reason': 'no_signal'}, {'symbol': 'FANG', 'reason': 'no_signal'}, {'symbol': 'IBKR', 'reason': 'no_signal'}, {'symbol': 'ED', 'reason': 'no_signal'}, {'symbol': 'PRU', 'reason': 'no_signal'}, {'symbol': 'ADM', 'reason': 'no_signal'}, {'symbol': 'SYY', 'reason': 'no_signal'}, {'symbol': 'WDAY', 'reason': 'no_signal'}, {'symbol': 'CBRE', 'reason': 'no_signal'}, {'symbol': 'TTWO', 'reason': 'no_signal'}, {'symbol': 'ROP', 'reason': 'no_signal'}, {'symbol': 'PEG', 'reason': 'no_signal'}, {'symbol': 'HIG', 'reason': 'no_signal'}, {'symbol': 'EME', 'reason': 'no_signal'}, {'symbol': 'IRM', 'reason': 'no_signal'}, {'symbol': 'KVUE', 'reason': 'no_signal'}, {'symbol': 'WEC', 'reason': 'no_signal'}, {'symbol': 'DHI', 'reason': 'no_signal'}, {'symbol': 'BIIB', 'reason': 'no_signal'}, {'symbol': 'UAL', 'reason': 'no_signal'}, {'symbol': 'ODFL', 'reason': 'no_signal'}, {'symbol': 'RMD', 'reason': 'no_signal'}, {'symbol': 'CCL', 'reason': 'no_signal'}, {'symbol': 'AXON', 'reason': 'no_signal'}, {'symbol': 'PAYX', 'reason': 'no_signal'}, {'symbol': 'EQT', 'reason': 'no_signal'}, {'symbol': 'CNC', 'reason': 'no_signal'}, {'symbol': 'ACGL', 'reason': 'no_signal'}, {'symbol': 'KMB', 'reason': 'no_signal'}, {'symbol': 'JBL', 'reason': 'no_signal'}, {'symbol': 'DXCM', 'reason': 'no_signal'}, {'symbol': 'STLD', 'reason': 'no_signal'}, {'symbol': 'VMC', 'reason': 'no_signal'}, {'symbol': 'MTB', 'reason': 'no_signal'}, {'symbol': 'MTD', 'reason': 'no_signal'}, {'symbol': 'HBAN', 'reason': 'no_signal'}, {'symbol': 'ZTS', 'reason': 'no_signal'}, {'symbol': 'CBOE', 'reason': 'no_signal'}, {'symbol': 'NTRS', 'reason': 'no_signal'}, {'symbol': 'EXPE', 'reason': 'no_signal'}, {'symbol': 'GEHC', 'reason': 'no_signal'}, {'symbol': 'PCG', 'reason': 'no_signal'}, {'symbol': 'MLM', 'reason': 'no_signal'}, {'symbol': 'AEE', 'reason': 'no_signal'}, {'symbol': 'TDY', 'reason': 'no_signal'}, {'symbol': 'EXR', 'reason': 'no_signal'}, {'symbol': 'WSM', 'reason': 'no_signal'}, {'symbol': 'DG', 'reason': 'no_signal'}, {'symbol': 'WTW', 'reason': 'no_signal'}, {'symbol': 'RJF', 'reason': 'no_signal'}, {'symbol': 'ATO', 'reason': 'no_signal'}, {'symbol': 'HPQ', 'reason': 'no_signal'}, {'symbol': 'IR', 'reason': 'no_signal'}, {'symbol': 'CFG', 'reason': 'no_signal'}, {'symbol': 'LYV', 'reason': 'no_signal'}, {'symbol': 'CTSH', 'reason': 'no_signal'}, {'symbol': 'FFIV', 'reason': 'no_signal'}, {'symbol': 'DTE', 'reason': 'no_signal'}, {'symbol': 'PFE', 'reason': 'no_signal'}, {'symbol': 'PH', 'reason': 'no_signal'}, {'symbol': 'URI', 'reason': 'no_signal'}, {'symbol': 'PINS', 'reason': 'no_signal'}, {'symbol': 'CSX', 'reason': 'no_signal'}, {'symbol': 'PNC', 'reason': 'no_signal'}, {'symbol': 'LMT', 'reason': 'no_signal'}, {'symbol': 'NOC', 'reason': 'no_signal'}, {'symbol': 'PSX', 'reason': 'no_signal'}, {'symbol': 'GD', 'reason': 'no_signal'}, {'symbol': 'RBLX', 'reason': 'no_signal'}, {'symbol': 'RDDT', 'reason': 'no_signal'}, {'symbol': 'CARR', 'reason': 'no_signal'}, {'symbol': 'REGN', 'reason': 'no_signal'}, {'symbol': 'NKE', 'reason': 'no_signal'}, {'symbol': 'ROST', 'reason': 'no_signal'}, {'symbol': 'SBUX', 'reason': 'no_signal'}, {'symbol': 'LOW', 'reason': 'no_signal'}, {'symbol': 'SCHW', 'reason': 'no_signal'}, {'symbol': 'SHOP', 'reason': 'no_signal'}, {'symbol': 'TJX', 'reason': 'no_signal'}, {'symbol': 'BKNG', 'reason': 'no_signal'}, {'symbol': 'MAR', 'reason': 'no_signal'}, {'symbol': 'CMG', 'reason': 'no_signal'}, {'symbol': 'ORLY', 'reason': 'no_signal'}, {'symbol': 'TGT', 'reason': 'no_signal'}, {'symbol': 'PEP', 'reason': 'no_signal'}, {'symbol': 'MDLZ', 'reason': 'no_signal'}, {'symbol': 'CL', 'reason': 'no_signal'}, {'symbol': 'KHC', 'reason': 'no_signal'}, {'symbol': 'GIS', 'reason': 'no_signal'}, {'symbol': 'KR', 'reason': 'no_signal'}, {'symbol': 'EL', 'reason': 'no_signal'}, {'symbol': 'SLB', 'reason': 'no_signal'}, {'symbol': 'SNAP', 'reason': 'no_signal'}, {'symbol': 'OXY', 'reason': 'no_signal'}, {'symbol': 'SNOW', 'reason': 'no_signal'}, {'symbol': 'MPC', 'reason': 'no_signal'}, {'symbol': 'SYK', 'reason': 'no_signal'}, {'symbol': 'TEAM', 'reason': 'no_signal'}, {'symbol': 'VLO', 'reason': 'no_signal'}, {'symbol': 'TFC', 'reason': 'no_signal'}, {'symbol': 'HAL', 'reason': 'no_signal'}, {'symbol': 'FCX', 'reason': 'no_signal'}, {'symbol': 'NUE', 'reason': 'no_signal'}, {'symbol': 'TMUS', 'reason': 'no_signal'}, {'symbol': 'APD', 'reason': 'no_signal'}, {'symbol': 'TSM', 'reason': 'no_signal'}, {'symbol': 'DUK', 'reason': 'no_signal'}, {'symbol': 'UNH', 'reason': 'no_signal'}, {'symbol': 'UBER', 'reason': 'no_signal'}, {'symbol': 'AEP', 'reason': 'no_signal'}, {'symbol': 'UPS', 'reason': 'no_signal'}, {'symbol': 'CCI', 'reason': 'no_signal'}, {'symbol': 'EQIX', 'reason': 'no_signal'}, {'symbol': 'USB', 'reason': 'no_signal'}, {'symbol': 'VRTX', 'reason': 'no_signal'}, {'symbol': 'ZS', 'reason': 'no_signal'}, {'symbol': 'WMT', 'reason': 'no_signal'}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'no_signal'}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'no_signal'}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'no_signal'}, {'symbol': 'PDD', 'reason': 'no_signal'}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'NVDA', 'reason': 'no_signal'}, {'symbol': 'MU', 'reason': 'no_signal'}, {'symbol': 'PLTR', 'reason': 'no_signal'}, {'symbol': 'BRKH', 'reason': 'no_signal'}, {'symbol': 'NXTC', 'reason': 'no_signal'}, {'symbol': 'TGHL', 'reason': 'no_signal'}, {'symbol': 'MRAI', 'reason': 'missing_live_data'}, {'symbol': 'CPHI', 'reason': 'no_signal'}, {'symbol': 'MAAS', 'reason': 'no_signal'}, {'symbol': 'LEDS', 'reason': 'no_signal'}, {'symbol': 'APLM', 'reason': 'no_signal'}, {'symbol': 'PYPG', 'reason': 'no_signal'}, {'symbol': 'VEEE', 'reason': 'no_signal'}, {'symbol': 'EAF', 'reason': 'no_signal'}, {'symbol': 'YYAI', 'reason': 'no_signal'}, {'symbol': 'TOP', 'reason': 'no_signal'}, {'symbol': 'RCEL', 'reason': 'no_signal'}, {'symbol': 'SYRA', 'reason': 'missing_live_data'}, {'symbol': 'CRMT', 'reason': 'no_signal'}, {'symbol': 'NAKA', 'reason': 'no_signal'}, {'symbol': 'MAN', 'reason': 'no_signal'}, {'symbol': 'GOOGL', 'reason': 'no_signal'}, {'symbol': 'JPM', 'reason': 'no_signal'}, {'symbol': 'BAC', 'reason': 'no_signal'}, {'symbol': 'GS', 'reason': 'no_signal'}, {'symbol': 'V', 'reason': 'no_signal'}, {'symbol': 'LLY', 'reason': 'no_signal'}, {'symbol': 'JNJ', 'reason': 'no_signal'}, {'symbol': 'ABBV', 'reason': 'no_signal'}, {'symbol': 'TMO', 'reason': 'no_signal'}, {'symbol': 'CAT', 'reason': 'no_signal'}, {'symbol': 'GE', 'reason': 'no_signal'}, {'symbol': 'RTX', 'reason': 'no_signal'}, {'symbol': 'ETN', 'reason': 'no_signal'}, {'symbol': 'COST', 'reason': 'no_signal'}, {'symbol': 'PG', 'reason': 'no_signal'}, {'symbol': 'XOM', 'reason': 'no_signal'}, {'symbol': 'CVX', 'reason': 'no_signal'}, {'symbol': 'COP', 'reason': 'no_signal'}, {'symbol': 'NEE', 'reason': 'no_signal'}, {'symbol': 'SO', 'reason': 'no_signal'}, {'symbol': 'PLD', 'reason': 'no_signal'}, {'symbol': 'AMT', 'reason': 'no_signal'}, {'symbol': 'LIN', 'reason': 'no_signal'}, {'symbol': 'SHW', 'reason': 'no_signal'}, {'symbol': 'HD', 'reason': 'no_signal'}, {'symbol': 'MCD', 'reason': 'no_signal'}, {'symbol': 'META', 'reason': 'no_signal'}, {'symbol': 'NFLX', 'reason': 'no_signal'}, {'symbol': 'AVGO', 'reason': 'missing_live_data'}, {'symbol': 'ORCL', 'reason': 'no_signal'}, {'symbol': 'AMD', 'reason': 'no_signal'}, {'symbol': 'INTC', 'reason': 'no_signal'}, {'symbol': 'QCOM', 'reason': 'no_signal'}, {'symbol': 'ASML', 'reason': 'no_signal'}, {'symbol': 'KLAC', 'reason': 'no_signal'}, {'symbol': 'LRCX', 'reason': 'no_signal'}, {'symbol': 'MRVL', 'reason': 'no_signal'}, {'symbol': 'ADI', 'reason': 'no_signal'}, {'symbol': 'NXPI', 'reason': 'no_signal'}, {'symbol': 'ON', 'reason': 'no_signal'}, {'symbol': 'MCHP', 'reason': 'no_signal'}, {'symbol': 'CRM', 'reason': 'no_signal'}, {'symbol': 'NOW', 'reason': 'no_signal'}, {'symbol': 'PANW', 'reason': 'no_signal'}, {'symbol': 'CRWD', 'reason': 'no_signal'}, {'symbol': 'DDOG', 'reason': 'no_signal'}, {'symbol': 'NET', 'reason': 'no_signal'}, {'symbol': 'MDB', 'reason': 'no_signal'}, {'symbol': 'FTNT', 'reason': 'no_signal'}, {'symbol': 'APP', 'reason': 'no_signal'}, {'symbol': 'ABNB', 'reason': 'no_signal'}, {'symbol': 'DASH', 'reason': 'no_signal'}, {'symbol': 'C', 'reason': 'no_signal'}, {'symbol': 'MS', 'reason': 'no_signal'}, {'symbol': 'AXP', 'reason': 'no_signal'}, {'symbol': 'MA', 'reason': 'no_signal'}, {'symbol': 'COF', 'reason': 'no_signal'}, {'symbol': 'BLK', 'reason': 'no_signal'}, {'symbol': 'CME', 'reason': 'no_signal'}, {'symbol': 'ICE', 'reason': 'no_signal'}, {'symbol': 'MRK', 'reason': 'no_signal'}, {'symbol': 'ABT', 'reason': 'no_signal'}, {'symbol': 'MDT', 'reason': 'no_signal'}, {'symbol': 'ISRG', 'reason': 'no_signal'}, {'symbol': 'GILD', 'reason': 'no_signal'}, {'symbol': 'AMGN', 'reason': 'no_signal'}, {'symbol': 'BSX', 'reason': 'no_signal'}, {'symbol': 'BA', 'reason': 'no_signal'}, {'symbol': 'DE', 'reason': 'no_signal'}, {'symbol': 'HON', 'reason': 'no_signal'}, {'symbol': 'FDX', 'reason': 'no_signal'}, {'symbol': 'EOG', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'GOOG', 'reason': 'no_signal'}, {'symbol': 'CSCO', 'reason': 'no_signal'}, {'symbol': 'PM', 'reason': 'no_signal'}, {'symbol': 'GEV', 'reason': 'no_signal'}, {'symbol': 'TXN', 'reason': 'no_signal'}, {'symbol': 'WFC', 'reason': 'no_signal'}, {'symbol': 'ANET', 'reason': 'no_signal'}, {'symbol': 'SNDK', 'reason': 'no_signal'}, {'symbol': 'IBM', 'reason': 'no_signal'}, {'symbol': 'APH', 'reason': 'no_signal'}, {'symbol': 'DIS', 'reason': 'no_signal'}, {'symbol': 'VZ', 'reason': 'no_signal'}, {'symbol': 'DELL', 'reason': 'no_signal'}, {'symbol': 'STX', 'reason': 'no_signal'}, {'symbol': 'UNP', 'reason': 'no_signal'}, {'symbol': 'WELL', 'reason': 'no_signal'}, {'symbol': 'T', 'reason': 'no_signal'}, {'symbol': 'WDC', 'reason': 'no_signal'}, {'symbol': 'DHR', 'reason': 'no_signal'}, {'symbol': 'ACN', 'reason': 'no_signal'}, {'symbol': 'PGR', 'reason': 'no_signal'}, {'symbol': 'SPGI', 'reason': 'no_signal'}, {'symbol': 'NEM', 'reason': 'no_signal'}, {'symbol': 'CB', 'reason': 'no_signal'}, {'symbol': 'MO', 'reason': 'no_signal'}, {'symbol': 'BMY', 'reason': 'no_signal'}, {'symbol': 'GLW', 'reason': 'no_signal'}, {'symbol': 'CVS', 'reason': 'no_signal'}, {'symbol': 'MCK', 'reason': 'no_signal'}, {'symbol': 'ADP', 'reason': 'no_signal'}, {'symbol': 'TT', 'reason': 'no_signal'}, {'symbol': 'PWR', 'reason': 'no_signal'}, {'symbol': 'CEG', 'reason': 'no_signal'}, {'symbol': 'BNY', 'reason': 'no_signal'}, {'symbol': 'SNPS', 'reason': 'no_signal'}, {'symbol': 'CDNS', 'reason': 'no_signal'}, {'symbol': 'ADBE', 'reason': 'no_signal'}, {'symbol': 'JCI', 'reason': 'no_signal'}, {'symbol': 'HPE', 'reason': 'no_signal'}, {'symbol': 'VRT', 'reason': 'no_signal'}, {'symbol': 'ELV', 'reason': 'no_signal'}, {'symbol': 'WMB', 'reason': 'no_signal'}, {'symbol': 'EMR', 'reason': 'no_signal'}, {'symbol': 'LITE', 'reason': 'no_signal'}, {'symbol': 'HWM', 'reason': 'no_signal'}, {'symbol': 'HOOD', 'reason': 'no_signal'}, {'symbol': 'BX', 'reason': 'no_signal'}, {'symbol': 'INTU', 'reason': 'no_signal'}, {'symbol': 'MMM', 'reason': 'no_signal'}, {'symbol': 'MRNA', 'reason': 'no_signal'}, {'symbol': 'WM', 'reason': 'no_signal'}, {'symbol': 'TRV', 'reason': 'no_signal'}, {'symbol': 'BE', 'reason': 'no_signal'}, {'symbol': 'CI', 'reason': 'no_signal'}, {'symbol': 'MSI', 'reason': 'no_signal'}, {'symbol': 'HLT', 'reason': 'no_signal'}, {'symbol': 'CMCSA', 'reason': 'no_signal'}, {'symbol': 'CMI', 'reason': 'no_signal'}, {'symbol': 'GM', 'reason': 'no_signal'}, {'symbol': 'NSC', 'reason': 'no_signal'}, {'symbol': 'ECL', 'reason': 'no_signal'}, {'symbol': 'CTAS', 'reason': 'no_signal'}, {'symbol': 'MCO', 'reason': 'no_signal'}, {'symbol': 'RCL', 'reason': 'no_signal'}, {'symbol': 'ITW', 'reason': 'no_signal'}, {'symbol': 'HCA', 'reason': 'no_signal'}, {'symbol': 'SPG', 'reason': 'no_signal'}, {'symbol': 'MPWR', 'reason': 'no_signal'}, {'symbol': 'KMI', 'reason': 'no_signal'}, {'symbol': 'KEYS', 'reason': 'no_signal'}, {'symbol': 'KKR', 'reason': 'no_signal'}, {'symbol': 'DLR', 'reason': 'no_signal'}, {'symbol': 'TEL', 'reason': 'no_signal'}, {'symbol': 'MNST', 'reason': 'no_signal'}, {'symbol': 'TRGP', 'reason': 'no_signal'}, {'symbol': 'COR', 'reason': 'no_signal'}, {'symbol': 'TDG', 'reason': 'no_signal'}, {'symbol': 'TER', 'reason': 'no_signal'}, {'symbol': 'AJG', 'reason': 'no_signal'}, {'symbol': 'FAST', 'reason': 'no_signal'}, {'symbol': 'ALL', 'reason': 'no_signal'}, {'symbol': 'AON', 'reason': 'no_signal'}, {'symbol': 'OKE', 'reason': 'no_signal'}, {'symbol': 'FIX', 'reason': 'no_signal'}, {'symbol': 'AME', 'reason': 'no_signal'}, {'symbol': 'CIEN', 'reason': 'no_signal'}, {'symbol': 'PCAR', 'reason': 'no_signal'}, {'symbol': 'GWW', 'reason': 'no_signal'}, {'symbol': 'COHR', 'reason': 'no_signal'}, {'symbol': 'APO', 'reason': 'no_signal'}, {'symbol': 'BKR', 'reason': 'no_signal'}, {'symbol': 'CAH', 'reason': 'no_signal'}, {'symbol': 'D', 'reason': 'no_signal'}, {'symbol': 'CRH', 'reason': 'no_signal'}, {'symbol': 'DVN', 'reason': 'no_signal'}, {'symbol': 'SRE', 'reason': 'no_signal'}, {'symbol': 'MET', 'reason': 'no_signal'}, {'symbol': 'HUM', 'reason': 'no_signal'}, {'symbol': 'O', 'reason': 'no_signal'}, {'symbol': 'AFL', 'reason': 'no_signal'}, {'symbol': 'P', 'reason': 'no_signal'}, {'symbol': 'BDX', 'reason': 'no_signal'}, {'symbol': 'VYLR', 'reason': 'missing_required_chart_history', 'missing': ['daily', 'weekly']}, {'symbol': 'HONA', 'reason': 'no_signal'}, {'symbol': 'VST', 'reason': 'no_signal'}, {'symbol': 'EW', 'reason': 'no_signal'}, {'symbol': 'ADSK', 'reason': 'no_signal'}, {'symbol': 'PSA', 'reason': 'no_signal'}, {'symbol': 'A', 'reason': 'no_signal'}, {'symbol': 'ETR', 'reason': 'no_signal'}, {'symbol': 'ROK', 'reason': 'no_signal'}, {'symbol': 'WAB', 'reason': 'no_signal'}, {'symbol': 'STT', 'reason': 'no_signal'}, {'symbol': 'PYPL', 'reason': 'no_signal'}, {'symbol': 'AZO', 'reason': 'no_signal'}, {'symbol': 'F', 'reason': 'no_signal'}, {'symbol': 'NTAP', 'reason': 'no_signal'}, {'symbol': 'XEL', 'reason': 'no_signal'}, {'symbol': 'FITB', 'reason': 'no_signal'}, {'symbol': 'EBAY', 'reason': 'no_signal'}, {'symbol': 'KDP', 'reason': 'no_signal'}, {'symbol': 'LHX', 'reason': 'no_signal'}, {'symbol': 'GRMN', 'reason': 'no_signal'}, {'symbol': 'VEEV', 'reason': 'no_signal'}, {'symbol': 'VMRK', 'reason': 'no_signal'}, {'symbol': 'TWLO', 'reason': 'no_signal'}, {'symbol': 'EXC', 'reason': 'no_signal'}, {'symbol': 'FLEX', 'reason': 'no_signal'}, {'symbol': 'IQV', 'reason': 'no_signal'}, {'symbol': 'RSG', 'reason': 'no_signal'}, {'symbol': 'VTR', 'reason': 'no_signal'}, {'symbol': 'CVNA', 'reason': 'no_signal'}, {'symbol': 'FERG', 'reason': 'no_signal'}, {'symbol': 'WAT', 'reason': 'no_signal'}, {'symbol': 'ILMN', 'reason': 'no_signal'}, {'symbol': 'NDAQ', 'reason': 'no_signal'}, {'symbol': 'XYZ', 'reason': 'no_signal'}, {'symbol': 'MSCI', 'reason': 'no_signal'}, {'symbol': 'IDXX', 'reason': 'no_signal'}, {'symbol': 'AIG', 'reason': 'no_signal'}, {'symbol': 'COIN', 'reason': 'no_signal'}, {'symbol': 'YUM', 'reason': 'no_signal'}, {'symbol': 'FANG', 'reason': 'no_signal'}, {'symbol': 'IBKR', 'reason': 'no_signal'}, {'symbol': 'ED', 'reason': 'no_signal'}, {'symbol': 'PRU', 'reason': 'no_signal'}, {'symbol': 'ADM', 'reason': 'no_signal'}, {'symbol': 'SYY', 'reason': 'no_signal'}, {'symbol': 'WDAY', 'reason': 'no_signal'}, {'symbol': 'CBRE', 'reason': 'no_signal'}, {'symbol': 'TTWO', 'reason': 'no_signal'}, {'symbol': 'ROP', 'reason': 'no_signal'}, {'symbol': 'PEG', 'reason': 'no_signal'}, {'symbol': 'HIG', 'reason': 'no_signal'}, {'symbol': 'EME', 'reason': 'no_signal'}, {'symbol': 'IRM', 'reason': 'no_signal'}, {'symbol': 'KVUE', 'reason': 'no_signal'}, {'symbol': 'WEC', 'reason': 'no_signal'}, {'symbol': 'DHI', 'reason': 'no_signal'}, {'symbol': 'BIIB', 'reason': 'no_signal'}, {'symbol': 'UAL', 'reason': 'no_signal'}, {'symbol': 'ODFL', 'reason': 'no_signal'}, {'symbol': 'RMD', 'reason': 'no_signal'}, {'symbol': 'CCL', 'reason': 'no_signal'}, {'symbol': 'AXON', 'reason': 'no_signal'}, {'symbol': 'PAYX', 'reason': 'no_signal'}, {'symbol': 'EQT', 'reason': 'no_signal'}, {'symbol': 'CNC', 'reason': 'no_signal'}, {'symbol': 'ACGL', 'reason': 'no_signal'}, {'symbol': 'KMB', 'reason': 'no_signal'}, {'symbol': 'JBL', 'reason': 'no_signal'}, {'symbol': 'DXCM', 'reason': 'no_signal'}, {'symbol': 'STLD', 'reason': 'no_signal'}, {'symbol': 'VMC', 'reason': 'no_signal'}, {'symbol': 'MTB', 'reason': 'no_signal'}, {'symbol': 'MTD', 'reason': 'no_signal'}, {'symbol': 'HBAN', 'reason': 'no_signal'}, {'symbol': 'ZTS', 'reason': 'no_signal'}, {'symbol': 'CBOE', 'reason': 'no_signal'}, {'symbol': 'NTRS', 'reason': 'no_signal'}, {'symbol': 'EXPE', 'reason': 'no_signal'}, {'symbol': 'GEHC', 'reason': 'no_signal'}, {'symbol': 'PCG', 'reason': 'no_signal'}, {'symbol': 'MLM', 'reason': 'no_signal'}, {'symbol': 'AEE', 'reason': 'no_signal'}, {'symbol': 'TDY', 'reason': 'no_signal'}, {'symbol': 'EXR', 'reason': 'no_signal'}, {'symbol': 'WSM', 'reason': 'no_signal'}, {'symbol': 'DG', 'reason': 'no_signal'}, {'symbol': 'WTW', 'reason': 'no_signal'}, {'symbol': 'RJF', 'reason': 'no_signal'}, {'symbol': 'ATO', 'reason': 'no_signal'}, {'symbol': 'HPQ', 'reason': 'no_signal'}, {'symbol': 'IR', 'reason': 'no_signal'}, {'symbol': 'CFG', 'reason': 'no_signal'}, {'symbol': 'LYV', 'reason': 'no_signal'}, {'symbol': 'CTSH', 'reason': 'no_signal'}, {'symbol': 'FFIV', 'reason': 'no_signal'}, {'symbol': 'DTE', 'reason': 'no_signal'}, {'symbol': 'PFE', 'reason': 'no_signal'}, {'symbol': 'PH', 'reason': 'no_signal'}, {'symbol': 'URI', 'reason': 'no_signal'}, {'symbol': 'PINS', 'reason': 'no_signal'}, {'symbol': 'CSX', 'reason': 'no_signal'}, {'symbol': 'PNC', 'reason': 'no_signal'}, {'symbol': 'LMT', 'reason': 'no_signal'}, {'symbol': 'NOC', 'reason': 'no_signal'}, {'symbol': 'PSX', 'reason': 'no_signal'}, {'symbol': 'GD', 'reason': 'no_signal'}, {'symbol': 'RBLX', 'reason': 'no_signal'}, {'symbol': 'RDDT', 'reason': 'no_signal'}, {'symbol': 'CARR', 'reason': 'no_signal'}, {'symbol': 'REGN', 'reason': 'no_signal'}, {'symbol': 'NKE', 'reason': 'no_signal'}, {'symbol': 'ROST', 'reason': 'no_signal'}, {'symbol': 'SBUX', 'reason': 'no_signal'}, {'symbol': 'LOW', 'reason': 'no_signal'}, {'symbol': 'SCHW', 'reason': 'no_signal'}, {'symbol': 'SHOP', 'reason': 'no_signal'}, {'symbol': 'TJX', 'reason': 'no_signal'}, {'symbol': 'BKNG', 'reason': 'no_signal'}, {'symbol': 'MAR', 'reason': 'no_signal'}, {'symbol': 'CMG', 'reason': 'no_signal'}, {'symbol': 'ORLY', 'reason': 'no_signal'}, {'symbol': 'TGT', 'reason': 'no_signal'}, {'symbol': 'PEP', 'reason': 'no_signal'}, {'symbol': 'MDLZ', 'reason': 'no_signal'}, {'symbol': 'CL', 'reason': 'no_signal'}, {'symbol': 'KHC', 'reason': 'no_signal'}, {'symbol': 'GIS', 'reason': 'no_signal'}, {'symbol': 'KR', 'reason': 'no_signal'}, {'symbol': 'EL', 'reason': 'no_signal'}, {'symbol': 'SLB', 'reason': 'no_signal'}, {'symbol': 'SNAP', 'reason': 'no_signal'}, {'symbol': 'OXY', 'reason': 'no_signal'}, {'symbol': 'SNOW', 'reason': 'no_signal'}, {'symbol': 'MPC', 'reason': 'no_signal'}, {'symbol': 'SYK', 'reason': 'no_signal'}, {'symbol': 'TEAM', 'reason': 'no_signal'}, {'symbol': 'VLO', 'reason': 'no_signal'}, {'symbol': 'TFC', 'reason': 'no_signal'}, {'symbol': 'HAL', 'reason': 'no_signal'}, {'symbol': 'FCX', 'reason': 'no_signal'}, {'symbol': 'NUE', 'reason': 'missing_live_data'}, {'symbol': 'TMUS', 'reason': 'missing_live_data'}, {'symbol': 'APD', 'reason': 'missing_live_data'}, {'symbol': 'TSM', 'reason': 'missing_live_data'}, {'symbol': 'DUK', 'reason': 'no_signal'}, {'symbol': 'UNH', 'reason': 'no_signal'}, {'symbol': 'UBER', 'reason': 'no_signal'}, {'symbol': 'AEP', 'reason': 'no_signal'}, {'symbol': 'UPS', 'reason': 'no_signal'}, {'symbol': 'CCI', 'reason': 'no_signal'}, {'symbol': 'EQIX', 'reason': 'no_signal'}, {'symbol': 'USB', 'reason': 'no_signal'}, {'symbol': 'VRTX', 'reason': 'no_signal'}, {'symbol': 'ZS', 'reason': 'no_signal'}, {'symbol': 'WMT', 'reason': 'no_signal'}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'no_signal'}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'no_signal'}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'no_signal'}, {'symbol': 'PDD', 'reason': 'no_signal'}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'NVDA', 'reason': 'no_signal'}, {'symbol': 'MU', 'reason': 'no_signal'}, {'symbol': 'PLTR', 'reason': 'no_signal'}, {'symbol': 'BRKH', 'reason': 'no_signal'}, {'symbol': 'NXTC', 'reason': 'no_signal'}, {'symbol': 'TGHL', 'reason': 'no_signal'}, {'symbol': 'MRAI', 'reason': 'missing_live_data'}, {'symbol': 'CPHI', 'reason': 'no_signal'}, {'symbol': 'MAAS', 'reason': 'no_signal'}, {'symbol': 'LEDS', 'reason': 'no_signal'}, {'symbol': 'APLM', 'reason': 'no_signal'}, {'symbol': 'PYPG', 'reason': 'no_signal'}, {'symbol': 'VEEE', 'reason': 'no_signal'}, {'symbol': 'EAF', 'reason': 'no_signal'}, {'symbol': 'YYAI', 'reason': 'no_signal'}, {'symbol': 'TOP', 'reason': 'no_signal'}, {'symbol': 'RCEL', 'reason': 'no_signal'}, {'symbol': 'SYRA', 'reason': 'missing_live_data'}, {'symbol': 'CRMT', 'reason': 'no_signal'}, {'symbol': 'NAKA', 'reason': 'no_signal'}, {'symbol': 'MAN', 'reason': 'no_signal'}, {'symbol': 'GOOGL', 'reason': 'no_signal'}, {'symbol': 'JPM', 'reason': 'no_signal'}, {'symbol': 'BAC', 'reason': 'no_signal'}, {'symbol': 'GS', 'reason': 'no_signal'}, {'symbol': 'V', 'reason': 'no_signal'}, {'symbol': 'LLY', 'reason': 'no_signal'}, {'symbol': 'JNJ', 'reason': 'no_signal'}, {'symbol': 'ABBV', 'reason': 'no_signal'}, {'symbol': 'TMO', 'reason': 'no_signal'}, {'symbol': 'CAT', 'reason': 'no_signal'}, {'symbol': 'GE', 'reason': 'no_signal'}, {'symbol': 'RTX', 'reason': 'no_signal'}, {'symbol': 'ETN', 'reason': 'no_signal'}, {'symbol': 'COST', 'reason': 'no_signal'}, {'symbol': 'PG', 'reason': 'no_signal'}, {'symbol': 'XOM', 'reason': 'no_signal'}, {'symbol': 'CVX', 'reason': 'no_signal'}, {'symbol': 'COP', 'reason': 'no_signal'}, {'symbol': 'NEE', 'reason': 'no_signal'}, {'symbol': 'SO', 'reason': 'no_signal'}, {'symbol': 'PLD', 'reason': 'no_signal'}, {'symbol': 'AMT', 'reason': 'no_signal'}, {'symbol': 'LIN', 'reason': 'no_signal'}, {'symbol': 'SHW', 'reason': 'no_signal'}, {'symbol': 'HD', 'reason': 'no_signal'}, {'symbol': 'MCD', 'reason': 'no_signal'}, {'symbol': 'META', 'reason': 'no_signal'}, {'symbol': 'NFLX', 'reason': 'no_signal'}, {'symbol': 'AVGO', 'reason': 'missing_live_data'}, {'symbol': 'ORCL', 'reason': 'no_signal'}, {'symbol': 'AMD', 'reason': 'no_signal'}, {'symbol': 'INTC', 'reason': 'no_signal'}, {'symbol': 'QCOM', 'reason': 'no_signal'}, {'symbol': 'ASML', 'reason': 'no_signal'}, {'symbol': 'KLAC', 'reason': 'no_signal'}, {'symbol': 'LRCX', 'reason': 'no_signal'}, {'symbol': 'MRVL', 'reason': 'no_signal'}, {'symbol': 'ADI', 'reason': 'no_signal'}, {'symbol': 'NXPI', 'reason': 'no_signal'}, {'symbol': 'ON', 'reason': 'no_signal'}, {'symbol': 'MCHP', 'reason': 'no_signal'}, {'symbol': 'CRM', 'reason': 'no_signal'}, {'symbol': 'NOW', 'reason': 'no_signal'}, {'symbol': 'PANW', 'reason': 'no_signal'}, {'symbol': 'CRWD', 'reason': 'no_signal'}, {'symbol': 'DDOG', 'reason': 'no_signal'}, {'symbol': 'NET', 'reason': 'no_signal'}, {'symbol': 'MDB', 'reason': 'no_signal'}, {'symbol': 'FTNT', 'reason': 'no_signal'}, {'symbol': 'APP', 'reason': 'no_signal'}, {'symbol': 'ABNB', 'reason': 'no_signal'}, {'symbol': 'DASH', 'reason': 'no_signal'}, {'symbol': 'C', 'reason': 'no_signal'}, {'symbol': 'MS', 'reason': 'no_signal'}, {'symbol': 'AXP', 'reason': 'no_signal'}, {'symbol': 'MA', 'reason': 'no_signal'}, {'symbol': 'COF', 'reason': 'no_signal'}, {'symbol': 'BLK', 'reason': 'no_signal'}, {'symbol': 'CME', 'reason': 'no_signal'}, {'symbol': 'ICE', 'reason': 'no_signal'}, {'symbol': 'MRK', 'reason': 'no_signal'}, {'symbol': 'ABT', 'reason': 'no_signal'}, {'symbol': 'MDT', 'reason': 'no_signal'}, {'symbol': 'ISRG', 'reason': 'no_signal'}, {'symbol': 'GILD', 'reason': 'no_signal'}, {'symbol': 'AMGN', 'reason': 'no_signal'}, {'symbol': 'BSX', 'reason': 'no_signal'}, {'symbol': 'BA', 'reason': 'no_signal'}, {'symbol': 'DE', 'reason': 'no_signal'}, {'symbol': 'HON', 'reason': 'no_signal'}, {'symbol': 'FDX', 'reason': 'no_signal'}, {'symbol': 'EOG', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'GOOG', 'reason': 'no_signal'}, {'symbol': 'CSCO', 'reason': 'no_signal'}, {'symbol': 'PM', 'reason': 'no_signal'}, {'symbol': 'GEV', 'reason': 'no_signal'}, {'symbol': 'TXN', 'reason': 'no_signal'}, {'symbol': 'WFC', 'reason': 'no_signal'}, {'symbol': 'ANET', 'reason': 'no_signal'}, {'symbol': 'SNDK', 'reason': 'no_signal'}, {'symbol': 'IBM', 'reason': 'no_signal'}, {'symbol': 'APH', 'reason': 'no_signal'}, {'symbol': 'DIS', 'reason': 'no_signal'}, {'symbol': 'VZ', 'reason': 'no_signal'}, {'symbol': 'DELL', 'reason': 'no_signal'}, {'symbol': 'STX', 'reason': 'no_signal'}, {'symbol': 'UNP', 'reason': 'no_signal'}, {'symbol': 'WELL', 'reason': 'no_signal'}, {'symbol': 'T', 'reason': 'no_signal'}, {'symbol': 'WDC', 'reason': 'no_signal'}, {'symbol': 'DHR', 'reason': 'no_signal'}, {'symbol': 'ACN', 'reason': 'no_signal'}, {'symbol': 'PGR', 'reason': 'no_signal'}, {'symbol': 'SPGI', 'reason': 'no_signal'}, {'symbol': 'NEM', 'reason': 'no_signal'}, {'symbol': 'CB', 'reason': 'no_signal'}, {'symbol': 'MO', 'reason': 'no_signal'}, {'symbol': 'BMY', 'reason': 'no_signal'}, {'symbol': 'GLW', 'reason': 'no_signal'}, {'symbol': 'CVS', 'reason': 'no_signal'}, {'symbol': 'MCK', 'reason': 'no_signal'}, {'symbol': 'ADP', 'reason': 'no_signal'}, {'symbol': 'TT', 'reason': 'no_signal'}, {'symbol': 'PWR', 'reason': 'no_signal'}, {'symbol': 'CEG', 'reason': 'no_signal'}, {'symbol': 'BNY', 'reason': 'no_signal'}, {'symbol': 'SNPS', 'reason': 'no_signal'}, {'symbol': 'CDNS', 'reason': 'no_signal'}, {'symbol': 'ADBE', 'reason': 'no_signal'}, {'symbol': 'JCI', 'reason': 'no_signal'}, {'symbol': 'HPE', 'reason': 'no_signal'}, {'symbol': 'VRT', 'reason': 'no_signal'}, {'symbol': 'ELV', 'reason': 'no_signal'}, {'symbol': 'WMB', 'reason': 'no_signal'}, {'symbol': 'EMR', 'reason': 'no_signal'}, {'symbol': 'LITE', 'reason': 'no_signal'}, {'symbol': 'HWM', 'reason': 'no_signal'}, {'symbol': 'HOOD', 'reason': 'no_signal'}, {'symbol': 'BX', 'reason': 'no_signal'}, {'symbol': 'INTU', 'reason': 'no_signal'}, {'symbol': 'MMM', 'reason': 'no_signal'}, {'symbol': 'MRNA', 'reason': 'no_signal'}, {'symbol': 'WM', 'reason': 'no_signal'}, {'symbol': 'TRV', 'reason': 'no_signal'}, {'symbol': 'BE', 'reason': 'no_signal'}, {'symbol': 'CI', 'reason': 'no_signal'}, {'symbol': 'MSI', 'reason': 'no_signal'}, {'symbol': 'HLT', 'reason': 'no_signal'}, {'symbol': 'CMCSA', 'reason': 'no_signal'}, {'symbol': 'CMI', 'reason': 'no_signal'}, {'symbol': 'GM', 'reason': 'no_signal'}, {'symbol': 'NSC', 'reason': 'no_signal'}, {'symbol': 'ECL', 'reason': 'no_signal'}, {'symbol': 'CTAS', 'reason': 'no_signal'}, {'symbol': 'MCO', 'reason': 'no_signal'}, {'symbol': 'RCL', 'reason': 'no_signal'}, {'symbol': 'ITW', 'reason': 'no_signal'}, {'symbol': 'HCA', 'reason': 'no_signal'}, {'symbol': 'SPG', 'reason': 'no_signal'}, {'symbol': 'MPWR', 'reason': 'no_signal'}, {'symbol': 'KMI', 'reason': 'no_signal'}, {'symbol': 'KEYS', 'reason': 'no_signal'}, {'symbol': 'KKR', 'reason': 'no_signal'}, {'symbol': 'DLR', 'reason': 'no_signal'}, {'symbol': 'TEL', 'reason': 'no_signal'}, {'symbol': 'MNST', 'reason': 'no_signal'}, {'symbol': 'TRGP', 'reason': 'no_signal'}, {'symbol': 'COR', 'reason': 'no_signal'}, {'symbol': 'TDG', 'reason': 'no_signal'}, {'symbol': 'TER', 'reason': 'no_signal'}, {'symbol': 'AJG', 'reason': 'no_signal'}, {'symbol': 'FAST', 'reason': 'no_signal'}, {'symbol': 'ALL', 'reason': 'no_signal'}, {'symbol': 'AON', 'reason': 'no_signal'}, {'symbol': 'OKE', 'reason': 'no_signal'}, {'symbol': 'FIX', 'reason': 'no_signal'}, {'symbol': 'AME', 'reason': 'no_signal'}, {'symbol': 'CIEN', 'reason': 'no_signal'}, {'symbol': 'PCAR', 'reason': 'no_signal'}, {'symbol': 'GWW', 'reason': 'no_signal'}, {'symbol': 'COHR', 'reason': 'no_signal'}, {'symbol': 'APO', 'reason': 'no_signal'}, {'symbol': 'BKR', 'reason': 'no_signal'}, {'symbol': 'CAH', 'reason': 'no_signal'}, {'symbol': 'D', 'reason': 'no_signal'}, {'symbol': 'CRH', 'reason': 'no_signal'}, {'symbol': 'DVN', 'reason': 'no_signal'}, {'symbol': 'SRE', 'reason': 'no_signal'}, {'symbol': 'MET', 'reason': 'no_signal'}, {'symbol': 'HUM', 'reason': 'no_signal'}, {'symbol': 'O', 'reason': 'no_signal'}, {'symbol': 'AFL', 'reason': 'no_signal'}, {'symbol': 'P', 'reason': 'no_signal'}, {'symbol': 'BDX', 'reason': 'no_signal'}, {'symbol': 'VYLR', 'reason': 'missing_required_chart_history', 'missing': ['daily', 'weekly']}, {'symbol': 'HONA', 'reason': 'no_signal'}, {'symbol': 'VST', 'reason': 'no_signal'}, {'symbol': 'EW', 'reason': 'no_signal'}, {'symbol': 'ADSK', 'reason': 'no_signal'}, {'symbol': 'PSA', 'reason': 'no_signal'}, {'symbol': 'A', 'reason': 'no_signal'}, {'symbol': 'ETR', 'reason': 'no_signal'}, {'symbol': 'ROK', 'reason': 'no_signal'}, {'symbol': 'WAB', 'reason': 'no_signal'}, {'symbol': 'STT', 'reason': 'no_signal'}, {'symbol': 'PYPL', 'reason': 'no_signal'}, {'symbol': 'AZO', 'reason': 'no_signal'}, {'symbol': 'F', 'reason': 'no_signal'}, {'symbol': 'NTAP', 'reason': 'no_signal'}, {'symbol': 'XEL', 'reason': 'no_signal'}, {'symbol': 'FITB', 'reason': 'no_signal'}, {'symbol': 'EBAY', 'reason': 'no_signal'}, {'symbol': 'KDP', 'reason': 'no_signal'}, {'symbol': 'LHX', 'reason': 'no_signal'}, {'symbol': 'GRMN', 'reason': 'no_signal'}, {'symbol': 'VEEV', 'reason': 'no_signal'}, {'symbol': 'VMRK', 'reason': 'no_signal'}, {'symbol': 'TWLO', 'reason': 'no_signal'}, {'symbol': 'EXC', 'reason': 'no_signal'}, {'symbol': 'FLEX', 'reason': 'no_signal'}, {'symbol': 'IQV', 'reason': 'no_signal'}, {'symbol': 'RSG', 'reason': 'no_signal'}, {'symbol': 'VTR', 'reason': 'no_signal'}, {'symbol': 'CVNA', 'reason': 'no_signal'}, {'symbol': 'FERG', 'reason': 'no_signal'}, {'symbol': 'WAT', 'reason': 'no_signal'}, {'symbol': 'ILMN', 'reason': 'no_signal'}, {'symbol': 'NDAQ', 'reason': 'no_signal'}, {'symbol': 'XYZ', 'reason': 'no_signal'}, {'symbol': 'MSCI', 'reason': 'no_signal'}, {'symbol': 'IDXX', 'reason': 'no_signal'}, {'symbol': 'AIG', 'reason': 'no_signal'}, {'symbol': 'COIN', 'reason': 'no_signal'}, {'symbol': 'YUM', 'reason': 'no_signal'}, {'symbol': 'FANG', 'reason': 'no_signal'}, {'symbol': 'IBKR', 'reason': 'no_signal'}, {'symbol': 'ED', 'reason': 'no_signal'}, {'symbol': 'PRU', 'reason': 'no_signal'}, {'symbol': 'ADM', 'reason': 'no_signal'}, {'symbol': 'SYY', 'reason': 'no_signal'}, {'symbol': 'WDAY', 'reason': 'no_signal'}, {'symbol': 'CBRE', 'reason': 'no_signal'}, {'symbol': 'TTWO', 'reason': 'no_signal'}, {'symbol': 'ROP', 'reason': 'no_signal'}, {'symbol': 'PEG', 'reason': 'no_signal'}, {'symbol': 'HIG', 'reason': 'no_signal'}, {'symbol': 'EME', 'reason': 'no_signal'}, {'symbol': 'IRM', 'reason': 'no_signal'}, {'symbol': 'KVUE', 'reason': 'no_signal'}, {'symbol': 'WEC', 'reason': 'no_signal'}, {'symbol': 'DHI', 'reason': 'no_signal'}, {'symbol': 'BIIB', 'reason': 'no_signal'}, {'symbol': 'UAL', 'reason': 'no_signal'}, {'symbol': 'ODFL', 'reason': 'no_signal'}, {'symbol': 'RMD', 'reason': 'no_signal'}, {'symbol': 'CCL', 'reason': 'no_signal'}, {'symbol': 'AXON', 'reason': 'no_signal'}, {'symbol': 'PAYX', 'reason': 'no_signal'}, {'symbol': 'EQT', 'reason': 'no_signal'}, {'symbol': 'CNC', 'reason': 'no_signal'}, {'symbol': 'ACGL', 'reason': 'no_signal'}, {'symbol': 'KMB', 'reason': 'no_signal'}, {'symbol': 'JBL', 'reason': 'no_signal'}, {'symbol': 'DXCM', 'reason': 'no_signal'}, {'symbol': 'STLD', 'reason': 'no_signal'}, {'symbol': 'VMC', 'reason': 'no_signal'}, {'symbol': 'MTB', 'reason': 'no_signal'}, {'symbol': 'MTD', 'reason': 'no_signal'}, {'symbol': 'HBAN', 'reason': 'no_signal'}, {'symbol': 'ZTS', 'reason': 'no_signal'}, {'symbol': 'CBOE', 'reason': 'no_signal'}, {'symbol': 'NTRS', 'reason': 'no_signal'}, {'symbol': 'EXPE', 'reason': 'no_signal'}, {'symbol': 'GEHC', 'reason': 'no_signal'}, {'symbol': 'PCG', 'reason': 'no_signal'}, {'symbol': 'MLM', 'reason': 'no_signal'}, {'symbol': 'AEE', 'reason': 'no_signal'}, {'symbol': 'TDY', 'reason': 'no_signal'}, {'symbol': 'EXR', 'reason': 'no_signal'}, {'symbol': 'WSM', 'reason': 'no_signal'}, {'symbol': 'DG', 'reason': 'no_signal'}, {'symbol': 'WTW', 'reason': 'no_signal'}, {'symbol': 'RJF', 'reason': 'no_signal'}, {'symbol': 'ATO', 'reason': 'no_signal'}, {'symbol': 'HPQ', 'reason': 'no_signal'}, {'symbol': 'IR', 'reason': 'no_signal'}, {'symbol': 'CFG', 'reason': 'no_signal'}, {'symbol': 'LYV', 'reason': 'no_signal'}, {'symbol': 'CTSH', 'reason': 'no_signal'}, {'symbol': 'FFIV', 'reason': 'no_signal'}, {'symbol': 'DTE', 'reason': 'no_signal'}, {'symbol': 'PFE', 'reason': 'no_signal'}, {'symbol': 'PH', 'reason': 'no_signal'}, {'symbol': 'URI', 'reason': 'no_signal'}, {'symbol': 'PINS', 'reason': 'no_signal'}, {'symbol': 'CSX', 'reason': 'no_signal'}, {'symbol': 'PNC', 'reason': 'no_signal'}, {'symbol': 'LMT', 'reason': 'no_signal'}, {'symbol': 'NOC', 'reason': 'no_signal'}, {'symbol': 'PSX', 'reason': 'no_signal'}, {'symbol': 'GD', 'reason': 'no_signal'}, {'symbol': 'RBLX', 'reason': 'no_signal'}, {'symbol': 'RDDT', 'reason': 'no_signal'}, {'symbol': 'CARR', 'reason': 'no_signal'}, {'symbol': 'REGN', 'reason': 'no_signal'}, {'symbol': 'NKE', 'reason': 'no_signal'}, {'symbol': 'ROST', 'reason': 'no_signal'}, {'symbol': 'SBUX', 'reason': 'no_signal'}, {'symbol': 'LOW', 'reason': 'no_signal'}, {'symbol': 'SCHW', 'reason': 'no_signal'}, {'symbol': 'SHOP', 'reason': 'no_signal'}, {'symbol': 'TJX', 'reason': 'no_signal'}, {'symbol': 'BKNG', 'reason': 'no_signal'}, {'symbol': 'MAR', 'reason': 'no_signal'}, {'symbol': 'CMG', 'reason': 'no_signal'}, {'symbol': 'ORLY', 'reason': 'no_signal'}, {'symbol': 'TGT', 'reason': 'no_signal'}, {'symbol': 'PEP', 'reason': 'no_signal'}, {'symbol': 'MDLZ', 'reason': 'no_signal'}, {'symbol': 'CL', 'reason': 'no_signal'}, {'symbol': 'KHC', 'reason': 'no_signal'}, {'symbol': 'GIS', 'reason': 'no_signal'}, {'symbol': 'KR', 'reason': 'no_signal'}, {'symbol': 'EL', 'reason': 'no_signal'}, {'symbol': 'SLB', 'reason': 'no_signal'}, {'symbol': 'SNAP', 'reason': 'no_signal'}, {'symbol': 'OXY', 'reason': 'no_signal'}, {'symbol': 'SNOW', 'reason': 'no_signal'}, {'symbol': 'MPC', 'reason': 'no_signal'}, {'symbol': 'SYK', 'reason': 'no_signal'}, {'symbol': 'TEAM', 'reason': 'no_signal'}, {'symbol': 'VLO', 'reason': 'no_signal'}, {'symbol': 'TFC', 'reason': 'no_signal'}, {'symbol': 'HAL', 'reason': 'no_signal'}, {'symbol': 'FCX', 'reason': 'no_signal'}, {'symbol': 'NUE', 'reason': 'no_signal'}, {'symbol': 'TMUS', 'reason': 'no_signal'}, {'symbol': 'APD', 'reason': 'no_signal'}, {'symbol': 'TSM', 'reason': 'no_signal'}, {'symbol': 'DUK', 'reason': 'no_signal'}, {'symbol': 'UNH', 'reason': 'no_signal'}, {'symbol': 'UBER', 'reason': 'no_signal'}, {'symbol': 'AEP', 'reason': 'no_signal'}, {'symbol': 'UPS', 'reason': 'no_signal'}, {'symbol': 'CCI', 'reason': 'no_signal'}, {'symbol': 'EQIX', 'reason': 'no_signal'}, {'symbol': 'USB', 'reason': 'no_signal'}, {'symbol': 'VRTX', 'reason': 'no_signal'}, {'symbol': 'ZS', 'reason': 'no_signal'}, {'symbol': 'WMT', 'reason': 'no_signal'}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'no_signal'}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'no_signal'}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'no_signal'}, {'symbol': 'PDD', 'reason': 'no_signal'}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'NVDA', 'reason': 'no_signal'}, {'symbol': 'MU', 'reason': 'no_signal'}, {'symbol': 'PLTR', 'reason': 'no_signal'}, {'symbol': 'BRKH', 'reason': 'no_signal'}, {'symbol': 'NXTC', 'reason': 'no_signal'}, {'symbol': 'TGHL', 'reason': 'no_signal'}, {'symbol': 'MRAI', 'reason': 'missing_live_data'}, {'symbol': 'CPHI', 'reason': 'no_signal'}, {'symbol': 'MAAS', 'reason': 'no_signal'}, {'symbol': 'LEDS', 'reason': 'no_signal'}, {'symbol': 'APLM', 'reason': 'no_signal'}, {'symbol': 'PYPG', 'reason': 'no_signal'}, {'symbol': 'VEEE', 'reason': 'no_signal'}, {'symbol': 'EAF', 'reason': 'no_signal'}, {'symbol': 'YYAI', 'reason': 'no_signal'}, {'symbol': 'TOP', 'reason': 'no_signal'}, {'symbol': 'RCEL', 'reason': 'no_signal'}, {'symbol': 'SYRA', 'reason': 'missing_live_data'}, {'symbol': 'CRMT', 'reason': 'no_signal'}, {'symbol': 'NAKA', 'reason': 'no_signal'}, {'symbol': 'MAN', 'reason': 'no_signal'}, {'symbol': 'GOOGL', 'reason': 'no_signal'}, {'symbol': 'JPM', 'reason': 'no_signal'}, {'symbol': 'BAC', 'reason': 'no_signal'}, {'symbol': 'GS', 'reason': 'no_signal'}, {'symbol': 'V', 'reason': 'no_signal'}, {'symbol': 'LLY', 'reason': 'no_signal'}, {'symbol': 'JNJ', 'reason': 'no_signal'}, {'symbol': 'ABBV', 'reason': 'no_signal'}, {'symbol': 'TMO', 'reason': 'no_signal'}, {'symbol': 'CAT', 'reason': 'no_signal'}, {'symbol': 'GE', 'reason': 'no_signal'}, {'symbol': 'RTX', 'reason': 'no_signal'}, {'symbol': 'ETN', 'reason': 'no_signal'}, {'symbol': 'COST', 'reason': 'no_signal'}, {'symbol': 'PG', 'reason': 'no_signal'}, {'symbol': 'XOM', 'reason': 'no_signal'}, {'symbol': 'CVX', 'reason': 'no_signal'}, {'symbol': 'COP', 'reason': 'no_signal'}, {'symbol': 'NEE', 'reason': 'no_signal'}, {'symbol': 'SO', 'reason': 'no_signal'}, {'symbol': 'PLD', 'reason': 'no_signal'}, {'symbol': 'AMT', 'reason': 'no_signal'}, {'symbol': 'LIN', 'reason': 'no_signal'}, {'symbol': 'SHW', 'reason': 'no_signal'}, {'symbol': 'HD', 'reason': 'no_signal'}, {'symbol': 'MCD', 'reason': 'no_signal'}, {'symbol': 'META', 'reason': 'no_signal'}, {'symbol': 'NFLX', 'reason': 'no_signal'}, {'symbol': 'AVGO', 'reason': 'missing_live_data'}, {'symbol': 'ORCL', 'reason': 'no_signal'}, {'symbol': 'AMD', 'reason': 'no_signal'}, {'symbol': 'INTC', 'reason': 'no_signal'}, {'symbol': 'QCOM', 'reason': 'no_signal'}, {'symbol': 'ASML', 'reason': 'no_signal'}, {'symbol': 'KLAC', 'reason': 'no_signal'}, {'symbol': 'LRCX', 'reason': 'no_signal'}, {'symbol': 'MRVL', 'reason': 'no_signal'}, {'symbol': 'ADI', 'reason': 'no_signal'}, {'symbol': 'NXPI', 'reason': 'no_signal'}, {'symbol': 'ON', 'reason': 'no_signal'}, {'symbol': 'MCHP', 'reason': 'no_signal'}, {'symbol': 'CRM', 'reason': 'no_signal'}, {'symbol': 'NOW', 'reason': 'no_signal'}, {'symbol': 'PANW', 'reason': 'no_signal'}, {'symbol': 'CRWD', 'reason': 'no_signal'}, {'symbol': 'DDOG', 'reason': 'no_signal'}, {'symbol': 'NET', 'reason': 'no_signal'}, {'symbol': 'MDB', 'reason': 'no_signal'}, {'symbol': 'FTNT', 'reason': 'no_signal'}, {'symbol': 'APP', 'reason': 'no_signal'}, {'symbol': 'ABNB', 'reason': 'no_signal'}, {'symbol': 'DASH', 'reason': 'no_signal'}, {'symbol': 'C', 'reason': 'no_signal'}, {'symbol': 'MS', 'reason': 'no_signal'}, {'symbol': 'AXP', 'reason': 'no_signal'}, {'symbol': 'MA', 'reason': 'no_signal'}, {'symbol': 'COF', 'reason': 'no_signal'}, {'symbol': 'BLK', 'reason': 'no_signal'}, {'symbol': 'CME', 'reason': 'no_signal'}, {'symbol': 'ICE', 'reason': 'no_signal'}, {'symbol': 'MRK', 'reason': 'no_signal'}, {'symbol': 'ABT', 'reason': 'no_signal'}, {'symbol': 'MDT', 'reason': 'no_signal'}, {'symbol': 'ISRG', 'reason': 'no_signal'}, {'symbol': 'GILD', 'reason': 'no_signal'}, {'symbol': 'AMGN', 'reason': 'no_signal'}, {'symbol': 'BSX', 'reason': 'no_signal'}, {'symbol': 'BA', 'reason': 'no_signal'}, {'symbol': 'DE', 'reason': 'no_signal'}, {'symbol': 'HON', 'reason': 'no_signal'}, {'symbol': 'FDX', 'reason': 'no_signal'}, {'symbol': 'EOG', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'GOOG', 'reason': 'no_signal'}, {'symbol': 'CSCO', 'reason': 'no_signal'}, {'symbol': 'PM', 'reason': 'no_signal'}, {'symbol': 'GEV', 'reason': 'no_signal'}, {'symbol': 'TXN', 'reason': ['agent_decision_scheduled'], 'source': 'LLM_AGENT'}, {'symbol': 'WFC', 'reason': 'no_signal'}, {'symbol': 'ANET', 'reason': 'no_signal'}, {'symbol': 'SNDK', 'reason': 'no_signal'}, {'symbol': 'IBM', 'reason': 'no_signal'}, {'symbol': 'APH', 'reason': 'no_signal'}, {'symbol': 'DIS', 'reason': 'no_signal'}, {'symbol': 'VZ', 'reason': 'no_signal'}, {'symbol': 'DELL', 'reason': 'no_signal'}, {'symbol': 'STX', 'reason': 'no_signal'}, {'symbol': 'UNP', 'reason': 'no_signal'}, {'symbol': 'WELL', 'reason': 'no_signal'}, {'symbol': 'T', 'reason': 'no_signal'}, {'symbol': 'WDC', 'reason': 'no_signal'}, {'symbol': 'DHR', 'reason': 'no_signal'}, {'symbol': 'ACN', 'reason': 'no_signal'}, {'symbol': 'PGR', 'reason': 'no_signal'}, {'symbol': 'SPGI', 'reason': 'no_signal'}, {'symbol': 'NEM', 'reason': 'no_signal'}, {'symbol': 'CB', 'reason': 'no_signal'}, {'symbol': 'MO', 'reason': 'no_signal'}, {'symbol': 'BMY', 'reason': 'no_signal'}, {'symbol': 'GLW', 'reason': 'no_signal'}, {'symbol': 'CVS', 'reason': 'no_signal'}, {'symbol': 'MCK', 'reason': 'no_signal'}, {'symbol': 'ADP', 'reason': 'no_signal'}, {'symbol': 'TT', 'reason': 'no_signal'}, {'symbol': 'PWR', 'reason': 'no_signal'}, {'symbol': 'CEG', 'reason': 'no_signal'}, {'symbol': 'BNY', 'reason': 'no_signal'}, {'symbol': 'SNPS', 'reason': 'no_signal'}, {'symbol': 'CDNS', 'reason': 'no_signal'}, {'symbol': 'ADBE', 'reason': 'no_signal'}, {'symbol': 'JCI', 'reason': 'no_signal'}, {'symbol': 'HPE', 'reason': 'no_signal'}, {'symbol': 'VRT', 'reason': 'no_signal'}, {'symbol': 'ELV', 'reason': 'no_signal'}, {'symbol': 'WMB', 'reason': 'no_signal'}, {'symbol': 'EMR', 'reason': 'no_signal'}, {'symbol': 'LITE', 'reason': 'no_signal'}, {'symbol': 'HWM', 'reason': 'no_signal'}, {'symbol': 'HOOD', 'reason': 'no_signal'}, {'symbol': 'BX', 'reason': 'no_signal'}, {'symbol': 'INTU', 'reason': 'no_signal'}, {'symbol': 'MMM', 'reason': 'no_signal'}, {'symbol': 'MRNA', 'reason': 'no_signal'}, {'symbol': 'WM', 'reason': 'no_signal'}, {'symbol': 'TRV', 'reason': 'no_signal'}, {'symbol': 'BE', 'reason': 'no_signal'}, {'symbol': 'CI', 'reason': 'no_signal'}, {'symbol': 'MSI', 'reason': 'no_signal'}, {'symbol': 'HLT', 'reason': 'no_signal'}, {'symbol': 'CMCSA', 'reason': 'no_signal'}, {'symbol': 'CMI', 'reason': 'no_signal'}, {'symbol': 'GM', 'reason': 'no_signal'}, {'symbol': 'NSC', 'reason': 'no_signal'}, {'symbol': 'ECL', 'reason': 'no_signal'}, {'symbol': 'CTAS', 'reason': 'no_signal'}, {'symbol': 'MCO', 'reason': 'no_signal'}, {'symbol': 'RCL', 'reason': 'no_signal'}, {'symbol': 'ITW', 'reason': 'no_signal'}, {'symbol': 'HCA', 'reason': 'no_signal'}, {'symbol': 'SPG', 'reason': 'no_signal'}, {'symbol': 'MPWR', 'reason': 'no_signal'}, {'symbol': 'KMI', 'reason': 'no_signal'}, {'symbol': 'KEYS', 'reason': 'no_signal'}, {'symbol': 'KKR', 'reason': 'no_signal'}, {'symbol': 'DLR', 'reason': 'no_signal'}, {'symbol': 'TEL', 'reason': 'no_signal'}, {'symbol': 'MNST', 'reason': 'no_signal'}, {'symbol': 'TRGP', 'reason': 'no_signal'}, {'symbol': 'COR', 'reason': 'no_signal'}, {'symbol': 'TDG', 'reason': 'no_signal'}, {'symbol': 'TER', 'reason': 'no_signal'}, {'symbol': 'AJG', 'reason': 'no_signal'}, {'symbol': 'FAST', 'reason': 'no_signal'}, {'symbol': 'ALL', 'reason': 'no_signal'}, {'symbol': 'AON', 'reason': 'no_signal'}, {'symbol': 'OKE', 'reason': 'no_signal'}, {'symbol': 'FIX', 'reason': 'no_signal'}, {'symbol': 'AME', 'reason': 'no_signal'}, {'symbol': 'CIEN', 'reason': 'no_signal'}, {'symbol': 'PCAR', 'reason': 'no_signal'}, {'symbol': 'GWW', 'reason': 'no_signal'}, {'symbol': 'COHR', 'reason': 'no_signal'}, {'symbol': 'APO', 'reason': 'no_signal'}, {'symbol': 'BKR', 'reason': 'no_signal'}, {'symbol': 'CAH', 'reason': 'no_signal'}, {'symbol': 'D', 'reason': 'no_signal'}, {'symbol': 'CRH', 'reason': 'no_signal'}, {'symbol': 'DVN', 'reason': 'no_signal'}, {'symbol': 'SRE', 'reason': 'no_signal'}, {'symbol': 'MET', 'reason': 'no_signal'}, {'symbol': 'HUM', 'reason': 'no_signal'}, {'symbol': 'O', 'reason': 'no_signal'}, {'symbol': 'AFL', 'reason': 'no_signal'}, {'symbol': 'P', 'reason': 'no_signal'}, {'symbol': 'BDX', 'reason': 'no_signal'}, {'symbol': 'VYLR', 'reason': 'missing_required_chart_history', 'missing': ['daily', 'weekly']}, {'symbol': 'HONA', 'reason': 'no_signal'}, {'symbol': 'VST', 'reason': 'no_signal'}, {'symbol': 'EW', 'reason': 'no_signal'}, {'symbol': 'ADSK', 'reason': 'no_signal'}, {'symbol': 'PSA', 'reason': 'no_signal'}, {'symbol': 'A', 'reason': 'no_signal'}, {'symbol': 'ETR', 'reason': 'no_signal'}, {'symbol': 'ROK', 'reason': 'no_signal'}, {'symbol': 'WAB', 'reason': 'no_signal'}, {'symbol': 'STT', 'reason': 'no_signal'}, {'symbol': 'PYPL', 'reason': 'no_signal'}, {'symbol': 'AZO', 'reason': 'no_signal'}, {'symbol': 'F', 'reason': 'no_signal'}, {'symbol': 'NTAP', 'reason': 'no_signal'}, {'symbol': 'XEL', 'reason': 'no_signal'}, {'symbol': 'FITB', 'reason': 'no_signal'}, {'symbol': 'EBAY', 'reason': 'no_signal'}, {'symbol': 'KDP', 'reason': 'no_signal'}, {'symbol': 'LHX', 'reason': 'no_signal'}, {'symbol': 'GRMN', 'reason': 'no_signal'}, {'symbol': 'VEEV', 'reason': 'no_signal'}, {'symbol': 'VMRK', 'reason': 'no_signal'}, {'symbol': 'TWLO', 'reason': 'no_signal'}, {'symbol': 'EXC', 'reason': 'no_signal'}, {'symbol': 'FLEX', 'reason': 'no_signal'}, {'symbol': 'IQV', 'reason': 'no_signal'}, {'symbol': 'RSG', 'reason': 'no_signal'}, {'symbol': 'VTR', 'reason': 'no_signal'}, {'symbol': 'CVNA', 'reason': 'no_signal'}, {'symbol': 'FERG', 'reason': 'no_signal'}, {'symbol': 'WAT', 'reason': 'no_signal'}, {'symbol': 'ILMN', 'reason': 'no_signal'}, {'symbol': 'NDAQ', 'reason': 'no_signal'}, {'symbol': 'XYZ', 'reason': 'no_signal'}, {'symbol': 'MSCI', 'reason': 'no_signal'}, {'symbol': 'IDXX', 'reason': 'no_signal'}, {'symbol': 'AIG', 'reason': 'no_signal'}, {'symbol': 'COIN', 'reason': 'no_signal'}, {'symbol': 'YUM', 'reason': 'no_signal'}, {'symbol': 'FANG', 'reason': 'no_signal'}, {'symbol': 'IBKR', 'reason': 'no_signal'}, {'symbol': 'ED', 'reason': 'no_signal'}, {'symbol': 'PRU', 'reason': 'no_signal'}, {'symbol': 'ADM', 'reason': 'no_signal'}, {'symbol': 'SYY', 'reason': 'no_signal'}, {'symbol': 'WDAY', 'reason': 'no_signal'}, {'symbol': 'CBRE', 'reason': 'no_signal'}, {'symbol': 'TTWO', 'reason': 'no_signal'}, {'symbol': 'ROP', 'reason': 'no_signal'}, {'symbol': 'PEG', 'reason': 'no_signal'}, {'symbol': 'HIG', 'reason': 'no_signal'}, {'symbol': 'EME', 'reason': 'no_signal'}, {'symbol': 'IRM', 'reason': 'no_signal'}, {'symbol': 'KVUE', 'reason': 'no_signal'}, {'symbol': 'WEC', 'reason': 'no_signal'}, {'symbol': 'DHI', 'reason': 'no_signal'}, {'symbol': 'BIIB', 'reason': 'no_signal'}, {'symbol': 'UAL', 'reason': 'no_signal'}, {'symbol': 'ODFL', 'reason': 'no_signal'}, {'symbol': 'RMD', 'reason': 'no_signal'}, {'symbol': 'CCL', 'reason': 'no_signal'}, {'symbol': 'AXON', 'reason': 'no_signal'}, {'symbol': 'PAYX', 'reason': 'no_signal'}, {'symbol': 'EQT', 'reason': 'no_signal'}, {'symbol': 'CNC', 'reason': 'no_signal'}, {'symbol': 'ACGL', 'reason': 'no_signal'}, {'symbol': 'KMB', 'reason': 'no_signal'}, {'symbol': 'JBL', 'reason': 'no_signal'}, {'symbol': 'DXCM', 'reason': 'no_signal'}, {'symbol': 'STLD', 'reason': 'no_signal'}, {'symbol': 'VMC', 'reason': 'no_signal'}, {'symbol': 'MTB', 'reason': 'no_signal'}, {'symbol': 'MTD', 'reason': 'no_signal'}, {'symbol': 'HBAN', 'reason': 'no_signal'}, {'symbol': 'ZTS', 'reason': 'no_signal'}, {'symbol': 'CBOE', 'reason': 'no_signal'}, {'symbol': 'NTRS', 'reason': 'no_signal'}, {'symbol': 'EXPE', 'reason': 'no_signal'}, {'symbol': 'GEHC', 'reason': 'no_signal'}, {'symbol': 'PCG', 'reason': 'no_signal'}, {'symbol': 'MLM', 'reason': 'no_signal'}, {'symbol': 'AEE', 'reason': 'no_signal'}, {'symbol': 'TDY', 'reason': 'no_signal'}, {'symbol': 'EXR', 'reason': 'no_signal'}, {'symbol': 'WSM', 'reason': 'no_signal'}, {'symbol': 'DG', 'reason': 'no_signal'}, {'symbol': 'WTW', 'reason': 'no_signal'}, {'symbol': 'RJF', 'reason': 'no_signal'}, {'symbol': 'ATO', 'reason': 'no_signal'}, {'symbol': 'HPQ', 'reason': 'no_signal'}, {'symbol': 'IR', 'reason': 'no_signal'}, {'symbol': 'CFG', 'reason': 'no_signal'}, {'symbol': 'LYV', 'reason': 'no_signal'}, {'symbol': 'CTSH', 'reason': 'no_signal'}, {'symbol': 'FFIV', 'reason': 'no_signal'}, {'symbol': 'DTE', 'reason': 'no_signal'}, {'symbol': 'PFE', 'reason': 'no_signal'}, {'symbol': 'PH', 'reason': 'no_signal'}, {'symbol': 'URI', 'reason': 'no_signal'}, {'symbol': 'PINS', 'reason': 'no_signal'}, {'symbol': 'CSX', 'reason': 'no_signal'}, {'symbol': 'PNC', 'reason': 'no_signal'}, {'symbol': 'LMT', 'reason': 'no_signal'}, {'symbol': 'NOC', 'reason': 'no_signal'}, {'symbol': 'PSX', 'reason': 'no_signal'}, {'symbol': 'GD', 'reason': 'no_signal'}, {'symbol': 'RBLX', 'reason': 'no_signal'}, {'symbol': 'RDDT', 'reason': 'no_signal'}, {'symbol': 'CARR', 'reason': 'no_signal'}, {'symbol': 'REGN', 'reason': 'no_signal'}, {'symbol': 'NKE', 'reason': 'no_signal'}, {'symbol': 'ROST', 'reason': 'no_signal'}, {'symbol': 'SBUX', 'reason': 'no_signal'}, {'symbol': 'LOW', 'reason': 'no_signal'}, {'symbol': 'SCHW', 'reason': 'no_signal'}, {'symbol': 'SHOP', 'reason': 'no_signal'}, {'symbol': 'TJX', 'reason': 'no_signal'}, {'symbol': 'BKNG', 'reason': 'no_signal'}, {'symbol': 'MAR', 'reason': 'no_signal'}, {'symbol': 'CMG', 'reason': 'no_signal'}, {'symbol': 'ORLY', 'reason': 'no_signal'}, {'symbol': 'TGT', 'reason': 'no_signal'}, {'symbol': 'PEP', 'reason': 'no_signal'}, {'symbol': 'MDLZ', 'reason': 'no_signal'}, {'symbol': 'CL', 'reason': 'no_signal'}, {'symbol': 'KHC', 'reason': 'no_signal'}, {'symbol': 'GIS', 'reason': 'no_signal'}, {'symbol': 'KR', 'reason': 'no_signal'}, {'symbol': 'EL', 'reason': 'no_signal'}, {'symbol': 'SLB', 'reason': 'no_signal'}, {'symbol': 'SNAP', 'reason': 'no_signal'}, {'symbol': 'OXY', 'reason': 'no_signal'}, {'symbol': 'SNOW', 'reason': 'no_signal'}, {'symbol': 'MPC', 'reason': 'no_signal'}, {'symbol': 'SYK', 'reason': 'no_signal'}, {'symbol': 'TEAM', 'reason': 'no_signal'}, {'symbol': 'VLO', 'reason': 'no_signal'}, {'symbol': 'TFC', 'reason': 'no_signal'}, {'symbol': 'HAL', 'reason': 'no_signal'}, {'symbol': 'FCX', 'reason': 'no_signal'}, {'symbol': 'NUE', 'reason': 'no_signal'}, {'symbol': 'TMUS', 'reason': 'no_signal'}, {'symbol': 'APD', 'reason': 'no_signal'}, {'symbol': 'TSM', 'reason': 'no_signal'}, {'symbol': 'DUK', 'reason': 'no_signal'}, {'symbol': 'UNH', 'reason': 'no_signal'}, {'symbol': 'UBER', 'reason': 'no_signal'}, {'symbol': 'AEP', 'reason': 'no_signal'}, {'symbol': 'UPS', 'reason': 'no_signal'}, {'symbol': 'CCI', 'reason': 'no_signal'}, {'symbol': 'EQIX', 'reason': 'no_signal'}, {'symbol': 'USB', 'reason': 'no_signal'}, {'symbol': 'VRTX', 'reason': 'no_signal'}, {'symbol': 'ZS', 'reason': 'no_signal'}, {'symbol': 'WMT', 'reason': 'no_signal'}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'no_signal'}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'no_signal'}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'no_signal'}, {'symbol': 'PDD', 'reason': 'no_signal'}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'NVDA', 'reason': 'no_signal'}, {'symbol': 'MU', 'reason': 'no_signal'}, {'symbol': 'PLTR', 'reason': 'no_signal'}, {'symbol': 'BRKH', 'reason': 'no_signal'}, {'symbol': 'NXTC', 'reason': 'no_signal'}, {'symbol': 'TGHL', 'reason': 'no_signal'}, {'symbol': 'MRAI', 'reason': 'missing_live_data'}, {'symbol': 'CPHI', 'reason': 'no_signal'}, {'symbol': 'MAAS', 'reason': 'no_signal'}, {'symbol': 'LEDS', 'reason': 'no_signal'}, {'symbol': 'APLM', 'reason': 'no_signal'}, {'symbol': 'PYPG', 'reason': 'no_signal'}, {'symbol': 'VEEE', 'reason': 'no_signal'}, {'symbol': 'EAF', 'reason': 'no_signal'}, {'symbol': 'YYAI', 'reason': 'no_signal'}, {'symbol': 'TOP', 'reason': 'no_signal'}, {'symbol': 'RCEL', 'reason': 'no_signal'}, {'symbol': 'SYRA', 'reason': 'missing_live_data'}, {'symbol': 'CRMT', 'reason': 'no_signal'}, {'symbol': 'NAKA', 'reason': 'no_signal'}, {'symbol': 'MAN', 'reason': 'no_signal'}, {'symbol': 'GOOGL', 'reason': 'no_signal'}, {'symbol': 'JPM', 'reason': 'no_signal'}, {'symbol': 'BAC', 'reason': 'no_signal'}, {'symbol': 'GS', 'reason': 'no_signal'}, {'symbol': 'V', 'reason': 'no_signal'}, {'symbol': 'LLY', 'reason': 'no_signal'}, {'symbol': 'JNJ', 'reason': 'no_signal'}, {'symbol': 'ABBV', 'reason': 'no_signal'}, {'symbol': 'TMO', 'reason': 'no_signal'}, {'symbol': 'CAT', 'reason': 'no_signal'}, {'symbol': 'GE', 'reason': 'no_signal'}, {'symbol': 'RTX', 'reason': 'no_signal'}, {'symbol': 'ETN', 'reason': 'no_signal'}, {'symbol': 'COST', 'reason': 'no_signal'}, {'symbol': 'PG', 'reason': 'no_signal'}, {'symbol': 'XOM', 'reason': 'no_signal'}, {'symbol': 'CVX', 'reason': 'no_signal'}, {'symbol': 'COP', 'reason': 'no_signal'}, {'symbol': 'NEE', 'reason': 'no_signal'}, {'symbol': 'SO', 'reason': 'no_signal'}, {'symbol': 'PLD', 'reason': 'no_signal'}, {'symbol': 'AMT', 'reason': 'no_signal'}, {'symbol': 'LIN', 'reason': 'no_signal'}, {'symbol': 'SHW', 'reason': 'no_signal'}, {'symbol': 'HD', 'reason': 'no_signal'}, {'symbol': 'MCD', 'reason': 'no_signal'}, {'symbol': 'META', 'reason': 'no_signal'}, {'symbol': 'NFLX', 'reason': 'no_signal'}, {'symbol': 'AVGO', 'reason': 'missing_live_data'}, {'symbol': 'ORCL', 'reason': 'no_signal'}, {'symbol': 'AMD', 'reason': 'no_signal'}, {'symbol': 'INTC', 'reason': 'no_signal'}, {'symbol': 'QCOM', 'reason': 'no_signal'}, {'symbol': 'ASML', 'reason': 'no_signal'}, {'symbol': 'KLAC', 'reason': 'no_signal'}, {'symbol': 'LRCX', 'reason': 'no_signal'}, {'symbol': 'MRVL', 'reason': 'no_signal'}, {'symbol': 'ADI', 'reason': 'no_signal'}, {'symbol': 'NXPI', 'reason': 'no_signal'}, {'symbol': 'ON', 'reason': 'no_signal'}, {'symbol': 'MCHP', 'reason': 'no_signal'}, {'symbol': 'CRM', 'reason': 'no_signal'}, {'symbol': 'NOW', 'reason': 'no_signal'}, {'symbol': 'PANW', 'reason': 'no_signal'}, {'symbol': 'CRWD', 'reason': 'no_signal'}, {'symbol': 'DDOG', 'reason': 'no_signal'}, {'symbol': 'NET', 'reason': 'no_signal'}, {'symbol': 'MDB', 'reason': 'no_signal'}, {'symbol': 'FTNT', 'reason': 'no_signal'}, {'symbol': 'APP', 'reason': 'no_signal'}, {'symbol': 'ABNB', 'reason': 'no_signal'}, {'symbol': 'DASH', 'reason': 'no_signal'}, {'symbol': 'C', 'reason': 'no_signal'}, {'symbol': 'MS', 'reason': 'no_signal'}, {'symbol': 'AXP', 'reason': 'no_signal'}, {'symbol': 'MA', 'reason': 'no_signal'}, {'symbol': 'COF', 'reason': 'no_signal'}, {'symbol': 'BLK', 'reason': 'no_signal'}, {'symbol': 'CME', 'reason': 'no_signal'}, {'symbol': 'ICE', 'reason': 'no_signal'}, {'symbol': 'MRK', 'reason': 'no_signal'}, {'symbol': 'ABT', 'reason': 'no_signal'}, {'symbol': 'MDT', 'reason': 'no_signal'}, {'symbol': 'ISRG', 'reason': 'no_signal'}, {'symbol': 'GILD', 'reason': 'no_signal'}, {'symbol': 'AMGN', 'reason': 'no_signal'}, {'symbol': 'BSX', 'reason': 'no_signal'}, {'symbol': 'BA', 'reason': 'no_signal'}, {'symbol': 'DE', 'reason': 'no_signal'}, {'symbol': 'HON', 'reason': 'no_signal'}, {'symbol': 'FDX', 'reason': 'no_signal'}, {'symbol': 'EOG', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'GOOG', 'reason': 'no_signal'}, {'symbol': 'CSCO', 'reason': 'no_signal'}, {'symbol': 'PM', 'reason': 'no_signal'}, {'symbol': 'GEV', 'reason': 'no_signal'}, {'symbol': 'TXN', 'reason': 'no_signal'}, {'symbol': 'WFC', 'reason': 'no_signal'}, {'symbol': 'ANET', 'reason': 'no_signal'}, {'symbol': 'SNDK', 'reason': 'no_signal'}, {'symbol': 'IBM', 'reason': 'no_signal'}, {'symbol': 'APH', 'reason': 'no_signal'}, {'symbol': 'DIS', 'reason': 'no_signal'}, {'symbol': 'VZ', 'reason': 'no_signal'}, {'symbol': 'DELL', 'reason': 'no_signal'}, {'symbol': 'STX', 'reason': 'no_signal'}, {'symbol': 'UNP', 'reason': 'no_signal'}, {'symbol': 'WELL', 'reason': 'no_signal'}, {'symbol': 'T', 'reason': 'no_signal'}, {'symbol': 'WDC', 'reason': 'no_signal'}, {'symbol': 'DHR', 'reason': 'no_signal'}, {'symbol': 'ACN', 'reason': 'no_signal'}, {'symbol': 'PGR', 'reason': 'no_signal'}, {'symbol': 'SPGI', 'reason': 'no_signal'}, {'symbol': 'NEM', 'reason': 'no_signal'}, {'symbol': 'CB', 'reason': 'no_signal'}, {'symbol': 'MO', 'reason': 'no_signal'}, {'symbol': 'BMY', 'reason': 'no_signal'}, {'symbol': 'GLW', 'reason': 'no_signal'}, {'symbol': 'CVS', 'reason': 'no_signal'}, {'symbol': 'MCK', 'reason': 'no_signal'}, {'symbol': 'ADP', 'reason': 'no_signal'}, {'symbol': 'TT', 'reason': 'no_signal'}, {'symbol': 'PWR', 'reason': 'no_signal'}, {'symbol': 'CEG', 'reason': 'no_signal'}, {'symbol': 'BNY', 'reason': 'no_signal'}, {'symbol': 'SNPS', 'reason': 'no_signal'}, {'symbol': 'CDNS', 'reason': 'no_signal'}, {'symbol': 'ADBE', 'reason': 'no_signal'}, {'symbol': 'JCI', 'reason': 'no_signal'}, {'symbol': 'HPE', 'reason': 'no_signal'}, {'symbol': 'VRT', 'reason': 'no_signal'}, {'symbol': 'ELV', 'reason': 'no_signal'}, {'symbol': 'WMB', 'reason': 'no_signal'}, {'symbol': 'EMR', 'reason': 'no_signal'}, {'symbol': 'LITE', 'reason': 'no_signal'}, {'symbol': 'HWM', 'reason': 'no_signal'}, {'symbol': 'HOOD', 'reason': 'no_signal'}, {'symbol': 'BX', 'reason': 'no_signal'}, {'symbol': 'INTU', 'reason': 'no_signal'}, {'symbol': 'MMM', 'reason': 'no_signal'}, {'symbol': 'MRNA', 'reason': 'no_signal'}, {'symbol': 'WM', 'reason': 'no_signal'}, {'symbol': 'TRV', 'reason': 'no_signal'}, {'symbol': 'BE', 'reason': 'no_signal'}, {'symbol': 'CI', 'reason': 'no_signal'}, {'symbol': 'MSI', 'reason': 'no_signal'}, {'symbol': 'HLT', 'reason': 'no_signal'}, {'symbol': 'CMCSA', 'reason': 'no_signal'}, {'symbol': 'CMI', 'reason': 'no_signal'}, {'symbol': 'GM', 'reason': 'no_signal'}, {'symbol': 'NSC', 'reason': 'no_signal'}, {'symbol': 'ECL', 'reason': 'no_signal'}, {'symbol': 'CTAS', 'reason': 'no_signal'}, {'symbol': 'MCO', 'reason': 'no_signal'}, {'symbol': 'RCL', 'reason': 'no_signal'}, {'symbol': 'ITW', 'reason': 'no_signal'}, {'symbol': 'HCA', 'reason': 'no_signal'}, {'symbol': 'SPG', 'reason': 'no_signal'}, {'symbol': 'MPWR', 'reason': 'no_signal'}, {'symbol': 'KMI', 'reason': 'no_signal'}, {'symbol': 'KEYS', 'reason': 'no_signal'}, {'symbol': 'KKR', 'reason': 'no_signal'}, {'symbol': 'DLR', 'reason': 'no_signal'}, {'symbol': 'TEL', 'reason': 'no_signal'}, {'symbol': 'MNST', 'reason': 'no_signal'}, {'symbol': 'TRGP', 'reason': 'no_signal'}, {'symbol': 'COR', 'reason': 'no_signal'}, {'symbol': 'TDG', 'reason': 'no_signal'}, {'symbol': 'TER', 'reason': 'no_signal'}, {'symbol': 'AJG', 'reason': 'no_signal'}, {'symbol': 'FAST', 'reason': 'no_signal'}, {'symbol': 'ALL', 'reason': 'no_signal'}, {'symbol': 'AON', 'reason': 'no_signal'}, {'symbol': 'OKE', 'reason': 'no_signal'}, {'symbol': 'FIX', 'reason': 'no_signal'}, {'symbol': 'AME', 'reason': 'no_signal'}, {'symbol': 'CIEN', 'reason': 'no_signal'}, {'symbol': 'PCAR', 'reason': 'no_signal'}, {'symbol': 'GWW', 'reason': 'no_signal'}, {'symbol': 'COHR', 'reason': 'no_signal'}, {'symbol': 'APO', 'reason': 'no_signal'}, {'symbol': 'BKR', 'reason': 'no_signal'}, {'symbol': 'CAH', 'reason': 'no_signal'}, {'symbol': 'D', 'reason': 'no_signal'}, {'symbol': 'CRH', 'reason': 'no_signal'}, {'symbol': 'DVN', 'reason': 'no_signal'}, {'symbol': 'SRE', 'reason': 'no_signal'}, {'symbol': 'MET', 'reason': 'no_signal'}, {'symbol': 'HUM', 'reason': 'no_signal'}, {'symbol': 'O', 'reason': 'no_signal'}, {'symbol': 'AFL', 'reason': 'no_signal'}, {'symbol': 'P', 'reason': 'no_signal'}, {'symbol': 'BDX', 'reason': 'no_signal'}, {'symbol': 'VYLR', 'reason': 'missing_required_chart_history', 'missing': ['daily', 'weekly']}, {'symbol': 'HONA', 'reason': 'no_signal'}, {'symbol': 'VST', 'reason': 'no_signal'}, {'symbol': 'EW', 'reason': 'no_signal'}, {'symbol': 'ADSK', 'reason': 'no_signal'}, {'symbol': 'PSA', 'reason': 'no_signal'}, {'symbol': 'A', 'reason': 'no_signal'}, {'symbol': 'ETR', 'reason': 'no_signal'}, {'symbol': 'ROK', 'reason': 'no_signal'}, {'symbol': 'WAB', 'reason': 'no_signal'}, {'symbol': 'STT', 'reason': 'no_signal'}, {'symbol': 'PYPL', 'reason': 'no_signal'}, {'symbol': 'AZO', 'reason': 'no_signal'}, {'symbol': 'F', 'reason': 'no_signal'}, {'symbol': 'NTAP', 'reason': 'no_signal'}, {'symbol': 'XEL', 'reason': 'no_signal'}, {'symbol': 'FITB', 'reason': 'no_signal'}, {'symbol': 'EBAY', 'reason': 'no_signal'}, {'symbol': 'KDP', 'reason': 'no_signal'}, {'symbol': 'LHX', 'reason': 'no_signal'}, {'symbol': 'GRMN', 'reason': 'no_signal'}, {'symbol': 'VEEV', 'reason': 'no_signal'}, {'symbol': 'VMRK', 'reason': 'no_signal'}, {'symbol': 'TWLO', 'reason': 'no_signal'}, {'symbol': 'EXC', 'reason': 'no_signal'}, {'symbol': 'FLEX', 'reason': 'no_signal'}, {'symbol': 'IQV', 'reason': 'no_signal'}, {'symbol': 'RSG', 'reason': 'no_signal'}, {'symbol': 'VTR', 'reason': 'no_signal'}, {'symbol': 'CVNA', 'reason': 'no_signal'}, {'symbol': 'FERG', 'reason': 'no_signal'}, {'symbol': 'WAT', 'reason': 'no_signal'}, {'symbol': 'ILMN', 'reason': 'no_signal'}, {'symbol': 'NDAQ', 'reason': 'no_signal'}, {'symbol': 'XYZ', 'reason': 'no_signal'}, {'symbol': 'MSCI', 'reason': 'no_signal'}, {'symbol': 'IDXX', 'reason': 'no_signal'}, {'symbol': 'AIG', 'reason': 'no_signal'}, {'symbol': 'COIN', 'reason': 'no_signal'}, {'symbol': 'YUM', 'reason': 'no_signal'}, {'symbol': 'FANG', 'reason': 'no_signal'}, {'symbol': 'IBKR', 'reason': 'no_signal'}, {'symbol': 'ED', 'reason': 'no_signal'}, {'symbol': 'PRU', 'reason': 'no_signal'}, {'symbol': 'ADM', 'reason': 'no_signal'}, {'symbol': 'SYY', 'reason': 'no_signal'}, {'symbol': 'WDAY', 'reason': 'no_signal'}, {'symbol': 'CBRE', 'reason': 'no_signal'}, {'symbol': 'TTWO', 'reason': 'no_signal'}, {'symbol': 'ROP', 'reason': 'no_signal'}, {'symbol': 'PEG', 'reason': 'no_signal'}, {'symbol': 'HIG', 'reason': 'no_signal'}, {'symbol': 'EME', 'reason': 'no_signal'}, {'symbol': 'IRM', 'reason': 'no_signal'}, {'symbol': 'KVUE', 'reason': 'no_signal'}, {'symbol': 'WEC', 'reason': 'no_signal'}, {'symbol': 'DHI', 'reason': 'no_signal'}, {'symbol': 'BIIB', 'reason': 'no_signal'}, {'symbol': 'UAL', 'reason': 'no_signal'}, {'symbol': 'ODFL', 'reason': 'no_signal'}, {'symbol': 'RMD', 'reason': 'no_signal'}, {'symbol': 'CCL', 'reason': 'no_signal'}, {'symbol': 'AXON', 'reason': 'no_signal'}, {'symbol': 'PAYX', 'reason': 'no_signal'}, {'symbol': 'EQT', 'reason': 'no_signal'}, {'symbol': 'CNC', 'reason': 'no_signal'}, {'symbol': 'ACGL', 'reason': 'no_signal'}, {'symbol': 'KMB', 'reason': 'no_signal'}, {'symbol': 'JBL', 'reason': 'no_signal'}, {'symbol': 'DXCM', 'reason': 'no_signal'}, {'symbol': 'STLD', 'reason': 'no_signal'}, {'symbol': 'VMC', 'reason': 'no_signal'}, {'symbol': 'MTB', 'reason': 'no_signal'}, {'symbol': 'MTD', 'reason': 'no_signal'}, {'symbol': 'HBAN', 'reason': 'no_signal'}, {'symbol': 'ZTS', 'reason': 'no_signal'}, {'symbol': 'CBOE', 'reason': 'no_signal'}, {'symbol': 'NTRS', 'reason': 'no_signal'}, {'symbol': 'EXPE', 'reason': 'no_signal'}, {'symbol': 'GEHC', 'reason': 'no_signal'}, {'symbol': 'PCG', 'reason': 'no_signal'}, {'symbol': 'MLM', 'reason': 'no_signal'}, {'symbol': 'AEE', 'reason': 'no_signal'}, {'symbol': 'TDY', 'reason': 'no_signal'}, {'symbol': 'EXR', 'reason': 'no_signal'}, {'symbol': 'WSM', 'reason': 'no_signal'}, {'symbol': 'DG', 'reason': 'no_signal'}, {'symbol': 'WTW', 'reason': 'no_signal'}, {'symbol': 'RJF', 'reason': 'no_signal'}, {'symbol': 'ATO', 'reason': 'no_signal'}, {'symbol': 'HPQ', 'reason': 'no_signal'}, {'symbol': 'IR', 'reason': 'no_signal'}, {'symbol': 'CFG', 'reason': 'no_signal'}, {'symbol': 'LYV', 'reason': 'no_signal'}, {'symbol': 'CTSH', 'reason': 'no_signal'}, {'symbol': 'FFIV', 'reason': 'no_signal'}, {'symbol': 'DTE', 'reason': 'no_signal'}, {'symbol': 'PFE', 'reason': 'no_signal'}, {'symbol': 'PH', 'reason': 'no_signal'}, {'symbol': 'URI', 'reason': 'no_signal'}, {'symbol': 'PINS', 'reason': 'no_signal'}, {'symbol': 'CSX', 'reason': 'no_signal'}, {'symbol': 'PNC', 'reason': 'no_signal'}, {'symbol': 'LMT', 'reason': 'no_signal'}, {'symbol': 'NOC', 'reason': 'no_signal'}, {'symbol': 'PSX', 'reason': 'no_signal'}, {'symbol': 'GD', 'reason': 'no_signal'}, {'symbol': 'RBLX', 'reason': 'no_signal'}, {'symbol': 'RDDT', 'reason': 'no_signal'}, {'symbol': 'CARR', 'reason': 'no_signal'}, {'symbol': 'REGN', 'reason': 'no_signal'}, {'symbol': 'NKE', 'reason': 'no_signal'}, {'symbol': 'ROST', 'reason': 'no_signal'}, {'symbol': 'SBUX', 'reason': 'no_signal'}, {'symbol': 'LOW', 'reason': 'no_signal'}, {'symbol': 'SCHW', 'reason': 'no_signal'}, {'symbol': 'SHOP', 'reason': 'no_signal'}, {'symbol': 'TJX', 'reason': 'no_signal'}, {'symbol': 'BKNG', 'reason': 'no_signal'}, {'symbol': 'MAR', 'reason': 'no_signal'}, {'symbol': 'CMG', 'reason': 'no_signal'}, {'symbol': 'ORLY', 'reason': 'no_signal'}, {'symbol': 'TGT', 'reason': 'no_signal'}, {'symbol': 'PEP', 'reason': 'no_signal'}, {'symbol': 'MDLZ', 'reason': 'no_signal'}, {'symbol': 'CL', 'reason': 'no_signal'}, {'symbol': 'KHC', 'reason': 'no_signal'}, {'symbol': 'GIS', 'reason': 'no_signal'}, {'symbol': 'KR', 'reason': 'no_signal'}, {'symbol': 'EL', 'reason': 'no_signal'}, {'symbol': 'SLB', 'reason': 'no_signal'}, {'symbol': 'SNAP', 'reason': 'no_signal'}, {'symbol': 'OXY', 'reason': 'no_signal'}, {'symbol': 'SNOW', 'reason': 'no_signal'}, {'symbol': 'MPC', 'reason': 'no_signal'}, {'symbol': 'SYK', 'reason': 'no_signal'}, {'symbol': 'TEAM', 'reason': 'no_signal'}, {'symbol': 'VLO', 'reason': 'no_signal'}, {'symbol': 'TFC', 'reason': 'no_signal'}, {'symbol': 'HAL', 'reason': 'no_signal'}, {'symbol': 'FCX', 'reason': 'no_signal'}, {'symbol': 'NUE', 'reason': 'no_signal'}, {'symbol': 'TMUS', 'reason': 'no_signal'}, {'symbol': 'APD', 'reason': 'no_signal'}, {'symbol': 'TSM', 'reason': 'no_signal'}, {'symbol': 'DUK', 'reason': 'no_signal'}, {'symbol': 'UNH', 'reason': 'no_signal'}, {'symbol': 'UBER', 'reason': 'no_signal'}, {'symbol': 'AEP', 'reason': 'no_signal'}, {'symbol': 'UPS', 'reason': 'no_signal'}, {'symbol': 'CCI', 'reason': 'no_signal'}, {'symbol': 'EQIX', 'reason': 'no_signal'}, {'symbol': 'USB', 'reason': 'no_signal'}, {'symbol': 'VRTX', 'reason': 'no_signal'}, {'symbol': 'ZS', 'reason': 'no_signal'}, {'symbol': 'WMT', 'reason': 'no_signal'}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'no_signal'}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'no_signal'}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'no_signal'}, {'symbol': 'PDD', 'reason': 'no_signal'}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'NVDA', 'reason': 'no_signal'}, {'symbol': 'MU', 'reason': 'no_signal'}, {'symbol': 'PLTR', 'reason': 'no_signal'}, {'symbol': 'BRKH', 'reason': 'no_signal'}, {'symbol': 'NXTC', 'reason': 'no_signal'}, {'symbol': 'TGHL', 'reason': 'no_signal'}, {'symbol': 'MRAI', 'reason': 'missing_live_data'}, {'symbol': 'CPHI', 'reason': 'no_signal'}, {'symbol': 'MAAS', 'reason': 'no_signal'}, {'symbol': 'LEDS', 'reason': 'no_signal'}, {'symbol': 'APLM', 'reason': 'no_signal'}, {'symbol': 'PYPG', 'reason': 'no_signal'}, {'symbol': 'VEEE', 'reason': 'no_signal'}, {'symbol': 'EAF', 'reason': 'no_signal'}, {'symbol': 'YYAI', 'reason': 'no_signal'}, {'symbol': 'TOP', 'reason': 'no_signal'}, {'symbol': 'RCEL', 'reason': 'no_signal'}, {'symbol': 'SYRA', 'reason': 'missing_live_data'}, {'symbol': 'CRMT', 'reason': 'no_signal'}, {'symbol': 'NAKA', 'reason': 'no_signal'}, {'symbol': 'MAN', 'reason': 'no_signal'}, {'symbol': 'GOOGL', 'reason': 'no_signal'}, {'symbol': 'JPM', 'reason': 'no_signal'}, {'symbol': 'BAC', 'reason': 'no_signal'}, {'symbol': 'GS', 'reason': 'no_signal'}, {'symbol': 'V', 'reason': 'no_signal'}, {'symbol': 'LLY', 'reason': 'no_signal'}, {'symbol': 'JNJ', 'reason': 'no_signal'}, {'symbol': 'ABBV', 'reason': 'no_signal'}, {'symbol': 'TMO', 'reason': 'no_signal'}, {'symbol': 'CAT', 'reason': 'no_signal'}, {'symbol': 'GE', 'reason': 'no_signal'}, {'symbol': 'RTX', 'reason': 'no_signal'}, {'symbol': 'ETN', 'reason': 'no_signal'}, {'symbol': 'COST', 'reason': 'no_signal'}, {'symbol': 'PG', 'reason': 'no_signal'}, {'symbol': 'XOM', 'reason': 'no_signal'}, {'symbol': 'CVX', 'reason': 'no_signal'}, {'symbol': 'COP', 'reason': 'no_signal'}, {'symbol': 'NEE', 'reason': 'no_signal'}, {'symbol': 'SO', 'reason': 'no_signal'}, {'symbol': 'PLD', 'reason': 'no_signal'}, {'symbol': 'AMT', 'reason': 'no_signal'}, {'symbol': 'LIN', 'reason': 'no_signal'}, {'symbol': 'SHW', 'reason': 'no_signal'}, {'symbol': 'HD', 'reason': 'no_signal'}, {'symbol': 'MCD', 'reason': 'no_signal'}, {'symbol': 'META', 'reason': 'no_signal'}, {'symbol': 'NFLX', 'reason': 'no_signal'}, {'symbol': 'AVGO', 'reason': 'missing_live_data'}, {'symbol': 'ORCL', 'reason': 'no_signal'}, {'symbol': 'AMD', 'reason': 'no_signal'}, {'symbol': 'INTC', 'reason': 'no_signal'}, {'symbol': 'QCOM', 'reason': 'no_signal'}, {'symbol': 'ASML', 'reason': 'no_signal'}, {'symbol': 'KLAC', 'reason': 'no_signal'}, {'symbol': 'LRCX', 'reason': 'no_signal'}, {'symbol': 'MRVL', 'reason': 'no_signal'}, {'symbol': 'ADI', 'reason': 'no_signal'}, {'symbol': 'NXPI', 'reason': 'no_signal'}, {'symbol': 'ON', 'reason': 'no_signal'}, {'symbol': 'MCHP', 'reason': 'no_signal'}, {'symbol': 'CRM', 'reason': 'no_signal'}, {'symbol': 'NOW', 'reason': 'no_signal'}, {'symbol': 'PANW', 'reason': 'no_signal'}, {'symbol': 'CRWD', 'reason': 'no_signal'}, {'symbol': 'DDOG', 'reason': 'no_signal'}, {'symbol': 'NET', 'reason': 'no_signal'}, {'symbol': 'MDB', 'reason': 'no_signal'}, {'symbol': 'FTNT', 'reason': 'no_signal'}, {'symbol': 'APP', 'reason': 'no_signal'}, {'symbol': 'ABNB', 'reason': 'no_signal'}, {'symbol': 'DASH', 'reason': 'no_signal'}, {'symbol': 'C', 'reason': 'no_signal'}, {'symbol': 'MS', 'reason': 'no_signal'}, {'symbol': 'AXP', 'reason': 'no_signal'}, {'symbol': 'MA', 'reason': 'no_signal'}, {'symbol': 'COF', 'reason': 'no_signal'}, {'symbol': 'BLK', 'reason': 'no_signal'}, {'symbol': 'CME', 'reason': 'no_signal'}, {'symbol': 'ICE', 'reason': 'no_signal'}, {'symbol': 'MRK', 'reason': 'no_signal'}, {'symbol': 'ABT', 'reason': 'no_signal'}, {'symbol': 'MDT', 'reason': 'no_signal'}, {'symbol': 'ISRG', 'reason': 'no_signal'}, {'symbol': 'GILD', 'reason': 'no_signal'}, {'symbol': 'AMGN', 'reason': 'no_signal'}, {'symbol': 'BSX', 'reason': 'no_signal'}, {'symbol': 'BA', 'reason': 'no_signal'}, {'symbol': 'DE', 'reason': 'no_signal'}, {'symbol': 'HON', 'reason': 'no_signal'}, {'symbol': 'FDX', 'reason': 'no_signal'}, {'symbol': 'EOG', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'GOOG', 'reason': 'no_signal'}, {'symbol': 'CSCO', 'reason': 'no_signal'}, {'symbol': 'PM', 'reason': 'no_signal'}, {'symbol': 'GEV', 'reason': 'no_signal'}, {'symbol': 'TXN', 'reason': 'no_signal'}, {'symbol': 'WFC', 'reason': 'no_signal'}, {'symbol': 'ANET', 'reason': 'no_signal'}, {'symbol': 'SNDK', 'reason': 'no_signal'}, {'symbol': 'IBM', 'reason': 'no_signal'}, {'symbol': 'APH', 'reason': 'no_signal'}, {'symbol': 'DIS', 'reason': 'no_signal'}, {'symbol': 'VZ', 'reason': 'no_signal'}, {'symbol': 'DELL', 'reason': 'no_signal'}, {'symbol': 'STX', 'reason': 'no_signal'}, {'symbol': 'UNP', 'reason': 'no_signal'}, {'symbol': 'WELL', 'reason': 'no_signal'}, {'symbol': 'T', 'reason': 'no_signal'}, {'symbol': 'WDC', 'reason': 'no_signal'}, {'symbol': 'DHR', 'reason': 'no_signal'}, {'symbol': 'ACN', 'reason': 'no_signal'}, {'symbol': 'PGR', 'reason': 'no_signal'}, {'symbol': 'SPGI', 'reason': 'no_signal'}, {'symbol': 'NEM', 'reason': 'no_signal'}, {'symbol': 'CB', 'reason': 'no_signal'}, {'symbol': 'MO', 'reason': 'no_signal'}, {'symbol': 'BMY', 'reason': 'no_signal'}, {'symbol': 'GLW', 'reason': 'no_signal'}, {'symbol': 'CVS', 'reason': 'no_signal'}, {'symbol': 'MCK', 'reason': 'no_signal'}, {'symbol': 'ADP', 'reason': 'no_signal'}, {'symbol': 'TT', 'reason': 'no_signal'}, {'symbol': 'PWR', 'reason': 'no_signal'}, {'symbol': 'CEG', 'reason': 'no_signal'}, {'symbol': 'BNY', 'reason': 'no_signal'}, {'symbol': 'SNPS', 'reason': 'no_signal'}, {'symbol': 'CDNS', 'reason': 'no_signal'}, {'symbol': 'ADBE', 'reason': 'no_signal'}, {'symbol': 'JCI', 'reason': 'no_signal'}, {'symbol': 'HPE', 'reason': 'no_signal'}, {'symbol': 'VRT', 'reason': 'no_signal'}, {'symbol': 'ELV', 'reason': 'no_signal'}, {'symbol': 'WMB', 'reason': 'no_signal'}, {'symbol': 'EMR', 'reason': 'no_signal'}, {'symbol': 'LITE', 'reason': 'no_signal'}, {'symbol': 'HWM', 'reason': 'no_signal'}, {'symbol': 'HOOD', 'reason': 'no_signal'}, {'symbol': 'BX', 'reason': 'no_signal'}, {'symbol': 'INTU', 'reason': 'no_signal'}, {'symbol': 'MMM', 'reason': 'no_signal'}, {'symbol': 'MRNA', 'reason': 'no_signal'}, {'symbol': 'WM', 'reason': 'no_signal'}, {'symbol': 'TRV', 'reason': 'no_signal'}, {'symbol': 'BE', 'reason': 'no_signal'}, {'symbol': 'CI', 'reason': 'no_signal'}, {'symbol': 'MSI', 'reason': 'no_signal'}, {'symbol': 'HLT', 'reason': 'no_signal'}, {'symbol': 'CMCSA', 'reason': 'no_signal'}, {'symbol': 'CMI', 'reason': 'no_signal'}, {'symbol': 'GM', 'reason': 'no_signal'}, {'symbol': 'NSC', 'reason': 'no_signal'}, {'symbol': 'ECL', 'reason': 'no_signal'}, {'symbol': 'CTAS', 'reason': 'no_signal'}, {'symbol': 'MCO', 'reason': 'no_signal'}, {'symbol': 'RCL', 'reason': 'no_signal'}, {'symbol': 'ITW', 'reason': 'no_signal'}, {'symbol': 'HCA', 'reason': 'no_signal'}, {'symbol': 'SPG', 'reason': 'no_signal'}, {'symbol': 'MPWR', 'reason': 'no_signal'}, {'symbol': 'KMI', 'reason': 'no_signal'}, {'symbol': 'KEYS', 'reason': 'no_signal'}, {'symbol': 'KKR', 'reason': 'no_signal'}, {'symbol': 'DLR', 'reason': 'no_signal'}, {'symbol': 'TEL', 'reason': 'no_signal'}, {'symbol': 'MNST', 'reason': 'no_signal'}, {'symbol': 'TRGP', 'reason': 'no_signal'}, {'symbol': 'COR', 'reason': 'no_signal'}, {'symbol': 'TDG', 'reason': 'no_signal'}, {'symbol': 'TER', 'reason': 'no_signal'}, {'symbol': 'AJG', 'reason': 'no_signal'}, {'symbol': 'FAST', 'reason': 'no_signal'}, {'symbol': 'ALL', 'reason': 'no_signal'}, {'symbol': 'AON', 'reason': 'no_signal'}, {'symbol': 'OKE', 'reason': 'no_signal'}, {'symbol': 'FIX', 'reason': 'no_signal'}, {'symbol': 'AME', 'reason': 'no_signal'}, {'symbol': 'CIEN', 'reason': 'no_signal'}, {'symbol': 'PCAR', 'reason': 'no_signal'}, {'symbol': 'GWW', 'reason': 'no_signal'}, {'symbol': 'COHR', 'reason': 'no_signal'}, {'symbol': 'APO', 'reason': 'no_signal'}, {'symbol': 'BKR', 'reason': 'no_signal'}, {'symbol': 'CAH', 'reason': 'no_signal'}, {'symbol': 'D', 'reason': 'no_signal'}, {'symbol': 'CRH', 'reason': 'no_signal'}, {'symbol': 'DVN', 'reason': 'no_signal'}, {'symbol': 'SRE', 'reason': 'no_signal'}, {'symbol': 'MET', 'reason': 'no_signal'}, {'symbol': 'HUM', 'reason': 'no_signal'}, {'symbol': 'O', 'reason': 'no_signal'}, {'symbol': 'AFL', 'reason': 'no_signal'}, {'symbol': 'P', 'reason': 'no_signal'}, {'symbol': 'BDX', 'reason': 'no_signal'}, {'symbol': 'VYLR', 'reason': 'missing_required_chart_history', 'missing': ['daily', 'weekly']}, {'symbol': 'HONA', 'reason': 'no_signal'}, {'symbol': 'VST', 'reason': 'no_signal'}, {'symbol': 'EW', 'reason': 'no_signal'}, {'symbol': 'ADSK', 'reason': 'no_signal'}, {'symbol': 'PSA', 'reason': 'no_signal'}, {'symbol': 'A', 'reason': 'no_signal'}, {'symbol': 'ETR', 'reason': 'no_signal'}, {'symbol': 'ROK', 'reason': 'no_signal'}, {'symbol': 'WAB', 'reason': 'no_signal'}, {'symbol': 'STT', 'reason': 'no_signal'}, {'symbol': 'PYPL', 'reason': 'no_signal'}, {'symbol': 'AZO', 'reason': 'no_signal'}, {'symbol': 'F', 'reason': 'no_signal'}, {'symbol': 'NTAP', 'reason': 'no_signal'}, {'symbol': 'XEL', 'reason': 'no_signal'}, {'symbol': 'FITB', 'reason': 'no_signal'}, {'symbol': 'EBAY', 'reason': 'no_signal'}, {'symbol': 'KDP', 'reason': 'no_signal'}, {'symbol': 'LHX', 'reason': 'no_signal'}, {'symbol': 'GRMN', 'reason': 'no_signal'}, {'symbol': 'VEEV', 'reason': 'no_signal'}, {'symbol': 'VMRK', 'reason': 'no_signal'}, {'symbol': 'TWLO', 'reason': 'no_signal'}, {'symbol': 'EXC', 'reason': 'no_signal'}, {'symbol': 'FLEX', 'reason': 'no_signal'}, {'symbol': 'IQV', 'reason': 'no_signal'}, {'symbol': 'RSG', 'reason': 'no_signal'}, {'symbol': 'VTR', 'reason': 'no_signal'}, {'symbol': 'CVNA', 'reason': 'no_signal'}, {'symbol': 'FERG', 'reason': 'no_signal'}, {'symbol': 'WAT', 'reason': 'no_signal'}, {'symbol': 'ILMN', 'reason': 'no_signal'}, {'symbol': 'NDAQ', 'reason': 'no_signal'}, {'symbol': 'XYZ', 'reason': 'no_signal'}, {'symbol': 'MSCI', 'reason': 'no_signal'}, {'symbol': 'IDXX', 'reason': 'no_signal'}, {'symbol': 'AIG', 'reason': 'no_signal'}, {'symbol': 'COIN', 'reason': 'no_signal'}, {'symbol': 'YUM', 'reason': 'no_signal'}, {'symbol': 'FANG', 'reason': 'no_signal'}, {'symbol': 'IBKR', 'reason': 'no_signal'}, {'symbol': 'ED', 'reason': 'no_signal'}, {'symbol': 'PRU', 'reason': 'no_signal'}, {'symbol': 'ADM', 'reason': 'no_signal'}, {'symbol': 'SYY', 'reason': 'no_signal'}, {'symbol': 'WDAY', 'reason': 'no_signal'}, {'symbol': 'CBRE', 'reason': 'no_signal'}, {'symbol': 'TTWO', 'reason': 'no_signal'}, {'symbol': 'ROP', 'reason': 'no_signal'}, {'symbol': 'PEG', 'reason': 'no_signal'}, {'symbol': 'HIG', 'reason': 'no_signal'}, {'symbol': 'EME', 'reason': 'no_signal'}, {'symbol': 'IRM', 'reason': 'no_signal'}, {'symbol': 'KVUE', 'reason': 'no_signal'}, {'symbol': 'WEC', 'reason': 'no_signal'}, {'symbol': 'DHI', 'reason': 'no_signal'}, {'symbol': 'BIIB', 'reason': 'no_signal'}, {'symbol': 'UAL', 'reason': 'no_signal'}, {'symbol': 'ODFL', 'reason': 'no_signal'}, {'symbol': 'RMD', 'reason': 'no_signal'}, {'symbol': 'CCL', 'reason': 'no_signal'}, {'symbol': 'AXON', 'reason': 'no_signal'}, {'symbol': 'PAYX', 'reason': 'no_signal'}, {'symbol': 'EQT', 'reason': 'no_signal'}, {'symbol': 'CNC', 'reason': 'no_signal'}, {'symbol': 'ACGL', 'reason': 'no_signal'}, {'symbol': 'KMB', 'reason': 'no_signal'}, {'symbol': 'JBL', 'reason': 'no_signal'}, {'symbol': 'DXCM', 'reason': 'no_signal'}, {'symbol': 'STLD', 'reason': 'no_signal'}, {'symbol': 'VMC', 'reason': 'no_signal'}, {'symbol': 'MTB', 'reason': 'no_signal'}, {'symbol': 'MTD', 'reason': 'no_signal'}, {'symbol': 'HBAN', 'reason': 'no_signal'}, {'symbol': 'ZTS', 'reason': 'no_signal'}, {'symbol': 'CBOE', 'reason': 'no_signal'}, {'symbol': 'NTRS', 'reason': 'no_signal'}, {'symbol': 'EXPE', 'reason': 'no_signal'}, {'symbol': 'GEHC', 'reason': 'no_signal'}, {'symbol': 'PCG', 'reason': 'no_signal'}, {'symbol': 'MLM', 'reason': 'no_signal'}, {'symbol': 'AEE', 'reason': 'no_signal'}, {'symbol': 'TDY', 'reason': 'no_signal'}, {'symbol': 'EXR', 'reason': 'no_signal'}, {'symbol': 'WSM', 'reason': 'no_signal'}, {'symbol': 'DG', 'reason': 'no_signal'}, {'symbol': 'WTW', 'reason': 'no_signal'}, {'symbol': 'RJF', 'reason': 'no_signal'}, {'symbol': 'ATO', 'reason': 'no_signal'}, {'symbol': 'HPQ', 'reason': 'no_signal'}, {'symbol': 'IR', 'reason': 'no_signal'}, {'symbol': 'CFG', 'reason': 'no_signal'}, {'symbol': 'LYV', 'reason': 'no_signal'}, {'symbol': 'CTSH', 'reason': 'no_signal'}, {'symbol': 'FFIV', 'reason': 'no_signal'}, {'symbol': 'DTE', 'reason': 'no_signal'}]
+- **manual_candidates**: none
+- **trading_halted_reasons**: none
+- **scan_count**: 14
+- **skip_reason_summary**: {'no_signal': 5406, 'agent_decision_scheduled': 16, 'missing_live_data': 61, 'technical_atr_too_low': 5, 'missing_required_chart_history': 14}
+
+## End Of Day (2026-10-14T16:10:04)
+- **summary**: {'date': '2026-10-14', 'daily_pnl': 0.0, 'daily_pnl_pct': 0.0, 'total_tickers_scanned': 390, 'valid_setups': 9, 'trades_taken': 0, 'skipped': 390, 'top_rejection_reasons': [('no return inside zone', 379), ('abnormal volatility spike', 1), ('no breakout', 1)]}
+- **report**: 
+--------------------------------------------------
+Ticker: A
+Level: 97.37
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 95.99 - 97.81
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AAPL
+Level: 174.72
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 173.95 - 175.49
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ABBV
+Level: 247.56
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 246.67 - 248.57
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ABNB
+Level: 173.03
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 172.55 - 173.99
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ABT
+Level: 86.15
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 85.89 - 86.41
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ACGL
+Level: 85.45
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 85.27 - 85.63
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ACN
+Level: 223.61
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 222.96 - 224.26
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ADBE
+Level: 549.93
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 548.93 - 550.93
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ADI
+Level: 252.48
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 250.67 - 254.2
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ADM
+Level: 42.98
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 42.51 - 43.23
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ADP
+Level: 197.23
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 196.58 - 197.73
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ADSK
+Level: 189.45
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 188.69 - 190.76
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AEE
+Level: 116.4
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 116.22 - 116.58
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AEP
+Level: 139.44
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 139.12 - 139.66
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AFL
+Level: 125.93
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 125.71 - 126.22
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AGPU
+Level: 35.55
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 35.44 - 35.66
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AIG
+Level: 72.15
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 71.82 - 72.29
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AJG
+Level: 197.4
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 196.33 - 198.26
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ALL
+Level: 178.4
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 177.97 - 178.83
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ALOY
+Level: 21.69
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 21.65 - 21.73
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AMAT
+Level: 696.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 691.64 - 698.14
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AMD
+Level: 402.04
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 398.25 - 404.87
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AME
+Level: 148.72
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 147.78 - 149.24
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AMGN
+Level: 437.23
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 435.74 - 438.5
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AMH
+Level: 39.38
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 39.32 - 39.55
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AMP
+Level: 422.81
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 419.85 - 424.06
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AMT
+Level: 165.55
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 164.51 - 166.12
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AMZN
+Level: 175.85
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 175.16 - 176.98
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ANET
+Level: 215.38
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 214.08 - 216.64
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AON
+Level: 297.87
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 297.24 - 298.5
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: APD
+Level: 230.35
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 228.51 - 230.95
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: APH
+Level: 39.81
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 39.29 - 40.07
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: APLM
+Level: 35.98
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 35.84 - 36.12
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: APO
+Level: 100.3
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 99.13 - 100.73
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: APP
+Level: 166.19
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 163.94 - 167.43
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ASML
+Level: 1127.75
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 1122.21 - 1133.29
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ASND
+Level: 265.37
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 262.98 - 266.18
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ATO
+Level: 191.49
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 191.21 - 191.77
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AVGO
+Level: 442.36
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 441.09 - 443.49
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AXON
+Level: 351.33
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 349.68 - 352.98
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AXP
+Level: 227.36
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 226.24 - 228.08
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: AZO
+Level: 4332.68
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 4325.05 - 4340.31
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: BA
+Level: 254.14
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 253.77 - 254.72
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: BAC
+Level: 49.89
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 49.69 - 50.19
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 49.83
+Stop: 49.65
+Target: 52.33
+R:R: 13.89
+Confidence: 0.85
+Position Modifier: 1.0
+
+Reasons:
+- router_accepted
+- clean false breakout return
+
+--------------------------------------------------
+Ticker: BDX
+Level: 200.8
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 200.33 - 202.14
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: BE
+Level: 318.49
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 316.61 - 323.86
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: BIDU
+Level: 161.44
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 161.24 - 161.64
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: BIIB
+Level: 156.08
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 154.49 - 157.94
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: BKNG
+Level: 156.95
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 156.44 - 157.46
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: BKR
+Level: 35.27
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 35.12 - 35.42
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: BLK
+Level: 1209.82
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 1207.67 - 1211.97
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: BMY
+Level: 67.57
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 67.08 - 67.73
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: BNY
+Level: 72.5
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 71.82 - 72.79
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: BRKH
+Level: 9.92
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 9.92 - 9.92
+
+Decision:
+NO TRADE
+
+Reasons:
+- abnormal volatility spike
+
+--------------------------------------------------
+Ticker: BSX
+Level: 78.63
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 78.49 - 78.77
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: BX
+Level: 105.19
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 104.72 - 105.56
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: C
+Level: 56.07
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 55.19 - 56.48
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CAH
+Level: 249.29
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 248.55 - 250.03
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CARR
+Level: 80.74
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 80.6 - 81.02
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CAT
+Level: 280.06
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 272.65 - 283.41
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CB
+Level: 365.29
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 364.68 - 366.52
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CBOE
+Level: 347.25
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 344.56 - 348.69
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CBRE
+Level: 112.52
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 111.05 - 113.08
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CCI
+Level: 67.47
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 67.09 - 68.56
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CCL
+Level: 17.64
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 17.44 - 17.71
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CDNS
+Level: 411.68
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 409.0 - 412.68
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CEG
+Level: 189.79
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 187.91 - 194.49
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CFG
+Level: 33.95
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 33.55 - 34.11
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CI
+Level: 350.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 349.06 - 350.94
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CIEN
+Level: 572.39
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 563.59 - 575.88
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CL
+Level: 76.11
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 75.8 - 76.27
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CMCSA
+Level: 37.24
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 37.18 - 37.29
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CME
+Level: 322.57
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 321.89 - 323.25
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CMG
+Level: 66.06
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 65.94 - 66.18
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CMI
+Level: 272.57
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 271.32 - 273.82
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CNC
+Level: 53.26
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 52.62 - 53.57
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: COF
+Level: 243.36
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 241.77 - 243.93
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: COHR
+Level: 433.69
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 429.64 - 436.56
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: COIN
+Level: 413.63
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 412.79 - 414.47
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: COP
+Level: 82.66
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 82.33 - 82.99
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: COR
+Level: 372.65
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 371.91 - 373.39
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: COST
+Level: 1078.24
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 1076.8 - 1081.27
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CPHI
+Level: 2.65
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 2.6 - 2.76
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CRH
+Level: 80.35
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 79.72 - 80.58
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 79.79
+Stop: 79.6
+Target: 84.85
+R:R: 26.63
+Confidence: 0.81
+Position Modifier: 1.0
+
+Reasons:
+- router_accepted
+- clean false breakout return
+
+--------------------------------------------------
+Ticker: CRM
+Level: 213.17
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 212.29 - 214.05
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CRMT
+Level: 62.55
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 62.51 - 62.57
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CRWD
+Level: 160.25
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 156.83 - 161.7
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CSCO
+Level: 52.67
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 51.77 - 53.01
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CSX
+Level: 26.31
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 26.13 - 26.39
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CTAS
+Level: 166.23
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 165.89 - 166.57
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CTSH
+Level: 40.03
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 39.56 - 40.24
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CVNA
+Level: 34.44
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 33.75 - 34.69
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CVS
+Level: 110.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 109.68 - 110.32
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: CVX
+Level: 180.39
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 179.11 - 180.81
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: D
+Level: 49.85
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 49.73 - 49.97
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: DAL
+Level: 37.29
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 36.65 - 37.55
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: DASH
+Level: 143.37
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 142.56 - 144.11
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: DDOG
+Level: 289.9
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 288.35 - 294.27
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: DE
+Level: 680.99
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 677.88 - 684.17
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: DELL
+Level: 298.32
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 295.29 - 303.28
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: DG
+Level: 68.57
+Pattern: ONE_BAR
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: LOW
+- Zone: 67.39 - 68.99
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: DHI
+Level: 114.17
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 113.47 - 114.48
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: DHR
+Level: 252.95
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 252.32 - 253.57
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: DIS
+Level: 80.99
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 80.59 - 81.25
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: DLR
+Level: 139.5
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 138.76 - 140.01
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: DTE
+Level: 116.65
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 116.1 - 116.85
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: DUK
+Level: 105.9
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 105.45 - 106.08
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: DVN
+Level: 27.14
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 26.99 - 27.28
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: DXCM
+Level: 58.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 57.76 - 58.27
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: EAF
+Level: 5.1
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 5.02 - 5.18
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: EBAY
+Level: 58.89
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 58.33 - 59.27
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ECL
+Level: 227.63
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 227.1 - 228.16
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ED
+Level: 107.59
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 107.25 - 107.95
+
+Decision:
+VALID SETUP
+Trade: SELL
+Entry: 107.88
+Stop: 108.05
+Target: 103.88
+R:R: 23.53
+Confidence: 0.77
+Position Modifier: 1.0
+
+Reasons:
+- router_accepted
+- clean false breakout return
+
+--------------------------------------------------
+Ticker: EL
+Level: 50.33
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 49.96 - 50.7
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ELV
+Level: 454.46
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 452.98 - 456.53
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: EME
+Level: 879.37
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 876.46 - 885.2
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: EMR
+Level: 92.36
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 91.54 - 92.76
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: EOG
+Level: 150.96
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 150.66 - 151.75
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: EQIX
+Level: 732.72
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 726.04 - 735.5
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: EQT
+Level: 38.76
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 38.65 - 38.94
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ETN
+Level: 260.85
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 257.85 - 262.47
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ETR
+Level: 72.17
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 71.99 - 72.34
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: EUR.USD
+Level: 1.07
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 1.07 - 1.07
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: EW
+Level: 65.94
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 65.25 - 66.2
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: EXC
+Level: 50.38
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 50.31 - 50.45
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: EXPE
+Level: 141.86
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 138.71 - 142.97
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: EXR
+Level: 171.28
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 170.99 - 171.57
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: F
+Level: 16.62
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 16.59 - 16.65
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: FANG
+Level: 123.15
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 122.64 - 123.88
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: FAST
+Level: 52.15
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 51.87 - 52.28
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: FCX
+Level: 31.35
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 30.97 - 31.53
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: FDX
+Level: 256.09
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 255.58 - 257.26
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: FERG
+Level: 152.17
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 150.41 - 152.77
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: FFIV
+Level: 357.4
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 355.81 - 361.59
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: FITB
+Level: 33.84
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 33.65 - 33.94
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: FIX
+Level: 1127.55
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 1118.73 - 1140.04
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: FLEX
+Level: 80.33
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 79.21 - 81.04
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: FTNT
+Level: 191.15
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 190.55 - 191.75
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: GCTS
+Level: 0.96
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 0.94 - 0.97
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: GD
+Level: 244.66
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 243.85 - 245.47
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: GE
+Level: 216.8
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 216.09 - 217.51
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: GEHC
+Level: 91.58
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 91.37 - 92.17
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: GEV
+Level: 257.02
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 252.79 - 261.25
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: GILD
+Level: 84.16
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 83.72 - 84.6
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: GIS
+Level: 70.49
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 70.4 - 70.58
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: GLW
+Level: 218.11
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 216.18 - 219.46
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: GM
+Level: 42.48
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 42.3 - 42.66
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: GOOG
+Level: 236.68
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 235.76 - 237.5
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: GOOGL
+Level: 271.41
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 270.56 - 272.26
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: GRMN
+Level: 307.1
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 306.19 - 309.35
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: GS
+Level: 1143.84
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 1141.3 - 1146.38
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: GSHD
+Level: 79.85
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 79.61 - 80.27
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: GWW
+Level: 906.52
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 899.72 - 909.24
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: HAL
+Level: 42.46
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 42.39 - 42.53
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: HBAN
+Level: 12.42
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 12.39 - 12.45
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: HCA
+Level: 532.92
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 531.54 - 534.3
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: HD
+Level: 282.46
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 281.94 - 282.98
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: HIG
+Level: 108.49
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 108.01 - 108.81
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: HLT
+Level: 201.15
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 200.57 - 201.73
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: HON
+Level: 188.8
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 187.84 - 189.31
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: HONA
+Level: 280.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 279.46 - 280.54
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: HOOD
+Level: 153.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 152.62 - 153.38
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: HPE
+Level: 37.75
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 37.35 - 38.15
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: HPQ
+Level: 36.58
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 36.41 - 36.99
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: HUM
+Level: 433.5
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 430.76 - 441.76
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: HWM
+Level: 160.01
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 158.37 - 161.07
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: IBKR
+Level: 79.62
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 79.15 - 79.85
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: IBM
+Level: 232.29
+Pattern: ONE_BAR
+
+Context:
+- Trend: DOWN
+- ATR: OK
+- News: LOW
+- Zone: 230.49 - 233.27
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 232.18
+Stop: 229.14
+Target: 251.61
+R:R: 6.39
+Confidence: 0.81
+Position Modifier: 1.0
+
+Reasons:
+- router_accepted
+- clean false breakout return
+
+--------------------------------------------------
+Ticker: ICCC
+Level: 4.28
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 4.25 - 4.31
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ICE
+Level: 124.49
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 123.56 - 124.79
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: IDXX
+Level: 526.66
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 525.1 - 530.63
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 525.52
+Stop: 523.94
+Target: 562.38
+R:R: 23.33
+Confidence: 0.83
+Position Modifier: 1.0
+
+Reasons:
+- router_accepted
+- clean false breakout return
+
+--------------------------------------------------
+Ticker: ILMN
+Level: 248.16
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 245.31 - 249.61
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: INTC
+Level: 137.98
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 137.45 - 138.51
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: INTU
+Level: 790.6
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 789.36 - 791.84
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: IQV
+Level: 246.87
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 245.96 - 247.8
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: IR
+Level: 65.7
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 65.35 - 65.96
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: IRM
+Level: 79.39
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 79.05 - 79.84
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ISRG
+Level: 353.33
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 351.78 - 354.65
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ITIC
+Level: 195.87
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 193.33 - 196.75
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ITW
+Level: 218.41
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 217.78 - 220.15
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: JBL
+Level: 388.3
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 386.86 - 389.74
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: JCI
+Level: 96.67
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 95.58 - 97.1
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: JNJ
+Level: 142.2
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 139.9 - 142.98
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: JPM
+Level: 214.44
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 213.92 - 215.9
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: KDP
+Level: 36.7
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 36.61 - 36.79
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: KEYS
+Level: 373.88
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 372.09 - 376.22
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: KHC
+Level: 33.35
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 33.29 - 33.41
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: KKR
+Level: 163.68
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 163.36 - 164.0
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: KLAC
+Level: 279.03
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 278.17 - 280.2
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: KMB
+Level: 93.95
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 93.71 - 94.18
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: KMDA
+Level: 9.24
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 9.22 - 9.26
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: KMI
+Level: 30.06
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 30.0 - 30.24
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: KO
+Level: 90.92
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 90.76 - 91.08
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: KR
+Level: 73.89
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 73.75 - 74.03
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: KVUE
+Level: 20.05
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 20.02 - 20.08
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: KYTX
+Level: 11.26
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 11.22 - 11.3
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: LEDS
+Level: 3.3
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 3.28 - 3.32
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: LHX
+Level: 373.12
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 372.29 - 373.63
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: LIN
+Level: 538.95
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 538.14 - 539.76
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: LITE
+Level: 1030.37
+Pattern: ONE_BAR
+
+Context:
+- Trend: DOWN
+- ATR: OK
+- News: LOW
+- Zone: 1022.26 - 1043.11
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: LLY
+Level: 640.86
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 635.24 - 645.05
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: LMT
+Level: 676.08
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 674.91 - 677.25
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: LOW
+Level: 285.24
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 284.66 - 285.82
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: LRCX
+Level: 194.08
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 192.78 - 196.34
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: LVO
+Level: 15.2
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 15.17 - 15.23
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: LYV
+Level: 116.1
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 115.38 - 116.98
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MA
+Level: 471.66
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 468.7 - 472.96
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MAAS
+Level: 4152.56
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 4152.47 - 4152.64
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MAN
+Level: 47.19
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 46.56 - 47.41
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MAR
+Level: 208.16
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 206.81 - 208.97
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MCD
+Level: 250.32
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 249.82 - 250.82
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MCHP
+Level: 99.3
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 99.0 - 99.6
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MCK
+Level: 978.71
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 976.04 - 981.38
+
+Decision:
+NO TRADE
+
+Reasons:
+- no breakout
+
+--------------------------------------------------
+Ticker: MCO
+Level: 398.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 395.71 - 398.99
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MDB
+Level: 147.38
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 143.61 - 149.05
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MDLZ
+Level: 53.13
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 53.01 - 53.25
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MDT
+Level: 74.4
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 74.09 - 74.71
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MDU
+Level: 15.42
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 15.38 - 15.45
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MET
+Level: 92.21
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 91.93 - 92.5
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: META
+Level: 502.86
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 497.77 - 505.37
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MLM
+Level: 444.9
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 443.72 - 446.08
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MMM
+Level: 180.8
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 180.07 - 181.22
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MNST
+Level: 42.24
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 42.07 - 42.35
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MO
+Level: 74.11
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 73.92 - 74.29
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MPC
+Level: 277.55
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 275.65 - 279.45
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MPWR
+Level: 1675.42
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 1669.54 - 1681.3
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MRK
+Level: 141.36
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 140.93 - 141.79
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MRLN
+Level: 14.6
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 14.58 - 14.62
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MRNA
+Level: 197.17
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 193.23 - 200.81
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MRSH
+Level: 158.16
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 157.43 - 158.47
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MRVL
+Level: 301.27
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 299.29 - 307.45
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MS
+Level: 100.31
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 99.34 - 100.8
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MSCI
+Level: 507.44
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 505.48 - 508.52
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MSEX
+Level: 70.19
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 70.09 - 70.29
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MSFT
+Level: 550.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 548.85 - 551.15
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MSI
+Level: 500.86
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 499.9 - 503.42
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MTB
+Level: 168.87
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 168.45 - 169.29
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MTD
+Level: 982.02
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 978.0 - 986.04
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: MU
+Level: 649.83
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 634.92 - 655.11
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: NAKA
+Level: 1140.6
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 1140.52 - 1140.68
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: NCEW
+Level: 3.15
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 3.15 - 3.15
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: NDAQ
+Level: 93.64
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 93.46 - 94.14
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 93.72
+Stop: 93.02
+Target: 97.75
+R:R: 5.76
+Confidence: 0.85
+Position Modifier: 1.0
+
+Reasons:
+- router_accepted
+- clean false breakout return
+
+--------------------------------------------------
+Ticker: NEE
+Level: 64.68
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 64.44 - 64.84
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: NEM
+Level: 76.75
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 76.44 - 77.06
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: NEOV
+Level: 6.11
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 6.09 - 6.13
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: NET
+Level: 306.47
+Pattern: ONE_BAR
+
+Context:
+- Trend: DOWN
+- ATR: OK
+- News: LOW
+- Zone: 304.71 - 308.77
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: NFLX
+Level: 128.22
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 128.05 - 128.4
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: NKE
+Level: 81.18
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 81.07 - 81.29
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: NOC
+Level: 487.64
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 484.36 - 489.16
+
+Decision:
+VALID SETUP
+Trade: SELL
+Entry: 487.05
+Stop: 489.41
+Target: 466.36
+R:R: 8.77
+Confidence: 0.73
+Position Modifier: 1.0
+
+Reasons:
+- router_accepted
+- clean false breakout return
+
+--------------------------------------------------
+Ticker: NOW
+Level: 224.74
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 224.06 - 226.69
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: NSC
+Level: 202.54
+Pattern: ONE_BAR
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: LOW
+- Zone: 201.13 - 203.04
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: NTAP
+Level: 230.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 228.49 - 230.84
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: NTRS
+Level: 118.99
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 118.63 - 119.36
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: NUE
+Level: 214.61
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 213.6 - 215.14
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: NVDA
+Level: 156.26
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 155.44 - 156.79
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: NXPI
+Level: 156.91
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 155.7 - 157.8
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: NXTC
+Level: 16.68
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 16.3 - 16.82
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: O
+Level: 66.57
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 66.46 - 66.68
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ODFL
+Level: 248.94
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 248.24 - 249.43
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: OKE
+Level: 114.27
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 114.04 - 114.5
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ON
+Level: 130.48
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 130.12 - 130.84
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: OPTX
+Level: 13.58
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 13.51 - 13.65
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ORCL
+Level: 260.87
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 260.2 - 261.54
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ORLY
+Level: 103.59
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 103.15 - 103.78
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: OXY
+Level: 65.38
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 65.25 - 65.51
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: P
+Level: 130.78
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 129.95 - 131.61
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PANW
+Level: 143.5
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 137.61 - 145.63
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PAYX
+Level: 130.23
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 130.01 - 130.54
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PCAR
+Level: 87.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 86.69 - 87.6
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PCG
+Level: 12.44
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 12.4 - 12.48
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PDD
+Level: 74.72
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 74.5 - 74.94
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PEG
+Level: 94.99
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 94.82 - 95.39
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PEP
+Level: 124.21
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 123.89 - 124.53
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PFE
+Level: 21.97
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 21.78 - 22.03
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PG
+Level: 179.99
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 179.7 - 180.72
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PGR
+Level: 193.06
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 192.63 - 193.49
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PH
+Level: 517.47
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 515.07 - 519.63
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PINS
+Level: 28.69
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 28.6 - 28.78
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PLD
+Level: 96.52
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 95.91 - 96.97
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PLTR
+Level: 60.24
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 57.52 - 61.11
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PM
+Level: 198.68
+Pattern: ONE_BAR
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: LOW
+- Zone: 198.38 - 199.06
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PNC
+Level: 160.99
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 159.77 - 161.45
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PRU
+Level: 93.13
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 92.78 - 93.63
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PSA
+Level: 347.43
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 346.76 - 348.1
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PSX
+Level: 224.68
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 223.47 - 225.57
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PWR
+Level: 510.64
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 507.68 - 515.35
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PYPG
+Level: 21.61
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 21.58 - 21.64
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: PYPL
+Level: 92.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 91.89 - 92.11
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: QCOM
+Level: 248.27
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 247.69 - 248.85
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: RBLX
+Level: 141.45
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 141.19 - 142.26
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: RCEL
+Level: 7.76
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 7.51 - 7.86
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: RCL
+Level: 363.22
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 361.99 - 364.02
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: RDDT
+Level: 266.66
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 265.57 - 267.56
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: REGN
+Level: 859.34
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 856.83 - 861.85
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: RJF
+Level: 124.94
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 124.56 - 125.24
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: RMD
+Level: 293.08
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 292.47 - 294.42
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ROK
+Level: 477.38
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 476.18 - 479.87
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ROLR
+Level: 22.85
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 22.83 - 22.87
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ROP
+Level: 434.54
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 432.27 - 435.39
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ROST
+Level: 200.6
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 200.0 - 201.2
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: RSG
+Level: 198.51
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 197.17 - 198.94
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: RTX
+Level: 220.49
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 220.04 - 220.94
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SANM
+Level: 280.13
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 278.92 - 281.34
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SBUX
+Level: 112.26
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 111.97 - 112.91
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SCHW
+Level: 67.82
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 67.64 - 68.16
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SEI
+Level: 82.17
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 81.69 - 82.65
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SHOP
+Level: 176.93
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 176.25 - 177.61
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SHW
+Level: 299.02
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 298.12 - 299.8
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SION
+Level: 31.06
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 30.99 - 31.1
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SKYQ
+Level: 21.36
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 21.34 - 21.38
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SLB
+Level: 58.82
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 58.67 - 58.97
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SMA
+Level: 39.18
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 39.13 - 39.23
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SNAP
+Level: 12.74
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 12.7 - 12.78
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SNDK
+Level: 2256.11
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 2241.55 - 2265.84
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SNOW
+Level: 369.04
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 367.24 - 372.35
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SNPS
+Level: 636.61
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 635.19 - 638.03
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SO
+Level: 99.58
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 99.45 - 99.71
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SPG
+Level: 234.95
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 234.56 - 235.34
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SPGI
+Level: 535.5
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 534.74 - 536.54
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SPOT
+Level: 745.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 742.54 - 750.34
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SRAD
+Level: 27.25
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 27.2 - 27.3
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SRE
+Level: 62.66
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 62.23 - 62.81
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: STLD
+Level: 162.16
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 161.6 - 162.72
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: STT
+Level: 141.9
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 141.53 - 142.27
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: STX
+Level: 680.63
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 677.14 - 684.12
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SYK
+Level: 404.14
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 403.26 - 405.75
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: SYY
+Level: 91.4
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 91.3 - 91.56
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: T
+Level: 21.05
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 20.91 - 21.13
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TDG
+Level: 1541.88
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 1537.33 - 1544.55
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TDY
+Level: 431.29
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 427.44 - 432.73
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TEAM
+Level: 296.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 295.16 - 296.75
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TEL
+Level: 120.04
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 119.49 - 120.59
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TER
+Level: 469.11
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 467.31 - 470.91
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TFC
+Level: 33.82
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 33.72 - 33.92
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TGHL
+Level: 2.93
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 2.92 - 2.94
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TGT
+Level: 164.04
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 163.61 - 164.47
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TJX
+Level: 162.37
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 162.04 - 163.37
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TMO
+Level: 656.75
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 652.59 - 658.67
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TMUS
+Level: 164.47
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 163.62 - 164.87
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TOP
+Level: 16.94
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 16.83 - 17.05
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TREX
+Level: 30.4
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 30.27 - 30.53
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TRGP
+Level: 305.08
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 304.47 - 305.69
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TRV
+Level: 325.39
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 324.64 - 326.14
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TSLA
+Level: 475.9
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 474.34 - 476.75
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TSM
+Level: 471.19
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 467.21 - 472.49
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TT
+Level: 316.17
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 314.91 - 317.43
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TTWO
+Level: 160.83
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 159.92 - 161.74
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TWLO
+Level: 255.57
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 253.11 - 257.34
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: TXN
+Level: 143.31
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 141.7 - 144.17
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: UAL
+Level: 56.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 55.53 - 56.36
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: UBER
+Level: 99.72
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 99.5 - 99.92
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: UNH
+Level: 239.5
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 237.81 - 241.19
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: UNP
+Level: 208.25
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 207.78 - 208.72
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: UPS
+Level: 138.67
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 138.46 - 138.88
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: URI
+Level: 551.94
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 548.6 - 555.28
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: USB
+Level: 65.61
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 65.49 - 65.73
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: V
+Level: 283.53
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 282.64 - 285.98
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: VAL
+Level: 61.21
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 60.93 - 61.98
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: VEEE
+Level: 234.58
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 234.52 - 234.64
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: VEEV
+Level: 258.93
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 256.83 - 259.97
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: VLO
+Level: 101.66
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 99.0 - 103.56
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: VMC
+Level: 222.44
+Pattern: ONE_BAR
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: LOW
+- Zone: 221.86 - 223.02
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: VMRK
+Level: 74.37
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 74.22 - 74.83
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: VRT
+Level: 343.31
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 341.07 - 344.25
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: VRTX
+Level: 491.93
+Pattern: ONE_BAR
+
+Context:
+- Trend: DOWN
+- ATR: OK
+- News: LOW
+- Zone: 490.5 - 494.0
+
+Decision:
+VALID SETUP
+Trade: BUY
+Entry: 492.64
+Stop: 487.29
+Target: 519.52
+R:R: 5.02
+Confidence: 0.82
+Position Modifier: 1.0
+
+Reasons:
+- router_accepted
+- clean false breakout return
+
+--------------------------------------------------
+Ticker: VST
+Level: 99.24
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 98.06 - 100.42
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: VTR
+Level: 97.61
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 96.94 - 97.84
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: VZ
+Level: 38.94
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 38.84 - 39.04
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: WAB
+Level: 157.56
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 156.13 - 158.34
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: WAT
+Level: 276.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 273.72 - 277.33
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: WDAY
+Level: 281.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 280.37 - 281.63
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: WDC
+Level: 729.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 724.98 - 731.54
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: WEC
+Level: 118.53
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 118.37 - 118.69
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: WELL
+Level: 244.84
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 243.5 - 245.41
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: WFC
+Level: 59.71
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 59.16 - 59.98
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: WM
+Level: 246.05
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 245.67 - 246.43
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: WMB
+Level: 51.02
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 50.83 - 51.21
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: WMT
+Level: 81.83
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 81.48 - 82.27
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: WSM
+Level: 251.78
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 251.09 - 252.47
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: WTBA
+Level: 30.33
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 30.26 - 30.4
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: WTW
+Level: 275.6
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 274.87 - 277.59
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: XEL
+Level: 63.64
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 63.52 - 63.76
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: XOM
+Level: 174.38
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 174.09 - 175.18
+
+Decision:
+VALID SETUP
+Trade: SELL
+Entry: 174.58
+Stop: 175.64
+Target: 167.18
+R:R: 6.98
+Confidence: 0.8
+Position Modifier: 1.0
+
+Reasons:
+- router_accepted
+- clean false breakout return
+
+--------------------------------------------------
+Ticker: XP
+Level: 29.29
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 29.12 - 29.42
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: XYZ
+Level: 45.7
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 45.12 - 45.91
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: YUM
+Level: 126.46
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 126.15 - 126.77
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: YYAI
+Level: 272000.0
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 271999.99 - 272000.01
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ZS
+Level: 120.85
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 118.25 - 122.1
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ZTO
+Level: 17.04
+Pattern: ONE_BAR
+
+Context:
+- Trend: RANGE
+- ATR: OK
+- News: LOW
+- Zone: 17.0 - 17.12
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+--------------------------------------------------
+Ticker: ZTS
+Level: 189.98
+Pattern: ONE_BAR
+
+Context:
+- Trend: UP
+- ATR: OK
+- News: LOW
+- Zone: 189.78 - 190.18
+
+Decision:
+NO TRADE
+
+Reasons:
+- no return inside zone
+
+
+## Workflow EOD (2026-10-14T16:10:04)
+- **stage**: EOD
+- **summary**: {'date': '2026-10-14', 'daily_pnl': 0.0, 'daily_pnl_pct': 0.0, 'positions': [{'symbol': 'KDP', 'quantity': 45, 'entry': 32.83666965, 'avg_cost': 32.7411131, 'direction': 'long', 'sec_type': 'STK', 'protection_policy': 'manual_unmanaged', 'stop_order_id': 1044, 'current_stop_order_status': 'PreSubmitted', 'stop_loss': 32.3, 'current_stop_loss': 32.3, 'limit_order_id': 1045, 'current_target_order_status': 'Submitted', 'target': 34.86, 'current_target': 34.86, 'planned_stop_loss': 32.3, 'planned_target': 34.86}, {'symbol': 'KO', 'quantity': 5, 'entry': 90.200003, 'avg_cost': 90.2, 'direction': 'long', 'sec_type': 'STK', 'protection_policy': 'manual_unmanaged', 'stop_order_id': 1017, 'current_stop_order_status': 'PreSubmitted', 'stop_loss': 87.6, 'current_stop_loss': 87.6, 'limit_order_id': 1018, 'current_target_order_status': 'Submitted', 'target': 95.23, 'current_target': 95.23, 'planned_stop_loss': 87.6, 'planned_target': 95.23}, {'symbol': 'VEEV', 'quantity': 3, 'entry': 299.32333635, 'avg_cost': 299.32333635, 'direction': 'long', 'sec_type': 'STK', 'protection_policy': 'manual_unmanaged', 'stop_order_id': 1052, 'current_stop_order_status': 'PreSubmitted', 'stop_loss': 291.41, 'current_stop_loss': 291.41, 'limit_order_id': 1053, 'current_target_order_status': 'Submitted', 'target': 321.47, 'current_target': 321.47, 'planned_stop_loss': 291.41, 'planned_target': 321.47}, {'symbol': 'OXY', 'quantity': 8, 'entry': 60.995003, 'avg_cost': 60.995, 'direction': 'long', 'sec_type': 'STK', 'protection_policy': 'manual_unmanaged', 'stop_order_id': 1013, 'current_stop_order_status': 'PreSubmitted', 'stop_loss': 57.82, 'current_stop_loss': 57.82, 'limit_order_id': 1014, 'current_target_order_status': 'Submitted', 'target': 67.94, 'current_target': 67.94, 'planned_stop_loss': 57.82, 'planned_target': 67.94}, {'symbol': 'GSHD', 'quantity': 21, 'entry': 46.10762205, 'avg_cost': 46.1076238, 'direction': 'long', 'sec_type': 'STK', 'protection_policy': 'manual_unmanaged', 'stop_order_id': 924, 'current_stop_order_status': 'PreSubmitted', 'stop_loss': 42.83, 'current_stop_loss': 42.83, 'limit_order_id': 925, 'current_target_order_status': 'Submitted', 'target': 50.0, 'current_target': 50.0, 'planned_stop_loss': 44.09, 'planned_target': 50.0}, {'symbol': 'EOG', 'quantity': 3, 'entry': 152.33333635, 'avg_cost': 152.33333335, 'direction': 'long', 'sec_type': 'STK', 'protection_policy': 'manual_unmanaged', 'stop_order_id': 1021, 'current_stop_order_status': 'PreSubmitted', 'stop_loss': 148.05, 'current_stop_loss': 148.05, 'limit_order_id': 1022, 'current_target_order_status': 'Submitted', 'target': 159.39, 'current_target': 159.39, 'planned_stop_loss': 148.05, 'planned_target': 159.39}, {'symbol': 'MRSH', 'quantity': 5, 'entry': 176.07, 'avg_cost': 176.07, 'direction': 'long', 'sec_type': 'STK', 'protection_policy': 'manual_unmanaged', 'stop_order_id': 991, 'current_stop_order_status': 'PreSubmitted', 'stop_loss': 173.3, 'current_stop_loss': 173.3, 'limit_order_id': 992, 'current_target_order_status': 'Submitted', 'target': 182.33, 'current_target': 182.33, 'planned_stop_loss': 173.3, 'planned_target': 182.33}], 'account_snapshot': {'account': [{'account': 'DU5454348', 'tag': 'AccountType', 'value': 'INDIVIDUAL', 'currency': ''}, {'account': 'DU5454348', 'tag': 'Cushion', 'value': '0.716402', 'currency': ''}, {'account': 'DU5454348', 'tag': 'LookAheadNextChange', 'value': '1792071000', 'currency': ''}, {'account': 'DU5454348', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'AvailableFunds', 'value': '3481.51', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'BuyingPower', 'value': '13926.05', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'EquityWithLoanValue', 'value': '4958.05', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'ExcessLiquidity', 'value': '3552.29', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullAvailableFunds', 'value': '3481.51', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullExcessLiquidity', 'value': '3552.29', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullInitMarginReq', 'value': '1476.54', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'FullMaintMarginReq', 'value': '1406.22', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'GrossPositionValue', 'value': '5624.90', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'InitMarginReq', 'value': '1476.54', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadAvailableFunds', 'value': '3481.51', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadExcessLiquidity', 'value': '3552.29', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadInitMarginReq', 'value': '1476.54', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'LookAheadMaintMarginReq', 'value': '1406.22', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'MaintMarginReq', 'value': '1406.22', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'NetLiquidation', 'value': '4958.52', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTEquity', 'value': '4958.52', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'RegTMargin', 'value': '2812.45', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'SMA', 'value': '4094.45', 'currency': 'USD'}, {'account': 'DU5454348', 'tag': 'TotalCashValue', 'value': '-666.38', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'CashBalance', 'value': '-666.3802', 'currency': 'USD'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '-666.3802', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '5624.90', 'currency': 'USD'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '4958.5177', 'currency': 'USD'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '9.01', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '-24.34', 'currency': 'USD'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'USD'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'USD', 'currency': 'USD'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'USD'}, {'account': 'All', 'tag': 'Currency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CashBalance', 'value': '-666.3802', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TotalCashBalance', 'value': '-666.3802', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccruedCash', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'StockMarketValue', 'value': '5624.90', 'currency': 'BASE'}, {'account': 'All', 'tag': 'OptionMarketValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FutureOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FuturesPNL', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetLiquidationByCurrency', 'value': '4958.5177', 'currency': 'BASE'}, {'account': 'All', 'tag': 'UnrealizedPnL', 'value': '9.01', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealizedPnL', 'value': '-24.34', 'currency': 'BASE'}, {'account': 'All', 'tag': 'ExchangeRate', 'value': '1.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'NetDividend', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MutualFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'MoneyMarketFundValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'CorporateBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBondValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'TBillValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'WarrantValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'FxCashBalance', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'AccountOrGroup', 'value': 'All', 'currency': 'BASE'}, {'account': 'All', 'tag': 'RealCurrency', 'value': 'BASE', 'currency': 'BASE'}, {'account': 'All', 'tag': 'IssuerOptionValue', 'value': '0.00', 'currency': 'BASE'}, {'account': 'All', 'tag': 'Cryptocurrency', 'value': '0.00', 'currency': 'BASE'}], 'positions': [{'symbol': 'KDP', 'currency': 'USD', 'local_symbol': 'KDP', 'position': 45.0, 'avg_cost': 32.7411131, 'sec_type': 'STK'}, {'symbol': 'KO', 'currency': 'USD', 'local_symbol': 'KO', 'position': 5.0, 'avg_cost': 90.2, 'sec_type': 'STK'}, {'symbol': 'VEEV', 'currency': 'USD', 'local_symbol': 'VEEV', 'position': 3.0, 'avg_cost': 299.32333635, 'sec_type': 'STK'}, {'symbol': 'OXY', 'currency': 'USD', 'local_symbol': 'OXY', 'position': 8.0, 'avg_cost': 60.995, 'sec_type': 'STK'}, {'symbol': 'GSHD', 'currency': 'USD', 'local_symbol': 'GSHD', 'position': 21.0, 'avg_cost': 46.1076238, 'sec_type': 'STK'}, {'symbol': 'EOG', 'currency': 'USD', 'local_symbol': 'EOG', 'position': 3.0, 'avg_cost': 152.33333335, 'sec_type': 'STK'}, {'symbol': 'MRSH', 'currency': 'USD', 'local_symbol': 'MRSH', 'position': 5.0, 'avg_cost': 176.07, 'sec_type': 'STK'}], 'open_orders': [{'symbol': 'GSHD', 'order_id': 925, 'perm_id': 1087357359, 'parent_id': 0, 'action': 'SELL', 'quantity': 21.0, 'type': 'LMT', 'status': 'Submitted', 'aux_price': 0.0, 'stop_price': 0.0, 'limit_price': 50.0, 'filled': 0.0, 'remaining': 21.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': True}, {'symbol': 'MRSH', 'order_id': 991, 'perm_id': 144245433, 'parent_id': 0, 'action': 'SELL', 'quantity': 5.0, 'type': 'STP', 'status': 'PreSubmitted', 'aux_price': 173.3, 'stop_price': 173.3, 'limit_price': 0.0, 'filled': 0.0, 'remaining': 5.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': False}, {'symbol': 'GSHD', 'order_id': 924, 'perm_id': 1087357358, 'parent_id': 0, 'action': 'SELL', 'quantity': 21.0, 'type': 'STP', 'status': 'PreSubmitted', 'aux_price': 42.83, 'stop_price': 42.83, 'limit_price': 0.0, 'filled': 0.0, 'remaining': 21.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': False}, {'symbol': 'VEEV', 'order_id': 1053, 'perm_id': 1196547280, 'parent_id': 1051, 'action': 'SELL', 'quantity': 3.0, 'type': 'LMT', 'status': 'Submitted', 'aux_price': 0.0, 'stop_price': 0.0, 'limit_price': 321.47, 'filled': 0.0, 'remaining': 3.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': True}, {'symbol': 'SO', 'order_id': 1076, 'perm_id': 1861254866, 'parent_id': 0, 'action': 'BUY', 'quantity': 11.0, 'type': 'LMT', 'status': 'Submitted', 'aux_price': 0.0, 'stop_price': 0.0, 'limit_price': 88.29, 'filled': 0.0, 'remaining': 11.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': True}, {'symbol': 'MRSH', 'order_id': 992, 'perm_id': 144245434, 'parent_id': 0, 'action': 'SELL', 'quantity': 5.0, 'type': 'LMT', 'status': 'Submitted', 'aux_price': 0.0, 'stop_price': 0.0, 'limit_price': 182.33, 'filled': 0.0, 'remaining': 5.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': True}, {'symbol': 'SO', 'order_id': 1077, 'perm_id': 1861254867, 'parent_id': 1076, 'action': 'SELL', 'quantity': 11.0, 'type': 'STP', 'status': 'PreSubmitted', 'aux_price': 87.1, 'stop_price': 87.1, 'limit_price': 0.0, 'filled': 0.0, 'remaining': 11.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': False}, {'symbol': 'SO', 'order_id': 1078, 'perm_id': 1861254868, 'parent_id': 1076, 'action': 'SELL', 'quantity': 11.0, 'type': 'LMT', 'status': 'PreSubmitted', 'aux_price': 0.0, 'stop_price': 0.0, 'limit_price': 91.27, 'filled': 0.0, 'remaining': 11.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': True}, {'symbol': 'KDP', 'order_id': 1063, 'perm_id': 1861254299, 'parent_id': 1062, 'action': 'SELL', 'quantity': 30.0, 'type': 'STP', 'status': 'PreSubmitted', 'aux_price': 32.3, 'stop_price': 32.3, 'limit_price': 0.0, 'filled': 0.0, 'remaining': 30.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': False}, {'symbol': 'KDP', 'order_id': 1064, 'perm_id': 1861254300, 'parent_id': 1062, 'action': 'SELL', 'quantity': 30.0, 'type': 'LMT', 'status': 'Submitted', 'aux_price': 0.0, 'stop_price': 0.0, 'limit_price': 34.3, 'filled': 0.0, 'remaining': 30.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': True}, {'symbol': 'OXY', 'order_id': 1013, 'perm_id': 1196543199, 'parent_id': 0, 'action': 'SELL', 'quantity': 8.0, 'type': 'STP', 'status': 'PreSubmitted', 'aux_price': 57.82, 'stop_price': 57.82, 'limit_price': 0.0, 'filled': 0.0, 'remaining': 8.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': False}, {'symbol': 'OXY', 'order_id': 1014, 'perm_id': 1196543200, 'parent_id': 0, 'action': 'SELL', 'quantity': 8.0, 'type': 'LMT', 'status': 'Submitted', 'aux_price': 0.0, 'stop_price': 0.0, 'limit_price': 67.94, 'filled': 0.0, 'remaining': 8.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': True}, {'symbol': 'KO', 'order_id': 1018, 'perm_id': 1196543209, 'parent_id': 0, 'action': 'SELL', 'quantity': 5.0, 'type': 'LMT', 'status': 'Submitted', 'aux_price': 0.0, 'stop_price': 0.0, 'limit_price': 95.23, 'filled': 0.0, 'remaining': 5.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': True}, {'symbol': 'KO', 'order_id': 1017, 'perm_id': 1196543208, 'parent_id': 0, 'action': 'SELL', 'quantity': 5.0, 'type': 'STP', 'status': 'PreSubmitted', 'aux_price': 87.6, 'stop_price': 87.6, 'limit_price': 0.0, 'filled': 0.0, 'remaining': 5.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': False}, {'symbol': 'EOG', 'order_id': 1021, 'perm_id': 1196543211, 'parent_id': 0, 'action': 'SELL', 'quantity': 3.0, 'type': 'STP', 'status': 'PreSubmitted', 'aux_price': 148.05, 'stop_price': 148.05, 'limit_price': 0.0, 'filled': 0.0, 'remaining': 3.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': False}, {'symbol': 'KDP', 'order_id': 1044, 'perm_id': 1196547213, 'parent_id': 0, 'action': 'SELL', 'quantity': 15.0, 'type': 'STP', 'status': 'PreSubmitted', 'aux_price': 32.3, 'stop_price': 32.3, 'limit_price': 0.0, 'filled': 0.0, 'remaining': 15.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': False}, {'symbol': 'EOG', 'order_id': 1022, 'perm_id': 1196543212, 'parent_id': 0, 'action': 'SELL', 'quantity': 3.0, 'type': 'LMT', 'status': 'Submitted', 'aux_price': 0.0, 'stop_price': 0.0, 'limit_price': 159.39, 'filled': 0.0, 'remaining': 3.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': True}, {'symbol': 'VEEV', 'order_id': 1052, 'perm_id': 1196547279, 'parent_id': 1051, 'action': 'SELL', 'quantity': 3.0, 'type': 'STP', 'status': 'PreSubmitted', 'aux_price': 291.41, 'stop_price': 291.41, 'limit_price': 0.0, 'filled': 0.0, 'remaining': 3.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': False}, {'symbol': 'KDP', 'order_id': 1045, 'perm_id': 1196547214, 'parent_id': 0, 'action': 'SELL', 'quantity': 15.0, 'type': 'LMT', 'status': 'Submitted', 'aux_price': 0.0, 'stop_price': 0.0, 'limit_price': 34.86, 'filled': 0.0, 'remaining': 15.0, 'avg_fill_price': 0.0, 'order_ref': '', 'tif': 'GTC', 'outside_rth': True}]}, 'blocked': False, 'reasons': [], 'decision_summary': {'total_tickers_scanned': 390, 'valid_setups': 9, 'trades_taken': 0, 'skipped': 390, 'top_rejection_reasons': [('no return inside zone', 379), ('abnormal volatility spike', 1), ('no breakout', 1)], 'open_symbols': ['EOG', 'GSHD', 'KDP', 'KO', 'MRSH', 'OXY', 'VEEV'], 'ticker_sections': ['--------------------------------------------------\nTicker: A\nLevel: 97.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 95.99 - 97.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AAPL\nLevel: 174.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 173.95 - 175.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ABBV\nLevel: 247.56\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 246.67 - 248.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ABNB\nLevel: 173.03\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 172.55 - 173.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ABT\nLevel: 86.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 85.89 - 86.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ACGL\nLevel: 85.45\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 85.27 - 85.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ACN\nLevel: 223.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 222.96 - 224.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ADBE\nLevel: 549.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 548.93 - 550.93\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ADI\nLevel: 252.48\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 250.67 - 254.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ADM\nLevel: 42.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 42.51 - 43.23\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ADP\nLevel: 197.23\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 196.58 - 197.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ADSK\nLevel: 189.45\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 188.69 - 190.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AEE\nLevel: 116.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 116.22 - 116.58\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AEP\nLevel: 139.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 139.12 - 139.66\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AFL\nLevel: 125.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 125.71 - 126.22\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AGPU\nLevel: 35.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 35.44 - 35.66\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AIG\nLevel: 72.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 71.82 - 72.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AJG\nLevel: 197.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 196.33 - 198.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ALL\nLevel: 178.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 177.97 - 178.83\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ALOY\nLevel: 21.69\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 21.65 - 21.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AMAT\nLevel: 696.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 691.64 - 698.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AMD\nLevel: 402.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 398.25 - 404.87\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AME\nLevel: 148.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 147.78 - 149.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AMGN\nLevel: 437.23\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 435.74 - 438.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AMH\nLevel: 39.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 39.32 - 39.55\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AMP\nLevel: 422.81\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 419.85 - 424.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AMT\nLevel: 165.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 164.51 - 166.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AMZN\nLevel: 175.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 175.16 - 176.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ANET\nLevel: 215.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 214.08 - 216.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AON\nLevel: 297.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 297.24 - 298.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: APD\nLevel: 230.35\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 228.51 - 230.95\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: APH\nLevel: 39.81\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 39.29 - 40.07\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: APLM\nLevel: 35.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 35.84 - 36.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: APO\nLevel: 100.3\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.13 - 100.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: APP\nLevel: 166.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 163.94 - 167.43\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ASML\nLevel: 1127.75\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1122.21 - 1133.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ASND\nLevel: 265.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 262.98 - 266.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ATO\nLevel: 191.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 191.21 - 191.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AVGO\nLevel: 442.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 441.09 - 443.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AXON\nLevel: 351.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 349.68 - 352.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AXP\nLevel: 227.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 226.24 - 228.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: AZO\nLevel: 4332.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 4325.05 - 4340.31\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: BA\nLevel: 254.14\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 253.77 - 254.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: BAC\nLevel: 49.89\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 49.69 - 50.19\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 49.83\nStop: 49.65\nTarget: 52.33\nR:R: 13.89\nConfidence: 0.85\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n', '--------------------------------------------------\nTicker: BDX\nLevel: 200.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 200.33 - 202.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: BE\nLevel: 318.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 316.61 - 323.86\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: BIDU\nLevel: 161.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 161.24 - 161.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: BIIB\nLevel: 156.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 154.49 - 157.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: BKNG\nLevel: 156.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 156.44 - 157.46\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: BKR\nLevel: 35.27\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 35.12 - 35.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: BLK\nLevel: 1209.82\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1207.67 - 1211.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: BMY\nLevel: 67.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 67.08 - 67.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: BNY\nLevel: 72.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 71.82 - 72.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: BRKH\nLevel: 9.92\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 9.92 - 9.92\n\nDecision:\nNO TRADE\n\nReasons:\n- abnormal volatility spike\n', '--------------------------------------------------\nTicker: BSX\nLevel: 78.63\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 78.49 - 78.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: BX\nLevel: 105.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 104.72 - 105.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: C\nLevel: 56.07\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 55.19 - 56.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CAH\nLevel: 249.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 248.55 - 250.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CARR\nLevel: 80.74\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 80.6 - 81.02\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CAT\nLevel: 280.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 272.65 - 283.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CB\nLevel: 365.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 364.68 - 366.52\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CBOE\nLevel: 347.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 344.56 - 348.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CBRE\nLevel: 112.52\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 111.05 - 113.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CCI\nLevel: 67.47\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 67.09 - 68.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CCL\nLevel: 17.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 17.44 - 17.71\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CDNS\nLevel: 411.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 409.0 - 412.68\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CEG\nLevel: 189.79\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 187.91 - 194.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CFG\nLevel: 33.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.55 - 34.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CI\nLevel: 350.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 349.06 - 350.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CIEN\nLevel: 572.39\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 563.59 - 575.88\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CL\nLevel: 76.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 75.8 - 76.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CMCSA\nLevel: 37.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 37.18 - 37.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CME\nLevel: 322.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 321.89 - 323.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CMG\nLevel: 66.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.94 - 66.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CMI\nLevel: 272.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 271.32 - 273.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CNC\nLevel: 53.26\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 52.62 - 53.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: COF\nLevel: 243.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 241.77 - 243.93\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: COHR\nLevel: 433.69\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 429.64 - 436.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: COIN\nLevel: 413.63\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 412.79 - 414.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: COP\nLevel: 82.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 82.33 - 82.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: COR\nLevel: 372.65\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 371.91 - 373.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: COST\nLevel: 1078.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1076.8 - 1081.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CPHI\nLevel: 2.65\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 2.6 - 2.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CRH\nLevel: 80.35\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.72 - 80.58\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 79.79\nStop: 79.6\nTarget: 84.85\nR:R: 26.63\nConfidence: 0.81\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n', '--------------------------------------------------\nTicker: CRM\nLevel: 213.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 212.29 - 214.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CRMT\nLevel: 62.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 62.51 - 62.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CRWD\nLevel: 160.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 156.83 - 161.7\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CSCO\nLevel: 52.67\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 51.77 - 53.01\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CSX\nLevel: 26.31\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 26.13 - 26.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CTAS\nLevel: 166.23\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 165.89 - 166.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CTSH\nLevel: 40.03\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 39.56 - 40.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CVNA\nLevel: 34.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.75 - 34.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CVS\nLevel: 110.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 109.68 - 110.32\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: CVX\nLevel: 180.39\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 179.11 - 180.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: D\nLevel: 49.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 49.73 - 49.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: DAL\nLevel: 37.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 36.65 - 37.55\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: DASH\nLevel: 143.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 142.56 - 144.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: DDOG\nLevel: 289.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 288.35 - 294.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: DE\nLevel: 680.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 677.88 - 684.17\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: DELL\nLevel: 298.32\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 295.29 - 303.28\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: DG\nLevel: 68.57\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 67.39 - 68.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: DHI\nLevel: 114.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 113.47 - 114.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: DHR\nLevel: 252.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 252.32 - 253.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: DIS\nLevel: 80.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 80.59 - 81.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: DLR\nLevel: 139.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 138.76 - 140.01\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: DTE\nLevel: 116.65\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 116.1 - 116.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: DUK\nLevel: 105.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 105.45 - 106.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: DVN\nLevel: 27.14\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 26.99 - 27.28\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: DXCM\nLevel: 58.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 57.76 - 58.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: EAF\nLevel: 5.1\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 5.02 - 5.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: EBAY\nLevel: 58.89\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 58.33 - 59.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ECL\nLevel: 227.63\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 227.1 - 228.16\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ED\nLevel: 107.59\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 107.25 - 107.95\n\nDecision:\nVALID SETUP\nTrade: SELL\nEntry: 107.88\nStop: 108.05\nTarget: 103.88\nR:R: 23.53\nConfidence: 0.77\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n', '--------------------------------------------------\nTicker: EL\nLevel: 50.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 49.96 - 50.7\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ELV\nLevel: 454.46\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 452.98 - 456.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: EME\nLevel: 879.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 876.46 - 885.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: EMR\nLevel: 92.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.54 - 92.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: EOG\nLevel: 150.96\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 150.66 - 151.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: EQIX\nLevel: 732.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 726.04 - 735.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: EQT\nLevel: 38.76\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 38.65 - 38.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ETN\nLevel: 260.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 257.85 - 262.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ETR\nLevel: 72.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 71.99 - 72.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: EUR.USD\nLevel: 1.07\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1.07 - 1.07\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: EW\nLevel: 65.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.25 - 66.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: EXC\nLevel: 50.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 50.31 - 50.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: EXPE\nLevel: 141.86\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 138.71 - 142.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: EXR\nLevel: 171.28\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 170.99 - 171.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: F\nLevel: 16.62\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 16.59 - 16.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: FANG\nLevel: 123.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 122.64 - 123.88\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: FAST\nLevel: 52.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 51.87 - 52.28\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: FCX\nLevel: 31.35\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.97 - 31.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: FDX\nLevel: 256.09\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 255.58 - 257.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: FERG\nLevel: 152.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 150.41 - 152.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: FFIV\nLevel: 357.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 355.81 - 361.59\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: FITB\nLevel: 33.84\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.65 - 33.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: FIX\nLevel: 1127.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1118.73 - 1140.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: FLEX\nLevel: 80.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.21 - 81.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: FTNT\nLevel: 191.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 190.55 - 191.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: GCTS\nLevel: 0.96\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 0.94 - 0.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: GD\nLevel: 244.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 243.85 - 245.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: GE\nLevel: 216.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 216.09 - 217.51\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: GEHC\nLevel: 91.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.37 - 92.17\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: GEV\nLevel: 257.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 252.79 - 261.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: GILD\nLevel: 84.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 83.72 - 84.6\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: GIS\nLevel: 70.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 70.4 - 70.58\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: GLW\nLevel: 218.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 216.18 - 219.46\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: GM\nLevel: 42.48\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 42.3 - 42.66\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: GOOG\nLevel: 236.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 235.76 - 237.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: GOOGL\nLevel: 271.41\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 270.56 - 272.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: GRMN\nLevel: 307.1\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 306.19 - 309.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: GS\nLevel: 1143.84\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1141.3 - 1146.38\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: GSHD\nLevel: 79.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.61 - 80.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: GWW\nLevel: 906.52\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 899.72 - 909.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: HAL\nLevel: 42.46\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 42.39 - 42.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: HBAN\nLevel: 12.42\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 12.39 - 12.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: HCA\nLevel: 532.92\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 531.54 - 534.3\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: HD\nLevel: 282.46\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 281.94 - 282.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: HIG\nLevel: 108.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 108.01 - 108.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: HLT\nLevel: 201.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 200.57 - 201.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: HON\nLevel: 188.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 187.84 - 189.31\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: HONA\nLevel: 280.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 279.46 - 280.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: HOOD\nLevel: 153.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 152.62 - 153.38\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: HPE\nLevel: 37.75\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 37.35 - 38.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: HPQ\nLevel: 36.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 36.41 - 36.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: HUM\nLevel: 433.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 430.76 - 441.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: HWM\nLevel: 160.01\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 158.37 - 161.07\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: IBKR\nLevel: 79.62\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.15 - 79.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: IBM\nLevel: 232.29\nPattern: ONE_BAR\n\nContext:\n- Trend: DOWN\n- ATR: OK\n- News: LOW\n- Zone: 230.49 - 233.27\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 232.18\nStop: 229.14\nTarget: 251.61\nR:R: 6.39\nConfidence: 0.81\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n', '--------------------------------------------------\nTicker: ICCC\nLevel: 4.28\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 4.25 - 4.31\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ICE\nLevel: 124.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 123.56 - 124.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: IDXX\nLevel: 526.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 525.1 - 530.63\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 525.52\nStop: 523.94\nTarget: 562.38\nR:R: 23.33\nConfidence: 0.83\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n', '--------------------------------------------------\nTicker: ILMN\nLevel: 248.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 245.31 - 249.61\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: INTC\nLevel: 137.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 137.45 - 138.51\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: INTU\nLevel: 790.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 789.36 - 791.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: IQV\nLevel: 246.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 245.96 - 247.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: IR\nLevel: 65.7\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.35 - 65.96\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: IRM\nLevel: 79.39\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.05 - 79.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ISRG\nLevel: 353.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 351.78 - 354.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ITIC\nLevel: 195.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 193.33 - 196.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ITW\nLevel: 218.41\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 217.78 - 220.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: JBL\nLevel: 388.3\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 386.86 - 389.74\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: JCI\nLevel: 96.67\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 95.58 - 97.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: JNJ\nLevel: 142.2\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 139.9 - 142.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: JPM\nLevel: 214.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 213.92 - 215.9\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: KDP\nLevel: 36.7\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 36.61 - 36.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: KEYS\nLevel: 373.88\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 372.09 - 376.22\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: KHC\nLevel: 33.35\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.29 - 33.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: KKR\nLevel: 163.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 163.36 - 164.0\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: KLAC\nLevel: 279.03\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 278.17 - 280.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: KMB\nLevel: 93.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 93.71 - 94.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: KMDA\nLevel: 9.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 9.22 - 9.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: KMI\nLevel: 30.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.0 - 30.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: KO\nLevel: 90.92\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 90.76 - 91.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: KR\nLevel: 73.89\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 73.75 - 74.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: KVUE\nLevel: 20.05\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 20.02 - 20.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: KYTX\nLevel: 11.26\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 11.22 - 11.3\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: LEDS\nLevel: 3.3\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 3.28 - 3.32\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: LHX\nLevel: 373.12\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 372.29 - 373.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: LIN\nLevel: 538.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 538.14 - 539.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: LITE\nLevel: 1030.37\nPattern: ONE_BAR\n\nContext:\n- Trend: DOWN\n- ATR: OK\n- News: LOW\n- Zone: 1022.26 - 1043.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: LLY\nLevel: 640.86\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 635.24 - 645.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: LMT\nLevel: 676.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 674.91 - 677.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: LOW\nLevel: 285.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 284.66 - 285.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: LRCX\nLevel: 194.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 192.78 - 196.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: LVO\nLevel: 15.2\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 15.17 - 15.23\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: LYV\nLevel: 116.1\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 115.38 - 116.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MA\nLevel: 471.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 468.7 - 472.96\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MAAS\nLevel: 4152.56\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 4152.47 - 4152.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MAN\nLevel: 47.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 46.56 - 47.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MAR\nLevel: 208.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 206.81 - 208.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MCD\nLevel: 250.32\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 249.82 - 250.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MCHP\nLevel: 99.3\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.0 - 99.6\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MCK\nLevel: 978.71\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 976.04 - 981.38\n\nDecision:\nNO TRADE\n\nReasons:\n- no breakout\n', '--------------------------------------------------\nTicker: MCO\nLevel: 398.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 395.71 - 398.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MDB\nLevel: 147.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 143.61 - 149.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MDLZ\nLevel: 53.13\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 53.01 - 53.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MDT\nLevel: 74.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 74.09 - 74.71\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MDU\nLevel: 15.42\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 15.38 - 15.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MET\nLevel: 92.21\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.93 - 92.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: META\nLevel: 502.86\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 497.77 - 505.37\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MLM\nLevel: 444.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 443.72 - 446.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MMM\nLevel: 180.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 180.07 - 181.22\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MNST\nLevel: 42.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 42.07 - 42.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MO\nLevel: 74.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 73.92 - 74.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MPC\nLevel: 277.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 275.65 - 279.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MPWR\nLevel: 1675.42\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1669.54 - 1681.3\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MRK\nLevel: 141.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 140.93 - 141.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MRLN\nLevel: 14.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 14.58 - 14.62\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MRNA\nLevel: 197.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 193.23 - 200.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MRSH\nLevel: 158.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 157.43 - 158.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MRVL\nLevel: 301.27\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 299.29 - 307.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MS\nLevel: 100.31\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.34 - 100.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MSCI\nLevel: 507.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 505.48 - 508.52\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MSEX\nLevel: 70.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 70.09 - 70.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MSFT\nLevel: 550.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 548.85 - 551.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MSI\nLevel: 500.86\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 499.9 - 503.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MTB\nLevel: 168.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 168.45 - 169.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MTD\nLevel: 982.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 978.0 - 986.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: MU\nLevel: 649.83\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 634.92 - 655.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: NAKA\nLevel: 1140.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1140.52 - 1140.68\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: NCEW\nLevel: 3.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 3.15 - 3.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: NDAQ\nLevel: 93.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 93.46 - 94.14\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 93.72\nStop: 93.02\nTarget: 97.75\nR:R: 5.76\nConfidence: 0.85\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n', '--------------------------------------------------\nTicker: NEE\nLevel: 64.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 64.44 - 64.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: NEM\nLevel: 76.75\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 76.44 - 77.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: NEOV\nLevel: 6.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 6.09 - 6.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: NET\nLevel: 306.47\nPattern: ONE_BAR\n\nContext:\n- Trend: DOWN\n- ATR: OK\n- News: LOW\n- Zone: 304.71 - 308.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: NFLX\nLevel: 128.22\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 128.05 - 128.4\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: NKE\nLevel: 81.18\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 81.07 - 81.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: NOC\nLevel: 487.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 484.36 - 489.16\n\nDecision:\nVALID SETUP\nTrade: SELL\nEntry: 487.05\nStop: 489.41\nTarget: 466.36\nR:R: 8.77\nConfidence: 0.73\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n', '--------------------------------------------------\nTicker: NOW\nLevel: 224.74\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 224.06 - 226.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: NSC\nLevel: 202.54\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 201.13 - 203.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: NTAP\nLevel: 230.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 228.49 - 230.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: NTRS\nLevel: 118.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 118.63 - 119.36\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: NUE\nLevel: 214.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 213.6 - 215.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: NVDA\nLevel: 156.26\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 155.44 - 156.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: NXPI\nLevel: 156.91\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 155.7 - 157.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: NXTC\nLevel: 16.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 16.3 - 16.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: O\nLevel: 66.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 66.46 - 66.68\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ODFL\nLevel: 248.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 248.24 - 249.43\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: OKE\nLevel: 114.27\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 114.04 - 114.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ON\nLevel: 130.48\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 130.12 - 130.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: OPTX\nLevel: 13.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 13.51 - 13.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ORCL\nLevel: 260.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 260.2 - 261.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ORLY\nLevel: 103.59\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 103.15 - 103.78\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: OXY\nLevel: 65.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.25 - 65.51\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: P\nLevel: 130.78\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 129.95 - 131.61\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PANW\nLevel: 143.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 137.61 - 145.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PAYX\nLevel: 130.23\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 130.01 - 130.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PCAR\nLevel: 87.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 86.69 - 87.6\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PCG\nLevel: 12.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 12.4 - 12.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PDD\nLevel: 74.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 74.5 - 74.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PEG\nLevel: 94.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 94.82 - 95.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PEP\nLevel: 124.21\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 123.89 - 124.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PFE\nLevel: 21.97\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 21.78 - 22.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PG\nLevel: 179.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 179.7 - 180.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PGR\nLevel: 193.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 192.63 - 193.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PH\nLevel: 517.47\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 515.07 - 519.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PINS\nLevel: 28.69\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 28.6 - 28.78\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PLD\nLevel: 96.52\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 95.91 - 96.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PLTR\nLevel: 60.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 57.52 - 61.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PM\nLevel: 198.68\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 198.38 - 199.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PNC\nLevel: 160.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 159.77 - 161.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PRU\nLevel: 93.13\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 92.78 - 93.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PSA\nLevel: 347.43\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 346.76 - 348.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PSX\nLevel: 224.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 223.47 - 225.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PWR\nLevel: 510.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 507.68 - 515.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PYPG\nLevel: 21.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 21.58 - 21.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: PYPL\nLevel: 92.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.89 - 92.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: QCOM\nLevel: 248.27\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 247.69 - 248.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: RBLX\nLevel: 141.45\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 141.19 - 142.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: RCEL\nLevel: 7.76\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 7.51 - 7.86\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: RCL\nLevel: 363.22\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 361.99 - 364.02\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: RDDT\nLevel: 266.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 265.57 - 267.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: REGN\nLevel: 859.34\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 856.83 - 861.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: RJF\nLevel: 124.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 124.56 - 125.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: RMD\nLevel: 293.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 292.47 - 294.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ROK\nLevel: 477.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 476.18 - 479.87\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ROLR\nLevel: 22.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 22.83 - 22.87\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ROP\nLevel: 434.54\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 432.27 - 435.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ROST\nLevel: 200.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 200.0 - 201.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: RSG\nLevel: 198.51\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 197.17 - 198.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: RTX\nLevel: 220.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 220.04 - 220.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SANM\nLevel: 280.13\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 278.92 - 281.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SBUX\nLevel: 112.26\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 111.97 - 112.91\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SCHW\nLevel: 67.82\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 67.64 - 68.16\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SEI\nLevel: 82.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 81.69 - 82.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SHOP\nLevel: 176.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 176.25 - 177.61\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SHW\nLevel: 299.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 298.12 - 299.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SION\nLevel: 31.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.99 - 31.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SKYQ\nLevel: 21.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 21.34 - 21.38\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SLB\nLevel: 58.82\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 58.67 - 58.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SMA\nLevel: 39.18\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 39.13 - 39.23\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SNAP\nLevel: 12.74\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 12.7 - 12.78\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SNDK\nLevel: 2256.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 2241.55 - 2265.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SNOW\nLevel: 369.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 367.24 - 372.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SNPS\nLevel: 636.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 635.19 - 638.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SO\nLevel: 99.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.45 - 99.71\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SPG\nLevel: 234.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 234.56 - 235.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SPGI\nLevel: 535.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 534.74 - 536.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SPOT\nLevel: 745.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 742.54 - 750.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SRAD\nLevel: 27.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 27.2 - 27.3\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SRE\nLevel: 62.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 62.23 - 62.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: STLD\nLevel: 162.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 161.6 - 162.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: STT\nLevel: 141.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 141.53 - 142.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: STX\nLevel: 680.63\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 677.14 - 684.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SYK\nLevel: 404.14\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 403.26 - 405.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: SYY\nLevel: 91.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.3 - 91.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: T\nLevel: 21.05\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 20.91 - 21.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TDG\nLevel: 1541.88\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1537.33 - 1544.55\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TDY\nLevel: 431.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 427.44 - 432.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TEAM\nLevel: 296.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 295.16 - 296.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TEL\nLevel: 120.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 119.49 - 120.59\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TER\nLevel: 469.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 467.31 - 470.91\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TFC\nLevel: 33.82\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.72 - 33.92\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TGHL\nLevel: 2.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 2.92 - 2.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TGT\nLevel: 164.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 163.61 - 164.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TJX\nLevel: 162.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 162.04 - 163.37\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TMO\nLevel: 656.75\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 652.59 - 658.67\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TMUS\nLevel: 164.47\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 163.62 - 164.87\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TOP\nLevel: 16.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 16.83 - 17.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TREX\nLevel: 30.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.27 - 30.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TRGP\nLevel: 305.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 304.47 - 305.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TRV\nLevel: 325.39\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 324.64 - 326.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TSLA\nLevel: 475.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 474.34 - 476.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TSM\nLevel: 471.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 467.21 - 472.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TT\nLevel: 316.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 314.91 - 317.43\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TTWO\nLevel: 160.83\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 159.92 - 161.74\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TWLO\nLevel: 255.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 253.11 - 257.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: TXN\nLevel: 143.31\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 141.7 - 144.17\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: UAL\nLevel: 56.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 55.53 - 56.36\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: UBER\nLevel: 99.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.5 - 99.92\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: UNH\nLevel: 239.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 237.81 - 241.19\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: UNP\nLevel: 208.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 207.78 - 208.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: UPS\nLevel: 138.67\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 138.46 - 138.88\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: URI\nLevel: 551.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 548.6 - 555.28\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: USB\nLevel: 65.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.49 - 65.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: V\nLevel: 283.53\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 282.64 - 285.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: VAL\nLevel: 61.21\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 60.93 - 61.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: VEEE\nLevel: 234.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 234.52 - 234.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: VEEV\nLevel: 258.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 256.83 - 259.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: VLO\nLevel: 101.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.0 - 103.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: VMC\nLevel: 222.44\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 221.86 - 223.02\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: VMRK\nLevel: 74.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 74.22 - 74.83\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: VRT\nLevel: 343.31\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 341.07 - 344.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: VRTX\nLevel: 491.93\nPattern: ONE_BAR\n\nContext:\n- Trend: DOWN\n- ATR: OK\n- News: LOW\n- Zone: 490.5 - 494.0\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 492.64\nStop: 487.29\nTarget: 519.52\nR:R: 5.02\nConfidence: 0.82\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n', '--------------------------------------------------\nTicker: VST\nLevel: 99.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 98.06 - 100.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: VTR\nLevel: 97.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 96.94 - 97.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: VZ\nLevel: 38.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 38.84 - 39.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: WAB\nLevel: 157.56\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 156.13 - 158.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: WAT\nLevel: 276.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 273.72 - 277.33\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: WDAY\nLevel: 281.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 280.37 - 281.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: WDC\nLevel: 729.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 724.98 - 731.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: WEC\nLevel: 118.53\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 118.37 - 118.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: WELL\nLevel: 244.84\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 243.5 - 245.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: WFC\nLevel: 59.71\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 59.16 - 59.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: WM\nLevel: 246.05\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 245.67 - 246.43\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: WMB\nLevel: 51.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 50.83 - 51.21\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: WMT\nLevel: 81.83\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 81.48 - 82.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: WSM\nLevel: 251.78\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 251.09 - 252.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: WTBA\nLevel: 30.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.26 - 30.4\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: WTW\nLevel: 275.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 274.87 - 277.59\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: XEL\nLevel: 63.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 63.52 - 63.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: XOM\nLevel: 174.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 174.09 - 175.18\n\nDecision:\nVALID SETUP\nTrade: SELL\nEntry: 174.58\nStop: 175.64\nTarget: 167.18\nR:R: 6.98\nConfidence: 0.8\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n', '--------------------------------------------------\nTicker: XP\nLevel: 29.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 29.12 - 29.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: XYZ\nLevel: 45.7\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 45.12 - 45.91\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: YUM\nLevel: 126.46\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 126.15 - 126.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: YYAI\nLevel: 272000.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 271999.99 - 272000.01\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ZS\nLevel: 120.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 118.25 - 122.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ZTO\nLevel: 17.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 17.0 - 17.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n', '--------------------------------------------------\nTicker: ZTS\nLevel: 189.98\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 189.78 - 190.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n']}, 'report_text': '--------------------------------------------------\nTicker: A\nLevel: 97.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 95.99 - 97.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AAPL\nLevel: 174.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 173.95 - 175.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ABBV\nLevel: 247.56\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 246.67 - 248.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ABNB\nLevel: 173.03\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 172.55 - 173.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ABT\nLevel: 86.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 85.89 - 86.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ACGL\nLevel: 85.45\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 85.27 - 85.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ACN\nLevel: 223.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 222.96 - 224.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ADBE\nLevel: 549.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 548.93 - 550.93\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ADI\nLevel: 252.48\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 250.67 - 254.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ADM\nLevel: 42.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 42.51 - 43.23\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ADP\nLevel: 197.23\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 196.58 - 197.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ADSK\nLevel: 189.45\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 188.69 - 190.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AEE\nLevel: 116.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 116.22 - 116.58\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AEP\nLevel: 139.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 139.12 - 139.66\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AFL\nLevel: 125.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 125.71 - 126.22\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AGPU\nLevel: 35.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 35.44 - 35.66\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AIG\nLevel: 72.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 71.82 - 72.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AJG\nLevel: 197.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 196.33 - 198.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ALL\nLevel: 178.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 177.97 - 178.83\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ALOY\nLevel: 21.69\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 21.65 - 21.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMAT\nLevel: 696.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 691.64 - 698.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMD\nLevel: 402.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 398.25 - 404.87\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AME\nLevel: 148.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 147.78 - 149.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMGN\nLevel: 437.23\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 435.74 - 438.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMH\nLevel: 39.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 39.32 - 39.55\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMP\nLevel: 422.81\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 419.85 - 424.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMT\nLevel: 165.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 164.51 - 166.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMZN\nLevel: 175.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 175.16 - 176.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ANET\nLevel: 215.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 214.08 - 216.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AON\nLevel: 297.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 297.24 - 298.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: APD\nLevel: 230.35\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 228.51 - 230.95\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: APH\nLevel: 39.81\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 39.29 - 40.07\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: APLM\nLevel: 35.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 35.84 - 36.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: APO\nLevel: 100.3\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.13 - 100.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: APP\nLevel: 166.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 163.94 - 167.43\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ASML\nLevel: 1127.75\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1122.21 - 1133.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ASND\nLevel: 265.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 262.98 - 266.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ATO\nLevel: 191.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 191.21 - 191.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AVGO\nLevel: 442.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 441.09 - 443.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AXON\nLevel: 351.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 349.68 - 352.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AXP\nLevel: 227.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 226.24 - 228.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AZO\nLevel: 4332.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 4325.05 - 4340.31\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BA\nLevel: 254.14\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 253.77 - 254.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BAC\nLevel: 49.89\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 49.69 - 50.19\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 49.83\nStop: 49.65\nTarget: 52.33\nR:R: 13.89\nConfidence: 0.85\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n\n--------------------------------------------------\nTicker: BDX\nLevel: 200.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 200.33 - 202.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BE\nLevel: 318.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 316.61 - 323.86\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BIDU\nLevel: 161.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 161.24 - 161.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BIIB\nLevel: 156.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 154.49 - 157.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BKNG\nLevel: 156.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 156.44 - 157.46\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BKR\nLevel: 35.27\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 35.12 - 35.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BLK\nLevel: 1209.82\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1207.67 - 1211.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BMY\nLevel: 67.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 67.08 - 67.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BNY\nLevel: 72.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 71.82 - 72.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BRKH\nLevel: 9.92\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 9.92 - 9.92\n\nDecision:\nNO TRADE\n\nReasons:\n- abnormal volatility spike\n\n--------------------------------------------------\nTicker: BSX\nLevel: 78.63\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 78.49 - 78.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BX\nLevel: 105.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 104.72 - 105.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: C\nLevel: 56.07\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 55.19 - 56.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CAH\nLevel: 249.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 248.55 - 250.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CARR\nLevel: 80.74\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 80.6 - 81.02\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CAT\nLevel: 280.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 272.65 - 283.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CB\nLevel: 365.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 364.68 - 366.52\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CBOE\nLevel: 347.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 344.56 - 348.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CBRE\nLevel: 112.52\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 111.05 - 113.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CCI\nLevel: 67.47\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 67.09 - 68.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CCL\nLevel: 17.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 17.44 - 17.71\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CDNS\nLevel: 411.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 409.0 - 412.68\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CEG\nLevel: 189.79\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 187.91 - 194.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CFG\nLevel: 33.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.55 - 34.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CI\nLevel: 350.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 349.06 - 350.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CIEN\nLevel: 572.39\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 563.59 - 575.88\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CL\nLevel: 76.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 75.8 - 76.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CMCSA\nLevel: 37.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 37.18 - 37.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CME\nLevel: 322.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 321.89 - 323.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CMG\nLevel: 66.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.94 - 66.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CMI\nLevel: 272.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 271.32 - 273.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CNC\nLevel: 53.26\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 52.62 - 53.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: COF\nLevel: 243.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 241.77 - 243.93\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: COHR\nLevel: 433.69\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 429.64 - 436.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: COIN\nLevel: 413.63\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 412.79 - 414.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: COP\nLevel: 82.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 82.33 - 82.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: COR\nLevel: 372.65\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 371.91 - 373.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: COST\nLevel: 1078.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1076.8 - 1081.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CPHI\nLevel: 2.65\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 2.6 - 2.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CRH\nLevel: 80.35\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.72 - 80.58\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 79.79\nStop: 79.6\nTarget: 84.85\nR:R: 26.63\nConfidence: 0.81\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n\n--------------------------------------------------\nTicker: CRM\nLevel: 213.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 212.29 - 214.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CRMT\nLevel: 62.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 62.51 - 62.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CRWD\nLevel: 160.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 156.83 - 161.7\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CSCO\nLevel: 52.67\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 51.77 - 53.01\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CSX\nLevel: 26.31\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 26.13 - 26.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CTAS\nLevel: 166.23\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 165.89 - 166.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CTSH\nLevel: 40.03\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 39.56 - 40.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CVNA\nLevel: 34.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.75 - 34.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CVS\nLevel: 110.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 109.68 - 110.32\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CVX\nLevel: 180.39\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 179.11 - 180.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: D\nLevel: 49.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 49.73 - 49.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DAL\nLevel: 37.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 36.65 - 37.55\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DASH\nLevel: 143.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 142.56 - 144.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DDOG\nLevel: 289.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 288.35 - 294.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DE\nLevel: 680.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 677.88 - 684.17\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DELL\nLevel: 298.32\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 295.29 - 303.28\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DG\nLevel: 68.57\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 67.39 - 68.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DHI\nLevel: 114.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 113.47 - 114.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DHR\nLevel: 252.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 252.32 - 253.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DIS\nLevel: 80.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 80.59 - 81.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DLR\nLevel: 139.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 138.76 - 140.01\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DTE\nLevel: 116.65\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 116.1 - 116.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DUK\nLevel: 105.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 105.45 - 106.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DVN\nLevel: 27.14\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 26.99 - 27.28\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DXCM\nLevel: 58.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 57.76 - 58.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EAF\nLevel: 5.1\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 5.02 - 5.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EBAY\nLevel: 58.89\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 58.33 - 59.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ECL\nLevel: 227.63\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 227.1 - 228.16\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ED\nLevel: 107.59\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 107.25 - 107.95\n\nDecision:\nVALID SETUP\nTrade: SELL\nEntry: 107.88\nStop: 108.05\nTarget: 103.88\nR:R: 23.53\nConfidence: 0.77\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n\n--------------------------------------------------\nTicker: EL\nLevel: 50.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 49.96 - 50.7\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ELV\nLevel: 454.46\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 452.98 - 456.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EME\nLevel: 879.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 876.46 - 885.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EMR\nLevel: 92.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.54 - 92.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EOG\nLevel: 150.96\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 150.66 - 151.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EQIX\nLevel: 732.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 726.04 - 735.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EQT\nLevel: 38.76\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 38.65 - 38.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ETN\nLevel: 260.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 257.85 - 262.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ETR\nLevel: 72.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 71.99 - 72.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EUR.USD\nLevel: 1.07\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1.07 - 1.07\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EW\nLevel: 65.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.25 - 66.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EXC\nLevel: 50.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 50.31 - 50.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EXPE\nLevel: 141.86\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 138.71 - 142.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EXR\nLevel: 171.28\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 170.99 - 171.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: F\nLevel: 16.62\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 16.59 - 16.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FANG\nLevel: 123.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 122.64 - 123.88\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FAST\nLevel: 52.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 51.87 - 52.28\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FCX\nLevel: 31.35\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.97 - 31.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FDX\nLevel: 256.09\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 255.58 - 257.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FERG\nLevel: 152.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 150.41 - 152.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FFIV\nLevel: 357.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 355.81 - 361.59\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FITB\nLevel: 33.84\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.65 - 33.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FIX\nLevel: 1127.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1118.73 - 1140.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FLEX\nLevel: 80.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.21 - 81.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FTNT\nLevel: 191.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 190.55 - 191.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GCTS\nLevel: 0.96\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 0.94 - 0.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GD\nLevel: 244.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 243.85 - 245.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GE\nLevel: 216.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 216.09 - 217.51\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GEHC\nLevel: 91.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.37 - 92.17\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GEV\nLevel: 257.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 252.79 - 261.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GILD\nLevel: 84.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 83.72 - 84.6\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GIS\nLevel: 70.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 70.4 - 70.58\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GLW\nLevel: 218.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 216.18 - 219.46\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GM\nLevel: 42.48\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 42.3 - 42.66\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GOOG\nLevel: 236.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 235.76 - 237.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GOOGL\nLevel: 271.41\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 270.56 - 272.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GRMN\nLevel: 307.1\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 306.19 - 309.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GS\nLevel: 1143.84\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1141.3 - 1146.38\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GSHD\nLevel: 79.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.61 - 80.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GWW\nLevel: 906.52\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 899.72 - 909.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HAL\nLevel: 42.46\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 42.39 - 42.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HBAN\nLevel: 12.42\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 12.39 - 12.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HCA\nLevel: 532.92\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 531.54 - 534.3\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HD\nLevel: 282.46\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 281.94 - 282.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HIG\nLevel: 108.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 108.01 - 108.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HLT\nLevel: 201.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 200.57 - 201.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HON\nLevel: 188.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 187.84 - 189.31\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HONA\nLevel: 280.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 279.46 - 280.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HOOD\nLevel: 153.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 152.62 - 153.38\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HPE\nLevel: 37.75\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 37.35 - 38.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HPQ\nLevel: 36.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 36.41 - 36.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HUM\nLevel: 433.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 430.76 - 441.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HWM\nLevel: 160.01\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 158.37 - 161.07\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: IBKR\nLevel: 79.62\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.15 - 79.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: IBM\nLevel: 232.29\nPattern: ONE_BAR\n\nContext:\n- Trend: DOWN\n- ATR: OK\n- News: LOW\n- Zone: 230.49 - 233.27\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 232.18\nStop: 229.14\nTarget: 251.61\nR:R: 6.39\nConfidence: 0.81\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n\n--------------------------------------------------\nTicker: ICCC\nLevel: 4.28\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 4.25 - 4.31\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ICE\nLevel: 124.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 123.56 - 124.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: IDXX\nLevel: 526.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 525.1 - 530.63\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 525.52\nStop: 523.94\nTarget: 562.38\nR:R: 23.33\nConfidence: 0.83\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n\n--------------------------------------------------\nTicker: ILMN\nLevel: 248.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 245.31 - 249.61\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: INTC\nLevel: 137.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 137.45 - 138.51\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: INTU\nLevel: 790.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 789.36 - 791.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: IQV\nLevel: 246.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 245.96 - 247.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: IR\nLevel: 65.7\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.35 - 65.96\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: IRM\nLevel: 79.39\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.05 - 79.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ISRG\nLevel: 353.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 351.78 - 354.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ITIC\nLevel: 195.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 193.33 - 196.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ITW\nLevel: 218.41\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 217.78 - 220.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: JBL\nLevel: 388.3\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 386.86 - 389.74\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: JCI\nLevel: 96.67\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 95.58 - 97.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: JNJ\nLevel: 142.2\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 139.9 - 142.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: JPM\nLevel: 214.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 213.92 - 215.9\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KDP\nLevel: 36.7\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 36.61 - 36.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KEYS\nLevel: 373.88\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 372.09 - 376.22\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KHC\nLevel: 33.35\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.29 - 33.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KKR\nLevel: 163.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 163.36 - 164.0\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KLAC\nLevel: 279.03\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 278.17 - 280.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KMB\nLevel: 93.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 93.71 - 94.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KMDA\nLevel: 9.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 9.22 - 9.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KMI\nLevel: 30.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.0 - 30.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KO\nLevel: 90.92\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 90.76 - 91.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KR\nLevel: 73.89\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 73.75 - 74.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KVUE\nLevel: 20.05\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 20.02 - 20.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KYTX\nLevel: 11.26\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 11.22 - 11.3\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LEDS\nLevel: 3.3\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 3.28 - 3.32\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LHX\nLevel: 373.12\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 372.29 - 373.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LIN\nLevel: 538.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 538.14 - 539.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LITE\nLevel: 1030.37\nPattern: ONE_BAR\n\nContext:\n- Trend: DOWN\n- ATR: OK\n- News: LOW\n- Zone: 1022.26 - 1043.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LLY\nLevel: 640.86\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 635.24 - 645.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LMT\nLevel: 676.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 674.91 - 677.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LOW\nLevel: 285.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 284.66 - 285.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LRCX\nLevel: 194.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 192.78 - 196.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LVO\nLevel: 15.2\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 15.17 - 15.23\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LYV\nLevel: 116.1\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 115.38 - 116.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MA\nLevel: 471.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 468.7 - 472.96\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MAAS\nLevel: 4152.56\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 4152.47 - 4152.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MAN\nLevel: 47.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 46.56 - 47.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MAR\nLevel: 208.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 206.81 - 208.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MCD\nLevel: 250.32\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 249.82 - 250.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MCHP\nLevel: 99.3\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.0 - 99.6\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MCK\nLevel: 978.71\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 976.04 - 981.38\n\nDecision:\nNO TRADE\n\nReasons:\n- no breakout\n\n--------------------------------------------------\nTicker: MCO\nLevel: 398.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 395.71 - 398.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MDB\nLevel: 147.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 143.61 - 149.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MDLZ\nLevel: 53.13\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 53.01 - 53.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MDT\nLevel: 74.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 74.09 - 74.71\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MDU\nLevel: 15.42\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 15.38 - 15.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MET\nLevel: 92.21\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.93 - 92.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: META\nLevel: 502.86\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 497.77 - 505.37\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MLM\nLevel: 444.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 443.72 - 446.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MMM\nLevel: 180.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 180.07 - 181.22\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MNST\nLevel: 42.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 42.07 - 42.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MO\nLevel: 74.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 73.92 - 74.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MPC\nLevel: 277.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 275.65 - 279.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MPWR\nLevel: 1675.42\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1669.54 - 1681.3\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MRK\nLevel: 141.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 140.93 - 141.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MRLN\nLevel: 14.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 14.58 - 14.62\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MRNA\nLevel: 197.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 193.23 - 200.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MRSH\nLevel: 158.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 157.43 - 158.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MRVL\nLevel: 301.27\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 299.29 - 307.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MS\nLevel: 100.31\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.34 - 100.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MSCI\nLevel: 507.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 505.48 - 508.52\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MSEX\nLevel: 70.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 70.09 - 70.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MSFT\nLevel: 550.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 548.85 - 551.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MSI\nLevel: 500.86\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 499.9 - 503.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MTB\nLevel: 168.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 168.45 - 169.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MTD\nLevel: 982.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 978.0 - 986.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MU\nLevel: 649.83\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 634.92 - 655.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NAKA\nLevel: 1140.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1140.52 - 1140.68\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NCEW\nLevel: 3.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 3.15 - 3.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NDAQ\nLevel: 93.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 93.46 - 94.14\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 93.72\nStop: 93.02\nTarget: 97.75\nR:R: 5.76\nConfidence: 0.85\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n\n--------------------------------------------------\nTicker: NEE\nLevel: 64.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 64.44 - 64.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NEM\nLevel: 76.75\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 76.44 - 77.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NEOV\nLevel: 6.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 6.09 - 6.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NET\nLevel: 306.47\nPattern: ONE_BAR\n\nContext:\n- Trend: DOWN\n- ATR: OK\n- News: LOW\n- Zone: 304.71 - 308.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NFLX\nLevel: 128.22\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 128.05 - 128.4\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NKE\nLevel: 81.18\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 81.07 - 81.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NOC\nLevel: 487.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 484.36 - 489.16\n\nDecision:\nVALID SETUP\nTrade: SELL\nEntry: 487.05\nStop: 489.41\nTarget: 466.36\nR:R: 8.77\nConfidence: 0.73\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n\n--------------------------------------------------\nTicker: NOW\nLevel: 224.74\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 224.06 - 226.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NSC\nLevel: 202.54\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 201.13 - 203.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NTAP\nLevel: 230.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 228.49 - 230.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NTRS\nLevel: 118.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 118.63 - 119.36\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NUE\nLevel: 214.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 213.6 - 215.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NVDA\nLevel: 156.26\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 155.44 - 156.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NXPI\nLevel: 156.91\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 155.7 - 157.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NXTC\nLevel: 16.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 16.3 - 16.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: O\nLevel: 66.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 66.46 - 66.68\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ODFL\nLevel: 248.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 248.24 - 249.43\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: OKE\nLevel: 114.27\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 114.04 - 114.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ON\nLevel: 130.48\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 130.12 - 130.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: OPTX\nLevel: 13.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 13.51 - 13.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ORCL\nLevel: 260.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 260.2 - 261.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ORLY\nLevel: 103.59\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 103.15 - 103.78\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: OXY\nLevel: 65.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.25 - 65.51\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: P\nLevel: 130.78\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 129.95 - 131.61\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PANW\nLevel: 143.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 137.61 - 145.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PAYX\nLevel: 130.23\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 130.01 - 130.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PCAR\nLevel: 87.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 86.69 - 87.6\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PCG\nLevel: 12.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 12.4 - 12.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PDD\nLevel: 74.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 74.5 - 74.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PEG\nLevel: 94.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 94.82 - 95.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PEP\nLevel: 124.21\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 123.89 - 124.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PFE\nLevel: 21.97\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 21.78 - 22.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PG\nLevel: 179.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 179.7 - 180.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PGR\nLevel: 193.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 192.63 - 193.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PH\nLevel: 517.47\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 515.07 - 519.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PINS\nLevel: 28.69\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 28.6 - 28.78\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PLD\nLevel: 96.52\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 95.91 - 96.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PLTR\nLevel: 60.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 57.52 - 61.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PM\nLevel: 198.68\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 198.38 - 199.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PNC\nLevel: 160.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 159.77 - 161.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PRU\nLevel: 93.13\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 92.78 - 93.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PSA\nLevel: 347.43\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 346.76 - 348.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PSX\nLevel: 224.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 223.47 - 225.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PWR\nLevel: 510.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 507.68 - 515.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PYPG\nLevel: 21.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 21.58 - 21.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PYPL\nLevel: 92.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.89 - 92.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: QCOM\nLevel: 248.27\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 247.69 - 248.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: RBLX\nLevel: 141.45\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 141.19 - 142.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: RCEL\nLevel: 7.76\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 7.51 - 7.86\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: RCL\nLevel: 363.22\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 361.99 - 364.02\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: RDDT\nLevel: 266.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 265.57 - 267.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: REGN\nLevel: 859.34\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 856.83 - 861.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: RJF\nLevel: 124.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 124.56 - 125.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: RMD\nLevel: 293.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 292.47 - 294.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ROK\nLevel: 477.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 476.18 - 479.87\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ROLR\nLevel: 22.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 22.83 - 22.87\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ROP\nLevel: 434.54\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 432.27 - 435.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ROST\nLevel: 200.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 200.0 - 201.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: RSG\nLevel: 198.51\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 197.17 - 198.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: RTX\nLevel: 220.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 220.04 - 220.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SANM\nLevel: 280.13\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 278.92 - 281.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SBUX\nLevel: 112.26\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 111.97 - 112.91\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SCHW\nLevel: 67.82\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 67.64 - 68.16\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SEI\nLevel: 82.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 81.69 - 82.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SHOP\nLevel: 176.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 176.25 - 177.61\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SHW\nLevel: 299.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 298.12 - 299.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SION\nLevel: 31.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.99 - 31.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SKYQ\nLevel: 21.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 21.34 - 21.38\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SLB\nLevel: 58.82\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 58.67 - 58.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SMA\nLevel: 39.18\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 39.13 - 39.23\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SNAP\nLevel: 12.74\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 12.7 - 12.78\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SNDK\nLevel: 2256.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 2241.55 - 2265.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SNOW\nLevel: 369.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 367.24 - 372.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SNPS\nLevel: 636.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 635.19 - 638.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SO\nLevel: 99.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.45 - 99.71\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SPG\nLevel: 234.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 234.56 - 235.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SPGI\nLevel: 535.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 534.74 - 536.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SPOT\nLevel: 745.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 742.54 - 750.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SRAD\nLevel: 27.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 27.2 - 27.3\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SRE\nLevel: 62.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 62.23 - 62.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: STLD\nLevel: 162.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 161.6 - 162.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: STT\nLevel: 141.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 141.53 - 142.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: STX\nLevel: 680.63\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 677.14 - 684.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SYK\nLevel: 404.14\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 403.26 - 405.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SYY\nLevel: 91.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.3 - 91.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: T\nLevel: 21.05\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 20.91 - 21.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TDG\nLevel: 1541.88\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1537.33 - 1544.55\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TDY\nLevel: 431.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 427.44 - 432.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TEAM\nLevel: 296.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 295.16 - 296.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TEL\nLevel: 120.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 119.49 - 120.59\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TER\nLevel: 469.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 467.31 - 470.91\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TFC\nLevel: 33.82\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.72 - 33.92\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TGHL\nLevel: 2.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 2.92 - 2.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TGT\nLevel: 164.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 163.61 - 164.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TJX\nLevel: 162.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 162.04 - 163.37\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TMO\nLevel: 656.75\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 652.59 - 658.67\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TMUS\nLevel: 164.47\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 163.62 - 164.87\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TOP\nLevel: 16.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 16.83 - 17.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TREX\nLevel: 30.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.27 - 30.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TRGP\nLevel: 305.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 304.47 - 305.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TRV\nLevel: 325.39\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 324.64 - 326.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TSLA\nLevel: 475.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 474.34 - 476.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TSM\nLevel: 471.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 467.21 - 472.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TT\nLevel: 316.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 314.91 - 317.43\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TTWO\nLevel: 160.83\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 159.92 - 161.74\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TWLO\nLevel: 255.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 253.11 - 257.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TXN\nLevel: 143.31\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 141.7 - 144.17\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: UAL\nLevel: 56.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 55.53 - 56.36\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: UBER\nLevel: 99.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.5 - 99.92\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: UNH\nLevel: 239.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 237.81 - 241.19\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: UNP\nLevel: 208.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 207.78 - 208.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: UPS\nLevel: 138.67\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 138.46 - 138.88\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: URI\nLevel: 551.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 548.6 - 555.28\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: USB\nLevel: 65.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.49 - 65.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: V\nLevel: 283.53\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 282.64 - 285.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VAL\nLevel: 61.21\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 60.93 - 61.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VEEE\nLevel: 234.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 234.52 - 234.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VEEV\nLevel: 258.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 256.83 - 259.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VLO\nLevel: 101.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.0 - 103.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VMC\nLevel: 222.44\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 221.86 - 223.02\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VMRK\nLevel: 74.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 74.22 - 74.83\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VRT\nLevel: 343.31\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 341.07 - 344.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VRTX\nLevel: 491.93\nPattern: ONE_BAR\n\nContext:\n- Trend: DOWN\n- ATR: OK\n- News: LOW\n- Zone: 490.5 - 494.0\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 492.64\nStop: 487.29\nTarget: 519.52\nR:R: 5.02\nConfidence: 0.82\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n\n--------------------------------------------------\nTicker: VST\nLevel: 99.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 98.06 - 100.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VTR\nLevel: 97.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 96.94 - 97.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VZ\nLevel: 38.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 38.84 - 39.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WAB\nLevel: 157.56\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 156.13 - 158.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WAT\nLevel: 276.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 273.72 - 277.33\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WDAY\nLevel: 281.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 280.37 - 281.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WDC\nLevel: 729.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 724.98 - 731.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WEC\nLevel: 118.53\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 118.37 - 118.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WELL\nLevel: 244.84\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 243.5 - 245.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WFC\nLevel: 59.71\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 59.16 - 59.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WM\nLevel: 246.05\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 245.67 - 246.43\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WMB\nLevel: 51.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 50.83 - 51.21\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WMT\nLevel: 81.83\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 81.48 - 82.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WSM\nLevel: 251.78\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 251.09 - 252.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WTBA\nLevel: 30.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.26 - 30.4\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WTW\nLevel: 275.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 274.87 - 277.59\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: XEL\nLevel: 63.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 63.52 - 63.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: XOM\nLevel: 174.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 174.09 - 175.18\n\nDecision:\nVALID SETUP\nTrade: SELL\nEntry: 174.58\nStop: 175.64\nTarget: 167.18\nR:R: 6.98\nConfidence: 0.8\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n\n--------------------------------------------------\nTicker: XP\nLevel: 29.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 29.12 - 29.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: XYZ\nLevel: 45.7\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 45.12 - 45.91\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: YUM\nLevel: 126.46\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 126.15 - 126.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: YYAI\nLevel: 272000.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 271999.99 - 272000.01\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ZS\nLevel: 120.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 118.25 - 122.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ZTO\nLevel: 17.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 17.0 - 17.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ZTS\nLevel: 189.98\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 189.78 - 190.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n'}
+```json
+{
+  "stage": "EOD",
+  "payload": {
+    "summary": {
+      "date": "2026-10-14",
+      "daily_pnl": 0.0,
+      "daily_pnl_pct": 0.0,
+      "positions": [
+        {
+          "symbol": "KDP",
+          "quantity": 45,
+          "entry": 32.83666965,
+          "avg_cost": 32.7411131,
+          "direction": "long",
+          "sec_type": "STK",
+          "protection_policy": "manual_unmanaged",
+          "stop_order_id": 1044,
+          "current_stop_order_status": "PreSubmitted",
+          "stop_loss": 32.3,
+          "current_stop_loss": 32.3,
+          "limit_order_id": 1045,
+          "current_target_order_status": "Submitted",
+          "target": 34.86,
+          "current_target": 34.86,
+          "planned_stop_loss": 32.3,
+          "planned_target": 34.86
+        },
+        {
+          "symbol": "KO",
+          "quantity": 5,
+          "entry": 90.200003,
+          "avg_cost": 90.2,
+          "direction": "long",
+          "sec_type": "STK",
+          "protection_policy": "manual_unmanaged",
+          "stop_order_id": 1017,
+          "current_stop_order_status": "PreSubmitted",
+          "stop_loss": 87.6,
+          "current_stop_loss": 87.6,
+          "limit_order_id": 1018,
+          "current_target_order_status": "Submitted",
+          "target": 95.23,
+          "current_target": 95.23,
+          "planned_stop_loss": 87.6,
+          "planned_target": 95.23
+        },
+        {
+          "symbol": "VEEV",
+          "quantity": 3,
+          "entry": 299.32333635,
+          "avg_cost": 299.32333635,
+          "direction": "long",
+          "sec_type": "STK",
+          "protection_policy": "manual_unmanaged",
+          "stop_order_id": 1052,
+          "current_stop_order_status": "PreSubmitted",
+          "stop_loss": 291.41,
+          "current_stop_loss": 291.41,
+          "limit_order_id": 1053,
+          "current_target_order_status": "Submitted",
+          "target": 321.47,
+          "current_target": 321.47,
+          "planned_stop_loss": 291.41,
+          "planned_target": 321.47
+        },
+        {
+          "symbol": "OXY",
+          "quantity": 8,
+          "entry": 60.995003,
+          "avg_cost": 60.995,
+          "direction": "long",
+          "sec_type": "STK",
+          "protection_policy": "manual_unmanaged",
+          "stop_order_id": 1013,
+          "current_stop_order_status": "PreSubmitted",
+          "stop_loss": 57.82,
+          "current_stop_loss": 57.82,
+          "limit_order_id": 1014,
+          "current_target_order_status": "Submitted",
+          "target": 67.94,
+          "current_target": 67.94,
+          "planned_stop_loss": 57.82,
+          "planned_target": 67.94
+        },
+        {
+          "symbol": "GSHD",
+          "quantity": 21,
+          "entry": 46.10762205,
+          "avg_cost": 46.1076238,
+          "direction": "long",
+          "sec_type": "STK",
+          "protection_policy": "manual_unmanaged",
+          "stop_order_id": 924,
+          "current_stop_order_status": "PreSubmitted",
+          "stop_loss": 42.83,
+          "current_stop_loss": 42.83,
+          "limit_order_id": 925,
+          "current_target_order_status": "Submitted",
+          "target": 50.0,
+          "current_target": 50.0,
+          "planned_stop_loss": 44.09,
+          "planned_target": 50.0
+        },
+        {
+          "symbol": "EOG",
+          "quantity": 3,
+          "entry": 152.33333635,
+          "avg_cost": 152.33333335,
+          "direction": "long",
+          "sec_type": "STK",
+          "protection_policy": "manual_unmanaged",
+          "stop_order_id": 1021,
+          "current_stop_order_status": "PreSubmitted",
+          "stop_loss": 148.05,
+          "current_stop_loss": 148.05,
+          "limit_order_id": 1022,
+          "current_target_order_status": "Submitted",
+          "target": 159.39,
+          "current_target": 159.39,
+          "planned_stop_loss": 148.05,
+          "planned_target": 159.39
+        },
+        {
+          "symbol": "MRSH",
+          "quantity": 5,
+          "entry": 176.07,
+          "avg_cost": 176.07,
+          "direction": "long",
+          "sec_type": "STK",
+          "protection_policy": "manual_unmanaged",
+          "stop_order_id": 991,
+          "current_stop_order_status": "PreSubmitted",
+          "stop_loss": 173.3,
+          "current_stop_loss": 173.3,
+          "limit_order_id": 992,
+          "current_target_order_status": "Submitted",
+          "target": 182.33,
+          "current_target": 182.33,
+          "planned_stop_loss": 173.3,
+          "planned_target": 182.33
+        }
+      ],
+      "account_snapshot": {
+        "account": [
+          {
+            "account": "DU5454348",
+            "tag": "AccountType",
+            "value": "INDIVIDUAL",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "Cushion",
+            "value": "0.716402",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadNextChange",
+            "value": "1792071000",
+            "currency": ""
+          },
+          {
+            "account": "DU5454348",
+            "tag": "AccruedCash",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "AvailableFunds",
+            "value": "3481.51",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "BuyingPower",
+            "value": "13926.05",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "EquityWithLoanValue",
+            "value": "4958.05",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "ExcessLiquidity",
+            "value": "3552.29",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullAvailableFunds",
+            "value": "3481.51",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullExcessLiquidity",
+            "value": "3552.29",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullInitMarginReq",
+            "value": "1476.54",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "FullMaintMarginReq",
+            "value": "1406.22",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "GrossPositionValue",
+            "value": "5624.90",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "InitMarginReq",
+            "value": "1476.54",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadAvailableFunds",
+            "value": "3481.51",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadExcessLiquidity",
+            "value": "3552.29",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadInitMarginReq",
+            "value": "1476.54",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "LookAheadMaintMarginReq",
+            "value": "1406.22",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "MaintMarginReq",
+            "value": "1406.22",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "NetLiquidation",
+            "value": "4958.52",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "RegTEquity",
+            "value": "4958.52",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "RegTMargin",
+            "value": "2812.45",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "SMA",
+            "value": "4094.45",
+            "currency": "USD"
+          },
+          {
+            "account": "DU5454348",
+            "tag": "TotalCashValue",
+            "value": "-666.38",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "Currency",
+            "value": "USD",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "CashBalance",
+            "value": "-666.3802",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "TotalCashBalance",
+            "value": "-666.3802",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "AccruedCash",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "StockMarketValue",
+            "value": "5624.90",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "OptionMarketValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FutureOptionValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FuturesPNL",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "NetLiquidationByCurrency",
+            "value": "4958.5177",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "UnrealizedPnL",
+            "value": "9.01",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "RealizedPnL",
+            "value": "-24.34",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "ExchangeRate",
+            "value": "1.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FundValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "NetDividend",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "MutualFundValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "MoneyMarketFundValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "CorporateBondValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "TBondValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "TBillValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "WarrantValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "FxCashBalance",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "AccountOrGroup",
+            "value": "All",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "RealCurrency",
+            "value": "USD",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "IssuerOptionValue",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "Cryptocurrency",
+            "value": "0.00",
+            "currency": "USD"
+          },
+          {
+            "account": "All",
+            "tag": "Currency",
+            "value": "BASE",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "CashBalance",
+            "value": "-666.3802",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "TotalCashBalance",
+            "value": "-666.3802",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "AccruedCash",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "StockMarketValue",
+            "value": "5624.90",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "OptionMarketValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FutureOptionValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FuturesPNL",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "NetLiquidationByCurrency",
+            "value": "4958.5177",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "UnrealizedPnL",
+            "value": "9.01",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "RealizedPnL",
+            "value": "-24.34",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "ExchangeRate",
+            "value": "1.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FundValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "NetDividend",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "MutualFundValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "MoneyMarketFundValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "CorporateBondValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "TBondValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "TBillValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "WarrantValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "FxCashBalance",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "AccountOrGroup",
+            "value": "All",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "RealCurrency",
+            "value": "BASE",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "IssuerOptionValue",
+            "value": "0.00",
+            "currency": "BASE"
+          },
+          {
+            "account": "All",
+            "tag": "Cryptocurrency",
+            "value": "0.00",
+            "currency": "BASE"
+          }
+        ],
+        "positions": [
+          {
+            "symbol": "KDP",
+            "currency": "USD",
+            "local_symbol": "KDP",
+            "position": 45.0,
+            "avg_cost": 32.7411131,
+            "sec_type": "STK"
+          },
+          {
+            "symbol": "KO",
+            "currency": "USD",
+            "local_symbol": "KO",
+            "position": 5.0,
+            "avg_cost": 90.2,
+            "sec_type": "STK"
+          },
+          {
+            "symbol": "VEEV",
+            "currency": "USD",
+            "local_symbol": "VEEV",
+            "position": 3.0,
+            "avg_cost": 299.32333635,
+            "sec_type": "STK"
+          },
+          {
+            "symbol": "OXY",
+            "currency": "USD",
+            "local_symbol": "OXY",
+            "position": 8.0,
+            "avg_cost": 60.995,
+            "sec_type": "STK"
+          },
+          {
+            "symbol": "GSHD",
+            "currency": "USD",
+            "local_symbol": "GSHD",
+            "position": 21.0,
+            "avg_cost": 46.1076238,
+            "sec_type": "STK"
+          },
+          {
+            "symbol": "EOG",
+            "currency": "USD",
+            "local_symbol": "EOG",
+            "position": 3.0,
+            "avg_cost": 152.33333335,
+            "sec_type": "STK"
+          },
+          {
+            "symbol": "MRSH",
+            "currency": "USD",
+            "local_symbol": "MRSH",
+            "position": 5.0,
+            "avg_cost": 176.07,
+            "sec_type": "STK"
+          }
+        ],
+        "open_orders": [
+          {
+            "symbol": "GSHD",
+            "order_id": 925,
+            "perm_id": 1087357359,
+            "parent_id": 0,
+            "action": "SELL",
+            "quantity": 21.0,
+            "type": "LMT",
+            "status": "Submitted",
+            "aux_price": 0.0,
+            "stop_price": 0.0,
+            "limit_price": 50.0,
+            "filled": 0.0,
+            "remaining": 21.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": true
+          },
+          {
+            "symbol": "MRSH",
+            "order_id": 991,
+            "perm_id": 144245433,
+            "parent_id": 0,
+            "action": "SELL",
+            "quantity": 5.0,
+            "type": "STP",
+            "status": "PreSubmitted",
+            "aux_price": 173.3,
+            "stop_price": 173.3,
+            "limit_price": 0.0,
+            "filled": 0.0,
+            "remaining": 5.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": false
+          },
+          {
+            "symbol": "GSHD",
+            "order_id": 924,
+            "perm_id": 1087357358,
+            "parent_id": 0,
+            "action": "SELL",
+            "quantity": 21.0,
+            "type": "STP",
+            "status": "PreSubmitted",
+            "aux_price": 42.83,
+            "stop_price": 42.83,
+            "limit_price": 0.0,
+            "filled": 0.0,
+            "remaining": 21.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": false
+          },
+          {
+            "symbol": "VEEV",
+            "order_id": 1053,
+            "perm_id": 1196547280,
+            "parent_id": 1051,
+            "action": "SELL",
+            "quantity": 3.0,
+            "type": "LMT",
+            "status": "Submitted",
+            "aux_price": 0.0,
+            "stop_price": 0.0,
+            "limit_price": 321.47,
+            "filled": 0.0,
+            "remaining": 3.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": true
+          },
+          {
+            "symbol": "SO",
+            "order_id": 1076,
+            "perm_id": 1861254866,
+            "parent_id": 0,
+            "action": "BUY",
+            "quantity": 11.0,
+            "type": "LMT",
+            "status": "Submitted",
+            "aux_price": 0.0,
+            "stop_price": 0.0,
+            "limit_price": 88.29,
+            "filled": 0.0,
+            "remaining": 11.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": true
+          },
+          {
+            "symbol": "MRSH",
+            "order_id": 992,
+            "perm_id": 144245434,
+            "parent_id": 0,
+            "action": "SELL",
+            "quantity": 5.0,
+            "type": "LMT",
+            "status": "Submitted",
+            "aux_price": 0.0,
+            "stop_price": 0.0,
+            "limit_price": 182.33,
+            "filled": 0.0,
+            "remaining": 5.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": true
+          },
+          {
+            "symbol": "SO",
+            "order_id": 1077,
+            "perm_id": 1861254867,
+            "parent_id": 1076,
+            "action": "SELL",
+            "quantity": 11.0,
+            "type": "STP",
+            "status": "PreSubmitted",
+            "aux_price": 87.1,
+            "stop_price": 87.1,
+            "limit_price": 0.0,
+            "filled": 0.0,
+            "remaining": 11.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": false
+          },
+          {
+            "symbol": "SO",
+            "order_id": 1078,
+            "perm_id": 1861254868,
+            "parent_id": 1076,
+            "action": "SELL",
+            "quantity": 11.0,
+            "type": "LMT",
+            "status": "PreSubmitted",
+            "aux_price": 0.0,
+            "stop_price": 0.0,
+            "limit_price": 91.27,
+            "filled": 0.0,
+            "remaining": 11.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": true
+          },
+          {
+            "symbol": "KDP",
+            "order_id": 1063,
+            "perm_id": 1861254299,
+            "parent_id": 1062,
+            "action": "SELL",
+            "quantity": 30.0,
+            "type": "STP",
+            "status": "PreSubmitted",
+            "aux_price": 32.3,
+            "stop_price": 32.3,
+            "limit_price": 0.0,
+            "filled": 0.0,
+            "remaining": 30.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": false
+          },
+          {
+            "symbol": "KDP",
+            "order_id": 1064,
+            "perm_id": 1861254300,
+            "parent_id": 1062,
+            "action": "SELL",
+            "quantity": 30.0,
+            "type": "LMT",
+            "status": "Submitted",
+            "aux_price": 0.0,
+            "stop_price": 0.0,
+            "limit_price": 34.3,
+            "filled": 0.0,
+            "remaining": 30.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": true
+          },
+          {
+            "symbol": "OXY",
+            "order_id": 1013,
+            "perm_id": 1196543199,
+            "parent_id": 0,
+            "action": "SELL",
+            "quantity": 8.0,
+            "type": "STP",
+            "status": "PreSubmitted",
+            "aux_price": 57.82,
+            "stop_price": 57.82,
+            "limit_price": 0.0,
+            "filled": 0.0,
+            "remaining": 8.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": false
+          },
+          {
+            "symbol": "OXY",
+            "order_id": 1014,
+            "perm_id": 1196543200,
+            "parent_id": 0,
+            "action": "SELL",
+            "quantity": 8.0,
+            "type": "LMT",
+            "status": "Submitted",
+            "aux_price": 0.0,
+            "stop_price": 0.0,
+            "limit_price": 67.94,
+            "filled": 0.0,
+            "remaining": 8.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": true
+          },
+          {
+            "symbol": "KO",
+            "order_id": 1018,
+            "perm_id": 1196543209,
+            "parent_id": 0,
+            "action": "SELL",
+            "quantity": 5.0,
+            "type": "LMT",
+            "status": "Submitted",
+            "aux_price": 0.0,
+            "stop_price": 0.0,
+            "limit_price": 95.23,
+            "filled": 0.0,
+            "remaining": 5.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": true
+          },
+          {
+            "symbol": "KO",
+            "order_id": 1017,
+            "perm_id": 1196543208,
+            "parent_id": 0,
+            "action": "SELL",
+            "quantity": 5.0,
+            "type": "STP",
+            "status": "PreSubmitted",
+            "aux_price": 87.6,
+            "stop_price": 87.6,
+            "limit_price": 0.0,
+            "filled": 0.0,
+            "remaining": 5.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": false
+          },
+          {
+            "symbol": "EOG",
+            "order_id": 1021,
+            "perm_id": 1196543211,
+            "parent_id": 0,
+            "action": "SELL",
+            "quantity": 3.0,
+            "type": "STP",
+            "status": "PreSubmitted",
+            "aux_price": 148.05,
+            "stop_price": 148.05,
+            "limit_price": 0.0,
+            "filled": 0.0,
+            "remaining": 3.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": false
+          },
+          {
+            "symbol": "KDP",
+            "order_id": 1044,
+            "perm_id": 1196547213,
+            "parent_id": 0,
+            "action": "SELL",
+            "quantity": 15.0,
+            "type": "STP",
+            "status": "PreSubmitted",
+            "aux_price": 32.3,
+            "stop_price": 32.3,
+            "limit_price": 0.0,
+            "filled": 0.0,
+            "remaining": 15.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": false
+          },
+          {
+            "symbol": "EOG",
+            "order_id": 1022,
+            "perm_id": 1196543212,
+            "parent_id": 0,
+            "action": "SELL",
+            "quantity": 3.0,
+            "type": "LMT",
+            "status": "Submitted",
+            "aux_price": 0.0,
+            "stop_price": 0.0,
+            "limit_price": 159.39,
+            "filled": 0.0,
+            "remaining": 3.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": true
+          },
+          {
+            "symbol": "VEEV",
+            "order_id": 1052,
+            "perm_id": 1196547279,
+            "parent_id": 1051,
+            "action": "SELL",
+            "quantity": 3.0,
+            "type": "STP",
+            "status": "PreSubmitted",
+            "aux_price": 291.41,
+            "stop_price": 291.41,
+            "limit_price": 0.0,
+            "filled": 0.0,
+            "remaining": 3.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": false
+          },
+          {
+            "symbol": "KDP",
+            "order_id": 1045,
+            "perm_id": 1196547214,
+            "parent_id": 0,
+            "action": "SELL",
+            "quantity": 15.0,
+            "type": "LMT",
+            "status": "Submitted",
+            "aux_price": 0.0,
+            "stop_price": 0.0,
+            "limit_price": 34.86,
+            "filled": 0.0,
+            "remaining": 15.0,
+            "avg_fill_price": 0.0,
+            "order_ref": "",
+            "tif": "GTC",
+            "outside_rth": true
+          }
+        ]
+      },
+      "blocked": false,
+      "reasons": [],
+      "decision_summary": {
+        "total_tickers_scanned": 390,
+        "valid_setups": 9,
+        "trades_taken": 0,
+        "skipped": 390,
+        "top_rejection_reasons": [
+          [
+            "no return inside zone",
+            379
+          ],
+          [
+            "abnormal volatility spike",
+            1
+          ],
+          [
+            "no breakout",
+            1
+          ]
+        ],
+        "open_symbols": [
+          "EOG",
+          "GSHD",
+          "KDP",
+          "KO",
+          "MRSH",
+          "OXY",
+          "VEEV"
+        ],
+        "ticker_sections": [
+          "--------------------------------------------------\nTicker: A\nLevel: 97.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 95.99 - 97.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AAPL\nLevel: 174.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 173.95 - 175.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ABBV\nLevel: 247.56\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 246.67 - 248.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ABNB\nLevel: 173.03\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 172.55 - 173.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ABT\nLevel: 86.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 85.89 - 86.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ACGL\nLevel: 85.45\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 85.27 - 85.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ACN\nLevel: 223.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 222.96 - 224.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ADBE\nLevel: 549.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 548.93 - 550.93\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ADI\nLevel: 252.48\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 250.67 - 254.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ADM\nLevel: 42.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 42.51 - 43.23\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ADP\nLevel: 197.23\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 196.58 - 197.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ADSK\nLevel: 189.45\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 188.69 - 190.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AEE\nLevel: 116.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 116.22 - 116.58\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AEP\nLevel: 139.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 139.12 - 139.66\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AFL\nLevel: 125.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 125.71 - 126.22\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AGPU\nLevel: 35.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 35.44 - 35.66\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AIG\nLevel: 72.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 71.82 - 72.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AJG\nLevel: 197.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 196.33 - 198.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ALL\nLevel: 178.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 177.97 - 178.83\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ALOY\nLevel: 21.69\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 21.65 - 21.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AMAT\nLevel: 696.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 691.64 - 698.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AMD\nLevel: 402.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 398.25 - 404.87\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AME\nLevel: 148.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 147.78 - 149.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AMGN\nLevel: 437.23\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 435.74 - 438.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AMH\nLevel: 39.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 39.32 - 39.55\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AMP\nLevel: 422.81\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 419.85 - 424.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AMT\nLevel: 165.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 164.51 - 166.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AMZN\nLevel: 175.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 175.16 - 176.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ANET\nLevel: 215.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 214.08 - 216.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AON\nLevel: 297.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 297.24 - 298.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: APD\nLevel: 230.35\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 228.51 - 230.95\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: APH\nLevel: 39.81\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 39.29 - 40.07\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: APLM\nLevel: 35.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 35.84 - 36.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: APO\nLevel: 100.3\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.13 - 100.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: APP\nLevel: 166.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 163.94 - 167.43\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ASML\nLevel: 1127.75\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1122.21 - 1133.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ASND\nLevel: 265.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 262.98 - 266.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ATO\nLevel: 191.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 191.21 - 191.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AVGO\nLevel: 442.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 441.09 - 443.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AXON\nLevel: 351.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 349.68 - 352.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AXP\nLevel: 227.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 226.24 - 228.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: AZO\nLevel: 4332.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 4325.05 - 4340.31\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: BA\nLevel: 254.14\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 253.77 - 254.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: BAC\nLevel: 49.89\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 49.69 - 50.19\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 49.83\nStop: 49.65\nTarget: 52.33\nR:R: 13.89\nConfidence: 0.85\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n",
+          "--------------------------------------------------\nTicker: BDX\nLevel: 200.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 200.33 - 202.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: BE\nLevel: 318.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 316.61 - 323.86\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: BIDU\nLevel: 161.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 161.24 - 161.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: BIIB\nLevel: 156.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 154.49 - 157.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: BKNG\nLevel: 156.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 156.44 - 157.46\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: BKR\nLevel: 35.27\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 35.12 - 35.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: BLK\nLevel: 1209.82\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1207.67 - 1211.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: BMY\nLevel: 67.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 67.08 - 67.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: BNY\nLevel: 72.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 71.82 - 72.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: BRKH\nLevel: 9.92\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 9.92 - 9.92\n\nDecision:\nNO TRADE\n\nReasons:\n- abnormal volatility spike\n",
+          "--------------------------------------------------\nTicker: BSX\nLevel: 78.63\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 78.49 - 78.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: BX\nLevel: 105.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 104.72 - 105.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: C\nLevel: 56.07\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 55.19 - 56.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CAH\nLevel: 249.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 248.55 - 250.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CARR\nLevel: 80.74\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 80.6 - 81.02\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CAT\nLevel: 280.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 272.65 - 283.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CB\nLevel: 365.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 364.68 - 366.52\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CBOE\nLevel: 347.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 344.56 - 348.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CBRE\nLevel: 112.52\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 111.05 - 113.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CCI\nLevel: 67.47\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 67.09 - 68.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CCL\nLevel: 17.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 17.44 - 17.71\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CDNS\nLevel: 411.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 409.0 - 412.68\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CEG\nLevel: 189.79\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 187.91 - 194.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CFG\nLevel: 33.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.55 - 34.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CI\nLevel: 350.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 349.06 - 350.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CIEN\nLevel: 572.39\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 563.59 - 575.88\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CL\nLevel: 76.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 75.8 - 76.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CMCSA\nLevel: 37.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 37.18 - 37.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CME\nLevel: 322.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 321.89 - 323.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CMG\nLevel: 66.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.94 - 66.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CMI\nLevel: 272.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 271.32 - 273.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CNC\nLevel: 53.26\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 52.62 - 53.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: COF\nLevel: 243.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 241.77 - 243.93\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: COHR\nLevel: 433.69\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 429.64 - 436.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: COIN\nLevel: 413.63\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 412.79 - 414.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: COP\nLevel: 82.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 82.33 - 82.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: COR\nLevel: 372.65\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 371.91 - 373.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: COST\nLevel: 1078.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1076.8 - 1081.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CPHI\nLevel: 2.65\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 2.6 - 2.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CRH\nLevel: 80.35\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.72 - 80.58\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 79.79\nStop: 79.6\nTarget: 84.85\nR:R: 26.63\nConfidence: 0.81\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n",
+          "--------------------------------------------------\nTicker: CRM\nLevel: 213.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 212.29 - 214.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CRMT\nLevel: 62.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 62.51 - 62.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CRWD\nLevel: 160.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 156.83 - 161.7\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CSCO\nLevel: 52.67\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 51.77 - 53.01\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CSX\nLevel: 26.31\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 26.13 - 26.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CTAS\nLevel: 166.23\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 165.89 - 166.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CTSH\nLevel: 40.03\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 39.56 - 40.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CVNA\nLevel: 34.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.75 - 34.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CVS\nLevel: 110.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 109.68 - 110.32\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: CVX\nLevel: 180.39\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 179.11 - 180.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: D\nLevel: 49.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 49.73 - 49.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: DAL\nLevel: 37.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 36.65 - 37.55\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: DASH\nLevel: 143.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 142.56 - 144.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: DDOG\nLevel: 289.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 288.35 - 294.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: DE\nLevel: 680.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 677.88 - 684.17\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: DELL\nLevel: 298.32\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 295.29 - 303.28\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: DG\nLevel: 68.57\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 67.39 - 68.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: DHI\nLevel: 114.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 113.47 - 114.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: DHR\nLevel: 252.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 252.32 - 253.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: DIS\nLevel: 80.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 80.59 - 81.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: DLR\nLevel: 139.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 138.76 - 140.01\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: DTE\nLevel: 116.65\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 116.1 - 116.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: DUK\nLevel: 105.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 105.45 - 106.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: DVN\nLevel: 27.14\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 26.99 - 27.28\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: DXCM\nLevel: 58.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 57.76 - 58.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: EAF\nLevel: 5.1\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 5.02 - 5.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: EBAY\nLevel: 58.89\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 58.33 - 59.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ECL\nLevel: 227.63\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 227.1 - 228.16\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ED\nLevel: 107.59\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 107.25 - 107.95\n\nDecision:\nVALID SETUP\nTrade: SELL\nEntry: 107.88\nStop: 108.05\nTarget: 103.88\nR:R: 23.53\nConfidence: 0.77\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n",
+          "--------------------------------------------------\nTicker: EL\nLevel: 50.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 49.96 - 50.7\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ELV\nLevel: 454.46\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 452.98 - 456.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: EME\nLevel: 879.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 876.46 - 885.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: EMR\nLevel: 92.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.54 - 92.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: EOG\nLevel: 150.96\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 150.66 - 151.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: EQIX\nLevel: 732.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 726.04 - 735.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: EQT\nLevel: 38.76\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 38.65 - 38.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ETN\nLevel: 260.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 257.85 - 262.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ETR\nLevel: 72.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 71.99 - 72.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: EUR.USD\nLevel: 1.07\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1.07 - 1.07\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: EW\nLevel: 65.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.25 - 66.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: EXC\nLevel: 50.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 50.31 - 50.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: EXPE\nLevel: 141.86\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 138.71 - 142.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: EXR\nLevel: 171.28\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 170.99 - 171.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: F\nLevel: 16.62\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 16.59 - 16.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: FANG\nLevel: 123.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 122.64 - 123.88\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: FAST\nLevel: 52.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 51.87 - 52.28\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: FCX\nLevel: 31.35\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.97 - 31.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: FDX\nLevel: 256.09\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 255.58 - 257.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: FERG\nLevel: 152.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 150.41 - 152.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: FFIV\nLevel: 357.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 355.81 - 361.59\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: FITB\nLevel: 33.84\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.65 - 33.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: FIX\nLevel: 1127.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1118.73 - 1140.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: FLEX\nLevel: 80.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.21 - 81.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: FTNT\nLevel: 191.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 190.55 - 191.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: GCTS\nLevel: 0.96\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 0.94 - 0.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: GD\nLevel: 244.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 243.85 - 245.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: GE\nLevel: 216.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 216.09 - 217.51\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: GEHC\nLevel: 91.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.37 - 92.17\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: GEV\nLevel: 257.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 252.79 - 261.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: GILD\nLevel: 84.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 83.72 - 84.6\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: GIS\nLevel: 70.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 70.4 - 70.58\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: GLW\nLevel: 218.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 216.18 - 219.46\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: GM\nLevel: 42.48\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 42.3 - 42.66\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: GOOG\nLevel: 236.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 235.76 - 237.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: GOOGL\nLevel: 271.41\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 270.56 - 272.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: GRMN\nLevel: 307.1\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 306.19 - 309.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: GS\nLevel: 1143.84\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1141.3 - 1146.38\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: GSHD\nLevel: 79.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.61 - 80.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: GWW\nLevel: 906.52\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 899.72 - 909.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: HAL\nLevel: 42.46\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 42.39 - 42.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: HBAN\nLevel: 12.42\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 12.39 - 12.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: HCA\nLevel: 532.92\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 531.54 - 534.3\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: HD\nLevel: 282.46\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 281.94 - 282.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: HIG\nLevel: 108.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 108.01 - 108.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: HLT\nLevel: 201.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 200.57 - 201.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: HON\nLevel: 188.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 187.84 - 189.31\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: HONA\nLevel: 280.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 279.46 - 280.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: HOOD\nLevel: 153.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 152.62 - 153.38\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: HPE\nLevel: 37.75\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 37.35 - 38.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: HPQ\nLevel: 36.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 36.41 - 36.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: HUM\nLevel: 433.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 430.76 - 441.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: HWM\nLevel: 160.01\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 158.37 - 161.07\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: IBKR\nLevel: 79.62\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.15 - 79.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: IBM\nLevel: 232.29\nPattern: ONE_BAR\n\nContext:\n- Trend: DOWN\n- ATR: OK\n- News: LOW\n- Zone: 230.49 - 233.27\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 232.18\nStop: 229.14\nTarget: 251.61\nR:R: 6.39\nConfidence: 0.81\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n",
+          "--------------------------------------------------\nTicker: ICCC\nLevel: 4.28\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 4.25 - 4.31\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ICE\nLevel: 124.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 123.56 - 124.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: IDXX\nLevel: 526.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 525.1 - 530.63\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 525.52\nStop: 523.94\nTarget: 562.38\nR:R: 23.33\nConfidence: 0.83\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n",
+          "--------------------------------------------------\nTicker: ILMN\nLevel: 248.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 245.31 - 249.61\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: INTC\nLevel: 137.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 137.45 - 138.51\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: INTU\nLevel: 790.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 789.36 - 791.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: IQV\nLevel: 246.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 245.96 - 247.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: IR\nLevel: 65.7\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.35 - 65.96\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: IRM\nLevel: 79.39\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.05 - 79.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ISRG\nLevel: 353.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 351.78 - 354.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ITIC\nLevel: 195.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 193.33 - 196.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ITW\nLevel: 218.41\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 217.78 - 220.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: JBL\nLevel: 388.3\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 386.86 - 389.74\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: JCI\nLevel: 96.67\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 95.58 - 97.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: JNJ\nLevel: 142.2\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 139.9 - 142.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: JPM\nLevel: 214.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 213.92 - 215.9\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: KDP\nLevel: 36.7\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 36.61 - 36.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: KEYS\nLevel: 373.88\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 372.09 - 376.22\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: KHC\nLevel: 33.35\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.29 - 33.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: KKR\nLevel: 163.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 163.36 - 164.0\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: KLAC\nLevel: 279.03\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 278.17 - 280.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: KMB\nLevel: 93.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 93.71 - 94.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: KMDA\nLevel: 9.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 9.22 - 9.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: KMI\nLevel: 30.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.0 - 30.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: KO\nLevel: 90.92\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 90.76 - 91.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: KR\nLevel: 73.89\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 73.75 - 74.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: KVUE\nLevel: 20.05\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 20.02 - 20.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: KYTX\nLevel: 11.26\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 11.22 - 11.3\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: LEDS\nLevel: 3.3\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 3.28 - 3.32\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: LHX\nLevel: 373.12\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 372.29 - 373.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: LIN\nLevel: 538.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 538.14 - 539.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: LITE\nLevel: 1030.37\nPattern: ONE_BAR\n\nContext:\n- Trend: DOWN\n- ATR: OK\n- News: LOW\n- Zone: 1022.26 - 1043.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: LLY\nLevel: 640.86\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 635.24 - 645.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: LMT\nLevel: 676.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 674.91 - 677.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: LOW\nLevel: 285.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 284.66 - 285.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: LRCX\nLevel: 194.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 192.78 - 196.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: LVO\nLevel: 15.2\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 15.17 - 15.23\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: LYV\nLevel: 116.1\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 115.38 - 116.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MA\nLevel: 471.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 468.7 - 472.96\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MAAS\nLevel: 4152.56\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 4152.47 - 4152.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MAN\nLevel: 47.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 46.56 - 47.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MAR\nLevel: 208.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 206.81 - 208.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MCD\nLevel: 250.32\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 249.82 - 250.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MCHP\nLevel: 99.3\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.0 - 99.6\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MCK\nLevel: 978.71\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 976.04 - 981.38\n\nDecision:\nNO TRADE\n\nReasons:\n- no breakout\n",
+          "--------------------------------------------------\nTicker: MCO\nLevel: 398.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 395.71 - 398.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MDB\nLevel: 147.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 143.61 - 149.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MDLZ\nLevel: 53.13\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 53.01 - 53.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MDT\nLevel: 74.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 74.09 - 74.71\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MDU\nLevel: 15.42\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 15.38 - 15.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MET\nLevel: 92.21\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.93 - 92.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: META\nLevel: 502.86\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 497.77 - 505.37\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MLM\nLevel: 444.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 443.72 - 446.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MMM\nLevel: 180.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 180.07 - 181.22\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MNST\nLevel: 42.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 42.07 - 42.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MO\nLevel: 74.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 73.92 - 74.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MPC\nLevel: 277.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 275.65 - 279.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MPWR\nLevel: 1675.42\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1669.54 - 1681.3\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MRK\nLevel: 141.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 140.93 - 141.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MRLN\nLevel: 14.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 14.58 - 14.62\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MRNA\nLevel: 197.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 193.23 - 200.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MRSH\nLevel: 158.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 157.43 - 158.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MRVL\nLevel: 301.27\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 299.29 - 307.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MS\nLevel: 100.31\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.34 - 100.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MSCI\nLevel: 507.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 505.48 - 508.52\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MSEX\nLevel: 70.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 70.09 - 70.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MSFT\nLevel: 550.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 548.85 - 551.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MSI\nLevel: 500.86\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 499.9 - 503.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MTB\nLevel: 168.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 168.45 - 169.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MTD\nLevel: 982.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 978.0 - 986.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: MU\nLevel: 649.83\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 634.92 - 655.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: NAKA\nLevel: 1140.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1140.52 - 1140.68\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: NCEW\nLevel: 3.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 3.15 - 3.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: NDAQ\nLevel: 93.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 93.46 - 94.14\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 93.72\nStop: 93.02\nTarget: 97.75\nR:R: 5.76\nConfidence: 0.85\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n",
+          "--------------------------------------------------\nTicker: NEE\nLevel: 64.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 64.44 - 64.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: NEM\nLevel: 76.75\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 76.44 - 77.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: NEOV\nLevel: 6.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 6.09 - 6.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: NET\nLevel: 306.47\nPattern: ONE_BAR\n\nContext:\n- Trend: DOWN\n- ATR: OK\n- News: LOW\n- Zone: 304.71 - 308.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: NFLX\nLevel: 128.22\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 128.05 - 128.4\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: NKE\nLevel: 81.18\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 81.07 - 81.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: NOC\nLevel: 487.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 484.36 - 489.16\n\nDecision:\nVALID SETUP\nTrade: SELL\nEntry: 487.05\nStop: 489.41\nTarget: 466.36\nR:R: 8.77\nConfidence: 0.73\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n",
+          "--------------------------------------------------\nTicker: NOW\nLevel: 224.74\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 224.06 - 226.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: NSC\nLevel: 202.54\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 201.13 - 203.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: NTAP\nLevel: 230.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 228.49 - 230.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: NTRS\nLevel: 118.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 118.63 - 119.36\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: NUE\nLevel: 214.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 213.6 - 215.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: NVDA\nLevel: 156.26\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 155.44 - 156.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: NXPI\nLevel: 156.91\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 155.7 - 157.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: NXTC\nLevel: 16.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 16.3 - 16.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: O\nLevel: 66.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 66.46 - 66.68\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ODFL\nLevel: 248.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 248.24 - 249.43\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: OKE\nLevel: 114.27\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 114.04 - 114.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ON\nLevel: 130.48\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 130.12 - 130.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: OPTX\nLevel: 13.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 13.51 - 13.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ORCL\nLevel: 260.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 260.2 - 261.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ORLY\nLevel: 103.59\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 103.15 - 103.78\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: OXY\nLevel: 65.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.25 - 65.51\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: P\nLevel: 130.78\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 129.95 - 131.61\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PANW\nLevel: 143.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 137.61 - 145.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PAYX\nLevel: 130.23\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 130.01 - 130.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PCAR\nLevel: 87.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 86.69 - 87.6\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PCG\nLevel: 12.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 12.4 - 12.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PDD\nLevel: 74.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 74.5 - 74.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PEG\nLevel: 94.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 94.82 - 95.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PEP\nLevel: 124.21\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 123.89 - 124.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PFE\nLevel: 21.97\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 21.78 - 22.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PG\nLevel: 179.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 179.7 - 180.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PGR\nLevel: 193.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 192.63 - 193.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PH\nLevel: 517.47\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 515.07 - 519.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PINS\nLevel: 28.69\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 28.6 - 28.78\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PLD\nLevel: 96.52\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 95.91 - 96.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PLTR\nLevel: 60.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 57.52 - 61.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PM\nLevel: 198.68\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 198.38 - 199.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PNC\nLevel: 160.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 159.77 - 161.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PRU\nLevel: 93.13\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 92.78 - 93.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PSA\nLevel: 347.43\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 346.76 - 348.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PSX\nLevel: 224.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 223.47 - 225.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PWR\nLevel: 510.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 507.68 - 515.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PYPG\nLevel: 21.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 21.58 - 21.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: PYPL\nLevel: 92.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.89 - 92.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: QCOM\nLevel: 248.27\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 247.69 - 248.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: RBLX\nLevel: 141.45\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 141.19 - 142.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: RCEL\nLevel: 7.76\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 7.51 - 7.86\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: RCL\nLevel: 363.22\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 361.99 - 364.02\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: RDDT\nLevel: 266.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 265.57 - 267.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: REGN\nLevel: 859.34\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 856.83 - 861.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: RJF\nLevel: 124.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 124.56 - 125.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: RMD\nLevel: 293.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 292.47 - 294.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ROK\nLevel: 477.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 476.18 - 479.87\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ROLR\nLevel: 22.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 22.83 - 22.87\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ROP\nLevel: 434.54\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 432.27 - 435.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ROST\nLevel: 200.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 200.0 - 201.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: RSG\nLevel: 198.51\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 197.17 - 198.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: RTX\nLevel: 220.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 220.04 - 220.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SANM\nLevel: 280.13\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 278.92 - 281.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SBUX\nLevel: 112.26\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 111.97 - 112.91\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SCHW\nLevel: 67.82\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 67.64 - 68.16\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SEI\nLevel: 82.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 81.69 - 82.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SHOP\nLevel: 176.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 176.25 - 177.61\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SHW\nLevel: 299.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 298.12 - 299.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SION\nLevel: 31.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.99 - 31.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SKYQ\nLevel: 21.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 21.34 - 21.38\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SLB\nLevel: 58.82\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 58.67 - 58.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SMA\nLevel: 39.18\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 39.13 - 39.23\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SNAP\nLevel: 12.74\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 12.7 - 12.78\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SNDK\nLevel: 2256.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 2241.55 - 2265.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SNOW\nLevel: 369.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 367.24 - 372.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SNPS\nLevel: 636.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 635.19 - 638.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SO\nLevel: 99.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.45 - 99.71\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SPG\nLevel: 234.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 234.56 - 235.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SPGI\nLevel: 535.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 534.74 - 536.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SPOT\nLevel: 745.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 742.54 - 750.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SRAD\nLevel: 27.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 27.2 - 27.3\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SRE\nLevel: 62.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 62.23 - 62.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: STLD\nLevel: 162.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 161.6 - 162.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: STT\nLevel: 141.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 141.53 - 142.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: STX\nLevel: 680.63\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 677.14 - 684.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SYK\nLevel: 404.14\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 403.26 - 405.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: SYY\nLevel: 91.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.3 - 91.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: T\nLevel: 21.05\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 20.91 - 21.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TDG\nLevel: 1541.88\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1537.33 - 1544.55\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TDY\nLevel: 431.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 427.44 - 432.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TEAM\nLevel: 296.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 295.16 - 296.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TEL\nLevel: 120.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 119.49 - 120.59\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TER\nLevel: 469.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 467.31 - 470.91\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TFC\nLevel: 33.82\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.72 - 33.92\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TGHL\nLevel: 2.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 2.92 - 2.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TGT\nLevel: 164.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 163.61 - 164.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TJX\nLevel: 162.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 162.04 - 163.37\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TMO\nLevel: 656.75\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 652.59 - 658.67\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TMUS\nLevel: 164.47\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 163.62 - 164.87\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TOP\nLevel: 16.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 16.83 - 17.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TREX\nLevel: 30.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.27 - 30.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TRGP\nLevel: 305.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 304.47 - 305.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TRV\nLevel: 325.39\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 324.64 - 326.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TSLA\nLevel: 475.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 474.34 - 476.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TSM\nLevel: 471.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 467.21 - 472.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TT\nLevel: 316.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 314.91 - 317.43\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TTWO\nLevel: 160.83\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 159.92 - 161.74\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TWLO\nLevel: 255.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 253.11 - 257.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: TXN\nLevel: 143.31\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 141.7 - 144.17\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: UAL\nLevel: 56.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 55.53 - 56.36\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: UBER\nLevel: 99.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.5 - 99.92\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: UNH\nLevel: 239.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 237.81 - 241.19\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: UNP\nLevel: 208.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 207.78 - 208.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: UPS\nLevel: 138.67\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 138.46 - 138.88\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: URI\nLevel: 551.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 548.6 - 555.28\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: USB\nLevel: 65.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.49 - 65.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: V\nLevel: 283.53\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 282.64 - 285.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: VAL\nLevel: 61.21\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 60.93 - 61.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: VEEE\nLevel: 234.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 234.52 - 234.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: VEEV\nLevel: 258.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 256.83 - 259.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: VLO\nLevel: 101.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.0 - 103.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: VMC\nLevel: 222.44\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 221.86 - 223.02\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: VMRK\nLevel: 74.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 74.22 - 74.83\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: VRT\nLevel: 343.31\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 341.07 - 344.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: VRTX\nLevel: 491.93\nPattern: ONE_BAR\n\nContext:\n- Trend: DOWN\n- ATR: OK\n- News: LOW\n- Zone: 490.5 - 494.0\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 492.64\nStop: 487.29\nTarget: 519.52\nR:R: 5.02\nConfidence: 0.82\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n",
+          "--------------------------------------------------\nTicker: VST\nLevel: 99.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 98.06 - 100.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: VTR\nLevel: 97.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 96.94 - 97.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: VZ\nLevel: 38.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 38.84 - 39.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: WAB\nLevel: 157.56\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 156.13 - 158.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: WAT\nLevel: 276.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 273.72 - 277.33\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: WDAY\nLevel: 281.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 280.37 - 281.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: WDC\nLevel: 729.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 724.98 - 731.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: WEC\nLevel: 118.53\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 118.37 - 118.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: WELL\nLevel: 244.84\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 243.5 - 245.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: WFC\nLevel: 59.71\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 59.16 - 59.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: WM\nLevel: 246.05\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 245.67 - 246.43\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: WMB\nLevel: 51.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 50.83 - 51.21\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: WMT\nLevel: 81.83\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 81.48 - 82.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: WSM\nLevel: 251.78\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 251.09 - 252.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: WTBA\nLevel: 30.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.26 - 30.4\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: WTW\nLevel: 275.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 274.87 - 277.59\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: XEL\nLevel: 63.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 63.52 - 63.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: XOM\nLevel: 174.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 174.09 - 175.18\n\nDecision:\nVALID SETUP\nTrade: SELL\nEntry: 174.58\nStop: 175.64\nTarget: 167.18\nR:R: 6.98\nConfidence: 0.8\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n",
+          "--------------------------------------------------\nTicker: XP\nLevel: 29.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 29.12 - 29.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: XYZ\nLevel: 45.7\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 45.12 - 45.91\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: YUM\nLevel: 126.46\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 126.15 - 126.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: YYAI\nLevel: 272000.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 271999.99 - 272000.01\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ZS\nLevel: 120.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 118.25 - 122.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ZTO\nLevel: 17.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 17.0 - 17.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n",
+          "--------------------------------------------------\nTicker: ZTS\nLevel: 189.98\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 189.78 - 190.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n"
+        ]
+      },
+      "report_text": "--------------------------------------------------\nTicker: A\nLevel: 97.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 95.99 - 97.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AAPL\nLevel: 174.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 173.95 - 175.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ABBV\nLevel: 247.56\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 246.67 - 248.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ABNB\nLevel: 173.03\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 172.55 - 173.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ABT\nLevel: 86.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 85.89 - 86.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ACGL\nLevel: 85.45\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 85.27 - 85.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ACN\nLevel: 223.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 222.96 - 224.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ADBE\nLevel: 549.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 548.93 - 550.93\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ADI\nLevel: 252.48\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 250.67 - 254.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ADM\nLevel: 42.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 42.51 - 43.23\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ADP\nLevel: 197.23\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 196.58 - 197.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ADSK\nLevel: 189.45\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 188.69 - 190.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AEE\nLevel: 116.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 116.22 - 116.58\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AEP\nLevel: 139.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 139.12 - 139.66\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AFL\nLevel: 125.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 125.71 - 126.22\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AGPU\nLevel: 35.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 35.44 - 35.66\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AIG\nLevel: 72.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 71.82 - 72.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AJG\nLevel: 197.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 196.33 - 198.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ALL\nLevel: 178.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 177.97 - 178.83\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ALOY\nLevel: 21.69\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 21.65 - 21.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMAT\nLevel: 696.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 691.64 - 698.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMD\nLevel: 402.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 398.25 - 404.87\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AME\nLevel: 148.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 147.78 - 149.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMGN\nLevel: 437.23\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 435.74 - 438.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMH\nLevel: 39.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 39.32 - 39.55\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMP\nLevel: 422.81\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 419.85 - 424.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMT\nLevel: 165.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 164.51 - 166.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AMZN\nLevel: 175.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 175.16 - 176.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ANET\nLevel: 215.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 214.08 - 216.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AON\nLevel: 297.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 297.24 - 298.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: APD\nLevel: 230.35\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 228.51 - 230.95\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: APH\nLevel: 39.81\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 39.29 - 40.07\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: APLM\nLevel: 35.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 35.84 - 36.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: APO\nLevel: 100.3\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.13 - 100.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: APP\nLevel: 166.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 163.94 - 167.43\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ASML\nLevel: 1127.75\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1122.21 - 1133.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ASND\nLevel: 265.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 262.98 - 266.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ATO\nLevel: 191.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 191.21 - 191.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AVGO\nLevel: 442.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 441.09 - 443.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AXON\nLevel: 351.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 349.68 - 352.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AXP\nLevel: 227.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 226.24 - 228.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: AZO\nLevel: 4332.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 4325.05 - 4340.31\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BA\nLevel: 254.14\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 253.77 - 254.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BAC\nLevel: 49.89\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 49.69 - 50.19\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 49.83\nStop: 49.65\nTarget: 52.33\nR:R: 13.89\nConfidence: 0.85\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n\n--------------------------------------------------\nTicker: BDX\nLevel: 200.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 200.33 - 202.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BE\nLevel: 318.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 316.61 - 323.86\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BIDU\nLevel: 161.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 161.24 - 161.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BIIB\nLevel: 156.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 154.49 - 157.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BKNG\nLevel: 156.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 156.44 - 157.46\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BKR\nLevel: 35.27\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 35.12 - 35.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BLK\nLevel: 1209.82\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1207.67 - 1211.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BMY\nLevel: 67.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 67.08 - 67.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BNY\nLevel: 72.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 71.82 - 72.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BRKH\nLevel: 9.92\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 9.92 - 9.92\n\nDecision:\nNO TRADE\n\nReasons:\n- abnormal volatility spike\n\n--------------------------------------------------\nTicker: BSX\nLevel: 78.63\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 78.49 - 78.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: BX\nLevel: 105.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 104.72 - 105.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: C\nLevel: 56.07\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 55.19 - 56.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CAH\nLevel: 249.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 248.55 - 250.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CARR\nLevel: 80.74\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 80.6 - 81.02\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CAT\nLevel: 280.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 272.65 - 283.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CB\nLevel: 365.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 364.68 - 366.52\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CBOE\nLevel: 347.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 344.56 - 348.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CBRE\nLevel: 112.52\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 111.05 - 113.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CCI\nLevel: 67.47\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 67.09 - 68.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CCL\nLevel: 17.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 17.44 - 17.71\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CDNS\nLevel: 411.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 409.0 - 412.68\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CEG\nLevel: 189.79\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 187.91 - 194.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CFG\nLevel: 33.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.55 - 34.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CI\nLevel: 350.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 349.06 - 350.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CIEN\nLevel: 572.39\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 563.59 - 575.88\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CL\nLevel: 76.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 75.8 - 76.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CMCSA\nLevel: 37.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 37.18 - 37.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CME\nLevel: 322.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 321.89 - 323.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CMG\nLevel: 66.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.94 - 66.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CMI\nLevel: 272.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 271.32 - 273.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CNC\nLevel: 53.26\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 52.62 - 53.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: COF\nLevel: 243.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 241.77 - 243.93\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: COHR\nLevel: 433.69\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 429.64 - 436.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: COIN\nLevel: 413.63\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 412.79 - 414.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: COP\nLevel: 82.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 82.33 - 82.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: COR\nLevel: 372.65\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 371.91 - 373.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: COST\nLevel: 1078.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1076.8 - 1081.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CPHI\nLevel: 2.65\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 2.6 - 2.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CRH\nLevel: 80.35\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.72 - 80.58\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 79.79\nStop: 79.6\nTarget: 84.85\nR:R: 26.63\nConfidence: 0.81\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n\n--------------------------------------------------\nTicker: CRM\nLevel: 213.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 212.29 - 214.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CRMT\nLevel: 62.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 62.51 - 62.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CRWD\nLevel: 160.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 156.83 - 161.7\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CSCO\nLevel: 52.67\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 51.77 - 53.01\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CSX\nLevel: 26.31\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 26.13 - 26.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CTAS\nLevel: 166.23\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 165.89 - 166.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CTSH\nLevel: 40.03\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 39.56 - 40.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CVNA\nLevel: 34.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.75 - 34.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CVS\nLevel: 110.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 109.68 - 110.32\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: CVX\nLevel: 180.39\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 179.11 - 180.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: D\nLevel: 49.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 49.73 - 49.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DAL\nLevel: 37.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 36.65 - 37.55\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DASH\nLevel: 143.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 142.56 - 144.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DDOG\nLevel: 289.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 288.35 - 294.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DE\nLevel: 680.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 677.88 - 684.17\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DELL\nLevel: 298.32\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 295.29 - 303.28\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DG\nLevel: 68.57\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 67.39 - 68.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DHI\nLevel: 114.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 113.47 - 114.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DHR\nLevel: 252.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 252.32 - 253.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DIS\nLevel: 80.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 80.59 - 81.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DLR\nLevel: 139.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 138.76 - 140.01\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DTE\nLevel: 116.65\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 116.1 - 116.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DUK\nLevel: 105.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 105.45 - 106.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DVN\nLevel: 27.14\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 26.99 - 27.28\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: DXCM\nLevel: 58.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 57.76 - 58.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EAF\nLevel: 5.1\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 5.02 - 5.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EBAY\nLevel: 58.89\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 58.33 - 59.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ECL\nLevel: 227.63\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 227.1 - 228.16\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ED\nLevel: 107.59\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 107.25 - 107.95\n\nDecision:\nVALID SETUP\nTrade: SELL\nEntry: 107.88\nStop: 108.05\nTarget: 103.88\nR:R: 23.53\nConfidence: 0.77\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n\n--------------------------------------------------\nTicker: EL\nLevel: 50.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 49.96 - 50.7\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ELV\nLevel: 454.46\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 452.98 - 456.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EME\nLevel: 879.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 876.46 - 885.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EMR\nLevel: 92.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.54 - 92.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EOG\nLevel: 150.96\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 150.66 - 151.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EQIX\nLevel: 732.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 726.04 - 735.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EQT\nLevel: 38.76\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 38.65 - 38.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ETN\nLevel: 260.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 257.85 - 262.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ETR\nLevel: 72.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 71.99 - 72.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EUR.USD\nLevel: 1.07\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1.07 - 1.07\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EW\nLevel: 65.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.25 - 66.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EXC\nLevel: 50.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 50.31 - 50.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EXPE\nLevel: 141.86\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 138.71 - 142.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: EXR\nLevel: 171.28\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 170.99 - 171.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: F\nLevel: 16.62\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 16.59 - 16.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FANG\nLevel: 123.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 122.64 - 123.88\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FAST\nLevel: 52.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 51.87 - 52.28\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FCX\nLevel: 31.35\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.97 - 31.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FDX\nLevel: 256.09\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 255.58 - 257.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FERG\nLevel: 152.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 150.41 - 152.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FFIV\nLevel: 357.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 355.81 - 361.59\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FITB\nLevel: 33.84\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.65 - 33.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FIX\nLevel: 1127.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1118.73 - 1140.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FLEX\nLevel: 80.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.21 - 81.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: FTNT\nLevel: 191.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 190.55 - 191.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GCTS\nLevel: 0.96\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 0.94 - 0.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GD\nLevel: 244.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 243.85 - 245.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GE\nLevel: 216.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 216.09 - 217.51\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GEHC\nLevel: 91.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.37 - 92.17\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GEV\nLevel: 257.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 252.79 - 261.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GILD\nLevel: 84.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 83.72 - 84.6\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GIS\nLevel: 70.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 70.4 - 70.58\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GLW\nLevel: 218.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 216.18 - 219.46\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GM\nLevel: 42.48\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 42.3 - 42.66\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GOOG\nLevel: 236.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 235.76 - 237.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GOOGL\nLevel: 271.41\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 270.56 - 272.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GRMN\nLevel: 307.1\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 306.19 - 309.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GS\nLevel: 1143.84\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1141.3 - 1146.38\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GSHD\nLevel: 79.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.61 - 80.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: GWW\nLevel: 906.52\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 899.72 - 909.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HAL\nLevel: 42.46\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 42.39 - 42.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HBAN\nLevel: 12.42\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 12.39 - 12.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HCA\nLevel: 532.92\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 531.54 - 534.3\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HD\nLevel: 282.46\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 281.94 - 282.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HIG\nLevel: 108.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 108.01 - 108.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HLT\nLevel: 201.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 200.57 - 201.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HON\nLevel: 188.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 187.84 - 189.31\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HONA\nLevel: 280.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 279.46 - 280.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HOOD\nLevel: 153.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 152.62 - 153.38\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HPE\nLevel: 37.75\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 37.35 - 38.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HPQ\nLevel: 36.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 36.41 - 36.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HUM\nLevel: 433.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 430.76 - 441.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: HWM\nLevel: 160.01\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 158.37 - 161.07\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: IBKR\nLevel: 79.62\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.15 - 79.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: IBM\nLevel: 232.29\nPattern: ONE_BAR\n\nContext:\n- Trend: DOWN\n- ATR: OK\n- News: LOW\n- Zone: 230.49 - 233.27\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 232.18\nStop: 229.14\nTarget: 251.61\nR:R: 6.39\nConfidence: 0.81\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n\n--------------------------------------------------\nTicker: ICCC\nLevel: 4.28\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 4.25 - 4.31\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ICE\nLevel: 124.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 123.56 - 124.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: IDXX\nLevel: 526.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 525.1 - 530.63\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 525.52\nStop: 523.94\nTarget: 562.38\nR:R: 23.33\nConfidence: 0.83\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n\n--------------------------------------------------\nTicker: ILMN\nLevel: 248.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 245.31 - 249.61\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: INTC\nLevel: 137.98\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 137.45 - 138.51\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: INTU\nLevel: 790.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 789.36 - 791.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: IQV\nLevel: 246.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 245.96 - 247.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: IR\nLevel: 65.7\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.35 - 65.96\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: IRM\nLevel: 79.39\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 79.05 - 79.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ISRG\nLevel: 353.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 351.78 - 354.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ITIC\nLevel: 195.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 193.33 - 196.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ITW\nLevel: 218.41\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 217.78 - 220.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: JBL\nLevel: 388.3\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 386.86 - 389.74\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: JCI\nLevel: 96.67\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 95.58 - 97.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: JNJ\nLevel: 142.2\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 139.9 - 142.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: JPM\nLevel: 214.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 213.92 - 215.9\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KDP\nLevel: 36.7\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 36.61 - 36.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KEYS\nLevel: 373.88\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 372.09 - 376.22\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KHC\nLevel: 33.35\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.29 - 33.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KKR\nLevel: 163.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 163.36 - 164.0\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KLAC\nLevel: 279.03\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 278.17 - 280.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KMB\nLevel: 93.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 93.71 - 94.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KMDA\nLevel: 9.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 9.22 - 9.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KMI\nLevel: 30.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.0 - 30.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KO\nLevel: 90.92\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 90.76 - 91.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KR\nLevel: 73.89\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 73.75 - 74.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KVUE\nLevel: 20.05\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 20.02 - 20.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: KYTX\nLevel: 11.26\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 11.22 - 11.3\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LEDS\nLevel: 3.3\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 3.28 - 3.32\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LHX\nLevel: 373.12\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 372.29 - 373.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LIN\nLevel: 538.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 538.14 - 539.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LITE\nLevel: 1030.37\nPattern: ONE_BAR\n\nContext:\n- Trend: DOWN\n- ATR: OK\n- News: LOW\n- Zone: 1022.26 - 1043.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LLY\nLevel: 640.86\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 635.24 - 645.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LMT\nLevel: 676.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 674.91 - 677.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LOW\nLevel: 285.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 284.66 - 285.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LRCX\nLevel: 194.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 192.78 - 196.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LVO\nLevel: 15.2\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 15.17 - 15.23\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: LYV\nLevel: 116.1\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 115.38 - 116.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MA\nLevel: 471.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 468.7 - 472.96\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MAAS\nLevel: 4152.56\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 4152.47 - 4152.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MAN\nLevel: 47.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 46.56 - 47.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MAR\nLevel: 208.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 206.81 - 208.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MCD\nLevel: 250.32\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 249.82 - 250.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MCHP\nLevel: 99.3\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.0 - 99.6\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MCK\nLevel: 978.71\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 976.04 - 981.38\n\nDecision:\nNO TRADE\n\nReasons:\n- no breakout\n\n--------------------------------------------------\nTicker: MCO\nLevel: 398.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 395.71 - 398.99\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MDB\nLevel: 147.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 143.61 - 149.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MDLZ\nLevel: 53.13\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 53.01 - 53.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MDT\nLevel: 74.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 74.09 - 74.71\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MDU\nLevel: 15.42\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 15.38 - 15.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MET\nLevel: 92.21\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.93 - 92.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: META\nLevel: 502.86\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 497.77 - 505.37\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MLM\nLevel: 444.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 443.72 - 446.08\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MMM\nLevel: 180.8\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 180.07 - 181.22\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MNST\nLevel: 42.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 42.07 - 42.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MO\nLevel: 74.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 73.92 - 74.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MPC\nLevel: 277.55\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 275.65 - 279.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MPWR\nLevel: 1675.42\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1669.54 - 1681.3\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MRK\nLevel: 141.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 140.93 - 141.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MRLN\nLevel: 14.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 14.58 - 14.62\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MRNA\nLevel: 197.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 193.23 - 200.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MRSH\nLevel: 158.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 157.43 - 158.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MRVL\nLevel: 301.27\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 299.29 - 307.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MS\nLevel: 100.31\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.34 - 100.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MSCI\nLevel: 507.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 505.48 - 508.52\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MSEX\nLevel: 70.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 70.09 - 70.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MSFT\nLevel: 550.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 548.85 - 551.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MSI\nLevel: 500.86\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 499.9 - 503.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MTB\nLevel: 168.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 168.45 - 169.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MTD\nLevel: 982.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 978.0 - 986.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: MU\nLevel: 649.83\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 634.92 - 655.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NAKA\nLevel: 1140.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1140.52 - 1140.68\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NCEW\nLevel: 3.15\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 3.15 - 3.15\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NDAQ\nLevel: 93.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 93.46 - 94.14\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 93.72\nStop: 93.02\nTarget: 97.75\nR:R: 5.76\nConfidence: 0.85\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n\n--------------------------------------------------\nTicker: NEE\nLevel: 64.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 64.44 - 64.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NEM\nLevel: 76.75\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 76.44 - 77.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NEOV\nLevel: 6.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 6.09 - 6.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NET\nLevel: 306.47\nPattern: ONE_BAR\n\nContext:\n- Trend: DOWN\n- ATR: OK\n- News: LOW\n- Zone: 304.71 - 308.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NFLX\nLevel: 128.22\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 128.05 - 128.4\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NKE\nLevel: 81.18\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 81.07 - 81.29\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NOC\nLevel: 487.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 484.36 - 489.16\n\nDecision:\nVALID SETUP\nTrade: SELL\nEntry: 487.05\nStop: 489.41\nTarget: 466.36\nR:R: 8.77\nConfidence: 0.73\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n\n--------------------------------------------------\nTicker: NOW\nLevel: 224.74\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 224.06 - 226.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NSC\nLevel: 202.54\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 201.13 - 203.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NTAP\nLevel: 230.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 228.49 - 230.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NTRS\nLevel: 118.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 118.63 - 119.36\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NUE\nLevel: 214.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 213.6 - 215.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NVDA\nLevel: 156.26\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 155.44 - 156.79\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NXPI\nLevel: 156.91\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 155.7 - 157.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: NXTC\nLevel: 16.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 16.3 - 16.82\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: O\nLevel: 66.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 66.46 - 66.68\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ODFL\nLevel: 248.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 248.24 - 249.43\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: OKE\nLevel: 114.27\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 114.04 - 114.5\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ON\nLevel: 130.48\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 130.12 - 130.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: OPTX\nLevel: 13.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 13.51 - 13.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ORCL\nLevel: 260.87\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 260.2 - 261.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ORLY\nLevel: 103.59\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 103.15 - 103.78\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: OXY\nLevel: 65.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.25 - 65.51\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: P\nLevel: 130.78\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 129.95 - 131.61\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PANW\nLevel: 143.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 137.61 - 145.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PAYX\nLevel: 130.23\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 130.01 - 130.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PCAR\nLevel: 87.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 86.69 - 87.6\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PCG\nLevel: 12.44\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 12.4 - 12.48\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PDD\nLevel: 74.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 74.5 - 74.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PEG\nLevel: 94.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 94.82 - 95.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PEP\nLevel: 124.21\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 123.89 - 124.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PFE\nLevel: 21.97\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 21.78 - 22.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PG\nLevel: 179.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 179.7 - 180.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PGR\nLevel: 193.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 192.63 - 193.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PH\nLevel: 517.47\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 515.07 - 519.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PINS\nLevel: 28.69\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 28.6 - 28.78\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PLD\nLevel: 96.52\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 95.91 - 96.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PLTR\nLevel: 60.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 57.52 - 61.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PM\nLevel: 198.68\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 198.38 - 199.06\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PNC\nLevel: 160.99\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 159.77 - 161.45\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PRU\nLevel: 93.13\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 92.78 - 93.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PSA\nLevel: 347.43\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 346.76 - 348.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PSX\nLevel: 224.68\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 223.47 - 225.57\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PWR\nLevel: 510.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 507.68 - 515.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PYPG\nLevel: 21.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 21.58 - 21.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: PYPL\nLevel: 92.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.89 - 92.11\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: QCOM\nLevel: 248.27\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 247.69 - 248.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: RBLX\nLevel: 141.45\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 141.19 - 142.26\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: RCEL\nLevel: 7.76\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 7.51 - 7.86\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: RCL\nLevel: 363.22\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 361.99 - 364.02\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: RDDT\nLevel: 266.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 265.57 - 267.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: REGN\nLevel: 859.34\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 856.83 - 861.85\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: RJF\nLevel: 124.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 124.56 - 125.24\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: RMD\nLevel: 293.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 292.47 - 294.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ROK\nLevel: 477.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 476.18 - 479.87\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ROLR\nLevel: 22.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 22.83 - 22.87\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ROP\nLevel: 434.54\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 432.27 - 435.39\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ROST\nLevel: 200.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 200.0 - 201.2\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: RSG\nLevel: 198.51\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 197.17 - 198.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: RTX\nLevel: 220.49\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 220.04 - 220.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SANM\nLevel: 280.13\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 278.92 - 281.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SBUX\nLevel: 112.26\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 111.97 - 112.91\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SCHW\nLevel: 67.82\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 67.64 - 68.16\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SEI\nLevel: 82.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 81.69 - 82.65\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SHOP\nLevel: 176.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 176.25 - 177.61\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SHW\nLevel: 299.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 298.12 - 299.8\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SION\nLevel: 31.06\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.99 - 31.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SKYQ\nLevel: 21.36\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 21.34 - 21.38\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SLB\nLevel: 58.82\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 58.67 - 58.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SMA\nLevel: 39.18\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 39.13 - 39.23\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SNAP\nLevel: 12.74\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 12.7 - 12.78\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SNDK\nLevel: 2256.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 2241.55 - 2265.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SNOW\nLevel: 369.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 367.24 - 372.35\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SNPS\nLevel: 636.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 635.19 - 638.03\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SO\nLevel: 99.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.45 - 99.71\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SPG\nLevel: 234.95\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 234.56 - 235.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SPGI\nLevel: 535.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 534.74 - 536.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SPOT\nLevel: 745.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 742.54 - 750.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SRAD\nLevel: 27.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 27.2 - 27.3\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SRE\nLevel: 62.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 62.23 - 62.81\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: STLD\nLevel: 162.16\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 161.6 - 162.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: STT\nLevel: 141.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 141.53 - 142.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: STX\nLevel: 680.63\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 677.14 - 684.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SYK\nLevel: 404.14\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 403.26 - 405.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: SYY\nLevel: 91.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 91.3 - 91.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: T\nLevel: 21.05\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 20.91 - 21.13\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TDG\nLevel: 1541.88\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 1537.33 - 1544.55\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TDY\nLevel: 431.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 427.44 - 432.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TEAM\nLevel: 296.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 295.16 - 296.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TEL\nLevel: 120.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 119.49 - 120.59\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TER\nLevel: 469.11\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 467.31 - 470.91\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TFC\nLevel: 33.82\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 33.72 - 33.92\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TGHL\nLevel: 2.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 2.92 - 2.94\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TGT\nLevel: 164.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 163.61 - 164.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TJX\nLevel: 162.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 162.04 - 163.37\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TMO\nLevel: 656.75\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 652.59 - 658.67\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TMUS\nLevel: 164.47\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 163.62 - 164.87\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TOP\nLevel: 16.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 16.83 - 17.05\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TREX\nLevel: 30.4\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.27 - 30.53\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TRGP\nLevel: 305.08\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 304.47 - 305.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TRV\nLevel: 325.39\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 324.64 - 326.14\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TSLA\nLevel: 475.9\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 474.34 - 476.75\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TSM\nLevel: 471.19\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 467.21 - 472.49\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TT\nLevel: 316.17\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 314.91 - 317.43\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TTWO\nLevel: 160.83\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 159.92 - 161.74\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TWLO\nLevel: 255.57\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 253.11 - 257.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: TXN\nLevel: 143.31\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 141.7 - 144.17\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: UAL\nLevel: 56.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 55.53 - 56.36\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: UBER\nLevel: 99.72\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.5 - 99.92\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: UNH\nLevel: 239.5\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 237.81 - 241.19\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: UNP\nLevel: 208.25\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 207.78 - 208.72\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: UPS\nLevel: 138.67\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 138.46 - 138.88\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: URI\nLevel: 551.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 548.6 - 555.28\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: USB\nLevel: 65.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 65.49 - 65.73\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: V\nLevel: 283.53\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 282.64 - 285.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VAL\nLevel: 61.21\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 60.93 - 61.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VEEE\nLevel: 234.58\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 234.52 - 234.64\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VEEV\nLevel: 258.93\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 256.83 - 259.97\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VLO\nLevel: 101.66\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 99.0 - 103.56\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VMC\nLevel: 222.44\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 221.86 - 223.02\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VMRK\nLevel: 74.37\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 74.22 - 74.83\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VRT\nLevel: 343.31\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 341.07 - 344.25\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VRTX\nLevel: 491.93\nPattern: ONE_BAR\n\nContext:\n- Trend: DOWN\n- ATR: OK\n- News: LOW\n- Zone: 490.5 - 494.0\n\nDecision:\nVALID SETUP\nTrade: BUY\nEntry: 492.64\nStop: 487.29\nTarget: 519.52\nR:R: 5.02\nConfidence: 0.82\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n\n--------------------------------------------------\nTicker: VST\nLevel: 99.24\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 98.06 - 100.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VTR\nLevel: 97.61\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 96.94 - 97.84\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: VZ\nLevel: 38.94\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 38.84 - 39.04\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WAB\nLevel: 157.56\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 156.13 - 158.34\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WAT\nLevel: 276.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 273.72 - 277.33\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WDAY\nLevel: 281.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 280.37 - 281.63\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WDC\nLevel: 729.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 724.98 - 731.54\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WEC\nLevel: 118.53\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 118.37 - 118.69\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WELL\nLevel: 244.84\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 243.5 - 245.41\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WFC\nLevel: 59.71\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 59.16 - 59.98\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WM\nLevel: 246.05\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 245.67 - 246.43\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WMB\nLevel: 51.02\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 50.83 - 51.21\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WMT\nLevel: 81.83\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 81.48 - 82.27\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WSM\nLevel: 251.78\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 251.09 - 252.47\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WTBA\nLevel: 30.33\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 30.26 - 30.4\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: WTW\nLevel: 275.6\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 274.87 - 277.59\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: XEL\nLevel: 63.64\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 63.52 - 63.76\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: XOM\nLevel: 174.38\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 174.09 - 175.18\n\nDecision:\nVALID SETUP\nTrade: SELL\nEntry: 174.58\nStop: 175.64\nTarget: 167.18\nR:R: 6.98\nConfidence: 0.8\nPosition Modifier: 1.0\n\nReasons:\n- router_accepted\n- clean false breakout return\n\n--------------------------------------------------\nTicker: XP\nLevel: 29.29\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 29.12 - 29.42\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: XYZ\nLevel: 45.7\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 45.12 - 45.91\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: YUM\nLevel: 126.46\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 126.15 - 126.77\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: YYAI\nLevel: 272000.0\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 271999.99 - 272000.01\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ZS\nLevel: 120.85\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 118.25 - 122.1\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ZTO\nLevel: 17.04\nPattern: ONE_BAR\n\nContext:\n- Trend: RANGE\n- ATR: OK\n- News: LOW\n- Zone: 17.0 - 17.12\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n\n--------------------------------------------------\nTicker: ZTS\nLevel: 189.98\nPattern: ONE_BAR\n\nContext:\n- Trend: UP\n- ATR: OK\n- News: LOW\n- Zone: 189.78 - 190.18\n\nDecision:\nNO TRADE\n\nReasons:\n- no return inside zone\n"
+    }
+  }
+}
+```
+
+## Workflow EOD Flex Reconciliation (2026-10-14T16:10:04)
+- **stage**: EOD Flex Reconciliation
+- **summary**: {'status': 'disabled', 'reconciled': 0, 'archive': None, 'reason': 'missing_flex_configuration', 'unmatched': 0}
+```json
+{
+  "stage": "EOD Flex Reconciliation",
+  "payload": {
+    "summary": {
+      "status": "disabled",
+      "reconciled": 0,
+      "archive": null,
+      "reason": "missing_flex_configuration",
+      "unmatched": 0
+    }
+  }
+}
+```
+
+## Manual Trade SO (2026-10-15T09:38:39)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: SO
+- **strategy**: market_screener_prb1_manual_setup
+- **level_type**: resistance
+- **direction**: long
+- **signal**: BUY
+- **entry**: 88.29
+- **stop_loss**: 87.09
+- **target**: 91.29000000000002
+- **reward_risk**: 2.5000000000000058
+- **partial_targets**: []
+- **quantity**: 11
+- **market_order_id**: 1087
+- **stop_order_id**: 1088
+- **limit_order_id**: 1089
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Market Open (2026-10-15T09:56:55)
+- **executed**: none
+- **skipped**: [{'symbol': 'PFE', 'reason': 'no_signal'}, {'symbol': 'PH', 'reason': 'no_signal'}, {'symbol': 'URI', 'reason': 'no_signal'}, {'symbol': 'PINS', 'reason': 'no_signal'}, {'symbol': 'CSX', 'reason': 'no_signal'}, {'symbol': 'PNC', 'reason': 'no_signal'}, {'symbol': 'LMT', 'reason': 'no_signal'}, {'symbol': 'NOC', 'reason': 'no_signal'}, {'symbol': 'PSX', 'reason': 'no_signal'}, {'symbol': 'GD', 'reason': 'no_signal'}, {'symbol': 'RBLX', 'reason': 'no_signal'}, {'symbol': 'RDDT', 'reason': 'no_signal'}, {'symbol': 'CARR', 'reason': 'no_signal'}, {'symbol': 'REGN', 'reason': 'no_signal'}, {'symbol': 'NKE', 'reason': 'no_signal'}, {'symbol': 'ROST', 'reason': 'no_signal'}, {'symbol': 'SBUX', 'reason': 'no_signal'}, {'symbol': 'LOW', 'reason': 'no_signal'}, {'symbol': 'SCHW', 'reason': 'no_signal'}, {'symbol': 'SHOP', 'reason': 'no_signal'}, {'symbol': 'TJX', 'reason': 'no_signal'}, {'symbol': 'BKNG', 'reason': 'no_signal'}, {'symbol': 'MAR', 'reason': 'no_signal'}, {'symbol': 'CMG', 'reason': 'no_signal'}, {'symbol': 'ORLY', 'reason': 'no_signal'}, {'symbol': 'TGT', 'reason': 'no_signal'}, {'symbol': 'PEP', 'reason': 'no_signal'}, {'symbol': 'MDLZ', 'reason': 'no_signal'}, {'symbol': 'CL', 'reason': 'no_signal'}, {'symbol': 'KHC', 'reason': 'no_signal'}, {'symbol': 'GIS', 'reason': 'no_signal'}, {'symbol': 'KR', 'reason': 'no_signal'}, {'symbol': 'EL', 'reason': 'no_signal'}, {'symbol': 'SLB', 'reason': 'no_signal'}, {'symbol': 'SNAP', 'reason': 'no_signal'}, {'symbol': 'OXY', 'reason': 'no_signal'}, {'symbol': 'SNOW', 'reason': 'no_signal'}, {'symbol': 'MPC', 'reason': 'no_signal'}, {'symbol': 'SYK', 'reason': 'no_signal'}, {'symbol': 'TEAM', 'reason': 'no_signal'}, {'symbol': 'VLO', 'reason': 'no_signal'}, {'symbol': 'TFC', 'reason': 'no_signal'}, {'symbol': 'HAL', 'reason': 'no_signal'}, {'symbol': 'FCX', 'reason': 'no_signal'}, {'symbol': 'NUE', 'reason': 'no_signal'}, {'symbol': 'TMUS', 'reason': 'no_signal'}, {'symbol': 'APD', 'reason': 'no_signal'}, {'symbol': 'TSM', 'reason': 'no_signal'}, {'symbol': 'DUK', 'reason': 'no_signal'}, {'symbol': 'UNH', 'reason': 'no_signal'}, {'symbol': 'UBER', 'reason': 'no_signal'}, {'symbol': 'AEP', 'reason': 'no_signal'}, {'symbol': 'UPS', 'reason': 'no_signal'}, {'symbol': 'CCI', 'reason': 'no_signal'}, {'symbol': 'EQIX', 'reason': 'no_signal'}, {'symbol': 'USB', 'reason': 'no_signal'}, {'symbol': 'VRTX', 'reason': 'no_signal'}, {'symbol': 'ZS', 'reason': 'no_signal'}, {'symbol': 'WMT', 'reason': 'no_signal'}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'missing_live_data'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': 'no_signal'}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': 'no_signal'}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'no_signal'}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'no_signal'}, {'symbol': 'PDD', 'reason': 'no_signal'}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'NVDA', 'reason': 'no_signal'}, {'symbol': 'MU', 'reason': 'no_signal'}, {'symbol': 'PLTR', 'reason': 'no_signal'}, {'symbol': 'BRKH', 'reason': 'no_signal'}, {'symbol': 'NXTC', 'reason': 'no_signal'}, {'symbol': 'TGHL', 'reason': 'no_signal'}, {'symbol': 'MRAI', 'reason': 'missing_live_data'}, {'symbol': 'CPHI', 'reason': 'no_signal'}, {'symbol': 'MAAS', 'reason': 'no_signal'}, {'symbol': 'LEDS', 'reason': 'no_signal'}, {'symbol': 'APLM', 'reason': 'no_signal'}, {'symbol': 'PYPG', 'reason': 'no_signal'}, {'symbol': 'VEEE', 'reason': 'no_signal'}, {'symbol': 'EAF', 'reason': 'no_signal'}, {'symbol': 'YYAI', 'reason': 'no_signal'}, {'symbol': 'TOP', 'reason': 'no_signal'}, {'symbol': 'RCEL', 'reason': 'no_signal'}, {'symbol': 'SYRA', 'reason': 'missing_live_data'}, {'symbol': 'CRMT', 'reason': 'no_signal'}, {'symbol': 'NAKA', 'reason': 'no_signal'}, {'symbol': 'MAN', 'reason': 'no_signal'}, {'symbol': 'GOOGL', 'reason': 'no_signal'}, {'symbol': 'JPM', 'reason': 'no_signal'}, {'symbol': 'BAC', 'reason': 'no_signal'}, {'symbol': 'GS', 'reason': 'no_signal'}, {'symbol': 'V', 'reason': 'no_signal'}, {'symbol': 'LLY', 'reason': 'no_signal'}, {'symbol': 'JNJ', 'reason': 'no_signal'}, {'symbol': 'ABBV', 'reason': 'no_signal'}, {'symbol': 'TMO', 'reason': 'no_signal'}, {'symbol': 'CAT', 'reason': 'no_signal'}, {'symbol': 'GE', 'reason': 'no_signal'}, {'symbol': 'RTX', 'reason': 'no_signal'}, {'symbol': 'ETN', 'reason': 'no_signal'}, {'symbol': 'COST', 'reason': 'no_signal'}, {'symbol': 'PG', 'reason': 'no_signal'}, {'symbol': 'XOM', 'reason': 'no_signal'}, {'symbol': 'CVX', 'reason': 'no_signal'}, {'symbol': 'COP', 'reason': 'no_signal'}, {'symbol': 'NEE', 'reason': 'no_signal'}, {'symbol': 'SO', 'reason': 'no_signal'}, {'symbol': 'PLD', 'reason': 'no_signal'}, {'symbol': 'AMT', 'reason': 'no_signal'}, {'symbol': 'LIN', 'reason': 'no_signal'}, {'symbol': 'SHW', 'reason': 'no_signal'}, {'symbol': 'HD', 'reason': 'no_signal'}, {'symbol': 'MCD', 'reason': 'no_signal'}, {'symbol': 'META', 'reason': 'no_signal'}, {'symbol': 'NFLX', 'reason': 'no_signal'}, {'symbol': 'AVGO', 'reason': 'no_signal'}, {'symbol': 'ORCL', 'reason': 'no_signal'}, {'symbol': 'AMD', 'reason': 'no_signal'}, {'symbol': 'INTC', 'reason': 'no_signal'}, {'symbol': 'QCOM', 'reason': 'no_signal'}, {'symbol': 'ASML', 'reason': 'no_signal'}, {'symbol': 'KLAC', 'reason': 'no_signal'}, {'symbol': 'LRCX', 'reason': 'no_signal'}, {'symbol': 'MRVL', 'reason': 'no_signal'}, {'symbol': 'ADI', 'reason': 'no_signal'}, {'symbol': 'NXPI', 'reason': 'no_signal'}, {'symbol': 'ON', 'reason': 'no_signal'}, {'symbol': 'MCHP', 'reason': 'no_signal'}, {'symbol': 'CRM', 'reason': 'no_signal'}, {'symbol': 'NOW', 'reason': 'no_signal'}, {'symbol': 'PANW', 'reason': 'no_signal'}, {'symbol': 'CRWD', 'reason': 'no_signal'}, {'symbol': 'DDOG', 'reason': 'no_signal'}, {'symbol': 'NET', 'reason': 'no_signal'}, {'symbol': 'MDB', 'reason': 'no_signal'}, {'symbol': 'FTNT', 'reason': 'no_signal'}, {'symbol': 'APP', 'reason': 'no_signal'}, {'symbol': 'ABNB', 'reason': 'no_signal'}, {'symbol': 'DASH', 'reason': 'no_signal'}, {'symbol': 'C', 'reason': 'no_signal'}, {'symbol': 'MS', 'reason': 'no_signal'}, {'symbol': 'AXP', 'reason': 'no_signal'}, {'symbol': 'MA', 'reason': 'no_signal'}, {'symbol': 'COF', 'reason': 'no_signal'}, {'symbol': 'BLK', 'reason': 'no_signal'}, {'symbol': 'CME', 'reason': 'no_signal'}, {'symbol': 'ICE', 'reason': 'no_signal'}, {'symbol': 'MRK', 'reason': 'no_signal'}, {'symbol': 'ABT', 'reason': 'no_signal'}, {'symbol': 'MDT', 'reason': 'no_signal'}, {'symbol': 'ISRG', 'reason': 'no_signal'}, {'symbol': 'GILD', 'reason': 'no_signal'}, {'symbol': 'AMGN', 'reason': 'no_signal'}, {'symbol': 'BSX', 'reason': 'no_signal'}, {'symbol': 'BA', 'reason': 'no_signal'}, {'symbol': 'DE', 'reason': 'no_signal'}, {'symbol': 'HON', 'reason': 'no_signal'}, {'symbol': 'FDX', 'reason': 'no_signal'}, {'symbol': 'EOG', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'GOOG', 'reason': 'no_signal'}, {'symbol': 'CSCO', 'reason': 'no_signal'}, {'symbol': 'PM', 'reason': 'no_signal'}, {'symbol': 'GEV', 'reason': 'no_signal'}, {'symbol': 'TXN', 'reason': 'no_signal'}, {'symbol': 'WFC', 'reason': 'no_signal'}, {'symbol': 'ANET', 'reason': 'no_signal'}, {'symbol': 'SNDK', 'reason': 'no_signal'}, {'symbol': 'IBM', 'reason': 'no_signal'}, {'symbol': 'APH', 'reason': 'no_signal'}, {'symbol': 'DIS', 'reason': 'no_signal'}, {'symbol': 'VZ', 'reason': 'no_signal'}, {'symbol': 'DELL', 'reason': 'no_signal'}, {'symbol': 'STX', 'reason': 'no_signal'}, {'symbol': 'UNP', 'reason': 'no_signal'}, {'symbol': 'WELL', 'reason': 'no_signal'}, {'symbol': 'T', 'reason': 'no_signal'}, {'symbol': 'WDC', 'reason': 'no_signal'}, {'symbol': 'DHR', 'reason': 'no_signal'}, {'symbol': 'ACN', 'reason': 'no_signal'}, {'symbol': 'PGR', 'reason': 'no_signal'}, {'symbol': 'SPGI', 'reason': 'no_signal'}, {'symbol': 'NEM', 'reason': 'no_signal'}, {'symbol': 'CB', 'reason': 'no_signal'}, {'symbol': 'MO', 'reason': 'no_signal'}, {'symbol': 'BMY', 'reason': 'no_signal'}, {'symbol': 'GLW', 'reason': 'no_signal'}, {'symbol': 'CVS', 'reason': 'no_signal'}, {'symbol': 'MCK', 'reason': 'no_signal'}, {'symbol': 'ADP', 'reason': 'no_signal'}, {'symbol': 'TT', 'reason': 'no_signal'}, {'symbol': 'PWR', 'reason': 'no_signal'}, {'symbol': 'CEG', 'reason': 'no_signal'}, {'symbol': 'BNY', 'reason': 'no_signal'}, {'symbol': 'SNPS', 'reason': 'no_signal'}, {'symbol': 'CDNS', 'reason': 'no_signal'}, {'symbol': 'ADBE', 'reason': 'no_signal'}, {'symbol': 'JCI', 'reason': 'no_signal'}, {'symbol': 'HPE', 'reason': 'no_signal'}, {'symbol': 'VRT', 'reason': 'no_signal'}, {'symbol': 'ELV', 'reason': 'no_signal'}, {'symbol': 'WMB', 'reason': 'no_signal'}, {'symbol': 'EMR', 'reason': 'no_signal'}, {'symbol': 'LITE', 'reason': 'no_signal'}, {'symbol': 'HWM', 'reason': 'no_signal'}, {'symbol': 'HOOD', 'reason': 'no_signal'}, {'symbol': 'BX', 'reason': 'no_signal'}, {'symbol': 'INTU', 'reason': 'no_signal'}, {'symbol': 'MMM', 'reason': 'no_signal'}, {'symbol': 'MRNA', 'reason': 'no_signal'}, {'symbol': 'WM', 'reason': 'no_signal'}, {'symbol': 'TRV', 'reason': 'no_signal'}, {'symbol': 'BE', 'reason': 'no_signal'}, {'symbol': 'CI', 'reason': 'no_signal'}, {'symbol': 'MSI', 'reason': 'no_signal'}, {'symbol': 'HLT', 'reason': 'no_signal'}, {'symbol': 'CMCSA', 'reason': 'no_signal'}, {'symbol': 'CMI', 'reason': 'no_signal'}, {'symbol': 'GM', 'reason': 'no_signal'}, {'symbol': 'NSC', 'reason': 'no_signal'}, {'symbol': 'ECL', 'reason': 'no_signal'}, {'symbol': 'CTAS', 'reason': 'no_signal'}, {'symbol': 'MCO', 'reason': 'no_signal'}, {'symbol': 'RCL', 'reason': 'no_signal'}, {'symbol': 'ITW', 'reason': 'no_signal'}, {'symbol': 'HCA', 'reason': 'technical_atr_too_low'}, {'symbol': 'SPG', 'reason': 'no_signal'}, {'symbol': 'MPWR', 'reason': 'no_signal'}, {'symbol': 'KMI', 'reason': 'no_signal'}, {'symbol': 'KEYS', 'reason': 'no_signal'}, {'symbol': 'KKR', 'reason': 'no_signal'}, {'symbol': 'DLR', 'reason': 'no_signal'}, {'symbol': 'TEL', 'reason': 'no_signal'}, {'symbol': 'MNST', 'reason': 'no_signal'}, {'symbol': 'TRGP', 'reason': 'no_signal'}, {'symbol': 'COR', 'reason': 'no_signal'}, {'symbol': 'TDG', 'reason': 'no_signal'}, {'symbol': 'TER', 'reason': 'no_signal'}, {'symbol': 'AJG', 'reason': 'no_signal'}, {'symbol': 'FAST', 'reason': 'no_signal'}, {'symbol': 'ALL', 'reason': 'no_signal'}, {'symbol': 'AON', 'reason': 'no_signal'}, {'symbol': 'OKE', 'reason': 'no_signal'}, {'symbol': 'FIX', 'reason': 'no_signal'}, {'symbol': 'AME', 'reason': 'no_signal'}, {'symbol': 'CIEN', 'reason': 'no_signal'}, {'symbol': 'PCAR', 'reason': 'no_signal'}, {'symbol': 'GWW', 'reason': 'no_signal'}, {'symbol': 'COHR', 'reason': 'no_signal'}, {'symbol': 'APO', 'reason': 'no_signal'}, {'symbol': 'BKR', 'reason': 'no_signal'}, {'symbol': 'CAH', 'reason': 'no_signal'}, {'symbol': 'D', 'reason': 'no_signal'}, {'symbol': 'CRH', 'reason': 'no_signal'}, {'symbol': 'DVN', 'reason': 'no_signal'}, {'symbol': 'SRE', 'reason': 'no_signal'}, {'symbol': 'MET', 'reason': 'no_signal'}, {'symbol': 'HUM', 'reason': 'no_signal'}, {'symbol': 'O', 'reason': 'no_signal'}, {'symbol': 'AFL', 'reason': 'no_signal'}, {'symbol': 'P', 'reason': 'no_signal'}, {'symbol': 'BDX', 'reason': 'no_signal'}, {'symbol': 'VYLR', 'reason': 'missing_required_chart_history', 'missing': ['daily', 'weekly']}, {'symbol': 'HONA', 'reason': 'no_signal'}, {'symbol': 'VST', 'reason': 'no_signal'}, {'symbol': 'EW', 'reason': 'no_signal'}, {'symbol': 'ADSK', 'reason': 'no_signal'}, {'symbol': 'PSA', 'reason': 'no_signal'}, {'symbol': 'A', 'reason': 'no_signal'}, {'symbol': 'ETR', 'reason': 'no_signal'}, {'symbol': 'ROK', 'reason': 'no_signal'}, {'symbol': 'WAB', 'reason': 'no_signal'}, {'symbol': 'STT', 'reason': 'no_signal'}, {'symbol': 'PYPL', 'reason': 'no_signal'}, {'symbol': 'AZO', 'reason': 'no_signal'}, {'symbol': 'F', 'reason': 'no_signal'}, {'symbol': 'NTAP', 'reason': 'no_signal'}, {'symbol': 'XEL', 'reason': 'no_signal'}, {'symbol': 'FITB', 'reason': 'no_signal'}, {'symbol': 'EBAY', 'reason': 'no_signal'}, {'symbol': 'KDP', 'reason': 'no_signal'}, {'symbol': 'LHX', 'reason': 'no_signal'}, {'symbol': 'GRMN', 'reason': 'no_signal'}, {'symbol': 'VEEV', 'reason': 'no_signal'}, {'symbol': 'VMRK', 'reason': 'no_signal'}, {'symbol': 'TWLO', 'reason': 'no_signal'}, {'symbol': 'EXC', 'reason': 'no_signal'}, {'symbol': 'FLEX', 'reason': 'no_signal'}, {'symbol': 'IQV', 'reason': 'no_signal'}, {'symbol': 'RSG', 'reason': 'no_signal'}, {'symbol': 'VTR', 'reason': 'no_signal'}, {'symbol': 'CVNA', 'reason': 'no_signal'}, {'symbol': 'FERG', 'reason': 'no_signal'}, {'symbol': 'WAT', 'reason': 'no_signal'}, {'symbol': 'ILMN', 'reason': 'no_signal'}, {'symbol': 'NDAQ', 'reason': 'no_signal'}, {'symbol': 'XYZ', 'reason': 'no_signal'}, {'symbol': 'MSCI', 'reason': 'no_signal'}, {'symbol': 'IDXX', 'reason': 'no_signal'}, {'symbol': 'AIG', 'reason': 'no_signal'}, {'symbol': 'COIN', 'reason': 'no_signal'}, {'symbol': 'YUM', 'reason': 'no_signal'}, {'symbol': 'FANG', 'reason': 'no_signal'}, {'symbol': 'IBKR', 'reason': 'no_signal'}, {'symbol': 'ED', 'reason': 'no_signal'}, {'symbol': 'PRU', 'reason': 'no_signal'}, {'symbol': 'ADM', 'reason': 'no_signal'}, {'symbol': 'SYY', 'reason': 'no_signal'}, {'symbol': 'WDAY', 'reason': 'no_signal'}, {'symbol': 'CBRE', 'reason': 'no_signal'}, {'symbol': 'TTWO', 'reason': 'no_signal'}, {'symbol': 'ROP', 'reason': 'no_signal'}, {'symbol': 'PEG', 'reason': 'no_signal'}, {'symbol': 'HIG', 'reason': 'no_signal'}, {'symbol': 'EME', 'reason': 'no_signal'}, {'symbol': 'IRM', 'reason': 'no_signal'}, {'symbol': 'KVUE', 'reason': 'no_signal'}, {'symbol': 'WEC', 'reason': 'no_signal'}, {'symbol': 'DHI', 'reason': 'no_signal'}, {'symbol': 'BIIB', 'reason': 'no_signal'}, {'symbol': 'UAL', 'reason': 'no_signal'}, {'symbol': 'ODFL', 'reason': 'no_signal'}, {'symbol': 'RMD', 'reason': 'no_signal'}, {'symbol': 'CCL', 'reason': 'no_signal'}, {'symbol': 'AXON', 'reason': 'no_signal'}, {'symbol': 'PAYX', 'reason': 'no_signal'}, {'symbol': 'EQT', 'reason': 'no_signal'}, {'symbol': 'CNC', 'reason': 'no_signal'}, {'symbol': 'ACGL', 'reason': 'no_signal'}, {'symbol': 'KMB', 'reason': 'no_signal'}, {'symbol': 'JBL', 'reason': 'no_signal'}, {'symbol': 'DXCM', 'reason': 'no_signal'}, {'symbol': 'STLD', 'reason': 'no_signal'}, {'symbol': 'VMC', 'reason': 'no_signal'}, {'symbol': 'MTB', 'reason': 'no_signal'}, {'symbol': 'MTD', 'reason': 'no_signal'}, {'symbol': 'HBAN', 'reason': 'no_signal'}, {'symbol': 'ZTS', 'reason': 'no_signal'}, {'symbol': 'CBOE', 'reason': 'no_signal'}, {'symbol': 'NTRS', 'reason': 'no_signal'}, {'symbol': 'EXPE', 'reason': 'no_signal'}, {'symbol': 'GEHC', 'reason': 'no_signal'}, {'symbol': 'PCG', 'reason': 'no_signal'}, {'symbol': 'MLM', 'reason': 'no_signal'}, {'symbol': 'AEE', 'reason': 'no_signal'}, {'symbol': 'TDY', 'reason': 'no_signal'}, {'symbol': 'EXR', 'reason': 'no_signal'}, {'symbol': 'WSM', 'reason': 'no_signal'}, {'symbol': 'DG', 'reason': 'no_signal'}, {'symbol': 'WTW', 'reason': 'no_signal'}, {'symbol': 'RJF', 'reason': 'no_signal'}, {'symbol': 'ATO', 'reason': 'no_signal'}, {'symbol': 'HPQ', 'reason': 'no_signal'}, {'symbol': 'IR', 'reason': 'no_signal'}, {'symbol': 'CFG', 'reason': 'no_signal'}, {'symbol': 'LYV', 'reason': 'no_signal'}, {'symbol': 'CTSH', 'reason': 'no_signal'}, {'symbol': 'FFIV', 'reason': 'no_signal'}, {'symbol': 'DTE', 'reason': 'no_signal'}]
+- **manual_candidates**: none
+- **scan_count**: 1
+- **skip_reason_summary**: {'no_signal': 388, 'missing_live_data': 3, 'technical_atr_too_low': 1, 'missing_required_chart_history': 1}
+
+## Manual Trade KVUE (2026-10-15T12:03:50)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: KVUE
+- **strategy**: market_screener_prb1_manual_setup
+- **level_type**: resistance
+- **direction**: long
+- **signal**: BUY
+- **entry**: 18.38
+- **stop_loss**: 17.8
+- **target**: 19.829999999999995
+- **reward_risk**: 2.5
+- **partial_targets**: []
+- **quantity**: 27
+- **market_order_id**: 1091
+- **stop_order_id**: 1092
+- **limit_order_id**: 1093
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Manual Trade HBAN (2026-10-15T12:39:13)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: HBAN
+- **strategy**: market_screener_lp1_manual_setup
+- **level_type**: support
+- **direction**: long
+- **signal**: BUY
+- **entry**: 15.21
+- **stop_loss**: 14.83
+- **target**: 16.160000000000004
+- **reward_risk**: 2.500000000000002
+- **partial_targets**: []
+- **quantity**: 32
+- **market_order_id**: 1096
+- **stop_order_id**: 1097
+- **limit_order_id**: 1098
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}

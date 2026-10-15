@@ -64,7 +64,7 @@ from src.journal.flex_statement import (
 from src.journal.order_journal import load_order_journal, save_review
 from src.stocks.tradingview_webhook import handle_stock_tradingview_webhook, load_stock_tradingview_state
 from dashboard_react.market_screener import ScreenerParams, run_market_screener
-from src.daily_trader import DailyTraderScanRequest, DailyTraderService
+from src.daily_trader import DailyTraderScanJobManager, DailyTraderScanRequest, DailyTraderService
 from src.pre_trade_reviewer import router as pre_trade_reviewer_router
 from src.radar.service import RadarService
 from src.scanners.inefficiency_reclaim import run_inefficiency_reclaim_screener
@@ -2287,6 +2287,8 @@ class DailyTraderScanBody(BaseModel):
     include_breakouts: bool = True
     include_fresh_flips: bool = True
     max_symbols: int = Field(default=30, ge=1, le=100)
+    idempotency_key: str | None = None
+    trigger_source: Literal["manual", "scheduled"] = "manual"
 
 
 class DailyTraderScannerCounts(BaseModel):
@@ -2324,12 +2326,41 @@ class DailyTraderError(BaseModel):
 
 class DailyTraderScanResponse(BaseModel):
     scan_id: str
+    status: Literal["QUEUED", "RUNNING", "COMPLETED", "FAILED"]
+    radar_as_of: str | None = None
+    mode: Literal["scheduled", "top", "breakouts", "fresh_flips"]
+    top_n: int
+    max_symbols: int
+    include_breakouts: bool
+    include_fresh_flips: bool
+    trigger_source: Literal["manual", "scheduled"]
+    started_at: str | None = None
+    completed_at: str | None = None
+    processed_count: int = 0
+    persisted_result_count: int = 0
+    error: dict[str, Any] | None = None
+    read_only: bool
+    orders_submitted: int
+    approvals_created: int
+    execution_intents_created: int
+
+
+class DailyTraderScanStatusResponse(DailyTraderScanResponse):
+    result: dict[str, Any] | None = None
+
+
+class DailyTraderCompletedScanResponse(BaseModel):
+    scan_id: str
     scan_timestamp: str
     market_status: Literal["OPEN", "CLOSED"]
     mode: Literal["scheduled", "top", "breakouts", "fresh_flips"]
     read_only: bool
     orders_submitted: int
+    approvals_created: int = 0
+    execution_intents_created: int = 0
     radar_as_of: str | None = None
+    processed_count: int = 0
+    persisted_result_count: int = 0
     selection: dict[str, int]
     scanner: DailyTraderScannerCounts
     summary: DailyTraderSummary
@@ -2362,6 +2393,42 @@ class DailyTraderHealthResponse(BaseModel):
     radar_available: bool
     scanner_available: bool
     latest_radar_as_of: str | None = None
+    current_radar_row_count: int = 0
+
+
+class DailyTraderSetupsResponse(BaseModel):
+    scan_id: str
+    generated_at: str
+    market_status: Literal["OPEN", "CLOSED"]
+    mode: Literal["persisted_setups"]
+    side: str
+    read_only: bool
+    orders_submitted: int
+    radar_as_of: str | None = None
+    selection: dict[str, int]
+    scanner: DailyTraderScannerCounts
+    summary: DailyTraderSummary
+    active: list[DailyTraderSetup]
+    terminal: list[DailyTraderSetup]
+    no_setup: list[DailyTraderNoSetup]
+    errors: list[DailyTraderError]
+
+
+class DailyTraderMarketResponse(BaseModel):
+    status: Literal["ok", "degraded"]
+    read_only: bool
+    orders_submitted: int
+    approvals_created: int
+    execution_intents_created: int
+    generated_at: str
+    market_session: Literal["OPEN", "CLOSED"]
+    dashboard_api: dict[str, Any]
+    radar: dict[str, Any]
+    production_scanner: dict[str, Any]
+    persisted_scanner_results: dict[str, Any]
+    radar_setups: dict[str, Any]
+    market_screener: dict[str, Any]
+    warnings: list[str]
 
 
 def _production_scanner_health() -> dict[str, Any]:
@@ -2397,13 +2464,23 @@ def _production_scanner_health() -> dict[str, Any]:
         if not isinstance(manifest, dict) or not isinstance(summary, dict):
             continue
         errors = int(summary.get("errors") or 0)
+        error_details: list[Any] = []
+        try:
+            errors_payload = json.loads((run_dir / "errors.json").read_text(encoding="utf-8")) if (run_dir / "errors.json").exists() else {}
+            if isinstance(errors_payload, dict) and isinstance(errors_payload.get("errors"), list):
+                error_details = errors_payload["errors"]
+        except (OSError, ValueError, TypeError):
+            error_details = []
         latest = {
             "run_id": run_dir.name,
             "last_scan_at": manifest.get("completed_at") or manifest.get("started_at"),
             "last_scan_status": "COMPLETED_WITH_ERRORS" if errors else "COMPLETED",
+            "symbols_requested": summary.get("symbols_requested") or manifest.get("requested_symbol_count"),
             "symbols_scanned": summary.get("symbols_scanned"),
+            "symbols_skipped": summary.get("symbols_skipped") or len(manifest.get("skipped_symbols") or []),
             "candidate_count": sum(int(item.get("entry_signals", 0)) for item in (summary.get("strategies") or {}).values() if isinstance(item, dict)),
             "error_count": errors,
+            "errors": error_details,
         }
         break
 
@@ -2429,6 +2506,18 @@ def _production_scanner_health() -> dict[str, Any]:
 def _daily_trader_service() -> DailyTraderService:
     """Build Daily Trader on the existing Radar/scanner seam only."""
     return DailyTraderService(radar_service=_radar_service())
+
+
+_DAILY_TRADER_SCAN_JOBS: DailyTraderScanJobManager | None = None
+_DAILY_TRADER_SCAN_JOBS_LOCK = threading.Lock()
+
+
+def _daily_trader_scan_jobs() -> DailyTraderScanJobManager:
+    global _DAILY_TRADER_SCAN_JOBS
+    with _DAILY_TRADER_SCAN_JOBS_LOCK:
+        if _DAILY_TRADER_SCAN_JOBS is None:
+            _DAILY_TRADER_SCAN_JOBS = DailyTraderScanJobManager(service_factory=_daily_trader_service)
+        return _DAILY_TRADER_SCAN_JOBS
 
 
 @app.get("/api/market-screener")
@@ -2721,16 +2810,70 @@ def api_radar_symbol(symbol: str):
 def api_daily_trader_scan(body: DailyTraderScanBody):
     try:
         values = body.model_dump() if hasattr(body, "model_dump") else body.dict()
-        return _daily_trader_service().scan(DailyTraderScanRequest.from_mapping(values))
+        return _daily_trader_scan_jobs().submit(DailyTraderScanRequest.from_mapping(values))
     except ValueError as exc:
         raise HTTPException(400, str(exc)) from exc
     except RuntimeError as exc:
         raise HTTPException(503, str(exc)) from exc
 
 
+@app.get("/api/daily-trader/scans/latest", response_model=DailyTraderScanStatusResponse)
+def api_daily_trader_latest_scan():
+    result = _daily_trader_scan_jobs().latest_completed()
+    if result is None:
+        raise HTTPException(404, "No completed Daily Trader scan with a valid persisted result was found")
+    return result
+
+
+@app.get("/api/daily-trader/scans/{scan_id}", response_model=DailyTraderScanStatusResponse)
+def api_daily_trader_scan_status(scan_id: str):
+    result = _daily_trader_scan_jobs().status(scan_id)
+    if result is None:
+        raise HTTPException(404, f"No Daily Trader scan found for {scan_id}")
+    return result
+
+
 @app.get("/api/daily-trader/health", response_model=DailyTraderHealthResponse)
 def api_daily_trader_health():
     return _daily_trader_service().health()
+
+
+@app.get("/api/daily-trader/setups", response_model=DailyTraderSetupsResponse)
+def api_daily_trader_setups(side: str = ""):
+    try:
+        normalized = str(side or "").strip().upper() or None
+        return _daily_trader_service().persisted_setups(side=normalized)
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
+
+
+@app.get("/api/daily-trader/market", response_model=DailyTraderMarketResponse)
+def api_daily_trader_market():
+    service = _daily_trader_service()
+    dashboard_api = {
+        "status": "ok",
+        "api_available": True,
+        "endpoint": "/api/daily-trader/market",
+    }
+    try:
+        production_scanner = _production_scanner_health()
+    except Exception as exc:
+        LOGGER.exception("Daily Trader market report scanner health check failed")
+        production_scanner = {
+            "status": "unavailable",
+            "read_only": True,
+            "scanner_available": False,
+            "reason_code": "SCANNER_HEALTH_CHECK_FAILED",
+            "reason": type(exc).__name__,
+            "orders_submitted": 0,
+        }
+    radar_universe = _radar_setup_universe()
+    return service.market_report(
+        dashboard_api=dashboard_api,
+        production_scanner=production_scanner,
+        market_screener=production_scanner,
+        radar_universe=radar_universe,
+    )
 
 
 @app.get("/api/daily-trader/symbol/{symbol}", response_model=DailyTraderSymbolResponse)

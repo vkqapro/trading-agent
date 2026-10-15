@@ -1,0 +1,29 @@
+**Daily Trader fresh Radar flips** — `radar_as_of=2026-10-13`, source updated `2026-10-13T17:01:41Z`, 20 rows. `read_only=true`, `orders_submitted=0`. Tickers validated against source JSON.
+
+**GREEN (5)** — newly flipped into GREEN:
+- AEP — score 71.69 (from GREY)
+- SO — 71.14 (from GREY)
+- UNH — 65.41 (from GREY)
+- MDB — 57.88 (from GREY)
+- URI — 57.06 (from GREY)
+
+**GREY (9)** — trending flat:
+- FCX — 57.38 (from GREEN)
+- PLD — 57.19 (from RED)
+- ABT — 57.13 (from RED)
+- NUE — 55.94 (from GREEN)
+- SYK — 55.55 (from RED)
+- MRSH — 54.93 (from RED)
+- AMD — 53.76 (from GREEN)
+- JPM — 51.60 (from RED)
+- MRK — 50.92 (from GREEN)
+
+**RED (6)** — newly flipped into RED:
+- JNJ — 50.69 (from GREY)
+- BLK — 48.85 (from GREY)
+- REGN — 46.96 (from GREY)
+- EQIX — 43.41 (from GREY)
+- KLAC — 43.29 (from GREY)
+- INTC — 42.43 (from GREY)
+
+Radar flags these as interesting; none are trading candidates. The authoritative scanner decides whether a production setup exists — run `/scan` to check.

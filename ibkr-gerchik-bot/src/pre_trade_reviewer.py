@@ -162,6 +162,13 @@ def review_batch_payload(payloads: list[Mapping[str, Any]]) -> list[ReviewResult
     return results
 
 
+@router.get("/api/pre-trade-review/health")
+def pre_trade_review_health_route():
+    from dashboard_react.server import _daily_trader_service
+    health = _daily_trader_service().health()
+    return {"status": health.get("status"), "read_only": health.get("read_only") is True, "orders_submitted": int(health.get("orders_submitted") or 0), "approval_created": False, "reviewer": "pre-trade-reviewer"}
+
+
 @router.get("/api/pre-trade-review/{symbol}")
 def pre_trade_review_route(symbol: str):
     from dashboard_react.server import _daily_trader_service
@@ -188,9 +195,3 @@ def pre_trade_review_batch_route(body: dict):
             raise HTTPException(503, str(exc)) from exc
     return {"requested": len(symbols), "reviews": [item.to_dict() for item in review_batch_payload(sources)], "read_only": all(item.get("read_only") is True for item in sources), "orders_submitted": sum(int(item.get("orders_submitted") or 0) for item in sources), "approval_created": False}
 
-
-@router.get("/api/pre-trade-review/health")
-def pre_trade_review_health_route():
-    from dashboard_react.server import _daily_trader_service
-    health = _daily_trader_service().health()
-    return {"status": health.get("status"), "read_only": health.get("read_only") is True, "orders_submitted": int(health.get("orders_submitted") or 0), "approval_created": False, "reviewer": "pre-trade-reviewer"}
