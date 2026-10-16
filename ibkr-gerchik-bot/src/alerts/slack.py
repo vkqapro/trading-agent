@@ -21,6 +21,17 @@ except ImportError:  # pragma: no cover - optional dependency path.
 class SlackAlerter:
     """Send alerts to Slack with graceful degradation when disabled."""
 
+    @staticmethod
+    def _automated_reports_enabled() -> bool:
+        return SETTINGS.slack_automated_reports_enabled
+
+    def send_automated_report(self, message: str) -> bool:
+        """Send a scheduled report without gating critical or interactive alerts."""
+        if not self._automated_reports_enabled():
+            LOGGER.info("Automated Slack report disabled. Message skipped.")
+            return False
+        return self.send_channel_message(message)
+
     def __init__(self, webhook_url: str | None = None) -> None:
         self.webhook_url = webhook_url or SETTINGS.slack_webhook
         self.client = WebhookClient(self.webhook_url) if self.webhook_url and WebhookClient else None
@@ -131,7 +142,12 @@ class SlackAlerter:
         parts.append(f"{status}: {reason}" if reason != status else status)
         return " | ".join(parts)
 
-    def send_intraday_heartbeat(self, summary: Dict[str, object]) -> bool:
+    def send_intraday_heartbeat(
+        self, summary: Dict[str, object], *, automated_report: bool = False
+    ) -> bool:
+        if automated_report and not self._automated_reports_enabled():
+            LOGGER.info("Automated Slack report disabled. Intraday heartbeat skipped.")
+            return False
         tracked_symbols = summary.get("tracked_symbols")
         tracked_count = len(tracked_symbols) if isinstance(tracked_symbols, list) else 0
         actions = summary.get("actions")
@@ -209,7 +225,12 @@ class SlackAlerter:
                 lines.append(f"Latest action: {latest}")
         return self.send_channel_message("\n".join(lines))
 
-    def send_premarket_summary(self, summary: Dict[str, object]) -> bool:
+    def send_premarket_summary(
+        self, summary: Dict[str, object], *, automated_report: bool = False
+    ) -> bool:
+        if automated_report and not self._automated_reports_enabled():
+            LOGGER.info("Automated Slack report disabled. Premarket summary skipped.")
+            return False
         macro_risk = summary.get("macro_risk", {})
         blocked = bool(macro_risk.get("blocked")) if isinstance(macro_risk, dict) else False
         ideas = summary.get("ideas")
@@ -253,7 +274,17 @@ class SlackAlerter:
 
         return self.send_channel_message("\n".join(lines))
 
-    def upload_file(self, file_path: Path, title: str, initial_comment: str = "") -> bool:
+    def upload_file(
+        self,
+        file_path: Path,
+        title: str,
+        initial_comment: str = "",
+        *,
+        automated_report: bool = False,
+    ) -> bool:
+        if automated_report and not self._automated_reports_enabled():
+            LOGGER.info("Automated Slack report disabled. File upload skipped: %s", file_path)
+            return False
         if self.bot_client is None or not SETTINGS.slack_channel:
             LOGGER.info("Slack bot token/channel not configured. File upload skipped: %s", file_path)
             return False
@@ -298,7 +329,12 @@ class SlackAlerter:
             "reason": first_reason,
         }
 
-    def send_daily_summary(self, summary: Dict[str, object]) -> bool:
+    def send_daily_summary(
+        self, summary: Dict[str, object], *, automated_report: bool = False
+    ) -> bool:
+        if automated_report and not self._automated_reports_enabled():
+            LOGGER.info("Automated Slack report disabled. Daily summary skipped.")
+            return False
         positions = summary.get("positions")
         open_position_count = len(positions) if isinstance(positions, list) else 0
         decision_summary = summary.get("decision_summary", {})

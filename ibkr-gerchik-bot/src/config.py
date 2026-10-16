@@ -630,6 +630,7 @@ class Settings:
     slack_bot_token: str = _env_str("SLACK_BOT_TOKEN", "")
     slack_channel: str = _env_str("SLACK_CHANNEL", "")
     slack_commands_enabled: bool = _env_bool("SLACK_COMMANDS_ENABLED", True)
+    slack_automated_reports_enabled: bool = _env_bool("SLACK_AUTOMATED_REPORTS_ENABLED", False)
     slack_command_prefix: str = _env_str("SLACK_COMMAND_PREFIX", "ibkr").strip().lower()
     slack_allowed_user_ids: List[str] = field(default_factory=lambda: _csv_env("SLACK_ALLOWED_USER_IDS", ""))
     # Telegram approval is a reference-only human gate. It never carries order fields.

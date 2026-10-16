@@ -1,11 +1,48 @@
 from __future__ import annotations
 
 import unittest
+from pathlib import Path
+from unittest.mock import Mock, patch
 
 from src.alerts.slack import SlackAlerter
 
 
 class SlackHeartbeatTests(unittest.TestCase):
+    def test_automated_report_is_suppressed_when_disabled(self) -> None:
+        alerter = SlackAlerter(webhook_url=None)
+        alerter.send_channel_message = Mock(return_value=True)  # type: ignore[method-assign]
+
+        with patch.object(SlackAlerter, "_automated_reports_enabled", return_value=False):
+            sent = alerter.send_automated_report("scheduled report")
+
+        self.assertFalse(sent)
+        alerter.send_channel_message.assert_not_called()
+
+    def test_automated_report_uses_existing_transport_when_enabled(self) -> None:
+        alerter = SlackAlerter(webhook_url=None)
+        alerter.send_channel_message = Mock(return_value=True)  # type: ignore[method-assign]
+
+        with patch.object(SlackAlerter, "_automated_reports_enabled", return_value=True):
+            sent = alerter.send_automated_report("scheduled report")
+
+        self.assertTrue(sent)
+        alerter.send_channel_message.assert_called_once_with("scheduled report")
+
+    def test_automated_file_upload_is_suppressed_before_transport(self) -> None:
+        alerter = SlackAlerter(webhook_url=None)
+        alerter.bot_client = Mock()  # type: ignore[assignment]
+        alerter.send_channel_message = Mock(return_value=True)  # type: ignore[method-assign]
+
+        with patch.object(SlackAlerter, "_automated_reports_enabled", return_value=False):
+            sent = alerter.upload_file(
+                Path("does-not-exist.xlsx"),
+                title="Scheduled report",
+                automated_report=True,
+            )
+
+        self.assertFalse(sent)
+        alerter.bot_client.files_upload_v2.assert_not_called()
+
     def test_intraday_heartbeat_includes_signal_details(self) -> None:
         alerter = SlackAlerter(webhook_url=None)
         messages: list[str] = []

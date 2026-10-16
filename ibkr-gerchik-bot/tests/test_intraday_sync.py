@@ -62,7 +62,7 @@ class IntradaySyncTests(TestCase):
                 return self.calls <= 2
 
         class AlerterStub:
-            def send_intraday_heartbeat(self, _payload):
+            def send_intraday_heartbeat(self, _payload, *, automated_report=False):
                 return True
 
         class NewsFilterStub:
@@ -120,7 +120,7 @@ class IntradaySyncTests(TestCase):
                 return self.calls <= 2
 
         class AlerterStub:
-            def send_intraday_heartbeat(self, _payload):
+            def send_intraday_heartbeat(self, _payload, *, automated_report=False):
                 return True
 
         class NewsFilterStub:

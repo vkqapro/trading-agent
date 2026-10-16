@@ -297,7 +297,8 @@ def run_intraday(
                 "manual_candidates": iteration_manual_candidates,
                 "signal_details": iteration_signal_details,
                 "skip_reason_summary": summarize_skip_reasons(iteration_skipped),
-            }
+            },
+            automated_report=True,
         )
         if iteration_report_rows:
             report_path = write_intraday_scan_report(
@@ -313,6 +314,7 @@ def run_intraday(
                     f"Scanned: {symbols_scanned} | Signals: {signals_detected} | "
                     f"Executed: {len(iteration_executed)} | Skipped: {len(iteration_skipped)}"
                 ),
+                automated_report=True,
             )
 
         if interval <= 0:

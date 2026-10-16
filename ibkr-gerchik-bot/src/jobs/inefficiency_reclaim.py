@@ -121,7 +121,7 @@ def notify_inefficiency_reclaim_scan(
                 "entries remain blocked."
             )
     if mode == "EOD_REPORT":
-        alerter.send(
+        alerter.send_automated_report(
             f"PAPER IRS EOD summary symbols={result.get('universe_size', 0)} "
             f"display_setups={result.get('signals_found', 0)} "
             f"rejections={len(result.get('rejected', ())) if isinstance(result.get('rejected'), list) else 0} "

@@ -12,6 +12,9 @@ class AlerterStub:
     def send(self, message: str) -> None:
         self.messages.append(message)
 
+    def send_automated_report(self, message: str) -> None:
+        self.messages.append(message)
+
     def send_error(self, message: str) -> None:
         self.messages.append(message)
 

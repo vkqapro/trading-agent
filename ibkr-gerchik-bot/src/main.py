@@ -1008,15 +1008,16 @@ def _run_connected_job(
             watchlist = premarket_summary.get("watchlist", {})
             state["watchlist"] = watchlist
             _save_state(state_path, state)
-            alerter.send_premarket_summary(premarket_summary)
+            alerter.send_premarket_summary(premarket_summary, automated_report=True)
             report_path = premarket_summary.get("report_path")
             if isinstance(report_path, str) and report_path:
                 uploaded = alerter.upload_file(
                     Path(report_path),
                     title="Premarket Strong Levels",
                     initial_comment="Daily premarket levels report (strength_score > 7).",
+                    automated_report=True,
                 )
-                if not uploaded:
+                if not uploaded and SETTINGS.slack_automated_reports_enabled:
                     alerter.send(f"Premarket levels report generated: {Path(report_path).name}")
             maybe_commit_and_push(
                 repo_root,
