@@ -4648,6 +4648,59 @@
         }
       },
       "message": "Order submitted to paper account (qty 53)."
+    },
+    {
+      "id": "6408ece9e7d1",
+      "action": "place",
+      "status": "done",
+      "created_at": "2026-10-16T12:44:33",
+      "updated_at": "2026-10-16T12:44:35",
+      "source": "MARKET_SCREENER_MANUAL",
+      "live": false,
+      "immutable_intent": false,
+      "symbol": "ALOY",
+      "signal": "BUY",
+      "direction": "long",
+      "entry": 7.05,
+      "stop": 6.27,
+      "target": 9,
+      "market_only": false,
+      "manual_setup": true,
+      "entry_order_type": "LIMIT",
+      "level_price": null,
+      "level_type": "support",
+      "strategy": "market_screener_lp2_manual_setup",
+      "nearest_upper_level": null,
+      "nearest_lower_level": null,
+      "reward_risk": 2.4999999999999996,
+      "confidence": 0.6609,
+      "quantity": 32,
+      "result": {
+        "status": "executed",
+        "dry_run": false,
+        "symbol": "ALOY",
+        "strategy": "market_screener_lp2_manual_setup",
+        "level_type": "support",
+        "direction": "long",
+        "signal": "BUY",
+        "entry": 7.05,
+        "stop_loss": 6.27,
+        "target": 9.0,
+        "reward_risk": 2.4999999999999996,
+        "partial_targets": [],
+        "quantity": 32,
+        "market_order_id": 1127,
+        "stop_order_id": 1128,
+        "limit_order_id": 1129,
+        "manual_override": true,
+        "entry_order_type": "LIMIT",
+        "broker_statuses": {
+          "market_order": "Submitted",
+          "stop_order": "PreSubmitted",
+          "limit_order": "PreSubmitted"
+        }
+      },
+      "message": "Order submitted to paper account (qty 32)."
     }
   ]
 }
