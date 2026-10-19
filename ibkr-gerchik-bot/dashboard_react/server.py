@@ -97,6 +97,59 @@ app.add_middleware(
 )
 
 
+_SPARKLINE_SYMBOL_RE = re.compile(r"^[A-Z0-9][A-Z0-9._/-]{0,19}$")
+_SPARKLINE_LIMIT = 500
+
+
+def _latest_completed_daily_cutoff() -> pd.Timestamp:
+    """Return the latest weekday that can have a completed daily candle.
+
+    The persisted bar store remains authoritative for actual availability; this
+    guard only prevents a same-day/incomplete candle from appearing when the
+    dashboard is opened during the session or on a weekend.
+    """
+    cutoff = datetime.now(ZoneInfo(SETTINGS.trading_hours.timezone)).date() - timedelta(days=1)
+    while cutoff.weekday() >= 5:
+        cutoff -= timedelta(days=1)
+    return pd.Timestamp(cutoff)
+
+
+def _price_sparkline_payload(symbols: list[str], cutoff_date: str = "") -> dict[str, Any]:
+    symbols = list(dict.fromkeys(symbols))
+    requested_cutoff = pd.Timestamp(cutoff_date).normalize() if cutoff_date else _latest_completed_daily_cutoff()
+    if pd.isna(requested_cutoff):
+        raise ValueError("cutoff_date must be an ISO date")
+    cutoff = min(requested_cutoff, _latest_completed_daily_cutoff())
+    result: dict[str, Any] = {}
+    for symbol in symbols:
+        frame = _safe(lambda selected=symbol: load_bars(selected, "daily"), pd.DataFrame())
+        if frame is None or frame.empty or "date" not in frame.columns or "close" not in frame.columns:
+            result[symbol] = {"bars": [], "latest_available_date": None, "unavailable": True}
+            continue
+        dates = pd.to_datetime(frame["date"], errors="coerce")
+        closes = pd.to_numeric(frame["close"], errors="coerce")
+        valid = frame.loc[
+            dates.notna()
+            & closes.notna()
+            & closes.map(math.isfinite)
+            & (closes > 0)
+            & (dates.dt.normalize() <= cutoff)
+        ].copy()
+        if valid.empty:
+            result[symbol] = {"bars": [], "latest_available_date": None, "unavailable": True}
+            continue
+        valid["date"] = pd.to_datetime(valid["date"], errors="coerce").dt.normalize()
+        valid["close"] = pd.to_numeric(valid["close"], errors="coerce")
+        valid = valid.sort_values("date").drop_duplicates("date", keep="last").tail(30)
+        bars = [{"date": row.date.date().isoformat(), "close": float(row.close)} for row in valid.itertuples()]
+        result[symbol] = {
+            "bars": bars,
+            "latest_available_date": bars[-1]["date"] if bars else None,
+            "unavailable": len(bars) < 2,
+        }
+    return {"cutoff_date": cutoff.date().isoformat(), "bars": result}
+
+
 @app.middleware("http")
 async def disable_dashboard_cache(request: Request, call_next):
     response = await call_next(request)
@@ -105,6 +158,24 @@ async def disable_dashboard_cache(request: Request, call_next):
         response.headers["Pragma"] = "no-cache"
         response.headers["Expires"] = "0"
     return response
+
+
+@app.get("/api/price-sparklines")
+def api_price_sparklines(symbols: str = "", cutoff_date: str = ""):
+    """Read-only batched completed-daily closes for compact dashboard charts."""
+    requested = [str(item).strip().upper() for item in str(symbols or "").split(",")]
+    requested = list(dict.fromkeys(item for item in requested if item))
+    if not requested:
+        return {"cutoff_date": None, "bars": {}}
+    if len(requested) > _SPARKLINE_LIMIT:
+        raise HTTPException(400, f"At most {_SPARKLINE_LIMIT} symbols may be requested")
+    invalid = [item for item in requested if not _SPARKLINE_SYMBOL_RE.fullmatch(item)]
+    if invalid:
+        raise HTTPException(400, f"Invalid symbol: {invalid[0]}")
+    try:
+        return _price_sparkline_payload(requested, cutoff_date)
+    except (TypeError, ValueError) as exc:
+        raise HTTPException(400, "cutoff_date must be an ISO date") from exc
 
 HERE = Path(__file__).parent
 app.mount("/static", StaticFiles(directory=HERE), name="static")

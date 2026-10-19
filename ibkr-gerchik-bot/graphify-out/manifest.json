@@ -90,9 +90,9 @@
     "semantic_hash": ""
   },
   "dashboard_react/server.py": {
-    "mtime": 1792007623.6625414,
-    "seen": 1792007767.3329268,
-    "ast_hash": "2ac00951772444015a42bcdbfe06100a",
+    "mtime": 1792367906.3307908,
+    "seen": 1792368050.6119523,
+    "ast_hash": "c7a57fae27d9efd5cb7dbc8f4911b00c",
     "semantic_hash": ""
   },
   "design_handoff/trading-bot-dashboard/project/ibkr-gerchik-bot/dashboard/app.py": {
@@ -162,9 +162,9 @@
     "semantic_hash": "a47f92efff8d7a388062745b50785c68"
   },
   "memory/order_requests.json": {
-    "mtime": 1792091542.1349823,
-    "seen": 1792093294.8264809,
-    "ast_hash": "fbe8728b7e2bac46ca483bffc6bb4dae",
+    "mtime": 1792170875.879344,
+    "seen": 1792368050.6138954,
+    "ast_hash": "c8e5865c46c2a2affda62a440528d67f",
     "semantic_hash": ""
   },
   "migrations/001_inefficiency_reclaim_down.sql": {
@@ -1194,9 +1194,9 @@
     "semantic_hash": ""
   },
   "dashboard_react/index.html": {
-    "mtime": 1791919185.498144,
-    "seen": 1791919412.38502,
-    "ast_hash": "4adb75b22c728a604c0322434248095a",
+    "mtime": 1792369266.5969124,
+    "seen": 1792369346.8990245,
+    "ast_hash": "4bea1d1d54ec25173c92facf38419ed9",
     "semantic_hash": ""
   },
   "design_handoff/trading-bot-dashboard/README.md": {
@@ -1224,15 +1224,15 @@
     "semantic_hash": ""
   },
   "memory/LEVELS_LOG.md": {
-    "mtime": 1792067613.8591676,
-    "seen": 1792093294.9127839,
-    "ast_hash": "9ebdb9b756e24fa371d8b7b05a0b91b6",
+    "mtime": 1792153957.5849009,
+    "seen": 1792368050.6773114,
+    "ast_hash": "3c7f3e5206ba5101c2c9b31f96061469",
     "semantic_hash": ""
   },
   "memory/TRADE_LOG.md": {
-    "mtime": 1792082353.1413815,
-    "seen": 1792093294.912793,
-    "ast_hash": "17e894ef401faeb8b99132ef7b36cc34",
+    "mtime": 1792181404.7208695,
+    "seen": 1792368050.677316,
+    "ast_hash": "a2029031b298e8cc561167a5796ae474",
     "semantic_hash": ""
   },
   "memory/TRADING_STRATEGY.md": {
@@ -1242,9 +1242,9 @@
     "semantic_hash": ""
   },
   "memory/WEEKLY_LOG.md": {
-    "mtime": 1791577504.1797318,
-    "seen": 1791605407.8240128,
-    "ast_hash": "00bf03ed3c1800dd9736f1d3f141fb9a",
+    "mtime": 1792182305.8419063,
+    "seen": 1792368050.6774738,
+    "ast_hash": "6fa922d13b6dc0a57e8dd40e439c0704",
     "semantic_hash": ""
   },
   "memory/WEEKLY_REVIEW.md": {
@@ -4608,9 +4608,9 @@
     "semantic_hash": ""
   },
   "memory/RESEARCH_LOG.md": {
-    "mtime": 1792072615.7457461,
-    "seen": 1792093294.912789,
-    "ast_hash": "59304b4cd7e6953ad6545a8dc72f29f1",
+    "mtime": 1792180185.922137,
+    "seen": 1792368050.6773138,
+    "ast_hash": "3f92d40550dd6e1af951eac63d77ff8a",
     "semantic_hash": ""
   },
   "scripts/start_detached_python_service.ps1": {
@@ -4707,6 +4707,48 @@
     "mtime": 1792031182.7104754,
     "seen": 1792031327.453103,
     "ast_hash": "d3bcd21d72f86a4cc34e99a7dd85356d",
+    "semantic_hash": ""
+  },
+  "tests/test_dashboard_price_sparklines.py": {
+    "mtime": 1792367906.3307908,
+    "seen": 1792368050.6394615,
+    "ast_hash": "f82e2efdabad125c1e9291c7757a490d",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-19T00-01-25-443Z.yml": {
+    "mtime": 1792368085.448883,
+    "seen": 1792369346.8937051,
+    "ast_hash": "a08fe75de0bfa4c56dde2f092f34ebce",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-19T00-01-31-297Z.yml": {
+    "mtime": 1792368091.2970974,
+    "seen": 1792369346.89371,
+    "ast_hash": "6e7d0cf7e227614202dbb59b30ffdcdd",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-19T00-01-36-086Z.yml": {
+    "mtime": 1792368096.083983,
+    "seen": 1792369346.8937116,
+    "ast_hash": "26ba0ced5366246c2b7887f1bd4c643f",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-19T00-21-44-372Z.yml": {
+    "mtime": 1792369304.3749132,
+    "seen": 1792369346.8937132,
+    "ast_hash": "a08fe75de0bfa4c56dde2f092f34ebce",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-19T00-21-46-205Z.yml": {
+    "mtime": 1792369306.2032044,
+    "seen": 1792369346.8937151,
+    "ast_hash": "147b9d5ea84042357f9bb02c0cc3986e",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-19T00-21-48-339Z.yml": {
+    "mtime": 1792369308.3285325,
+    "seen": 1792369346.8937168,
+    "ast_hash": "748a2969ed20ee648001bef57cea2fc7",
     "semantic_hash": ""
   }
 }

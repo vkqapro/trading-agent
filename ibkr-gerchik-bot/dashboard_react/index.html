@@ -172,6 +172,45 @@ const Table = ({cols, rows, compact=false, minColWidth=100}) => (
   </div>
 );
 
+const fetchPriceSparklines = (symbols, cutoffDate='') => {
+  const unique = [...new Set((symbols||[]).map(symbol=>String(symbol||'').trim().toUpperCase()).filter(Boolean))];
+  if(!unique.length) return Promise.resolve({cutoff_date:null,bars:{}});
+  const query = new URLSearchParams({symbols:unique.join(',')});
+  if(cutoffDate) query.set('cutoff_date',String(cutoffDate).slice(0,10));
+  return fetch(`${API}/price-sparklines?${query.toString()}`,{cache:'no-store'})
+    .then(async response=>{
+      const body = await response.json().catch(()=>({}));
+      if(!response.ok) throw new Error(body.detail||'Price history unavailable');
+      return body;
+    });
+};
+
+function PriceSparkline({symbol, history, width=100, height=30}) {
+  const bars = Array.isArray(history?.bars) ? history.bars : [];
+  const values = bars.map(item=>Number(item?.close)).filter(value=>Number.isFinite(value) && value>0);
+  const first = values[0];
+  const last = values[values.length-1];
+  const valid = values.length >= 2 && Number.isFinite(first) && Number.isFinite(last);
+  const direction = !valid || last===first ? 'flat' : last>first ? 'up' : 'down';
+  const color = direction==='up' ? '#20D6A5' : direction==='down' ? C.chartDown : C.outline;
+  const min = valid ? Math.min(...values) : 0;
+  const max = valid ? Math.max(...values) : 1;
+  const span = max-min || Math.max(Math.abs(first||1)*0.01,0.000001);
+  const points = valid ? values.map((value,index)=>`${(index/(values.length-1))*100},${27-((value-min)/span)*24}`).join(' ') : '';
+  const percent = valid && first!==0 ? ((last-first)/first)*100 : null;
+  const title = valid
+    ? `${symbol} · Daily / last ${values.length} available completed trading bars\n${bars[0]?.date||'—'} ${first.toFixed(4)} → ${bars[bars.length-1]?.date||'—'} ${last.toFixed(4)}\nChange: ${percent>=0?'+':''}${percent.toFixed(2)}%`
+    : `${symbol} · Daily / last 30 available completed trading bars · unavailable`;
+  return <span title={title} aria-label={title} style={{display:'inline-flex',width,height,alignItems:'center',justifyContent:'center',verticalAlign:'middle',flexShrink:0}}>
+    <svg width={width} height={height} viewBox="0 0 100 30" role="img" aria-hidden="true">
+      {valid ? <polyline points={points} fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke"/> : <>
+        <line x1="8" y1="15" x2="92" y2="15" stroke={color} strokeWidth="1.5" strokeDasharray="3 3" vectorEffect="non-scaling-stroke"/>
+        <circle cx="50" cy="15" r="2" fill={color}/>
+      </>}
+    </svg>
+  </span>;
+}
+
 /* ── SVG candlestick chart ────────────────────────────────────────────────── */
 function CandleChart({bars, levels=[], lines=[], zones=[], tradeMarkers=[], highlightBars=[], strategyOverlay=null, gaussianOverlay=null, trendMeterOverlay=null, showVol=true, height=300, stale=false, lastDate=null, fullscreenTargetRef=null, fullscreenHeightOffset=110, lineLabelPosition='right'}) {
   const n = bars?.length || 0;
@@ -4900,6 +4939,17 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
     });
   };
   const signals = data.signals || [];
+  const [priceSparklines,setPriceSparklines] = useState({});
+  useEffect(()=>{
+    if(isCrypto){ setPriceSparklines({}); return; }
+    let cancelled = false;
+    const symbols = signals.map(row=>row.ticker);
+    if(!symbols.length){ setPriceSparklines({}); return; }
+    fetchPriceSparklines(symbols, data.anchor_date || anchorDate)
+      .then(payload=>{if(!cancelled) setPriceSparklines(payload.bars||{});})
+      .catch(()=>{if(!cancelled) setPriceSparklines({});});
+    return ()=>{cancelled=true;};
+  },[isCrypto, data.signals, data.anchor_date, anchorDate]);
   const rejected = data.rejected || [];
   const nearMisses = data.near_misses || [];
   const reasonCounts = Object.entries(data.reason_counts || {});
@@ -5350,12 +5400,13 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
         <Table
           compact
           minColWidth={82}
-          cols={['Ticker','Strategy','Side','Status','Level','Entry','Stop','TP','RR','ATR','Score',isCrypto?'Units':'Shares','Filters','Reasoning']}
+          cols={['Ticker','PRICE 30D','Strategy','Side','Status','Level','Entry','Stop','TP','RR','ATR','Score',isCrypto?'Units':'Shares','Filters','Reasoning']}
           rows={filteredSignals.map(row=>[
             <button onClick={()=>setSelectedSignalKey(signalKey(row))}
               style={{background:'transparent',border:0,padding:0,cursor:'pointer',color:signalKey(row)===signalKey(selectedSignal)?C.cyan:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:900}}>
               {row.ticker}
             </button>,
+            <PriceSparkline symbol={row.ticker} history={priceSparklines[String(row.ticker||'').toUpperCase()]} />,
             <Pill text={row.strategy} color={row.strategy?.startsWith('LP')?C.cyan:C.lime}/>,
             <Pill text={row.side} color={row.side==='SHORT'?C.err:C.lime}/>,
             <Pill text={row.status} color={statusColor(row.status)}/>,
@@ -7070,6 +7121,7 @@ function TabTrendRadar({refreshKey=0}) {
   const [busy,setBusy] = useState(false);
   const [scanBusy,setScanBusy] = useState(false);
   const [error,setError] = useState('');
+  const [priceSparklines,setPriceSparklines] = useState({});
 
   const loadRadar = useCallback(()=>{
     setBusy(true);
@@ -7080,6 +7132,16 @@ function TabTrendRadar({refreshKey=0}) {
       .finally(()=>setBusy(false));
   },[]);
   useEffect(()=>{loadRadar();},[refreshKey,loadRadar]);
+  useEffect(()=>{
+    let cancelled = false;
+    const symbols = rows.map(row=>row.symbol);
+    const cutoffs = rows.map(row=>String(row.as_of||'').slice(0,10)).filter(Boolean).sort();
+    if(!symbols.length){ setPriceSparklines({}); return; }
+    fetchPriceSparklines(symbols, cutoffs[0]||'')
+      .then(payload=>{if(!cancelled) setPriceSparklines(payload.bars||{});})
+      .catch(()=>{if(!cancelled) setPriceSparklines({});});
+    return ()=>{cancelled=true;};
+  },[rows]);
 
   const refreshRadar = async()=>{
     if(busy) return;
@@ -7225,7 +7287,7 @@ function TabTrendRadar({refreshKey=0}) {
     <div style={{display:'grid',gridTemplateColumns:selected?'minmax(0,1.55fr) minmax(300px,.85fr)':'1fr',gap:18,alignItems:'start'}}>
       <div style={{...card,padding:0,overflow:'hidden'}}>
         <PanelHeader icon="radar" title="Trend Radar" badge={`${filtered.length} assets`}/>
-        <div style={{overflowX:'auto'}}><table style={{width:'100%',borderCollapse:'collapse',minWidth:820}}><thead><tr>{['','Symbol','Trend','Radar','Breakout','Momentum','Volume','Scanner'].map(label=><th key={label} style={{padding:'11px 14px',textAlign:'left',fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.06em',color:C.outline,borderBottom:`1px solid ${R(C.outline,0.14)}`}}>{label}</th>)}</tr></thead><tbody>{filtered.map(row=>{const scan=scannerStates[row.symbol]; const scanColumn=scannerColumn(row); const scanStatus=radarScannerNormalize(scan?.status||row.scanner_status); const checked=selectedSymbols.includes(row.symbol); return <tr key={`${row.symbol}-${row.as_of}`} onClick={()=>openResult(row)} style={{cursor:'pointer',background:selected?.symbol===row.symbol?R(C.cyan,0.08):'transparent'}} onMouseEnter={event=>event.currentTarget.style.background=R(C.onSurf,0.04)} onMouseLeave={event=>event.currentTarget.style.background=selected?.symbol===row.symbol?R(C.cyan,0.08):'transparent'}><td style={{padding:'12px 14px'}}><input type="checkbox" checked={checked} onChange={event=>{event.stopPropagation();setSelectedSymbols(previous=>event.target.checked?[...previous,row.symbol]:previous.filter(symbol=>symbol!==row.symbol));}} onClick={event=>event.stopPropagation()} aria-label={`Select ${row.symbol}`}/></td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onSurf,fontWeight:800}}>{row.symbol}</td><td style={{padding:'12px 14px'}}><Pill text={row.trend} color={trendColor(row.trend)}/>{row.trend_flip&&<span style={{marginLeft:6,color:C.cyan,fontSize:10}}>FLIP</span>}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.cyan}}>{score(row.radar_score)}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:row.breakout?C.lime:C.outline}}>{row.breakout?`${row.breakout_direction} · ${score(row.breakout_score)}`:'—'}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar}}>{score(row.momentum_score)}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar}}>{Number(row.volume_ratio||0).toFixed(2)}x</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:scanStatus==='CANDIDATE'?C.lime:scanStatus==='ERROR'?C.err:scanStatus==='SCANNING'?C.cyan:C.outline}}><div>{scanColumn.label}</div>{scanColumn.timestamp&&<div style={{marginTop:3,fontSize:9,color:C.onVar}}>{String(scanColumn.timestamp).slice(0,16).replace('T',' ')}</div>}</td></tr>;})}</tbody></table></div>
+        <div style={{overflowX:'auto'}}><table style={{width:'100%',borderCollapse:'collapse',minWidth:920}}><thead><tr>{['','Symbol','PRICE 30D','Trend','Radar','Breakout','Momentum','Volume','Scanner'].map(label=><th key={label} style={{padding:'11px 14px',textAlign:'left',fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:'0.06em',color:C.outline,borderBottom:`1px solid ${R(C.outline,0.14)}`}}>{label}</th>)}</tr></thead><tbody>{filtered.map(row=>{const scan=scannerStates[row.symbol]; const scanColumn=scannerColumn(row); const scanStatus=radarScannerNormalize(scan?.status||row.scanner_status); const checked=selectedSymbols.includes(row.symbol); return <tr key={`${row.symbol}-${row.as_of}`} onClick={()=>openResult(row)} style={{cursor:'pointer',background:selected?.symbol===row.symbol?R(C.cyan,0.08):'transparent'}} onMouseEnter={event=>event.currentTarget.style.background=R(C.onSurf,0.04)} onMouseLeave={event=>event.currentTarget.style.background=selected?.symbol===row.symbol?R(C.cyan,0.08):'transparent'}><td style={{padding:'12px 14px'}}><input type="checkbox" checked={checked} onChange={event=>{event.stopPropagation();setSelectedSymbols(previous=>event.target.checked?[...previous,row.symbol]:previous.filter(symbol=>symbol!==row.symbol));}} onClick={event=>event.stopPropagation()} aria-label={`Select ${row.symbol}`}/></td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.onSurf,fontWeight:800}}>{row.symbol}</td><td style={{padding:'12px 14px'}}><PriceSparkline symbol={row.symbol} history={priceSparklines[String(row.symbol||'').toUpperCase()]} /></td><td style={{padding:'12px 14px'}}><Pill text={row.trend} color={trendColor(row.trend)}/>{row.trend_flip&&<span style={{marginLeft:6,color:C.cyan,fontSize:10}}>FLIP</span>}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:12,color:C.cyan}}>{score(row.radar_score)}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:row.breakout?C.lime:C.outline}}>{row.breakout?`${row.breakout_direction} · ${score(row.breakout_score)}`:'—'}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar}}>{score(row.momentum_score)}</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar}}>{Number(row.volume_ratio||0).toFixed(2)}x</td><td style={{padding:'12px 14px',fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:scanStatus==='CANDIDATE'?C.lime:scanStatus==='ERROR'?C.err:scanStatus==='SCANNING'?C.cyan:C.outline}}><div>{scanColumn.label}</div>{scanColumn.timestamp&&<div style={{marginTop:3,fontSize:9,color:C.onVar}}>{String(scanColumn.timestamp).slice(0,16).replace('T',' ')}</div>}</td></tr>;})}</tbody></table></div>
         {!filtered.length&&<div style={{padding:28,color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}>No persisted Radar observations match this view. Use REFRESH RADAR after daily bars are available.</div>}
       </div>
       {selected&&<div style={{...card,display:'flex',flexDirection:'column',gap:15}}>
