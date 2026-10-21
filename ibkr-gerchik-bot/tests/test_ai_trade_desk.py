@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 import time
 import os
 from datetime import datetime, timezone
@@ -188,8 +189,16 @@ def test_review_job_reconciliation_completes_from_authoritative_audit(tmp_path: 
     store = AITradeDeskStore(tmp_path / "decision.db")
     source = {**candidate(), "source_scan_id": "scanner-observation-1", "scan_timestamp": "2026-10-20T00:00:00+00:00"}
     proposal = store.ingest(source, idempotency_key="reconcile:complete", ai_review_status="PENDING")
+    observation = store.observations(proposal["proposal_id"])[0]
     store.publish_ai_review(proposal["proposal_id"], {
-        "source_scan_id": source["source_scan_id"], "symbol": "TEST", "strategy": "LP1",
+        "proposal_id": proposal["proposal_id"], "opportunity_id": proposal["opportunity_id"],
+        "gpt_review_job_id": "review-complete", "parent_market_scan_id": "market-complete",
+        "proposal_origin_source_scan_id": proposal["source_scan_id"],
+        "proposal_origin_source_candidate_id": proposal["source_candidate_id"],
+        "reviewed_observation_id": observation["observation_id"],
+        "reviewed_source_candidate_id": observation["source_candidate_id"],
+        "source_scan_id": observation["source_scan_id"], "symbol": "TEST", "strategy": "LP1",
+        "direction": "LONG", "lifecycle_status": "ENTRY_TRIGGERED",
         "ai_reasoning": "source-backed", "strengths": ["s"], "weaknesses": ["w"],
         "risk_observations": ["r"], "review_result": "HUMAN_REVIEW_REQUIRED", "model_provider": "fixture",
     }, actor="fixture-ai")
@@ -202,7 +211,7 @@ def test_review_job_reconciliation_completes_from_authoritative_audit(tmp_path: 
         con.execute("INSERT INTO ai_trade_desk_scans(scan_id,job_type,status,stage,stage_results_json,result_json,updated_at) VALUES(?,?,?,?,?,?,?)", (parent_id, "FULL_MARKET_SCAN", "COMPLETED", "PROPOSALS", json.dumps(parent_stages), json.dumps(parent_result), "2026-10-20T00:00:00+00:00"))
         con.execute("INSERT INTO ai_trade_desk_scans(scan_id,job_type,parent_scan_id,status,stage,stage_results_json,result_json,updated_at) VALUES(?,?,?,?,?,?,?,?)", (review_id, "GPT_REVIEW", parent_id, "REVIEW_PENDING", "KANBAN_PUBLICATION", json.dumps({"GPT_ANALYSIS": {"status": "REVIEW_PENDING"}, "KANBAN_PUBLICATION": {"status": "PENDING_AI_REVIEW"}}), json.dumps({"status": "REVIEW_PENDING"}), "2026-10-20T00:00:00+00:00"))
     result = manager.reconcile_review_job(review_id, proposal_store=store)
-    assert result["status"] == "COMPLETED"
+    assert result["status"] == "COMPLETED", result["result"]["reconciliation"]
     assert result["result"]["reviewed_count"] == 1
     assert result["result"]["published_count"] == 1
     assert result["stage_results"]["GPT_ANALYSIS"]["status"] == "COMPLETED"
@@ -313,6 +322,62 @@ def test_store_preview_policy_and_ai_review_preserve_source(tmp_path: Path):
     assert len(store.events(proposal["proposal_id"])) == 2
 
 
+def test_later_attached_observation_review_preserves_origin_and_is_idempotent(tmp_path: Path):
+    store = AITradeDeskStore(tmp_path / "decision.db")
+    origin = {**candidate(), "source_scan_id": "observation-origin", "scan_timestamp": "2026-10-20T00:00:00+00:00", "anchor_date": "2026-10-19"}
+    proposal = store.ingest(origin, idempotency_key="origin", ai_review_status="PENDING")
+    later = {**origin, "source_scan_id": "observation-later", "scan_timestamp": "2026-10-21T00:00:00+00:00"}
+    reused = store.ingest(later, idempotency_key="later", ai_review_status="PENDING")
+    assert reused["proposal_id"] == proposal["proposal_id"]
+    reviewed = store.observations(proposal["proposal_id"])[1]
+    review = {
+        "proposal_id": proposal["proposal_id"], "opportunity_id": proposal["opportunity_id"],
+        "gpt_review_job_id": "review-later", "parent_market_scan_id": "market-later",
+        "proposal_origin_source_scan_id": proposal["source_scan_id"],
+        "proposal_origin_source_candidate_id": proposal["source_candidate_id"],
+        "reviewed_observation_id": reviewed["observation_id"],
+        "reviewed_source_candidate_id": reviewed["source_candidate_id"],
+        "source_scan_id": reviewed["source_scan_id"], "symbol": "TEST", "strategy": "LP1",
+        "direction": "LONG", "lifecycle_status": "ENTRY_TRIGGERED",
+        "ai_reasoning": "Reviewed the later persisted observation without changing origin.",
+        "strengths": ["attached observation verified"], "weaknesses": ["entry already triggered"],
+        "risk_observations": ["human approval remains required"],
+        "review_result": "HUMAN_REVIEW_REQUIRED", "model_provider": "fixture",
+    }
+
+    published = store.publish_ai_review(proposal["proposal_id"], review, actor="fixture-ai")
+    repeated = store.publish_ai_review(proposal["proposal_id"], review, actor="fixture-ai")
+
+    assert published["source_scan_id"] == "observation-origin"
+    assert published["ai_review"]["proposal_origin_source_scan_id"] == "observation-origin"
+    assert published["ai_review"]["reviewed_source_scan_id"] == "observation-later"
+    assert repeated["ai_review"] == published["ai_review"]
+    event = store.events(proposal["proposal_id"])[-1]
+    assert event["event_type"] == "AI_REVIEW_PUBLISHED"
+    assert json.loads(event["details_json"])["reviewed_observation_id"] == reviewed["observation_id"]
+
+
+def test_later_observation_review_rejects_unattached_or_conflicting_identity(tmp_path: Path):
+    store = AITradeDeskStore(tmp_path / "decision.db")
+    first = store.ingest({**candidate(), "source_scan_id": "origin-a", "anchor_date": "2026-10-19"}, idempotency_key="a", ai_review_status="PENDING")
+    second = store.ingest({**candidate(), "symbol": "OTHER", "source_scan_id": "origin-b", "anchor_date": "2026-10-19"}, idempotency_key="b", ai_review_status="PENDING")
+    foreign_observation = store.observations(second["proposal_id"])[0]
+    review = {
+        "proposal_id": first["proposal_id"], "opportunity_id": first["opportunity_id"],
+        "gpt_review_job_id": "review", "parent_market_scan_id": "market",
+        "proposal_origin_source_scan_id": first["source_scan_id"],
+        "reviewed_observation_id": foreign_observation["observation_id"],
+        "reviewed_source_candidate_id": foreign_observation["source_candidate_id"],
+        "source_scan_id": foreign_observation["source_scan_id"], "symbol": "TEST", "strategy": "LP1",
+        "direction": "LONG", "lifecycle_status": "ENTRY_TRIGGERED",
+        "ai_reasoning": "fixture", "strengths": ["fixture"], "weaknesses": ["fixture"],
+        "risk_observations": ["fixture"], "review_result": "HUMAN_REVIEW_REQUIRED", "model_provider": "fixture",
+    }
+
+    with pytest.raises(ValueError, match="not attached"):
+        store.publish_ai_review(first["proposal_id"], review, actor="fixture-ai")
+
+
 def test_isolated_authenticated_fixture_review_import_is_idempotent(tmp_path: Path):
     from dashboard_react import server
     from src.decision.ai_trade_desk_scan import _register_dashboard_routes
@@ -334,9 +399,6 @@ def test_isolated_authenticated_fixture_review_import_is_idempotent(tmp_path: Pa
     proposal = store.ingest(fixture, idempotency_key="fixture:phase2f", ai_review_status="PENDING")
     review = {
         "proposal_id": proposal["proposal_id"],
-        "source_scan_id": proposal["source_scan_id"],
-        "symbol": proposal["symbol"],
-        "strategy": proposal["strategy"],
         "ai_reasoning": "Fixture-only review generated from the exact source fields; no live signal.",
         "strengths": ["source identity matches", "direction-aware levels are internally consistent"],
         "weaknesses": ["fixture is not a production scan", "no live market freshness claim"],
@@ -349,11 +411,28 @@ def test_isolated_authenticated_fixture_review_import_is_idempotent(tmp_path: Pa
     try:
         server._AI_TRADE_DESK_STORE = store
         server._AI_TRADE_DESK_SCAN_JOBS = type("FixtureJobs", (), {
-            "status": lambda self, _scan_id: {"status": "REVIEW_PENDING"},
+            "status": lambda self, scan_id: (
+                {"scan_id": "fixture-review", "job_type": "GPT_REVIEW", "status": "REVIEW_PENDING", "parent_scan_id": "fixture-market"}
+                if scan_id == "fixture-review" else
+                {"scan_id": "fixture-market", "job_type": "FULL_MARKET_SCAN", "status": "COMPLETED",
+                 "stage_results": {"PROPOSALS": {"proposal_ids": [proposal["proposal_id"]]}},
+                 "result": {"result": {"active": [{"symbol": fixture["symbol"], "scanner": fixture}]}}}
+            ),
             "reconcile_review_job": lambda self, _scan_id, proposal_store: {"status": "REVIEW_PARTIAL"},
         })()
         with patch.dict(os.environ, {"AI_TRADE_DESK_AI_TOKEN": "fixture-only-token"}, clear=False):
             client = TestClient(server.app)
+            payload = client.get(
+                "/api/ai-trade-desk/scans/fixture-review/review-payload",
+                headers={"X-AI-Trade-Desk-Role": "human", "X-AI-Trade-Desk-Actor": "fixture-human"},
+            )
+            assert payload.status_code == 200
+            source_identity = payload.json()["candidates"][0]
+            review.update({key: source_identity[key] for key in (
+                "source_scan_id", "gpt_review_job_id", "parent_market_scan_id", "opportunity_id",
+                "proposal_origin_source_scan_id", "reviewed_observation_id", "reviewed_source_candidate_id",
+                "symbol", "strategy", "direction", "lifecycle_status",
+            )})
             response = client.post(
                 "/api/ai-trade-desk/scans/fixture-review/review-import",
                 headers={"X-AI-Trade-Desk-Role": "ai", "X-AI-Trade-Desk-Actor": "fixture-codex", "X-AI-Trade-Desk-Token": "fixture-only-token"},

@@ -1,0 +1,197 @@
+- generic [ref=f1e3]:
+  - complementary [ref=f1e4]:
+    - generic [ref=f1e5]: candlestick_chart
+    - generic [ref=f1e9]:
+      - generic "Dashboard" [ref=f1e10] [cursor=pointer]: space_dashboard
+      - generic "Watchlist" [ref=f1e12] [cursor=pointer]: visibility
+      - generic "Pre-Open" [ref=f1e14] [cursor=pointer]: wb_twilight
+      - generic "Screener Stocks" [ref=f1e16] [cursor=pointer]: radar
+      - generic "Trend Radar" [ref=f1e18] [cursor=pointer]: radar
+      - generic "AI Trade Desk" [ref=f1e20] [cursor=pointer]: auto_awesome
+      - generic "Screener Crypto" [ref=f1e22] [cursor=pointer]: track_changes
+      - generic "Inefficiency Reclaim" [ref=f1e24] [cursor=pointer]: deployed_code
+      - generic "Intraday" [ref=f1e26] [cursor=pointer]: monitoring
+      - generic "Strategy Stocks" [ref=f1e28] [cursor=pointer]: insights
+      - generic "Strategy Crypto" [ref=f1e30] [cursor=pointer]: currency_bitcoin
+      - generic "Crypto" [ref=f1e32] [cursor=pointer]: currency_bitcoin
+      - generic "Orders Journal" [ref=f1e34] [cursor=pointer]: receipt_long
+      - generic "Forex" [ref=f1e36] [cursor=pointer]: currency_exchange
+      - generic "Trades & Positions" [ref=f1e38] [cursor=pointer]: swap_horiz
+      - generic "Forecast" [ref=f1e40] [cursor=pointer]: calculate
+      - generic "Reports" [ref=f1e42] [cursor=pointer]: description
+      - generic "Decision Lab" [ref=f1e44] [cursor=pointer]: psychology
+    - button "Switch to light theme" [ref=f1e46] [cursor=pointer]:
+      - generic [ref=f1e47]: light_mode
+    - button "keyboard_double_arrow_right" [ref=f1e49] [cursor=pointer]
+    - button "Logout and stop dashboard services" [ref=f1e52] [cursor=pointer]:
+      - generic [ref=f1e53]: logout
+  - main [ref=f1e54]:
+    - generic [ref=f1e55]:
+      - generic [ref=f1e56]:
+        - generic [ref=f1e57]: OPERATIONS DESK
+        - generic [ref=f1e58]: /
+        - generic [ref=f1e59]: AI Trade Desk
+      - generic [ref=f1e60]:
+        - generic [ref=f1e61]: SYNCED 08:23:52 ET
+        - generic [ref=f1e64]: PAPER · READ-ONLY
+        - generic [ref=f1e65]:
+          - generic [ref=f1e66]: schedule
+          - generic [ref=f1e67]: Market PRE-MARKET
+        - button "cloud_download FETCH CANDLES" [ref=f1e68] [cursor=pointer]:
+          - generic [ref=f1e69]: cloud_download
+          - text: FETCH CANDLES
+        - button "refresh REFRESH" [ref=f1e70] [cursor=pointer]:
+          - generic [ref=f1e71]: refresh
+          - text: REFRESH
+        - button "restart_alt HARD RESET" [ref=f1e72] [cursor=pointer]:
+          - generic [ref=f1e73]: restart_alt
+          - text: HARD RESET
+    - generic [ref=f1e75]:
+      - generic [ref=f1e77]:
+        - heading "AI Trade Desk" [level=1] [ref=f1e802]
+        - paragraph [ref=f1e79]: Candidate review · deterministic risk · human approval only
+      - generic [ref=f1e803]:
+        - generic [ref=f1e804]:
+          - generic [ref=f1e805]:
+            - generic [ref=f1e806]: AI TRADE DESK
+            - heading "Candidate management" [level=1] [ref=f1e807]
+            - generic [ref=f1e808]: AI may propose and explain. Only a human can change state or approve.
+          - generic [ref=f1e809]:
+            - textbox "Filter symbol, strategy, status" [ref=f1e810]
+            - button "SHOW HISTORICAL" [ref=f1e811] [cursor=pointer]
+            - button "↻ IMPORT PERSISTED" [ref=f1e812] [cursor=pointer]
+            - button "RUN FULL MARKET SCAN" [ref=f1e813] [cursor=pointer]
+            - button "RUN GPT CANDIDATE REVIEW" [ref=f1e814] [cursor=pointer]
+            - button "RUN FULL AI SCAN" [ref=f1e815] [cursor=pointer]
+        - generic [ref=f1e816]:
+          - generic [ref=f1e817]: SCAN PROGRESS & HISTORY
+          - generic [ref=f1e818]: "Latest: GPT_REVIEW · COMPLETED · aitd-scan-29e1f8cc72e448599f30fc13c539e660"
+          - generic [ref=f1e819]:
+            - generic [ref=f1e820]: GPT ANALYSIS
+            - generic [ref=f1e821]: COMPLETED · 2
+          - generic [ref=f1e822]:
+            - generic [ref=f1e823]: KANBAN PUBLICATION
+            - generic [ref=f1e824]: COMPLETED · —
+        - generic [ref=f1e826]:
+          - generic [ref=f1e827]:
+            - generic [ref=f1e828]:
+              - generic [ref=f1e829]: DISCOVERED
+              - generic [ref=f1e830]: "2"
+            - generic [ref=f1e831]: Authoritative scanner candidates
+            - button "ISRG LONG PRB1 LIMIT proposal; open signal chart" [ref=f1e832] [cursor=pointer]:
+              - generic [ref=f1e833]:
+                - generic [ref=f1e834]:
+                  - generic [ref=f1e835]:
+                    - strong [ref=f1e836]: ISRG
+                    - generic [ref=f1e837]: OPEN CHART ↗
+                  - generic [ref=f1e838]:
+                    - generic [ref=f1e839]: LONG
+                    - generic [ref=f1e840]: PRB1
+                    - generic [ref=f1e841]: LIMIT
+                - generic [ref=f1e842]: DISCOVERED
+              - generic [ref=f1e843]:
+                - generic [ref=f1e844]: SCANNER · CANDIDATE
+                - generic [ref=f1e845]: AI · COMPLETED
+              - generic [ref=f1e846]: PROPOSAL · aitd-48e35a931fe2493da5534a2341adbbe0 · REV 0
+              - generic [ref=f1e847]:
+                - generic [ref=f1e848]:
+                  - generic [ref=f1e849]: Entry
+                  - generic [ref=f1e850]: "435.37"
+                - generic [ref=f1e851]:
+                  - generic [ref=f1e852]: Stop
+                  - generic [ref=f1e853]: "427.36"
+                - generic [ref=f1e854]:
+                  - generic [ref=f1e855]: Target
+                  - generic [ref=f1e856]: "451.41"
+              - generic [ref=f1e857]:
+                - generic [ref=f1e858]:
+                  - generic [ref=f1e859]: R:R
+                  - generic [ref=f1e860]: "2.00"
+                - generic [ref=f1e861]:
+                  - generic [ref=f1e862]: Quantity
+                  - generic [ref=f1e863]: "16"
+                - generic [ref=f1e864]:
+                  - generic [ref=f1e865]: Cash allocation
+                  - generic [ref=f1e866]: $26993.23
+                - generic [ref=f1e867]:
+                  - generic [ref=f1e868]: Max risk
+                  - generic [ref=f1e869]: 0.50%
+                - generic [ref=f1e870]:
+                  - generic [ref=f1e871]: Potential loss
+                  - generic [ref=f1e872]: "-$128.27"
+                - generic [ref=f1e873]:
+                  - generic [ref=f1e874]: Potential profit
+                  - generic [ref=f1e875]: +$256.54
+                - generic [ref=f1e876]:
+                  - generic [ref=f1e877]: Notional exposure
+                  - generic [ref=f1e878]: $6966.00
+              - generic [ref=f1e879]:
+                - generic [ref=f1e880]: ⚠ ENTRY TRIGGERED
+                - generic [ref=f1e881]: ⚠ SPREAD DATA
+                - generic [ref=f1e882]: ⚠ CORPORATE ACTIONS
+            - button "AIG LONG PRB2 LIMIT proposal; open signal chart" [ref=f1e883] [cursor=pointer]:
+              - generic [ref=f1e884]:
+                - generic [ref=f1e885]:
+                  - generic [ref=f1e886]:
+                    - strong [ref=f1e887]: AIG
+                    - generic [ref=f1e888]: OPEN CHART ↗
+                  - generic [ref=f1e889]:
+                    - generic [ref=f1e890]: LONG
+                    - generic [ref=f1e891]: PRB2
+                    - generic [ref=f1e892]: LIMIT
+                - generic [ref=f1e893]: DISCOVERED
+              - generic [ref=f1e894]:
+                - generic [ref=f1e895]: SCANNER · CANDIDATE
+                - generic [ref=f1e896]: AI · COMPLETED
+              - generic [ref=f1e897]: PROPOSAL · aitd-dadc0e2d9e994a57a54f454c84a14339 · REV 0
+              - generic [ref=f1e898]:
+                - generic [ref=f1e899]:
+                  - generic [ref=f1e900]: Entry
+                  - generic [ref=f1e901]: "81.08"
+                - generic [ref=f1e902]:
+                  - generic [ref=f1e903]: Stop
+                  - generic [ref=f1e904]: "79.92"
+                - generic [ref=f1e905]:
+                  - generic [ref=f1e906]: Target
+                  - generic [ref=f1e907]: "83.40"
+              - generic [ref=f1e908]:
+                - generic [ref=f1e909]:
+                  - generic [ref=f1e910]: R:R
+                  - generic [ref=f1e911]: "2.00"
+                - generic [ref=f1e912]:
+                  - generic [ref=f1e913]: Quantity
+                  - generic [ref=f1e914]: "147"
+                - generic [ref=f1e915]:
+                  - generic [ref=f1e916]: Cash allocation
+                  - generic [ref=f1e917]: $34377.92
+                - generic [ref=f1e918]:
+                  - generic [ref=f1e919]: Max risk
+                  - generic [ref=f1e920]: 0.50%
+                - generic [ref=f1e921]:
+                  - generic [ref=f1e922]: Potential loss
+                  - generic [ref=f1e923]: "-$170.87"
+                - generic [ref=f1e924]:
+                  - generic [ref=f1e925]: Potential profit
+                  - generic [ref=f1e926]: +$341.75
+                - generic [ref=f1e927]:
+                  - generic [ref=f1e928]: Notional exposure
+                  - generic [ref=f1e929]: $11918.76
+              - generic [ref=f1e930]:
+                - generic [ref=f1e931]: ⚠ ENTRY TRIGGERED
+                - generic [ref=f1e932]: ⚠ SPREAD DATA
+                - generic [ref=f1e933]: ⚠ CORPORATE ACTIONS
+          - generic [ref=f1e934]:
+            - generic [ref=f1e935]:
+              - generic [ref=f1e936]: UNDER REVIEW
+              - generic [ref=f1e937]: "0"
+            - generic [ref=f1e938]: Human validation in progress
+          - generic [ref=f1e939]:
+            - generic [ref=f1e940]:
+              - generic [ref=f1e941]: READY
+              - generic [ref=f1e942]: "0"
+            - generic [ref=f1e943]: Eligible for human approval
+          - generic [ref=f1e944]:
+            - generic [ref=f1e945]:
+              - generic [ref=f1e946]: INVALIDATED
+              - generic [ref=f1e947]: "0"
+            - generic [ref=f1e948]: Closed or no longer eligible

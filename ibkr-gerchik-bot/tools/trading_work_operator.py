@@ -40,6 +40,14 @@ ANALYTICS_RECOVERY_KEYS = ("dashboard", "strategy_scanner_mcp", "market_data")
 REQUIRED_REVIEW_FIELDS = (
     "proposal_id",
     "source_scan_id",
+    "gpt_review_job_id",
+    "parent_market_scan_id",
+    "opportunity_id",
+    "proposal_origin_source_scan_id",
+    "reviewed_observation_id",
+    "reviewed_source_candidate_id",
+    "direction",
+    "lifecycle_status",
     "symbol",
     "strategy",
     "ai_reasoning",
@@ -677,6 +685,16 @@ class TradingWorkOperator:
                     f"proposal_id={proposal_id}; missing source_scan_id; "
                     "authoritative recovery is required before review publication"
                 )
+            # Older signed review files contain reasoning plus the reviewed source
+            # scan. Complete the new envelope only from this exact server payload;
+            # supplied identity values still have to match below.
+            for field in (
+                "gpt_review_job_id", "parent_market_scan_id", "opportunity_id",
+                "proposal_origin_source_scan_id", "reviewed_observation_id",
+                "reviewed_source_candidate_id", "direction", "lifecycle_status",
+            ):
+                if item.get(field) in (None, "") and proposal and proposal.get(field) not in (None, ""):
+                    item[field] = proposal[field]
             missing = [field for field in REQUIRED_REVIEW_FIELDS if item.get(field) in (None, "")]
             if missing:
                 raise OperatorError("Review is missing required fields: " + ", ".join(missing))
@@ -686,7 +704,11 @@ class TradingWorkOperator:
             proposal = by_proposal_id.get(str(item["proposal_id"]))
             if proposal is None:
                 raise OperatorError("Review proposal_id is not an exact persisted candidate from this payload")
-            for field in ("source_scan_id", "symbol", "strategy"):
+            for field in (
+                "source_scan_id", "gpt_review_job_id", "parent_market_scan_id", "opportunity_id",
+                "proposal_origin_source_scan_id", "reviewed_observation_id", "reviewed_source_candidate_id",
+                "symbol", "strategy", "direction", "lifecycle_status",
+            ):
                 if str(item[field]).upper() != str(proposal.get(field) or "").upper():
                     raise OperatorError(f"Review {field} does not match its authoritative candidate")
             validated.append(item)

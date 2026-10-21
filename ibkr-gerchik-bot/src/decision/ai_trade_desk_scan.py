@@ -111,8 +111,6 @@ class AITradeDeskScanManager:
 
     def reconcile_review_job(self, scan_id: str, *, proposal_store: Any) -> dict[str, Any]:
         """Recompute a GPT review aggregate from persisted, source-backed evidence."""
-        from src.decision.ai_trade_desk import candidate_identity
-
         job = self._get(scan_id)
         if job is None:
             raise KeyError("review_job_not_found")
@@ -122,16 +120,14 @@ class AITradeDeskScanManager:
         parent = self._get(parent_id) if parent_id else None
         if parent is None:
             raise ValueError("parent_market_scan_not_found")
-        parent_result = parent.get("result") if isinstance(parent.get("result"), Mapping) else {}
-        source = parent_result.get("result") if isinstance(parent_result.get("result"), Mapping) else parent_result
-        candidates = _candidate_rows(source)
         proposal_stage = (parent.get("stage_results") or {}).get("PROPOSALS") or {}
         expected_ids = [str(item) for item in proposal_stage.get("proposal_ids") or [] if str(item).strip()]
-        by_identity = {candidate_identity(item): item for item in candidates}
+        checkpoint = _review_checkpoint(scan_id, job, parent, include_completed=True, proposal_store=proposal_store)
+        by_proposal_id = {str(item.get("proposal_id") or ""): item for item in checkpoint if item.get("proposal_id")}
         evidence: list[dict[str, Any]] = []
         for proposal_id in expected_ids:
             proposal = proposal_store.get(proposal_id)
-            candidate = by_identity.get(str(proposal.get("source_candidate_id") or "")) if proposal else None
+            candidate = by_proposal_id.get(proposal_id)
             reasons: list[str] = []
             if proposal is None:
                 reasons.append("PROPOSAL_NOT_FOUND")
@@ -140,7 +136,6 @@ class AITradeDeskScanManager:
             else:
                 candidate_direction = str(candidate.get("side") or candidate.get("direction") or "").upper()
                 for field, left, right in (
-                    ("source_scan_id", proposal.get("source_scan_id"), candidate.get("source_scan_id")),
                     ("symbol", proposal.get("symbol"), candidate.get("symbol")),
                     ("strategy", proposal.get("strategy"), candidate.get("strategy")),
                     ("direction", proposal.get("direction"), candidate_direction),
@@ -156,16 +151,18 @@ class AITradeDeskScanManager:
                 reasons.append("AI_REVIEW_PUBLISHED_AUDIT_MISMATCH")
             if not isinstance(review, Mapping):
                 reasons.append("AI_REVIEW_PAYLOAD_MISSING")
-            else:
-                for field in ("source_scan_id", "symbol", "strategy"):
-                    if str(review.get(field) or "").upper() != str(proposal.get(field) or "").upper():
+            elif candidate is not None:
+                for field in ("proposal_id", "opportunity_id", "proposal_origin_source_scan_id", "reviewed_observation_id", "reviewed_source_candidate_id"):
+                    if str(review.get(field) or "") != str(candidate.get(field) or ""):
                         reasons.append(f"REVIEW_{field.upper()}_MISMATCH")
+                if str(review.get("reviewed_source_scan_id") or "") != str(candidate.get("reviewed_source_scan_id") or ""):
+                    reasons.append("REVIEW_REVIEWED_SOURCE_SCAN_ID_MISMATCH")
             evidence.append({"proposal_id": proposal_id, "published": not reasons, "reasons": reasons})
 
         expected_count = len(expected_ids)
         reviewed_count = sum(1 for item in evidence if item["published"])
         complete = expected_count == reviewed_count
-        if expected_count == 0 and not candidates:
+        if expected_count == 0 and not checkpoint:
             status = "SKIPPED_NO_CANDIDATES"
         elif complete:
             status = "COMPLETED"
@@ -239,17 +236,19 @@ def _candidate_rows(result: Mapping[str, Any]) -> list[dict[str, Any]]:
     return rows
 
 
-def _reviewable_candidates(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def _reviewable_candidates(candidates: list[dict[str, Any]], *, proposal_store: Any | None = None) -> list[dict[str, Any]]:
     """Attach only exact, persisted proposal identities to review candidates."""
     from dashboard_react import server
     from src.decision.ai_trade_desk import candidate_identity, opportunity_identity
 
-    proposals = server._ai_trade_desk_store().list()
+    proposal_store = proposal_store or server._ai_trade_desk_store()
+    proposals = proposal_store.list()
     by_candidate = {str(proposal.get("source_candidate_id") or ""): proposal for proposal in proposals}
     by_opportunity = {str(proposal.get("opportunity_id") or ""): proposal for proposal in proposals if proposal.get("opportunity_id")}
     reviewable: list[dict[str, Any]] = []
     for candidate in candidates:
         item = dict(candidate)
+        item["direction"] = str(candidate.get("side") or candidate.get("direction") or "").upper()
         candidate_id = candidate_identity(candidate)
         try:
             candidate_opportunity_id = opportunity_identity(candidate)
@@ -261,6 +260,20 @@ def _reviewable_candidates(candidates: list[dict[str, Any]]) -> list[dict[str, A
             item["proposal_status"] = proposal["status"]
             item["ai_review_status"] = proposal["ai_review_status"]
             item["opportunity_id"] = proposal.get("opportunity_id")
+            item["proposal_origin_source_scan_id"] = proposal.get("source_scan_id")
+            item["proposal_origin_source_candidate_id"] = proposal.get("source_candidate_id")
+            item["reviewed_source_candidate_id"] = candidate_id
+            observation = next(
+                (
+                    row for row in proposal_store.observations(str(proposal["proposal_id"]))
+                    if str(row.get("opportunity_id") or "") == str(proposal.get("opportunity_id") or "")
+                    and str(row.get("source_scan_id") or "") == str(candidate.get("source_scan_id") or "")
+                    and str(row.get("source_candidate_id") or "") == candidate_id
+                ),
+                None,
+            )
+            item["reviewed_observation_id"] = observation.get("observation_id") if observation else None
+            item["reviewed_source_scan_id"] = observation.get("source_scan_id") if observation else None
             source = proposal.get("source") if isinstance(proposal.get("source"), Mapping) else {}
             material_fields = ("symbol", "strategy", "side", "level_type", "level", "planned_entry", "entry", "stop", "target")
             changed = any(str(candidate.get(field, "")) != str(source.get(field, proposal.get(field, ""))) for field in material_fields)
@@ -273,6 +286,29 @@ def _reviewable_candidates(candidates: list[dict[str, Any]]) -> list[dict[str, A
             item["review_classification"] = "NEW_OPPORTUNITY" if candidate_opportunity_id else "HISTORICAL_OR_TERMINAL"
         reviewable.append(item)
     return reviewable
+
+
+def _review_checkpoint(
+    scan_id: str,
+    review_job: Mapping[str, Any],
+    parent: Mapping[str, Any],
+    *,
+    include_completed: bool = False,
+    proposal_store: Any | None = None,
+) -> list[dict[str, Any]]:
+    """Build the exact persisted parent-scan candidates eligible for this review."""
+    parent_result = parent.get("result") if isinstance(parent.get("result"), Mapping) else {}
+    source = parent_result.get("result") if isinstance(parent_result.get("result"), Mapping) else parent_result
+    candidates = _reviewable_candidates(_candidate_rows(source), proposal_store=proposal_store)
+    if not include_completed:
+        candidates = [
+            item for item in candidates
+            if item.get("review_classification") in {"NEW_OPPORTUNITY", "UPDATED_OPPORTUNITY"}
+        ]
+    for candidate in candidates:
+        candidate["gpt_review_job_id"] = scan_id
+        candidate["parent_market_scan_id"] = str(review_job.get("parent_scan_id") or "")
+    return candidates
 
 
 def _run_market_stages(scan_id: str, stage: Callable[[str, Mapping[str, Any]], None], cancelled: Callable[[], bool]) -> dict[str, Any]:
@@ -328,11 +364,7 @@ def _run_ai_trade_desk_pipeline(scan_id: str, stage: Callable[[str, Mapping[str,
     parent_id = str(job.get("parent_scan_id") or scan_id)
     parent = server._ai_trade_desk_scan_jobs().status(parent_id) or {}
     result = parent.get("result") if isinstance(parent.get("result"), Mapping) else {}
-    candidates = _candidate_rows(result.get("result") if isinstance(result.get("result"), Mapping) else result)
-    review_candidates = [
-        item for item in _reviewable_candidates(candidates)
-        if item.get("review_classification") in {"NEW_OPPORTUNITY", "UPDATED_OPPORTUNITY"}
-    ]
+    review_candidates = _review_checkpoint(scan_id, job, parent)
     if not review_candidates:
         stage("GPT_ANALYSIS", {"status": "SKIPPED_NO_CANDIDATES", "candidate_count": 0, "reviewed_count": 0, "reason_code": "NO_ELIGIBLE_CANDIDATES", "review_payload_available": False})
         stage("KANBAN_PUBLICATION", {"status": "SKIPPED_NO_CANDIDATES", "published_count": 0, "reason_code": "NO_ELIGIBLE_CANDIDATES"})
@@ -405,15 +437,12 @@ def _register_dashboard_routes() -> None:
         item = status(scan_id)
         result = item.get("result") if isinstance(item.get("result"), Mapping) else {}
         parent = server._ai_trade_desk_scan_jobs().status(str(item.get("parent_scan_id") or scan_id)) or item
-        parent_result = parent.get("result") if isinstance(parent.get("result"), Mapping) else {}
-        source = parent_result.get("result") if isinstance(parent_result.get("result"), Mapping) else parent_result
-        candidates = [
-            item for item in _reviewable_candidates(_candidate_rows(source))
-            if item.get("review_classification") in {"NEW_OPPORTUNITY", "UPDATED_OPPORTUNITY"}
-        ]
+        candidates = _review_checkpoint(scan_id, item, parent)
         review_status = "SKIPPED_NO_CANDIDATES" if item.get("status") == "SKIPPED_NO_CANDIDATES" else "AI_REVIEW_PENDING"
         return {
             "scan_id": scan_id,
+            "gpt_review_job_id": scan_id,
+            "parent_market_scan_id": str(item.get("parent_scan_id") or ""),
             "review_status": review_status,
             "candidates": candidates,
             "reviewable_count": sum(1 for candidate in candidates if candidate.get("proposal_id")),
@@ -430,11 +459,33 @@ def _register_dashboard_routes() -> None:
         if item.get("status") == "SKIPPED_NO_CANDIDATES" and not reviews:
             return {"scan_id": scan_id, "status": "SKIPPED_NO_CANDIDATES", "reviewed_count": 0, "published_count": 0, "count": 0, "orders_submitted": 0, "execution_intents_created": 0}
         actor = server._ai_trade_desk_role(request, "ai")
+        parent = server._ai_trade_desk_scan_jobs().status(str(item.get("parent_scan_id") or ""))
+        if parent is None:
+            raise HTTPException(422, "parent_market_scan_not_found")
+        checkpoint = {
+            str(candidate.get("proposal_id") or ""): candidate
+            for candidate in _review_checkpoint(scan_id, item, parent, include_completed=True)
+            if candidate.get("proposal_id")
+        }
         published = []
         for review_item in reviews:
             proposal_id = str(review_item.get("proposal_id") or "")
             if not proposal_id:
                 raise HTTPException(422, "proposal_id is required")
+            expected = checkpoint.get(proposal_id)
+            if expected is None:
+                raise HTTPException(422, "review proposal is not an exact reviewable parent-scan checkpoint candidate")
+            for field in (
+                "gpt_review_job_id", "parent_market_scan_id", "opportunity_id",
+                "proposal_origin_source_scan_id", "reviewed_observation_id",
+                "reviewed_source_candidate_id", "source_scan_id", "symbol", "strategy",
+            ):
+                if str(review_item.get(field) or "").upper() != str(expected.get(field) or "").upper():
+                    raise HTTPException(422, f"review {field} does not match authoritative parent-scan checkpoint")
+            if str(review_item.get("direction") or review_item.get("side") or "").upper() != str(expected.get("side") or expected.get("direction") or "").upper():
+                raise HTTPException(422, "review direction does not match authoritative parent-scan checkpoint")
+            if str(review_item.get("lifecycle_status") or "").upper() != str(expected.get("lifecycle_status") or "").upper():
+                raise HTTPException(422, "review lifecycle_status does not match authoritative parent-scan checkpoint")
             try:
                 published.append(server._ai_trade_desk_store().publish_ai_review(proposal_id, review_item, actor=actor))
             except (KeyError, ValueError) as exc:

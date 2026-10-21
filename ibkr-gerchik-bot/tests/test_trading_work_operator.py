@@ -12,9 +12,17 @@ def _candidate(proposal_id: str = "aitd-fixture") -> dict:
     return {
         "proposal_id": proposal_id,
         "source_scan_id": "fixture:market:1",
+        "gpt_review_job_id": "fixture-review",
+        "parent_market_scan_id": "fixture-market",
+        "opportunity_id": "opportunity-fixture",
+        "proposal_origin_source_scan_id": "fixture:market:0",
+        "reviewed_observation_id": "observation-fixture",
+        "reviewed_source_candidate_id": "candidate-fixture",
         "symbol": "FIXTURE_ONLY",
         "strategy": "PRB1",
         "side": "LONG",
+        "direction": "LONG",
+        "lifecycle_status": "ENTRY_TRIGGERED",
         "entry": 81.08,
         "stop": 79.92,
         "target": 84.27,
@@ -29,8 +37,16 @@ def _review(proposal_id: str = "aitd-fixture") -> dict:
     return {
         "proposal_id": proposal_id,
         "source_scan_id": "fixture:market:1",
+        "gpt_review_job_id": "fixture-review",
+        "parent_market_scan_id": "fixture-market",
+        "opportunity_id": "opportunity-fixture",
+        "proposal_origin_source_scan_id": "fixture:market:0",
+        "reviewed_observation_id": "observation-fixture",
+        "reviewed_source_candidate_id": "candidate-fixture",
         "symbol": "FIXTURE_ONLY",
         "strategy": "PRB1",
+        "direction": "LONG",
+        "lifecycle_status": "ENTRY_TRIGGERED",
         "ai_reasoning": "Fixture-only reasoning; no live market claim.",
         "strengths": ["source identity matches"],
         "weaknesses": ["fixture data only"],
@@ -404,6 +420,24 @@ def test_validate_reviews_requires_exact_persisted_source_identity():
         operator.validate_reviews(payload, [bad])
 
 
+def test_validate_reviews_enriches_legacy_reasoning_only_with_payload_identity():
+    operator = TradingWorkOperator(requester=lambda *_args, **_kwargs: {})
+    payload = {"review_status": "AI_REVIEW_PENDING", "candidates": [_candidate()]}
+    legacy = _review()
+    for field in (
+        "gpt_review_job_id", "parent_market_scan_id", "opportunity_id",
+        "proposal_origin_source_scan_id", "reviewed_observation_id",
+        "reviewed_source_candidate_id", "direction", "lifecycle_status",
+    ):
+        legacy.pop(field)
+
+    validated = operator.validate_reviews(payload, [legacy])[0]
+
+    assert validated["source_scan_id"] == "fixture:market:1"
+    assert validated["reviewed_observation_id"] == "observation-fixture"
+    assert validated["proposal_origin_source_scan_id"] == "fixture:market:0"
+
+
 def test_validate_reviews_reports_unverified_source_provenance():
     operator = TradingWorkOperator(requester=lambda *_args, **_kwargs: {})
     payload = {"review_status": "AI_REVIEW_PENDING", "candidates": [{**_candidate(), "source_scan_id": ""}]}
@@ -477,7 +511,14 @@ def test_isolated_operator_round_trip_uses_real_trade_desk_routes(tmp_path):
         operator = TradingWorkOperator(requester=requester)
         with patch("tools.trading_work_operator._configured_ai_token", return_value="fixture-token"), patch.dict("os.environ", {"AI_TRADE_DESK_AI_TOKEN": "fixture-token"}, clear=False):
             payload = operator.review_payload("fixture-review")
-            review = _review(proposal["proposal_id"])
+            review = {
+                **_review(proposal["proposal_id"]),
+                **{key: payload["candidates"][0][key] for key in (
+                    "source_scan_id", "gpt_review_job_id", "parent_market_scan_id", "opportunity_id",
+                    "proposal_origin_source_scan_id", "reviewed_observation_id", "reviewed_source_candidate_id",
+                    "symbol", "strategy", "direction", "lifecycle_status",
+                )},
+            }
             result = operator.publish_reviews("fixture-review", payload, [review])
     finally:
         server._AI_TRADE_DESK_STORE, server._AI_TRADE_DESK_SCAN_JOBS = old_store, old_jobs

@@ -162,8 +162,8 @@
     "semantic_hash": "a47f92efff8d7a388062745b50785c68"
   },
   "memory/order_requests.json": {
-    "mtime": 1792554015.6242247,
-    "seen": 1792554019.2109995,
+    "mtime": 1792555139.2361786,
+    "seen": 1792584801.6882362,
     "ast_hash": "651fd151e0484a832f99765a874bd2e2",
     "semantic_hash": ""
   },
@@ -4746,15 +4746,15 @@
     "semantic_hash": ""
   },
   "src/decision/ai_trade_desk.py": {
-    "mtime": 1792553954.1216297,
-    "seen": 1792554019.22075,
-    "ast_hash": "e39c3f518547ff78463203592cfd4a2c",
+    "mtime": 1792584408.295057,
+    "seen": 1792584801.7008178,
+    "ast_hash": "b20c6cfcd2006dec428ba38929c0245b",
     "semantic_hash": ""
   },
   "tests/test_ai_trade_desk.py": {
-    "mtime": 1792553954.1227665,
-    "seen": 1792554019.2445502,
-    "ast_hash": "248eb4f0e3cbfc8b304087a146138a9e",
+    "mtime": 1792584795.3571203,
+    "seen": 1792584801.7276323,
+    "ast_hash": "f3aa3f0fb6a8bb31a2a065491e09fb6e",
     "semantic_hash": ""
   },
   "docs/chatgpt-integration-audit/07-AI-TRADE-DESK.md": {
@@ -4770,21 +4770,21 @@
     "semantic_hash": ""
   },
   "src/decision/ai_trade_desk_scan.py": {
-    "mtime": 1792553594.5315924,
-    "seen": 1792553676.7193,
-    "ast_hash": "c6cc22d08bef3f620b4bb82a67ecabff",
+    "mtime": 1792584681.5859537,
+    "seen": 1792584801.7008226,
+    "ast_hash": "313548c52d053fffb2f75ff4b260f6df",
     "semantic_hash": ""
   },
   "tests/test_trading_work_operator.py": {
-    "mtime": 1792553581.6532495,
-    "seen": 1792553676.761829,
-    "ast_hash": "43f96399f89a8af6c518b2781ec93abb",
+    "mtime": 1792584908.735911,
+    "seen": 1792584977.8497503,
+    "ast_hash": "b9caaedd9e837bfe1110109e9ea38e08",
     "semantic_hash": ""
   },
   "tools/trading_work_operator.py": {
-    "mtime": 1792552415.0249996,
-    "seen": 1792552543.0308666,
-    "ast_hash": "ea6b3e9e44fdf523164eb1f69fe97ac2",
+    "mtime": 1792584900.2429197,
+    "seen": 1792584977.852827,
+    "ast_hash": "342961ab03971cbca92b36acecd9ed87",
     "semantic_hash": ""
   },
   "runtime/phase2j3-preflight.json": {
@@ -4803,6 +4803,84 @@
     "mtime": 1792553278.3094056,
     "seen": 1792553676.6365416,
     "ast_hash": "687937c6f343e0aaae5d5a5a308be66e",
+    "semantic_hash": ""
+  },
+  "ai_trade_desk_reviews_aitd-scan-29e1f8cc72e448599f30fc13c539e660.json": {
+    "mtime": 1792583904.016929,
+    "seen": 1792584801.6086485,
+    "ast_hash": "2ef534164e83fe851ca3994edf9376f7",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-21T03-44-46-822Z.yml": {
+    "mtime": 1792554286.8249795,
+    "seen": 1792584801.769112,
+    "ast_hash": "0642b168e42ac433844ca3539e83bc22",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-21T03-44-52-232Z.yml": {
+    "mtime": 1792554292.2341645,
+    "seen": 1792584801.7691162,
+    "ast_hash": "9a552de985d0ac57987008e34b1966a9",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-21T03-44-57-594Z.yml": {
+    "mtime": 1792554297.5951807,
+    "seen": 1792584801.7691188,
+    "ast_hash": "a4d68e671e91995259c394297d5d5939",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-21T03-45-10-838Z.yml": {
+    "mtime": 1792554310.839853,
+    "seen": 1792584801.7691212,
+    "ast_hash": "1d72b93afe7f4189abd83dca2a8d3d69",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-21T11-52-04-572Z.yml": {
+    "mtime": 1792583524.5741677,
+    "seen": 1792584801.7691233,
+    "ast_hash": "0642b168e42ac433844ca3539e83bc22",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-21T11-52-10-730Z.yml": {
+    "mtime": 1792583530.7328117,
+    "seen": 1792584801.7691264,
+    "ast_hash": "4b32baddf967bf6316bc3363930f1e69",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-21T11-52-22-199Z.yml": {
+    "mtime": 1792583542.2019424,
+    "seen": 1792584801.76913,
+    "ast_hash": "7d65c926f6e6b136f01cffb3b7b818e6",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-21T11-52-33-736Z.yml": {
+    "mtime": 1792583553.7390513,
+    "seen": 1792584801.7691338,
+    "ast_hash": "3e83ee435a8e2d94c802874be9de77fe",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-21T03-45-02-930Z.png": {
+    "mtime": 1792554302.9325056,
+    "seen": 1792584801.798429,
+    "ast_hash": "89c5f1e787a5c799ce1eedef8278dcec",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-21T03-45-12-982Z.png": {
+    "mtime": 1792554312.9844058,
+    "seen": 1792584801.7984324,
+    "ast_hash": "87b3e04e66d3f34547ff8afb759c3b59",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-21T11-52-27-200Z.png": {
+    "mtime": 1792583547.204276,
+    "seen": 1792584801.7984357,
+    "ast_hash": "7dbc0edf47beba8eee63f2edb3afe17b",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-21T11-53-11-933Z.png": {
+    "mtime": 1792583591.935457,
+    "seen": 1792584801.798439,
+    "ast_hash": "6e4f6dacf02e14e75b3131136b2de0c9",
     "semantic_hash": ""
   }
 }

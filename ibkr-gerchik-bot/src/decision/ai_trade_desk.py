@@ -385,6 +385,13 @@ class AITradeDeskStore:
                 result.append(item)
             return result
 
+    def review_observation(self, proposal_id: str, observation_id: str) -> dict[str, Any] | None:
+        """Return an observation only when it remains attached to this proposal."""
+        for observation in self.observations(proposal_id):
+            if str(observation.get("observation_id") or "") == str(observation_id or ""):
+                return observation
+        return None
+
     def update(self, proposal_id: str, changes: Mapping[str, Any], *, actor: str, reason: str = "") -> dict[str, Any]:
         current = self.get(proposal_id)
         if current is None:
@@ -434,8 +441,8 @@ class AITradeDeskStore:
         current = self.get(proposal_id)
         if current is None:
             raise KeyError("proposal_not_found")
-        if str(review.get("source_scan_id") or "") != str(current["source_scan_id"]):
-            raise ValueError("review source_scan_id does not match authoritative proposal")
+        if str(review.get("proposal_id") or proposal_id) != proposal_id:
+            raise ValueError("review proposal_id does not match authoritative proposal")
         if str(review.get("symbol") or "").upper() != str(current["symbol"]).upper():
             raise ValueError("review symbol does not match authoritative proposal")
         if str(review.get("strategy") or "").upper() != str(current["strategy"]).upper():
@@ -445,17 +452,71 @@ class AITradeDeskStore:
         if missing:
             raise ValueError("review missing fields: " + ",".join(missing))
         normalized = dict(review)
+        dual_provenance_keys = (
+            "opportunity_id",
+            "proposal_origin_source_scan_id",
+            "reviewed_observation_id",
+            "reviewed_source_candidate_id",
+        )
+        has_dual_provenance = any(key in normalized for key in dual_provenance_keys)
+        if has_dual_provenance:
+            missing_provenance = [key for key in dual_provenance_keys if not str(normalized.get(key) or "").strip()]
+            if missing_provenance:
+                raise ValueError("review dual provenance missing fields: " + ",".join(missing_provenance))
+            if str(normalized["opportunity_id"]) != str(current.get("opportunity_id") or ""):
+                raise ValueError("review opportunity_id does not match authoritative proposal")
+            if str(normalized["proposal_origin_source_scan_id"]) != str(current["source_scan_id"]):
+                raise ValueError("review proposal origin does not match immutable proposal provenance")
+            origin_candidate_id = normalized.get("proposal_origin_source_candidate_id")
+            if origin_candidate_id not in (None, "") and str(origin_candidate_id) != str(current["source_candidate_id"]):
+                raise ValueError("review proposal origin candidate does not match immutable proposal provenance")
+            observation = self.review_observation(proposal_id, str(normalized["reviewed_observation_id"]))
+            if observation is None:
+                raise ValueError("reviewed observation is not attached to authoritative proposal")
+            if str(observation.get("opportunity_id") or "") != str(current.get("opportunity_id") or ""):
+                raise ValueError("reviewed observation opportunity does not match authoritative proposal")
+            if str(normalized.get("source_scan_id") or "") != str(observation.get("source_scan_id") or ""):
+                raise ValueError("review source_scan_id does not match reviewed observation")
+            if str(normalized["reviewed_source_candidate_id"]) != str(observation.get("source_candidate_id") or ""):
+                raise ValueError("review source candidate does not match reviewed observation")
+            candidate = observation.get("candidate") if isinstance(observation.get("candidate"), Mapping) else {}
+            reviewed_direction = str(normalized.get("direction") or normalized.get("side") or "").upper()
+            candidate_direction = str(candidate.get("side") or candidate.get("direction") or "").upper()
+            for field, expected, actual in (
+                ("symbol", current["symbol"], candidate.get("symbol")),
+                ("strategy", current["strategy"], candidate.get("strategy")),
+                ("direction", current["direction"], candidate_direction),
+                ("lifecycle", normalized.get("lifecycle_status"), candidate.get("lifecycle_status")),
+            ):
+                if field == "lifecycle" and expected in (None, ""):
+                    raise ValueError("review lifecycle_status is required for reviewed observation")
+                if field != "lifecycle" and field == "direction":
+                    expected = reviewed_direction
+                if str(expected or "").upper() != str(actual or "").upper():
+                    raise ValueError(f"review {field} does not match reviewed observation")
+            scanner_status = str(candidate.get("scanner_status") or "").upper()
+            lifecycle = str(candidate.get("lifecycle_status") or "").upper()
+            if scanner_status in {"NO_SETUP", "NO_SCAN", "NOT_SCANNED", "ERROR"} or lifecycle in TERMINAL_LIFECYCLES:
+                raise ValueError("reviewed observation is not reviewable")
+            normalized["reviewed_source_scan_id"] = str(observation["source_scan_id"])
+        elif str(normalized.get("source_scan_id") or "") != str(current["source_scan_id"]):
+            # Legacy review clients retain the original immutable-source contract.
+            raise ValueError("review source_scan_id does not match authoritative proposal")
         normalized["review_timestamp"] = str(normalized.get("review_timestamp") or _now())
         normalized["source_scan_id"] = current["source_scan_id"]
         normalized["symbol"] = current["symbol"]
         normalized["strategy"] = current["strategy"]
+        normalized["proposal_id"] = proposal_id
+        normalized["opportunity_id"] = current.get("opportunity_id")
+        normalized["proposal_origin_source_scan_id"] = current["source_scan_id"]
+        normalized["proposal_origin_source_candidate_id"] = current["source_candidate_id"]
         if current.get("ai_review_status") == "COMPLETED":
             # Review publication is idempotent: a retry must not overwrite the
             # persisted model result or create a duplicate audit event.
             return current
         with self._connection() as con:
             con.execute("UPDATE ai_trade_proposals SET ai_reasoning=?,ai_model=?,ai_review_status='COMPLETED',ai_review_json=?,updated_at=? WHERE proposal_id=?", (str(normalized["ai_reasoning"]), str(normalized["model_provider"]), _json(normalized), normalized["review_timestamp"], proposal_id))
-            con.execute("INSERT INTO ai_trade_proposal_events(proposal_id,event_type,actor,details_json,created_at) VALUES(?,?,?,?,?)", (proposal_id, "AI_REVIEW_PUBLISHED", actor, _json({"review_result": normalized.get("review_result")}), normalized["review_timestamp"]))
+            con.execute("INSERT INTO ai_trade_proposal_events(proposal_id,event_type,actor,details_json,created_at) VALUES(?,?,?,?,?)", (proposal_id, "AI_REVIEW_PUBLISHED", actor, _json({"review_result": normalized.get("review_result"), "opportunity_id": normalized.get("opportunity_id"), "proposal_origin_source_scan_id": normalized.get("proposal_origin_source_scan_id"), "reviewed_observation_id": normalized.get("reviewed_observation_id"), "reviewed_source_scan_id": normalized.get("reviewed_source_scan_id"), "reviewed_source_candidate_id": normalized.get("reviewed_source_candidate_id")}), normalized["review_timestamp"]))
             row = con.execute("SELECT * FROM ai_trade_proposals WHERE proposal_id=?", (proposal_id,)).fetchone()
             return self._decode(row)
 
