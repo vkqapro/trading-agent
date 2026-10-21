@@ -1,0 +1,348 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]: candlestick_chart
+    - generic [ref=e9]:
+      - generic "Dashboard" [ref=e10] [cursor=pointer]: space_dashboard
+      - generic "Watchlist" [ref=e12] [cursor=pointer]: visibility
+      - generic "Pre-Open" [ref=e14] [cursor=pointer]: wb_twilight
+      - generic "Screener Stocks" [ref=e16] [cursor=pointer]: radar
+      - generic "Trend Radar" [ref=e18] [cursor=pointer]: radar
+      - generic "AI Trade Desk" [ref=e20] [cursor=pointer]: auto_awesome
+      - generic "Screener Crypto" [ref=e22] [cursor=pointer]: track_changes
+      - generic "Inefficiency Reclaim" [ref=e24] [cursor=pointer]: deployed_code
+      - generic "Intraday" [ref=e26] [cursor=pointer]: monitoring
+      - generic "Strategy Stocks" [ref=e28] [cursor=pointer]: insights
+      - generic "Strategy Crypto" [ref=e30] [cursor=pointer]: currency_bitcoin
+      - generic "Crypto" [ref=e32] [cursor=pointer]: currency_bitcoin
+      - generic "Orders Journal" [ref=e34] [cursor=pointer]: receipt_long
+      - generic "Forex" [ref=e36] [cursor=pointer]: currency_exchange
+      - generic "Trades & Positions" [ref=e38] [cursor=pointer]: swap_horiz
+      - generic "Forecast" [ref=e40] [cursor=pointer]: calculate
+      - generic "Reports" [ref=e42] [cursor=pointer]: description
+      - generic "Decision Lab" [ref=e44] [cursor=pointer]: psychology
+    - button "Switch to light theme" [ref=e46] [cursor=pointer]:
+      - generic [ref=e47]: light_mode
+    - button "keyboard_double_arrow_right" [ref=e49] [cursor=pointer]
+    - button "Logout and stop dashboard services" [ref=e52] [cursor=pointer]:
+      - generic [ref=e53]: logout
+  - main [ref=e54]:
+    - generic [ref=e55]:
+      - generic [ref=e56]:
+        - generic [ref=e57]: OPERATIONS DESK
+        - generic [ref=e58]: /
+        - generic [ref=e59]: AI Trade Desk
+      - generic [ref=e60]:
+        - generic [ref=e61]: SYNCED 09:09:30 ET
+        - generic [ref=e64]: PAPER · READ-ONLY
+        - generic [ref=e65]:
+          - generic [ref=e66]: schedule
+          - generic [ref=e67]: Market PRE-MARKET
+        - button "cloud_download FETCH CANDLES" [ref=e68] [cursor=pointer]:
+          - generic [ref=e69]: cloud_download
+          - text: FETCH CANDLES
+        - button "refresh REFRESH" [ref=e70] [cursor=pointer]:
+          - generic [ref=e71]: refresh
+          - text: REFRESH
+        - button "restart_alt HARD RESET" [ref=e72] [cursor=pointer]:
+          - generic [ref=e73]: restart_alt
+          - text: HARD RESET
+    - generic [ref=e75]:
+      - generic [ref=e77]:
+        - heading "AI Trade Desk" [level=1] [ref=e83]
+        - paragraph [ref=e79]: Candidate review · deterministic risk · human approval only
+      - generic [ref=e84]:
+        - generic [ref=e85]:
+          - generic [ref=e86]:
+            - generic [ref=e87]: AI TRADE DESK
+            - heading "Candidate management" [level=1] [ref=e88]
+            - generic [ref=e89]: AI may propose and explain. Only a human can change state or approve.
+          - generic [ref=e90]:
+            - textbox "Filter symbol, strategy, status" [ref=e91]
+            - button "SHOW HISTORICAL" [ref=e92] [cursor=pointer]
+            - button "↻ IMPORT PERSISTED" [ref=e93] [cursor=pointer]
+            - button "RUN FULL MARKET SCAN" [ref=e94] [cursor=pointer]
+            - button "RUN GPT CANDIDATE REVIEW" [ref=e95] [cursor=pointer]
+            - button "RUN FULL AI SCAN" [ref=e96] [cursor=pointer]
+        - generic [ref=e97]:
+          - generic [ref=e98]: SCAN PROGRESS & HISTORY
+          - generic [ref=e122]: "Latest: GPT_REVIEW · COMPLETED · aitd-scan-29e1f8cc72e448599f30fc13c539e660"
+          - generic [ref=e123]:
+            - generic [ref=e124]: GPT ANALYSIS
+            - generic [ref=e125]: COMPLETED · 2
+          - generic [ref=e126]:
+            - generic [ref=e127]: KANBAN PUBLICATION
+            - generic [ref=e128]: COMPLETED · —
+        - generic [ref=e101]:
+          - generic [ref=e102]:
+            - generic [ref=e103]:
+              - generic [ref=e104]: DISCOVERED
+              - generic [ref=e105]: "2"
+            - generic [ref=e106]: Authoritative scanner candidates
+            - button "ISRG LONG PRB1 LIMIT proposal; open signal chart" [active] [ref=e129] [cursor=pointer]:
+              - generic [ref=e130]:
+                - generic [ref=e131]:
+                  - generic [ref=e132]:
+                    - strong [ref=e133]: ISRG
+                    - generic [ref=e134]: OPEN CHART ↗
+                  - generic [ref=e135]:
+                    - generic [ref=e136]: LONG
+                    - generic [ref=e137]: PRB1
+                    - generic [ref=e138]: LIMIT
+                - generic [ref=e139]: DISCOVERED
+              - generic [ref=e140]:
+                - generic [ref=e141]: SCANNER · CANDIDATE
+                - generic [ref=e142]: AI · COMPLETED
+              - generic [ref=e143]: PROPOSAL · aitd-48e35a931fe2493da5534a2341adbbe0 · REV 0
+              - generic [ref=e144]:
+                - generic [ref=e145]:
+                  - generic [ref=e146]: Entry
+                  - generic [ref=e147]: "435.37"
+                - generic [ref=e148]:
+                  - generic [ref=e149]: Stop
+                  - generic [ref=e150]: "427.36"
+                - generic [ref=e151]:
+                  - generic [ref=e152]: Target
+                  - generic [ref=e153]: "451.41"
+              - generic [ref=e154]:
+                - generic [ref=e155]:
+                  - generic [ref=e156]: R:R
+                  - generic [ref=e157]: "2.00"
+                - generic [ref=e158]:
+                  - generic [ref=e159]: Quantity
+                  - generic [ref=e160]: "16"
+                - generic [ref=e161]:
+                  - generic [ref=e162]: Cash allocation
+                  - generic [ref=e163]: $26993.23
+                - generic [ref=e164]:
+                  - generic [ref=e165]: Max risk
+                  - generic [ref=e166]: 0.50%
+                - generic [ref=e167]:
+                  - generic [ref=e168]: Potential loss
+                  - generic [ref=e169]: "-$128.27"
+                - generic [ref=e170]:
+                  - generic [ref=e171]: Potential profit
+                  - generic [ref=e172]: +$256.54
+                - generic [ref=e173]:
+                  - generic [ref=e174]: Notional exposure
+                  - generic [ref=e175]: $6966.00
+              - generic [ref=e176]:
+                - generic [ref=e177]: ⚠ ENTRY TRIGGERED
+                - generic [ref=e178]: ⚠ SPREAD DATA
+                - generic [ref=e179]: ⚠ CORPORATE ACTIONS
+            - button "AIG LONG PRB2 LIMIT proposal; open signal chart" [ref=e180] [cursor=pointer]:
+              - generic [ref=e181]:
+                - generic [ref=e182]:
+                  - generic [ref=e183]:
+                    - strong [ref=e184]: AIG
+                    - generic [ref=e185]: OPEN CHART ↗
+                  - generic [ref=e186]:
+                    - generic [ref=e187]: LONG
+                    - generic [ref=e188]: PRB2
+                    - generic [ref=e189]: LIMIT
+                - generic [ref=e190]: DISCOVERED
+              - generic [ref=e191]:
+                - generic [ref=e192]: SCANNER · CANDIDATE
+                - generic [ref=e193]: AI · COMPLETED
+              - generic [ref=e194]: PROPOSAL · aitd-dadc0e2d9e994a57a54f454c84a14339 · REV 0
+              - generic [ref=e195]:
+                - generic [ref=e196]:
+                  - generic [ref=e197]: Entry
+                  - generic [ref=e198]: "81.08"
+                - generic [ref=e199]:
+                  - generic [ref=e200]: Stop
+                  - generic [ref=e201]: "79.92"
+                - generic [ref=e202]:
+                  - generic [ref=e203]: Target
+                  - generic [ref=e204]: "83.40"
+              - generic [ref=e205]:
+                - generic [ref=e206]:
+                  - generic [ref=e207]: R:R
+                  - generic [ref=e208]: "2.00"
+                - generic [ref=e209]:
+                  - generic [ref=e210]: Quantity
+                  - generic [ref=e211]: "147"
+                - generic [ref=e212]:
+                  - generic [ref=e213]: Cash allocation
+                  - generic [ref=e214]: $34377.92
+                - generic [ref=e215]:
+                  - generic [ref=e216]: Max risk
+                  - generic [ref=e217]: 0.50%
+                - generic [ref=e218]:
+                  - generic [ref=e219]: Potential loss
+                  - generic [ref=e220]: "-$170.87"
+                - generic [ref=e221]:
+                  - generic [ref=e222]: Potential profit
+                  - generic [ref=e223]: +$341.75
+                - generic [ref=e224]:
+                  - generic [ref=e225]: Notional exposure
+                  - generic [ref=e226]: $11918.76
+              - generic [ref=e227]:
+                - generic [ref=e228]: ⚠ ENTRY TRIGGERED
+                - generic [ref=e229]: ⚠ SPREAD DATA
+                - generic [ref=e230]: ⚠ CORPORATE ACTIONS
+          - generic [ref=e107]:
+            - generic [ref=e108]:
+              - generic [ref=e109]: UNDER REVIEW
+              - generic [ref=e110]: "0"
+            - generic [ref=e111]: Human validation in progress
+          - generic [ref=e112]:
+            - generic [ref=e113]:
+              - generic [ref=e114]: READY
+              - generic [ref=e115]: "0"
+            - generic [ref=e116]: Eligible for human approval
+          - generic [ref=e117]:
+            - generic [ref=e118]:
+              - generic [ref=e119]: INVALIDATED
+              - generic [ref=e120]: "0"
+            - generic [ref=e121]: Closed or no longer eligible
+        - generic [ref=e232]:
+          - generic [ref=e233]:
+            - generic [ref=e234]:
+              - generic [ref=e235]: PROPOSAL DETAIL
+              - heading "ISRG LONG" [level=2] [ref=e236]
+              - generic [ref=e237]:
+                - generic [ref=e238]: PRB1
+                - generic [ref=e239]: DISCOVERED
+                - generic [ref=e240]: AI COMPLETED
+                - generic [ref=e241]: REV 0
+            - button "Close proposal detail" [ref=e242] [cursor=pointer]: ×
+          - group [ref=e243]:
+            - generic "SOURCE INTEGRITY · verify scanner provenance and reviewed observation" [ref=e244] [cursor=pointer]
+          - generic [ref=e245]:
+            - generic [ref=e246]:
+              - generic [ref=e247]: Signal Chart · ISRG
+              - generic [ref=e248]:
+                - button "5Min" [ref=e249] [cursor=pointer]
+                - button "4H" [ref=e250] [cursor=pointer]
+                - button "1H" [ref=e251] [cursor=pointer]
+                - button "1D" [ref=e252] [cursor=pointer]
+                - button "1W" [ref=e253] [cursor=pointer]
+                - button "1M" [ref=e254] [cursor=pointer]
+            - generic [ref=e255]:
+              - generic [ref=e256] [cursor=pointer]: Raw levels
+              - generic [ref=e260] [cursor=pointer]: Trade zones
+              - generic [ref=e264] [cursor=pointer]: Volume
+              - generic [ref=e268] [cursor=pointer]: BMSB strategy
+              - generic [ref=e272] [cursor=pointer]: BMSB strategy 2
+              - generic [ref=e276] [cursor=pointer]: Gaussian channel
+              - generic [ref=e280] [cursor=pointer]: Gaussian signals
+            - generic [ref=e285]:
+              - generic [ref=e286]:
+                - button "add" [ref=e287] [cursor=pointer]
+                - button "remove" [ref=e289] [cursor=pointer]
+                - button "fit_screen" [ref=e291] [cursor=pointer]
+                - button "fullscreen" [ref=e293] [cursor=pointer]
+                - button "my_location" [ref=e296] [cursor=pointer]
+                - button "show_chart" [ref=e298] [cursor=pointer]
+                - button "straighten" [ref=e300] [cursor=pointer]
+                - generic [ref=e303] [cursor=pointer]: Bars
+                - generic [ref=e307] [cursor=pointer]: Trend Meter
+                - generic [ref=e311]: Hover candle for OHLCV
+                - generic [ref=e313]: 1–508 / 508 bars
+              - generic [ref=e314]:
+                - img [ref=e315]:
+                  - generic [ref=e316]: "350.0"
+                  - generic [ref=e317]: "400.0"
+                  - generic [ref=e318]: "450.0"
+                  - generic [ref=e319]: "500.0"
+                  - generic [ref=e320]: "550.0"
+                  - generic [ref=e321]: "600.0"
+                  - generic [ref=e322]: 10/10 00:00
+                  - generic [ref=e323]: 01/13 00:00
+                  - generic [ref=e324]: 04/14 00:00
+                  - generic [ref=e325]: 07/16 00:00
+                  - generic [ref=e326]: 10/14 00:00
+                  - generic [ref=e327]: 01/14 00:00
+                  - generic [ref=e328]: 04/16 00:00
+                  - generic [ref=e329]: 07/17 00:00
+                  - generic [ref=e330]: 10/15 00:00
+                  - generic [ref=e337]: BUY
+                  - generic [ref=e340]: SELL
+                  - generic [ref=e343]: BUY
+                  - generic [ref=e346]: SELL
+                  - generic [ref=e349]: BUY
+                  - generic [ref=e352]: SELL
+                  - generic [ref=e355]: BUY
+                  - generic [ref=e358]: SELL
+                  - generic [ref=e361]: BUY
+                  - generic [ref=e364]: SELL
+                  - generic [ref=e391]: 21W EMA 407.6
+                  - generic [ref=e392]: 20W SMA 391.6
+                  - generic [ref=e394]: TARGET 451.41
+                  - generic [ref=e396]: ENTRY 435.37
+                  - generic [ref=e398]: STOP 427.36
+                  - generic [ref=e908]: VOL
+                  - generic [ref=e909]: "438.0"
+                - generic: LVL 609.08 · 4T
+                - generic: GAP 592.27 · 17T
+                - generic: GAP 573.48 · 38T
+                - generic: LVL 537.69 · 59T
+                - generic: GAP 513.00 · 45T
+                - generic: GAP 478.74 · 58T
+                - generic: GAP 451.58 · 37T
+                - generic: LVL 433.81 · 33T
+                - generic: GAP 402.33 · 30T
+                - generic: ABN 372.60 · 20T
+                - generic: GAP 353.33 · 11T
+                - generic: TARGET 451.41
+                - generic: ENTRY 435.37
+                - generic: STOP 427.36
+          - generic [ref=e910]:
+            - generic [ref=e911]:
+              - generic [ref=e912]: MANUAL TRADE SETUP
+              - generic [ref=e913]: PREVIEW ONLY UNTIL SAVED
+            - generic [ref=e914]:
+              - generic [ref=e915]:
+                - text: Entry
+                - spinbutton "Entry" [ref=e916]: "435.3747"
+              - generic [ref=e917]:
+                - text: Order Type
+                - combobox "Order Type" [ref=e918]:
+                  - option "LIMIT" [selected]
+                  - option "MARKET"
+                  - option "STOP_LIMIT"
+              - generic [ref=e919]:
+                - text: Direction
+                - combobox "Direction" [ref=e920]:
+                  - option "LONG" [selected]
+                  - option "SHORT"
+              - generic [ref=e921]:
+                - text: Stop
+                - spinbutton "Stop" [ref=e922]: "427.3577"
+              - generic [ref=e923]:
+                - text: Target
+                - spinbutton "Target" [ref=e924]: "451.4087"
+              - generic [ref=e925]:
+                - text: R:R
+                - spinbutton "R:R" [ref=e926]: "2"
+              - button "USE SIGNAL" [ref=e927] [cursor=pointer]
+              - generic [ref=e928]:
+                - text: Cash $
+                - spinbutton "Cash $" [ref=e929]: "26993.23"
+              - generic [ref=e930]:
+                - text: Max Risk %
+                - spinbutton "Max Risk %" [ref=e931]: "0.5"
+            - generic [ref=e932]:
+              - generic [ref=e933]:
+                - text: Quantity
+                - spinbutton "Quantity" [ref=e934]: "16"
+              - generic [ref=e935]: RISK $128.27
+              - generic [ref=e936]: PROFIT $256.54
+              - generic [ref=e937]: 16 SH
+              - generic [ref=e938]: R:R 2.00
+              - generic [ref=e939]: Exposure $6966.00
+              - generic [ref=e940]:
+                - button "SAVE" [ref=e941] [cursor=pointer]
+                - button "RESET" [ref=e942] [cursor=pointer]
+          - generic [ref=e943]:
+            - generic [ref=e944]: AUDIT HISTORY
+            - generic [ref=e945]:
+              - generic [ref=e946]: AI_REVIEW_PUBLISHED · chatgpt-work-operator
+              - generic [ref=e947]: 2026-10-21 11:58:00
+            - generic [ref=e948]:
+              - generic [ref=e949]: PROPOSAL_CREATED · AI
+              - generic [ref=e950]: 2026-10-21 11:49:51
+          - generic [ref=e951]:
+            - button "START REVIEW" [ref=e952] [cursor=pointer]
+            - button "REJECT" [ref=e953] [cursor=pointer]
+          - generic [ref=e954]: Approval remains paper-only and fail-closed. No order is submitted by this view.

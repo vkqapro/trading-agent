@@ -1,0 +1,109 @@
+- generic [ref=f4e3]:
+  - complementary [ref=f4e4]:
+    - generic [ref=f4e5]:
+      - generic [ref=f4e6]:
+        - generic [ref=f4e7]: candlestick_chart
+        - generic [ref=f4e9]:
+          - generic [ref=f4e10]: Vitaly's Trading Bot
+          - generic [ref=f4e11]: IBKR · PAPER
+      - button "keyboard_double_arrow_left" [ref=f4e12] [cursor=pointer]
+    - generic [ref=f4e14]:
+      - generic [ref=f4e15] [cursor=pointer]:
+        - generic [ref=f4e16]: space_dashboard
+        - generic [ref=f4e17]: Dashboard
+      - generic [ref=f4e18] [cursor=pointer]:
+        - generic [ref=f4e19]: visibility
+        - generic [ref=f4e20]: Watchlist
+      - generic [ref=f4e21] [cursor=pointer]:
+        - generic [ref=f4e22]: wb_twilight
+        - generic [ref=f4e23]: Pre-Open
+      - generic [ref=f4e24] [cursor=pointer]:
+        - generic [ref=f4e25]: radar
+        - generic [ref=f4e26]: Screener Stocks
+      - generic [ref=f4e27] [cursor=pointer]:
+        - generic [ref=f4e28]: radar
+        - generic [ref=f4e29]: Trend Radar
+      - generic [ref=f4e30] [cursor=pointer]:
+        - generic [ref=f4e31]: auto_awesome
+        - generic [ref=f4e32]: AI Trade Desk
+      - generic [ref=f4e33] [cursor=pointer]:
+        - generic [ref=f4e34]: track_changes
+        - generic [ref=f4e35]: Screener Crypto
+      - generic [ref=f4e36] [cursor=pointer]:
+        - generic [ref=f4e37]: deployed_code
+        - generic [ref=f4e38]: Inefficiency Reclaim
+      - generic [ref=f4e39] [cursor=pointer]:
+        - generic [ref=f4e40]: monitoring
+        - generic [ref=f4e41]: Intraday
+      - generic [ref=f4e42] [cursor=pointer]:
+        - generic [ref=f4e43]: insights
+        - generic [ref=f4e44]: Strategy Stocks
+      - generic [ref=f4e45] [cursor=pointer]:
+        - generic [ref=f4e46]: currency_bitcoin
+        - generic [ref=f4e47]: Strategy Crypto
+      - generic [ref=f4e48] [cursor=pointer]:
+        - generic [ref=f4e49]: currency_bitcoin
+        - generic [ref=f4e50]: Crypto
+      - generic [ref=f4e51] [cursor=pointer]:
+        - generic [ref=f4e52]: receipt_long
+        - generic [ref=f4e53]: Orders Journal
+      - generic [ref=f4e54] [cursor=pointer]:
+        - generic [ref=f4e55]: currency_exchange
+        - generic [ref=f4e56]: Forex
+      - generic [ref=f4e57] [cursor=pointer]:
+        - generic [ref=f4e58]: swap_horiz
+        - generic [ref=f4e59]: Trades & Positions
+      - generic [ref=f4e60] [cursor=pointer]:
+        - generic [ref=f4e61]: calculate
+        - generic [ref=f4e62]: Forecast
+      - generic [ref=f4e63] [cursor=pointer]:
+        - generic [ref=f4e64]: description
+        - generic [ref=f4e65]: Reports
+      - generic [ref=f4e66] [cursor=pointer]:
+        - generic [ref=f4e67]: psychology
+        - generic [ref=f4e68]: Decision Lab
+    - button "Switch to light theme" [ref=f4e69] [cursor=pointer]:
+      - generic [ref=f4e70]:
+        - generic [ref=f4e71]: light_mode
+        - generic [ref=f4e72]: Light theme
+    - generic [ref=f4e75]:
+      - generic [ref=f4e76]: Read-only mode
+      - generic [ref=f4e79]: Never connects to IBKR.Views memory/ only.
+    - generic [ref=f4e80]:
+      - generic [ref=f4e81] [cursor=pointer]:
+        - generic [ref=f4e82]: help
+        - text: Docs
+      - generic [ref=f4e83] [cursor=pointer]:
+        - generic [ref=f4e84]: settings
+        - text: Settings
+      - button "Logout and stop dashboard services" [ref=f4e85] [cursor=pointer]:
+        - generic [ref=f4e86]: logout
+        - text: Logout
+  - main [ref=f4e87]:
+    - generic [ref=f4e88]:
+      - generic [ref=f4e89]:
+        - generic [ref=f4e90]: OPERATIONS DESK
+        - generic [ref=f4e91]: /
+        - generic [ref=f4e92]: Dashboard
+      - generic [ref=f4e93]:
+        - generic [ref=f4e94]: SYNCED — ET
+        - generic [ref=f4e97]: PAPER · READ-ONLY
+        - generic [ref=f4e98]:
+          - generic [ref=f4e99]: schedule
+          - generic [ref=f4e100]: Market —
+        - button "cloud_download FETCH CANDLES" [ref=f4e101] [cursor=pointer]:
+          - generic [ref=f4e102]: cloud_download
+          - text: FETCH CANDLES
+        - button "refresh REFRESH" [ref=f4e103] [cursor=pointer]:
+          - generic [ref=f4e104]: refresh
+          - text: REFRESH
+        - button "restart_alt HARD RESET" [ref=f4e105] [cursor=pointer]:
+          - generic [ref=f4e106]: restart_alt
+          - text: HARD RESET
+    - generic [ref=f4e108]:
+      - generic [ref=f4e110]:
+        - heading "Command Overview" [level=1] [ref=f4e111]
+        - paragraph [ref=f4e112]: All systems nominal · scan cycle 5m · paper account
+      - generic [ref=f4e114]:
+        - generic [ref=f4e115]: hourglass_top
+        - text: Loading…

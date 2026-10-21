@@ -4776,15 +4776,15 @@
     "semantic_hash": ""
   },
   "tests/test_trading_work_operator.py": {
-    "mtime": 1792584512.9477663,
-    "seen": 1792584801.7528853,
-    "ast_hash": "a8b7cd39ae896e9ca9e77c9e203f2cae",
+    "mtime": 1792584908.735911,
+    "seen": 1792584977.8497503,
+    "ast_hash": "b9caaedd9e837bfe1110109e9ea38e08",
     "semantic_hash": ""
   },
   "tools/trading_work_operator.py": {
-    "mtime": 1792584458.458646,
-    "seen": 1792584801.756627,
-    "ast_hash": "10af57ba2e9beec01848df05a0b4fb75",
+    "mtime": 1792584900.2429197,
+    "seen": 1792584977.852827,
+    "ast_hash": "342961ab03971cbca92b36acecd9ed87",
     "semantic_hash": ""
   },
   "runtime/phase2j3-preflight.json": {

@@ -1194,9 +1194,9 @@
     "semantic_hash": ""
   },
   "dashboard_react/index.html": {
-    "mtime": 1792553569.518826,
-    "seen": 1792553676.7841575,
-    "ast_hash": "e733c2ef1469a32150e9f04234772180",
+    "mtime": 1792586941.6579118,
+    "seen": 1792587050.7257879,
+    "ast_hash": "36799e0498fbf6d203e28711251fbc69",
     "semantic_hash": ""
   },
   "design_handoff/trading-bot-dashboard/README.md": {
@@ -1224,9 +1224,9 @@
     "semantic_hash": ""
   },
   "memory/LEVELS_LOG.md": {
-    "mtime": 1792499752.217052,
-    "seen": 1792530209.54539,
-    "ast_hash": "6ccf1e680e4a6dcc6fc247ec8c9ec41c",
+    "mtime": 1792585914.4600852,
+    "seen": 1792587050.7366512,
+    "ast_hash": "2be4a75eaaf1aabbe8e72da77673caa7",
     "semantic_hash": ""
   },
   "memory/TRADE_LOG.md": {
@@ -4764,9 +4764,9 @@
     "semantic_hash": ""
   },
   "memory/RESEARCH_LOG.md": {
-    "mtime": 1792525800.811191,
-    "seen": 1792532001.9226444,
-    "ast_hash": "1932c7887043da2f0ee05f9d3fa0b684",
+    "mtime": 1792585915.4529178,
+    "seen": 1792587050.7366538,
+    "ast_hash": "2e4a8c2eae1373195e406cf52da68086",
     "semantic_hash": ""
   },
   "src/decision/ai_trade_desk_scan.py": {
@@ -4881,6 +4881,60 @@
     "mtime": 1792583591.935457,
     "seen": 1792584801.798439,
     "ast_hash": "6e4f6dacf02e14e75b3131136b2de0c9",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-21T12-23-24-563Z.yml": {
+    "mtime": 1792585404.5665376,
+    "seen": 1792587050.7188292,
+    "ast_hash": "0642b168e42ac433844ca3539e83bc22",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-21T12-23-31-059Z.yml": {
+    "mtime": 1792585411.061404,
+    "seen": 1792587050.7188325,
+    "ast_hash": "d720d5865473c8ca3f61802eb3c97aa4",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-21T12-23-38-441Z.yml": {
+    "mtime": 1792585418.4449086,
+    "seen": 1792587050.718834,
+    "ast_hash": "be410211966bc779a8aa2ea2b79a55b1",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-21T12-23-47-758Z.yml": {
+    "mtime": 1792585427.7607114,
+    "seen": 1792587050.7188354,
+    "ast_hash": "fecde80d978a25eea3e52c64825f8770",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-21T12-23-55-654Z.yml": {
+    "mtime": 1792585435.6558402,
+    "seen": 1792587050.7188368,
+    "ast_hash": "fcfad4e1694cbbd9ab15c031177ea7c6",
+    "semantic_hash": ""
+  },
+  ".playwright-mcp/page-2026-10-21T12-46-50-978Z.yml": {
+    "mtime": 1792586810.9805064,
+    "seen": 1792587050.7188382,
+    "ast_hash": "fd1c203a884d71fb359d291bf181c944",
+    "semantic_hash": ""
+  },
+  "artifacts/phase-2k5-ai-trade-desk.png": {
+    "mtime": 1792585498.8826034,
+    "seen": 1792587050.7499359,
+    "ast_hash": "ec773cec20410ba7b0d61334354f33e1",
+    "semantic_hash": ""
+  },
+  "artifacts/phase-2l-fullscreen-detail.png": {
+    "mtime": 1792586950.5550709,
+    "seen": 1792587050.749938,
+    "ast_hash": "d48e5c7096a63a31a39f70c6f12fcdcb",
+    "semantic_hash": ""
+  },
+  "artifacts/phase-2l-kanban-closed.png": {
+    "mtime": 1792586950.8101296,
+    "seen": 1792587050.7499402,
+    "ast_hash": "540cc23203773abdc30a4b8f30b0a608",
     "semantic_hash": ""
   }
 }

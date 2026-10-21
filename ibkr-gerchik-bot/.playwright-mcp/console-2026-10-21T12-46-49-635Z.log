@@ -1,0 +1,138 @@
+[     135ms] [WARNING] You are using the in-browser Babel transformer. Be sure to precompile your scripts for production - https://babeljs.io/docs/setup/ @ https://unpkg.com/@babel/standalone@7.26.4/babel.min.js:0
+[    1044ms] [ERROR] [BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB. @ https://unpkg.com/@babel/standalone@7.26.4/babel.min.js:0
+[    1305ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/dashboard:0
+[    1306ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/services:0
+[    1306ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/bars/AAPL/intraday_1h:0
+[    1306ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/preopen/AAPL:0
+[    1306ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[    1334ms] Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+[    1329ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/favicon.ico:0
+[    1342ms] Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+[    3779ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/decision-lab/status:0
+[    3779ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/decision-lab/control:0
+[    6277ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/services:0
+[    6278ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/decision-lab/status:0
+[    6278ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/decision-lab/control:0
+[    6278ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[    8590ms] [WARNING] You are using the in-browser Babel transformer. Be sure to precompile your scripts for production - https://babeljs.io/docs/setup/ @ https://unpkg.com/@babel/standalone@7.26.4/babel.min.js:0
+[    9439ms] [ERROR] [BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB. @ https://unpkg.com/@babel/standalone@7.26.4/babel.min.js:0
+[    9662ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/dashboard:0
+[    9662ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/services:0
+[    9663ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[    9671ms] Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+[    9929ms] [ERROR] TypeError: Cannot read properties of undefined (reading 'replace')
+    at R (<anonymous>:1:2433)
+    at Pill (<anonymous>:3:539)
+    at mf (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:105:412)
+    at Qk (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:250:214)
+    at Ri (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:195:185)
+    at Ok (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:195:116)
+    at Nd (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:194:492)
+    at Qf (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:187:439)
+    at Ni (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:185:400)
+    at S (https://unpkg.com/react@18.3.1/umd/react.production.min.js:17:25)
+    at MessagePort.U (https://unpkg.com/react@18.3.1/umd/react.production.min.js:21:229) @ https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:120
+[    9929ms] [ERROR] Tab render error: TypeError: Cannot read properties of undefined (reading 'replace')
+    at R (<anonymous>:1:2433)
+    at Pill (<anonymous>:3:539)
+    at mf (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:105:412)
+    at Qk (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:250:214)
+    at Ri (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:195:185)
+    at Ok (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:195:116)
+    at Nd (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:194:492)
+    at Qf (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:187:439)
+    at Ni (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:185:400)
+    at S (https://unpkg.com/react@18.3.1/umd/react.production.min.js:17:25)
+    at MessagePort.U (https://unpkg.com/react@18.3.1/umd/react.production.min.js:21:229) {componentStack: 
+    at Pill (<anonymous>:3:332)
+    at div
+    at…ain
+    at div
+    at App (<anonymous>:87:123123)} @ :84
+[   14655ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[   19656ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[   24665ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[   29665ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[   34656ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[   39662ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[   44662ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[   49665ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[   54657ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[   59656ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[   64667ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[   69663ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[   74665ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[   79197ms] [WARNING] You are using the in-browser Babel transformer. Be sure to precompile your scripts for production - https://babeljs.io/docs/setup/ @ https://unpkg.com/@babel/standalone@7.26.4/babel.min.js:0
+[   80113ms] [ERROR] [BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB. @ https://unpkg.com/@babel/standalone@7.26.4/babel.min.js:0
+[   80354ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/services:0
+[   80354ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/dashboard:0
+[   80354ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[   80356ms] Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+[   80955ms] [ERROR] Failed to load resource: the server responded with a status of 501 (Unsupported method ('POST')) @ http://127.0.0.1:8899/api/ai-trade-desk/preview:0
+[   84262ms] [ERROR] Failed to load resource: the server responded with a status of 501 (Unsupported method ('POST')) @ http://127.0.0.1:8899/api/ai-trade-desk/preview:0
+[   85353ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[   88823ms] [ERROR] Failed to load resource: the server responded with a status of 501 (Unsupported method ('POST')) @ http://127.0.0.1:8899/api/ai-trade-desk/preview:0
+[   90353ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[   95353ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[  100353ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[  105353ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[  110353ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[  115353ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[  120349ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[  125353ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[  130349ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[  135531ms] [WARNING] You are using the in-browser Babel transformer. Be sure to precompile your scripts for production - https://babeljs.io/docs/setup/ @ https://unpkg.com/@babel/standalone@7.26.4/babel.min.js:0
+[  136437ms] [ERROR] [BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB. @ https://unpkg.com/@babel/standalone@7.26.4/babel.min.js:0
+[  136582ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/dashboard:0
+[  136582ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/services:0
+[  136582ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[  136584ms] Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+[  141583ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8899/api/meta:0
+[  146570ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  151582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  156579ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  161572ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  166574ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  171583ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  176573ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  181569ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  186569ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  191571ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  196569ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  201577ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  206570ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  211568ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  216571ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  221571ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  226574ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  231571ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  236569ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  241569ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  246569ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  251573ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  256569ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  261580ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  266569ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  271570ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  276569ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  281568ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  286569ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  291569ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  296569ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  301582ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  306569ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  311580ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  316570ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  321570ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  326571ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  331570ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  336574ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  341569ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  346570ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  351569ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  356569ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  361570ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  366569ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  371580ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  376570ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0
+[  381577ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8899/api/meta:0

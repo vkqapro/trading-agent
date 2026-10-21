@@ -1,17 +1,17 @@
 # Graph Report - ibkr-gerchik-bot  (2026-10-21)
 
 ## Corpus Check
-- 704 files · ~69,592,309 words
+- 704 files · ~71,378,350 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 126 file(s) not represented in the graph (top: .csv 35, .log 27, .cmd 26)
+- Unclassified: 127 file(s) not represented in the graph (top: .csv 35, .log 30, .cmd 26)
 
 ## Summary
-- 9170 nodes · 18825 edges · 362 communities (286 shown, 76 thin omitted)
+- 9173 nodes · 18828 edges · 361 communities (283 shown, 78 thin omitted)
 - Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 857 edges (avg confidence: 0.91)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `0f0d013a`
+- Built from commit: `92638897`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -39,15 +39,15 @@
 - InefficiencyReclaimStore
 - Research Log
 - scan_20260930T211401Z_d6418d/manifest.json
-- symbols.py
+- market_screener.py
 - Codex_Trading_Research_Analyst_V1_Prompt.md
 - plan_order
 - AutonomousStockWorker
 - scan_20260930T160513Z_cb3f1c/manifest.json
 - TradeSignal
-- test_p0_fixes.py
+- _make_level
 - flex_statement.py
-- scanners/inefficiency_reclaim.py
+- IRSConfig
 - dashboard/app.py
 - scan_20260930T180535Z_32af32/manifest.json
 - project/ibkr-gerchik-bot/dashboard/app.py
@@ -55,17 +55,17 @@
 - rebound.py
 - scan_20261003T173147Z_39a298/manifest.json
 - Trading Bot Dashboard/ibkr-gerchik-bot/dashboard/app.py
-- chart_history.py
+- _bars
 - test_strategy_library.py
-- AgentMode
+- test_autonomous_llm_remediation.py
 - dashboard_react/server.py
 - scan_20260930T161706Z_0f2c8b/manifest.json
 - Autonomous LLM Agent — Remediation Re-Review
-- load_stock_symbols
+- data_adapter.py
 - order_requests.py
 - candles_with_levels
 - Levels Log
-- StrategyScannerService
+- scanner_mcp/service.py
 - IBKR Gerchik Bot
 - scan_20260930T201918Z_5aef5b/manifest.json
 - TradingWorkOperator
@@ -92,7 +92,7 @@
 - scan_20260930T171037Z_2ff4f8/manifest.json
 - scan_20260930T172407Z_6382fb/manifest.json
 - scan_20260930T211652Z_d7cdf9/manifest.json
-- OKXClient
+- show_df
 - market_data_collector.py
 - BarStoreMergeTests
 - ScreenerParams
@@ -103,7 +103,7 @@
 - Autonomous LLM Gerchik Agent — Adversarial Safety Review
 - build_live_candidate_proposal
 - _MarketDataServiceStub
-- test_irs_scheduler.py
+- jobs/inefficiency_reclaim.py
 - engine/__init__.py
 - strategy_sources.py
 - scan_20261004T145856Z_a47190/manifest.json
@@ -132,7 +132,7 @@
 - graphify reference: query, path, explain
 - Trading Operations Dashboard
 - Trading Strategy
-- test_news_timing_isolation.py
+- AgentMode
 - CODING AGENTS: READ THIS FIRST
 - test_ibkr_account_identity.py
 - graphify reference: add a URL and watch a folder
@@ -149,7 +149,7 @@
 - AutonomousGerchikAgent
 - Decision Lab Strategy Control
 - Q: Implement Market Screener Crypto with the same LP1 LP2 PRB1 PRB2 strategy logic as stocks in a separate tab
-- test_scanner_registration.py
+- StrategySourceRegistry
 - Trading Strategies Project Memory
 - Findings and disposition
 - scan_20260930T171017Z_4d0d19/manifest.json
@@ -164,12 +164,12 @@
 - IBKR Paper Autonomous validation runbook
 - scan_20261002T175517Z_95a453/manifest.json
 - scan_20260930T170953Z_ac710f/manifest.json
-- ProposalSizingInputs
+- _irs_schedule_status
 - Shadow runtime preparation report
 - Decision Lab provider diagnostics report
 - LLM Shadow runtime validation
 - DailyTraderScanRequest
-- manual_order.py
+- OKXClient
 - scan_20261004T150305Z_9aa1dd/manifest.json
 - scan_20261003T173331Z_9da7ba/manifest.json
 - Unified Dashboard Stack Implementation Report
@@ -192,7 +192,7 @@
 - scan_20261003T173513Z_791820/manifest.json
 - Strategy Prompt Layer Implementation Report
 - Trading Bot Data MCP v0.1 Implementation Report
-- DecisionCandidate
+- DecisionAction
 - DeepSeek Harness Trading Bot MCP Integration Report
 - agent.py
 - Backtesting Engine — TradingView Matching Internals
@@ -203,7 +203,7 @@
 - Direction
 - NasdaqDataClient
 - mcp/__init__.py
-- trade_signal_to_candidate
+- signal_models.py
 - scan_20261001T163406Z_36214b/manifest.json
 - test_telegram_trade_approval.py
 - run_backtest
@@ -218,7 +218,7 @@
 - Take Profit & Stop Loss
 - tests/__init__.py
 - _FakeEvent
-- worker.py
+- analysis.py
 - scan_20261001T163456Z_8189a6/manifest.json
 - scan_20261001T163532Z_5f376e/manifest.json
 - scan_20261001T163634Z_7cfd4d/manifest.json
@@ -231,45 +231,45 @@
 - scan_20261001T163843Z_922ed7/manifest.json
 - false_breakout_continuation.py
 - test_unified_stack_lifecycle.py
-- analysis.py
+- snapshot_to_candidate
 - scan_20261001T164536Z_88f98a/manifest.json
-- test_decision_lab_provider_diagnostics.py
+- ProviderHealthResult
 - trading_bot_mcp
 - scan_20261001T164557Z_694841/manifest.json
 - .symbol
 - .connection
-- _market_data_spec
-- jobs/inefficiency_reclaim.py
+- _add_metrics
+- calculate_robust_atr
 - Hermes Native Telegram Trade Approval Integration
 - broker_reconcile.py
 - Any
 - OrderJournalTests
 - _BrokerStub
-- CryptoOrderManager
+- load_workflow_context
 - pre-trade-review-candidate/SKILL.md
 - Telegram Trade Approval Runbook
 - Telegram Trade Approval Test Plan
 - stocks/tradingview_webhook.py
 - autonomous_stock_worker
-- AccountState
-- post
+- api_decision_lab_run
+- _Request
 - _process_snapshot
-- test_strategy_prompt_layer.py
+- DecisionCandidate
 - TELEGRAM_TRADE_APPROVAL_ARCHITECTURE.md
 - test_execute_requests.py
 - test_pre_trade_reviewer_candidate.py
-- NewsService
+- NewsRiskFilter
 - ScannerTests
 - test_detached_launcher_contract.py
 - api_inefficiency_reclaim
-- prompt_presets.py
-- nearest_level_details
+- _BrokerStub
+- _BrokerStub
 - third_touch.py
 - lp_prb.py
 - _read_execute_worker_preflight
-- scanner_mcp/service.py
+- runner.py
 - heartbeat
-- normalize_okx_instrument
+- false_breakout.py
 - src/main.py
 - BMSB
 - Any
@@ -281,7 +281,7 @@
 - 24. Read-only tests
 - USNewYorkFallback
 - Trading Research Analyst
-- cli.py
+- test_approve_setup_only_authorizes_and_enqueues
 - Trend Radar V1
 - crypto/config.py
 - LP1
@@ -302,7 +302,7 @@
 - Complex False Breakout
 - False Breakout Continuation
 - DailyTraderService
-- evaluate_entry_day
+- _recover_queued_runs
 - One-Bar False Breakout
 - Two-Bar False Breakout
 - Gaussian Channel
@@ -310,11 +310,11 @@
 - Rebound
 - dependencies
 - execution_worker
-- Supervisor
-- DecisionProvider
+- ._process_snapshot
+- TestBaseDetectFalseBreakoutDisabled
 - Pre-Trade Reviewer V1
 - analytics_service.py
-- ValidatorTests
+- validator.py
 - Daily Trader V1
 - Trading Ops Supervisor V2
 - daily_trader
@@ -333,36 +333,35 @@
 - StrategyLibrary
 - Trading Readiness Orchestrator
 - _TradeReportHTMLParser
-- package.json
+- _FakeAgent
 - dashboard_api_lifecycle.ps1
 - make_zone
 - Current Architecture
 - Implementation Roadmap
 - autonomous_worker
-- ProductionDataPaths
-- _NewsRiskFilterStub
+- candle_reader.py
+- test_validate_watchlist_job.py
 - trading-orchestrator/SOUL.md
 - TRADING_ORCHESTRATOR_A2A.md
 - Read-Only POC Results
 - AI Trade Desk
 - strategy_scanner_mcp
 - response
-- should_trigger_kill_switch
 - daily-trader-latest-scan/SKILL.md
 - service_status
 - trend_radar
-- append_workflow_snapshot
+- eod.py
 - ChatGPT Capability Matrix
 - InefficiencyReclaimSettings
 - BrokerStub
 - response
 - latest_scan
-- .test_intraday_kill_switch_mode_continues_collecting_without_trading
+- ProductionDataPaths
 
 ## God Nodes (most connected - your core abstractions)
 1. `Trade Log` - 632 edges
-2. `Research Log` - 557 edges
-3. `Levels Log` - 167 edges
+2. `Research Log` - 559 edges
+3. `Levels Log` - 168 edges
 4. `Level` - 125 edges
 5. `DecisionAudit` - 91 edges
 6. `TradeSignal` - 87 edges
@@ -374,51 +373,51 @@
 ## Surprising Connections (you probably didn't know these)
 - `add_bmsb_signals()` --calls--> `calc_sma()`  [INFERRED]
   strategies/bmsb_strategy_1.py → backtest_engine_v24.4/engine/engine.py
+- `_web_imports()` --indirect_call--> `_detect_signals()`  [INFERRED]
+  backtest_engine_v24.4/live_engine/engine.py → dashboard_react/market_screener.py
+- `_web_imports()` --indirect_call--> `_pivot_levels()`  [INFERRED]
+  backtest_engine_v24.4/live_engine/engine.py → dashboard_react/market_screener.py
+- `_web_imports()` --uses--> `ScreenerParams`  [INFERRED]
+  backtest_engine_v24.4/live_engine/engine.py → dashboard_react/market_screener.py
 - `test_production_web_endpoint_and_mcp_runner_share_snapshot()` --uses--> `LoadedBars`  [INFERRED]
   tests/test_production_scanner_parity.py → backtest_engine_v24.4/scanner/data_adapter.py
-- `_production_scanner_health()` --calls--> `configured_symbols()`  [INFERRED]
-  dashboard_react/server.py → backtest_engine_v24.4/scanner/data_adapter.py
-- `_production_scanner_health()` --calls--> `universe_source()`  [INFERRED]
-  dashboard_react/server.py → backtest_engine_v24.4/scanner/data_adapter.py
-- `_production_scanner_health()` --calls--> `available_daily_symbols()`  [INFERRED]
-  dashboard_react/server.py → backtest_engine_v24.4/scanner/data_adapter.py
 
 ## Import Cycles
 - None detected.
 
-## Communities (362 total, 76 thin omitted)
+## Communities (361 total, 78 thin omitted)
 
 ### Community 0 - "session_utils.py"
-Cohesion: 0.04
-Nodes (87): NowProvider, SleepProvider, _matching_headlines(), NewsRiskFilter, News-driven trade blocking logic., Evaluate symbol-specific and macro news risk before trading., News API access layer., datetime (+79 more)
+Cohesion: 0.03
+Nodes (106): NowProvider, SleepProvider, Slack webhook notifications., append_markdown_log(), ensure_directories(), Create runtime and memory directories expected by the application., Append a timestamped Markdown section to a log file., default_agent() (+98 more)
 
 ### Community 1 - "strategy_control.py"
-Cohesion: 0.15
-Nodes (43): claim_queued_run(), control_path(), control_payload(), create_run(), _file_lock(), list_runs(), load_control(), _load_runs() (+35 more)
+Cohesion: 0.17
+Nodes (38): claim_queued_run(), control_path(), control_payload(), create_run(), _file_lock(), list_runs(), load_control(), _load_runs() (+30 more)
 
 ### Community 2 - "trading_data_service.py"
-Cohesion: 0.20
-Nodes (27): loader(), _bars(), _candle(), DataError, _frame_closed(), _freshness(), get_level_context(), get_symbol_data_coverage() (+19 more)
+Cohesion: 0.09
+Nodes (42): Read-only adapter for persisted current-session state., load_closed_daily_bars(), CallToolResult, Render a visual candlestick chart from stored Trading Bot data. Prefer this…, render_symbol_chart(), _bars(), _candle(), DataError (+34 more)
 
 ### Community 3 - "forecast.py"
-Cohesion: 0.13
-Nodes (22): _bars_freshness(), calculate_open_risk(), _candidate(), ForecastScenario, _number(), projected_level_candidates(), Any, DataFrame (+14 more)
+Cohesion: 0.12
+Nodes (25): _bars_freshness(), calculate_open_risk(), _candidate(), ForecastScenario, _number(), projected_level_candidates(), Any, DataFrame (+17 more)
 
 ### Community 4 - "false_breakout_one_bar.py"
 Cohesion: 0.11
-Nodes (51): PatternName, SignalSide, body_size(), upper_wick(), _complex_score(), detect_false_breakout(), DataFrame, Series (+43 more)
+Nodes (50): PatternName, SignalSide, body_size(), _complex_score(), detect_false_breakout(), DataFrame, Series, Gerchik-style complex 3+ bar false breakout detection helpers with… (+42 more)
 
 ### Community 5 - "trading_bot_server.py"
-Cohesion: 0.06
-Nodes (61): CallToolResult, _app(), _approval_card_payload(), _approval_store(), approve_setup(), _artifact_candidate(), confirm_approval_card_delivery(), create_setup_approval() (+53 more)
+Cohesion: 0.08
+Nodes (61): plan_hash(), Path, Register an existing canonical scanner setup in DecisionAudit. The setup is…, register_canonical_setup(), _app(), _approval_card_payload(), _approval_store(), approve_setup() (+53 more)
 
 ### Community 6 - "ensure_irs_history"
 Cohesion: 0.17
 Nodes (17): ensure_irs_history(), history_specs(), IRSHistorySpec, _mark_skipped_remaining(), _paced_get_bars(), Any, Exception, Incremental historical-data hydration for IRS timeframes. (+9 more)
 
 ### Community 7 - "breakout.py"
-Cohesion: 0.12
-Nodes (29): _build_manual_watch_trade_signal(), _infer_manual_watch_signal(), calculate_stop_loss(), round_number_guard(), calculate_take_profit(), reward_risk_ratio(), _acts_as_resistance(), _acts_as_support() (+21 more)
+Cohesion: 0.13
+Nodes (25): calculate_stop_loss(), calculate_take_profit(), reward_risk_ratio(), _acts_as_resistance(), _acts_as_support(), _atr_used(), _bar_index(), _breakout_is_overextended() (+17 more)
 
 ### Community 8 - "PaperPortfolio"
 Cohesion: 0.16
@@ -430,7 +429,7 @@ Nodes (61): boot(), collectProps(), compileAttr(), compileTemplate(), createComp
 
 ### Community 10 - "Level"
 Cohesion: 0.06
-Nodes (57): detect_breakout(), Detect a Gerchik-style two-step confirmed breakout on intraday bars., apply_strength_scores(), _fallback_score(), Level strength scoring helpers., Return the precomputed strength score, falling back to the legacy field., score_level(), _atr_distances() (+49 more)
+Nodes (58): detect_breakout(), _level_zone(), Detect a Gerchik-style two-step confirmed breakout on intraday bars., apply_strength_scores(), _fallback_score(), Level strength scoring helpers., Return the precomputed strength score, falling back to the legacy field., score_level() (+50 more)
 
 ### Community 11 - "Trading Bot Dashboard/support.js"
 Cohesion: 0.07
@@ -441,48 +440,48 @@ Cohesion: 0.07
 Nodes (18): main(), One-off backfill of OHLCV bars for the dashboard. Connects to TWS / IB Gateway…, IntradayDataResult, MarketDataService, evaluate(), DataFrame, datetime, Timestamp (+10 more)
 
 ### Community 13 - "strategy/inefficiency_reclaim.py"
-Cohesion: 0.12
-Nodes (53): _diagnose_no_candidate(), _add_rth_hours(), Bar, _bounded(), build_explanation(), build_inefficiency_zone(), build_low_overlap_zone(), build_signal_id() (+45 more)
+Cohesion: 0.11
+Nodes (50): AccountState, _add_rth_hours(), Bar, _bounded(), build_explanation(), build_inefficiency_zone(), build_low_overlap_zone(), build_strict_gap_zone() (+42 more)
 
 ### Community 14 - "data_access.py"
-Cohesion: 0.10
-Nodes (56): render_intraday(), render_reports(), mark_levels(), metric_grid(), Render a responsive grid of glass metric cards., all_decision_attempts(), bars_index(), blocked_news_summary() (+48 more)
+Cohesion: 0.11
+Nodes (46): render_intraday(), mark_levels(), all_decision_attempts(), bars_index(), blocked_news_summary(), crypto_bars_index(), decisions_for_symbol(), decisions_to_frame() (+38 more)
 
 ### Community 15 - "levels_export.py"
 Cohesion: 0.16
 Nodes (19): _center(), _clean_gap_annotations(), _coerce_float(), export_premarket_levels_report(), _gap_to_upper_level(), _level_key(), _level_price(), _optimization_reason() (+11 more)
 
 ### Community 16 - "OrderManager"
-Cohesion: 0.06
-Nodes (30): _ensure_event_loop(), IBKRDependencyError, OrderResult, RuntimeError, Interactive Brokers connectivity built on top of ib_insync., ib_insync/eventkit expects a current event loop on newer Python versions., Raised when ib_insync is unavailable., OrderManager (+22 more)
+Cohesion: 0.04
+Nodes (44): _ensure_event_loop(), IBKRDependencyError, OrderResult, RuntimeError, Interactive Brokers connectivity built on top of ib_insync., ib_insync/eventkit expects a current event loop on newer Python versions., Raised when ib_insync is unavailable., datetime (+36 more)
 
 ### Community 17 - "order_journal.py"
 Cohesion: 0.16
 Nodes (31): _base_row(), _broker_pnl_is_usable(), _closed_positions_by_symbol(), _f(), _fill_price_from_result(), _infer_bracket_exit_from_bars(), _observed_close_matches_request(), _order_ids() (+23 more)
 
 ### Community 18 - "provider.py"
-Cohesion: 0.13
-Nodes (23): Redact credential/account-like values from text before persistence/UI., sanitize_text(), build_system_prompt(), DecisionProviderError, _extract_json_content(), _extract_raw_content(), HttpDecisionProvider, Any (+15 more)
+Cohesion: 0.14
+Nodes (21): build_system_prompt(), DecisionProviderError, _extract_json_content(), _extract_raw_content(), HttpDecisionProvider, Any, RuntimeError, Model-independent decision-provider boundary. Only this module knows how to… (+13 more)
 
 ### Community 19 - "backtest/inefficiency_reclaim.py"
 Cohesion: 0.14
 Nodes (23): BacktestCosts, BacktestTrade, _bar_contains_time(), build_backtest_report(), _entry_fill(), _exit_touches(), _maximum_drawdown(), Any (+15 more)
 
 ### Community 20 - "InefficiencyReclaimStore"
-Cohesion: 0.14
-Nodes (13): ImmutableZoneError, InefficiencyReclaimStore, _json(), _json_default(), Any, Connection, datetime, Decimal (+5 more)
+Cohesion: 0.18
+Nodes (8): InefficiencyReclaimStore, _json(), _json_default(), Any, Connection, datetime, Decimal, Path
 
 ### Community 21 - "Research Log"
 Cohesion: 0.00
-Nodes (557): Premarket Research (2026-04-27T22:02:49), Premarket Research (2026-04-27T22:03:01), Premarket Research (2026-04-27T22:04:21), Premarket Research (2026-04-27T22:12:41), Premarket Research (2026-04-27T22:36:13), Premarket Research (2026-04-27T22:45:49), Premarket Research (2026-04-27T22:47:57), Premarket Research (2026-04-27T22:53:40) (+549 more)
+Nodes (559): Premarket Research (2026-04-27T22:02:49), Premarket Research (2026-04-27T22:03:01), Premarket Research (2026-04-27T22:04:21), Premarket Research (2026-04-27T22:12:41), Premarket Research (2026-04-27T22:36:13), Premarket Research (2026-04-27T22:45:49), Premarket Research (2026-04-27T22:47:57), Premarket Research (2026-04-27T22:53:40) (+551 more)
 
 ### Community 22 - "scan_20260930T211401Z_d6418d/manifest.json"
 Cohesion: 0.07
 Nodes (28): available_symbol_count, available_symbols, closed_bars_only, completed_at, data_source, direction, errors_count, network_fallback_enabled (+20 more)
 
-### Community 23 - "symbols.py"
-Cohesion: 0.14
-Nodes (8): load_crypto_symbols(), configured_crypto_symbols(), _dedupe(), default_instrument_type(), load_crypto_symbol_inputs(), Normalize TradingView/OKX crypto symbols into OKX instrument ids., _split_raw_text(), CryptoStrategyMonitorTests
+### Community 23 - "market_screener.py"
+Cohesion: 0.17
+Nodes (32): _apply_anchor_date(), _approach_profile(), _bar_position(), _business_day_offset(), _date_value(), _event_dates(), _execution_details(), _has_event_in_window() (+24 more)
 
 ### Community 24 - "Codex_Trading_Research_Analyst_V1_Prompt.md"
 Cohesion: 0.07
@@ -494,31 +493,31 @@ Nodes (20): CanonicalOrderPlan, CapitalConstraints, _error(), ExecutionCosts, _f
 
 ### Community 26 - "AutonomousStockWorker"
 Cohesion: 0.08
-Nodes (33): ProviderHealthResult, Sanitized result suitable for a worker heartbeat or dashboard response., PreflightResult, Safe, dashboard-ready readiness evidence with no account identifier., AutonomousStockWorker, _heartbeat_blocked_reason(), _heartbeat_provider_status(), _iso() (+25 more)
+Nodes (30): PreflightResult, Safe, dashboard-ready readiness evidence with no account identifier., AutonomousStockWorker, _heartbeat_blocked_reason(), _heartbeat_provider_status(), _iso(), _pid_alive(), datetime (+22 more)
 
 ### Community 27 - "scan_20260930T160513Z_cb3f1c/manifest.json"
 Cohesion: 0.07
 Nodes (28): available_symbol_count, available_symbols, closed_bars_only, completed_at, data_source, direction, errors_count, network_fallback_enabled (+20 more)
 
 ### Community 28 - "TradeSignal"
-Cohesion: 0.06
-Nodes (42): build_partial_targets(), DecisionSink, Record a decision into ``sink`` if one is provided; otherwise do nothing., record(), detect_false_breakout_complex(), DecisionSink, Router-compatible wrapper returning a TradeSignal for complex false breakouts., detect_false_breakout_one_bar() (+34 more)
+Cohesion: 0.07
+Nodes (39): _append(), build_partial_targets(), DecisionSink, Record a decision into ``sink`` if one is provided; otherwise do nothing., record(), detect_false_breakout_complex(), DecisionSink, Router-compatible wrapper returning a TradeSignal for complex false breakouts. (+31 more)
 
-### Community 29 - "test_p0_fixes.py"
-Cohesion: 0.09
-Nodes (14): detect_false_breakout(), DataFrame, False breakout detection — base module, intentionally disabled. This module…, Detect a level breach followed by immediate rejection. .. deprecated:: This…, _make_level(), DataFrame, Tests covering P0 fixes for Gerchik-style trading logic. P0-A:…, Verify that breakout and rebound honour the configured RR minimum. We patch… (+6 more)
+### Community 29 - "_make_level"
+Cohesion: 0.13
+Nodes (8): _make_level(), DataFrame, Verify that breakout and rebound honour the configured RR minimum. We patch…, Bars that produce a valid rebound setup but only ~2.5 R to the nearest level., TestComplexStopBuffer, TestMinTouchesFromSettings, TestRRMinimumUnified, TestTwoBarStopBuffer
 
 ### Community 30 - "flex_statement.py"
 Cohesion: 0.11
 Nodes (32): api_orders_journal(), Element, main(), Import the latest TWS trade report without requiring a live IBKR socket., archive_statement(), commit_flex_checkpoint(), discover_trade_report(), fetch_flex_statement() (+24 more)
 
-### Community 31 - "scanners/inefficiency_reclaim.py"
+### Community 31 - "IRSConfig"
 Cohesion: 0.11
-Nodes (29): BarLoader, QuoteLoader, _account_state(), candidate_row(), classify_market_regime(), classify_market_trend_direction(), data_quality_diagnostics(), frame_to_bars() (+21 more)
+Nodes (30): BarLoader, QuoteLoader, _account_state(), candidate_row(), classify_market_regime(), classify_market_trend_direction(), data_quality_diagnostics(), _diagnose_no_candidate() (+22 more)
 
 ### Community 32 - "dashboard/app.py"
 Cohesion: 0.21
-Nodes (22): _as_dict(), _as_list(), _confirm_close_position(), _confirm_place_order(), _forecast_defaults(), _forecast_result_frame(), _forecast_trade_identity(), _level_frame() (+14 more)
+Nodes (21): _as_dict(), _as_list(), _confirm_close_position(), _confirm_place_order(), _forecast_defaults(), _forecast_result_frame(), _forecast_trade_identity(), _level_frame() (+13 more)
 
 ### Community 33 - "scan_20260930T180535Z_32af32/manifest.json"
 Cohesion: 0.07
@@ -526,7 +525,7 @@ Nodes (28): available_symbol_count, available_symbols, closed_bars_only, complet
 
 ### Community 34 - "project/ibkr-gerchik-bot/dashboard/app.py"
 Cohesion: 0.21
-Nodes (22): _as_dict(), _as_list(), _confirm_close_position(), _confirm_place_order(), _forecast_defaults(), _forecast_result_frame(), _forecast_trade_identity(), _level_frame() (+14 more)
+Nodes (21): _as_dict(), _as_list(), _confirm_close_position(), _confirm_place_order(), _forecast_defaults(), _forecast_result_frame(), _forecast_trade_identity(), _level_frame() (+13 more)
 
 ### Community 35 - "Trade Log"
 Cohesion: 0.00
@@ -534,31 +533,31 @@ Nodes (632): End Of Day (2026-04-27T22:05:40), End Of Day (2026-04-27T22:06:16),
 
 ### Community 36 - "rebound.py"
 Cohesion: 0.12
-Nodes (37): average_range(), close_above_level(), close_below_level(), close_location(), full_range(), has_compression(), is_abnormal_candle(), is_bearish() (+29 more)
+Nodes (39): round_number_guard(), average_range(), close_above_level(), close_below_level(), close_location(), full_range(), has_compression(), is_abnormal_candle() (+31 more)
 
 ### Community 37 - "scan_20261003T173147Z_39a298/manifest.json"
 Cohesion: 0.07
 Nodes (28): available_symbol_count, available_symbols, closed_bars_only, completed_at, data_source, direction, errors_count, network_fallback_enabled (+20 more)
 
 ### Community 38 - "Trading Bot Dashboard/ibkr-gerchik-bot/dashboard/app.py"
-Cohesion: 0.20
-Nodes (23): panel_header(), _as_dict(), _as_list(), _confirm_close_position(), _confirm_place_order(), _forecast_defaults(), _forecast_result_frame(), _forecast_trade_identity() (+15 more)
+Cohesion: 0.21
+Nodes (21): _as_dict(), _as_list(), _confirm_close_position(), _confirm_place_order(), _forecast_defaults(), _forecast_result_frame(), _forecast_trade_identity(), _level_frame() (+13 more)
 
-### Community 39 - "chart_history.py"
-Cohesion: 0.08
-Nodes (37): Read-only adapter for persisted current-session state., main(), Path, _symbol_from_intraday_file(), backfill_daily_from_intraday(), build_partial_daily_frame(), ChartHistorySpec, daily_bars_from_intraday() (+29 more)
+### Community 39 - "_bars"
+Cohesion: 0.19
+Nodes (15): ChartHistorySpec, _bars(), ChartHistoryTests, get_4h_bars(), get_daily_bars(), get_weekly_bars(), load(), save() (+7 more)
 
 ### Community 40 - "test_strategy_library.py"
 Cohesion: 0.10
 Nodes (39): PermissionError, MonkeyPatch, Path, test_cli_requires_bytecode_write_protection(), test_sqlite_reader_is_true_read_only(), test_symlink_escape_is_rejected_when_supported(), test_workspace_write_succeeds_and_production_and_traversal_writes_fail(), _path() (+31 more)
 
-### Community 41 - "AgentMode"
-Cohesion: 0.20
-Nodes (23): DecisionAgentConfig, Configuration for the bounded LLM decision layer. ``mode=off`` is the safe…, default_agent(), Any, Return the process-local agent for the current config. The cache keeps shadow-…, AgentMode, test_live_configuration_requires_verified_allowlisted_account(), _candidate() (+15 more)
+### Community 41 - "test_autonomous_llm_remediation.py"
+Cohesion: 0.10
+Nodes (14): SimpleNamespace, _candidate(), _config(), test_audit_failure_fails_closed_before_paper_mutation(), test_autonomous_guard_rejects_unknown_stale_and_wide_quotes(), test_decision_queue_is_bounded_and_shadow_deduplicates_pending_work(), decide(), test_live_reconciliation_marks_uncertain_submission_without_retry() (+6 more)
 
 ### Community 42 - "dashboard_react/server.py"
 Cohesion: 0.04
-Nodes (104): BaseModel, _ai_trade_desk_candidates(), api_crypto(), api_crypto_bars(), api_crypto_manual_orders(), api_crypto_strategy(), api_crypto_symbol(), api_crypto_tradingview_state() (+96 more)
+Nodes (117): BaseModel, _ai_trade_desk_candidates(), api_crypto(), api_crypto_analyze(), api_crypto_bars(), api_crypto_order_simulate(), api_crypto_strategy(), api_crypto_symbol() (+109 more)
 
 ### Community 43 - "scan_20260930T161706Z_0f2c8b/manifest.json"
 Cohesion: 0.07
@@ -568,13 +567,13 @@ Nodes (28): available_symbol_count, available_symbols, closed_bars_only, complet
 Cohesion: 0.06
 Nodes (35): 10. Paper Protection Scheduling, 11. Paper Recovery, 12. Account Identity, 13. Audit Fail-Closed Behavior, 14. Broker Order Provenance, 15. Mode Isolation, 16. News Isolation, 17. Test Coverage (+27 more)
 
-### Community 45 - "load_stock_symbols"
-Cohesion: 0.13
-Nodes (23): api_watchlist_add(), api_watchlist_bulk_add(), api_watchlist_fetch_missing(), api_watchlist_remove(), _onboard_client_id(), _parse_stock_symbol_upload(), _queue_bulk_stock_onboarding(), _stock_symbols_missing_chart_history() (+15 more)
+### Community 45 - "data_adapter.py"
+Cohesion: 0.08
+Nodes (31): _hash_candles(), load_partial_daily_bars(), Any, Read-only adapter to the Trading Bot persisted candle service., Load closed daily history plus the current 5m-derived partial session., universe_source(), api_watchlist_add(), api_watchlist_bulk_add() (+23 more)
 
 ### Community 46 - "order_requests.py"
-Cohesion: 0.11
-Nodes (36): _acquire_lock(), claim_pending(), _apply(), list_requests(), load(), _load(), _mutate(), _now() (+28 more)
+Cohesion: 0.13
+Nodes (31): _acquire_lock(), claim_pending(), _apply(), list_requests(), load(), _load(), _mutate(), _now() (+23 more)
 
 ### Community 47 - "candles_with_levels"
 Cohesion: 0.14
@@ -582,11 +581,11 @@ Nodes (18): candles_with_levels(), capital_gauges(), _focus_price(), forecast_rr
 
 ### Community 48 - "Levels Log"
 Cohesion: 0.01
-Nodes (167): Daily Levels (2026-04-27T22:02:49), Daily Levels (2026-04-27T22:03:01), Daily Levels (2026-04-27T22:04:21), Daily Levels (2026-04-27T22:12:41), Daily Levels (2026-04-27T22:36:13), Daily Levels (2026-04-27T22:45:49), Daily Levels (2026-04-27T22:47:57), Daily Levels (2026-04-27T22:53:40) (+159 more)
+Nodes (168): Daily Levels (2026-04-27T22:02:49), Daily Levels (2026-04-27T22:03:01), Daily Levels (2026-04-27T22:04:21), Daily Levels (2026-04-27T22:12:41), Daily Levels (2026-04-27T22:36:13), Daily Levels (2026-04-27T22:45:49), Daily Levels (2026-04-27T22:47:57), Daily Levels (2026-04-27T22:53:40) (+160 more)
 
-### Community 49 - "StrategyScannerService"
-Cohesion: 0.08
-Nodes (24): load_closed_daily_frame(), Localhost MCP facade for the deterministic Strategy Scanner., Exception, Validation and stable error contracts for Strategy Scanner MCP., ScannerMCPError, validate_run_id(), validate_strategy_token(), Any (+16 more)
+### Community 49 - "scanner_mcp/service.py"
+Cohesion: 0.07
+Nodes (30): load_closed_daily_frame(), available_daily_symbols(), configured_symbols(), Localhost MCP facade for the deterministic Strategy Scanner., Exception, Validation and stable error contracts for Strategy Scanner MCP., ScannerMCPError, validate_run_id() (+22 more)
 
 ### Community 50 - "IBKR Gerchik Bot"
 Cohesion: 0.07
@@ -614,7 +613,7 @@ Nodes (35): path, readable, status, writable, safe_to_start, status, operations,
 
 ### Community 56 - "InefficiencyReclaimPaperExecutor"
 Cohesion: 0.06
-Nodes (15): InefficiencyReclaimPaperExecutor, IRSBroker, IRSExecutionPolicy, IRSExecutionResult, IRSExpiryCancellationResult, IRSReconnectResult, Any, datetime (+7 more)
+Nodes (14): InefficiencyReclaimPaperExecutor, IRSBroker, IRSExecutionPolicy, IRSExecutionResult, IRSExpiryCancellationResult, IRSReconnectResult, Any, datetime (+6 more)
 
 ### Community 57 - "engine.py"
 Cohesion: 0.10
@@ -637,32 +636,32 @@ Cohesion: 0.07
 Nodes (28): available_symbol_count, available_symbols, closed_bars_only, completed_at, data_source, direction, errors_count, network_fallback_enabled (+20 more)
 
 ### Community 63 - "IBKRClient"
-Cohesion: 0.06
-Nodes (26): _account_values(), IBKRClient, _normalized_broker_account_id(), Any, Normalize optional broker values without turning missing data into zero., Resize an existing open child order, used for partial-fill protection., Thin broker adapter responsible for connectivity and core order actions., Return only a supported brokerage account identity. (+18 more)
+Cohesion: 0.05
+Nodes (30): _account_values(), IBKRClient, _normalized_broker_account_id(), Any, Normalize optional broker values without turning missing data into zero., Resize an existing open child order, used for partial-fill protection., Thin broker adapter responsible for connectivity and core order actions., Return only a supported brokerage account identity. (+22 more)
 
 ### Community 64 - "test_ai_trade_desk.py"
 Cohesion: 0.05
 Nodes (75): _ai_trade_desk_scan_jobs(), AITradeDeskStore, calculate_trade_metrics(), candidate_identity(), _finite_number(), _json(), _now(), opportunity_identity() (+67 more)
 
 ### Community 65 - "live_engine/engine.py"
-Cohesion: 0.09
-Nodes (39): Bar, CurrentSessionState, LivePreview, LiveStrategyResult, LiveTradePlan, Enum, str, Immutable contracts for canonical daily setup and current-session preview. (+31 more)
+Cohesion: 0.08
+Nodes (48): Bar, CurrentSessionState, DailySetup, LivePreview, LiveStrategyResult, LiveTradePlan, Enum, str (+40 more)
 
 ### Community 66 - "scan_20260930T161722Z_ac49a1/manifest.json"
 Cohesion: 0.07
 Nodes (28): available_symbol_count, available_symbols, closed_bars_only, completed_at, data_source, direction, errors_count, network_fallback_enabled (+20 more)
 
 ### Community 67 - "components.py"
-Cohesion: 0.12
-Nodes (42): render_dashboard(), render_header(), render_navigation(), bias_card(), blocked_news_panel(), _clean(), _esc(), feature_card() (+34 more)
+Cohesion: 0.13
+Nodes (39): render_dashboard(), render_header(), render_navigation(), bias_card(), blocked_news_panel(), _clean(), _esc(), feature_card() (+31 more)
 
 ### Community 68 - "scan_20261003T170848Z_17ab70/manifest.json"
 Cohesion: 0.07
 Nodes (28): available_symbol_count, available_symbols, closed_bars_only, completed_at, data_source, direction, errors_count, network_fallback_enabled (+20 more)
 
 ### Community 69 - "ops/trading_platform_ops.py"
-Cohesion: 0.13
-Nodes (26): _descendant_pids(), _get_json(), _heartbeat(), human_report(), _issue_lines(), _json(), _logical_roots(), main() (+18 more)
+Cohesion: 0.11
+Nodes (27): _descendant_pids(), _get_json(), _heartbeat(), human_report(), _issue_lines(), _json(), main(), _market_data_heartbeat() (+19 more)
 
 ### Community 70 - "TrendRadarStore"
 Cohesion: 0.07
@@ -684,25 +683,25 @@ Nodes (28): available_symbol_count, available_symbols, closed_bars_only, complet
 Cohesion: 0.07
 Nodes (28): available_symbol_count, available_symbols, closed_bars_only, completed_at, data_source, direction, errors_count, network_fallback_enabled (+20 more)
 
-### Community 76 - "OKXClient"
+### Community 76 - "show_df"
 Cohesion: 0.17
-Nodes (7): OKXClient, OKXInstrument, Any, DataFrame, Small OKX REST client for public candles and future private order work., Place a SPOT order, optionally with attached market-exit TP/SL. Private…, OKXSpotOrderPayloadTests
+Nodes (24): render_reports(), render_trades(), metric_grid(), panel_header(), DataFrame, Render a responsive grid of glass metric cards., show_df(), clear_caches() (+16 more)
 
 ### Community 77 - "market_data_collector.py"
 Cohesion: 0.09
 Nodes (19): _collector_session_bounds(), _collector_session_is_open(), _collector_session_state(), _next_collector_open(), datetime, Independent intraday bar collector for dashboard continuity., Sleep in bounded chunks so waiting collectors keep proving liveness., Collect bars without account synchronization, signals, or orders. (+11 more)
 
 ### Community 79 - "ScreenerParams"
-Cohesion: 0.06
-Nodes (51): _web_imports(), _add_metrics(), _apply_anchor_date(), _approach_profile(), _bar_position(), _business_day_offset(), _date_value(), _detect_signals() (+43 more)
+Cohesion: 0.10
+Nodes (10): _detect_signals(), _finalize_candidate_lifecycle(), Finalize the existing execution result without changing detection rules. The…, ScreenerParams, _frame(), _intraday(), MarketScreenerTests, loader() (+2 more)
 
 ### Community 80 - "data.py"
 Cohesion: 0.10
 Nodes (30): _discover_via_coingecko(), ensure_data_coverage(), _fetch_bitstamp_chunk(), fetch_btc_daily(), fetch_crypto(), fetch_tv(), _fmt_date(), _normalize_tf() (+22 more)
 
 ### Community 81 - "test_ibkr_paper_autonomous.py"
-Cohesion: 0.14
-Nodes (17): test_autonomous_guard_rejects_unknown_stale_and_wide_quotes(), Broker, candidate(), config(), context(), OrderManager, paper_runtime(), Provider (+9 more)
+Cohesion: 0.20
+Nodes (16): Broker, candidate(), config(), context(), OrderManager, paper_runtime(), Provider, fixture (+8 more)
 
 ### Community 82 - "scan_20261002T170142Z_fe5513/manifest.json"
 Cohesion: 0.07
@@ -710,27 +709,27 @@ Nodes (28): available_symbol_count, available_symbols, closed_bars_only, complet
 
 ### Community 83 - "SlackAlerter"
 Cohesion: 0.06
-Nodes (14): Path, Slack webhook notifications., Send alerts to Slack with graceful degradation when disabled., Send a scheduled report without gating critical or interactive alerts., SlackAlerter, Path, Safe Slack command polling and dispatch., Parsed Slack command. (+6 more)
+Nodes (13): Path, Send alerts to Slack with graceful degradation when disabled., Send a scheduled report without gating critical or interactive alerts., SlackAlerter, Path, Safe Slack command polling and dispatch., Parsed Slack command., Poll a Slack channel for whitelisted bot commands. (+5 more)
 
 ### Community 84 - "Autonomous LLM Gerchik Agent — Adversarial Safety Review"
 Cohesion: 0.04
 Nodes (47): 10. Duplicate / Concurrency Analysis, 11. Ownership and Same-Symbol Collisions, 12. Broker vs Local Reconciliation, 13. LLM Latency Impact, 14. Provider Failure Behavior, 15. Response Validation, 16. Risk-Gate Bypass Analysis, 17. Price / Stale-Data Revalidation (+39 more)
 
 ### Community 85 - "build_live_candidate_proposal"
-Cohesion: 0.24
-Nodes (17): build_live_candidate_proposal(), LiveProposalError, _mapping(), Any, ValueError, Pure READY-only integration from canonical live results to CandidateProposal., Structured validation failure; no planner call is made for non-ready input., Build a deterministic proposal only from a fresh canonical READY result. All… (+9 more)
+Cohesion: 0.12
+Nodes (31): build_live_candidate_proposal(), LiveProposalError, _mapping(), Any, ValueError, Pure READY-only integration from canonical live results to CandidateProposal., Structured validation failure; no planner call is made for non-ready input., Build a deterministic proposal only from a fresh canonical READY result. All… (+23 more)
 
-### Community 87 - "test_irs_scheduler.py"
+### Community 87 - "jobs/inefficiency_reclaim.py"
 Cohesion: 0.11
-Nodes (19): _irs_schedule_status(), _market_collector_window_status(), _market_session(), _next_manifest_run(), datetime, _query_irs_scheduled_tasks(), _scheduled_time(), build_all_task_scheduler_commands() (+11 more)
+Nodes (21): active_confirmation_symbols(), Any, datetime, Connected IRS data-hydration and analysis workflow., Return non-expired symbols that need the 15-minute confirmation scan., Atomically publish IRS scheduler state for the Service Health dashboard., record_irs_runtime_status(), run_inefficiency_reclaim_job() (+13 more)
 
 ### Community 88 - "engine/__init__.py"
 Cohesion: 0.13
 Nodes (27): load_tv_export(), Load a TradingView-exported CSV file. TV export format: time (unix timestamp),…, BacktestConfig, calc_ema(), detect_crossover(), detect_crossunder(), ema_cross_signals(), print_kpis() (+19 more)
 
 ### Community 89 - "strategy_sources.py"
-Cohesion: 0.08
-Nodes (45): _preview_candidate(), _snapshot_payload(), _current_source_context(), current_source_snapshot_payload(), _daily_snapshot_frame(), default_sources(), _gerchik_snapshots(), _iso() (+37 more)
+Cohesion: 0.15
+Nodes (21): daily_bars_from_intraday(), Aggregate saved intraday bars into daily OHLCV rows. The resulting ``date``…, _snapshot_payload(), _daily_snapshot_frame(), default_sources(), _gerchik_snapshots(), _iso(), _monitor_snapshots() (+13 more)
 
 ### Community 90 - "scan_20261004T145856Z_a47190/manifest.json"
 Cohesion: 0.07
@@ -738,15 +737,15 @@ Nodes (28): available_symbol_count, available_symbols, closed_bars_only, complet
 
 ### Community 91 - "src/config.py"
 Cohesion: 0.07
-Nodes (36): Logger, BrokerConfig, _csv_env(), _csv_env_file_or_fallback(), _csv_env_with_fallback(), _dedupe_preserve_order(), _env_bool(), _env_float() (+28 more)
+Nodes (32): Logger, BrokerConfig, _csv_env(), _csv_env_file_or_fallback(), _csv_env_with_fallback(), _dedupe_preserve_order(), _env_bool(), _env_float() (+24 more)
 
 ### Community 92 - "execute_requests.py"
 Cohesion: 0.19
 Nodes (24): enqueue_existing_worker(), Send a validated intent to the existing atomic execution queue., _effective_dry_run(), _f(), _market_order_tif(), _position_symbol_key(), process_approved_once(), gate() (+16 more)
 
 ### Community 93 - "DecisionAudit"
-Cohesion: 0.11
-Nodes (13): DecisionAudit, _json(), _now(), Connection, Path, Small SQLite repository; all writes are explicit and queryable., Persist one immutable canonical setup revision in DecisionAudit., Persist downstream policy outcome without overwriting model output. (+5 more)
+Cohesion: 0.10
+Nodes (16): DecisionAudit, _json(), _now(), Connection, Path, Durable SQLite audit trail for autonomous decisions., Small SQLite repository; all writes are explicit and queryable., Persist one immutable canonical setup revision in DecisionAudit. (+8 more)
 
 ### Community 94 - "DESIGN.md"
 Cohesion: 0.15
@@ -784,9 +783,9 @@ Nodes (5): Candle data, Install, Run, Trading Operations Dashboard, Workspaces
 Cohesion: 0.33
 Nodes (5): Buy-Side Gate, Core Rules, Intraday Rules, Review Process, Trading Strategy
 
-### Community 121 - "test_news_timing_isolation.py"
-Cohesion: 0.19
-Nodes (14): _Broker, _DecisionAgent, _MarketData, _News, _OrderManager, _run(), _signal(), test_off_mode_keeps_legacy_macro_news_gate() (+6 more)
+### Community 121 - "AgentMode"
+Cohesion: 0.14
+Nodes (22): _decision_lab_warnings(), DecisionAgentConfig, Configuration for the bounded LLM decision layer. ``mode=off`` is the safe…, AgentMode, str, test_live_configuration_requires_verified_allowlisted_account(), test_agent_mode_has_safe_default_and_explicit_values(), test_mode_parses_and_config_requires_verified_allowlisted_paper_account() (+14 more)
 
 ### Community 122 - "CODING AGENTS: READ THIS FIRST"
 Cohesion: 0.40
@@ -817,8 +816,8 @@ Cohesion: 0.16
 Nodes (22): compute_kpis(), Compute performance KPIs matching TradingView's Strategy Tester. Max drawdown…, A single completed (or open) trade., Trade, _atr(), backtest(), _ema(), _hit() (+14 more)
 
 ### Community 136 - "AutonomousGerchikAgent"
-Cohesion: 0.07
-Nodes (32): SimpleNamespace, AgentResult, AgentRuntimeContext, AutonomousGerchikAgent, Process one candidate through durable, fail-closed authorization., Run deterministic Paper protection independently of the LLM., Validate a provider without exposing broker/account data or trading., Resolve uncertain Live reservations without ever resubmitting. (+24 more)
+Cohesion: 0.10
+Nodes (27): AgentResult, AgentRuntimeContext, AutonomousGerchikAgent, Any, Process one candidate through durable, fail-closed authorization., Run deterministic Paper protection independently of the LLM., Validate a provider without exposing broker/account data or trading., Resolve uncertain Live reservations without ever resubmitting. (+19 more)
 
 ### Community 137 - "Decision Lab Strategy Control"
 Cohesion: 0.40
@@ -828,9 +827,9 @@ Nodes (4): Decision Lab Strategy Control, MANUAL and AUTO, Safety boundary, Sour
 Cohesion: 0.40
 Nodes (4): Answer, Outcome, Q: Implement Market Screener Crypto with the same LP1 LP2 PRB1 PRB2 strategy logic as stocks in a separate tab, Source Nodes
 
-### Community 140 - "test_scanner_registration.py"
-Cohesion: 0.24
-Nodes (17): _candidate(), plan_hash(), Path, Row, Register an existing canonical scanner setup in DecisionAudit. The setup is…, register_canonical_setup(), install_source(), make_candidate() (+9 more)
+### Community 140 - "StrategySourceRegistry"
+Cohesion: 0.21
+Nodes (14): AnalysisExecutionContext, current_source_snapshot_payload(), Small extensible registry; adding a source requires one adapter entry., Return selectable IDs, including the synthetic combined view., Read and normalize all existing strategy data for Decision Lab., StrategySource, StrategySourceInfo, StrategySourceRegistry (+6 more)
 
 ### Community 141 - "Trading Strategies Project Memory"
 Cohesion: 0.09
@@ -876,9 +875,9 @@ Nodes (28): available_symbol_count, available_symbols, closed_bars_only, complet
 Cohesion: 0.07
 Nodes (26): available_symbol_count, available_symbols, closed_bars_only, completed_at, data_source, direction, errors_count, network_fallback_enabled (+18 more)
 
-### Community 157 - "ProposalSizingInputs"
+### Community 157 - "_irs_schedule_status"
 Cohesion: 0.20
-Nodes (14): build_candidate_proposal(), CandidateProposal, ProposalSizingInputs, Any, Deterministic, read-only CandidateProposal integration for scanner artifacts., Build a proposal using scanner prices verbatim and the canonical planner only., _settings_hash(), candidate() (+6 more)
+Nodes (17): api_services(), _autonomous_stock_worker_status(), _irs_schedule_status(), _iso_age_seconds(), _latest_job_log_status(), _lock_status(), _market_collector_window_status(), _market_session() (+9 more)
 
 ### Community 158 - "Shadow runtime preparation report"
 Cohesion: 0.20
@@ -896,9 +895,9 @@ Nodes (9): 1. Scope and prerequisites, 2. Exact process-scoped Shadow configurat
 Cohesion: 0.09
 Nodes (23): DailyTraderScanJobManager, DailyTraderScanRequest, Validated, intentionally small request contract for scheduled scans., Persistent async wrapper around the existing synchronous scan path., _service(), test_async_scan_concurrent_duplicate_requests_start_one_execution(), submit(), test_async_scan_idempotency_key_reuses_active_job_and_prevents_duplicate_execution() (+15 more)
 
-### Community 162 - "manual_order.py"
-Cohesion: 0.19
-Nodes (16): _client_order_id(), _decimal(), _decimal_text(), execute_manual_demo_order(), _floor_to_step(), _instrument(), load_manual_order_state(), _now() (+8 more)
+### Community 162 - "OKXClient"
+Cohesion: 0.07
+Nodes (35): api_crypto_manual_orders(), api_crypto_order_place(), Submit a manual Strategy Crypto order to OKX Demo only., _client_order_id(), _decimal(), _decimal_text(), execute_manual_demo_order(), _floor_to_step() (+27 more)
 
 ### Community 163 - "scan_20261004T150305Z_9aa1dd/manifest.json"
 Cohesion: 0.07
@@ -913,16 +912,16 @@ Cohesion: 0.15
 Nodes (12): 10. Limitations and controlled-validation status, 11. Operator workflow, 1. Existing and new launcher behavior, 2. Worker architecture and entry point, 3. Startup order, 4. Heartbeat, state, and duplicate prevention, 5. Closed-market behavior, 6. Mode-aware preflight and retry behavior (+4 more)
 
 ### Community 166 - "journal_reader.py"
-Cohesion: 0.18
-Nodes (18): test_eastern_fallback_observes_modern_us_daylight_saving(), _safe_symbol(), _first_decimal(), OrderJournalReader, parse_timestamp(), Any, datetime, Decimal (+10 more)
+Cohesion: 0.17
+Nodes (21): test_eastern_fallback_observes_modern_us_daylight_saving(), _first_decimal(), OrderJournalReader, parse_timestamp(), Any, datetime, Decimal, Path (+13 more)
 
 ### Community 167 - "reconcile_workflow"
 Cohesion: 0.25
 Nodes (23): _candidate_identity(), ContractError, _count(), _mapping(), _nonempty(), Any, ValueError, Pure validation and reconciliation for Trading Orchestrator A2A replies. (+15 more)
 
 ### Community 168 - "premarket.py"
-Cohesion: 0.08
-Nodes (48): bar_metadata(), bar_path(), _bar_store_lock(), _ensure_dir(), load_bars(), _normalize_frame(), DataFrame, Path (+40 more)
+Cohesion: 0.06
+Nodes (67): main(), Path, _symbol_from_intraday_file(), bar_metadata(), bar_path(), _bar_store_lock(), _ensure_dir(), load_bars() (+59 more)
 
 ### Community 169 - "scan_20260930T202434Z_b9a9dc/manifest.json"
 Cohesion: 0.07
@@ -933,8 +932,8 @@ Cohesion: 0.22
 Nodes (9): PersistedSessionAdapter, Any, _daily_row(), _loader_factory(), test_closed_intraday_bars_are_required(), test_incomplete_daily_row_is_only_fallback_without_usable_intraday(), test_intraday_current_session_wins_over_incomplete_daily_row(), test_intraday_ohlcv_aggregation_is_exact() (+1 more)
 
 ### Community 171 - "test_trading_platform_ops.py"
-Cohesion: 0.19
-Nodes (28): ProcessInfo, ServiceSpec, _supervisor(), test_active_execution_blocks_missing_execute_worker_start(), test_api_health_check_failure_after_process_start_is_unavailable(), test_broker_unavailable_blocks_ready(), test_dashboard_already_running_is_adopted_from_verified_port_owner(), test_dashboard_missing_uses_api_only_launcher_while_workers_remain_healthy() (+20 more)
+Cohesion: 0.12
+Nodes (52): ProcessInfo, ServiceSpec, Supervisor, _market_data_spec(), Path, _supervisor(), test_active_execution_blocks_missing_execute_worker_start(), test_api_health_check_failure_after_process_start_is_unavailable() (+44 more)
 
 ### Community 172 - "report_autonomous_stock_worker_start.py"
 Cohesion: 0.60
@@ -969,8 +968,8 @@ Cohesion: 0.25
 Nodes (7): Current integration, DeepSeek Harness ↔ Trading Bot Data MCP, Expected model-visible tools, Model switching and safety, Startup order, Troubleshooting, Validation prompts
 
 ### Community 180 - "metrics.py"
-Cohesion: 0.13
-Nodes (27): average_true_range(), Decimal, Read persisted candle CSVs without importing production write-capable modules., Any, Descriptive winner-versus-loser comparisons with no significance claims., winner_loser_comparison(), _decimal_values(), derive_trade_metrics() (+19 more)
+Cohesion: 0.17
+Nodes (21): Any, Descriptive winner-versus-loser comparisons with no significance claims., winner_loser_comparison(), _decimal_values(), derive_trade_metrics(), _first_touch(), _is_short(), _minutes_between() (+13 more)
 
 ### Community 182 - "Trading Bot Data MCP v0.1"
 Cohesion: 0.25
@@ -988,25 +987,25 @@ Nodes (4): Changed components, Scope, Strategy Prompt Layer Implementation Repor
 Cohesion: 0.25
 Nodes (7): Acceptance status, Authoritative sources, Boundary verification, Final safety answers, Price and freshness verification, Trading Bot Data MCP v0.1 Implementation Report, Trading Bot Data MCP v0.2 — render_symbol_chart
 
-### Community 186 - "DecisionCandidate"
-Cohesion: 0.07
-Nodes (59): BaseException, check(), main(), provider_check(), Read-only preflight for ``ibkr_paper_autonomous``. The default invocation reads…, _check(), main(), _provider_check() (+51 more)
+### Community 186 - "DecisionAction"
+Cohesion: 0.06
+Nodes (64): BaseException, check(), main(), provider_check(), Read-only preflight for ``ibkr_paper_autonomous``. The default invocation reads…, _check(), main(), _provider_check() (+56 more)
 
 ### Community 187 - "DeepSeek Harness Trading Bot MCP Integration Report"
 Cohesion: 0.25
 Nodes (7): Changed configuration, Configuration inspection, DeepSeek Harness Trading Bot MCP Integration Report, Evidence completed, Harness live-chat evidence, Safety, Status
 
 ### Community 188 - "agent.py"
-Cohesion: 0.07
-Nodes (40): Autonomous Gerchik decision orchestrator. The agent owns reasoning and…, broker_order_ref(), execution_key(), order_fingerprint(), Stable identities shared by autonomous persistence and broker provenance., Return the mode/agent/candidate namespace key used by SQLite claims., Create a compact deterministic orderRef suitable for IBKR order fields., _finite() (+32 more)
+Cohesion: 0.13
+Nodes (23): Autonomous Gerchik decision orchestrator. The agent owns reasoning and…, broker_order_ref(), execution_key(), order_fingerprint(), Stable identities shared by autonomous persistence and broker provenance., Return the mode/agent/candidate namespace key used by SQLite claims., Create a compact deterministic orderRef suitable for IBKR order fields., PositionAction (+15 more)
 
 ### Community 189 - "Backtesting Engine — TradingView Matching Internals"
 Cohesion: 0.13
 Nodes (15): Backtesting Engine — TradingView Matching Internals, Commission, Crossover / Crossunder Detection, Data Source, EMA Calculation, Net Profit vs Open P&L, Order of Operations Per Bar (matching TV), Peak Equity Update on Reversal (v4.0 fix) (+7 more)
 
 ### Community 190 - "ApprovalStore"
-Cohesion: 0.11
-Nodes (24): ApprovalResult, ApprovalStore, _iso(), _now(), Any, Connection, datetime, SQLite-backed approval state machine sharing the DecisionAudit database. (+16 more)
+Cohesion: 0.10
+Nodes (26): ApprovalResult, ApprovalStore, _candidate(), _iso(), _now(), Any, Connection, datetime (+18 more)
 
 ### Community 191 - "scan_20261001T163053Z_4bfbc5/manifest.json"
 Cohesion: 0.07
@@ -1021,24 +1020,24 @@ Cohesion: 0.07
 Nodes (28): available_symbol_count, available_symbols, closed_bars_only, completed_at, data_source, direction, errors_count, network_fallback_enabled (+20 more)
 
 ### Community 194 - "Direction"
-Cohesion: 0.13
-Nodes (28): _historical_analysis_candidate(), Remove live-only risk gates from an anchor-date analysis result., ConfirmationType, Direction, OrderPlan, Enum, str, ScoreBreakdown (+20 more)
+Cohesion: 0.10
+Nodes (37): Fail-closed paper executor for ENTRY_ARMED IRS candidates., _historical_analysis_candidate(), Remove live-only risk gates from an anchor-date analysis result., ImmutableZoneError, ValueError, SQLite audit store for IRS zones, setups, transitions, and execution records., Raised when a scan attempts to move persisted zone boundaries., build_signal_id() (+29 more)
 
 ### Community 195 - "NasdaqDataClient"
-Cohesion: 0.10
+Cohesion: 0.09
 Nodes (21): NasdaqDataConfig, Optional Nasdaq market-data fallback for historical candles., _cloud_precision(), _cloud_range(), _daily_cloud_range(), _duration_days(), _duration_start_date(), _empty_bars() (+13 more)
 
-### Community 197 - "trade_signal_to_candidate"
-Cohesion: 0.13
-Nodes (17): _first(), _float_or_none(), mapping_to_candidate(), datetime, Adapters from deterministic strategy signals into decision contracts., Adapt a calculated non-stock trade plan to the common decision contract., Adapt a fully normalized ``TradeSignal`` without recalculating it., _signal_timestamp() (+9 more)
+### Community 197 - "signal_models.py"
+Cohesion: 0.12
+Nodes (18): _first(), _float_or_none(), mapping_to_candidate(), datetime, Adapters from deterministic strategy signals into decision contracts., Adapt a calculated non-stock trade plan to the common decision contract., Adapt a fully normalized ``TradeSignal`` without recalculating it., _signal_timestamp() (+10 more)
 
 ### Community 198 - "scan_20261001T163406Z_36214b/manifest.json"
 Cohesion: 0.07
 Nodes (28): available_symbol_count, available_symbols, closed_bars_only, completed_at, data_source, direction, errors_count, network_fallback_enabled (+20 more)
 
 ### Community 199 - "test_telegram_trade_approval.py"
-Cohesion: 0.17
-Nodes (39): candidate(), deliver(), make_store(), test_ack_unknown_remains_prepared_until_explicit_reconciliation(), test_active_pending_approval_is_reused(), test_active_preparation_states_are_reused(), test_approved_decision_enqueues_one_durable_worker_job(), test_authorized_decisions_are_idempotent() (+31 more)
+Cohesion: 0.13
+Nodes (47): callback_data(), parse_callback_data(), Parse untrusted native Telegram callback data without invoking an LLM., Map backend states to safe Telegram presentation text., Return native inline-button semantics; callbacks remain opaque references., telegram_controls(), telegram_status_message(), candidate() (+39 more)
 
 ### Community 200 - "run_backtest"
 Cohesion: 0.29
@@ -1060,9 +1059,9 @@ Nodes (29): _app(), get_candidate_proposals(), get_live_candidate_proposals(), g
 Cohesion: 0.40
 Nodes (5): Anti-patterns to avoid, Step 1 — Confirm or default the design parameters, Step 2 — Disclose all assumptions BEFORE coding, Step 3 — Build, backtest, validate, Strategy Build Process (MANDATORY before writing strategy code)
 
-### Community 213 - "worker.py"
-Cohesion: 0.15
-Nodes (23): collect_crypto_bars(), validate_symbols(), _analysis_summary(), main(), CLI entry point for the separate crypto bot., _symbols(), _lock_owned_by_current_process(), _lock_owner() (+15 more)
+### Community 213 - "analysis.py"
+Cohesion: 0.06
+Nodes (61): load_crypto_symbols(), api_crypto_add(), api_crypto_bulk_add(), api_crypto_remove(), Resolve user-friendly crypto input to an OKX instrument id. People often type…, _resolve_crypto_add_instrument(), analyze_symbol(), collect_crypto_bars() (+53 more)
 
 ### Community 214 - "scan_20261001T163456Z_8189a6/manifest.json"
 Cohesion: 0.07
@@ -1093,32 +1092,32 @@ Cohesion: 0.36
 Nodes (19): api_market_screener(), _normalize_scan_universe(), parametrize, _radar(), _request(), _scan(), _scanner_result(), _service_with_scans() (+11 more)
 
 ### Community 222 - "telegram_approval.py"
-Cohesion: 0.12
-Nodes (32): _bar_session_date(), callback_data(), _easter_sunday(), expected_latest_completed_daily_session(), format_ready_message(), fresh_scanner_revalidate(), _is_nyse_session(), _last_weekday() (+24 more)
+Cohesion: 0.15
+Nodes (26): Persist current source data; this never calls a trading-session job., refresh_current_source_snapshot(), _bar_session_date(), _easter_sunday(), expected_latest_completed_daily_session(), format_ready_message(), fresh_scanner_revalidate(), _is_nyse_session() (+18 more)
 
 ### Community 223 - "scan_20261001T163843Z_922ed7/manifest.json"
 Cohesion: 0.07
 Nodes (28): available_symbol_count, available_symbols, closed_bars_only, completed_at, data_source, direction, errors_count, network_fallback_enabled (+20 more)
 
 ### Community 224 - "false_breakout_continuation.py"
-Cohesion: 0.20
-Nodes (15): _context(), _continuation_score(), _continuation_stop(), _current_session_uptrend_from_level(), detect_false_breakout_continuation(), _is_prior_false_breakdown(), _normalize_bars(), DataFrame (+7 more)
+Cohesion: 0.18
+Nodes (18): _context(), _continuation_score(), _continuation_stop(), _current_session_uptrend_from_level(), detect_false_breakout_continuation(), _is_prior_false_breakdown(), _normalize_bars(), DataFrame (+10 more)
 
 ### Community 225 - "test_unified_stack_lifecycle.py"
 Cohesion: 0.23
 Nodes (14): api_system_logout(), index(), Start the fixed dashboard-service shutdown script for the UI logout action., test_dashboard_launcher_tracks_listener_and_wrapper_pids_without_fallback(), test_dashboard_lifecycle_isolated_refresh_is_port_and_identity_scoped(), test_dashboard_service_contract_exposes_worker_fields_without_account_id(), test_hard_reset_reuses_complete_stack_and_documents_protection(), test_logout_endpoint_only_launches_the_fixed_stop_script() (+6 more)
 
-### Community 226 - "analysis.py"
-Cohesion: 0.23
-Nodes (18): analyze_symbol(), load_crypto_state(), _quiet_shared_level_logs(), Crypto Gerchik-style analysis using the shared stock strategy logic., Keep crypto batch scans from flooding the shared stock bot log file., run_crypto_analysis(), crypto_bar_path(), crypto_index_snapshot() (+10 more)
+### Community 226 - "snapshot_to_candidate"
+Cohesion: 0.22
+Nodes (13): _monitor_candidate_class(), Map monitor semantics without granting the monitor execution authority., Adapt one snapshot without inventing a trade plan., Adapt an executable snapshot to the existing signal execution boundary., snapshot_to_candidate(), snapshot_to_trade_signal(), _source_signal_id(), _snapshot() (+5 more)
 
 ### Community 227 - "scan_20261001T164536Z_88f98a/manifest.json"
 Cohesion: 0.07
 Nodes (28): available_symbol_count, available_symbols, closed_bars_only, completed_at, data_source, direction, errors_count, network_fallback_enabled (+20 more)
 
-### Community 228 - "test_decision_lab_provider_diagnostics.py"
-Cohesion: 0.16
-Nodes (27): api_decision_lab_status(), api_decision_lab_test_provider(), api_services(), _autonomous_stock_worker_status(), _decision_lab_warnings(), _iso_age_seconds(), _latest_job_log_status(), _lock_status() (+19 more)
+### Community 228 - "ProviderHealthResult"
+Cohesion: 0.23
+Nodes (19): api_decision_lab_status(), api_decision_lab_test_provider(), _provider_test_state(), Run the shared configured-provider WAIT diagnostic without trading state., _set_provider_test_state(), ProviderHealthResult, Sanitized result suitable for a worker heartbeat or dashboard response., _config() (+11 more)
 
 ### Community 229 - "trading_bot_mcp"
 Cohesion: 0.07
@@ -1136,13 +1135,13 @@ Nodes (22): api_bars(), _fifteen_minute_bars(), _four_hour_bars(), _hourly_bars(
 Cohesion: 0.15
 Nodes (5): Any, Connection, Path, Row, Return the newest completed job with a valid persisted result.
 
-### Community 233 - "_market_data_spec"
-Cohesion: 0.16
-Nodes (20): _market_data_spec(), Path, test_market_data_active_session_with_stale_cycle_and_fresh_runtime_is_unavailable(), test_market_data_after_close_cycle_is_degraded_not_unavailable(), test_market_data_dead_process_with_stale_heartbeat_is_missing(), test_market_data_degraded_quality_is_operational(), test_market_data_lock_owner_child_of_root_is_not_mismatch(), test_market_data_lock_owner_mismatch_is_unknown() (+12 more)
+### Community 233 - "_add_metrics"
+Cohesion: 0.20
+Nodes (9): _web_imports(), _add_metrics(), CryptoMarketScreenerTests, DataFrame, _request(), _strategy_frame(), DataFrame, _snapshot() (+1 more)
 
-### Community 234 - "jobs/inefficiency_reclaim.py"
-Cohesion: 0.18
-Nodes (10): active_confirmation_symbols(), notify_inefficiency_reclaim_scan(), Any, datetime, Connected IRS data-hydration and analysis workflow., Return non-expired symbols that need the 15-minute confirmation scan., run_inefficiency_reclaim_job(), _summary_value() (+2 more)
+### Community 234 - "calculate_robust_atr"
+Cohesion: 0.24
+Nodes (5): calculate_robust_atr(), Calculate the median/MAD filtered and symmetrically trimmed ATR., DisplacementAndZoneTests, make_bar(), RobustATRTests
 
 ### Community 235 - "Hermes Native Telegram Trade Approval Integration"
 Cohesion: 0.22
@@ -1156,9 +1155,9 @@ Nodes (36): _execution_can_close_opened_at(), _execution_can_close_position(), _
 Cohesion: 0.16
 Nodes (9): direction_conflict(), Any, run_one(), Backfill legacy snapshots that predate serialized ``price``. The value is read…, Run a bounded batch through the same authoritative scanner callback. The…, Return a stable identity for one persisted scanner observation. This is created…, Return whether a scanner side opposes a directional Radar regime. Radar…, source_observation_id() (+1 more)
 
-### Community 240 - "CryptoOrderManager"
-Cohesion: 0.21
-Nodes (9): CryptoOrderManager, CryptoOrderRequest, OKX crypto order planning and safe simulated execution. Crypto orders…, Expose the shared stock risk settings used for crypto sizing., Floor generic precision so rounding can never exceed buying power., _reward_risk(), _round_crypto_quantity(), stock_risk_settings() (+1 more)
+### Community 240 - "load_workflow_context"
+Cohesion: 0.26
+Nodes (10): Calculate weekly win rate, expectancy, and strategy-level review., run_weekly(), load_workflow_context(), Path, Helpers for reading strategy and recent workflow memory., Return the tail of a text file, or an empty string if it does not exist., Return the full contents of a text file, or an empty string if missing., Load the strategy doc plus recent research/trade context for workflow jobs. (+2 more)
 
 ### Community 242 - "Telegram Trade Approval Runbook"
 Cohesion: 0.33
@@ -1169,28 +1168,28 @@ Cohesion: 0.33
 Nodes (5): End-to-end Paper case, Execution and recovery, Lifecycle and authorization, Revalidation and risk, Telegram Trade Approval Test Plan
 
 ### Community 244 - "stocks/tradingview_webhook.py"
-Cohesion: 0.25
-Nodes (18): api_stock_tradingview_webhook(), _append_execution(), _as_float(), _as_int(), _expected_bot_id(), _first_float(), handle_stock_tradingview_webhook(), load_stock_tradingview_state() (+10 more)
+Cohesion: 0.27
+Nodes (17): _append_execution(), _as_float(), _as_int(), _expected_bot_id(), _first_float(), handle_stock_tradingview_webhook(), load_stock_tradingview_state(), _normalize_stock_symbol() (+9 more)
 
 ### Community 245 - "autonomous_stock_worker"
 Cohesion: 0.07
 Nodes (30): account_status, allowlist_status, autonomous_entry_enabled, blocked_reason, broker_executions_readable, broker_open_orders_readable, broker_positions_readable, broker_status (+22 more)
 
-### Community 246 - "AccountState"
-Cohesion: 0.19
-Nodes (7): AccountState, evaluate_hard_gates(), Decimal, Quote, _regime_aligned(), StrategyContext, PlanningAndGateTests
+### Community 246 - "api_decision_lab_run"
+Cohesion: 0.25
+Nodes (11): api_decision_lab_control(), api_decision_lab_run(), api_decision_lab_update_control(), Return control plus the worker's persisted source snapshot. The status/read…, Persist only the UI control selection; execution remains worker-owned., Queue one bounded MANUAL run for the persistent worker. This endpoint first…, Path, _settings() (+3 more)
 
-### Community 247 - "post"
-Cohesion: 0.07
-Nodes (43): _ai_trade_desk_role(), _ai_trade_desk_store(), api_ai_trade_desk_import_persisted(), api_ai_trade_desk_ingest(), api_ai_trade_desk_proposal(), api_ai_trade_desk_proposals(), api_ai_trade_desk_reject(), api_ai_trade_desk_status() (+35 more)
+### Community 247 - "_Request"
+Cohesion: 0.10
+Nodes (24): _ai_trade_desk_role(), _ai_trade_desk_store(), api_ai_trade_desk_import_persisted(), api_ai_trade_desk_ingest(), api_ai_trade_desk_proposal(), api_ai_trade_desk_proposals(), api_ai_trade_desk_reject(), api_ai_trade_desk_status() (+16 more)
 
 ### Community 248 - "_process_snapshot"
-Cohesion: 0.17
-Nodes (12): _process_snapshot(), _process_snapshot_from_cim(), _process_snapshot_from_get_process(), _process_snapshot_from_netstat(), _process_snapshot_from_psutil(), Fallback inventory with PID/name/path only when CIM command lines are denied., Last-resort listener ownership only; insufficient for non-port service recovery., Return independent process evidence without treating one CIM failure as host… (+4 more)
+Cohesion: 0.20
+Nodes (10): _process_snapshot(), _process_snapshot_from_cim(), _process_snapshot_from_get_process(), _process_snapshot_from_netstat(), _process_snapshot_from_psutil(), Fallback inventory with PID/name/path only when CIM command lines are denied., Last-resort listener ownership only; insufficient for non-port service recovery., Return independent process evidence without treating one CIM failure as host… (+2 more)
 
-### Community 249 - "test_strategy_prompt_layer.py"
+### Community 249 - "DecisionCandidate"
 Cohesion: 0.09
-Nodes (31): api_decision_lab_strategy_definitions(), ApplicabilityResult, evaluate_candidate_applicability(), _has_quantity(), _position_symbol(), Deterministic candidate applicability gates before any provider call., _candidate_payload(), compile_decision_prompt() (+23 more)
+Nodes (49): api_decision_lab_strategy_definitions(), ApplicabilityResult, evaluate_candidate_applicability(), _has_quantity(), _position_symbol(), Deterministic candidate applicability gates before any provider call., DecisionCandidate, _candidate_payload() (+41 more)
 
 ### Community 251 - "test_execute_requests.py"
 Cohesion: 0.05
@@ -1200,57 +1199,49 @@ Nodes (9): ApprovalWorkerTests, ExecuteWorkerTests, FakeBroker, FakeOrderManager
 Cohesion: 0.05
 Nodes (66): _classify(), _missing(), pre_trade_review_batch_route(), pre_trade_review_health_route(), pre_trade_review_route(), Any, get, post (+58 more)
 
-### Community 253 - "NewsService"
-Cohesion: 0.13
-Nodes (7): fx_pair_components(), normalize_symbol(), Settings, NewsService, Fetch symbol, macro, and earnings context from NewsAPI.ai / Event Registry., _build_research_symbols(), SymbolHandlingTests
+### Community 253 - "NewsRiskFilter"
+Cohesion: 0.18
+Nodes (6): _matching_headlines(), NewsRiskFilter, Evaluate symbol-specific and macro news risk before trading., NewsBlockingTests, Tests for news blocking., StubNewsService
 
 ### Community 254 - "ScannerTests"
-Cohesion: 0.20
-Nodes (4): aapl_history(), constant_frame(), DataFrame, ScannerTests
+Cohesion: 0.17
+Nodes (6): LoadedBars, aapl_history(), constant_frame(), DataFrame, ScannerTests, loader()
 
 ### Community 255 - "test_detached_launcher_contract.py"
 Cohesion: 0.30
 Nodes (14): _helper_invocation(), _launcher_text(), Path, _run_powershell_binding(), _sq(), test_dashboard_launcher_uses_safe_powershell_array_binding(), test_launchers_do_not_contain_trading_side_effects(), test_launchers_preserve_duplicate_and_ambiguous_port_guards_before_start() (+6 more)
 
 ### Community 256 - "api_inefficiency_reclaim"
-Cohesion: 0.18
-Nodes (13): api_inefficiency_reclaim(), api_inefficiency_reclaim_settings(), api_update_inefficiency_reclaim_settings(), _parse_irs_min_daily_history_rows(), _parse_irs_minimum_display_score(), Path, Run the disabled-by-default IRS analysis scan over persisted bars., Atomically update one allowlisted environment setting. (+5 more)
-
-### Community 257 - "prompt_presets.py"
-Cohesion: 0.38
-Nodes (16): default_preset(), disable_preset(), duplicate_preset(), get_preset(), _hash(), list_presets(), _load_custom(), _now() (+8 more)
-
-### Community 258 - "nearest_level_details"
-Cohesion: 0.21
-Nodes (10): _coerce_float(), nearest_level_details(), datetime, Path, _quote_reference_price(), Excel exports for intraday scan outcomes., Write one intraday scan result workbook and return its path., Return the most relevant watchlist level for reporting. (+2 more)
+Cohesion: 0.20
+Nodes (12): api_inefficiency_reclaim(), api_inefficiency_reclaim_settings(), api_update_inefficiency_reclaim_settings(), _parse_irs_min_daily_history_rows(), _parse_irs_minimum_display_score(), Path, Run the disabled-by-default IRS analysis scan over persisted bars., Atomically update one allowlisted environment setting. (+4 more)
 
 ### Community 259 - "third_touch.py"
 Cohesion: 0.33
 Nodes (6): detect_third_touch(), DataFrame, Series, Third touch setup detection., Detect the third qualified interaction with a level., _touch_indices()
 
 ### Community 260 - "lp_prb.py"
-Cohesion: 0.19
-Nodes (20): Allowlisted deterministic strategy adapters., _canonical_result(), _chart_annotations(), evaluate_symbol(), evaluate_symbol_canonical(), _frame_for_web(), _legacy_result(), _pattern_bars() (+12 more)
+Cohesion: 0.23
+Nodes (19): Allowlisted deterministic strategy adapters., _canonical_result(), _chart_annotations(), evaluate_symbol(), evaluate_symbol_canonical(), _frame_for_web(), _legacy_result(), _pattern_bars() (+11 more)
 
 ### Community 261 - "_read_execute_worker_preflight"
-Cohesion: 0.23
-Nodes (12): _execute_worker_paths(), _processes(), Path, Resolve the same durable stores used by the production worker., Inspect Execute Worker startup inputs without opening a writable store. The…, _read_execute_worker_preflight(), _preflight_db(), test_execute_worker_preflight_detects_duplicate_instances_without_mutating() (+4 more)
+Cohesion: 0.19
+Nodes (14): _execute_worker_paths(), _logical_roots(), _matching(), Path, Collapse a launcher/wrapper and its matching child into one logical root., Resolve the same durable stores used by the production worker., Inspect Execute Worker startup inputs without opening a writable store. The…, _read_execute_worker_preflight() (+6 more)
 
-### Community 262 - "scanner_mcp/service.py"
-Cohesion: 0.10
-Nodes (34): Enum, str, Stable contracts for deterministic scanner inputs and JSON outputs., ScanStatus, StrategySpec, available_daily_symbols(), configured_symbols(), _hash_candles() (+26 more)
+### Community 262 - "runner.py"
+Cohesion: 0.14
+Nodes (21): Any, Enum, str, Stable contracts for deterministic scanner inputs and JSON outputs., ScanStatus, StrategySpec, Deterministic strategy scanner built on the existing backtest implementations., get_strategy_spec() (+13 more)
 
 ### Community 263 - "heartbeat"
 Cohesion: 0.10
 Nodes (27): heartbeat, heartbeat, age_seconds, available, data_quality, fresh, last_cycle_age_seconds, last_heartbeat_age_seconds (+19 more)
 
-### Community 264 - "normalize_okx_instrument"
-Cohesion: 0.18
-Nodes (15): api_crypto_add(), api_crypto_bulk_add(), api_crypto_order_place(), api_crypto_order_simulate(), api_crypto_remove(), Resolve user-friendly crypto input to an OKX instrument id. People often type…, Submit a manual Strategy Crypto order to OKX Demo only., _resolve_crypto_add_instrument() (+7 more)
+### Community 264 - "false_breakout.py"
+Cohesion: 0.40
+Nodes (4): detect_false_breakout(), DataFrame, False breakout detection — base module, intentionally disabled. This module…, Detect a level breach followed by immediate rejection. .. deprecated:: This…
 
 ### Community 265 - "src/main.py"
 Cohesion: 0.03
-Nodes (50): maybe_commit_and_push(), Path, Optional git commit/push helpers for workflow jobs., Commit and push workflow outputs when AUTO_GIT_PUSH is enabled., _run_git(), Atomically publish IRS scheduler state for the Service Health dashboard., record_irs_runtime_status(), calculate_open_risk_amount() (+42 more)
+Nodes (52): News-driven trade blocking logic., NewsService, News API access layer., Fetch symbol, macro, and earnings context from NewsAPI.ai / Event Registry., completed_scan_callback(), get_strategy_analysis_controller(), Worker callback used after an existing intraday scan fully completes., maybe_commit_and_push() (+44 more)
 
 ### Community 266 - "BMSB"
 Cohesion: 0.33
@@ -1261,8 +1252,8 @@ Cohesion: 0.28
 Nodes (15): load_order_journal(), load_reviews(), _merge_reviews(), _now(), _open_position_index(), _order_request_ids(), Any, Path (+7 more)
 
 ### Community 268 - "StrategyAnalysisController"
-Cohesion: 0.13
-Nodes (19): AnalysisExecutionContext, completed_scan_callback(), get_strategy_analysis_controller(), Path, Persist one coherent source snapshot, then schedule eligible work., Schedule queued MANUAL runs from the persisted latest snapshot., Create and schedule one AUTO analysis from current source data. This consumes…, Worker callback used after an existing intraday scan fully completes. (+11 more)
+Cohesion: 0.21
+Nodes (9): pending_manual_runs(), Path, Persist one coherent source snapshot, then schedule eligible work., Schedule queued MANUAL runs from the persisted latest snapshot., Create and schedule one AUTO analysis from current source data. This consumes…, Serializes bounded LLM analysis runs without owning a broker client., _snapshots_from_payload(), StrategyAnalysisController (+1 more)
 
 ### Community 270 - "Confirmed Breakout"
 Cohesion: 0.33
@@ -1287,10 +1278,6 @@ Nodes (8): america_new_york(), datetime, timedelta, America/New_York support tha
 ### Community 275 - "Trading Research Analyst"
 Cohesion: 0.33
 Nodes (5): Data and safety, Interface, Interpreting JSON, Strategy library, Trading Research Analyst
-
-### Community 276 - "cli.py"
-Cohesion: 0.29
-Nodes (10): ArgumentParser, date, trailing_date_range(), _add_filters(), build_parser(), _date(), main(), Namespace (+2 more)
 
 ### Community 277 - "Trend Radar V1"
 Cohesion: 0.22
@@ -1364,9 +1351,9 @@ Nodes (5): Analyst evidence, Code and test authority, Confirmed detector contrac
 Cohesion: 0.18
 Nodes (7): DailyTraderService, Any, datetime, Read-only Daily Trader orchestration over Trend Radar and the production…, Build stable read-only reports from the existing Radar/scanner seams., Select from the latest persisted Radar snapshot without recalculating it., Assemble Daily Trader platform health without running a scan.
 
-### Community 297 - "evaluate_entry_day"
-Cohesion: 0.41
-Nodes (9): DailySetup, evaluate_entry_day(), session(), setup(), test_current_session_is_not_pattern_bar(), test_gap_and_invalid_stop_rejection_are_structured(), test_orcl_setup_a_watch(), test_orcl_setup_b_watch_and_synthetic_ready() (+1 more)
+### Community 297 - "_recover_queued_runs"
+Cohesion: 0.67
+Nodes (4): datetime, Fail closed on queued requests that cannot be consumed safely., _recover_queued_runs(), _timestamp_age_seconds()
 
 ### Community 298 - "One-Bar False Breakout"
 Cohesion: 0.33
@@ -1396,21 +1383,21 @@ Nodes (25): required_for_new_scan, required_for_order_execution, status, reason_
 Cohesion: 0.08
 Nodes (25): readiness, execution_worker, action_taken, api_status, heartbeat_age_seconds, informational_only, label, launcher (+17 more)
 
-### Community 306 - "Supervisor"
-Cohesion: 0.16
-Nodes (8): ProcessSnapshot, Return a read-only, fail-closed Execute Worker startup verdict., Read-only gate preventing worker bootstrap during ambiguous execution., _specs(), Supervisor, test_execution_boundary_reads_ambiguous_reservation_without_mutating(), test_pre_trade_reviewer_health_uses_dashboard_route(), test_production_scanner_health_failure_remains_action_required()
-
-### Community 307 - "DecisionProvider"
-Cohesion: 0.31
-Nodes (6): DecisionProvider, Protocol, MultiProviderShadowRunner, Read-only multi-provider shadow comparison for identical snapshots., Fan out one immutable request; it cannot execute or approve a trade., ShadowProviderResult
+### Community 306 - "._process_snapshot"
+Cohesion: 0.29
+Nodes (3): _processes(), ProcessSnapshot, Return a read-only, fail-closed Execute Worker startup verdict.
 
 ### Community 308 - "Pre-Trade Reviewer V1"
 Cohesion: 0.17
 Nodes (11): Architecture and API, Examples, Integration with Daily Trader, Limitations and future compatibility, Pre-Trade Reviewer V1, Radar, lifecycle, chronology, and risk, Review states and hard rules, Role (+3 more)
 
 ### Community 309 - "analytics_service.py"
+Cohesion: 0.12
+Nodes (24): ArgumentParser, _candle(), _row(), _service(), test_date_strategy_and_loser_filters_preserve_eastern_time_contract(), test_direction_aware_metrics_summary_and_status_exclusions(), test_embedded_production_strategy_id_is_normalized_without_guessing(), test_missing_data_and_strategy_registry_are_explicit() (+16 more)
+
+### Community 310 - "validator.py"
 Cohesion: 0.14
-Nodes (19): _candle(), _row(), _service(), test_date_strategy_and_loser_filters_preserve_eastern_time_contract(), test_direction_aware_metrics_summary_and_status_exclusions(), test_embedded_production_strategy_id_is_normalized_without_guessing(), test_missing_data_and_strategy_registry_are_explicit(), confidence_guidance() (+11 more)
+Nodes (12): position_value_ok(), Position sizing logic., _optional_float(), Universal trade validation rules., Explainable validator wrapper that preserves deterministic reason tracking., Validate a trade candidate against hard trading rules., validate_trade(), validate_trade_result() (+4 more)
 
 ### Community 311 - "Daily Trader V1"
 Cohesion: 0.18
@@ -1433,8 +1420,8 @@ Cohesion: 0.11
 Nodes (23): account_id, accounts, environment, evidence, managed_accounts, paper_verified, summary_accounts, process_visibility (+15 more)
 
 ### Community 317 - "autonomous_stock_preflight.py"
-Cohesion: 0.15
-Nodes (10): _provider_evidence(), Any, Read-only readiness checks for the persistent autonomous stock worker. This…, Run mode-aware, read-only readiness checks. Broker checks use only…, Validate provider construction and stored health without a network call., run_preflight(), Path, ReadOnlyPaperBroker (+2 more)
+Cohesion: 0.13
+Nodes (13): _provider_evidence(), Any, Path, Read-only readiness checks for the persistent autonomous stock worker. This…, Run mode-aware, read-only readiness checks. Broker checks use only…, Reject reservations that need reconciliation before a new entry., Validate provider construction and stored health without a network call., read_only_unresolved() (+5 more)
 
 ### Community 318 - "test_daily_trader.py"
 Cohesion: 0.05
@@ -1456,10 +1443,6 @@ Nodes (5): Any, Path, Version-aware, analysis-only strategy documentation regist
 Cohesion: 0.29
 Nodes (6): A2A handoff contracts, Deferred A2A tool invocation contract, Final report, Reconciliation, Trading Readiness Orchestrator, Workflow selection
 
-### Community 335 - "package.json"
-Cohesion: 0.25
-Nodes (7): patch, dsh, bundle, name, private, type, version
-
 ### Community 336 - "dashboard_api_lifecycle.ps1"
 Cohesion: 0.54
 Nodes (7): Get-DashboardListener(), Get-DashboardWrapper(), Get-ProcessInfo(), Show-Status(), Stop-DashboardOnly(), Wait-ForReady(), Wait-ForStopped()
@@ -1476,9 +1459,13 @@ Nodes (9): Implementation Roadmap, Live trading prerequisites, Priority 0: Contr
 Cohesion: 0.09
 Nodes (23): action_taken, api_status, heartbeat_age_seconds, label, launcher, logical_instances, observed_count, operational_state (+15 more)
 
-### Community 342 - "ProductionDataPaths"
-Cohesion: 0.22
-Nodes (5): fake_read(), fake_read(), ProductionDataPaths, Path, Read-only locations consumed from the existing Orders Journal stores.
+### Community 342 - "candle_reader.py"
+Cohesion: 0.27
+Nodes (8): average_true_range(), CandleReader, Decimal, Read persisted candle CSVs without importing production write-capable modules., Read the existing ``memory/bars/<SYMBOL>__<timeframe>.csv`` cache., Return bounded deterministic candle evidence around a completed trade., _safe_symbol(), Candle
+
+### Community 343 - "test_validate_watchlist_job.py"
+Cohesion: 0.10
+Nodes (9): run_job(), _NewsRiskFilterStub, RunJobFlowTests, fake_run_intraday(), fake_run_open(), fake_run_premarket(), _stock_position(), _NewsRiskFilterStub (+1 more)
 
 ### Community 347 - "Read-Only POC Results"
 Cohesion: 0.25
@@ -1496,10 +1483,6 @@ Nodes (23): strategy_scanner_mcp, action_taken, api_status, heartbeat_age_second
 Cohesion: 0.11
 Nodes (22): response, response, response, approval_created, available_daily_symbol_count, configured_symbol_count, current_radar_row_count, data_source (+14 more)
 
-### Community 351 - "should_trigger_kill_switch"
-Cohesion: 0.31
-Nodes (6): _equity_symbols(), Trading kill switch conditions., Block all trading when safety conditions are breached., should_trigger_kill_switch(), KillSwitchTests, Tests for kill switch behavior.
-
 ### Community 353 - "service_status"
 Cohesion: 0.12
 Nodes (19): service_status, service_status, available_daily_symbol_count, configured_symbol_count, current_radar_row_count, data_source, last_scan_at, last_scan_status (+11 more)
@@ -1508,9 +1491,9 @@ Nodes (19): service_status, service_status, available_daily_symbol_count, config
 Cohesion: 0.11
 Nodes (18): trend_radar, trend_radar, count, enabled, results, updated_at, count, enabled (+10 more)
 
-### Community 355 - "append_workflow_snapshot"
-Cohesion: 0.05
-Nodes (39): append_markdown_log(), ensure_directories(), Create runtime and memory directories expected by the application., Append a timestamped Markdown section to a log file., _build_summary(), _build_ticker_section(), _build_workflow_fallback_summary(), _format_reason_lines() (+31 more)
+### Community 355 - "eod.py"
+Cohesion: 0.15
+Nodes (15): _build_summary(), _build_ticker_section(), _build_workflow_fallback_summary(), _format_reason_lines(), _load_today_job_blockers(), _load_today_workflow_snapshot(), _normalize_reasons(), _payload_matches_today() (+7 more)
 
 ### Community 356 - "ChatGPT Capability Matrix"
 Cohesion: 0.40
@@ -1520,6 +1503,10 @@ Nodes (4): ChatGPT Capability Matrix, Classification, IBKR connector findings, R
 Cohesion: 0.40
 Nodes (3): InefficiencyReclaimSettings, Validated environment-facing settings for the isolated IRS subsystem., Build the pure strategy config without making that module read env.
 
+### Community 361 - "BrokerStub"
+Cohesion: 0.05
+Nodes (4): notify_inefficiency_reclaim_scan(), BrokerStub, AlerterStub, IRSNotificationTests
+
 ### Community 363 - "response"
 Cohesion: 0.23
 Nodes (12): operational_state, read_only, response, service, status, host, mode, namespace (+4 more)
@@ -1528,29 +1515,29 @@ Nodes (12): operational_state, read_only, response, service, status, host, mode,
 Cohesion: 0.33
 Nodes (11): candidate_count, error_count, errors, last_scan_at, last_scan_status, run_id, symbols_requested, symbols_scanned (+3 more)
 
-### Community 366 - ".test_intraday_kill_switch_mode_continues_collecting_without_trading"
-Cohesion: 0.10
-Nodes (9): Any, BrokerReconcileTests, fake_read(), fake_read(), fake_read(), capture_write(), fake_read(), fake_read() (+1 more)
+### Community 366 - "ProductionDataPaths"
+Cohesion: 0.09
+Nodes (14): Any, BrokerReconcileTests, fake_read(), fake_read(), fake_read(), capture_write(), fake_read(), fake_read() (+6 more)
 
 ## Knowledge Gaps
-- **3288 isolated node(s):** `schema_version`, `run_id`, `started_at`, `completed_at`, `direction` (+3283 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 4773 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **76 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **3291 isolated node(s):** `schema_version`, `run_id`, `started_at`, `completed_at`, `direction` (+3286 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 4776 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **78 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `InefficiencyReclaimStore` connect `InefficiencyReclaimStore` to `api_inefficiency_reclaim`, `Direction`, `jobs/inefficiency_reclaim.py`, `dashboard_react/server.py`, `strategy/inefficiency_reclaim.py`, `InefficiencyReclaimPaperExecutor`, `scanners/inefficiency_reclaim.py`?**
+- **Why does `InefficiencyReclaimStore` connect `InefficiencyReclaimStore` to `api_inefficiency_reclaim`, `Direction`, `dashboard_react/server.py`, `jobs/inefficiency_reclaim.py`, `InefficiencyReclaimPaperExecutor`, `IRSConfig`?**
   _High betweenness centrality (0.020) - this node is a cross-community bridge._
-- **Why does `Level` connect `Level` to `session_utils.py`, `false_breakout_continuation.py`, `forecast.py`, `false_breakout_one_bar.py`, `rebound.py`, `breakout.py`, `premarket.py`, `src/main.py`, `decision_log.py`, `TradeSignal`, `test_p0_fixes.py`?**
+- **Why does `Level` connect `Level` to `session_utils.py`, `false_breakout_continuation.py`, `forecast.py`, `false_breakout_one_bar.py`, `rebound.py`, `breakout.py`, `premarket.py`, `src/main.py`, `OrderManager`, `decision_log.py`, `TradeSignal`, `_make_level`?**
   _High betweenness centrality (0.018) - this node is a cross-community bridge._
-- **Why does `ScreenerParams` connect `ScreenerParams` to `strategy_sources.py`, `live_engine/engine.py`, `lp_prb.py`, `dashboard_react/server.py`, `test_strategy_prompt_layer.py`, `test_market_screener_radar_universe.py`?**
+- **Why does `ScreenerParams` connect `ScreenerParams` to `strategy_sources.py`, `live_engine/engine.py`, `lp_prb.py`, `_add_metrics`, `dashboard_react/server.py`, `market_screener.py`, `DecisionCandidate`, `test_market_screener_radar_universe.py`?**
   _High betweenness centrality (0.016) - this node is a cross-community bridge._
 - **Are the 56 inferred relationships involving `Level` (e.g. with `_level_center()` and `_level_zone()`) actually correct?**
   _`Level` has 56 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 8 inferred relationships involving `DecisionAudit` (e.g. with `AutonomousGerchikAgent` and `DecisionCandidate`) actually correct?**
   _`DecisionAudit` has 8 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `schema_version`, `run_id`, `started_at` to the rest of the system?**
-  _3288 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _3291 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `session_utils.py` be split into smaller, more focused modules?**
-  _Cohesion score 0.03589232303090728 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.031104356636271528 - nodes in this community are weakly interconnected._
