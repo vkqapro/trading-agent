@@ -8,6 +8,7 @@ here so a language model never interprets process output as health.
 from __future__ import annotations
 
 import argparse
+import importlib
 import json
 import os
 import socket
@@ -75,21 +76,95 @@ def _json(path: Path) -> dict[str, Any] | None:
         return None
 
 
-def _process_snapshot() -> ProcessSnapshot:
-    """Return Python processes with command lines, without killing anything."""
+def _process_snapshot_from_cim() -> list[ProcessInfo]:
+    """Highest-fidelity Windows process inventory, when CIM is available."""
     ps = ("Get-CimInstance Win32_Process | Select-Object ProcessId,ParentProcessId,CommandLine,Name,CreationDate | "
           "ConvertTo-Json -Compress")
-    try:
-        raw = subprocess.check_output(["powershell", "-NoProfile", "-Command", ps], text=True, timeout=5)
-        data = json.loads(raw) if raw.strip() else []
-        if isinstance(data, dict):
-            data = [data]
-        processes = [ProcessInfo(int(row["ProcessId"]), str(row.get("CommandLine") or ""),
-                                 int(row["ParentProcessId"]) if row.get("ParentProcessId") else None,
-                                 str(row.get("Name") or ""), str(row.get("CreationDate") or "")) for row in data]
-        return ProcessSnapshot(processes=processes)
-    except (OSError, subprocess.SubprocessError, ValueError, KeyError, TypeError) as exc:
-        return ProcessSnapshot(processes=[], visibility="unavailable", reason=type(exc).__name__)
+    raw = subprocess.check_output(["powershell", "-NoProfile", "-Command", ps], text=True, timeout=5)
+    data = json.loads(raw) if raw.strip() else []
+    if isinstance(data, dict):
+        data = [data]
+    return [
+        ProcessInfo(
+            int(row["ProcessId"]), str(row.get("CommandLine") or ""),
+            int(row["ParentProcessId"]) if row.get("ParentProcessId") else None,
+            str(row.get("Name") or ""), str(row.get("CreationDate") or ""),
+        )
+        for row in data
+    ]
+
+
+def _process_snapshot_from_psutil() -> list[ProcessInfo]:
+    """Use psutil if installed; access-denied processes are intentionally skipped."""
+    psutil = importlib.import_module("psutil")
+    rows: list[ProcessInfo] = []
+    for process in psutil.process_iter(["pid", "ppid", "cmdline", "name", "exe", "create_time"]):
+        try:
+            info = process.info
+            command = " ".join(info.get("cmdline") or [])
+            rows.append(ProcessInfo(
+                int(info["pid"]), command, int(info.get("ppid") or 0) or None,
+                str(info.get("exe") or info.get("name") or ""), str(info.get("create_time") or ""),
+            ))
+        except Exception:  # Access-denied and disappeared processes are expected in a partial inventory.
+            continue
+    if not rows:
+        raise RuntimeError("psutil returned no visible processes")
+    return rows
+
+
+def _process_snapshot_from_get_process() -> list[ProcessInfo]:
+    """Fallback inventory with PID/name/path only when CIM command lines are denied."""
+    command = (
+        "$ErrorActionPreference='SilentlyContinue'; Get-Process | "
+        "Select-Object Id,ProcessName,Path,StartTime | ConvertTo-Json -Compress"
+    )
+    raw = subprocess.check_output(["powershell", "-NoProfile", "-Command", command], text=True, timeout=5)
+    data = json.loads(raw) if raw.strip() else []
+    if isinstance(data, dict):
+        data = [data]
+    rows = [
+        ProcessInfo(int(row["Id"]), "", None, str(row.get("Path") or row.get("ProcessName") or ""), str(row.get("StartTime") or ""))
+        for row in data
+        if row.get("Id") is not None
+    ]
+    if not rows:
+        raise RuntimeError("Get-Process returned no visible processes")
+    return rows
+
+
+def _process_snapshot_from_netstat() -> list[ProcessInfo]:
+    """Last-resort listener ownership only; insufficient for non-port service recovery."""
+    raw = subprocess.check_output(["netstat", "-ano"], text=True, timeout=5, errors="ignore")
+    pids: set[int] = set()
+    for line in raw.splitlines():
+        parts = line.split()
+        if len(parts) >= 5 and parts[0].upper() == "TCP" and parts[3].upper() == "LISTENING":
+            try:
+                pids.add(int(parts[4]))
+            except ValueError:
+                continue
+    if not pids:
+        raise RuntimeError("netstat returned no listener owners")
+    return [ProcessInfo(pid, "") for pid in sorted(pids)]
+
+
+def _process_snapshot() -> ProcessSnapshot:
+    """Return independent process evidence without treating one CIM failure as host failure."""
+    failures: list[str] = []
+    for source, visibility, reader in (
+        ("CIM", "available", _process_snapshot_from_cim),
+        ("psutil", "partial", _process_snapshot_from_psutil),
+        ("Get-Process", "partial", _process_snapshot_from_get_process),
+        ("netstat", "port_only", _process_snapshot_from_netstat),
+    ):
+        try:
+            rows = reader()
+            reason = None if not failures else "; ".join(failures)
+            return ProcessSnapshot(processes=rows, visibility=visibility, reason=reason)
+        except (ImportError, OSError, subprocess.SubprocessError, ValueError, KeyError, TypeError, RuntimeError) as exc:
+            failures.append(f"{source}:{type(exc).__name__}")
+    return ProcessSnapshot(processes=[], visibility="unavailable", reason="; ".join(failures))
 
 
 def _processes() -> list[ProcessInfo]:
@@ -298,22 +373,27 @@ def _port(port: int | None) -> dict[str, Any]:
         return {"checked": True, "reachable": False, "host": "127.0.0.1", "port": port, "reason": type(exc).__name__}
 
 
-def _port_owner(port: int | None) -> int | None:
+def _port_listeners(port: int | None) -> list[dict[str, Any]]:
     if not port:
-        return None
+        return []
     try:
         raw = subprocess.check_output(["netstat", "-ano"], text=True, timeout=5, errors="ignore")
     except (OSError, subprocess.SubprocessError):
-        return None
-    needle = f"127.0.0.1:{port}"
+        return []
+    records: list[dict[str, Any]] = []
     for line in raw.splitlines():
         parts = line.split()
-        if len(parts) >= 5 and parts[0].upper() == "TCP" and parts[1] == needle and parts[3].upper() == "LISTENING":
+        if len(parts) >= 5 and parts[0].upper() == "TCP" and parts[3].upper() == "LISTENING" and parts[1].rsplit(":", 1)[-1] == str(port):
             try:
-                return int(parts[4])
+                records.append({"address": parts[1].rsplit(":", 1)[0], "pid": int(parts[4])})
             except ValueError:
-                return None
-    return None
+                continue
+    return records
+
+
+def _port_owner(port: int | None) -> int | None:
+    loopback_owners = {row["pid"] for row in _port_listeners(port) if row.get("address") == "127.0.0.1"}
+    return next(iter(loopback_owners)) if len(loopback_owners) == 1 else None
 
 
 def _get_json(url: str, timeout: float = API_TIMEOUT_SECONDS) -> dict[str, Any]:
@@ -676,6 +756,10 @@ class Supervisor:
             "reason_code": None, "safe_auto_repair": bool(spec.launcher),
             "recommended_action": None, "operational_state": "UNKNOWN",
         }
+        if spec.port:
+            listeners = _port_listeners(spec.port)
+            row["port_listeners"] = listeners
+            row["port_conflict"] = len({listener["pid"] for listener in listeners}) > 1
         if len(roots) > 1:
             row.update(status="DUPLICATE_PROCESS", reason_code="DUPLICATE_PROCESS_DETECTED", safe_auto_repair=False,
                         recommended_action="Stop one root only after confirming no active execution state.")

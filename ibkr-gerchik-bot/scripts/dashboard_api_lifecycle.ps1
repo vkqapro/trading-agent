@@ -9,6 +9,8 @@ $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 $StartLauncher = Join-Path $Root 'run_dashboard_api.cmd'
 $Port = 8550
+$PidFile = Join-Path $Root 'runtime\dashboard_api.pid'
+$WrapperPidFile = Join-Path $Root 'runtime\dashboard_api.wrapper.pid'
 
 function Get-DashboardListener {
     $connections = @(Get-NetTCPConnection -LocalAddress '127.0.0.1' -LocalPort $Port -State Listen -ErrorAction SilentlyContinue)
@@ -30,6 +32,19 @@ function Get-DashboardListener {
 function Get-ProcessInfo([int]$ProcessId) {
     if ($ProcessId -le 0) { return $null }
     return Get-CimInstance Win32_Process -Filter "ProcessId=$ProcessId"
+}
+
+function Get-DashboardWrapper {
+    if (-not (Test-Path -LiteralPath $WrapperPidFile -PathType Leaf)) { return $null }
+    $raw = (Get-Content -LiteralPath $WrapperPidFile -ErrorAction SilentlyContinue | Select-Object -First 1)
+    $wrapperPid = 0
+    if (-not [int]::TryParse([string]$raw, [ref]$wrapperPid)) { return $null }
+    $process = Get-ProcessInfo $wrapperPid
+    if (-not $process) { return $null }
+    $command = ([string]$process.CommandLine) -replace '"', ''
+    if ($process.Name -notmatch '^cmd(\.exe)?$') { return $null }
+    if ($command -notmatch 'dashboard_react\.server:app' -or $command -notmatch '--port\s+8550') { return $null }
+    return $process
 }
 
 function Show-Status {
@@ -99,6 +114,11 @@ function Stop-DashboardOnly {
         } elseif (Get-ProcessInfo ([int]$parent.ProcessId)) {
             throw "Dashboard listener stopped, but its parent is not an independently identifiable Dashboard process: PID $($parent.ProcessId)."
         }
+    }
+    $wrapper = Get-DashboardWrapper
+    if ($wrapper -and (Get-ProcessInfo ([int]$wrapper.ProcessId))) {
+        Stop-Process -Id ([int]$wrapper.ProcessId) -ErrorAction Stop
+        Remove-Item -LiteralPath $WrapperPidFile -Force -ErrorAction SilentlyContinue
     }
     Write-Output 'dashboard_api stop=OK'
 }

@@ -5,6 +5,8 @@ param(
 $ErrorActionPreference = "SilentlyContinue"
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $Runtime = Join-Path $Root "memory\runtime"
+$DashboardPidFile = Join-Path $Root "runtime\dashboard_api.pid"
+$DashboardWrapperPidFile = Join-Path $Root "runtime\dashboard_api.wrapper.pid"
 
 function Stop-ById {
     param([int]$ProcessId, [string]$Why)
@@ -62,6 +64,21 @@ function Get-OwnedDashboardPython {
     } catch { return @() }
 }
 
+function Get-OwnedDashboardWrapper {
+    if (-not (Test-Path -LiteralPath $DashboardWrapperPidFile -PathType Leaf)) { return @() }
+    $raw = Get-Content -LiteralPath $DashboardWrapperPidFile -ErrorAction SilentlyContinue | Select-Object -First 1
+    $wrapperPid = 0
+    if (-not [int]::TryParse([string]$raw, [ref]$wrapperPid)) { return @() }
+    try {
+        return @(Get-CimInstance Win32_Process -Filter "ProcessId = $wrapperPid" | Where-Object {
+            $_.Name -match "^cmd(\.exe)?$" -and
+            $_.CommandLine -like "*$Root*" -and
+            $_.CommandLine -match "dashboard_react\.server:app" -and
+            $_.CommandLine -match "--port(=|\s+)8550"
+        })
+    } catch { return @() }
+}
+
 function Stop-OwnedPython {
     param([string[]]$Patterns, [string]$Why)
     foreach ($proc in (Get-OwnedPython -Patterns $Patterns)) {
@@ -106,6 +123,10 @@ try {
             Stop-ById -ProcessId ([int]$_.Matches[0].Groups[1].Value) -Why "dashboard API port 8550"
         }
 } catch {}
+
+foreach ($proc in (Get-OwnedDashboardWrapper)) {
+    Stop-ById -ProcessId ([int]$proc.ProcessId) -Why "detached dashboard wrapper"
+}
 
 $cmdPatterns = @(
     "run_react_dashboard.cmd",
@@ -154,6 +175,9 @@ if ($remaining.Count -gt 0) {
     $remaining | ForEach-Object { Write-Host "  remaining $_" -ForegroundColor Red }
     exit 1
 }
+
+Remove-Item -LiteralPath $DashboardPidFile -Force -ErrorAction SilentlyContinue
+Remove-Item -LiteralPath $DashboardWrapperPidFile -Force -ErrorAction SilentlyContinue
 
 Write-Host "Verified stopped: autonomous stock worker, execute worker, market-data collector, crypto worker, and dashboard API."
 Write-Host "ngrok, TWS/IB Gateway, browsers, and unrelated Python processes were not targeted."

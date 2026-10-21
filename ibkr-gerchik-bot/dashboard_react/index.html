@@ -33,6 +33,16 @@ html,body{background:var(--dashboard-bg,#131314);color:var(--dashboard-on-surf,#
   min-height:calc(100vh - 36px);
   background:var(--dashboard-surface,rgba(32,31,32,.78))!important;
 }
+.trade-desk-board{display:grid;grid-template-columns:repeat(4,minmax(280px,1fr));gap:12px;min-width:1180px;align-items:start}
+.trade-desk-lane{min-height:390px;max-height:calc(100vh - 350px);overflow-y:auto;padding:10px;border-radius:10px}
+.trade-desk-card{position:relative;border-radius:9px;cursor:pointer;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease;background:rgba(32,31,32,.82)}
+.trade-desk-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.24)}
+.trade-desk-card:focus-visible{outline:2px solid #7df4ff;outline-offset:2px}
+.trade-desk-card__price-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.trade-desk-card__metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 12px}
+.trade-desk-card__metric{min-width:0}
+.trade-desk-card__metric-value{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:1250px){.trade-desk-board{min-width:1080px}.trade-desk-lane{max-height:none}}
 </style>
 </head>
 <body>
@@ -84,6 +94,13 @@ const themedColor = (value, fallback) => {
   return mapped ? C[mapped] : (value || fallback);
 };
 const API = `${window.location.origin}/api`;
+const S = {
+  input: {background:R('#000',0.18), color:C.onSurf, border:`1px solid ${R(C.outline,0.28)}`, borderRadius:6, padding:'8px 10px', fontSize:12, outline:'none'},
+  secondaryBtn: {background:R(C.cyan,0.08), color:C.cyan, border:`1px solid ${R(C.cyan,0.35)}`, borderRadius:6, padding:'8px 11px', fontSize:11, fontWeight:700, letterSpacing:'.04em', cursor:'pointer'},
+  primaryBtn: {background:C.cyan, color:'#071013', border:`1px solid ${C.cyan}`, borderRadius:6, padding:'8px 11px', fontSize:11, fontWeight:700, letterSpacing:'.04em', cursor:'pointer'},
+  dangerBtn: {background:R(C.chartDown,0.1), color:C.chartDown2, border:`1px solid ${R(C.chartDown,0.38)}`, borderRadius:6, padding:'8px 11px', fontSize:11, fontWeight:700, letterSpacing:'.04em', cursor:'pointer'},
+  iconBtn: {background:'transparent', color:C.onVar, border:`1px solid ${R(C.outline,0.25)}`, borderRadius:6, width:32, height:32, fontSize:20, cursor:'pointer'},
+};
 
 // UI timeframe pill → API timeframe string (must match memory/bars filenames)
 const TF_API = {
@@ -4811,11 +4828,13 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
   const [symbolSearch,setSymbolSearch]=useState('');
   const [statusFilter,setStatusFilter]=useState('ALL');
   const [selectedSignalKey,setSelectedSignalKey]=useState(null);
+  const [signalDetailOpen,setSignalDetailOpen]=useState(false);
   const [signalChartTf,setSignalChartTf]=useState('1D');
   const [signalBars,setSignalBars]=useState([]);
   const [signalBarsInfo,setSignalBarsInfo]=useState({stale:false,lastDate:null});
   const [signalPlan,setSignalPlan]=useState(null);
   const signalChartFullscreenRef = useRef(null);
+  const screenerScrollTopRef = useRef(0);
   const [showSignalOverlay,setShowSignalOverlay]=useState(true);
   const [showSignalTrade,setShowSignalTrade]=useState(true);
   const [showSignalRaw,setShowSignalRaw]=useState(false);
@@ -4845,6 +4864,18 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
   const pct = v => v!=null && Number.isFinite(Number(v)) ? `${Number(v).toFixed(2)}%` : '—';
 
   const signalKey = row => row ? [row.ticker,row.strategy,row.side,row.signal_bar_date,row.entry_day,row.level_price,row.entry_price].join('|') : '';
+  const screenerViewport = () => document.querySelector('main > div[style*="overflow-y"]');
+  const openSignalDetail = row => {
+    const viewport = screenerViewport();
+    screenerScrollTopRef.current = viewport?.scrollTop || 0;
+    setSelectedSignalKey(signalKey(row));
+    setSignalDetailOpen(true);
+    requestAnimationFrame(()=>{ const nextViewport = screenerViewport(); if(nextViewport) nextViewport.scrollTop = 0; });
+  };
+  const closeSignalDetail = () => {
+    setSignalDetailOpen(false);
+    requestAnimationFrame(()=>{ const viewport = screenerViewport(); if(viewport) viewport.scrollTop = screenerScrollTopRef.current; });
+  };
   const dateKeyFromLocal = value => {
     const y = value.getFullYear();
     const m = String(value.getMonth()+1).padStart(2,'0');
@@ -5246,6 +5277,7 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
 
   return (
     <div style={{display:'flex',flexDirection:'column',gap:22}}>
+      {!signalDetailOpen && <>
       <MetricGrid items={[
         {label:'Universe',icon:'radar',value:data.eligible_symbol_count??data.universe_size??0,sub:data.idle?'idle':`${data.universe_source==='RADAR_SETUPS'?'Radar setups':'All universe'} · ${data.actual_scanned_symbol_count??data.universe_size??0} scanned`,valueColor:C.cyan},
         {label:'Signals',icon:'bolt',value:data.signals_found??0,sub:'LP / PRB matches',valueColor:(data.signals_found||0)>0?C.lime:C.outline},
@@ -5402,7 +5434,7 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
           minColWidth={82}
           cols={['Ticker','PRICE 30D','Strategy','Side','Status','Level','Entry','Stop','TP','RR','ATR','Score',isCrypto?'Units':'Shares','Filters','Reasoning']}
           rows={filteredSignals.map(row=>[
-            <button onClick={()=>setSelectedSignalKey(signalKey(row))}
+            <button onClick={()=>openSignalDetail(row)}
               style={{background:'transparent',border:0,padding:0,cursor:'pointer',color:signalKey(row)===signalKey(selectedSignal)?C.cyan:C.onSurf,fontFamily:"'JetBrains Mono',monospace",fontSize:12,fontWeight:900}}>
               {row.ticker}
             </button>,
@@ -5430,7 +5462,29 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
         )}
       </GlassCard>
 
-      <div ref={signalChartFullscreenRef} className="strategy-chart-fullscreen-shell">
+      </>}
+
+      {signalDetailOpen && selectedSignal && (
+        <GlassCard style={{padding:'14px 18px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:14,flexWrap:'wrap'}}>
+          <div style={{display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
+            <button type="button" onClick={closeSignalDetail}
+              style={{padding:'9px 12px',borderRadius:8,cursor:'pointer',fontFamily:"'JetBrains Mono',monospace",fontSize:11,fontWeight:800,color:C.cyan,background:R(C.cyan,0.08),border:`1px solid ${R(C.cyan,0.3)}`}}>
+              ← Back to Screener
+            </button>
+            <div>
+              <div style={{fontFamily:"'Hanken Grotesk',sans-serif",fontSize:24,fontWeight:600,color:C.onSurf}}>{selectedSignal.ticker}</div>
+              <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,marginTop:3}}>SIGNAL DETAIL · {selectedSignal.strategy || 'SCREENER'} · {selectedSignal.side || '—'}</div>
+            </div>
+          </div>
+          <div style={{display:'flex',gap:7,alignItems:'center',flexWrap:'wrap'}}>
+            <Pill text={`ANCHOR ${chartAnchorDate || selectedSignal.entry_day || '—'}`} color={C.cyan}/>
+            <Pill text={`STATUS ${selectedSignal.status || '—'}`} color={statusColor(selectedSignal.status)}/>
+            <Pill text={`SCORE ${num(selectedSignal.score,2)}`} color={Number(selectedSignal.score)>=0.7?C.lime:C.cyan}/>
+          </div>
+        </GlassCard>
+      )}
+
+      <div ref={signalChartFullscreenRef} className="strategy-chart-fullscreen-shell" style={{display:signalDetailOpen?'block':'none'}}>
       <GlassCard style={{overflow:'hidden'}}>
         <div style={{padding:'16px 18px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',justifyContent:'space-between',alignItems:'center',gap:12,flexWrap:'wrap'}}>
           <PanelHeader
@@ -5562,6 +5616,7 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
         )}
         {selectedSignal && signalChartBars.length ? (
           <CandleChart
+            key={`${signalDetailOpen?'detail':'list'}-${selectedSignalKey||'none'}`}
             bars={signalChartBars}
             levels={signalChartLevels}
             lines={signalChartLines}
@@ -5636,6 +5691,7 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
         </div>
       )}
 
+      {!signalDetailOpen && <>
       <div style={{display:'grid',gridTemplateColumns:'minmax(280px,0.75fr) minmax(0,1.25fr)',gap:16,alignItems:'start'}}>
         <GlassCard style={{overflow:'hidden'}}>
           <PanelHeader icon="filter_list" title="Rejected Reasons" badge={`${rejected.length} rejected`}/>
@@ -5668,6 +5724,7 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
 {JSON.stringify({scan_timestamp:data.scan_timestamp,timeframe:data.timeframe,universe_size:data.universe_size,signals_found:data.signals_found,signals:data.signals,rejected:data.rejected?.slice(0,80)},null,2)}
         </pre>
       </GlassCard>
+      </>}
     </div>
   );
 }
@@ -7339,12 +7396,141 @@ function TabTrendRadar({refreshKey=0}) {
   </div>;
 }
 
+const deskNumber = (value, digits=2) => value === null || value === undefined || value === '' ? '—' : Number(value).toFixed(digits);
+const deskStatusColor = (status) => ({DISCOVERED:C.outline, UNDER_REVIEW:C.ocean, READY:C.lime, INVALIDATED:C.chartDown2, REJECTED:C.chartDown2, APPROVED:C.lime}[status] || C.outline);
+const deskWarningLabel = (warning) => ({
+  spread:'SPREAD DATA', corporate_actions:'CORPORATE ACTIONS', listing_status:'LISTING STATUS',
+  split_adjustment:'SPLIT ADJUSTMENT', stale_signal:'STALE SIGNAL', existing_position:'EXISTING POSITION',
+  existing_order:'EXISTING ORDER', radar_conflict:'RADAR CONFLICT', data_quality:'DATA QUALITY'
+}[String(warning||'').toLowerCase()] || String(warning||'').replaceAll('_',' ').toUpperCase());
+const uniqueTradeDeskProposals = proposals => { const seen = new Set(); return (Array.isArray(proposals)?proposals:[]).filter(proposal => { const id=String(proposal?.proposal_id||''); if(!id || seen.has(id)) return false; seen.add(id); return true; }); };
+const readyTransitionCheck = proposal => { const source=proposal?.source||{}; if(!String(proposal?.source_scan_id||'').trim()) return {eligible:false,reason_code:'SOURCE_PROVENANCE_UNVERIFIED',reason:'Authoritative source_scan_id is missing.'}; const lifecycle=String(proposal?.scanner_lifecycle||source.lifecycle_status||'').toUpperCase(); if(['ENTRY_TRIGGERED','INVALIDATED','EXPIRED','AMBIGUOUS_INTRABAR_ORDER','NO_SETUP'].includes(lifecycle)) return {eligible:false,reason_code:'SIGNAL_NOT_CURRENTLY_READY',reason:`Scanner lifecycle ${lifecycle||'UNKNOWN'} cannot be promoted to READY.`}; if(!['PENDING_ENTRY','READY'].includes(lifecycle)) return {eligible:false,reason_code:'SIGNAL_LIFECYCLE_UNVERIFIED',reason:`Scanner lifecycle ${lifecycle||'UNKNOWN'} is not a current reviewable setup.`}; if(source.data_quality_complete!==true) return {eligible:false,reason_code:'DATA_QUALITY_INCOMPLETE',reason:'Authoritative scanner data quality is incomplete.'}; const timestamp=proposal?.source_timestamp||source.scan_timestamp; if(!timestamp) return {eligible:false,reason_code:'SOURCE_FRESHNESS_UNVERIFIED',reason:'Authoritative source timestamp is missing.'}; const age=Date.now()-Date.parse(timestamp); if(!Number.isFinite(age)||age<0||age>86400000) return {eligible:false,reason_code:'STALE_SOURCE_OBSERVATION',reason:'Authoritative scanner observation is outside the 24-hour freshness window.'}; return {eligible:true,reason_code:null,reason:'Current source-verified setup passed the human READY gate.'}; };
+
+const TradeDeskMetric = ({label,value,color=C.onVar,emphasis=false}) => (
+  <div className="trade-desk-card__metric">
+    <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:9,letterSpacing:'.06em',textTransform:'uppercase',color:C.outline,marginBottom:3}}>{label}</div>
+    <div className="trade-desk-card__metric-value" style={{fontSize:12,fontWeight:emphasis?700:500,color}}>{value}</div>
+  </div>
+);
+
+const TradeDeskCard = ({proposal,onOpen}) => {
+  const directionColor = proposal.direction==='LONG' ? '#20d6a5' : C.chartDown2;
+  const warningItems = Array.isArray(proposal.warnings) ? proposal.warnings : [];
+  const operationalWarnings = [
+    proposal.scanner_lifecycle==='ENTRY_TRIGGERED' ? 'entry triggered' : null,
+    proposal.ai_review_status && proposal.ai_review_status!=='COMPLETED' ? 'ai review pending' : null,
+    ...warningItems,
+  ].filter(Boolean).map(deskWarningLabel).filter((value,index,array)=>array.indexOf(value)===index).slice(0,3);
+  const scannerState = proposal.scanner_status || 'CANDIDATE';
+  const workflowState = proposal.status || 'DISCOVERED';
+  const handleKeyDown = event => {
+    if(event.key==='Enter' || event.key===' '){event.preventDefault();onOpen();}
+  };
+  return <div className="trade-desk-card" role="button" tabIndex={0} onClick={onOpen} onKeyDown={handleKeyDown}
+    aria-label={`${proposal.symbol} ${proposal.direction} ${proposal.strategy} ${proposal.order_type} proposal; open signal chart`}
+    style={{border:`1px solid ${R(directionColor,0.34)}`,boxShadow:`inset 3px 0 0 ${directionColor},inset 0 1px 0 ${R('#fff',0.04)}`,padding:14,marginBottom:10}}>
+    <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:10}}>
+      <div style={{minWidth:0}}><div style={{display:'flex',alignItems:'center',gap:8}}><strong style={{fontSize:19,letterSpacing:'.02em'}}>{proposal.symbol}</strong><span style={{fontSize:10,color:C.outline,letterSpacing:'.08em'}}>OPEN CHART ↗</span></div><div style={{display:'flex',alignItems:'center',gap:6,flexWrap:'wrap',marginTop:7}}><Pill text={proposal.direction} color={directionColor}/><span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.onVar}}>{proposal.strategy}</span><span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline}}>{proposal.order_type}</span></div></div>
+      <span style={{flexShrink:0,fontFamily:"'JetBrains Mono',monospace",fontSize:9,letterSpacing:'.06em',color:deskStatusColor(workflowState),border:`1px solid ${R(deskStatusColor(workflowState),0.3)}`,background:R(deskStatusColor(workflowState),0.1),borderRadius:9999,padding:'4px 7px'}}>{workflowState}</span>
+    </div>
+    <div style={{display:'flex',justifyContent:'space-between',gap:8,marginTop:12,paddingTop:9,borderTop:`1px solid ${R(C.outline,0.12)}`,fontFamily:"'JetBrains Mono',monospace",fontSize:9,color:C.outline}}><span>SCANNER · {scannerState}</span><span>AI · {proposal.ai_review_status||'NOT_REVIEWED'}</span></div>
+    <div style={{marginTop:7,fontFamily:"'JetBrains Mono',monospace",fontSize:9,color:C.outline,wordBreak:'break-all'}}>PROPOSAL · {proposal.proposal_id} · REV {proposal.revision||0}{proposal.manual_override_status==='OVERRIDDEN'?' · MANUAL OVERRIDE':''}</div>
+    <div className="trade-desk-card__price-grid" style={{marginTop:12,padding:'10px 0',borderTop:`1px solid ${R(C.outline,0.09)}`,borderBottom:`1px solid ${R(C.outline,0.09)}`}}>
+      <TradeDeskMetric label="Entry" value={deskNumber(proposal.entry)} color={C.cyan} emphasis/>
+      <TradeDeskMetric label="Stop" value={deskNumber(proposal.stop)} color={C.chartDown2} emphasis/>
+      <TradeDeskMetric label="Target" value={deskNumber(proposal.target)} color={C.lime} emphasis/>
+    </div>
+    <div className="trade-desk-card__metric-grid" style={{marginTop:12}}>
+      <TradeDeskMetric label="R:R" value={deskNumber(proposal.rr,2)} color={C.onSurf} emphasis/>
+      <TradeDeskMetric label="Quantity" value={proposal.quantity==null?'—':String(proposal.quantity)} color={C.onSurf}/>
+      <TradeDeskMetric label="Cash allocation" value={`$${deskNumber(proposal.cash_allocation)}`} />
+      <TradeDeskMetric label="Max risk" value={proposal.max_risk_pct==null?'—':`${deskNumber(proposal.max_risk_pct,2)}%`} />
+      <TradeDeskMetric label="Potential loss" value={`-$${deskNumber(proposal.actual_risk)}`} color={C.chartDown2} emphasis/>
+      <TradeDeskMetric label="Potential profit" value={`+$${deskNumber(proposal.potential_profit)}`} color="#20d6a5" emphasis/>
+      <TradeDeskMetric label="Notional exposure" value={`$${deskNumber(proposal.notional_exposure)}`} />
+    </div>
+    {operationalWarnings.length>0&&<div style={{display:'flex',gap:5,flexWrap:'wrap',marginTop:12,paddingTop:10,borderTop:`1px solid ${R(C.lemon,0.2)}`}}>{operationalWarnings.map(warning=><span key={warning} style={{fontFamily:"'JetBrains Mono',monospace",fontSize:9,letterSpacing:'.04em',color:C.lemon,background:R(C.lemon,0.08),border:`1px solid ${R(C.lemon,0.25)}`,borderRadius:9999,padding:'4px 6px'}}>⚠ {warning}</span>)}</div>}
+  </div>;
+};
+
+function TabAITradeDesk(){
+  const [items,setItems] = React.useState([]);
+  const [selected,setSelected] = React.useState(null);
+  const [detail,setDetail] = React.useState(null);
+  const [query,setQuery] = React.useState('');
+  const [busy,setBusy] = React.useState(false);
+  const [notice,setNotice] = React.useState('');
+  const [edit,setEdit] = React.useState({});
+  const [chartBars,setChartBars] = React.useState([]);
+  const [chartInfo,setChartInfo] = React.useState({stale:false,lastDate:null});
+  const [chartPlan,setChartPlan] = React.useState(null);
+  const [tf,setTf] = React.useState('1D');
+  const [showVol,setShowVol] = React.useState(true);
+  const [showRaw,setShowRaw] = React.useState(false);
+  const [showTrade,setShowTrade] = React.useState(true);
+  const [showStrategy,setShowStrategy] = React.useState(true);
+  const [showStrategy2,setShowStrategy2] = React.useState(false);
+  const [showGaussian,setShowGaussian] = React.useState(false);
+  const [showGaussianSignals,setShowGaussianSignals] = React.useState(true);
+  const [preview,setPreview] = React.useState(null);
+  const [scanRuns,setScanRuns] = React.useState([]);
+  const [scanBusy,setScanBusy] = React.useState(false);
+  const [scanNotice,setScanNotice] = React.useState('');
+  const headers = {'X-AI-Trade-Desk-Role':'human','X-AI-Trade-Desk-Actor':'dashboard-user'};
+  const setEditFrom = p => setEdit({entry:p.entry,stop:p.stop,target:p.target,rr:p.rr,quantity:p.quantity,cash_allocation:p.cash_allocation,max_risk_pct:p.max_risk_pct,direction:p.direction,order_type:p.order_type||'LIMIT'});
+  const load = React.useCallback(async()=>{ try { const r=await fetch('/api/ai-trade-desk/proposals'); const j=await r.json(); setItems(uniqueTradeDeskProposals(j.proposals)); } catch(e){setNotice('Trade Desk unavailable: '+e.message);} },[]);
+  React.useEffect(()=>{load();},[load]);
+  React.useEffect(()=>{ fetch('/api/ai-trade-desk/scans').then(r=>r.ok?r.json():{runs:[]}).then(j=>setScanRuns(j.runs||[])).catch(()=>{}); },[]);
+  React.useEffect(()=>{ if(!selected) return; let live=true; const run=async()=>{ try { const d=await fetch('/api/ai-trade-desk/proposals/'+selected).then(r=>r.json()); if(!live) return; setDetail(d); setEditFrom(d.proposal||{}); const p=d.proposal||{}; const tfApi=TF_API[tf]||'daily_live'; const [b,plan]=await Promise.all([fetch('/api/bars/'+encodeURIComponent(p.symbol)+'/'+tfApi).then(r=>r.json()),fetch('/api/preopen/'+encodeURIComponent(p.symbol)).then(r=>r.ok?r.json():{})]); if(live){setChartBars(b.bars||[]);setChartInfo({stale:!!b.stale,lastDate:b.last_date||b.lastDate||null});setChartPlan(plan||{});} } catch(e){if(live)setNotice(e.message);} }; run(); return ()=>{live=false;}; },[selected,tf]);
+  const act = async (url, opts={}) => { setBusy(true); setNotice(''); try { const r=await fetch(url,{...opts,headers:{...headers,...(opts.headers||{})}}); const j=await r.json(); if(!r.ok) throw new Error(j.detail||'Request failed'); await load(); if(selected) { const d=await fetch('/api/ai-trade-desk/proposals/'+selected).then(x=>x.json()); setDetail(d); if(url.includes('/proposals/') && opts.method==='PATCH') setEditFrom(d.proposal||{}); } return j; } catch(e){setNotice(e.message);} finally {setBusy(false);} };
+  const importPersisted = () => act('/api/ai-trade-desk/proposals/import-persisted',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
+  const submitScan = async(type, body={}) => { setScanBusy(true); setScanNotice(''); try { const r=await fetch('/api/ai-trade-desk/scans/'+type,{method:'POST',headers:{...headers,'Content-Type':'application/json'},body:JSON.stringify(body)}); const j=await r.json(); if(!r.ok) throw new Error(j.detail||'Scan request failed'); const poll=async()=>{ const s=await fetch('/api/ai-trade-desk/scans/'+j.scan_id).then(x=>x.json()); setScanRuns(prev=>[s,...prev.filter(item=>item.scan_id!==s.scan_id)]); if(['QUEUED','RUNNING','CANCEL_REQUESTED'].includes(s.status)){setTimeout(poll,800);} else {setScanBusy(false);setScanNotice(`${s.job_type||type}: ${s.status}`);await load();} }; await poll(); } catch(e){setScanBusy(false);setScanNotice(e.message);} };
+  const filtered = items.filter(p => !query || [p.symbol,p.strategy,p.direction,p.status,p.source_scan_id].join(' ').toLowerCase().includes(query.toLowerCase()));
+  const columns = [{id:'DISCOVERED',label:'DISCOVERED',hint:'Authoritative scanner candidates'}, {id:'UNDER_REVIEW',label:'UNDER REVIEW',hint:'Human validation in progress'}, {id:'READY',label:'READY',hint:'Eligible for human approval'}, {id:'INVALIDATED',label:'INVALIDATED',hint:'Closed or no longer eligible'}];
+  const transition = (id,status) => act('/api/ai-trade-desk/proposals/'+id+'/status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({status})});
+  const source = detail?.proposal?.source || {};
+  React.useEffect(()=>{ if(!detail?.proposal) return; let live=true; const run=async()=>{ try { const r=await fetch('/api/ai-trade-desk/preview',{method:'POST',headers:{'Content-Type':'application/json',...headers},body:JSON.stringify(edit)}); const j=await r.json(); if(live) setPreview(r.ok?j.preview:{error:j.detail||'Preview rejected'}); } catch(e){ if(live) setPreview({error:e.message}); } }; const timer=setTimeout(run,80); return ()=>{live=false;clearTimeout(timer);}; },[edit,detail]);
+  const previewValues = preview || {risk:0,reward:0,rr:0,notional:0,error:'Calculating…'};
+  const chartLines = [['target',C.lime,'TARGET'],['entry',C.ocean,'ENTRY'],['stop',C.err,'STOP']].map(([k,color,label])=>({p:Number(edit[k]),color,label:`${label} ${deskNumber(edit[k])}`})).filter(x=>Number.isFinite(x.p));
+  const strategyOverlay = showStrategy||showStrategy2 ? [showStrategy?sliceOverlayPoints(buildBmsbStrategyOverlay(chartBars),9999):null,showStrategy2?sliceOverlayPoints(buildBmsbStrategy2Overlay(chartBars),9999):null].filter(Boolean) : null;
+  const gaussianOverlay = (showGaussian||showGaussianSignals) ? (()=>{const full=buildGaussianChannelOverlay(chartBars); return full?{...full,showChannel:showGaussian,showSignals:showGaussianSignals}:null;})() : null;
+  return <div style={{padding:'4px 0 36px'}}>
+    <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-end',gap:16,marginBottom:18}}>
+      <div><div style={{fontSize:11,color:C.ocean,letterSpacing:1.5,fontWeight:700}}>AI TRADE DESK</div><h1 style={{fontSize:28,margin:'6px 0 4px',letterSpacing:0}}>Candidate management</h1><div style={{fontSize:13,color:C.muted}}>AI may propose and explain. Only a human can change state or approve.</div></div>
+       <div style={{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Filter symbol, strategy, status" style={{...S.input,width:220}}/><button disabled={busy||scanBusy} onClick={importPersisted} style={S.secondaryBtn} title="Import persisted scanner candidates">↻ IMPORT PERSISTED</button><button disabled={busy||scanBusy} onClick={()=>submitScan('full-market')} style={S.secondaryBtn}>RUN FULL MARKET SCAN</button><button disabled={busy||scanBusy} onClick={()=>submitScan('review',{parent_scan_id:scanRuns[0]?.scan_id})} style={S.secondaryBtn}>RUN GPT CANDIDATE REVIEW</button><button disabled={busy||scanBusy} onClick={()=>submitScan('full-ai')} style={S.primaryBtn}>RUN FULL AI SCAN</button></div>
+    </div>
+    {notice && <div style={{border:'1px solid '+C.red,background:'rgba(255,80,96,.08)',padding:'10px 12px',marginBottom:14,fontSize:12,color:'#ff9aa5'}}>{notice}</div>}
+     {scanNotice && <div style={{border:'1px solid '+C.ocean,background:'rgba(64,190,220,.08)',padding:'10px 12px',marginBottom:14,fontSize:12,color:C.ocean}}>{scanNotice}</div>}
+     <div style={{border:'1px solid '+C.border,background:'rgba(255,255,255,.025)',padding:12,marginBottom:14}}><div style={{fontSize:11,color:C.ocean,letterSpacing:1.1,fontWeight:700,marginBottom:8}}>SCAN PROGRESS & HISTORY</div>{scanRuns.length===0&&<div style={{fontSize:12,color:C.muted}}>No scan runs yet. Start a scan to create persistent stage checkpoints.</div>}{scanRuns.length>0&&<><div style={{fontSize:11,color:C.muted,marginBottom:8}}>Latest: {scanRuns[0].job_type||'SCAN'} · {scanRuns[0].status||'UNKNOWN'} · {scanRuns[0].scan_id}</div>{Object.keys(scanRuns[0].stage_results||{}).length===0&&<div style={{fontSize:12,color:C.muted}}>Waiting for stage checkpoints…</div>}{Object.entries(scanRuns[0].stage_results||{}).map(([name,data])=><div key={name} style={{display:'flex',justifyContent:'space-between',gap:12,borderBottom:'1px solid '+C.border,padding:'6px 0',fontSize:11}}><span>{name.replaceAll('_',' ')}</span><span style={{color:data.status==='COMPLETED'?C.green:data.status==='REVIEW_PENDING'?C.ocean:C.muted}}>{data.status||'RUNNING'} · {data.candidate_count??data.symbols_processed??'—'}</span></div>)}</>}</div>
+    <div style={{overflowX:'auto',paddingBottom:8}}>
+      <div className="trade-desk-board">
+        {columns.map(col=><div key={col.id} className="trade-desk-lane" style={{background:R(C.surf,0.32),border:`1px solid ${R(C.outline,0.2)}`}}>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',borderBottom:`1px solid ${R(C.outline,0.18)}`,padding:'5px 3px 10px',marginBottom:10}}><b style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,letterSpacing:'.1em',color:deskStatusColor(col.id)}}>{col.label}</b><span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:11,color:C.onVar}}>{filtered.filter(p=>p.status===col.id).length}</span></div>
+          <div style={{fontSize:11,color:C.muted,margin:'0 3px 11px',lineHeight:1.4}}>{col.hint}</div>
+          {filtered.filter(p=>p.status===col.id).map(p=><TradeDeskCard key={p.proposal_id} proposal={p} onOpen={()=>setSelected(p.proposal_id)}/>)}
+        </div>)}
+      </div>
+    </div>
+     {detail && detail.proposal && <div onClick={()=>setSelected(null)} style={{position:'fixed',inset:0,zIndex:30,background:'rgba(0,0,0,.62)',display:'flex',justifyContent:'flex-end'}}><div onClick={e=>e.stopPropagation()} style={{width:'min(980px,96vw)',height:'100%',overflowY:'auto',background:C.bg,padding:24,borderLeft:'1px solid '+C.border}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}><div><div style={{fontSize:11,color:C.ocean,letterSpacing:1.4}}>PROPOSAL DETAIL</div><h2 style={{margin:'6px 0',fontSize:27}}>{detail.proposal.symbol} <span style={{fontSize:13,color:detail.proposal.direction==='LONG'?C.green:C.red}}>{detail.proposal.direction}</span></h2><div style={{fontSize:12,color:C.muted}}>{detail.proposal.strategy} · {detail.proposal.status} · revision {detail.proposal.revision}</div></div><button onClick={()=>setSelected(null)} style={S.iconBtn} title="Close detail">×</button></div>
+       <div style={{marginTop:22,padding:12,border:'1px solid '+C.border,background:'rgba(255,255,255,.025)',fontSize:12}}><b>Source integrity</b><div style={{color:C.muted,marginTop:7}}>Scanner: {detail.proposal.scanner_status} · lifecycle: {detail.proposal.scanner_lifecycle} · AI review: {detail.proposal.ai_review_status||'NOT_REVIEWED'}</div><div style={{color:C.muted,marginTop:4}}>Source run: {detail.proposal.source_scan_id||'—'} · timestamp: {detail.proposal.source_timestamp||'—'}</div><div style={{color:C.muted,marginTop:4}}>Authoritative signal: Entry {deskNumber(source.entry??source.planned_entry??detail.proposal.entry)} · Stop {deskNumber(source.stop??detail.proposal.stop)} · Target {deskNumber(source.target??detail.proposal.target)} · R:R {deskNumber(source.rr??detail.proposal.rr,2)} · source quantity {source.position_size??'—'} · effective quantity {detail.proposal.quantity}</div></div>
+       <div style={{marginTop:18,border:'1px solid '+C.border,background:'rgba(255,255,255,.02)'}}><div style={{padding:'10px 12px',borderBottom:'1px solid '+C.border,display:'flex',justifyContent:'space-between',alignItems:'center',gap:8}}><b>Signal Chart · {detail.proposal.symbol}</b><TfPills value={tf} onChange={setTf}/></div><div style={{padding:'10px 12px',display:'flex',gap:14,flexWrap:'wrap'}}><Toggle on={showRaw} label="Raw levels" onChange={setShowRaw}/><Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/><Toggle on={showVol} label="Volume" onChange={setShowVol}/><Toggle on={showStrategy} label="BMSB strategy" onChange={setShowStrategy}/><Toggle on={showStrategy2} label="BMSB strategy 2" onChange={setShowStrategy2}/><Toggle on={showGaussian} label="Gaussian channel" onChange={v=>{setShowGaussian(v);if(v)setShowGaussianSignals(true);}}/><Toggle on={showGaussianSignals} label="Gaussian signals" onChange={setShowGaussianSignals}/></div><div style={{padding:'0 12px 12px'}}><CandleChart bars={chartBars} levels={buildChartLevels(chartPlan?.trade_levels,chartPlan?.raw_levels,showTrade,showRaw)} lines={chartLines} zones={[{p1:Number(edit.entry),p2:Number(edit.target),color:C.lime,label:'TARGET ZONE'},{p1:Number(edit.entry),p2:Number(edit.stop),color:C.err,label:'RISK ZONE'}].filter(z=>Number.isFinite(z.p1)&&Number.isFinite(z.p2))} strategyOverlay={strategyOverlay} gaussianOverlay={gaussianOverlay} showVol={showVol} height={500} stale={chartInfo.stale} lastDate={chartInfo.lastDate}/></div></div>
+       {['DISCOVERED','UNDER_REVIEW','READY'].includes(detail.proposal.status)&&<div style={{marginTop:18}}><div style={{fontSize:11,color:C.ocean,letterSpacing:1.1,fontWeight:700,marginBottom:8}}>MANUAL RECALCULATION</div><div style={{display:'grid',gridTemplateColumns:'repeat(4,minmax(120px,1fr))',gap:8}}>{[['entry','Entry'],['stop','Stop'],['target','Target'],['rr','R:R'],['quantity','Quantity'],['cash_allocation','Cash allocation'],['max_risk_pct','Max risk %']].map(([key,label])=><label key={key} style={{fontSize:10,color:C.muted}}>{label}<input type="number" step="any" value={edit[key]??''} onChange={e=>setEdit({...edit,[key]:e.target.value})} style={{...S.input,width:'100%',marginTop:4}}/></label>)}<label style={{fontSize:10,color:C.muted}}>Direction<select value={edit.direction||detail.proposal.direction} onChange={e=>setEdit({...edit,direction:e.target.value})} style={{...S.input,width:'100%',marginTop:4}}><option>LONG</option><option>SHORT</option></select></label><label style={{fontSize:10,color:C.muted}}>Order type<select value={edit.order_type||'LIMIT'} onChange={e=>setEdit({...edit,order_type:e.target.value})} style={{...S.input,width:'100%',marginTop:4}}><option>LIMIT</option><option>MARKET</option><option>STOP_LIMIT</option></select></label></div><div style={{marginTop:10,fontSize:12,color:previewValues.error?C.err:C.muted}}>Preview: {previewValues.error || `risk $${deskNumber(previewValues.actual_risk)} · reward $${deskNumber(previewValues.potential_profit)} · R:R ${deskNumber(previewValues.rr,2)} · exposure $${deskNumber(previewValues.notional_exposure)}`}</div><div style={{display:'flex',gap:8,marginTop:10}}><button disabled={busy} onClick={()=>act('/api/ai-trade-desk/proposals/'+detail.proposal.proposal_id,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({...edit,revision:detail.proposal.revision,reason:'Manual Trade Desk recalculation'})})} style={S.secondaryBtn}>SAVE & RECALCULATE</button><button disabled={busy} onClick={()=>setEditFrom({...detail.proposal,entry:source.entry??source.planned_entry??detail.proposal.entry,stop:source.stop??detail.proposal.stop,target:source.target??detail.proposal.target,rr:source.rr??detail.proposal.rr,quantity:source.position_size??detail.proposal.quantity,cash_allocation:source.cash_allocation??detail.proposal.cash_allocation,max_risk_pct:source.risk_pct??detail.proposal.max_risk_pct,direction:source.side??detail.proposal.direction,order_type:source.order_type??detail.proposal.order_type})} style={S.secondaryBtn}>RESET TO SIGNAL</button></div></div>}
+      {detail.events&&detail.events.length>0&&<div style={{marginTop:22}}><div style={{fontSize:11,color:C.ocean,letterSpacing:1.1,fontWeight:700,marginBottom:8}}>AUDIT HISTORY</div>{detail.events.slice().reverse().map(e=><div key={e.event_id} style={{fontSize:11,borderBottom:'1px solid '+C.border,padding:'7px 0',display:'flex',justifyContent:'space-between',gap:8}}><span>{e.event_type} · {e.actor}</span><span style={{color:C.muted}}>{String(e.created_at||'').slice(0,19).replace('T',' ')}</span></div>)}</div>}
+      {detail.proposal.status==='UNDER_REVIEW'&&!readyTransitionCheck(detail.proposal).eligible&&<div style={{marginTop:18,padding:10,border:'1px solid '+R(C.lemon,0.3),background:R(C.lemon,0.07),fontSize:11,color:C.lemon}}>READY BLOCKED · {readyTransitionCheck(detail.proposal).reason_code} · {readyTransitionCheck(detail.proposal).reason}</div>}
+      <div style={{display:'flex',flexWrap:'wrap',gap:8,marginTop:20}}>{detail.proposal.status==='DISCOVERED'&&<button onClick={()=>transition(detail.proposal.proposal_id,'UNDER_REVIEW')} style={S.secondaryBtn}>START REVIEW</button>}{detail.proposal.status==='UNDER_REVIEW'&&<button disabled={!readyTransitionCheck(detail.proposal).eligible} onClick={()=>transition(detail.proposal.proposal_id,'READY')} style={readyTransitionCheck(detail.proposal).eligible?S.primaryBtn:S.secondaryBtn} title={readyTransitionCheck(detail.proposal).reason}>MARK READY</button>}{['DISCOVERED','UNDER_REVIEW','READY'].includes(detail.proposal.status)&&<button onClick={()=>act('/api/ai-trade-desk/proposals/'+detail.proposal.proposal_id+'/reject',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reason:'Human rejected in dashboard'})})} style={S.dangerBtn}>REJECT</button>}{detail.proposal.status==='READY'&&<button onClick={()=>setNotice('Approval is fail-closed until the existing execution worker heartbeat is healthy. No approval was sent.')} style={S.secondaryBtn} title="Approval is gated by the existing execution worker">APPROVAL GATED</button>}</div>
+      <div style={{marginTop:24,fontSize:11,color:C.muted}}>Approval remains paper-only and fail-closed. No order is submitted by this view.</div>
+    </div></div>}
+  </div>;
+}
+
 const NAV = [
   {id:'dashboard',  label:'Dashboard',          icon:'space_dashboard'},
   {id:'watchlist',  label:'Watchlist',          icon:'visibility'},
   {id:'preopen',    label:'Pre-Open',            icon:'wb_twilight'},
   {id:'screener',   label:'Screener Stocks',     icon:'radar'},
   {id:'radar',      label:'Trend Radar',         icon:'radar'},
+  {id:'ai_trade_desk', label:'AI Trade Desk',     icon:'auto_awesome'},
   {id:'crypto_screener',label:'Screener Crypto', icon:'track_changes'},
   {id:'irs',        label:'Inefficiency Reclaim',icon:'deployed_code'},
   {id:'intraday',   label:'Intraday',            icon:'monitoring'},
@@ -7374,6 +7560,7 @@ const PAGE_META = {
   forex:     {title:'Forex TradingView Bridge',sub:'TradingView alerts · IBKR CASH market execution', crumb:'Forex'},
   trades:    {title:'Trades & Positions',     sub:'Open paper positions and trade journal', crumb:'Trades'},
   forecast:  {title:'Risk Forecast Calculator',sub:'Scenario-only · replays saved data · no live orders', crumb:'Forecast'},
+  ai_trade_desk:{title:'AI Trade Desk',          sub:'Candidate review · deterministic risk · human approval only', crumb:'AI Trade Desk'},
   reports:   {title:'Reports',               sub:'Generated session workbooks', crumb:'Reports'},
   decision_lab:{title:'Decision Lab',        sub:'LLM decisions Â· deterministic risk Â· isolated paper evidence', crumb:'Decision Lab'},
 };
@@ -7671,6 +7858,7 @@ function App() {
               {tab==='forex'     && <TabForex refreshKey={refreshKey}/>}
               {tab==='trades'    && <TabTrades refreshKey={refreshKey}/>}
               {tab==='forecast'  && <TabForecast refreshKey={refreshKey}/>}
+              {tab==='ai_trade_desk' && <TabAITradeDesk refreshKey={refreshKey}/>}
               {tab==='reports'   && <TabReports refreshKey={refreshKey}/>}
               {tab==='decision_lab' && <TabDecisionLab refreshKey={refreshKey}/>}
             </ErrBound>

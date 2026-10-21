@@ -1260,3 +1260,23 @@ INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
 2026-10-17 14:21:23 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
 2026-10-17 14:21:23 | INFO | ibkr-gerchik-bot | Connected to IBKR.
 2026-10-17 14:21:24 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+INFO:     Started server process [40056]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [41768]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [31616]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [34484]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [47312]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)

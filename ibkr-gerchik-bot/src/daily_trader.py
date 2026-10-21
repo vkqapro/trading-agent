@@ -43,6 +43,10 @@ class DailyTraderScanRequest:
     max_symbols: int = 30
     idempotency_key: str | None = None
     trigger_source: str = "manual"
+    # Internal orchestration handoff. Public request parsing intentionally
+    # does not expose this escape hatch; the dashboard uses it only after
+    # validating the authoritative RADAR_SETUPS universe.
+    symbols_override: tuple[str, ...] = ()
 
     @classmethod
     def from_mapping(cls, body: Mapping[str, Any] | None) -> "DailyTraderScanRequest":
@@ -163,6 +167,24 @@ class DailyTraderService:
     def select_symbols(self, request: DailyTraderScanRequest) -> tuple[list[str], dict[str, Any], dict[str, dict[str, Any]]]:
         """Select from the latest persisted Radar snapshot without recalculating it."""
         rows = sorted(self._current_radar_rows(), key=self._radar_sort_key)
+        if request.symbols_override:
+            current = {str(row.get("symbol") or "").strip().upper(): row for row in rows}
+            selected = []
+            by_symbol = {}
+            for raw_symbol in request.symbols_override:
+                symbol = str(raw_symbol or "").strip().upper()
+                if symbol and symbol in current and symbol not in by_symbol:
+                    by_symbol[symbol] = current[symbol]
+                    selected.append(symbol)
+            return selected, {
+                "top_n": request.top_n,
+                "top": 0,
+                "breakouts": 0,
+                "fresh_flips": 0,
+                "unique_symbols": len(selected),
+                "max_symbols": len(selected),
+                "universe_source": "RADAR_SETUPS",
+            }, by_symbol
         top = rows[: request.top_n]
         breakouts = [row for row in rows if row.get("breakout") is True]
         fresh_flips = [row for row in rows if row.get("trend_flip") is True]

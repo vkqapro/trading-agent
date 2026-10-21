@@ -54,7 +54,16 @@ REM memory/runtime/autonomous_stock_worker.json. Do not claim readiness merely
 REM because the wrapper process was launched.
 "%PYTHON%" scripts\report_autonomous_stock_worker_start.py --timeout 10
 
+REM The API has an independent lifecycle.  The four worker launchers above
+REM remain owned by this full-platform entrypoint; the dashboard itself is
+REM started through the duplicate-safe detached launcher so it can be refreshed
+REM without stopping those workers.
+echo  [OK] Starting isolated Dashboard API via run_dashboard_api.cmd ...
+call "%~dp0run_dashboard_api.cmd"
+if errorlevel 1 (
+    echo  [ERROR] Dashboard API failed to start.
+    exit /b 1
+)
+
 REM Give the server 2 seconds then open browser
 start "" /min cmd /c "timeout /t 2 /nobreak >nul && start http://127.0.0.1:8550"
-
-"%PYTHON%" -m uvicorn dashboard_react.server:app --host 127.0.0.1 --port 8550

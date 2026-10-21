@@ -1,0 +1,57 @@
+{
+  "reviews": [
+    {
+      "proposal_id": "aitd-0599853d87634b0ca2eba91e425bbdf7",
+      "source_scan_id": "scanner-observation-b6b212dd817bbfd2680c0c24eb9e3eaf",
+      "symbol": "ISRG",
+      "strategy": "PRB1",
+      "ai_reasoning": "The persisted PRB1 LONG observation is linked to the exact proposal and scanner observation. Radar context is GREEN with a bullish breakout, range compression, positive momentum, high liquidity, and a Radar score of 74.90. The authoritative parameters are entry 435.3747, stop 427.3577, target 451.4087, and R:R 2.0. The observation is already ENTRY_TRIGGERED and data quality is incomplete because spread, corporate actions, listing status, and split adjustment are missing. This is analytical support for human review only; it is not a fresh entry authorization and must not be promoted to execution eligibility without current validation and human approval.",
+      "strengths": [
+        "Persisted proposal_id and scanner source_scan_id match the review payload.",
+        "Radar is GREEN and records bullish breakout, range compression, positive momentum, and high liquidity.",
+        "Authoritative PRB1 entry, stop, target, and 2.0 R:R are present."
+      ],
+      "weaknesses": [
+        "Lifecycle is ENTRY_TRIGGERED rather than a fresh pending-entry observation.",
+        "Data quality is incomplete for spread, corporate actions, listing status, and split adjustment.",
+        "The payload has no scan_timestamp at the scanner candidate level, so current freshness requires human verification."
+      ],
+      "risk_observations": [
+        "Do not treat this review as approval, execution intent, or broker order authorization.",
+        "Validate current market data and existing positions or orders before any human decision.",
+        "Historical or triggered lifecycle state must remain fail-closed until the platform readiness gate is satisfied."
+      ],
+      "review_result": "HUMAN_REVIEW_REQUIRED",
+      "review_priority": "HIGH",
+      "model_provider": "OpenAI Codex interactive-session review",
+      "review_timestamp": "2026-10-21T03:09:16.3917961Z"
+    },
+    {
+      "proposal_id": "aitd-5d5f55aa4b72481e94616746586add7e",
+      "source_scan_id": "scanner-observation-77b754552c0ff7ecf81d402caa0bd903",
+      "symbol": "AIG",
+      "strategy": "PRB2",
+      "ai_reasoning": "The persisted PRB2 LONG observation is linked to the exact proposal and scanner observation. Radar context is GREEN with a bullish breakout, range compression, positive momentum, high liquidity, and a Radar score of 71.85. The authoritative parameters are entry 81.08, stop 79.9176, target 83.4047, and R:R 2.0. The scanner status is chased_gap_skip and the lifecycle is ENTRY_TRIGGERED, while spread, corporate actions, listing status, and split adjustment remain unavailable. The setup therefore requires human review and current-data validation; the review does not create a fresh signal or make the candidate executable.",
+      "strengths": [
+        "Persisted proposal_id and scanner source_scan_id match the review payload.",
+        "Radar is GREEN and records bullish breakout, range compression, positive momentum, and high liquidity.",
+        "Authoritative PRB2 entry, stop, target, and 2.0 R:R are present."
+      ],
+      "weaknesses": [
+        "Scanner status is chased_gap_skip, which is an explicit caution against treating the observation as a normal fresh setup.",
+        "Lifecycle is ENTRY_TRIGGERED rather than a fresh pending-entry observation.",
+        "Data quality is incomplete for spread, corporate actions, listing status, and split adjustment.",
+        "The payload has no scan_timestamp at the scanner candidate level, so current freshness requires human verification."
+      ],
+      "risk_observations": [
+        "Do not treat this review as approval, execution intent, or broker order authorization.",
+        "Validate current market data and existing positions or orders before any human decision.",
+        "Preserve the chased-gap and triggered lifecycle restrictions; do not promote this record solely because of the review."
+      ],
+      "review_result": "HUMAN_REVIEW_REQUIRED",
+      "review_priority": "MEDIUM",
+      "model_provider": "OpenAI Codex interactive-session review",
+      "review_timestamp": "2026-10-21T03:09:16.3917961Z"
+    }
+  ]
+}

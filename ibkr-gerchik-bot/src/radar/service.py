@@ -7,11 +7,13 @@ order-manager dependency.
 
 from __future__ import annotations
 
+import hashlib
+import json
 from datetime import datetime, timezone
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import replace
 from pathlib import Path
-from typing import Any, Callable, Iterable
+from typing import Any, Callable, Iterable, Mapping
 
 import pandas as pd
 
@@ -30,6 +32,30 @@ from .models import RadarResult, RadarScannerResult, RadarSettings
 BarsLoader = Callable[[str, str], pd.DataFrame]
 UniverseLoader = Callable[[], Iterable[str]]
 ScannerRunner = Callable[[str], dict[str, Any]]
+
+
+def source_observation_id(
+    *,
+    symbol: str,
+    radar_as_of: str,
+    scan_timestamp: str,
+    payload: Mapping[str, Any],
+) -> str:
+    """Return a stable identity for one persisted scanner observation.
+
+    This is created only at the authoritative Radar storage boundary when the
+    scanner does not provide its own run ID.  The canonical observation body
+    makes it traceable to the symbol, Radar snapshot, scan time, and scanner
+    response without treating any one timestamp as an identity.
+    """
+    body = {
+        "symbol": str(symbol).strip().upper(),
+        "radar_as_of": str(radar_as_of),
+        "scan_timestamp": str(scan_timestamp),
+        "payload": dict(payload),
+    }
+    digest = hashlib.sha256(json.dumps(body, sort_keys=True, separators=(",", ":"), default=str).encode("utf-8")).hexdigest()
+    return "scanner-observation-" + digest[:32]
 
 
 def direction_conflict(radar_trend: str | None, scanner_side: str | None) -> bool:
@@ -259,7 +285,15 @@ class RadarService:
         payload["radar_symbol"] = normalized
         payload["radar_trend"] = radar_trend
         payload.setdefault("scan_timestamp", scan_timestamp)
-        self._persist_scanner_payload(normalized, radar_result, payload)
+        source_scan_id = self._persist_scanner_payload(normalized, radar_result, payload)
+        if source_scan_id:
+            payload["source_scan_id"] = source_scan_id
+            payload["signals"] = [
+                {**signal, "source_scan_id": signal.get("source_scan_id") or source_scan_id}
+                if isinstance(signal, dict)
+                else signal
+                for signal in annotated_signals
+            ]
         return payload
 
     @staticmethod
@@ -282,17 +316,28 @@ class RadarService:
         symbol: str,
         radar_result: RadarResult | None,
         payload: dict[str, Any],
-    ) -> None:
+    ) -> str | None:
         if radar_result is None:
-            return
+            return None
         status = str(payload.get("scanner_status") or "ERROR").strip().upper()
         scan_timestamp = str(payload.get("scan_timestamp") or datetime.now(timezone.utc).isoformat())
         strategy, side, label = self._scanner_identity(payload)
-        source_scan_id = str(
-            payload.get("source_scan_id")
-            or payload.get("scan_id")
-            or f"radar:{radar_result.as_of}:{scan_timestamp}:{symbol}"
-        )
+        source_scan_id = str(payload.get("source_scan_id") or payload.get("scan_id") or "").strip()
+        if not source_scan_id:
+            source_scan_id = source_observation_id(
+                symbol=symbol,
+                radar_as_of=radar_result.as_of,
+                scan_timestamp=scan_timestamp,
+                payload=payload,
+            )
+        persisted_payload = dict(payload)
+        persisted_payload["source_scan_id"] = source_scan_id
+        persisted_payload["signals"] = [
+            {**signal, "source_scan_id": signal.get("source_scan_id") or source_scan_id}
+            if isinstance(signal, dict)
+            else signal
+            for signal in (payload.get("signals") or [])
+        ]
         self.store.upsert_scanner_result(
             RadarScannerResult(
                 symbol=symbol,
@@ -304,10 +349,11 @@ class RadarService:
                 strategy=strategy,
                 side=side,
                 signals_found=int(payload.get("signals_found") or len(payload.get("signals") or [])),
-                payload=dict(payload),
+                payload=persisted_payload,
                 error=str(payload.get("error")) if payload.get("error") else None,
             )
         )
+        return source_scan_id
 
     def scan_symbols(self, symbols: Iterable[str], *, max_workers: int = 3) -> dict[str, Any]:
         """Run a bounded batch through the same authoritative scanner callback.

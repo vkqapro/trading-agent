@@ -1,0 +1,1739 @@
+﻿{
+  "analytics_scan_readiness": {
+    "blocked_dependencies": [],
+    "status": "READY"
+  },
+  "approvals_created": 0,
+  "blocked_dependencies": [],
+  "broker_execution_readiness": {
+    "broker_status": "HEALTHY",
+    "execution_boundary_status": "SAFE_TO_START",
+    "safety_rule": "PAPER_TRADING=true, ALLOW_IBKR_PAPER_TRADING=true, and all live-trading flags disabled",
+    "safety_status": "SAFE_FOR_PAPER_EXECUTION",
+    "status": "READY"
+  },
+  "dashboard": {
+    "reachable": true,
+    "service_status": {
+      "all_ok": true,
+      "autonomous_stock_worker": {
+        "account_status": "VERIFIED_PAPER",
+        "allowlist_status": "VERIFIED",
+        "autonomous_entry_enabled": false,
+        "blocked_reason": "PROVIDER_UNAVAILABLE",
+        "broker_executions_readable": true,
+        "broker_open_orders_readable": true,
+        "broker_positions_readable": true,
+        "broker_status": "PAPER_VERIFIED",
+        "current_session": "MARKET CLOSED",
+        "heartbeat_age_seconds": 0.8,
+        "last_error": null,
+        "last_heartbeat": "2026-10-21T02:28:54.845802+00:00",
+        "last_preflight_at": "2026-10-21T02:27:21.913169+00:00",
+        "llm_mode": "ibkr_paper_autonomous",
+        "pid": 44960,
+        "process_alive": true,
+        "provider_last_checked_at": "2026-10-21T02:27:21.005961+00:00",
+        "provider_last_error": "AUTH_ERROR",
+        "provider_latency_ms": 697.03,
+        "provider_status": "UNAVAILABLE",
+        "service": "autonomous_stock_worker",
+        "state": "MARKET_CLOSED",
+        "status": "running",
+        "worker_running": true
+      },
+      "services": [
+        {
+          "age_seconds": 0.0,
+          "detail": "FastAPI responding",
+          "icon": "dashboard",
+          "label": "Dashboard API",
+          "ok": true,
+          "status": "online"
+        },
+        {
+          "age_seconds": 0.8,
+          "detail": "MARKET CLOSED - mode ibkr_paper_autonomous - broker PAPER_VERIFIED - provider UNAVAILABLE - new entries blocked - PROVIDER_UNAVAILABLE",
+          "icon": "bolt",
+          "label": "Autonomous Stock Worker",
+          "ok": true,
+          "status": "running"
+        },
+        {
+          "age_seconds": 49777.6,
+          "detail": "today's report ready - 49777s ago",
+          "icon": "wb_twilight",
+          "label": "Pre-Open",
+          "ok": true,
+          "status": "complete"
+        },
+        {
+          "age_seconds": 16311.9,
+          "detail": "waiting for 09:30 ET - pid 36672 - startup lock 16311s old",
+          "icon": "database",
+          "label": "Market Data",
+          "ok": true,
+          "status": "waiting"
+        },
+        {
+          "age_seconds": 62.6,
+          "detail": "sleeping \u00b7 pid 38592 \u00b7 62s ago",
+          "icon": "currency_bitcoin",
+          "label": "Crypto Worker",
+          "ok": true,
+          "status": "sleeping"
+        },
+        {
+          "age_seconds": 22481.0,
+          "detail": "Hourly Setup Scan finished 22480s ago; next Premarket Wed 08:00",
+          "icon": "schedule",
+          "label": "IRS Scheduler",
+          "ok": true,
+          "status": "finished"
+        },
+        {
+          "age_seconds": 3.1,
+          "detail": "via execute worker / market-data collector",
+          "icon": "account_balance",
+          "label": "IBKR Bridge",
+          "ok": true,
+          "status": "online"
+        }
+      ],
+      "updated_at": "2026-10-20T22:28:55.616825-04:00"
+    }
+  },
+  "dependencies": {
+    "ai_authentication": {
+      "required_for_new_scan": false,
+      "required_for_order_execution": false,
+      "status": "CONFIGURED"
+    },
+    "ai_trade_desk_api": {
+      "reason_code": null,
+      "required_for_new_scan": true,
+      "required_for_order_execution": false,
+      "status": "HEALTHY"
+    },
+    "daily_trader": {
+      "reason_code": null,
+      "required_for_new_scan": true,
+      "required_for_order_execution": false,
+      "service_status": {
+        "current_radar_row_count": 352,
+        "latest_radar_as_of": "2026-10-20",
+        "orders_submitted": 0,
+        "radar_available": true,
+        "read_only": true,
+        "scanner_available": true,
+        "status": "ok"
+      },
+      "status": "HEALTHY"
+    },
+    "dashboard_api": {
+      "ownership_logical_instances": 1,
+      "ownership_process_running": true,
+      "ownership_reason_code": null,
+      "reason_code": null,
+      "required_for_new_scan": true,
+      "required_for_order_execution": false,
+      "service_diagnosis": "HEALTHY",
+      "service_status": {
+        "all_ok": true,
+        "autonomous_stock_worker": {
+          "account_status": "VERIFIED_PAPER",
+          "allowlist_status": "VERIFIED",
+          "autonomous_entry_enabled": false,
+          "blocked_reason": "PROVIDER_UNAVAILABLE",
+          "broker_executions_readable": true,
+          "broker_open_orders_readable": true,
+          "broker_positions_readable": true,
+          "broker_status": "PAPER_VERIFIED",
+          "current_session": "MARKET CLOSED",
+          "heartbeat_age_seconds": 0.8,
+          "last_error": null,
+          "last_heartbeat": "2026-10-21T02:28:54.845802+00:00",
+          "last_preflight_at": "2026-10-21T02:27:21.913169+00:00",
+          "llm_mode": "ibkr_paper_autonomous",
+          "pid": 44960,
+          "process_alive": true,
+          "provider_last_checked_at": "2026-10-21T02:27:21.005961+00:00",
+          "provider_last_error": "AUTH_ERROR",
+          "provider_latency_ms": 697.03,
+          "provider_status": "UNAVAILABLE",
+          "service": "autonomous_stock_worker",
+          "state": "MARKET_CLOSED",
+          "status": "running",
+          "worker_running": true
+        },
+        "services": [
+          {
+            "age_seconds": 0.0,
+            "detail": "FastAPI responding",
+            "icon": "dashboard",
+            "label": "Dashboard API",
+            "ok": true,
+            "status": "online"
+          },
+          {
+            "age_seconds": 0.8,
+            "detail": "MARKET CLOSED - mode ibkr_paper_autonomous - broker PAPER_VERIFIED - provider UNAVAILABLE - new entries blocked - PROVIDER_UNAVAILABLE",
+            "icon": "bolt",
+            "label": "Autonomous Stock Worker",
+            "ok": true,
+            "status": "running"
+          },
+          {
+            "age_seconds": 49777.6,
+            "detail": "today's report ready - 49777s ago",
+            "icon": "wb_twilight",
+            "label": "Pre-Open",
+            "ok": true,
+            "status": "complete"
+          },
+          {
+            "age_seconds": 16311.9,
+            "detail": "waiting for 09:30 ET - pid 36672 - startup lock 16311s old",
+            "icon": "database",
+            "label": "Market Data",
+            "ok": true,
+            "status": "waiting"
+          },
+          {
+            "age_seconds": 62.6,
+            "detail": "sleeping \u00b7 pid 38592 \u00b7 62s ago",
+            "icon": "currency_bitcoin",
+            "label": "Crypto Worker",
+            "ok": true,
+            "status": "sleeping"
+          },
+          {
+            "age_seconds": 22481.0,
+            "detail": "Hourly Setup Scan finished 22480s ago; next Premarket Wed 08:00",
+            "icon": "schedule",
+            "label": "IRS Scheduler",
+            "ok": true,
+            "status": "finished"
+          },
+          {
+            "age_seconds": 3.1,
+            "detail": "via execute worker / market-data collector",
+            "icon": "account_balance",
+            "label": "IBKR Bridge",
+            "ok": true,
+            "status": "online"
+          }
+        ],
+        "updated_at": "2026-10-20T22:28:55.616825-04:00"
+      },
+      "status": "HEALTHY"
+    },
+    "execution_worker": {
+      "action_taken": null,
+      "api_status": null,
+      "heartbeat": {
+        "age_seconds": 3.88,
+        "available": true,
+        "fresh": true,
+        "path": "C:\\Users\\Vitaly\\Documents\\GitHub\\trading-agent\\ibkr-gerchik-bot\\memory\\runtime\\execute_worker.json",
+        "payload_status": null
+      },
+      "heartbeat_age_seconds": 3.88,
+      "informational_only": true,
+      "label": "Execute Worker",
+      "launcher": "run_execute_worker.cmd",
+      "logical_instances": 1,
+      "observed_count": 2,
+      "operational_state": "HEALTHY",
+      "pids": [
+        43064,
+        45352
+      ],
+      "port": {
+        "checked": false
+      },
+      "process_running": true,
+      "process_visibility": {
+        "reason": null,
+        "status": "available"
+      },
+      "readiness": {
+        "checked": false
+      },
+      "reason_code": null,
+      "recommended_action": null,
+      "required": true,
+      "required_for_new_scan": false,
+      "required_for_order_execution": true,
+      "root_pids": [
+        43064
+      ],
+      "safe_auto_repair": true,
+      "service": "execute_worker",
+      "status": "HEALTHY"
+    },
+    "ibkr_paper_gateway": {
+      "account_identity_verified": true,
+      "reason_code": null,
+      "required_for_new_scan": true,
+      "required_for_order_execution": true,
+      "status": "HEALTHY"
+    },
+    "market_data": {
+      "action_taken": null,
+      "api_status": null,
+      "coverage_warnings": {
+        "advanced": null,
+        "errors": null,
+        "fresh": null,
+        "no_data": null,
+        "received": null,
+        "requested": null,
+        "stale": null
+      },
+      "data_freshness": "AFTER_HOURS_FRESH_HEARTBEAT",
+      "heartbeat": {
+        "age_seconds": 39.92,
+        "available": true,
+        "data_quality": "UNKNOWN",
+        "fresh": true,
+        "last_cycle_age_seconds": null,
+        "last_heartbeat_age_seconds": 39.92,
+        "latest_fresh_cycle_age_seconds": null,
+        "path": "C:\\Users\\Vitaly\\Documents\\GitHub\\trading-agent\\ibkr-gerchik-bot\\memory\\runtime\\market_data_collector_status.json",
+        "payload_status": "unknown",
+        "pid": 36672,
+        "quality": {
+          "advanced": null,
+          "errors": null,
+          "fresh": null,
+          "no_data": null,
+          "received": null,
+          "requested": null,
+          "stale": null
+        },
+        "runtime_fresh": true,
+        "runtime_state": "WAITING_FOR_SESSION",
+        "session_state": "POST_SESSION",
+        "status_artifact_readable": true
+      },
+      "heartbeat_age_seconds": 39.92,
+      "label": "Market Data",
+      "launcher": "run_market_data_collector.cmd",
+      "lock": {
+        "owner_matches_process_tree": true,
+        "owner_pid": 36672,
+        "path": "C:\\Users\\Vitaly\\Documents\\GitHub\\trading-agent\\ibkr-gerchik-bot\\memory\\runtime\\market_data_collector.lock"
+      },
+      "logical_instances": 1,
+      "observed_count": 2,
+      "operational_state": "HEALTHY",
+      "pids": [
+        25056,
+        36672
+      ],
+      "port": {
+        "checked": false
+      },
+      "process_running": true,
+      "process_visibility": {
+        "reason": null,
+        "status": "available"
+      },
+      "readiness": {
+        "checked": false
+      },
+      "reason_code": null,
+      "recommended_action": null,
+      "required": true,
+      "required_for_new_scan": true,
+      "required_for_order_execution": true,
+      "root_pids": [
+        25056
+      ],
+      "safe_auto_repair": true,
+      "service": "market_data",
+      "service_diagnosis": "HEALTHY",
+      "status": "HEALTHY",
+      "supervisor_status": "WAITING_FOR_SESSION"
+    },
+    "production_scanner": {
+      "reason_code": null,
+      "required_for_new_scan": true,
+      "required_for_order_execution": false,
+      "service_status": {
+        "available_daily_symbol_count": 394,
+        "configured_symbol_count": 396,
+        "data_source": "C:\\Users\\Vitaly\\Documents\\GitHub\\trading-agent\\ibkr-gerchik-bot\\config\\STOCK_SYMBOLS.csv",
+        "last_scan_at": "2026-10-05T19:08:42.091822Z",
+        "last_scan_status": "COMPLETED_WITH_ERRORS",
+        "latest_artifact_readable": true,
+        "latest_scan": {
+          "candidate_count": 1,
+          "error_count": 1,
+          "errors": [
+            {
+              "reason": "NO_PERSISTED_DAILY_DATA",
+              "scope": "symbol",
+              "symbol": "BTM"
+            }
+          ],
+          "last_scan_at": "2026-10-05T19:08:42.091822Z",
+          "last_scan_status": "COMPLETED_WITH_ERRORS",
+          "run_id": "scan_20261005T190557Z_9af666",
+          "symbols_requested": 96,
+          "symbols_scanned": 95,
+          "symbols_skipped": 1
+        },
+        "orders_submitted": 0,
+        "production_strategies": [
+          "lp1",
+          "lp2",
+          "prb1",
+          "prb2"
+        ],
+        "production_strategy_count": 4,
+        "read_only": true,
+        "required_data_source_reachable": true,
+        "scanner_available": true,
+        "scanner_module_loaded": true,
+        "status": "ok"
+      },
+      "status": "HEALTHY"
+    },
+    "strategy_scanner_mcp": {
+      "action_taken": null,
+      "api_status": null,
+      "heartbeat": {
+        "available": false
+      },
+      "heartbeat_age_seconds": null,
+      "label": "Strategy Scanner MCP",
+      "launcher": "start-strategy-scanner-mcp.cmd",
+      "logical_instances": 1,
+      "observed_count": 3,
+      "operational_state": "HEALTHY",
+      "pids": [
+        9404,
+        45932,
+        44452
+      ],
+      "port": {
+        "checked": true,
+        "host": "127.0.0.1",
+        "port": 8766,
+        "reachable": true
+      },
+      "port_conflict": false,
+      "port_listeners": [
+        {
+          "address": "127.0.0.1",
+          "pid": 44452
+        }
+      ],
+      "process_running": true,
+      "process_visibility": {
+        "reason": null,
+        "status": "available"
+      },
+      "readiness": {
+        "operational_state": "HEALTHY",
+        "read_only": true,
+        "response": {
+          "host": "127.0.0.1",
+          "mode": "deterministic_analysis",
+          "namespace": "strategy_scanner",
+          "port": 8766,
+          "service": "Strategy Scanner MCP",
+          "status": "ok"
+        },
+        "service": "Strategy Scanner MCP",
+        "status": "HEALTHY"
+      },
+      "reason_code": null,
+      "recommended_action": null,
+      "required": true,
+      "required_for_new_scan": true,
+      "required_for_order_execution": false,
+      "root_pids": [
+        9404
+      ],
+      "safe_auto_repair": true,
+      "service": "strategy_scanner_mcp",
+      "service_diagnosis": "HEALTHY",
+      "status": "HEALTHY"
+    },
+    "trading_bot_mcp": {
+      "action_taken": null,
+      "api_status": null,
+      "heartbeat": {
+        "available": false
+      },
+      "heartbeat_age_seconds": null,
+      "label": "Trading Bot MCP",
+      "launcher": "run_trading_bot_mcp.cmd",
+      "logical_instances": 1,
+      "observed_count": 3,
+      "operational_state": "HEALTHY",
+      "pids": [
+        33724,
+        36696,
+        34180
+      ],
+      "port": {
+        "checked": true,
+        "host": "127.0.0.1",
+        "port": 8765,
+        "reachable": true
+      },
+      "port_conflict": false,
+      "port_listeners": [
+        {
+          "address": "127.0.0.1",
+          "pid": 34180
+        }
+      ],
+      "process_running": true,
+      "process_visibility": {
+        "reason": null,
+        "status": "available"
+      },
+      "readiness": {
+        "operational_state": "HEALTHY",
+        "read_only": true,
+        "response": {
+          "mode": "data_read_only_approval_state_machine",
+          "service": "Trading Bot Data MCP",
+          "status": "ok"
+        },
+        "service": "Trading Bot MCP",
+        "status": "HEALTHY"
+      },
+      "reason_code": null,
+      "recommended_action": null,
+      "required": true,
+      "required_for_new_scan": false,
+      "required_for_order_execution": false,
+      "root_pids": [
+        33724
+      ],
+      "safe_auto_repair": true,
+      "service": "trading_bot_mcp",
+      "service_diagnosis": "HEALTHY",
+      "status": "HEALTHY"
+    },
+    "trend_radar": {
+      "reason_code": null,
+      "required_for_new_scan": true,
+      "required_for_order_execution": false,
+      "service_status": {
+        "count": 1,
+        "enabled": true,
+        "results": [
+          {
+            "as_of": "2026-10-20",
+            "atr": 13.4123,
+            "atr_pct": 2.2698,
+            "avg_dollar_volume": 154596631.02,
+            "avg_volume": 278118.95,
+            "breakout": true,
+            "breakout_age_days": 0,
+            "breakout_date": "2026-10-20",
+            "breakout_direction": "BULLISH",
+            "breakout_score": 79.07,
+            "close_price": 590.91,
+            "compression_score": 83.51,
+            "created_at": "2026-10-21T02:06:57.957641+00:00",
+            "momentum_score": 79.85,
+            "previous_trend": "GREY",
+            "price": 590.91,
+            "radar_score": 87.65,
+            "range_high": 577.0,
+            "range_low": 533.45,
+            "reasons": [
+              "trend_green",
+              "fresh_trend_flip",
+              "range_compression",
+              "bullish_breakout",
+              "volume_expansion",
+              "positive_momentum",
+              "high_liquidity"
+            ],
+            "scanner_error": null,
+            "scanner_label": "NO_SETUP",
+            "scanner_result": {
+              "created_at": "2026-10-20T15:44:08.680886+00:00",
+              "error": null,
+              "payload": {
+                "anchor_date": null,
+                "anchor_message": "Anchor includes an in-progress session; opening price is usable, but the candle is not complete.",
+                "anchor_status": "IN_PROGRESS",
+                "anchor_warnings": [],
+                "asset_class": "stock",
+                "latest_available_date": "2026-10-20",
+                "levels_by_symbol": {
+                  "MSCI": [
+                    {
+                      "kind": "support",
+                      "last_touch": "2025-10-20",
+                      "price": 525.155,
+                      "strength": 0.59,
+                      "tolerance": 1.1636126874599768,
+                      "touches": 2
+                    },
+                    {
+                      "kind": "support",
+                      "last_touch": "2026-03-11",
+                      "price": 533.5250000000001,
+                      "strength": 0.59,
+                      "tolerance": 1.1636126874599768,
+                      "touches": 2
+                    },
+                    {
+                      "kind": "support",
+                      "last_touch": "2026-06-25",
+                      "price": 541.915,
+                      "strength": 0.59,
+                      "tolerance": 1.1636126874599768,
+                      "touches": 2
+                    },
+                    {
+                      "kind": "support",
+                      "last_touch": "2025-10-02",
+                      "price": 544.78,
+                      "strength": 0.59,
+                      "tolerance": 1.1636126874599768,
+                      "touches": 2
+                    },
+                    {
+                      "kind": "support",
+                      "last_touch": "2025-09-18",
+                      "price": 548.0300000000001,
+                      "strength": 0.71,
+                      "tolerance": 1.1636126874599768,
+                      "touches": 3
+                    },
+                    {
+                      "kind": "support",
+                      "last_touch": "2026-08-17",
+                      "price": 550.265,
+                      "strength": 0.59,
+                      "tolerance": 1.1636126874599768,
+                      "touches": 2
+                    },
+                    {
+                      "kind": "support",
+                      "last_touch": "2026-01-05",
+                      "price": 556.72,
+                      "strength": 0.59,
+                      "tolerance": 1.1636126874599768,
+                      "touches": 2
+                    },
+                    {
+                      "kind": "support",
+                      "last_touch": "2025-01-13",
+                      "price": 569.7049999999999,
+                      "strength": 0.59,
+                      "tolerance": 1.1636126874599768,
+                      "touches": 2
+                    }
+                  ]
+                },
+                "near_misses": [],
+                "params": {
+                  "anchor_date": null,
+                  "approach_lookback": 4,
+                  "approach_min_atr": 0.05,
+                  "asset_class": "stock",
+                  "chase_max_atr": 0.3,
+                  "entry_atr_pct": 0.5,
+                  "equity": 100000.0,
+                  "fees_per_share": 0.005,
+                  "gap_max_atr": 1.2,
+                  "level_tolerance_atr": 0.1,
+                  "lp1_delta_break": 0.05,
+                  "lp1_delta_close": 0.03,
+                  "lp1_volume_mult": 1.0,
+                  "lp2_delta_break": 0.05,
+                  "lp2_delta_close": 0.03,
+                  "lp2_overextended_atr": 1.2,
+                  "lp2_volume_mult": 1.0,
+                  "min_touches": 2,
+                  "open_tolerance_atr": 0.15,
+                  "pivot_k": 5,
+                  "prb1_delta_break": 0.05,
+                  "prb1_delta_close": 0.05,
+                  "prb2_delta_break": 0.05,
+                  "prb2_delta_close": 0.05,
+                  "prb2_hold_epsilon_atr": 0.05,
+                  "prb_volume_mult": 1.2,
+                  "range_cap": 2.5,
+                  "require_complete_quality": false,
+                  "risk_pct": 0.005,
+                  "rr": 2.0,
+                  "score_min": 0.0,
+                  "side_filter": "ALL",
+                  "slippage_per_share": 0.01,
+                  "stop_buffer_atr": 0.25,
+                  "stop_variant": "strategy_default",
+                  "strategies": [
+                    "LP1",
+                    "LP2",
+                    "PRB1",
+                    "PRB2"
+                  ],
+                  "two_bar_range_cap": 4.0
+                },
+                "radar_symbol": "MSCI",
+                "radar_trend": "GREEN",
+                "reason_counts": {
+                  "news_risk": 1,
+                  "price_out_of_range": 1
+                },
+                "reason_log": [
+                  {
+                    "reason": "price_out_of_range",
+                    "reasons": [
+                      "price_out_of_range",
+                      "news_risk"
+                    ],
+                    "ticker": "MSCI"
+                  }
+                ],
+                "rejected": [
+                  {
+                    "reason": "price_out_of_range",
+                    "reasons": [
+                      "price_out_of_range",
+                      "news_risk"
+                    ],
+                    "ticker": "MSCI"
+                  }
+                ],
+                "scan_timestamp": "2026-10-20T21:50:06-04:00",
+                "scanner_status": "NO_SETUP",
+                "signals": [],
+                "signals_found": 0,
+                "timeframe": "1D",
+                "universe_size": 1
+              },
+              "radar_as_of": "2026-10-20",
+              "scan_timestamp": "2026-10-20T21:50:06-04:00",
+              "scanner_label": "NO_SETUP",
+              "scanner_status": "NO_SETUP",
+              "side": null,
+              "signals_found": 0,
+              "source_scan_id": "radar:2026-10-20:2026-10-20T21:50:06-04:00:MSCI",
+              "strategy": null,
+              "symbol": "MSCI",
+              "updated_at": "2026-10-21T01:50:06.561551+00:00"
+            },
+            "scanner_scan_timestamp": "2026-10-20T21:50:06-04:00",
+            "scanner_side": null,
+            "scanner_signals_found": 0,
+            "scanner_source_scan_id": "radar:2026-10-20:2026-10-20T21:50:06-04:00:MSCI",
+            "scanner_status": "NO_SETUP",
+            "scanner_strategy": null,
+            "symbol": "MSCI",
+            "trend": "GREEN",
+            "trend_flip": true,
+            "trend_flip_age_days": 0,
+            "trend_flip_date": "2026-10-20",
+            "trend_flip_from": "GREY",
+            "trend_flip_to": "GREEN",
+            "trend_score": 68.6,
+            "volume_ratio": 2.2957
+          }
+        ],
+        "updated_at": "2026-10-21T02:06:57.957641+00:00"
+      },
+      "status": "HEALTHY"
+    }
+  },
+  "execution_environment": {
+    "host_name": "AiDesktop",
+    "host_os": "Windows",
+    "local_host": "LOCAL_WINDOWS_HOST",
+    "local_process_visibility": {
+      "reason": null,
+      "status": "available"
+    },
+    "loopback_origin": "http://127.0.0.1:8550",
+    "repository_access": true,
+    "repository_path": "C:\\Users\\Vitaly\\Documents\\GitHub\\trading-agent\\ibkr-gerchik-bot"
+  },
+  "execution_intents_created": 0,
+  "operations": {
+    "action_required": [],
+    "actions_taken": [],
+    "apis": {
+      "daily_trader": {
+        "operational_state": "HEALTHY",
+        "read_only": true,
+        "response": {
+          "current_radar_row_count": 352,
+          "latest_radar_as_of": "2026-10-20",
+          "orders_submitted": 0,
+          "radar_available": true,
+          "read_only": true,
+          "scanner_available": true,
+          "status": "ok"
+        },
+        "service": "Daily Trader",
+        "status": "HEALTHY"
+      },
+      "pre_trade_reviewer": {
+        "operational_state": "HEALTHY",
+        "read_only": true,
+        "response": {
+          "approval_created": false,
+          "orders_submitted": 0,
+          "read_only": true,
+          "reviewer": "pre-trade-reviewer",
+          "status": "ok"
+        },
+        "service": "Pre-Trade Reviewer",
+        "status": "HEALTHY"
+      },
+      "production_scanner": {
+        "operational_state": "HEALTHY",
+        "read_only": true,
+        "response": {
+          "available_daily_symbol_count": 394,
+          "configured_symbol_count": 396,
+          "data_source": "C:\\Users\\Vitaly\\Documents\\GitHub\\trading-agent\\ibkr-gerchik-bot\\config\\STOCK_SYMBOLS.csv",
+          "last_scan_at": "2026-10-05T19:08:42.091822Z",
+          "last_scan_status": "COMPLETED_WITH_ERRORS",
+          "latest_artifact_readable": true,
+          "latest_scan": {
+            "candidate_count": 1,
+            "error_count": 1,
+            "errors": [
+              {
+                "reason": "NO_PERSISTED_DAILY_DATA",
+                "scope": "symbol",
+                "symbol": "BTM"
+              }
+            ],
+            "last_scan_at": "2026-10-05T19:08:42.091822Z",
+            "last_scan_status": "COMPLETED_WITH_ERRORS",
+            "run_id": "scan_20261005T190557Z_9af666",
+            "symbols_requested": 96,
+            "symbols_scanned": 95,
+            "symbols_skipped": 1
+          },
+          "orders_submitted": 0,
+          "production_strategies": [
+            "lp1",
+            "lp2",
+            "prb1",
+            "prb2"
+          ],
+          "production_strategy_count": 4,
+          "read_only": true,
+          "required_data_source_reachable": true,
+          "scanner_available": true,
+          "scanner_module_loaded": true,
+          "status": "ok"
+        },
+        "service": "Production Scanner",
+        "status": "HEALTHY"
+      },
+      "trend_radar": {
+        "operational_state": "HEALTHY",
+        "read_only": true,
+        "response": {
+          "count": 1,
+          "enabled": true,
+          "results": [
+            {
+              "as_of": "2026-10-20",
+              "atr": 13.4123,
+              "atr_pct": 2.2698,
+              "avg_dollar_volume": 154596631.02,
+              "avg_volume": 278118.95,
+              "breakout": true,
+              "breakout_age_days": 0,
+              "breakout_date": "2026-10-20",
+              "breakout_direction": "BULLISH",
+              "breakout_score": 79.07,
+              "close_price": 590.91,
+              "compression_score": 83.51,
+              "created_at": "2026-10-21T02:06:57.957641+00:00",
+              "momentum_score": 79.85,
+              "previous_trend": "GREY",
+              "price": 590.91,
+              "radar_score": 87.65,
+              "range_high": 577.0,
+              "range_low": 533.45,
+              "reasons": [
+                "trend_green",
+                "fresh_trend_flip",
+                "range_compression",
+                "bullish_breakout",
+                "volume_expansion",
+                "positive_momentum",
+                "high_liquidity"
+              ],
+              "scanner_error": null,
+              "scanner_label": "NO_SETUP",
+              "scanner_result": {
+                "created_at": "2026-10-20T15:44:08.680886+00:00",
+                "error": null,
+                "payload": {
+                  "anchor_date": null,
+                  "anchor_message": "Anchor includes an in-progress session; opening price is usable, but the candle is not complete.",
+                  "anchor_status": "IN_PROGRESS",
+                  "anchor_warnings": [],
+                  "asset_class": "stock",
+                  "latest_available_date": "2026-10-20",
+                  "levels_by_symbol": {
+                    "MSCI": [
+                      {
+                        "kind": "support",
+                        "last_touch": "2025-10-20",
+                        "price": 525.155,
+                        "strength": 0.59,
+                        "tolerance": 1.1636126874599768,
+                        "touches": 2
+                      },
+                      {
+                        "kind": "support",
+                        "last_touch": "2026-03-11",
+                        "price": 533.5250000000001,
+                        "strength": 0.59,
+                        "tolerance": 1.1636126874599768,
+                        "touches": 2
+                      },
+                      {
+                        "kind": "support",
+                        "last_touch": "2026-06-25",
+                        "price": 541.915,
+                        "strength": 0.59,
+                        "tolerance": 1.1636126874599768,
+                        "touches": 2
+                      },
+                      {
+                        "kind": "support",
+                        "last_touch": "2025-10-02",
+                        "price": 544.78,
+                        "strength": 0.59,
+                        "tolerance": 1.1636126874599768,
+                        "touches": 2
+                      },
+                      {
+                        "kind": "support",
+                        "last_touch": "2025-09-18",
+                        "price": 548.0300000000001,
+                        "strength": 0.71,
+                        "tolerance": 1.1636126874599768,
+                        "touches": 3
+                      },
+                      {
+                        "kind": "support",
+                        "last_touch": "2026-08-17",
+                        "price": 550.265,
+                        "strength": 0.59,
+                        "tolerance": 1.1636126874599768,
+                        "touches": 2
+                      },
+                      {
+                        "kind": "support",
+                        "last_touch": "2026-01-05",
+                        "price": 556.72,
+                        "strength": 0.59,
+                        "tolerance": 1.1636126874599768,
+                        "touches": 2
+                      },
+                      {
+                        "kind": "support",
+                        "last_touch": "2025-01-13",
+                        "price": 569.7049999999999,
+                        "strength": 0.59,
+                        "tolerance": 1.1636126874599768,
+                        "touches": 2
+                      }
+                    ]
+                  },
+                  "near_misses": [],
+                  "params": {
+                    "anchor_date": null,
+                    "approach_lookback": 4,
+                    "approach_min_atr": 0.05,
+                    "asset_class": "stock",
+                    "chase_max_atr": 0.3,
+                    "entry_atr_pct": 0.5,
+                    "equity": 100000.0,
+                    "fees_per_share": 0.005,
+                    "gap_max_atr": 1.2,
+                    "level_tolerance_atr": 0.1,
+                    "lp1_delta_break": 0.05,
+                    "lp1_delta_close": 0.03,
+                    "lp1_volume_mult": 1.0,
+                    "lp2_delta_break": 0.05,
+                    "lp2_delta_close": 0.03,
+                    "lp2_overextended_atr": 1.2,
+                    "lp2_volume_mult": 1.0,
+                    "min_touches": 2,
+                    "open_tolerance_atr": 0.15,
+                    "pivot_k": 5,
+                    "prb1_delta_break": 0.05,
+                    "prb1_delta_close": 0.05,
+                    "prb2_delta_break": 0.05,
+                    "prb2_delta_close": 0.05,
+                    "prb2_hold_epsilon_atr": 0.05,
+                    "prb_volume_mult": 1.2,
+                    "range_cap": 2.5,
+                    "require_complete_quality": false,
+                    "risk_pct": 0.005,
+                    "rr": 2.0,
+                    "score_min": 0.0,
+                    "side_filter": "ALL",
+                    "slippage_per_share": 0.01,
+                    "stop_buffer_atr": 0.25,
+                    "stop_variant": "strategy_default",
+                    "strategies": [
+                      "LP1",
+                      "LP2",
+                      "PRB1",
+                      "PRB2"
+                    ],
+                    "two_bar_range_cap": 4.0
+                  },
+                  "radar_symbol": "MSCI",
+                  "radar_trend": "GREEN",
+                  "reason_counts": {
+                    "news_risk": 1,
+                    "price_out_of_range": 1
+                  },
+                  "reason_log": [
+                    {
+                      "reason": "price_out_of_range",
+                      "reasons": [
+                        "price_out_of_range",
+                        "news_risk"
+                      ],
+                      "ticker": "MSCI"
+                    }
+                  ],
+                  "rejected": [
+                    {
+                      "reason": "price_out_of_range",
+                      "reasons": [
+                        "price_out_of_range",
+                        "news_risk"
+                      ],
+                      "ticker": "MSCI"
+                    }
+                  ],
+                  "scan_timestamp": "2026-10-20T21:50:06-04:00",
+                  "scanner_status": "NO_SETUP",
+                  "signals": [],
+                  "signals_found": 0,
+                  "timeframe": "1D",
+                  "universe_size": 1
+                },
+                "radar_as_of": "2026-10-20",
+                "scan_timestamp": "2026-10-20T21:50:06-04:00",
+                "scanner_label": "NO_SETUP",
+                "scanner_status": "NO_SETUP",
+                "side": null,
+                "signals_found": 0,
+                "source_scan_id": "radar:2026-10-20:2026-10-20T21:50:06-04:00:MSCI",
+                "strategy": null,
+                "symbol": "MSCI",
+                "updated_at": "2026-10-21T01:50:06.561551+00:00"
+              },
+              "scanner_scan_timestamp": "2026-10-20T21:50:06-04:00",
+              "scanner_side": null,
+              "scanner_signals_found": 0,
+              "scanner_source_scan_id": "radar:2026-10-20:2026-10-20T21:50:06-04:00:MSCI",
+              "scanner_status": "NO_SETUP",
+              "scanner_strategy": null,
+              "symbol": "MSCI",
+              "trend": "GREEN",
+              "trend_flip": true,
+              "trend_flip_age_days": 0,
+              "trend_flip_date": "2026-10-20",
+              "trend_flip_from": "GREY",
+              "trend_flip_to": "GREEN",
+              "trend_score": 68.6,
+              "volume_ratio": 2.2957
+            }
+          ],
+          "updated_at": "2026-10-21T02:06:57.957641+00:00"
+        },
+        "service": "Radar",
+        "status": "HEALTHY"
+      }
+    },
+    "approvals_created": 0,
+    "broker": {
+      "account": {
+        "account_id": "DU5454348",
+        "accounts": [
+          "DU5454348"
+        ],
+        "environment": "paper",
+        "evidence": "ibkr_managed_account_du_prefix",
+        "managed_accounts": [
+          "DU5454348"
+        ],
+        "paper_verified": true,
+        "summary_accounts": [
+          "DU5454348"
+        ]
+      },
+      "account_identity_verified": true,
+      "environment": "PAPER",
+      "expected_accounts_configured": [
+        "DU5454348"
+      ],
+      "gateway_running": true,
+      "process_visibility": {
+        "reason": null,
+        "status": "available"
+      },
+      "socket_reachable": true,
+      "status": "HEALTHY"
+    },
+    "completed_at": "2026-10-21T02:28:52.424260+00:00",
+    "database": {
+      "path": "C:\\Users\\Vitaly\\Documents\\GitHub\\trading-agent\\ibkr-gerchik-bot\\memory\\decision_lab.db",
+      "readable": true,
+      "status": "HEALTHY",
+      "writable": true
+    },
+    "duplicates": [],
+    "execution_boundary": {
+      "safe_to_start": true,
+      "status": "SAFE_TO_START"
+    },
+    "execution_intents_created": 0,
+    "market_status": "PREMARKET_OR_CLOSED_ALLOWED",
+    "orders_submitted": 0,
+    "overall_status": "READY_FOR_MARKET_OPEN",
+    "readiness_dependencies": {
+      "broker": "verified Paper IBKR account",
+      "database": "authoritative SQLite database",
+      "mandatory_apis": [
+        "trend_radar",
+        "production_scanner"
+      ],
+      "mandatory_services": [
+        "trading_bot_mcp",
+        "strategy_scanner_mcp",
+        "dashboard",
+        "market_data",
+        "execute_worker"
+      ],
+      "optional_apis": [
+        "daily_trader",
+        "pre_trade_reviewer"
+      ],
+      "optional_services": [
+        "autonomous_worker",
+        "crypto_worker"
+      ],
+      "safety": "SAFE_FOR_PAPER_EXECUTION"
+    },
+    "safety": {
+      "allow_ibkr_paper_trading": true,
+      "allow_live_trading": false,
+      "allow_llm_live_trading": false,
+      "dry_run_mode": false,
+      "live_trading_enabled": false,
+      "paper_trading": true,
+      "reason_code": null,
+      "status": "SAFE_FOR_PAPER_EXECUTION"
+    },
+    "services": {
+      "autonomous_worker": {
+        "action_taken": null,
+        "api_status": null,
+        "heartbeat": {
+          "age_seconds": 4.15,
+          "available": true,
+          "fresh": true,
+          "path": "C:\\Users\\Vitaly\\Documents\\GitHub\\trading-agent\\ibkr-gerchik-bot\\memory\\runtime\\autonomous_stock_worker.json",
+          "payload_status": null
+        },
+        "heartbeat_age_seconds": 4.15,
+        "label": "Autonomous Worker",
+        "launcher": "run_autonomous_stock_worker.cmd",
+        "logical_instances": 1,
+        "observed_count": 2,
+        "operational_state": "HEALTHY",
+        "pids": [
+          41976,
+          44960
+        ],
+        "port": {
+          "checked": false
+        },
+        "process_running": true,
+        "process_visibility": {
+          "reason": null,
+          "status": "available"
+        },
+        "readiness": {
+          "checked": false
+        },
+        "reason_code": null,
+        "recommended_action": null,
+        "required": false,
+        "root_pids": [
+          41976
+        ],
+        "safe_auto_repair": true,
+        "service": "autonomous_worker",
+        "status": "HEALTHY"
+      },
+      "crypto_worker": {
+        "action_taken": null,
+        "api_status": null,
+        "heartbeat": {
+          "age_seconds": 55.86,
+          "available": true,
+          "fresh": true,
+          "path": "C:\\Users\\Vitaly\\Documents\\GitHub\\trading-agent\\ibkr-gerchik-bot\\memory\\crypto\\runtime\\worker.json",
+          "payload_status": "sleeping"
+        },
+        "heartbeat_age_seconds": 55.86,
+        "label": "Crypto Worker",
+        "launcher": "run_crypto_worker.cmd",
+        "logical_instances": 1,
+        "observed_count": 2,
+        "operational_state": "HEALTHY",
+        "pids": [
+          36384,
+          38592
+        ],
+        "port": {
+          "checked": false
+        },
+        "process_running": true,
+        "process_visibility": {
+          "reason": null,
+          "status": "available"
+        },
+        "readiness": {
+          "checked": false
+        },
+        "reason_code": null,
+        "recommended_action": null,
+        "required": false,
+        "root_pids": [
+          36384
+        ],
+        "safe_auto_repair": true,
+        "service": "crypto_worker",
+        "status": "HEALTHY"
+      },
+      "dashboard": {
+        "action_taken": null,
+        "api_status": null,
+        "heartbeat": {
+          "available": false
+        },
+        "heartbeat_age_seconds": null,
+        "label": "Dashboard",
+        "launcher": "run_dashboard_api.cmd",
+        "logical_instances": 1,
+        "observed_count": 3,
+        "operational_state": "HEALTHY",
+        "pids": [
+          16296,
+          26084,
+          41768
+        ],
+        "port": {
+          "checked": true,
+          "host": "127.0.0.1",
+          "port": 8550,
+          "reachable": true
+        },
+        "port_conflict": false,
+        "port_listeners": [
+          {
+            "address": "127.0.0.1",
+            "pid": 41768
+          }
+        ],
+        "process_running": true,
+        "process_visibility": {
+          "reason": null,
+          "status": "available"
+        },
+        "readiness": {
+          "operational_state": "HEALTHY",
+          "read_only": true,
+          "response": {
+            "count": 1,
+            "enabled": true,
+            "results": [
+              {
+                "as_of": "2026-10-20",
+                "atr": 13.4123,
+                "atr_pct": 2.2698,
+                "avg_dollar_volume": 154596631.02,
+                "avg_volume": 278118.95,
+                "breakout": true,
+                "breakout_age_days": 0,
+                "breakout_date": "2026-10-20",
+                "breakout_direction": "BULLISH",
+                "breakout_score": 79.07,
+                "close_price": 590.91,
+                "compression_score": 83.51,
+                "created_at": "2026-10-21T02:06:57.957641+00:00",
+                "momentum_score": 79.85,
+                "previous_trend": "GREY",
+                "price": 590.91,
+                "radar_score": 87.65,
+                "range_high": 577.0,
+                "range_low": 533.45,
+                "reasons": [
+                  "trend_green",
+                  "fresh_trend_flip",
+                  "range_compression",
+                  "bullish_breakout",
+                  "volume_expansion",
+                  "positive_momentum",
+                  "high_liquidity"
+                ],
+                "scanner_error": null,
+                "scanner_label": "NO_SETUP",
+                "scanner_result": {
+                  "created_at": "2026-10-20T15:44:08.680886+00:00",
+                  "error": null,
+                  "payload": {
+                    "anchor_date": null,
+                    "anchor_message": "Anchor includes an in-progress session; opening price is usable, but the candle is not complete.",
+                    "anchor_status": "IN_PROGRESS",
+                    "anchor_warnings": [],
+                    "asset_class": "stock",
+                    "latest_available_date": "2026-10-20",
+                    "levels_by_symbol": {
+                      "MSCI": [
+                        {
+                          "kind": "support",
+                          "last_touch": "2025-10-20",
+                          "price": 525.155,
+                          "strength": 0.59,
+                          "tolerance": 1.1636126874599768,
+                          "touches": 2
+                        },
+                        {
+                          "kind": "support",
+                          "last_touch": "2026-03-11",
+                          "price": 533.5250000000001,
+                          "strength": 0.59,
+                          "tolerance": 1.1636126874599768,
+                          "touches": 2
+                        },
+                        {
+                          "kind": "support",
+                          "last_touch": "2026-06-25",
+                          "price": 541.915,
+                          "strength": 0.59,
+                          "tolerance": 1.1636126874599768,
+                          "touches": 2
+                        },
+                        {
+                          "kind": "support",
+                          "last_touch": "2025-10-02",
+                          "price": 544.78,
+                          "strength": 0.59,
+                          "tolerance": 1.1636126874599768,
+                          "touches": 2
+                        },
+                        {
+                          "kind": "support",
+                          "last_touch": "2025-09-18",
+                          "price": 548.0300000000001,
+                          "strength": 0.71,
+                          "tolerance": 1.1636126874599768,
+                          "touches": 3
+                        },
+                        {
+                          "kind": "support",
+                          "last_touch": "2026-08-17",
+                          "price": 550.265,
+                          "strength": 0.59,
+                          "tolerance": 1.1636126874599768,
+                          "touches": 2
+                        },
+                        {
+                          "kind": "support",
+                          "last_touch": "2026-01-05",
+                          "price": 556.72,
+                          "strength": 0.59,
+                          "tolerance": 1.1636126874599768,
+                          "touches": 2
+                        },
+                        {
+                          "kind": "support",
+                          "last_touch": "2025-01-13",
+                          "price": 569.7049999999999,
+                          "strength": 0.59,
+                          "tolerance": 1.1636126874599768,
+                          "touches": 2
+                        }
+                      ]
+                    },
+                    "near_misses": [],
+                    "params": {
+                      "anchor_date": null,
+                      "approach_lookback": 4,
+                      "approach_min_atr": 0.05,
+                      "asset_class": "stock",
+                      "chase_max_atr": 0.3,
+                      "entry_atr_pct": 0.5,
+                      "equity": 100000.0,
+                      "fees_per_share": 0.005,
+                      "gap_max_atr": 1.2,
+                      "level_tolerance_atr": 0.1,
+                      "lp1_delta_break": 0.05,
+                      "lp1_delta_close": 0.03,
+                      "lp1_volume_mult": 1.0,
+                      "lp2_delta_break": 0.05,
+                      "lp2_delta_close": 0.03,
+                      "lp2_overextended_atr": 1.2,
+                      "lp2_volume_mult": 1.0,
+                      "min_touches": 2,
+                      "open_tolerance_atr": 0.15,
+                      "pivot_k": 5,
+                      "prb1_delta_break": 0.05,
+                      "prb1_delta_close": 0.05,
+                      "prb2_delta_break": 0.05,
+                      "prb2_delta_close": 0.05,
+                      "prb2_hold_epsilon_atr": 0.05,
+                      "prb_volume_mult": 1.2,
+                      "range_cap": 2.5,
+                      "require_complete_quality": false,
+                      "risk_pct": 0.005,
+                      "rr": 2.0,
+                      "score_min": 0.0,
+                      "side_filter": "ALL",
+                      "slippage_per_share": 0.01,
+                      "stop_buffer_atr": 0.25,
+                      "stop_variant": "strategy_default",
+                      "strategies": [
+                        "LP1",
+                        "LP2",
+                        "PRB1",
+                        "PRB2"
+                      ],
+                      "two_bar_range_cap": 4.0
+                    },
+                    "radar_symbol": "MSCI",
+                    "radar_trend": "GREEN",
+                    "reason_counts": {
+                      "news_risk": 1,
+                      "price_out_of_range": 1
+                    },
+                    "reason_log": [
+                      {
+                        "reason": "price_out_of_range",
+                        "reasons": [
+                          "price_out_of_range",
+                          "news_risk"
+                        ],
+                        "ticker": "MSCI"
+                      }
+                    ],
+                    "rejected": [
+                      {
+                        "reason": "price_out_of_range",
+                        "reasons": [
+                          "price_out_of_range",
+                          "news_risk"
+                        ],
+                        "ticker": "MSCI"
+                      }
+                    ],
+                    "scan_timestamp": "2026-10-20T21:50:06-04:00",
+                    "scanner_status": "NO_SETUP",
+                    "signals": [],
+                    "signals_found": 0,
+                    "timeframe": "1D",
+                    "universe_size": 1
+                  },
+                  "radar_as_of": "2026-10-20",
+                  "scan_timestamp": "2026-10-20T21:50:06-04:00",
+                  "scanner_label": "NO_SETUP",
+                  "scanner_status": "NO_SETUP",
+                  "side": null,
+                  "signals_found": 0,
+                  "source_scan_id": "radar:2026-10-20:2026-10-20T21:50:06-04:00:MSCI",
+                  "strategy": null,
+                  "symbol": "MSCI",
+                  "updated_at": "2026-10-21T01:50:06.561551+00:00"
+                },
+                "scanner_scan_timestamp": "2026-10-20T21:50:06-04:00",
+                "scanner_side": null,
+                "scanner_signals_found": 0,
+                "scanner_source_scan_id": "radar:2026-10-20:2026-10-20T21:50:06-04:00:MSCI",
+                "scanner_status": "NO_SETUP",
+                "scanner_strategy": null,
+                "symbol": "MSCI",
+                "trend": "GREEN",
+                "trend_flip": true,
+                "trend_flip_age_days": 0,
+                "trend_flip_date": "2026-10-20",
+                "trend_flip_from": "GREY",
+                "trend_flip_to": "GREEN",
+                "trend_score": 68.6,
+                "volume_ratio": 2.2957
+              }
+            ],
+            "updated_at": "2026-10-21T02:06:57.957641+00:00"
+          },
+          "service": "Dashboard",
+          "status": "HEALTHY"
+        },
+        "reason_code": null,
+        "recommended_action": null,
+        "required": true,
+        "root_pids": [
+          16296
+        ],
+        "safe_auto_repair": true,
+        "service": "dashboard",
+        "status": "HEALTHY"
+      },
+      "execute_worker": {
+        "action_taken": null,
+        "api_status": null,
+        "heartbeat": {
+          "age_seconds": 3.88,
+          "available": true,
+          "fresh": true,
+          "path": "C:\\Users\\Vitaly\\Documents\\GitHub\\trading-agent\\ibkr-gerchik-bot\\memory\\runtime\\execute_worker.json",
+          "payload_status": null
+        },
+        "heartbeat_age_seconds": 3.88,
+        "label": "Execute Worker",
+        "launcher": "run_execute_worker.cmd",
+        "logical_instances": 1,
+        "observed_count": 2,
+        "operational_state": "HEALTHY",
+        "pids": [
+          43064,
+          45352
+        ],
+        "port": {
+          "checked": false
+        },
+        "process_running": true,
+        "process_visibility": {
+          "reason": null,
+          "status": "available"
+        },
+        "readiness": {
+          "checked": false
+        },
+        "reason_code": null,
+        "recommended_action": null,
+        "required": true,
+        "root_pids": [
+          43064
+        ],
+        "safe_auto_repair": true,
+        "service": "execute_worker",
+        "status": "HEALTHY"
+      },
+      "market_data": {
+        "action_taken": null,
+        "api_status": null,
+        "heartbeat": {
+          "age_seconds": 39.92,
+          "available": true,
+          "data_quality": "UNKNOWN",
+          "fresh": true,
+          "last_cycle_age_seconds": null,
+          "last_heartbeat_age_seconds": 39.92,
+          "latest_fresh_cycle_age_seconds": null,
+          "path": "C:\\Users\\Vitaly\\Documents\\GitHub\\trading-agent\\ibkr-gerchik-bot\\memory\\runtime\\market_data_collector_status.json",
+          "payload_status": "unknown",
+          "pid": 36672,
+          "quality": {
+            "advanced": null,
+            "errors": null,
+            "fresh": null,
+            "no_data": null,
+            "received": null,
+            "requested": null,
+            "stale": null
+          },
+          "runtime_fresh": true,
+          "runtime_state": "WAITING_FOR_SESSION",
+          "session_state": "POST_SESSION",
+          "status_artifact_readable": true
+        },
+        "heartbeat_age_seconds": 39.92,
+        "label": "Market Data",
+        "launcher": "run_market_data_collector.cmd",
+        "lock": {
+          "owner_matches_process_tree": true,
+          "owner_pid": 36672,
+          "path": "C:\\Users\\Vitaly\\Documents\\GitHub\\trading-agent\\ibkr-gerchik-bot\\memory\\runtime\\market_data_collector.lock"
+        },
+        "logical_instances": 1,
+        "observed_count": 2,
+        "operational_state": "HEALTHY",
+        "pids": [
+          25056,
+          36672
+        ],
+        "port": {
+          "checked": false
+        },
+        "process_running": true,
+        "process_visibility": {
+          "reason": null,
+          "status": "available"
+        },
+        "readiness": {
+          "checked": false
+        },
+        "reason_code": null,
+        "recommended_action": null,
+        "required": true,
+        "root_pids": [
+          25056
+        ],
+        "safe_auto_repair": true,
+        "service": "market_data",
+        "status": "WAITING_FOR_SESSION"
+      },
+      "strategy_scanner_mcp": {
+        "action_taken": null,
+        "api_status": null,
+        "heartbeat": {
+          "available": false
+        },
+        "heartbeat_age_seconds": null,
+        "label": "Strategy Scanner MCP",
+        "launcher": "start-strategy-scanner-mcp.cmd",
+        "logical_instances": 1,
+        "observed_count": 3,
+        "operational_state": "HEALTHY",
+        "pids": [
+          9404,
+          45932,
+          44452
+        ],
+        "port": {
+          "checked": true,
+          "host": "127.0.0.1",
+          "port": 8766,
+          "reachable": true
+        },
+        "port_conflict": false,
+        "port_listeners": [
+          {
+            "address": "127.0.0.1",
+            "pid": 44452
+          }
+        ],
+        "process_running": true,
+        "process_visibility": {
+          "reason": null,
+          "status": "available"
+        },
+        "readiness": {
+          "operational_state": "HEALTHY",
+          "read_only": true,
+          "response": {
+            "host": "127.0.0.1",
+            "mode": "deterministic_analysis",
+            "namespace": "strategy_scanner",
+            "port": 8766,
+            "service": "Strategy Scanner MCP",
+            "status": "ok"
+          },
+          "service": "Strategy Scanner MCP",
+          "status": "HEALTHY"
+        },
+        "reason_code": null,
+        "recommended_action": null,
+        "required": true,
+        "root_pids": [
+          9404
+        ],
+        "safe_auto_repair": true,
+        "service": "strategy_scanner_mcp",
+        "status": "HEALTHY"
+      },
+      "trading_bot_mcp": {
+        "action_taken": null,
+        "api_status": null,
+        "heartbeat": {
+          "available": false
+        },
+        "heartbeat_age_seconds": null,
+        "label": "Trading Bot MCP",
+        "launcher": "run_trading_bot_mcp.cmd",
+        "logical_instances": 1,
+        "observed_count": 3,
+        "operational_state": "HEALTHY",
+        "pids": [
+          33724,
+          36696,
+          34180
+        ],
+        "port": {
+          "checked": true,
+          "host": "127.0.0.1",
+          "port": 8765,
+          "reachable": true
+        },
+        "port_conflict": false,
+        "port_listeners": [
+          {
+            "address": "127.0.0.1",
+            "pid": 34180
+          }
+        ],
+        "process_running": true,
+        "process_visibility": {
+          "reason": null,
+          "status": "available"
+        },
+        "readiness": {
+          "operational_state": "HEALTHY",
+          "read_only": true,
+          "response": {
+            "mode": "data_read_only_approval_state_machine",
+            "service": "Trading Bot Data MCP",
+            "status": "ok"
+          },
+          "service": "Trading Bot MCP",
+          "status": "HEALTHY"
+        },
+        "reason_code": null,
+        "recommended_action": null,
+        "required": true,
+        "root_pids": [
+          33724
+        ],
+        "safe_auto_repair": true,
+        "service": "trading_bot_mcp",
+        "status": "HEALTHY"
+      }
+    },
+    "started_at": "2026-10-21T02:28:44.342814+00:00",
+    "workflow": "trading_platform_health"
+  },
+  "orders_submitted": 0,
+  "persisted_data_mode": "NOT_AVAILABLE",
+  "status": "READY_FOR_OPERATOR_REVIEW",
+  "trade_desk": {
+    "active_scan_ids": [],
+    "active_scan_status": "VERIFIED",
+    "ai_ingestion_auth": "CONFIGURED",
+    "proposal_count": 4,
+    "proposal_status": "VERIFIED"
+  }
+}

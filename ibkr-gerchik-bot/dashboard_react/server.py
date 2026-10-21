@@ -86,6 +86,8 @@ from src.decision.prompt_compiler import compile_decision_prompt
 from src.decision.prompt_presets import disable_preset, duplicate_preset, get_preset, list_presets, save_preset
 from src.decision.strategy_definitions import current_strategy_parameters, get_strategy_definition, list_strategy_definitions
 from src.decision.strategy_sources import StrategySnapshot, snapshot_to_candidate
+from src.decision.ai_trade_desk import AITradeDeskStore, ACTIVE_PROPOSAL_STATUSES, TERMINAL_LIFECYCLES
+from src.decision.ai_trade_desk_scan import AITradeDeskScanManager
 
 app = FastAPI(title="Vitaly's Trading Bot Dashboard API", docs_url=None, redoc_url=None)
 app.include_router(pre_trade_reviewer_router)
@@ -99,6 +101,81 @@ app.add_middleware(
 
 _SPARKLINE_SYMBOL_RE = re.compile(r"^[A-Z0-9][A-Z0-9._/-]{0,19}$")
 _SPARKLINE_LIMIT = 500
+_AI_TRADE_DESK_STORE: AITradeDeskStore | None = None
+_AI_TRADE_DESK_SCAN_JOBS: AITradeDeskScanManager | None = None
+_AI_TRADE_DESK_SCAN_LOCK = threading.Lock()
+
+
+def _ai_trade_desk_store() -> AITradeDeskStore:
+    global _AI_TRADE_DESK_STORE
+    if _AI_TRADE_DESK_STORE is None:
+        _AI_TRADE_DESK_STORE = AITradeDeskStore(SETTINGS.decision_agent.database_path)
+    return _AI_TRADE_DESK_STORE
+
+
+def _ai_trade_desk_role(request: Request, expected: str) -> str:
+    """Keep AI ingestion and human actions server-side distinct."""
+    role = str(request.headers.get("x-ai-trade-desk-role") or "").strip().lower()
+    if role != expected:
+        raise HTTPException(403, f"{expected} role is required")
+    if expected == "ai":
+        configured = str(os.getenv("AI_TRADE_DESK_AI_TOKEN") or "").strip()
+        supplied = str(request.headers.get("x-ai-trade-desk-token") or "").strip()
+        if not configured:
+            raise HTTPException(503, "AI Trade Desk ingestion token is not configured")
+        if supplied != configured:
+            raise HTTPException(403, "invalid AI Trade Desk token")
+    return str(request.headers.get("x-ai-trade-desk-actor") or expected)
+
+
+def _ai_trade_desk_candidates() -> list[dict[str, Any]]:
+    """Flatten persisted Daily Trader candidates without starting a scan."""
+    payload = _daily_trader_service().persisted_setups()
+    rows: list[dict[str, Any]] = []
+    for group in ("active", "terminal"):
+        for item in payload.get(group) or []:
+            scanner = dict(item.get("scanner") or {})
+            symbol = str(item.get("symbol") or scanner.get("symbol") or "").upper()
+            if not symbol:
+                continue
+            rows.append({**scanner, "symbol": symbol, "radar": item.get("radar"), "market_status": payload.get("market_status"), "radar_as_of": payload.get("radar_as_of")})
+    return rows
+
+
+def _resolve_ai_source(body: Mapping[str, Any]) -> dict[str, Any]:
+    source_scan_id = str(body.get("source_scan_id") or "").strip()
+    symbol = str(body.get("symbol") or "").strip().upper()
+    strategy = str(body.get("strategy") or "").strip().upper()
+    direction = str(body.get("direction") or body.get("side") or "").strip().upper()
+    matches = [row for row in _ai_trade_desk_candidates() if str(row.get("source_scan_id") or "") == source_scan_id and str(row.get("symbol") or "").upper() == symbol and str(row.get("strategy") or "").upper() == strategy and str(row.get("side") or "").upper() == direction]
+    if len(matches) != 1:
+        raise HTTPException(409, "authoritative source candidate was not uniquely resolved")
+    candidate = matches[0]
+    if str(candidate.get("scanner_status") or "").upper() in {"NO_SETUP", "NO_SCAN", "NOT_SCANNED", "ERROR"}:
+        raise HTTPException(409, "candidate scanner status is not proposal-eligible")
+    if str(candidate.get("lifecycle_status") or "").upper() in TERMINAL_LIFECYCLES:
+        raise HTTPException(409, "candidate lifecycle is terminal")
+    return candidate
+
+
+def _execution_worker_ready() -> tuple[bool, str]:
+    path = ROOT / "memory" / "runtime" / "execute_worker.json"
+    if not path.exists():
+        return False, "ACTION_REQUIRED: execution worker heartbeat is missing"
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return False, "ACTION_REQUIRED: execution worker heartbeat is unreadable"
+    stamp = payload.get("updated_at") or payload.get("heartbeat_at") or payload.get("last_heartbeat")
+    if not stamp:
+        return False, "ACTION_REQUIRED: execution worker heartbeat has no timestamp"
+    try:
+        age = (datetime.now(timezone.utc) - datetime.fromisoformat(str(stamp).replace("Z", "+00:00"))).total_seconds()
+    except ValueError:
+        return False, "ACTION_REQUIRED: execution worker heartbeat timestamp is invalid"
+    if age > 900:
+        return False, f"ACTION_REQUIRED: execution worker heartbeat is stale ({int(age)}s)"
+    return True, "READY"
 
 
 def _latest_completed_daily_cutoff() -> pd.Timestamp:
@@ -2591,6 +2668,14 @@ def _daily_trader_scan_jobs() -> DailyTraderScanJobManager:
         return _DAILY_TRADER_SCAN_JOBS
 
 
+def _ai_trade_desk_scan_jobs() -> AITradeDeskScanManager:
+    global _AI_TRADE_DESK_SCAN_JOBS
+    with _AI_TRADE_DESK_SCAN_LOCK:
+        if _AI_TRADE_DESK_SCAN_JOBS is None:
+            _AI_TRADE_DESK_SCAN_JOBS = AITradeDeskScanManager(SETTINGS.decision_agent.database_path, _run_ai_trade_desk_pipeline)
+        return _AI_TRADE_DESK_SCAN_JOBS
+
+
 @app.get("/api/market-screener")
 @app.get("/api/crypto/market-screener")
 def api_market_screener(
@@ -2916,6 +3001,92 @@ def api_daily_trader_setups(side: str = ""):
         return _daily_trader_service().persisted_setups(side=normalized)
     except ValueError as exc:
         raise HTTPException(400, str(exc)) from exc
+
+
+@app.get("/api/ai-trade-desk/proposals")
+def api_ai_trade_desk_proposals(status: str = ""):
+    normalized = str(status or "").strip().upper() or None
+    if normalized and normalized not in {"DISCOVERED", "UNDER_REVIEW", "READY", "INVALIDATED", "APPROVED", "REJECTED", "SUBMITTED", "FILLED", "CANCELLED", "EXPIRED"}:
+        raise HTTPException(400, "unsupported proposal status")
+    proposals = _ai_trade_desk_store().list(status=normalized)
+    counts = {key: sum(1 for proposal in proposals if proposal.get("status") == key) for key in ("DISCOVERED", "UNDER_REVIEW", "READY", "INVALIDATED")}
+    return {"proposals": proposals, "counts": counts, "read_only": True, "orders_submitted": 0, "approvals_created": 0, "execution_intents_created": 0}
+
+
+@app.get("/api/ai-trade-desk/proposals/{proposal_id}")
+def api_ai_trade_desk_proposal(proposal_id: str):
+    proposal = _ai_trade_desk_store().get(proposal_id)
+    if proposal is None:
+        raise HTTPException(404, "proposal not found")
+    return {"proposal": proposal, "events": _ai_trade_desk_store().events(proposal_id), "revisions": _ai_trade_desk_store().revisions(proposal_id), "read_only": True, "orders_submitted": 0}
+
+
+@app.post("/api/ai-trade-desk/proposals/import-persisted")
+def api_ai_trade_desk_import_persisted(request: Request):
+    _ai_trade_desk_role(request, "human")
+    imported: list[dict[str, Any]] = []
+    for candidate in _ai_trade_desk_candidates():
+        lifecycle = str(candidate.get("lifecycle_status") or "").upper()
+        scanner_status = str(candidate.get("scanner_status") or "").upper()
+        if lifecycle in TERMINAL_LIFECYCLES or scanner_status in {"NO_SETUP", "NO_SCAN", "NOT_SCANNED", "ERROR"}:
+            continue
+        key = "persisted:" + "|".join(str(candidate.get(field) or "") for field in ("source_scan_id", "symbol", "strategy", "side"))
+        try:
+            imported.append(_ai_trade_desk_store().ingest(candidate, idempotency_key=key, ai_reasoning="Imported from the authoritative persisted scanner candidate; no AI opinion supplied.", ai_model="persisted-scanner"))
+        except ValueError:
+            continue
+    return {"proposals": imported, "count": len(imported), "read_only": True, "orders_submitted": 0}
+
+
+@app.post("/api/ai-trade-desk/proposals/ingest")
+def api_ai_trade_desk_ingest(request: Request, body: dict):
+    _ai_trade_desk_role(request, "ai")
+    if not isinstance(body, dict):
+        raise HTTPException(400, "proposal payload must be an object")
+    candidate = _resolve_ai_source(body)
+    try:
+        proposal = _ai_trade_desk_store().ingest(candidate, idempotency_key=str(body.get("idempotency_key") or "").strip(), ai_reasoning=str(body.get("ai_reasoning") or ""), ai_confidence=body.get("ai_confidence"), ai_model=str(body.get("ai_model") or ""))
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
+    return {"proposal": proposal, "read_only": True, "orders_submitted": 0}
+
+
+@app.patch("/api/ai-trade-desk/proposals/{proposal_id}")
+def api_ai_trade_desk_update(request: Request, proposal_id: str, body: dict):
+    actor = _ai_trade_desk_role(request, "human")
+    if not isinstance(body, dict):
+        raise HTTPException(400, "proposal update must be an object")
+    try:
+        proposal = _ai_trade_desk_store().update(proposal_id, body, actor=actor, reason=str(body.get("reason") or ""))
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(409 if "conflict" in str(exc) else 422, str(exc)) from exc
+    return {"proposal": proposal, "read_only": True, "orders_submitted": 0}
+
+
+@app.post("/api/ai-trade-desk/proposals/{proposal_id}/status")
+def api_ai_trade_desk_status(request: Request, proposal_id: str, body: dict):
+    actor = _ai_trade_desk_role(request, "human")
+    try:
+        proposal = _ai_trade_desk_store().transition(proposal_id, str(body.get("status") or ""), actor=actor, details={"reason": str(body.get("reason") or "")})
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
+    return {"proposal": proposal, "read_only": True, "orders_submitted": 0}
+
+
+@app.post("/api/ai-trade-desk/proposals/{proposal_id}/reject")
+def api_ai_trade_desk_reject(request: Request, proposal_id: str, body: dict | None = None):
+    actor = _ai_trade_desk_role(request, "human")
+    try:
+        proposal = _ai_trade_desk_store().transition(proposal_id, "REJECTED", actor=actor, details={"reason": str((body or {}).get("reason") or "")})
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
+    return {"proposal": proposal, "read_only": True, "orders_submitted": 0, "execution_intents_created": 0}
 
 
 @app.get("/api/daily-trader/market", response_model=DailyTraderMarketResponse)

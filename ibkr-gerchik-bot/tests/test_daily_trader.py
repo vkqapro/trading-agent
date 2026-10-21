@@ -91,6 +91,24 @@ def test_scheduled_selection_is_top_plus_breakouts_plus_flips_and_deduplicated(t
     assert result["orders_submitted"] == 0
 
 
+def test_authoritative_radar_setup_override_is_scanned_without_reselecting_breakouts(tmp_path):
+    calls: list[str] = []
+
+    def scanner(symbol: str):
+        calls.append(symbol)
+        return {"signals": []}
+
+    service = _service(tmp_path, scanner)
+    result = service.scan(DailyTraderScanRequest(symbols_override=("DDD", "AAA"), max_symbols=2))
+
+    # Radar scans symbols concurrently; order is not an execution contract.
+    assert set(calls) == {"DDD", "AAA"}
+    assert result["selection"]["universe_source"] == "RADAR_SETUPS"
+    assert result["selection"]["unique_symbols"] == 2
+    assert result["selection"]["breakouts"] == 0
+    assert result["selection"]["fresh_flips"] == 0
+
+
 def test_lifecycle_and_authoritative_fields_are_classified_without_recomputation(tmp_path):
     def scanner(symbol: str):
         if symbol == "AAA":

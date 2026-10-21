@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
 
-from ops.trading_platform_ops import ProcessInfo, Supervisor, human_report
+from ops.trading_platform_ops import ProcessInfo, Supervisor, _process_snapshot, human_report
 
 
 def _market_data_spec(tmp_path: Path):
@@ -59,6 +60,35 @@ def _supervisor(monkeypatch, processes, *, broker=None, safety=None, services=No
     monkeypatch.setattr(Supervisor, "_execution_boundary", lambda self: {"safe_to_start": True, "status": "SAFE_TO_START"})
     monkeypatch.setattr(Supervisor, "_api", lambda self, url, label, method="GET": {"service": label, "status": "HEALTHY", "read_only": True})
     return Supervisor(process_provider=lambda: list(processes), sleep=lambda _: None)
+
+
+def test_process_snapshot_uses_psutil_when_cim_is_denied(monkeypatch):
+    monkeypatch.setattr(
+        "ops.trading_platform_ops._process_snapshot_from_cim",
+        lambda: (_ for _ in ()).throw(subprocess.CalledProcessError(1, "powershell")),
+    )
+    monkeypatch.setattr(
+        "ops.trading_platform_ops._process_snapshot_from_psutil",
+        lambda: [ProcessInfo(77, "python -m scanner_mcp.server", 10, "python.exe")],
+    )
+
+    snapshot = _process_snapshot()
+
+    assert snapshot.visibility == "partial"
+    assert snapshot.processes[0].pid == 77
+    assert snapshot.reason == "CIM:CalledProcessError"
+
+
+def test_process_snapshot_uses_get_process_when_cim_and_psutil_are_unavailable(monkeypatch):
+    monkeypatch.setattr("ops.trading_platform_ops._process_snapshot_from_cim", lambda: (_ for _ in ()).throw(OSError("cim denied")))
+    monkeypatch.setattr("ops.trading_platform_ops._process_snapshot_from_psutil", lambda: (_ for _ in ()).throw(ImportError("psutil absent")))
+    monkeypatch.setattr("ops.trading_platform_ops._process_snapshot_from_get_process", lambda: [ProcessInfo(88, "", None, "python.exe")])
+
+    snapshot = _process_snapshot()
+
+    assert snapshot.visibility == "partial"
+    assert snapshot.processes[0].pid == 88
+    assert snapshot.reason == "CIM:OSError; psutil:ImportError"
 
 
 def test_everything_already_healthy_does_not_start(monkeypatch):

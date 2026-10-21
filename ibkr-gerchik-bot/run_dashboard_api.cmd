@@ -2,6 +2,8 @@
 setlocal EnableDelayedExpansion
 set "ROOT=%~dp0"
 set "PIDFILE=%ROOT%runtime\dashboard_api.pid"
+set "WRAPPER_PIDFILE=%ROOT%runtime\dashboard_api.wrapper.pid"
+set "LAUNCHER_PIDFILE=%ROOT%runtime\dashboard_api.launcher.pid"
 set "OUTLOG=%ROOT%runtime\dashboard_8550.stdout.log"
 set "ERRLOG=%ROOT%runtime\dashboard_8550.stderr.log"
 cd /d "%ROOT%"
@@ -49,13 +51,13 @@ if defined PORT_PID (
   echo Refusing to start a duplicate process. Check %ERRLOG%
   exit /b 1
 )
-powershell -NoProfile -ExecutionPolicy Bypass -Command "& '%ROOT%scripts\start_detached_python_service.ps1' -PythonExe '%PYTHON_EXE%' -WorkingDirectory '%ROOT%' -PidFile '%PIDFILE%' -StdoutLog '%OUTLOG%' -StderrLog '%ERRLOG%' -Arguments @('-m','uvicorn','dashboard_react.server:app','--host','127.0.0.1','--port','8550')"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "& '%ROOT%scripts\start_detached_python_service.ps1' -PythonExe '%PYTHON_EXE%' -WorkingDirectory '%ROOT%' -PidFile '%LAUNCHER_PIDFILE%' -StdoutLog '%OUTLOG%' -StderrLog '%ERRLOG%' -Arguments @('-m','uvicorn','dashboard_react.server:app','--host','127.0.0.1','--port','8550')"
 if errorlevel 1 (
   echo Failed to launch Dashboard API process. Check %ERRLOG%
   exit /b 1
 )
 for /l %%I in (1,1,40) do (
-  if exist "%PIDFILE%" (
+  if exist "%LAUNCHER_PIDFILE%" (
     powershell -NoProfile -Command "try { Invoke-RestMethod -Uri 'http://127.0.0.1:8550/api/radar/top?limit=1' -TimeoutSec 2 | Out-Null; exit 0 } catch {}; exit 1"
     if not errorlevel 1 goto :started
   )
@@ -65,8 +67,17 @@ echo Failed to start ready Dashboard API. Check %ERRLOG%
 exit /b 1
 
 :started
-set /p STARTED_PID=<"%PIDFILE%"
-echo Dashboard API started with PID %STARTED_PID%.
+set "LISTENER_PID="
+for /f "tokens=5" %%P in ('netstat -ano ^| findstr /R /C:"127.0.0.1:8550 .*LISTENING"') do set "LISTENER_PID=%%P"
+if not defined LISTENER_PID (
+  echo Failed to identify the Dashboard listener after health check.
+  exit /b 1
+)
+set /p WRAPPER_PID=<"%LAUNCHER_PIDFILE%"
+>"%PIDFILE%" echo %LISTENER_PID%
+>"%WRAPPER_PIDFILE%" echo %WRAPPER_PID%
+del /q "%LAUNCHER_PIDFILE%" >nul 2>&1
+echo Dashboard API listener PID %LISTENER_PID%, launcher PID %WRAPPER_PID%.
 echo URL:    http://127.0.0.1:8550
 echo Health: http://127.0.0.1:8550/api/radar/top?limit=1
 echo Logs:   %OUTLOG% and %ERRLOG%

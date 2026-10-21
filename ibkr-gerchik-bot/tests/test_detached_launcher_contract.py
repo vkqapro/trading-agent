@@ -83,7 +83,7 @@ def test_dashboard_launcher_uses_safe_powershell_array_binding() -> None:
     assert "-Command \"& '%ROOT%scripts\\start_detached_python_service.ps1'" in invocation
     assert "-File " not in invocation
     assert '-Arguments "-m","uvicorn"' not in invocation
-    assert "-PidFile '%PIDFILE%'" in invocation
+    assert "-PidFile '%LAUNCHER_PIDFILE%'" in invocation
     assert "-StdoutLog '%OUTLOG%'" in invocation
     assert "-StderrLog '%ERRLOG%'" in invocation
     assert "-Arguments @('-m','uvicorn','dashboard_react.server:app','--host','127.0.0.1','--port','8550')" in invocation

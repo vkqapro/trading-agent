@@ -20,11 +20,32 @@ def test_start_launcher_contains_complete_stack_in_required_order():
         text.index("run_execute_worker.cmd"),
         text.index("run_crypto_worker.cmd"),
         text.index("run_autonomous_stock_worker.cmd"),
-        text.index("uvicorn dashboard_react.server:app"),
+        text.index("run_dashboard_api.cmd"),
     ]
     assert positions == sorted(positions)
     assert "autonomous stock worker" in text.lower()
     assert "report_autonomous_stock_worker_start.py" in text
+    assert "call \"%~dp0run_dashboard_api.cmd\"" in text
+    assert "run_execute_worker.cmd" in text
+
+
+def test_dashboard_launcher_tracks_listener_and_wrapper_pids_without_fallback():
+    text = _text("run_dashboard_api.cmd")
+    assert "dashboard_api.wrapper.pid" in text
+    assert "dashboard_api.launcher.pid" in text
+    assert "netstat -ano" in text
+    assert "LISTENER_PID" in text
+    assert "dashboard_api.server:app" not in text
+    assert "dashboard_react.server:app" in text
+
+
+def test_dashboard_lifecycle_isolated_refresh_is_port_and_identity_scoped():
+    text = _text("scripts/dashboard_api_lifecycle.ps1")
+    assert "dashboard_api.wrapper.pid" in text
+    assert "Get-DashboardWrapper" in text
+    assert "dashboard_react\\.server:app" in text
+    assert "--port\\s+8550" in text
+    assert "Dashboard listener did not stop" in text
 
 
 def test_stop_script_has_exact_worker_signal_and_required_shutdown_order():
@@ -37,6 +58,10 @@ def test_stop_script_has_exact_worker_signal_and_required_shutdown_order():
     assert text.index("--job market_data") < text.index("src.crypto.main --job worker")
     assert text.index("src.crypto.main --job worker") < text.index("dashboard API port 8550")
     assert "Stop-Process -Id" in text
+    assert "dashboard_api.wrapper.pid" in _text("scripts/dashboard_api_lifecycle.ps1")
+    assert "Get-OwnedDashboardWrapper" in text
+    assert "detached dashboard wrapper" in text
+    assert "dashboard_api.pid" in text
 
 
 def test_hard_reset_reuses_complete_stack_and_documents_protection():
@@ -93,6 +118,15 @@ def test_dashboard_service_contract_exposes_worker_fields_without_account_id():
     ):
         assert field in server
     assert "account_id" not in server[server.index("def _autonomous_stock_worker_status"):server.index("def api_services")]
+
+
+def test_trade_desk_uses_proposal_identity_and_fail_closed_ready_gate():
+    dashboard = _text("dashboard_react/index.html")
+    assert "uniqueTradeDeskProposals" in dashboard
+    assert "proposal.proposal_id" in dashboard
+    assert "readyTransitionCheck" in dashboard
+    assert "SIGNAL_NOT_CURRENTLY_READY" in dashboard
+    assert "MANUAL OVERRIDE" in dashboard
 
 
 def test_startup_report_is_read_only_and_requires_heartbeat_lock_ownership():
