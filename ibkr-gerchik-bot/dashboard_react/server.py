@@ -3009,8 +3009,20 @@ def api_ai_trade_desk_proposals(status: str = ""):
     if normalized and normalized not in {"DISCOVERED", "UNDER_REVIEW", "READY", "INVALIDATED", "APPROVED", "REJECTED", "SUBMITTED", "FILLED", "CANCELLED", "EXPIRED"}:
         raise HTTPException(400, "unsupported proposal status")
     proposals = _ai_trade_desk_store().list(status=normalized)
+    active_counts = {}
+    for proposal in proposals:
+        opportunity_id = str(proposal.get("opportunity_id") or "")
+        if opportunity_id and proposal.get("status") in ACTIVE_PROPOSAL_STATUSES:
+            active_counts[opportunity_id] = active_counts.get(opportunity_id, 0) + 1
+    for proposal in proposals:
+        opportunity_id = str(proposal.get("opportunity_id") or "")
+        proposal["kanban_projection"] = (
+            "ACTIVE_OPPORTUNITY"
+            if opportunity_id and proposal.get("status") in ACTIVE_PROPOSAL_STATUSES and active_counts.get(opportunity_id) == 1
+            else "HISTORICAL_ARCHIVED"
+        )
     counts = {key: sum(1 for proposal in proposals if proposal.get("status") == key) for key in ("DISCOVERED", "UNDER_REVIEW", "READY", "INVALIDATED")}
-    return {"proposals": proposals, "counts": counts, "read_only": True, "orders_submitted": 0, "approvals_created": 0, "execution_intents_created": 0}
+    return {"proposals": proposals, "active_opportunities": [p for p in proposals if p["kanban_projection"] == "ACTIVE_OPPORTUNITY"], "historical_archived": [p for p in proposals if p["kanban_projection"] == "HISTORICAL_ARCHIVED"], "counts": counts, "read_only": True, "orders_submitted": 0, "approvals_created": 0, "execution_intents_created": 0}
 
 
 @app.get("/api/ai-trade-desk/proposals/{proposal_id}")
@@ -3018,7 +3030,7 @@ def api_ai_trade_desk_proposal(proposal_id: str):
     proposal = _ai_trade_desk_store().get(proposal_id)
     if proposal is None:
         raise HTTPException(404, "proposal not found")
-    return {"proposal": proposal, "events": _ai_trade_desk_store().events(proposal_id), "revisions": _ai_trade_desk_store().revisions(proposal_id), "read_only": True, "orders_submitted": 0}
+    return {"proposal": proposal, "events": _ai_trade_desk_store().events(proposal_id), "revisions": _ai_trade_desk_store().revisions(proposal_id), "observations": _ai_trade_desk_store().observations(proposal_id), "read_only": True, "orders_submitted": 0}
 
 
 @app.post("/api/ai-trade-desk/proposals/import-persisted")

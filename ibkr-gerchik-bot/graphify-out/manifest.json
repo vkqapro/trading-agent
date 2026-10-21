@@ -90,9 +90,9 @@
     "semantic_hash": ""
   },
   "dashboard_react/server.py": {
-    "mtime": 1792533071.1317546,
-    "seen": 1792533229.0433815,
-    "ast_hash": "8909f4ebc9e2b7b66d4e78e97c44ea57",
+    "mtime": 1792553569.5120726,
+    "seen": 1792553676.7056787,
+    "ast_hash": "0aa7deacc1c41c8202dc677ce48eb5d6",
     "semantic_hash": ""
   },
   "design_handoff/trading-bot-dashboard/project/ibkr-gerchik-bot/dashboard/app.py": {
@@ -162,8 +162,8 @@
     "semantic_hash": "a47f92efff8d7a388062745b50785c68"
   },
   "memory/order_requests.json": {
-    "mtime": 1792552538.652781,
-    "seen": 1792552542.9686491,
+    "mtime": 1792554015.6242247,
+    "seen": 1792554019.2109995,
     "ast_hash": "651fd151e0484a832f99765a874bd2e2",
     "semantic_hash": ""
   },
@@ -1194,9 +1194,9 @@
     "semantic_hash": ""
   },
   "dashboard_react/index.html": {
-    "mtime": 1792550719.0708938,
-    "seen": 1792550927.9513156,
-    "ast_hash": "7cfb51bebe553561d09f62ceb56c9706",
+    "mtime": 1792553569.518826,
+    "seen": 1792553676.7841575,
+    "ast_hash": "e733c2ef1469a32150e9f04234772180",
     "semantic_hash": ""
   },
   "design_handoff/trading-bot-dashboard/README.md": {
@@ -4746,15 +4746,15 @@
     "semantic_hash": ""
   },
   "src/decision/ai_trade_desk.py": {
-    "mtime": 1792550702.687838,
-    "seen": 1792550927.8849313,
-    "ast_hash": "01159c1433007c490f5ddb821551e5b8",
+    "mtime": 1792553954.1216297,
+    "seen": 1792554019.22075,
+    "ast_hash": "e39c3f518547ff78463203592cfd4a2c",
     "semantic_hash": ""
   },
   "tests/test_ai_trade_desk.py": {
-    "mtime": 1792552428.8052669,
-    "seen": 1792552543.004196,
-    "ast_hash": "5e9df0f0945901d494c1ef00da62acd4",
+    "mtime": 1792553954.1227665,
+    "seen": 1792554019.2445502,
+    "ast_hash": "248eb4f0e3cbfc8b304087a146138a9e",
     "semantic_hash": ""
   },
   "docs/chatgpt-integration-audit/07-AI-TRADE-DESK.md": {
@@ -4770,15 +4770,15 @@
     "semantic_hash": ""
   },
   "src/decision/ai_trade_desk_scan.py": {
-    "mtime": 1792552412.3906417,
-    "seen": 1792552542.9794822,
-    "ast_hash": "5769d34428182b6048585f414c604dd7",
+    "mtime": 1792553594.5315924,
+    "seen": 1792553676.7193,
+    "ast_hash": "c6cc22d08bef3f620b4bb82a67ecabff",
     "semantic_hash": ""
   },
   "tests/test_trading_work_operator.py": {
-    "mtime": 1792552440.3231869,
-    "seen": 1792552543.0278363,
-    "ast_hash": "92809c43897a70e1bf463974eb42ac93",
+    "mtime": 1792553581.6532495,
+    "seen": 1792553676.761829,
+    "ast_hash": "43f96399f89a8af6c518b2781ec93abb",
     "semantic_hash": ""
   },
   "tools/trading_work_operator.py": {
@@ -4797,6 +4797,12 @@
     "mtime": 1792552164.750353,
     "seen": 1792552542.9696264,
     "ast_hash": "7517e220e6495895b212e66e8c22a694",
+    "semantic_hash": ""
+  },
+  "ai_trade_desk_reviews_aitd-scan-7447812935134bbf948f01f8e797d868.json": {
+    "mtime": 1792553278.3094056,
+    "seen": 1792553676.6365416,
+    "ast_hash": "687937c6f343e0aaae5d5a5a308be66e",
     "semantic_hash": ""
   }
 }

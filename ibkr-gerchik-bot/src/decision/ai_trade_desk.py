@@ -137,6 +137,49 @@ def candidate_identity(candidate: Mapping[str, Any]) -> str:
     return "candidate-" + hashlib.sha256("|".join(str(item or "") for item in values).encode()).hexdigest()[:24]
 
 
+def opportunity_identity(candidate: Mapping[str, Any]) -> str:
+    """Return a setup identity that is independent of scan/job timestamps.
+
+    The scanner must provide a stable setup anchor.  A source observation ID
+    is intentionally excluded: it identifies an observation, not an ongoing
+    opportunity.  Missing setup evidence fails closed rather than collapsing
+    unrelated signals by ticker, strategy, and direction.
+    """
+    source = candidate.get("source") if isinstance(candidate.get("source"), Mapping) else {}
+    symbol = str(candidate.get("symbol") or source.get("symbol") or "").strip().upper()
+    strategy = str(candidate.get("strategy") or source.get("strategy") or "").strip().upper()
+    direction = str(candidate.get("side") or candidate.get("direction") or source.get("side") or "").strip().upper()
+    level = candidate.get("level", source.get("level"))
+    level_type = str(candidate.get("level_type") or source.get("level_type") or "").strip().upper()
+    planned_entry = candidate.get("planned_entry", candidate.get("entry", source.get("planned_entry")))
+    entry_touch_time = candidate.get("entry_touch_time") or source.get("entry_touch_time")
+    anchors = (
+        ("setup_id", candidate.get("setup_id") or source.get("setup_id")),
+        ("setup_anchor_id", candidate.get("setup_anchor_id") or source.get("setup_anchor_id")),
+        ("level_id", candidate.get("level_id") or source.get("level_id")),
+        ("anchor_date", candidate.get("anchor_date") or source.get("anchor_date")),
+        ("entry_touch_time", entry_touch_time),
+    )
+    anchor_kind, anchor = next(((kind, value) for kind, value in anchors if value not in (None, "")), ("", None))
+    if (
+        not all((symbol, strategy, direction, level_type))
+        or level in (None, "")
+        or planned_entry in (None, "")
+        or anchor in (None, "")
+    ):
+        raise ValueError("OPPORTUNITY_ID_UNVERIFIED: stable scanner setup identity is required")
+    try:
+        level_value = f"{float(level):.6f}"
+        entry_value = f"{float(planned_entry):.6f}"
+    except (TypeError, ValueError) as exc:
+        raise ValueError("OPPORTUNITY_ID_UNVERIFIED: setup prices are invalid") from exc
+    # A touch time is an anchor only when the scanner has no stronger persisted setup anchor.
+    # Including it beside an anchor date/setup ID would split the same opportunity when an
+    # optional touch timestamp appears later.
+    values = (symbol, strategy, direction, anchor_kind, str(anchor), level_type, level_value, entry_value)
+    return "opportunity-" + hashlib.sha256("|".join(values).encode()).hexdigest()[:24]
+
+
 class AITradeDeskStore:
     """SQLite-backed proposal store sharing the existing Decision Lab DB."""
 
@@ -160,6 +203,7 @@ class AITradeDeskStore:
                     symbol TEXT NOT NULL,
                     strategy TEXT NOT NULL,
                     direction TEXT NOT NULL,
+                     opportunity_id TEXT,
                     source_scan_id TEXT NOT NULL,
                     source_candidate_id TEXT NOT NULL,
                     source_timestamp TEXT,
@@ -196,6 +240,16 @@ class AITradeDeskStore:
                 );
                 CREATE INDEX IF NOT EXISTS idx_ai_trade_proposals_status ON ai_trade_proposals(status);
                 CREATE INDEX IF NOT EXISTS idx_ai_trade_proposals_source ON ai_trade_proposals(source_scan_id, symbol, strategy, direction);
+                 CREATE TABLE IF NOT EXISTS ai_trade_observations (
+                     observation_id TEXT PRIMARY KEY,
+                     proposal_id TEXT NOT NULL,
+                     opportunity_id TEXT NOT NULL,
+                     source_scan_id TEXT NOT NULL,
+                     source_candidate_id TEXT NOT NULL,
+                     observed_at TEXT NOT NULL,
+                     candidate_json TEXT NOT NULL,
+                     UNIQUE(proposal_id, source_scan_id, source_candidate_id)
+                 );
                 CREATE TABLE IF NOT EXISTS ai_trade_proposal_revisions (
                     revision_id TEXT PRIMARY KEY,
                     proposal_id TEXT NOT NULL,
@@ -222,6 +276,9 @@ class AITradeDeskStore:
                 con.execute("ALTER TABLE ai_trade_proposals ADD COLUMN ai_review_status TEXT NOT NULL DEFAULT 'NOT_REVIEWED'")
             if "ai_review_json" not in columns:
                 con.execute("ALTER TABLE ai_trade_proposals ADD COLUMN ai_review_json TEXT NOT NULL DEFAULT '{}'")
+            if "opportunity_id" not in columns:
+                con.execute("ALTER TABLE ai_trade_proposals ADD COLUMN opportunity_id TEXT")
+            con.execute("CREATE INDEX IF NOT EXISTS idx_ai_trade_proposals_opportunity ON ai_trade_proposals(opportunity_id, status)")
 
     @staticmethod
     def _decode(row: sqlite3.Row) -> dict[str, Any]:
@@ -237,14 +294,14 @@ class AITradeDeskStore:
     def list(self, *, status: str | None = None) -> list[dict[str, Any]]:
         with self._connection() as con:
             rows = con.execute(
-                "SELECT * FROM ai_trade_proposals WHERE (? IS NULL OR status=?) ORDER BY updated_at DESC",
+                "SELECT p.*, (SELECT COUNT(*) FROM ai_trade_observations o WHERE o.proposal_id=p.proposal_id) AS observation_count FROM ai_trade_proposals p WHERE (? IS NULL OR p.status=?) ORDER BY p.updated_at DESC",
                 (status, status),
             ).fetchall()
             return [self._decode(row) for row in rows]
 
     def get(self, proposal_id: str) -> dict[str, Any] | None:
         with self._connection() as con:
-            row = con.execute("SELECT * FROM ai_trade_proposals WHERE proposal_id=?", (proposal_id,)).fetchone()
+            row = con.execute("SELECT p.*, (SELECT COUNT(*) FROM ai_trade_observations o WHERE o.proposal_id=p.proposal_id) AS observation_count FROM ai_trade_proposals p WHERE p.proposal_id=?", (proposal_id,)).fetchone()
             return self._decode(row) if row else None
 
     def ingest(self, candidate: Mapping[str, Any], *, idempotency_key: str, ai_reasoning: str = "", ai_confidence: Any = None, ai_model: str = "", ai_review_status: str = "NOT_REVIEWED") -> dict[str, Any]:
@@ -261,6 +318,7 @@ class AITradeDeskStore:
         source_scan_id = str(candidate.get("source_scan_id") or "").strip()
         if not source_scan_id:
             raise ValueError("SOURCE_PROVENANCE_UNVERIFIED: source_scan_id is required")
+        opportunity_id = opportunity_identity(candidate)
         if scanner_status in {"NO_SETUP", "NO_SCAN", "NOT_SCANNED", "ERROR"} or lifecycle in TERMINAL_LIFECYCLES:
             raise ValueError("candidate is not eligible for proposal ingestion")
         entry = candidate.get("entry", candidate.get("planned_entry"))
@@ -278,21 +336,29 @@ class AITradeDeskStore:
         warnings = list(candidate.get("missing_quality_data") or [])
         if candidate.get("direction_conflict") is True:
             warnings.append("Radar direction conflict is informational")
+        source_candidate_id = str(candidate.get("source_candidate_id") or candidate_identity(candidate))
+        observation_id = "observation-" + hashlib.sha256((source_scan_id + "|" + source_candidate_id).encode()).hexdigest()[:24]
         with self._connection() as con:
+            con.execute("BEGIN IMMEDIATE")
             existing = con.execute("SELECT * FROM ai_trade_proposals WHERE idempotency_key=?", (key,)).fetchone()
+            if existing is None:
+                existing = con.execute("SELECT * FROM ai_trade_proposals WHERE opportunity_id=? AND status IN ('DISCOVERED','UNDER_REVIEW','READY') ORDER BY created_at LIMIT 1", (opportunity_id,)).fetchone()
             if existing:
-                return self._decode(existing)
+                existing_id = str(existing["proposal_id"])
+                con.execute("INSERT OR IGNORE INTO ai_trade_observations(observation_id,proposal_id,opportunity_id,source_scan_id,source_candidate_id,observed_at,candidate_json) VALUES(?,?,?,?,?,?,?)", (observation_id, existing_id, opportunity_id, source_scan_id, source_candidate_id, timestamp, _json(dict(candidate))))
+                row = con.execute("SELECT p.*, (SELECT COUNT(*) FROM ai_trade_observations o WHERE o.proposal_id=p.proposal_id) AS observation_count FROM ai_trade_proposals p WHERE p.proposal_id=?", (existing_id,)).fetchone()
+                return self._decode(row)
             con.execute(
                 """INSERT INTO ai_trade_proposals (
-                    proposal_id,idempotency_key,symbol,strategy,direction,source_scan_id,source_candidate_id,
+                    proposal_id,idempotency_key,symbol,strategy,direction,opportunity_id,source_scan_id,source_candidate_id,
                     source_timestamp,anchor_date,entry,stop,target,rr,order_type,cash_allocation,max_risk_pct,
                     quantity,risk_per_share,actual_risk,potential_profit,notional_exposure,scanner_status,
                     scanner_lifecycle,scanner_score,ai_reasoning,ai_confidence,ai_model,ai_review_status,ai_review_json,warnings_json,source_json,
                     status,manual_override_status,revision,approval_id,expires_at,created_at,updated_at
-                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                 (
-                    proposal_id, key, symbol, strategy, direction, source_scan_id,
-                    str(candidate.get("source_candidate_id") or candidate_identity(candidate)), candidate.get("scan_timestamp"),
+                    proposal_id, key, symbol, strategy, direction, opportunity_id, source_scan_id,
+                    source_candidate_id, candidate.get("scan_timestamp"),
                     candidate.get("anchor_date"), metrics["entry"], metrics["stop"], metrics["target"], metrics["rr"],
                     str(candidate.get("order_type") or "LIMIT").upper(), metrics["cash_allocation"], metrics["max_risk_pct"],
                     metrics["quantity"], metrics["risk_per_share"], metrics["actual_risk"], metrics["potential_profit"],
@@ -302,8 +368,22 @@ class AITradeDeskStore:
                 ),
             )
             con.execute("INSERT INTO ai_trade_proposal_events(proposal_id,event_type,actor,details_json,created_at) VALUES(?,?,?,?,?)", (proposal_id, "PROPOSAL_CREATED", "AI", _json({"idempotency_key": key}), timestamp))
-            row = con.execute("SELECT * FROM ai_trade_proposals WHERE proposal_id=?", (proposal_id,)).fetchone()
+            con.execute("INSERT INTO ai_trade_observations(observation_id,proposal_id,opportunity_id,source_scan_id,source_candidate_id,observed_at,candidate_json) VALUES(?,?,?,?,?,?,?)", (observation_id, proposal_id, opportunity_id, source_scan_id, source_candidate_id, timestamp, _json(dict(candidate))))
+            row = con.execute("SELECT p.*, (SELECT COUNT(*) FROM ai_trade_observations o WHERE o.proposal_id=p.proposal_id) AS observation_count FROM ai_trade_proposals p WHERE p.proposal_id=?", (proposal_id,)).fetchone()
             return self._decode(row)
+
+    def observations(self, proposal_id: str) -> list[dict[str, Any]]:
+        with self._connection() as con:
+            rows = con.execute("SELECT * FROM ai_trade_observations WHERE proposal_id=? ORDER BY observed_at, observation_id", (proposal_id,)).fetchall()
+            result = []
+            for row in rows:
+                item = dict(row)
+                try:
+                    item["candidate"] = json.loads(item.pop("candidate_json"))
+                except (TypeError, ValueError):
+                    item["candidate"] = {}
+                result.append(item)
+            return result
 
     def update(self, proposal_id: str, changes: Mapping[str, Any], *, actor: str, reason: str = "") -> dict[str, Any]:
         current = self.get(proposal_id)

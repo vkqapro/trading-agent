@@ -242,24 +242,35 @@ def _candidate_rows(result: Mapping[str, Any]) -> list[dict[str, Any]]:
 def _reviewable_candidates(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Attach only exact, persisted proposal identities to review candidates."""
     from dashboard_react import server
-    from src.decision.ai_trade_desk import candidate_identity
+    from src.decision.ai_trade_desk import candidate_identity, opportunity_identity
 
-    proposals = {
-        str(proposal.get("source_candidate_id") or ""): proposal
-        for proposal in server._ai_trade_desk_store().list()
-    }
+    proposals = server._ai_trade_desk_store().list()
+    by_candidate = {str(proposal.get("source_candidate_id") or ""): proposal for proposal in proposals}
+    by_opportunity = {str(proposal.get("opportunity_id") or ""): proposal for proposal in proposals if proposal.get("opportunity_id")}
     reviewable: list[dict[str, Any]] = []
     for candidate in candidates:
         item = dict(candidate)
-        proposal = proposals.get(candidate_identity(candidate))
+        candidate_id = candidate_identity(candidate)
+        try:
+            candidate_opportunity_id = opportunity_identity(candidate)
+        except ValueError:
+            candidate_opportunity_id = ""
+        proposal = by_candidate.get(candidate_id) or by_opportunity.get(candidate_opportunity_id)
         if proposal is not None:
             item["proposal_id"] = proposal["proposal_id"]
             item["proposal_status"] = proposal["status"]
             item["ai_review_status"] = proposal["ai_review_status"]
+            item["opportunity_id"] = proposal.get("opportunity_id")
+            source = proposal.get("source") if isinstance(proposal.get("source"), Mapping) else {}
+            material_fields = ("symbol", "strategy", "side", "level_type", "level", "planned_entry", "entry", "stop", "target")
+            changed = any(str(candidate.get(field, "")) != str(source.get(field, proposal.get(field, ""))) for field in material_fields)
+            item["review_classification"] = "UPDATED_OPPORTUNITY" if changed or proposal.get("ai_review_status") != "COMPLETED" else "UNCHANGED_OPPORTUNITY"
         else:
             item["proposal_id"] = None
             item["proposal_status"] = "NOT_PERSISTED"
             item["ai_review_status"] = "NOT_REVIEWABLE"
+            item["opportunity_id"] = candidate_opportunity_id or None
+            item["review_classification"] = "NEW_OPPORTUNITY" if candidate_opportunity_id else "HISTORICAL_OR_TERMINAL"
         reviewable.append(item)
     return reviewable
 
@@ -318,13 +329,17 @@ def _run_ai_trade_desk_pipeline(scan_id: str, stage: Callable[[str, Mapping[str,
     parent = server._ai_trade_desk_scan_jobs().status(parent_id) or {}
     result = parent.get("result") if isinstance(parent.get("result"), Mapping) else {}
     candidates = _candidate_rows(result.get("result") if isinstance(result.get("result"), Mapping) else result)
-    if not candidates:
+    review_candidates = [
+        item for item in _reviewable_candidates(candidates)
+        if item.get("review_classification") in {"NEW_OPPORTUNITY", "UPDATED_OPPORTUNITY"}
+    ]
+    if not review_candidates:
         stage("GPT_ANALYSIS", {"status": "SKIPPED_NO_CANDIDATES", "candidate_count": 0, "reviewed_count": 0, "reason_code": "NO_ELIGIBLE_CANDIDATES", "review_payload_available": False})
         stage("KANBAN_PUBLICATION", {"status": "SKIPPED_NO_CANDIDATES", "published_count": 0, "reason_code": "NO_ELIGIBLE_CANDIDATES"})
         return {"status": "SKIPPED_NO_CANDIDATES", "parent_scan_id": parent_id, "candidate_count": 0, "reviewed_count": 0, "published_count": 0, "orders_submitted": 0, "approvals_created": 0, "execution_intents_created": 0, "review_required": False}
-    stage("GPT_ANALYSIS", {"status": "REVIEW_PENDING", "candidate_count": len(candidates), "reviewed_count": 0, "reason_code": "CHATGPT_REVIEW_IMPORT_REQUIRED", "review_payload_available": True})
+    stage("GPT_ANALYSIS", {"status": "REVIEW_PENDING", "candidate_count": len(review_candidates), "reviewed_count": 0, "reason_code": "CHATGPT_REVIEW_IMPORT_REQUIRED", "review_payload_available": True})
     stage("KANBAN_PUBLICATION", {"status": "PENDING_AI_REVIEW", "published_count": 0})
-    return {"status": "REVIEW_PENDING", "parent_scan_id": parent_id, "candidate_count": len(candidates), "reviewed_count": 0, "published_count": 0, "orders_submitted": 0, "approvals_created": 0, "execution_intents_created": 0, "review_required": True}
+    return {"status": "REVIEW_PENDING", "parent_scan_id": parent_id, "candidate_count": len(review_candidates), "reviewed_count": 0, "published_count": 0, "orders_submitted": 0, "approvals_created": 0, "execution_intents_created": 0, "review_required": True}
 
 
 def _register_dashboard_routes() -> None:
@@ -392,7 +407,10 @@ def _register_dashboard_routes() -> None:
         parent = server._ai_trade_desk_scan_jobs().status(str(item.get("parent_scan_id") or scan_id)) or item
         parent_result = parent.get("result") if isinstance(parent.get("result"), Mapping) else {}
         source = parent_result.get("result") if isinstance(parent_result.get("result"), Mapping) else parent_result
-        candidates = _reviewable_candidates(_candidate_rows(source))
+        candidates = [
+            item for item in _reviewable_candidates(_candidate_rows(source))
+            if item.get("review_classification") in {"NEW_OPPORTUNITY", "UPDATED_OPPORTUNITY"}
+        ]
         review_status = "SKIPPED_NO_CANDIDATES" if item.get("status") == "SKIPPED_NO_CANDIDATES" else "AI_REVIEW_PENDING"
         return {
             "scan_id": scan_id,

@@ -7,7 +7,7 @@ from unittest.mock import patch
 import pytest
 from fastapi.testclient import TestClient
 
-from src.decision.ai_trade_desk import AITradeDeskStore, calculate_trade_metrics
+from src.decision.ai_trade_desk import AITradeDeskStore, calculate_trade_metrics, opportunity_identity
 from src.decision.ai_trade_desk_scan import AITradeDeskScanManager
 
 
@@ -20,6 +20,10 @@ def candidate():
         "entry": 81.08,
         "stop": 79.92,
         "target": 84.27,
+        "level": 79.0,
+        "level_type": "resistance",
+        "planned_entry": 81.08,
+        "entry_touch_time": "2026-10-20T13:30:00+00:00",
         "rr": 2.75,
         "position_size": 12,
         "risk_pct": 5,
@@ -463,4 +467,56 @@ def test_reused_proposal_does_not_overwrite_source_provenance(tmp_path: Path):
 
     assert reused["proposal_id"] == first["proposal_id"]
     assert reused["source_scan_id"] == first["source_scan_id"]
+
+
+def test_repeated_scanner_observation_reuses_opportunity_and_attaches_history(tmp_path: Path):
+    store = AITradeDeskStore(tmp_path / "decision.db")
+    first_source = {**candidate(), "source_scan_id": "scanner-observation-1", "scan_timestamp": "2026-10-20T13:30:00+00:00"}
+    second_source = {**candidate(), "source_scan_id": "scanner-observation-2", "scan_timestamp": "2026-10-21T13:30:00+00:00"}
+    first = store.ingest(first_source, idempotency_key="scan:1", ai_review_status="PENDING")
+    store.transition(first["proposal_id"], "UNDER_REVIEW", actor="tester")
+    reviewed = store.publish_ai_review(first["proposal_id"], {
+        "source_scan_id": first_source["source_scan_id"], "symbol": "TEST", "strategy": "LP1",
+        "ai_reasoning": "reviewed", "strengths": ["s"], "weaknesses": ["w"],
+        "risk_observations": ["r"], "review_result": "HUMAN_REVIEW_REQUIRED", "model_provider": "fixture",
+    }, actor="fixture-ai")
+    reused = store.ingest(second_source, idempotency_key="scan:2", ai_review_status="PENDING")
+    assert reused["proposal_id"] == first["proposal_id"]
+    assert reused["source_scan_id"] == first["source_scan_id"]
+    assert reused["status"] == "UNDER_REVIEW"
+    assert reused["ai_review_status"] == "COMPLETED"
+    assert reused["observation_count"] == 2
+    assert len(store.events(first["proposal_id"])) == 3
+    assert len(store.observations(first["proposal_id"])) == 2
+    assert reviewed["proposal_id"] == first["proposal_id"]
+
+
+def test_different_authoritative_setup_gets_separate_opportunity(tmp_path: Path):
+    store = AITradeDeskStore(tmp_path / "decision.db")
+    first = store.ingest(candidate(), idempotency_key="setup:1")
+    second = store.ingest({**candidate(), "level": 80.0, "planned_entry": 82.0, "entry_touch_time": "2026-10-21T13:30:00+00:00", "source_scan_id": "scanner-observation-2"}, idempotency_key="setup:2")
+    assert second["proposal_id"] != first["proposal_id"]
+    assert second["opportunity_id"] != first["opportunity_id"]
+
+
+def test_optional_entry_touch_does_not_split_anchor_date_opportunity():
+    anchored = {**candidate(), "anchor_date": "2026-10-20"}
+    without_touch = {key: value for key, value in anchored.items() if key != "entry_touch_time"}
+    later_touch = {**anchored, "entry_touch_time": "2026-10-21T13:30:00+00:00"}
+
+    assert opportunity_identity(without_touch) == opportunity_identity(later_touch)
+
+
+def test_entry_touch_is_the_required_anchor_when_no_stronger_anchor_exists():
+    touch_anchored = candidate()
+    later_touch = {**touch_anchored, "entry_touch_time": "2026-10-21T13:30:00+00:00"}
+
+    assert opportunity_identity(touch_anchored) != opportunity_identity(later_touch)
+
+
+def test_missing_setup_identity_fails_closed(tmp_path: Path):
+    store = AITradeDeskStore(tmp_path / "decision.db")
+    missing = {key: value for key, value in candidate().items() if key not in {"level", "level_type", "planned_entry", "entry_touch_time"}}
+    with pytest.raises(ValueError, match="OPPORTUNITY_ID_UNVERIFIED"):
+        store.ingest(missing, idempotency_key="setup:missing")
 

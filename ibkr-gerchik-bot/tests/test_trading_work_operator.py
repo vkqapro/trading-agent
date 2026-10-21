@@ -18,6 +18,10 @@ def _candidate(proposal_id: str = "aitd-fixture") -> dict:
         "entry": 81.08,
         "stop": 79.92,
         "target": 84.27,
+        "level": 79.0,
+        "level_type": "resistance",
+        "planned_entry": 81.08,
+        "entry_touch_time": "2026-10-20T13:30:00+00:00",
     }
 
 
