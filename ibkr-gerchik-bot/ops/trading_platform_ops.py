@@ -38,6 +38,14 @@ STARTUP_VERIFY_INTERVAL_SECONDS = 0.5
 BROKER_IDENTITY_TIMEOUT_SECONDS = 8.0
 
 
+class BrokerIdentityProbeError(RuntimeError):
+    """A read-only broker identity probe failed before returning identity."""
+
+    def __init__(self, reason_code: str, detail: str = "") -> None:
+        super().__init__(detail or reason_code)
+        self.reason_code = reason_code
+
+
 @dataclass(frozen=True)
 class ProcessInfo:
     pid: int
@@ -131,6 +139,78 @@ def _process_snapshot_from_get_process() -> list[ProcessInfo]:
     if not rows:
         raise RuntimeError("Get-Process returned no visible processes")
     return rows
+
+
+def _targeted_process_from_powershell(pid: int) -> ProcessInfo | None:
+    """Read one PID through an independent PowerShell query.
+
+    Bulk CIM enumeration can be incomplete under Windows security boundaries.
+    A targeted query is used only to corroborate a lock/heartbeat PID; failure
+    remains incomplete evidence and never becomes a positive ownership claim.
+    """
+    if int(pid) <= 0:
+        return None
+    for provider in ("Get-CimInstance", "Get-WmiObject"):
+        script = (
+            "$p = " + provider + " Win32_Process -Filter 'ProcessId = "
+            + str(int(pid))
+            + "' -ErrorAction SilentlyContinue; "
+            "if ($p) { $p | Select-Object ProcessId,ParentProcessId,CommandLine,Name,CreationDate | ConvertTo-Json -Compress }"
+        )
+        try:
+            raw = subprocess.check_output(["powershell", "-NoProfile", "-Command", script], text=True, timeout=5)
+            value = json.loads(raw) if raw.strip() else None
+            if isinstance(value, dict) and value.get("ProcessId") is not None:
+                return ProcessInfo(
+                    int(value["ProcessId"]), str(value.get("CommandLine") or ""),
+                    int(value["ParentProcessId"]) if value.get("ParentProcessId") else None,
+                    str(value.get("Name") or ""), str(value.get("CreationDate") or ""),
+                )
+        except (OSError, subprocess.SubprocessError, ValueError, TypeError, KeyError):
+            continue
+    return None
+
+
+def _parse_evidence_time(value: str | None) -> datetime | None:
+    if not value:
+        return None
+    text = str(value).strip()
+    if text.startswith("/Date(") and text.endswith(")/"):
+        try:
+            return datetime.fromtimestamp(int(text[6:-2]) / 1000, tz=timezone.utc)
+        except (TypeError, ValueError, OverflowError, OSError):
+            return None
+    try:
+        parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+        # Older collector locks were written with datetime.now().isoformat()
+        # and therefore contain local wall time without an offset. Treat that
+        # legacy form as local time; interpreting it as UTC causes a false PID
+        # reuse/lock mismatch on non-UTC Windows hosts.
+        return parsed if parsed.tzinfo else parsed.replace(tzinfo=datetime.now().astimezone().tzinfo)
+    except (TypeError, ValueError, OverflowError):
+        return None
+
+
+def _reconcile_market_data_process(processes: list[ProcessInfo], heartbeat: Mapping[str, Any], lock_owner: int | None, lock_created_at: str | None = None) -> tuple[list[ProcessInfo], str | None, bool]:
+    """Augment incomplete inventory with targeted evidence for the collector PID."""
+    if lock_owner is None or any(item.pid == lock_owner for item in processes):
+        matched = next((item for item in processes if item.pid == lock_owner), None)
+        lock_time = _parse_evidence_time(lock_created_at)
+        process_time = _parse_evidence_time(matched.start_time if matched else None)
+        if lock_time and process_time and process_time > lock_time:
+            return processes, "PROCESS_START_TIME_MISMATCH", False
+        return processes, None, True
+    targeted = _targeted_process_from_powershell(lock_owner)
+    if targeted is None:
+        return processes, "TARGETED_PROCESS_EVIDENCE_UNAVAILABLE", False
+    command = targeted.command_line.lower()
+    if "--job market_data" not in command:
+        return processes, "TARGETED_PROCESS_IDENTITY_MISMATCH", False
+    lock_time = _parse_evidence_time(lock_created_at)
+    process_time = _parse_evidence_time(targeted.start_time)
+    if lock_time and process_time and process_time > lock_time:
+        return processes, "PROCESS_START_TIME_MISMATCH", False
+    return [*processes, targeted], "BULK_PROCESS_INVENTORY_INCOMPLETE", True
 
 
 def _process_snapshot_from_netstat() -> list[ProcessInfo]:
@@ -709,6 +789,18 @@ class Supervisor:
                 result.update(status="ACTION_REQUIRED", reason_code="BROKER_ENVIRONMENT_MISMATCH", action_required="Expected a verified Paper account; no trading action was taken.")
             else:
                 result.update(status="HEALTHY", environment="PAPER")
+        except BrokerIdentityProbeError as exc:
+            result.update(
+                status="ACTION_REQUIRED",
+                reason_code=exc.reason_code,
+                reason=type(exc).__name__,
+                action_required=(
+                    "Install the approved broker-client dependency in the selected runtime, "
+                    "then rerun readiness-recheck."
+                    if exc.reason_code == "IBKR_DEPENDENCY_MISSING"
+                    else "Inspect the read-only broker identity probe, then rerun readiness-recheck."
+                ),
+            )
         except Exception as exc:
             result.update(status="WAITING_FOR_IBKR", reason_code="IBKR_LOGIN_REQUIRED", reason=type(exc).__name__, action_required="Open TWS or IB Gateway and complete login/2FA, then run readiness-recheck.")
         return result
@@ -731,17 +823,24 @@ class Supervisor:
             """
         )
         try:
-            raw = subprocess.check_output(
+            completed = subprocess.run(
                 [sys.executable, "-B", "-c", code],
                 cwd=str(ROOT),
                 text=True,
-                stderr=subprocess.DEVNULL,
+                capture_output=True,
                 timeout=BROKER_IDENTITY_TIMEOUT_SECONDS,
             )
-            value = json.loads(raw.strip())
+            if completed.returncode != 0:
+                stderr = str(completed.stderr or "")
+                if "ib_insync is not installed" in stderr:
+                    raise BrokerIdentityProbeError("IBKR_DEPENDENCY_MISSING")
+                raise BrokerIdentityProbeError("IBKR_PROBE_EXECUTION_FAILED")
+            value = json.loads(str(completed.stdout or "").strip())
             return value if isinstance(value, dict) else {}
         except subprocess.TimeoutExpired as exc:
-            raise TimeoutError("IBKR identity lookup timed out") from exc
+            raise BrokerIdentityProbeError("IBKR_PROBE_EXECUTION_FAILED") from exc
+        except json.JSONDecodeError as exc:
+            raise BrokerIdentityProbeError("IBKR_PROBE_EXECUTION_FAILED") from exc
 
     def _service(self, spec: ServiceSpec, *, start_missing: bool, processes: list[ProcessInfo], actions: list[Any], process_visibility: str = "available", process_visibility_reason: str | None = None) -> dict[str, Any]:
         matches = _matching(spec, processes)
@@ -849,17 +948,30 @@ class Supervisor:
                 else RUNTIME / "market_data_collector.lock"
             )
             lock_owner: int | None = None
+            lock_created_at: str | None = None
             if lock_path.exists():
                 try:
-                    owner_text = lock_path.read_text(encoding="utf-8", errors="ignore").split("|", 1)[0].strip()
+                    lock_parts = lock_path.read_text(encoding="utf-8", errors="ignore").split("|", 1)
+                    owner_text = lock_parts[0].strip()
+                    lock_created_at = lock_parts[1].strip() if len(lock_parts) > 1 else None
                     lock_owner = int(owner_text) if owner_text else None
                 except (OSError, TypeError, ValueError):
                     lock_owner = None
+            processes, evidence_note, ownership_valid = _reconcile_market_data_process(processes, hb, lock_owner, lock_created_at)
+            if evidence_note:
+                row["process_visibility"] = {"status": "partial", "reason": evidence_note}
+            matches = _matching(spec, processes)
+            roots = _logical_roots(matches, processes)
+            row.update(
+                observed_count=len(matches), logical_instances=len(roots),
+                root_pids=[p.pid for p in roots], pids=[p.pid for p in matches],
+                process_running=bool(matches),
+            )
             live_pids = {p.pid for p in matches}
             descendant_pids: set[int] = set()
             for root in roots:
                 descendant_pids.update(_descendant_pids(root.pid, processes))
-            lock_owner_matches_process = lock_owner is None or lock_owner in live_pids or lock_owner in descendant_pids
+            lock_owner_matches_process = ownership_valid and (lock_owner is None or lock_owner in live_pids or lock_owner in descendant_pids)
             row["lock"] = {
                 "path": str(lock_path),
                 "owner_pid": lock_owner,
@@ -869,8 +981,8 @@ class Supervisor:
                 row.update(
                     status="UNKNOWN",
                     operational_state="UNKNOWN",
-                    reason_code="MARKET_DATA_LOCK_OWNER_MISMATCH",
-                    recommended_action="Inspect the collector process tree and lock owner before starting or stopping Market Data.",
+                    reason_code=("PROCESS_EVIDENCE_INCOMPLETE" if evidence_note == "TARGETED_PROCESS_EVIDENCE_UNAVAILABLE" else "MARKET_DATA_LOCK_OWNER_MISMATCH"),
+                    recommended_action=("Re-run with complete Windows process visibility before starting or stopping Market Data." if evidence_note == "TARGETED_PROCESS_EVIDENCE_UNAVAILABLE" else "Inspect the collector process tree and lock owner before starting or stopping Market Data."),
                     safe_auto_repair=False,
                 )
         row["port"] = _port(spec.port)

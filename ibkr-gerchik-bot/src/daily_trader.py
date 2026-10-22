@@ -47,6 +47,7 @@ class DailyTraderScanRequest:
     # does not expose this escape hatch; the dashboard uses it only after
     # validating the authoritative RADAR_SETUPS universe.
     symbols_override: tuple[str, ...] = ()
+    scanner_timeout_seconds: float | None = None
 
     @classmethod
     def from_mapping(cls, body: Mapping[str, Any] | None) -> "DailyTraderScanRequest":
@@ -305,6 +306,17 @@ class DailyTraderService:
             "chronology_event": signal.get("chronology_event"),
             "entry_touch_time": signal.get("entry_touch_time"),
             "invalidation_touch_time": signal.get("invalidation_touch_time"),
+            # Preserve the authoritative scanner anchors verbatim. The
+            # dashboard uses them only to locate the scanner's formation.
+            "scanner_signal_id": signal.get("scanner_signal_id") or signal.get("signal_id"),
+            "signal_id": signal.get("signal_id"),
+            "signal_bar_date": signal.get("signal_bar_date") or signal.get("signal_bar"),
+            "entry_day": signal.get("entry_day"),
+            "pattern_bar_dates": signal.get("pattern_bar_dates") or [],
+            "signal_timestamp": signal.get("signal_timestamp"),
+            "setup_timestamp": signal.get("setup_timestamp"),
+            "source_bar_timestamp": signal.get("source_bar_timestamp"),
+            "signal_timeframe": signal.get("signal_timeframe") or signal.get("timeframe"),
         }
 
     @classmethod
@@ -464,7 +476,12 @@ class DailyTraderService:
     def scan(self, request: DailyTraderScanRequest | None = None, *, scan_id: str | None = None) -> dict[str, Any]:
         scan_request = request or DailyTraderScanRequest()
         symbols, selection, radar_by_symbol = self.select_symbols(scan_request)
-        batch = self.radar.scan_symbols(symbols, max_workers=min(5, max(1, len(symbols)))) if symbols else {
+        batch = self.radar.scan_symbols(
+            symbols,
+            max_workers=min(5, max(1, len(symbols))),
+            timeout_seconds=scan_request.scanner_timeout_seconds,
+            batch_id=scan_id if scan_request.scanner_timeout_seconds is not None else None,
+        ) if symbols else {
             "requested": 0,
             "completed": 0,
             "results": [],

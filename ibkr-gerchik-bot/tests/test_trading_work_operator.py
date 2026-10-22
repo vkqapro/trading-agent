@@ -115,6 +115,35 @@ def test_preflight_uses_read_only_results_and_reports_active_scan():
     assert result["trade_desk"]["ai_ingestion_auth"] == "CONFIGURED"
 
 
+def test_host_assisted_preflight_requires_direct_codex_host_and_complete_inventory(monkeypatch):
+    operator = TradingWorkOperator(requester=_preflight_requester(), environment_probe=_windows_host)
+    evidence = {
+        "context": "direct-codex-host",
+        "complete": True,
+        "target": {"pid": 44940},
+        "processes": [
+            {"pid": 48124, "parent_pid": 1, "executable": "python.exe", "command_line": "python.exe", "created": "2026-10-21T12:00:00+00:00"},
+            {"pid": 44940, "parent_pid": 48124, "executable": "python.exe", "command_line": "python.exe -m src.main --job market_data --client-id 17", "created": "2026-10-21T12:03:07+00:00"},
+        ],
+    }
+    expected = _healthy_operations()
+    monkeypatch.setattr("ops.trading_platform_ops.Supervisor.run", lambda self, start_missing=False: expected)
+    with patch.object(operator, "_ai_token_configured", return_value=True):
+        result = operator.host_preflight(evidence)
+    assert result["analytics_scan_readiness"]["status"] == "READY"
+
+
+@pytest.mark.parametrize("evidence", [
+    {"context": "operator-child", "complete": True, "target": {"pid": 44940}, "processes": []},
+    {"context": "direct-codex-host", "complete": False, "target": {"pid": 44940}, "processes": []},
+    {"context": "direct-codex-host", "complete": True, "target": {"pid": 44940}, "processes": [{"pid": 44940, "command_line": "python -m src.main --job execute_requests"}]},
+])
+def test_host_assisted_preflight_rejects_untrusted_or_mismatched_inventory(evidence):
+    operator = TradingWorkOperator(requester=_preflight_requester(), environment_probe=_windows_host)
+    with pytest.raises(OperatorError):
+        operator.host_preflight(evidence)
+
+
 def test_market_scan_requires_explicit_per_run_authorization():
     operator = TradingWorkOperator(requester=lambda *_args, **_kwargs: pytest.fail("request must not run"))
     with pytest.raises(OperatorError, match="explicit per-run"):

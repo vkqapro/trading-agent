@@ -221,6 +221,13 @@ def test_persisted_setups_reads_scanner_store_without_scanning(tmp_path):
                         "side": "LONG",
                         "lifecycle_status": "PENDING_ENTRY",
                         "planned_entry_price": 101.0,
+                        "scanner_signal_id": "scanner-signal-aaa-1",
+                        "signal_bar_date": "2026-10-09T10:15:00+00:00",
+                        "entry_day": "2026-10-09T10:20:00+00:00",
+                        "pattern_bar_dates": ["2026-10-09T10:10:00+00:00", "2026-10-09T10:15:00+00:00"],
+                        "signal_timestamp": "2026-10-09T10:15:00+00:00",
+                        "source_bar_timestamp": "2026-10-09T10:15:00+00:00",
+                        "signal_timeframe": "5m",
                     }
                 ],
             },
@@ -237,6 +244,9 @@ def test_persisted_setups_reads_scanner_store_without_scanning(tmp_path):
     assert [item["symbol"] for item in result["active"]] == ["AAA"]
     assert result["active"][0]["scanner"]["scanner_status"] == "CANDIDATE"
     assert result["active"][0]["scanner"]["planned_entry_price"] == 101.0
+    assert result["active"][0]["scanner"]["scanner_signal_id"] == "scanner-signal-aaa-1"
+    assert result["active"][0]["scanner"]["pattern_bar_dates"] == ["2026-10-09T10:10:00+00:00", "2026-10-09T10:15:00+00:00"]
+    assert result["active"][0]["scanner"]["signal_timeframe"] == "5m"
 
 
 def test_persisted_setups_excludes_historical_as_of_from_current_universe(tmp_path):

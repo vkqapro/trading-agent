@@ -15,7 +15,11 @@ from typing import Any, Callable, Mapping
 from fastapi import HTTPException, Request
 
 
-STAGES = ("RADAR_REFRESH", "BREAKOUTS", "FRESH_FLIPS", "RADAR_SETUPS", "PRODUCTION_SCANNER", "PROPOSALS")
+STAGES = ("RADAR_REFRESH", "BREAKOUTS", "FRESH_FLIPS", "RADAR_SETUPS", "DISCOVERY_UNIVERSE", "PRODUCTION_SCANNER", "PROPOSALS")
+DISCOVERY_BATCH_SIZE = 100
+DISCOVERY_MAX_SYMBOLS = 400
+DISCOVERY_DEFAULT_MAX_SYMBOLS = 25
+DISCOVERY_BATCH_TIMEOUT_SECONDS = 300.0
 
 
 def _server_pipeline(scan_id: str, stage: Callable[[str, Mapping[str, Any]], None], cancelled: Callable[[], bool]) -> Mapping[str, Any]:
@@ -53,6 +57,7 @@ class AITradeDeskScanManager:
                 scan_id TEXT PRIMARY KEY, job_type TEXT NOT NULL DEFAULT 'FULL_MARKET_SCAN', parent_scan_id TEXT,
                 status TEXT NOT NULL, stage TEXT NOT NULL,
                 stage_results_json TEXT NOT NULL, result_json TEXT, error_json TEXT,
+                parameters_json TEXT,
                 cancel_requested INTEGER NOT NULL DEFAULT 0, started_at TEXT,
                 completed_at TEXT, updated_at TEXT NOT NULL
             )""")
@@ -61,6 +66,8 @@ class AITradeDeskScanManager:
                 con.execute("ALTER TABLE ai_trade_desk_scans ADD COLUMN job_type TEXT NOT NULL DEFAULT 'FULL_MARKET_SCAN'")
             if "parent_scan_id" not in columns:
                 con.execute("ALTER TABLE ai_trade_desk_scans ADD COLUMN parent_scan_id TEXT")
+            if "parameters_json" not in columns:
+                con.execute("ALTER TABLE ai_trade_desk_scans ADD COLUMN parameters_json TEXT")
             con.execute("CREATE INDEX IF NOT EXISTS idx_ai_trade_desk_scans_updated ON ai_trade_desk_scans(updated_at)")
 
     @staticmethod
@@ -68,7 +75,7 @@ class AITradeDeskScanManager:
         if row is None:
             return None
         item = dict(row)
-        for key in ("stage_results_json", "result_json", "error_json"):
+        for key in ("stage_results_json", "result_json", "error_json", "parameters_json"):
             raw = item.pop(key, None)
             try:
                 item[key.removesuffix("_json")] = json.loads(raw) if raw else None
@@ -85,10 +92,24 @@ class AITradeDeskScanManager:
         with self._connection() as con:
             return self._decode(con.execute("SELECT * FROM ai_trade_desk_scans ORDER BY updated_at DESC LIMIT 1").fetchone())
 
-    def submit(self, *, job_type: str = "FULL_MARKET_SCAN", parent_scan_id: str | None = None) -> dict[str, Any]:
+    def submit(self, *, job_type: str = "FULL_MARKET_SCAN", parent_scan_id: str | None = None, parameters: Mapping[str, Any] | None = None) -> dict[str, Any]:
         normalized_type = str(job_type or "FULL_MARKET_SCAN").strip().upper()
-        if normalized_type not in {"FULL_MARKET_SCAN", "GPT_REVIEW", "FULL_AI_SCAN"}:
+        if normalized_type not in {"FULL_MARKET_SCAN", "FULL_MARKET_DISCOVERY", "GPT_REVIEW", "FULL_AI_SCAN"}:
             raise ValueError("unsupported AI Trade Desk job type")
+        normalized_parameters = dict(parameters or {})
+        if normalized_type == "FULL_MARKET_DISCOVERY":
+            raw_max_symbols = normalized_parameters.get("max_symbols", DISCOVERY_DEFAULT_MAX_SYMBOLS)
+            if isinstance(raw_max_symbols, bool):
+                raise ValueError("max_symbols must be a positive integer")
+            try:
+                max_symbols = int(raw_max_symbols)
+            except (TypeError, ValueError) as exc:
+                raise ValueError("max_symbols must be a positive integer") from exc
+            if max_symbols < 1 or max_symbols > DISCOVERY_MAX_SYMBOLS:
+                raise ValueError(f"max_symbols must be between 1 and {DISCOVERY_MAX_SYMBOLS}")
+            normalized_parameters = {"max_symbols": max_symbols}
+        else:
+            normalized_parameters = {}
         with self.lock:
             current = self.latest()
             if current and current["status"] in {"QUEUED", "RUNNING", "CANCEL_REQUESTED"}:
@@ -96,7 +117,7 @@ class AITradeDeskScanManager:
             scan_id = "aitd-scan-" + uuid.uuid4().hex
             now = _now()
             with self._connection() as con:
-                con.execute("INSERT INTO ai_trade_desk_scans(scan_id,job_type,parent_scan_id,status,stage,stage_results_json,updated_at) VALUES(?,?,?,?,?,?,?)", (scan_id, normalized_type, parent_scan_id, "QUEUED", "QUEUED", "{}", now))
+                con.execute("INSERT INTO ai_trade_desk_scans(scan_id,job_type,parent_scan_id,status,stage,stage_results_json,parameters_json,updated_at) VALUES(?,?,?,?,?,?,?,?)", (scan_id, normalized_type, parent_scan_id, "QUEUED", "QUEUED", "{}", json.dumps(normalized_parameters, sort_keys=True), now))
             self.executor.submit(self._run, scan_id)
             return self._get(scan_id) or {"scan_id": scan_id, "status": "QUEUED", "stage": "QUEUED"}
 
@@ -311,6 +332,153 @@ def _review_checkpoint(
     return candidates
 
 
+def _build_discovery_universe(rows: list[Mapping[str, Any]], *, max_symbols: int = DISCOVERY_DEFAULT_MAX_SYMBOLS) -> dict[str, Any]:
+    """Select a deterministic Radar-only universe; scanner output remains authoritative."""
+    normalized = [dict(row) for row in rows if isinstance(row, Mapping)]
+    snapshot_as_of = max((str(row.get("as_of") or "") for row in normalized), default="")
+    current = [row for row in normalized if str(row.get("as_of") or "") == snapshot_as_of]
+    selected: list[dict[str, Any]] = []
+    excluded: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for row in current:
+        symbol = str(row.get("symbol") or "").strip().upper()
+        reasons: list[str] = []
+        if not symbol:
+            reasons.append("MISSING_SYMBOL")
+        elif symbol in seen:
+            reasons.append("DUPLICATE_SYMBOL")
+        trend = str(row.get("trend") or "").strip().upper()
+        if trend not in {"GREEN", "RED", "GREY"}:
+            reasons.append("INVALID_TREND")
+        try:
+            price = float(row.get("price") or row.get("close_price") or 0)
+            liquidity = float(row.get("avg_dollar_volume") or 0)
+            radar_score = float(row.get("radar_score") or 0)
+        except (TypeError, ValueError):
+            price = liquidity = radar_score = 0.0
+            reasons.append("INVALID_RADAR_NUMERIC_DATA")
+        if price <= 0:
+            reasons.append("INVALID_PRICE")
+        if liquidity <= 0:
+            reasons.append("MISSING_LIQUIDITY_DATA")
+        if not str(row.get("as_of") or "").strip():
+            reasons.append("MISSING_SNAPSHOT_DATE")
+        if reasons:
+            excluded.append({"symbol": symbol or None, "reasons": reasons})
+            continue
+        seen.add(symbol)
+        selection_reasons = []
+        if bool(row.get("breakout")):
+            selection_reasons.append("BREAKOUT")
+        if bool(row.get("trend_flip")):
+            selection_reasons.append("FRESH_FLIP")
+        if float(row.get("momentum_score") or 0) > 0:
+            selection_reasons.append("MOMENTUM")
+        selection_reasons.append("LIQUID_RADAR_ROW")
+        selected.append({
+            "symbol": symbol,
+            "as_of": row.get("as_of"),
+            "trend": trend,
+            "radar_score": radar_score,
+            "breakout": bool(row.get("breakout")),
+            "trend_flip": bool(row.get("trend_flip")),
+            "momentum_score": row.get("momentum_score"),
+            "avg_dollar_volume": liquidity,
+            "price": price,
+            "scanner_status": row.get("scanner_status") or "NOT_SCANNED",
+            "selection_reasons": selection_reasons,
+        })
+    selected.sort(key=lambda item: (-float(item["radar_score"]), str(item["symbol"])))
+    cap = max(1, min(int(max_symbols), DISCOVERY_MAX_SYMBOLS))
+    if len(selected) > cap:
+        for item in selected[cap:]:
+            excluded.append({"symbol": item["symbol"], "reasons": ["DISCOVERY_CAPACITY_LIMIT"]})
+        selected = selected[:cap]
+    return {
+        "snapshot_as_of": snapshot_as_of or None,
+        "total_snapshot_rows": len(current),
+        "selected_symbols": [item["symbol"] for item in selected],
+        "selected": selected,
+        "excluded": sorted(excluded, key=lambda item: str(item.get("symbol") or "")),
+        "selected_count": len(selected),
+        "excluded_count": len(excluded),
+        "batch_size": DISCOVERY_BATCH_SIZE,
+        "max_symbols": cap,
+        "requested_max_symbols": int(max_symbols),
+        "actual_sample_size": len(selected),
+        "valid": bool(selected),
+        "reason_code": None if selected else "DISCOVERY_NO_ELIGIBLE_RADAR_ROWS",
+    }
+
+
+def _run_discovery_stages(scan_id: str, stage: Callable[[str, Mapping[str, Any]], None], cancelled: Callable[[], bool], *, max_symbols: int = DISCOVERY_DEFAULT_MAX_SYMBOLS) -> dict[str, Any]:
+    from dashboard_react import server
+
+    radar = server._radar_service()
+    if cancelled():
+        return {"status": "CANCELLED", "discovery_mode": "FULL_MARKET_DISCOVERY", "orders_submitted": 0}
+    refreshed = radar.refresh()
+    stage("RADAR_REFRESH", {"status": "COMPLETED", "symbols_processed": len(refreshed.get("results") or []), "warnings": refreshed.get("skipped") or []})
+    rows = [dict(row) for row in radar.list_results(limit=5000) if isinstance(row, Mapping)]
+    universe = _build_discovery_universe(rows, max_symbols=max_symbols)
+    snapshot_timestamp = max((str(row.get("created_at") or "") for row in rows if str(row.get("as_of") or "") == universe.get("snapshot_as_of")), default=None)
+    checkpoint = {
+        "discovery_mode": "FULL_MARKET_DISCOVERY",
+        "source": "RADAR_DISCOVERY",
+        "snapshot_as_of": universe.get("snapshot_as_of"),
+        "snapshot_timestamp": snapshot_timestamp,
+        "source_scan_id": f"radar:{universe.get('snapshot_as_of')}:{snapshot_timestamp}" if universe.get("snapshot_as_of") and snapshot_timestamp else None,
+        "captured_at": _now(),
+        **universe,
+    }
+    stage("DISCOVERY_UNIVERSE", {"status": "COMPLETED" if universe.get("valid") else "EMPTY", **checkpoint})
+    if cancelled():
+        return {"status": "CANCELLED", "discovery_mode": "FULL_MARKET_DISCOVERY", "radar_universe_checkpoint": checkpoint, "orders_submitted": 0}
+    selected = tuple(universe.get("selected_symbols") or [])
+    batches = [selected[index:index + DISCOVERY_BATCH_SIZE] for index in range(0, len(selected), DISCOVERY_BATCH_SIZE)]
+    batch_results: list[dict[str, Any]] = []
+    active: list[dict[str, Any]] = []
+    terminal: list[dict[str, Any]] = []
+    unsafe_in_flight = False
+    for batch_index, batch in enumerate(batches, start=1):
+        if cancelled():
+            return {"status": "CANCELLED", "discovery_mode": "FULL_MARKET_DISCOVERY", "radar_universe_checkpoint": checkpoint, "batch_results": batch_results, "orders_submitted": 0}
+        request = server.DailyTraderScanRequest(
+            mode="scheduled", top_n=10, include_breakouts=True, include_fresh_flips=True,
+            max_symbols=len(batch), idempotency_key=f"{scan_id}:batch:{batch_index}", trigger_source="manual",
+            symbols_override=tuple(batch), scanner_timeout_seconds=DISCOVERY_BATCH_TIMEOUT_SECONDS,
+        )
+        try:
+            result = server._daily_trader_service().scan(request, scan_id=f"{scan_id}:batch:{batch_index}")
+            if str(result.get("status") or "").upper() in {"IN_FLIGHT", "BLOCKED_GLOBAL_IN_FLIGHT"}:
+                unsafe_in_flight = True
+                batch_results.append({"batch_index": batch_index, "batch_id": f"{scan_id}:batch:{batch_index}", "symbols": list(batch), "status": str(result.get("status") or "IN_FLIGHT").upper(), "requested": len(batch), "processed": 0, "in_flight_owner": result.get("in_flight_owner"), "errors": [{"reason_code": "SCANNER_BATCH_IN_FLIGHT", "owner_batch_id": result.get("owner_batch_id")} ]})
+                break
+            errors = list(result.get("errors") or [])
+            active.extend(result.get("active") or [])
+            terminal.extend(result.get("terminal") or [])
+            batch_results.append({"batch_index": batch_index, "batch_id": f"{scan_id}:batch:{batch_index}", "symbols": list(batch), "status": "COMPLETED_WITH_ERRORS" if errors else "COMPLETED", "requested": len(batch), "processed": result.get("processed_count", 0), "errors": errors})
+        except Exception as exc:
+            batch_results.append({"batch_index": batch_index, "batch_id": f"{scan_id}:batch:{batch_index}", "symbols": list(batch), "status": "FAILED", "requested": len(batch), "processed": 0, "errors": [{"type": type(exc).__name__}]})
+    stage_status = "BLOCKED_SCANNER_IN_FLIGHT" if unsafe_in_flight else ("COMPLETED" if batch_results and all(item["status"] == "COMPLETED" for item in batch_results) else ("COMPLETED_WITH_ERRORS" if batch_results else "EMPTY"))
+    combined = {"active": active, "terminal": terminal, "processed_count": sum(int(item.get("processed") or 0) for item in batch_results), "scanner": {"requested": len(selected), "completed": sum(int(item.get("processed") or 0) for item in batch_results), "failed": sum(len(item.get("errors") or []) for item in batch_results)}}
+    candidates = _candidate_rows(combined)
+    stage("PRODUCTION_SCANNER", {"status": stage_status, "batch_count": len(batch_results), "batches": batch_results, "selected_symbols": selected, "symbols_processed": combined["processed_count"], "candidate_count": len(candidates), "scanner": combined["scanner"]})
+    published: list[str] = []
+    if unsafe_in_flight:
+        stage("PROPOSALS", {"status": "BLOCKED_SCANNER_IN_FLIGHT", "created_or_reused_count": 0, "proposal_ids": []})
+        return {"status": "BLOCKED_SCANNER_IN_FLIGHT", "discovery_mode": "FULL_MARKET_DISCOVERY", "scan_id": scan_id, "candidate_count": 0, "proposal_ids": [], "radar_universe_checkpoint": checkpoint, "batch_results": batch_results, "result": combined, "orders_submitted": 0, "approvals_created": 0, "execution_intents_created": 0, "recovery_required": True}
+    for candidate in candidates:
+        key = "discovery:" + "|".join(str(candidate.get(field) or "") for field in ("source_scan_id", "symbol", "strategy", "side"))
+        try:
+            proposal = server._ai_trade_desk_store().ingest(candidate, idempotency_key=key, ai_reasoning="AI review pending; deterministic scanner facts only.", ai_model="pending", ai_review_status="PENDING")
+            published.append(str(proposal["proposal_id"]))
+        except ValueError:
+            continue
+    stage("PROPOSALS", {"status": "COMPLETED", "created_or_reused_count": len(published), "proposal_ids": published})
+    return {"status": "COMPLETED_WITH_ERRORS" if stage_status != "COMPLETED" else "COMPLETED", "discovery_mode": "FULL_MARKET_DISCOVERY", "scan_id": scan_id, "candidate_count": len(candidates), "proposal_ids": published, "radar_universe_checkpoint": checkpoint, "batch_results": batch_results, "result": combined, "orders_submitted": 0, "approvals_created": 0, "execution_intents_created": 0}
+
+
 def _run_market_stages(scan_id: str, stage: Callable[[str, Mapping[str, Any]], None], cancelled: Callable[[], bool]) -> dict[str, Any]:
     from dashboard_react import server
 
@@ -326,7 +494,23 @@ def _run_market_stages(scan_id: str, stage: Callable[[str, Mapping[str, Any]], N
     flips = server._daily_trader_service().radar_rows(flips_only=True, limit=5000)
     stage("FRESH_FLIPS", {"status": "COMPLETED", "symbols_processed": flips.get("count", 0), "candidate_count": flips.get("count", 0)})
     universe = server._radar_setup_universe()
-    stage("RADAR_SETUPS", {"status": "COMPLETED" if universe.get("valid") else "EMPTY", **{key: universe.get(key) for key in ("source_scan_id", "snapshot_as_of", "eligible_symbol_count", "selected_symbols", "reason_code")}})
+    # Persist the complete selection evidence with the scan. The selected tuple below
+    # remains the sole input to the production scanner, even if Radar is updated later.
+    universe_checkpoint = {
+        "source": universe.get("source", "RADAR_SETUPS"),
+        "source_scan_id": universe.get("source_scan_id"),
+        "snapshot_as_of": universe.get("snapshot_as_of"),
+        "snapshot_timestamp": universe.get("snapshot_timestamp"),
+        "eligible_symbol_count": universe.get("eligible_symbol_count", 0),
+        "selected_symbols": list(universe.get("selected_symbols") or []),
+        "selected": list(universe.get("selected") or []),
+        "excluded_status_counts": dict(universe.get("excluded_status_counts") or {}),
+        "stale_symbol_count": universe.get("stale_symbol_count", 0),
+        "total_snapshot_rows": universe.get("total_snapshot_rows", 0),
+        "reason_code": universe.get("reason_code"),
+        "captured_at": _now(),
+    }
+    stage("RADAR_SETUPS", {"status": "COMPLETED" if universe.get("valid") else "EMPTY", **universe_checkpoint})
     if cancelled():
         return {"status": "CANCELLED", "orders_submitted": 0}
     selected_symbols = tuple(str(symbol).strip().upper() for symbol in (universe.get("selected_symbols") or []) if str(symbol).strip())
@@ -349,7 +533,13 @@ def _run_market_stages(scan_id: str, stage: Callable[[str, Mapping[str, Any]], N
         except ValueError:
             continue
     stage("PROPOSALS", {"status": "COMPLETED", "created_or_reused_count": len(published), "proposal_ids": published})
-    return {"status": "COMPLETED", "scan_id": production.get("scan_id"), "candidate_count": len(candidates), "proposal_ids": published, "result": production, "orders_submitted": 0, "approvals_created": 0, "execution_intents_created": 0}
+    return {
+        "status": "COMPLETED", "scan_id": production.get("scan_id"),
+        "candidate_count": len(candidates), "proposal_ids": published,
+        "radar_universe_checkpoint": universe_checkpoint,
+        "result": production, "orders_submitted": 0,
+        "approvals_created": 0, "execution_intents_created": 0,
+    }
 
 
 def _run_ai_trade_desk_pipeline(scan_id: str, stage: Callable[[str, Mapping[str, Any]], None], cancelled: Callable[[], bool]) -> Mapping[str, Any]:
@@ -357,6 +547,9 @@ def _run_ai_trade_desk_pipeline(scan_id: str, stage: Callable[[str, Mapping[str,
 
     job = server._ai_trade_desk_scan_jobs().status(scan_id) or {}
     job_type = str(job.get("job_type") or "FULL_MARKET_SCAN").upper()
+    if job_type == "FULL_MARKET_DISCOVERY":
+        parameters = job.get("parameters") if isinstance(job.get("parameters"), Mapping) else {}
+        return _run_discovery_stages(scan_id, stage, cancelled, max_symbols=int(parameters.get("max_symbols", DISCOVERY_DEFAULT_MAX_SYMBOLS)))
     if job_type in {"FULL_MARKET_SCAN", "FULL_AI_SCAN"}:
         market = _run_market_stages(scan_id, stage, cancelled)
         if job_type == "FULL_MARKET_SCAN" or market.get("status") == "CANCELLED":
@@ -391,12 +584,18 @@ def _register_dashboard_routes() -> None:
         values = dict(body or {})
         parent = values.get("parent_scan_id")
         try:
-            return server._ai_trade_desk_scan_jobs().submit(job_type=job_type, parent_scan_id=str(parent) if parent else None)
+            parameters = {}
+            if str(job_type).upper() == "FULL_MARKET_DISCOVERY":
+                parameters["max_symbols"] = values.get("max_symbols", DISCOVERY_DEFAULT_MAX_SYMBOLS)
+            return server._ai_trade_desk_scan_jobs().submit(job_type=job_type, parent_scan_id=str(parent) if parent else None, parameters=parameters)
         except ValueError as exc:
             raise HTTPException(400, str(exc)) from exc
 
     def full_market(request: Request):
         return submit("FULL_MARKET_SCAN", request)
+
+    def full_market_discovery(request: Request):
+        return submit("FULL_MARKET_DISCOVERY", request)
 
     def review(request: Request, body: dict):
         return submit("GPT_REVIEW", request, body)
@@ -507,6 +706,7 @@ def _register_dashboard_routes() -> None:
     routes = [
         ("/api/ai-trade-desk/preview", preview, ["POST"]),
         ("/api/ai-trade-desk/scans/full-market", full_market, ["POST"]),
+        ("/api/ai-trade-desk/scans/full-market-discovery", full_market_discovery, ["POST"]),
         ("/api/ai-trade-desk/scans/review", review, ["POST"]),
         ("/api/ai-trade-desk/scans/full-ai", full_ai, ["POST"]),
         ("/api/ai-trade-desk/scans", runs, ["GET"]),

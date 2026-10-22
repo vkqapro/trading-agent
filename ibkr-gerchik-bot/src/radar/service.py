@@ -10,7 +10,7 @@ from __future__ import annotations
 import hashlib
 import json
 from datetime import datetime, timezone
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed, wait
 from dataclasses import replace
 from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping
@@ -355,7 +355,7 @@ class RadarService:
         )
         return source_scan_id
 
-    def scan_symbols(self, symbols: Iterable[str], *, max_workers: int = 3) -> dict[str, Any]:
+    def scan_symbols(self, symbols: Iterable[str], *, max_workers: int = 3, timeout_seconds: float | None = None, batch_id: str | None = None) -> dict[str, Any]:
         """Run a bounded batch through the same authoritative scanner callback.
 
         The callback is the only scanner integration point.  A worker failure is
@@ -373,9 +373,31 @@ class RadarService:
         if not normalized:
             raise ValueError("At least one stock symbol is required")
         normalized = normalized[:100]
+        lease = self.store.begin_scanner_batch(batch_id, normalized, timeout_seconds) if batch_id else None
+        if lease and not lease.get("created"):
+            existing_status = str(lease.get("status") or "").upper()
+            if existing_status == "BLOCKED_GLOBAL_IN_FLIGHT":
+                return {
+                    "status": existing_status,
+                    "batch_id": batch_id,
+                    "requested": len(normalized),
+                    "completed": 0,
+                    "max_workers": 0,
+                    "results": [],
+                    "statuses": {},
+                    "owner_batch_id": lease.get("owner_batch_id"),
+                    "in_flight_owner": lease.get("owner_started_at"),
+                    "orders_submitted": 0,
+                }
+            if existing_status in {"RUNNING", "IN_FLIGHT"}:
+                return {"status": "IN_FLIGHT", "batch_id": batch_id, "requested": len(normalized), "completed": 0, "max_workers": 0, "results": [], "statuses": {}, "in_flight_owner": lease.get("started_at"), "orders_submitted": 0}
+            if existing_status in {"COMPLETED", "COMPLETED_AFTER_DEADLINE"}:
+                completed = json.loads(lease.get("completed_json") or "{}")
+                return {"status": "REPLAYED", "batch_id": batch_id, "requested": len(normalized), "completed": len(completed), "max_workers": 0, "results": [], "statuses": {symbol: item.get("status") for symbol, item in completed.items()}, "recovery_state": existing_status, "orders_submitted": 0}
         workers = max(1, min(int(max_workers), 5, len(normalized)))
 
         def run_one(symbol: str) -> dict[str, Any]:
+            outcome: dict[str, Any]
             try:
                 payload = self.scan_symbol(symbol)
                 signals = payload.get("signals") or []
@@ -386,7 +408,7 @@ class RadarService:
                 label = " ".join(item for item in (strategy, side) if item) or ("CANDIDATE" if signals else "NO_SETUP")
                 if lifecycle in _FINALIZED_LIFECYCLE_STATUSES:
                     label = " · ".join(item for item in (label, lifecycle) if item)
-                return {
+                outcome = {
                     "symbol": symbol,
                     "status": payload.get("scanner_status", "NO_SETUP"),
                     "label": label,
@@ -395,7 +417,7 @@ class RadarService:
                     "scanner": payload,
                 }
             except Exception as exc:  # isolate one symbol from the batch
-                return {
+                outcome = {
                     "symbol": symbol,
                     "status": "ERROR",
                     "label": "ERROR",
@@ -403,25 +425,54 @@ class RadarService:
                     "signals": [],
                     "error": str(exc) or type(exc).__name__,
                 }
+            finally:
+                if batch_id:
+                    self.store.record_scanner_batch_result(
+                        batch_id,
+                        symbol,
+                        locals().get("outcome") or {"status": "ERROR", "error": "SCANNER_CALLBACK_FAILED"},
+                    )
+            return outcome
 
         results_by_symbol: dict[str, dict[str, Any]] = {}
-        with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="trend-radar-scan") as executor:
-            futures = {executor.submit(run_one, symbol): symbol for symbol in normalized}
-            for future in as_completed(futures):
-                symbol = futures[future]
-                try:
-                    results_by_symbol[symbol] = future.result()
-                except Exception as exc:  # defensive: run_one already isolates expected failures
+        executor = ThreadPoolExecutor(max_workers=workers, thread_name_prefix="trend-radar-scan")
+        futures = {executor.submit(run_one, symbol): symbol for symbol in normalized}
+        try:
+            if timeout_seconds is None:
+                done = set(futures)
+                for future in as_completed(futures):
+                    symbol = futures[future]
+                    try:
+                        results_by_symbol[symbol] = future.result()
+                    except Exception as exc:  # defensive: run_one already isolates expected failures
+                        results_by_symbol[symbol] = {
+                            "symbol": symbol, "status": "ERROR", "label": "ERROR",
+                            "signals_found": 0, "signals": [], "error": str(exc) or type(exc).__name__,
+                        }
+            else:
+                done, pending = wait(futures, timeout=max(0.1, float(timeout_seconds)))
+                for future in done:
+                    symbol = futures[future]
+                    try:
+                        results_by_symbol[symbol] = future.result()
+                    except Exception as exc:
+                        results_by_symbol[symbol] = {
+                            "symbol": symbol, "status": "ERROR", "label": "ERROR",
+                            "signals_found": 0, "signals": [], "error": str(exc) or type(exc).__name__,
+                        }
+                for future in pending:
+                    symbol = futures[future]
+                    future.cancel()
                     results_by_symbol[symbol] = {
-                        "symbol": symbol,
-                        "status": "ERROR",
-                        "label": "ERROR",
-                        "signals_found": 0,
-                        "signals": [],
-                        "error": str(exc) or type(exc).__name__,
+                        "symbol": symbol, "status": "ERROR", "label": "ERROR",
+                        "signals_found": 0, "signals": [], "error": "SCANNER_BATCH_TIMEOUT",
                     }
+                if batch_id:
+                    self.store.mark_scanner_batch_in_flight(batch_id, [futures[future] for future in pending])
+        finally:
+            executor.shutdown(wait=timeout_seconds is None, cancel_futures=True)
         results = [results_by_symbol[symbol] for symbol in normalized]
-        return {
+        result = {
             "requested": len(normalized),
             "completed": len(results),
             "max_workers": workers,
@@ -429,3 +480,10 @@ class RadarService:
             "statuses": {item["symbol"]: item["status"] for item in results},
             "orders_submitted": 0,
         }
+        if timeout_seconds is not None:
+            result["timeout_seconds"] = timeout_seconds
+            result["timed_out"] = [item["symbol"] for item in results if item.get("error") == "SCANNER_BATCH_TIMEOUT"]
+        if batch_id:
+            result["batch_id"] = batch_id
+            result["status"] = "IN_FLIGHT" if result.get("timed_out") else "COMPLETED"
+        return result

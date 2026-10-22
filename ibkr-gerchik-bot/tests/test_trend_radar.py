@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import sqlite3
+import time
 from dataclasses import replace
 
 import pandas as pd
@@ -260,6 +261,48 @@ def test_no_setup_persists_and_supersedes_older_positive_result(tmp_path) -> Non
     assert row["scanner_status"] == "NO_SETUP"
     assert row["scanner_label"] == "NO_SETUP"
     assert row["scanner_scan_timestamp"] == "2026-10-12T21:00:00+00:00"
+
+
+def test_scanner_timeout_persists_inflight_and_replays_after_late_completion(tmp_path) -> None:
+    store = TrendRadarStore(tmp_path / "decision.db")
+    radar = analyze_daily_bars("SLOW", _bars(), settings=RadarSettings(min_avg_dollar_volume=1))
+    store.upsert(radar)
+    release = __import__("threading").Event()
+
+    def slow_scanner(_symbol: str):
+        release.wait(2)
+        return {"signals": []}
+
+    service = RadarService(store=store, settings=RadarSettings(min_avg_dollar_volume=1), scanner_runner=slow_scanner)
+    first = service.scan_symbols(["SLOW"], max_workers=1, timeout_seconds=0.01, batch_id="batch-timeout")
+    assert first["status"] == "IN_FLIGHT"
+    assert first["timed_out"] == ["SLOW"]
+    assert store.scanner_batch("batch-timeout")["status"] == "IN_FLIGHT"
+    overlapping = service.scan_symbols(["SLOW"], max_workers=1, timeout_seconds=0.01, batch_id="batch-timeout")
+    assert overlapping["status"] == "IN_FLIGHT"
+    blocked_other_job = service.scan_symbols(["SLOW"], max_workers=1, timeout_seconds=0.01, batch_id="batch-other-job")
+    assert blocked_other_job["status"] == "BLOCKED_GLOBAL_IN_FLIGHT"
+    assert blocked_other_job["owner_batch_id"] == "batch-timeout"
+
+    release.set()
+    deadline = time.time() + 2
+    while time.time() < deadline and store.scanner_batch("batch-timeout")["status"] == "IN_FLIGHT":
+        time.sleep(0.01)
+    assert store.scanner_batch("batch-timeout")["status"] == "COMPLETED_AFTER_DEADLINE"
+
+    restarted_service = RadarService(store=store, settings=RadarSettings(min_avg_dollar_volume=1), scanner_runner=slow_scanner)
+    replay = restarted_service.scan_symbols(["SLOW"], max_workers=1, timeout_seconds=0.01, batch_id="batch-timeout")
+    assert replay["status"] == "REPLAYED"
+    assert replay["recovery_state"] == "COMPLETED_AFTER_DEADLINE"
+
+
+def test_uncertain_running_batch_blocks_other_job_after_service_recreation(tmp_path) -> None:
+    store = TrendRadarStore(tmp_path / "decision.db")
+    store.begin_scanner_batch("crashed-batch", ["SLOW"], timeout_seconds=300)
+    restarted_service = RadarService(store=store, settings=RadarSettings(min_avg_dollar_volume=1), scanner_runner=lambda _symbol: {"signals": []})
+    result = restarted_service.scan_symbols(["SLOW"], batch_id="new-job", timeout_seconds=300)
+    assert result["status"] == "BLOCKED_GLOBAL_IN_FLIGHT"
+    assert result["owner_batch_id"] == "crashed-batch"
 
 
 def test_out_of_order_scanner_completion_does_not_replace_newer_result(tmp_path) -> None:

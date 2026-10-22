@@ -5,7 +5,22 @@ import subprocess
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
 
-from ops.trading_platform_ops import ProcessInfo, Supervisor, _process_snapshot, human_report
+from ops.trading_platform_ops import ProcessInfo, Supervisor, _parse_evidence_time, _process_snapshot, human_report
+
+
+class _ConnectedSocket:
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        return False
+
+
+def test_legacy_naive_lock_timestamp_is_interpreted_as_local_time():
+    parsed = _parse_evidence_time("2026-10-21T12:03:10.718400")
+    assert parsed is not None
+    assert parsed.tzinfo is not None
+    assert parsed.utcoffset() == datetime.now().astimezone().utcoffset()
 
 
 def _market_data_spec(tmp_path: Path):
@@ -318,7 +333,7 @@ def test_market_data_lock_owner_child_of_root_is_not_mismatch(tmp_path, monkeypa
 
 
 def test_market_data_lock_owner_mismatch_is_unknown(tmp_path, monkeypatch):
-    from ops.trading_platform_ops import Supervisor
+    from ops.trading_platform_ops import ProcessInfo, Supervisor
 
     spec = _market_data_spec(tmp_path)
     _write_market_data_status(spec)
@@ -326,12 +341,98 @@ def test_market_data_lock_owner_mismatch_is_unknown(tmp_path, monkeypatch):
     lock.write_text("43332|2026-10-12T10:54:14", encoding="utf-8")
     monkeypatch.setattr("ops.trading_platform_ops.ROOT", tmp_path)
     monkeypatch.setattr("ops.trading_platform_ops.RUNTIME", spec.heartbeat.parent)
+    monkeypatch.setattr(
+        "ops.trading_platform_ops._targeted_process_from_powershell",
+        lambda pid: ProcessInfo(pid, '"Python312\\python.exe" -m src.main --job execute_requests', 48124, "python.exe", "2026-10-21T12:03:07+00:00"),
+    )
 
     row = Supervisor(sleep=lambda _: None)._service(spec, start_missing=False, processes=[ProcessInfo(25624, "--job market_data")], actions=[])
 
     assert row["status"] == "UNKNOWN"
     assert row["operational_state"] == "UNKNOWN"
     assert row["reason_code"] == "MARKET_DATA_LOCK_OWNER_MISMATCH"
+
+
+def test_market_data_targeted_process_evidence_reconciles_incomplete_inventory(tmp_path, monkeypatch):
+    from ops.trading_platform_ops import ProcessInfo, Supervisor
+
+    spec = _market_data_spec(tmp_path)
+    _write_market_data_status(spec, pid=44940)
+    lock = spec.heartbeat.with_name("market_data_collector.lock")
+    lock.write_text("44940|2026-10-21T12:03:10", encoding="utf-8")
+    monkeypatch.setattr("ops.trading_platform_ops.ROOT", tmp_path)
+    monkeypatch.setattr("ops.trading_platform_ops.RUNTIME", spec.heartbeat.parent)
+    monkeypatch.setattr(
+        "ops.trading_platform_ops._targeted_process_from_powershell",
+        lambda pid: ProcessInfo(pid, '"Python312\\python.exe" -m src.main --job market_data --client-id 17', 48124, "python.exe", "2026-10-21T12:03:07+00:00"),
+    )
+
+    row = Supervisor(sleep=lambda _: None)._service(spec, start_missing=False, processes=[], actions=[])
+
+    assert row["status"] in {"HEALTHY", "WAITING_FOR_SESSION"}
+    assert row["operational_state"] == "HEALTHY"
+    assert row["lock"]["owner_matches_process_tree"] is True
+    assert row["process_visibility"]["status"] == "partial"
+    assert row["process_visibility"]["reason"] == "BULK_PROCESS_INVENTORY_INCOMPLETE"
+    assert row["pids"] == [44940]
+
+
+def test_market_data_targeted_process_identity_mismatch_remains_blocked(tmp_path, monkeypatch):
+    from ops.trading_platform_ops import ProcessInfo, Supervisor
+
+    spec = _market_data_spec(tmp_path)
+    _write_market_data_status(spec, pid=44940)
+    lock = spec.heartbeat.with_name("market_data_collector.lock")
+    lock.write_text("44940|2026-10-21T12:03:10", encoding="utf-8")
+    monkeypatch.setattr("ops.trading_platform_ops.ROOT", tmp_path)
+    monkeypatch.setattr("ops.trading_platform_ops.RUNTIME", spec.heartbeat.parent)
+    monkeypatch.setattr(
+        "ops.trading_platform_ops._targeted_process_from_powershell",
+        lambda pid: ProcessInfo(pid, '"Python312\\python.exe" -m src.main --job execute_requests', 48124, "python.exe", "start"),
+    )
+
+    row = Supervisor(sleep=lambda _: None)._service(spec, start_missing=False, processes=[], actions=[])
+
+    assert row["status"] == "UNKNOWN"
+    assert row["reason_code"] == "MARKET_DATA_LOCK_OWNER_MISMATCH"
+
+
+def test_market_data_stale_or_reused_pid_remains_blocked_without_targeted_evidence(tmp_path, monkeypatch):
+    from ops.trading_platform_ops import Supervisor
+
+    spec = _market_data_spec(tmp_path)
+    _write_market_data_status(spec, pid=44940)
+    lock = spec.heartbeat.with_name("market_data_collector.lock")
+    lock.write_text("44940|2026-10-21T12:03:10", encoding="utf-8")
+    monkeypatch.setattr("ops.trading_platform_ops.ROOT", tmp_path)
+    monkeypatch.setattr("ops.trading_platform_ops.RUNTIME", spec.heartbeat.parent)
+    monkeypatch.setattr("ops.trading_platform_ops._targeted_process_from_powershell", lambda pid: None)
+
+    row = Supervisor(sleep=lambda _: None)._service(spec, start_missing=False, processes=[], actions=[])
+
+    assert row["status"] == "UNKNOWN"
+    assert row["reason_code"] == "PROCESS_EVIDENCE_INCOMPLETE"
+
+
+def test_market_data_pid_reuse_with_later_process_start_remains_blocked(tmp_path, monkeypatch):
+    from ops.trading_platform_ops import ProcessInfo, Supervisor
+
+    spec = _market_data_spec(tmp_path)
+    _write_market_data_status(spec, pid=44940)
+    lock = spec.heartbeat.with_name("market_data_collector.lock")
+    lock.write_text("44940|2026-10-21T12:03:10+00:00", encoding="utf-8")
+    monkeypatch.setattr("ops.trading_platform_ops.ROOT", tmp_path)
+    monkeypatch.setattr("ops.trading_platform_ops.RUNTIME", spec.heartbeat.parent)
+    monkeypatch.setattr(
+        "ops.trading_platform_ops._targeted_process_from_powershell",
+        lambda pid: ProcessInfo(pid, '"Python312\\python.exe" -m src.main --job market_data --client-id 17', 48124, "python.exe", "2026-10-21T12:04:00+00:00"),
+    )
+
+    row = Supervisor(sleep=lambda _: None)._service(spec, start_missing=False, processes=[], actions=[])
+
+    assert row["status"] == "UNKNOWN"
+    assert row["reason_code"] == "MARKET_DATA_LOCK_OWNER_MISMATCH"
+    assert row["lock"]["owner_matches_process_tree"] is False
 
 
 def test_market_data_repeated_launcher_invocation_does_not_start_duplicate(tmp_path, monkeypatch):
@@ -624,6 +725,34 @@ def test_waiting_for_ibkr_is_not_ready(monkeypatch):
     ).run(start_missing=False)
     assert result["overall_status"] == "WAITING_FOR_IBKR"
     assert result["orders_submitted"] == 0
+
+
+def test_broker_dependency_failure_is_not_reported_as_login_required(monkeypatch):
+    from ops.trading_platform_ops import BrokerIdentityProbeError, ProcessSnapshot, Supervisor
+
+    sup = Supervisor(sleep=lambda _: None)
+    monkeypatch.setattr(sup, "_process_snapshot", lambda: ProcessSnapshot([]))
+    monkeypatch.setattr(sup, "_broker_identity", lambda: (_ for _ in ()).throw(BrokerIdentityProbeError("IBKR_DEPENDENCY_MISSING")))
+    monkeypatch.setattr("ops.trading_platform_ops.socket.create_connection", lambda *args, **kwargs: _ConnectedSocket())
+
+    result = sup._broker()
+
+    assert result["reason_code"] == "IBKR_DEPENDENCY_MISSING"
+    assert result["status"] == "ACTION_REQUIRED"
+
+
+def test_broker_probe_execution_failure_is_distinct_from_login(monkeypatch):
+    from ops.trading_platform_ops import BrokerIdentityProbeError, ProcessSnapshot, Supervisor
+
+    sup = Supervisor(sleep=lambda _: None)
+    monkeypatch.setattr(sup, "_process_snapshot", lambda: ProcessSnapshot([]))
+    monkeypatch.setattr(sup, "_broker_identity", lambda: (_ for _ in ()).throw(BrokerIdentityProbeError("IBKR_PROBE_EXECUTION_FAILED")))
+    monkeypatch.setattr("ops.trading_platform_ops.socket.create_connection", lambda *args, **kwargs: _ConnectedSocket())
+
+    result = sup._broker()
+
+    assert result["reason_code"] == "IBKR_PROBE_EXECUTION_FAILED"
+    assert result["status"] == "ACTION_REQUIRED"
 
 
 def test_valid_paper_execution_safety_is_accepted(monkeypatch):

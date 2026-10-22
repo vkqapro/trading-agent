@@ -1,3 +1,3 @@
 Fin Instrument,Symbol,Security Type,Last Trading Day,Strike,Put/Call,Currency,Action,Quantity,Price,Time,Date,Exch.,Account,Order Ref.,Clearing,More Info,Trading Class,Undr. Symbol,
-OXY,OXY,STK,,,,USD,SLD,8,61.51,14:45:39,20261020,NYSE,DU5454348,,,,,OXY,
-ISRG,ISRG,STK,,,,USD,BOT,2,436.94,17:12:02,20261020,T24X,DU5454348,,,,,ISRG,
+ISRG,ISRG,STK,,,,USD,SLD,2,398.99,13:30:00,20261021,ARCA,DU5454348,,,,,ISRG,
+FITB,FITB,STK,,,,USD,BOT,5,52.87,16:16:21,20261021,IEX,DU5454348,,,,,FITB,

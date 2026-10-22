@@ -93,8 +93,81 @@ class TrendRadarStore:
                 CREATE UNIQUE INDEX IF NOT EXISTS idx_daily_trader_scan_jobs_active_request
                     ON daily_trader_scan_jobs(request_key)
                     WHERE status IN ('QUEUED', 'RUNNING');
+                CREATE TABLE IF NOT EXISTS radar_scanner_batches (
+                    batch_id TEXT PRIMARY KEY,
+                    status TEXT NOT NULL,
+                    symbols_json TEXT NOT NULL,
+                    completed_json TEXT NOT NULL DEFAULT '{}',
+                    timeout_seconds REAL,
+                    started_at TEXT NOT NULL,
+                    completed_at TEXT,
+                    updated_at TEXT NOT NULL
+                );
                 """
             )
+
+    def begin_scanner_batch(self, batch_id: str, symbols: Iterable[str], timeout_seconds: float | None) -> dict[str, Any]:
+        normalized = sorted({str(symbol).strip().upper() for symbol in symbols if str(symbol).strip()})
+        now = datetime.now(timezone.utc).isoformat()
+        with self.connection() as connection:
+            row = connection.execute("SELECT * FROM radar_scanner_batches WHERE batch_id = ?", (batch_id,)).fetchone()
+            if row is not None:
+                existing = dict(row)
+                existing["created"] = False
+                return existing
+            owner = connection.execute(
+                "SELECT batch_id, status, started_at, updated_at FROM radar_scanner_batches "
+                "WHERE status IN ('RUNNING', 'IN_FLIGHT') ORDER BY started_at LIMIT 1"
+            ).fetchone()
+            if owner is not None:
+                return {
+                    "batch_id": batch_id,
+                    "status": "BLOCKED_GLOBAL_IN_FLIGHT",
+                    "owner_batch_id": owner["batch_id"],
+                    "owner_status": owner["status"],
+                    "owner_started_at": owner["started_at"],
+                    "owner_updated_at": owner["updated_at"],
+                    "created": False,
+                }
+            connection.execute(
+                "INSERT INTO radar_scanner_batches(batch_id,status,symbols_json,timeout_seconds,started_at,updated_at) VALUES(?,?,?,?,?,?)",
+                (batch_id, "RUNNING", json.dumps(normalized), timeout_seconds, now, now),
+            )
+            return {"batch_id": batch_id, "status": "RUNNING", "symbols_json": json.dumps(normalized), "completed_json": "{}", "started_at": now, "updated_at": now, "created": True}
+
+    def mark_scanner_batch_in_flight(self, batch_id: str, symbols: Iterable[str]) -> None:
+        now = datetime.now(timezone.utc).isoformat()
+        with self.connection() as connection:
+            row = connection.execute("SELECT completed_json FROM radar_scanner_batches WHERE batch_id = ?", (batch_id,)).fetchone()
+            completed = row[0] if row else "{}"
+            connection.execute("UPDATE radar_scanner_batches SET status='IN_FLIGHT', completed_json=?, updated_at=? WHERE batch_id=?", (completed, now, batch_id))
+
+    def record_scanner_batch_result(self, batch_id: str, symbol: str, result: Mapping[str, Any]) -> dict[str, Any] | None:
+        now = datetime.now(timezone.utc).isoformat()
+        with self.connection() as connection:
+            row = connection.execute("SELECT * FROM radar_scanner_batches WHERE batch_id = ?", (batch_id,)).fetchone()
+            if row is None:
+                return None
+            symbols = json.loads(row["symbols_json"] or "[]")
+            completed = json.loads(row["completed_json"] or "{}")
+            completed[str(symbol).upper()] = {
+                "status": result.get("status"),
+                "error": result.get("error"),
+                "signals_found": result.get("signals_found", 0),
+            }
+            done = len(completed) >= len(symbols)
+            status = "COMPLETED_AFTER_DEADLINE" if done and row["status"] == "IN_FLIGHT" else ("COMPLETED" if done else row["status"])
+            connection.execute(
+                "UPDATE radar_scanner_batches SET status=?,completed_json=?,completed_at=CASE WHEN ? THEN ? ELSE completed_at END,updated_at=? WHERE batch_id=?",
+                (status, json.dumps(completed, sort_keys=True), done, now, now, batch_id),
+            )
+            updated = connection.execute("SELECT * FROM radar_scanner_batches WHERE batch_id = ?", (batch_id,)).fetchone()
+            return dict(updated) if updated else None
+
+    def scanner_batch(self, batch_id: str) -> dict[str, Any] | None:
+        with self.connection() as connection:
+            row = connection.execute("SELECT * FROM radar_scanner_batches WHERE batch_id = ?", (batch_id,)).fetchone()
+        return dict(row) if row else None
 
     def upsert(self, result: RadarResult) -> None:
         created_at = result.created_at or datetime.now(timezone.utc).isoformat()

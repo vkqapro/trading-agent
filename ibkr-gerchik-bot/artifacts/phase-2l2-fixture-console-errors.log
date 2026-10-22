@@ -1,0 +1,32 @@
+Total messages: 4 (Errors: 3, Warnings: 1)
+Returning 3 messages for level "error"
+
+[ERROR] [BABEL] Note: The code generator has deoptimised the styling of /Inline Babel script as it exceeds the max of 500KB. @ https://unpkg.com/@babel/standalone@7.26.4/babel.min.js:0
+[ERROR] TypeError: Cannot read properties of undefined (reading 'watchlist')
+    at TabDashboard (<anonymous>:62:3160)
+    at mf (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:105:412)
+    at zf (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:127:55)
+    at Qk (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:251:489)
+    at Ri (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:195:185)
+    at Ok (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:195:116)
+    at Nd (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:194:492)
+    at Qf (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:187:439)
+    at Ni (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:185:400)
+    at S (https://unpkg.com/react@18.3.1/umd/react.production.min.js:17:25)
+    at MessagePort.U (https://unpkg.com/react@18.3.1/umd/react.production.min.js:21:229) @ https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:120
+[ERROR] Tab render error: TypeError: Cannot read properties of undefined (reading 'watchlist')
+    at TabDashboard (<anonymous>:62:3160)
+    at mf (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:105:412)
+    at zf (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:127:55)
+    at Qk (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:251:489)
+    at Ri (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:195:185)
+    at Ok (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:195:116)
+    at Nd (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:194:492)
+    at Qf (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:187:439)
+    at Ni (https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js:185:400)
+    at S (https://unpkg.com/react@18.3.1/umd/react.production.min.js:17:25)
+    at MessagePort.U (https://unpkg.com/react@18.3.1/umd/react.production.min.js:21:229) {componentStack: 
+    at TabDashboard (<anonymous>:62:102)
+    at E…ain
+    at div
+    at App (<anonymous>:87:124883)} @ :84

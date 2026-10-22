@@ -1394,6 +1394,67 @@ function TfPills({value, onChange}) {
   );
 }
 
+// This is the one signal-chart rendering path shared by Market Screener and
+// AI Trade Desk. Its signal identity is supplied by the authoritative caller.
+function ScreenerSignalChart({signal, bars, levels, lines, zones, strategyOverlay, gaussianOverlay, showVol, height, fullscreenTargetRef, fullscreenHeightOffset, stale, lastDate, lineLabelPosition='middle', chartKey, unavailableReason=''}) {
+  const signalMarkerPrice = signal ? (Number(signal.entry_price)||Number(signal.level_price)) : null;
+  const signalMarkers = signal && Number.isFinite(signalMarkerPrice) ? [{
+    time:signal.signal_bar_date,
+    price:signalMarkerPrice,
+    kind:'entry',
+    label:`${signal.strategy} ${signal.side}`,
+    value:`score ${Number.isFinite(Number(signal.score)) ? Number(signal.score).toFixed(2) : '—'}`,
+    color:signal.side==='SHORT'?C.err:C.lime,
+    placement:'above_bar',
+    labelFontSize:10.5,
+    valueFontSize:10.5,
+    valueFontWeight:800,
+  }] : [];
+  const signalHighlightedBars = useMemo(()=>{
+    if(!signal || !bars?.length) return [];
+    const dateKey = value => String(value||'').slice(0,10);
+    const barDate = bar => dateKey(bar?.t || bar?.date);
+    const exactPatternDates = (signal.pattern_bar_dates||[]).map(dateKey).filter(Boolean);
+    if(exactPatternDates.length) {
+      const wanted = new Set(exactPatternDates);
+      return bars.filter(bar=>wanted.has(barDate(bar))).map(bar=>({time:bar?.t || bar?.date}));
+    }
+    const signalDate = dateKey(signal.signal_bar_date);
+    const entryDate = dateKey(signal.entry_day || signal.signal_bar_date);
+    const signalIdx = bars.findIndex(bar=>barDate(bar)===signalDate);
+    const entryIdx = bars.findIndex(bar=>barDate(bar)===entryDate);
+    const indexes = new Set();
+    const strategy = String(signal.strategy||'').toUpperCase();
+    if(strategy === 'LP1') { if(signalIdx >= 0) indexes.add(signalIdx); }
+    else if(strategy === 'LP2') { const idx = signalIdx >= 0 ? signalIdx : entryIdx; if(idx > 0) indexes.add(idx-1); if(idx >= 0) indexes.add(idx); }
+    else if(strategy === 'PRB1') { if(signalIdx >= 0) indexes.add(signalIdx); if(entryIdx >= 0) indexes.add(entryIdx); }
+    else if(strategy === 'PRB2') { if(signalIdx >= 0 && entryIdx >= signalIdx) { for(let idx=signalIdx; idx<=entryIdx; idx++) indexes.add(idx); } else { if(signalIdx >= 0) indexes.add(signalIdx); if(entryIdx >= 0) indexes.add(entryIdx); } }
+    else if(signalIdx >= 0) indexes.add(signalIdx);
+    return [...indexes].sort((a,b)=>a-b).map(idx=>({time:bars[idx]?.t || bars[idx]?.date}));
+  },[signal?.ticker, signal?.strategy, signal?.side, signal?.signal_bar_date, signal?.entry_day, JSON.stringify(signal?.pattern_bar_dates||[]), bars]);
+  return <>{unavailableReason&&<div style={{padding:'0 0 10px',color:C.lemon,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}>{unavailableReason}</div>}<CandleChart key={chartKey} bars={bars} levels={levels} lines={lines} zones={zones} tradeMarkers={signalMarkers} highlightBars={signalHighlightedBars} strategyOverlay={strategyOverlay} gaussianOverlay={gaussianOverlay} showVol={showVol} height={height} fullscreenTargetRef={fullscreenTargetRef} fullscreenHeightOffset={fullscreenHeightOffset} stale={stale} lastDate={lastDate} lineLabelPosition={lineLabelPosition}/></>;
+}
+
+function reviewedProposalScreenerSignal(detail) {
+  const proposal = detail?.proposal || {};
+  const review = proposal.ai_review || {};
+  const observationId = String(review.reviewed_observation_id || '');
+  const observation = (detail?.observations || []).find(item=>String(item?.observation_id || '')===observationId);
+  if(!observation) return {signal:null,warning:'SOURCE SIGNAL UNAVAILABLE · the reviewed observation is not attached to this proposal.'};
+  const candidate = observation.candidate || {};
+  const candidateSymbol = String(candidate.symbol || candidate.ticker || '').toUpperCase();
+  const side = String(candidate.side || candidate.direction || '').toUpperCase();
+  const matches = candidateSymbol===String(proposal.symbol || '').toUpperCase()
+    && String(candidate.strategy || '').toUpperCase()===String(proposal.strategy || '').toUpperCase()
+    && side===String(proposal.direction || '').toUpperCase()
+    && String(observation.source_candidate_id || '')===String(review.reviewed_source_candidate_id || '')
+    && String(observation.source_scan_id || '')===String(review.reviewed_source_scan_id || '');
+  if(!matches) return {signal:null,warning:'SOURCE SIGNAL UNAVAILABLE · reviewed observation identity does not match this proposal.'};
+  const hasAnchor = Boolean(candidate.signal_bar_date && Array.isArray(candidate.pattern_bar_dates) && candidate.pattern_bar_dates.length);
+  if(!hasAnchor) return {signal:null,warning:'SOURCE SIGNAL UNAVAILABLE · this persisted reviewed observation has no exact scanner formation anchor.'};
+  return {signal:{...candidate,symbol:proposal.symbol,ticker:proposal.symbol,side},warning:''};
+}
+
 /* ── news modal ───────────────────────────────────────────────────────────── */
 function NewsModal({items=[], onClose}) {
   return (
@@ -5210,59 +5271,6 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
     {p1:signalManualSetup.entry,p2:signalManualSetup.target,color:C.lime,opacity:0.07},
     {p1:signalManualSetup.entry,p2:signalManualSetup.stop,color:C.err,opacity:0.08},
   ] : [];
-  const signalMarkerPrice = selectedSignal ? (Number(selectedSignal.entry_price)||Number(selectedSignal.level_price)) : null;
-  const signalMarkers = showSignalOverlay && selectedSignal && Number.isFinite(signalMarkerPrice) ? [{
-    time:selectedSignal.signal_bar_date,
-    price:signalMarkerPrice,
-    kind:'entry',
-    label:`${selectedSignal.strategy} ${selectedSignal.side}`,
-    value:`score ${num(selectedSignal.score,2)}`,
-    color:selectedSignal.side==='SHORT'?C.err:C.lime,
-    placement:'above_bar',
-    labelFontSize:10.5,
-    valueFontSize:10.5,
-    valueFontWeight:800,
-  }] : [];
-  const signalHighlightedBars = useMemo(()=>{
-    if(!selectedSignal || !signalChartBars.length) return [];
-    const dateKey = value => String(value||'').slice(0,10);
-    const barDate = bar => dateKey(bar?.t || bar?.date);
-    const exactPatternDates = (selectedSignal.pattern_bar_dates||[]).map(dateKey).filter(Boolean);
-    if(exactPatternDates.length) {
-      const wanted = new Set(exactPatternDates);
-      return signalChartBars
-        .filter(bar=>wanted.has(barDate(bar)))
-        .map(bar=>({time:bar?.t || bar?.date}));
-    }
-    const signalDate = dateKey(selectedSignal.signal_bar_date);
-    const entryDate = dateKey(selectedSignal.entry_day || selectedSignal.signal_bar_date);
-    const signalIdx = signalChartBars.findIndex(bar=>barDate(bar)===signalDate);
-    const entryIdx = signalChartBars.findIndex(bar=>barDate(bar)===entryDate);
-    const indexes = new Set();
-    const strategy = String(selectedSignal.strategy||'').toUpperCase();
-    if(strategy === 'LP1') {
-      if(signalIdx >= 0) indexes.add(signalIdx);
-    } else if(strategy === 'LP2') {
-      const idx = signalIdx >= 0 ? signalIdx : entryIdx;
-      if(idx > 0) indexes.add(idx-1);
-      if(idx >= 0) indexes.add(idx);
-    } else if(strategy === 'PRB1') {
-      if(signalIdx >= 0) indexes.add(signalIdx);
-      if(entryIdx >= 0) indexes.add(entryIdx);
-    } else if(strategy === 'PRB2') {
-      if(signalIdx >= 0 && entryIdx >= signalIdx) {
-        for(let idx=signalIdx; idx<=entryIdx; idx++) indexes.add(idx);
-      } else {
-        if(signalIdx >= 0) indexes.add(signalIdx);
-        if(entryIdx >= 0) indexes.add(entryIdx);
-      }
-    } else if(signalIdx >= 0) {
-      indexes.add(signalIdx);
-    }
-    return [...indexes]
-      .sort((a,b)=>a-b)
-      .map(idx=>({time:signalChartBars[idx]?.t || signalChartBars[idx]?.date}));
-  },[selectedSignalKey, selectedSignal?.strategy, selectedSignal?.signal_bar_date, selectedSignal?.entry_day, JSON.stringify(selectedSignal?.pattern_bar_dates||[]), signalChartBars]);
   const readyCount = signals.filter(row=>row.status==='READY').length;
   const avgScore = signals.length ? signals.reduce((sum,row)=>sum+Number(row.score||0),0)/signals.length : null;
   const controlsShell = {display:'flex',alignItems:'center',gap:8,padding:'9px 11px',borderRadius:8,background:R(C.surfLowest,0.78),border:`1px solid ${R(C.outline,0.22)}`};
@@ -5635,14 +5643,13 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
           </div>
         )}
         {selectedSignal && signalChartBars.length ? (
-          <CandleChart
-            key={`${signalDetailOpen?'detail':'list'}-${selectedSignalKey||'none'}`}
+          <ScreenerSignalChart
+            chartKey={`${signalDetailOpen?'detail':'list'}-${selectedSignalKey||'none'}`}
+            signal={showSignalOverlay ? selectedSignal : null}
             bars={signalChartBars}
             levels={signalChartLevels}
             lines={signalChartLines}
             zones={signalManualZones}
-            tradeMarkers={signalMarkers}
-            highlightBars={signalHighlightedBars}
             strategyOverlay={signalStrategyOverlay}
             gaussianOverlay={signalGaussianOverlay}
             showVol={showSignalVol}
@@ -5651,7 +5658,6 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
             fullscreenHeightOffset={showSignalManualSetup?280:170}
             stale={signalBarsInfo.stale}
             lastDate={signalBarsInfo.lastDate}
-            lineLabelPosition="middle"
           />
         ) : (
           <div style={{padding:'24px 20px',display:'flex',alignItems:'center',gap:10,color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:12}}>
@@ -7525,6 +7531,7 @@ function TabAITradeDesk(){
   const [chartInfo,setChartInfo] = React.useState({stale:false,lastDate:null});
   const [chartPlan,setChartPlan] = React.useState(null);
   const [tf,setTf] = React.useState('1D');
+  const [showSignal,setShowSignal] = React.useState(true);
   const [showVol,setShowVol] = React.useState(true);
   const [showRaw,setShowRaw] = React.useState(false);
   const [showTrade,setShowTrade] = React.useState(true);
@@ -7564,11 +7571,17 @@ function TabAITradeDesk(){
   const columns = [{id:'DISCOVERED',label:'DISCOVERED',hint:'Authoritative scanner candidates'}, {id:'UNDER_REVIEW',label:'UNDER REVIEW',hint:'Human validation in progress'}, {id:'READY',label:'READY',hint:'Eligible for human approval'}, {id:'INVALIDATED',label:'INVALIDATED',hint:'Closed or no longer eligible'}];
   const transition = (id,status) => act('/api/ai-trade-desk/proposals/'+id+'/status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({status})});
   const source = detail?.proposal?.source || {};
+  const chartSource = reviewedProposalScreenerSignal(detail);
   React.useEffect(()=>{ if(!detail?.proposal) return; let live=true; const run=async()=>{ try { const r=await fetch('/api/ai-trade-desk/preview',{method:'POST',headers:{'Content-Type':'application/json',...headers},body:JSON.stringify(edit)}); const j=await r.json(); if(live) setPreview(r.ok?j.preview:{error:j.detail||'Preview rejected'}); } catch(e){ if(live) setPreview({error:e.message}); } }; const timer=setTimeout(run,80); return ()=>{live=false;clearTimeout(timer);}; },[edit,detail]);
   const previewValues = preview || {risk:0,reward:0,rr:0,notional:0,error:'Calculating…'};
   const chartLines = [['target',C.lime,'TARGET'],['entry',C.ocean,'ENTRY'],['stop',C.err,'STOP']].map(([k,color,label])=>({p:Number(edit[k]),color,label:`${label} ${deskNumber(edit[k])}`})).filter(x=>Number.isFinite(x.p));
-  const strategyOverlay = showStrategy||showStrategy2 ? [showStrategy?sliceOverlayPoints(buildBmsbStrategyOverlay(chartBars),9999):null,showStrategy2?sliceOverlayPoints(buildBmsbStrategy2Overlay(chartBars),9999):null].filter(Boolean) : null;
-  const gaussianOverlay = (showGaussian||showGaussianSignals) ? (()=>{const full=buildGaussianChannelOverlay(chartBars); return full?{...full,showChannel:showGaussian,showSignals:showGaussianSignals}:null;})() : null;
+  const chartBarsForSignal = React.useMemo(()=>{
+    if(!chartSource.signal?.signal_bar_date) return chartBars.slice(-160);
+    const signalIndex = chartBars.findIndex(bar=>String(bar.t||bar.date||'').slice(0,10)===chartSource.signal.signal_bar_date);
+    return signalIndex < 0 ? chartBars.slice(-160) : chartBars.slice(Math.max(0,signalIndex-90));
+  },[chartBars,chartSource.signal?.signal_bar_date]);
+  const strategyOverlay = showStrategy||showStrategy2 ? [showStrategy?sliceOverlayPoints(buildBmsbStrategyOverlay(chartBarsForSignal),9999):null,showStrategy2?sliceOverlayPoints(buildBmsbStrategy2Overlay(chartBarsForSignal),9999):null].filter(Boolean) : null;
+  const gaussianOverlay = (showGaussian||showGaussianSignals) ? (()=>{const full=buildGaussianChannelOverlay(chartBarsForSignal); return full?{...full,showChannel:showGaussian,showSignals:showGaussianSignals}:null;})() : null;
   return <div style={{padding:'4px 0 36px'}}>
     <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-end',gap:16,marginBottom:18}}>
        <div><div style={{fontSize:11,color:C.ocean,letterSpacing:1.5,fontWeight:700}}>AI TRADE DESK</div><h1 style={{fontSize:28,margin:'6px 0 4px',letterSpacing:0}}>Candidate management</h1><div style={{fontSize:13,color:C.muted}}>AI may propose and explain. Only a human can change state or approve.</div></div>
@@ -7589,7 +7602,7 @@ function TabAITradeDesk(){
      {detail && detail.proposal && <div onClick={closeDetail} style={{position:'fixed',inset:0,zIndex:30,width:'100vw',height:'100vh',maxHeight:'100dvh',background:'rgba(0,0,0,.72)',display:'flex',alignItems:'stretch',overflow:'hidden'}}><div className="trade-desk-detail__surface" onClick={e=>e.stopPropagation()} style={{width:'100%',height:'100%',minHeight:'100dvh',overflowY:'auto',background:C.bg,padding:'clamp(14px,2vw,28px)',display:'flex',flexDirection:'column'}}>
       <div className="trade-desk-detail__header" style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:16,position:'sticky',top:0,zIndex:2,paddingBottom:12,background:C.bg}}><div style={{minWidth:0}}><div style={{fontSize:11,color:C.ocean,letterSpacing:1.4}}>PROPOSAL DETAIL</div><h2 style={{margin:'6px 0',fontSize:27}}>{detail.proposal.symbol} <span style={{fontSize:13,color:detail.proposal.direction==='LONG'?C.lime:C.chartDown2}}>{detail.proposal.direction}</span></h2><div style={{display:'flex',alignItems:'center',gap:8,flexWrap:'wrap',fontSize:12,color:C.muted}}><span>{detail.proposal.strategy}</span><Pill text={detail.proposal.status} color={deskStatusColor(detail.proposal.status)}/><Pill text={`AI ${detail.proposal.ai_review_status||'NOT_REVIEWED'}`} color={detail.proposal.ai_review_status==='COMPLETED'?C.lime:C.ocean}/><span>REV {detail.proposal.revision}</span></div></div><button onClick={closeDetail} style={S.iconBtn} title="Close detail" aria-label="Close proposal detail">×</button></div>
        <details style={{marginTop:8,border:'1px solid '+C.border,background:'rgba(255,255,255,.025)',fontSize:12}}><summary style={{cursor:'pointer',padding:'11px 12px',fontWeight:700,color:C.onSurf}}>SOURCE INTEGRITY <span style={{fontWeight:400,color:C.muted}}>· verify scanner provenance and reviewed observation</span></summary><div style={{padding:'0 12px 12px'}}><div style={{color:C.muted,marginTop:7}}>Scanner: {detail.proposal.scanner_status} · lifecycle: {detail.proposal.scanner_lifecycle} · AI review: {detail.proposal.ai_review_status||'NOT_REVIEWED'}</div><div style={{color:C.muted,marginTop:4}}>Source run: {detail.proposal.source_scan_id||'—'} · timestamp: {detail.proposal.source_timestamp||'—'}</div><div style={{color:C.muted,marginTop:4}}>Authoritative signal: Entry {deskNumber(source.entry??source.planned_entry??detail.proposal.entry)} · Stop {deskNumber(source.stop??detail.proposal.stop)} · Target {deskNumber(source.target??detail.proposal.target)} · R:R {deskNumber(source.rr??detail.proposal.rr,2)} · source quantity {source.position_size??'—'} · effective quantity {detail.proposal.quantity}</div></div></details>
-       <div className="trade-desk-detail__chart" style={{order:2,marginTop:18,border:'1px solid '+C.border,background:'rgba(255,255,255,.02)'}}><div style={{padding:'10px 12px',borderBottom:'1px solid '+C.border,display:'flex',justifyContent:'space-between',alignItems:'center',gap:8}}><b>Signal Chart · {detail.proposal.symbol}</b><TfPills value={tf} onChange={setTf}/></div><div style={{padding:'10px 12px',display:'flex',gap:14,flexWrap:'wrap'}}><Toggle on={showRaw} label="Raw levels" onChange={setShowRaw}/><Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/><Toggle on={showVol} label="Volume" onChange={setShowVol}/><Toggle on={showStrategy} label="BMSB strategy" onChange={setShowStrategy}/><Toggle on={showStrategy2} label="BMSB strategy 2" onChange={setShowStrategy2}/><Toggle on={showGaussian} label="Gaussian channel" onChange={v=>{setShowGaussian(v);if(v)setShowGaussianSignals(true);}}/><Toggle on={showGaussianSignals} label="Gaussian signals" onChange={setShowGaussianSignals}/></div><div style={{padding:'0 12px 12px',minHeight:420}}><CandleChart bars={chartBars} levels={buildChartLevels(chartPlan?.trade_levels,chartPlan?.raw_levels,showTrade,showRaw)} lines={chartLines} zones={[{p1:Number(edit.entry),p2:Number(edit.target),color:C.lime,label:'TARGET ZONE'},{p1:Number(edit.entry),p2:Number(edit.stop),color:C.err,label:'RISK ZONE'}].filter(z=>Number.isFinite(z.p1)&&Number.isFinite(z.p2))} strategyOverlay={strategyOverlay} gaussianOverlay={gaussianOverlay} showVol={showVol} height={Math.max(500,Math.min(760,window.innerHeight-360))} stale={chartInfo.stale} lastDate={chartInfo.lastDate}/></div></div>
+      <div className="trade-desk-detail__chart" style={{order:2,marginTop:18,border:'1px solid '+C.border,background:'rgba(255,255,255,.02)'}}><div style={{padding:'10px 12px',borderBottom:'1px solid '+C.border,display:'flex',justifyContent:'space-between',alignItems:'center',gap:8}}><b>Signal Chart · {detail.proposal.symbol}</b><TfPills value={tf} onChange={setTf}/></div><div style={{padding:'10px 12px',display:'flex',gap:14,flexWrap:'wrap'}}><Toggle on={showSignal} label="Signal" onChange={setShowSignal}/><Toggle on={showRaw} label="Raw levels" onChange={setShowRaw}/><Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/><Toggle on={showVol} label="Volume" onChange={setShowVol}/><Toggle on={showStrategy} label="BMSB strategy" onChange={setShowStrategy}/><Toggle on={showStrategy2} label="BMSB strategy 2" onChange={setShowStrategy2}/><Toggle on={showGaussian} label="Gaussian channel" onChange={v=>{setShowGaussian(v);if(v)setShowGaussianSignals(true);}}/><Toggle on={showGaussianSignals} label="Gaussian signals" onChange={setShowGaussianSignals}/></div><div style={{padding:'0 12px 12px',minHeight:420}}><ScreenerSignalChart chartKey={`ai-trade-desk-${detail.proposal.proposal_id}-${tf}`} signal={showSignal?chartSource.signal:null} unavailableReason={showSignal?chartSource.warning:''} bars={chartBarsForSignal} levels={buildChartLevels(chartPlan?.trade_levels,chartPlan?.raw_levels,showTrade,showRaw)} lines={chartLines} zones={[{p1:Number(edit.entry),p2:Number(edit.target),color:C.lime,label:'TARGET ZONE'},{p1:Number(edit.entry),p2:Number(edit.stop),color:C.err,label:'RISK ZONE'}].filter(z=>Number.isFinite(z.p1)&&Number.isFinite(z.p2))} strategyOverlay={strategyOverlay} gaussianOverlay={gaussianOverlay} showVol={showVol} height={Math.max(500,Math.min(760,window.innerHeight-360))} stale={chartInfo.stale} lastDate={chartInfo.lastDate} lineLabelPosition="middle"/></div></div>
        {['DISCOVERED','UNDER_REVIEW','READY'].includes(detail.proposal.status)&&<TradeDeskManualSetup detail={detail} source={source} edit={edit} setEdit={setEdit} previewValues={previewValues} busy={busy} act={act} setEditFrom={setEditFrom}/>} 
       {detail.events&&detail.events.length>0&&<div style={{marginTop:22}}><div style={{fontSize:11,color:C.ocean,letterSpacing:1.1,fontWeight:700,marginBottom:8}}>AUDIT HISTORY</div>{detail.events.slice().reverse().map(e=><div key={e.event_id} style={{fontSize:11,borderBottom:'1px solid '+C.border,padding:'7px 0',display:'flex',justifyContent:'space-between',gap:8}}><span>{e.event_type} · {e.actor}</span><span style={{color:C.muted}}>{String(e.created_at||'').slice(0,19).replace('T',' ')}</span></div>)}</div>}
       {detail.proposal.status==='UNDER_REVIEW'&&!readyTransitionCheck(detail.proposal).eligible&&<div style={{marginTop:18,padding:10,border:'1px solid '+R(C.lemon,0.3),background:R(C.lemon,0.07),fontSize:11,color:C.lemon}}>READY BLOCKED · {readyTransitionCheck(detail.proposal).reason_code} · {readyTransitionCheck(detail.proposal).reason}</div>}

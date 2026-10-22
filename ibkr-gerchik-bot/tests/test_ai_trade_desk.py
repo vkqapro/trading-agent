@@ -9,7 +9,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from src.decision.ai_trade_desk import AITradeDeskStore, calculate_trade_metrics, opportunity_identity
-from src.decision.ai_trade_desk_scan import AITradeDeskScanManager
+from src.decision.ai_trade_desk_scan import AITradeDeskScanManager, DISCOVERY_MAX_SYMBOLS, _build_discovery_universe, _run_discovery_stages, _run_market_stages
 
 
 def candidate():
@@ -80,6 +80,15 @@ def test_store_is_idempotent_and_audits_revision(tmp_path: Path):
         store.transition(first["proposal_id"], "FILLED", actor="tester")
     ready = store.transition(first["proposal_id"], "UNDER_REVIEW", actor="tester")
     assert ready["status"] == "UNDER_REVIEW"
+
+
+def test_discovery_submission_persists_bounded_sample_parameter(tmp_path: Path):
+    manager = AITradeDeskScanManager(tmp_path / "scan.db", lambda *_args: {"status": "COMPLETED"})
+    submitted = manager.submit(job_type="FULL_MARKET_DISCOVERY", parameters={"max_symbols": 25})
+    persisted = manager.status(submitted["scan_id"])
+    assert persisted["parameters"] == {"max_symbols": 25}
+    with pytest.raises(ValueError, match="between 1 and 400"):
+        manager.submit(job_type="FULL_MARKET_DISCOVERY", parameters={"max_symbols": 401})
 
 
 def test_ready_transition_rejects_entry_triggered_partial_quality_signal(tmp_path: Path):
@@ -168,6 +177,130 @@ def test_scan_manager_persists_zero_candidate_terminal_review_state(tmp_path: Pa
     assert current["result"]["reviewed_count"] == 0
     assert current["result"]["published_count"] == 0
     assert current["stage_results"]["KANBAN_PUBLICATION"]["published_count"] == 0
+
+
+def test_market_scan_persists_complete_radar_checkpoint_and_freezes_symbols(monkeypatch):
+    """A later Radar write cannot change the universe already handed to the scanner."""
+    import dashboard_react.server as server
+
+    captured = []
+    universe = {
+        "source": "RADAR_SETUPS",
+        "valid": True,
+        "source_scan_id": "radar:2026-10-20:2026-10-21T14:13:28+00:00",
+        "snapshot_as_of": "2026-10-20",
+        "snapshot_timestamp": "2026-10-21T14:13:28+00:00",
+        "eligible_symbol_count": 2,
+        "selected_symbols": ["ISRG", "AIG"],
+        "selected": [
+            {"symbol": "ISRG", "strategy": "PRB1", "side": "LONG", "source_scan_id": "obs-isrg"},
+            {"symbol": "AIG", "strategy": "PRB2", "side": "LONG", "source_scan_id": "obs-aig"},
+        ],
+        "excluded_status_counts": {"NO_SETUP": 352},
+        "stale_symbol_count": 0,
+        "total_snapshot_rows": 354,
+        "reason_code": None,
+    }
+
+    class Radar:
+        def refresh(self):
+            return {"results": [{}] * 354, "skipped": []}
+
+    class DailyTrader:
+        def radar_rows(self, **kwargs):
+            return {"count": 354, "results": []}
+
+        def scan(self, request, scan_id):
+            captured.append(tuple(request.symbols_override))
+            # Simulate APD appearing in Radar after universe capture.
+            universe["selected_symbols"].append("APD")
+            universe["selected"].append({"symbol": "APD", "strategy": "PRB1", "side": "LONG", "source_scan_id": "obs-apd"})
+            return {"scan_id": scan_id, "processed_count": len(request.symbols_override), "scanner": {"requested": len(request.symbols_override)}, "active": [], "terminal": []}
+
+    class Request:
+        def __init__(self, **kwargs):
+            self.__dict__.update(kwargs)
+
+    monkeypatch.setattr(server, "_radar_service", lambda: Radar())
+    monkeypatch.setattr(server, "_daily_trader_service", lambda: DailyTrader())
+    monkeypatch.setattr(server, "_radar_setup_universe", lambda: universe)
+    monkeypatch.setattr(server, "DailyTraderScanRequest", Request)
+
+    stages = {}
+    result = _run_market_stages("scan-test", lambda name, payload: stages.update({name: payload}), lambda: False)
+
+    assert captured == [("ISRG", "AIG")]
+    assert stages["RADAR_SETUPS"]["selected"] == universe["selected"][:2]
+    assert stages["RADAR_SETUPS"]["excluded_status_counts"] == {"NO_SETUP": 352}
+    assert stages["RADAR_SETUPS"]["snapshot_timestamp"] == "2026-10-21T14:13:28+00:00"
+    assert result["radar_universe_checkpoint"]["selected_symbols"] == ["ISRG", "AIG"]
+    assert result["radar_universe_checkpoint"]["captured_at"]
+
+
+def test_discovery_universe_includes_unscanned_apd_deterministically():
+    rows = [
+        {"symbol": "APD", "as_of": "2026-10-21", "created_at": "2026-10-21T10:00:00+00:00", "trend": "GREEN", "radar_score": 70.7, "momentum_score": 72, "price": 303.70, "avg_dollar_volume": 50_000_000, "breakout": True, "trend_flip": False},
+        {"symbol": "ISRG", "as_of": "2026-10-21", "created_at": "2026-10-21T10:00:00+00:00", "trend": "GREEN", "radar_score": 70.7, "momentum_score": 68, "price": 500, "avg_dollar_volume": 50_000_000, "breakout": False, "trend_flip": True, "scanner_status": "NO_SETUP"},
+    ]
+    first = _build_discovery_universe(rows)
+    second = _build_discovery_universe(list(reversed(rows)))
+    assert first["selected_symbols"] == ["APD", "ISRG"]
+    assert first["selected_symbols"] == second["selected_symbols"]
+    assert first["selected"][0]["scanner_status"] == "NOT_SCANNED"
+    assert first["selected"][0]["selection_reasons"] == ["BREAKOUT", "MOMENTUM", "LIQUID_RADAR_ROW"]
+
+
+def test_discovery_sample_size_is_deterministic_and_records_capacity_exclusions():
+    rows = [
+        {"symbol": f"S{index:02d}", "as_of": "2026-10-21", "trend": "GREEN", "radar_score": float(100 - index), "price": 20, "avg_dollar_volume": 30_000_000}
+        for index in range(30)
+    ]
+    result = _build_discovery_universe(rows, max_symbols=25)
+    assert result["requested_max_symbols"] == 25
+    assert result["actual_sample_size"] == 25
+    assert result["selected_count"] == 25
+    assert result["excluded_count"] == 5
+    assert all(item["reasons"] == ["DISCOVERY_CAPACITY_LIMIT"] for item in result["excluded"])
+    assert result["selected_symbols"] == [f"S{index:02d}" for index in range(25)]
+
+
+def test_discovery_batches_over_one_hundred_and_keeps_no_setup_non_proposal(monkeypatch):
+    import dashboard_react.server as server
+
+    rows = [
+        {"symbol": f"S{index:03d}", "as_of": "2026-10-21", "created_at": "2026-10-21T10:00:00+00:00", "trend": "GREEN", "radar_score": float(500 - index), "momentum_score": 50, "price": 20, "avg_dollar_volume": 30_000_000}
+        for index in range(205)
+    ]
+    calls = []
+
+    class Radar:
+        def refresh(self):
+            return {"results": rows, "skipped": []}
+
+        def list_results(self, limit=5000):
+            return rows
+
+    class DailyTrader:
+        def scan(self, request, scan_id):
+            calls.append((scan_id, tuple(request.symbols_override)))
+            return {"scan_id": scan_id, "processed_count": len(request.symbols_override), "errors": [], "active": [], "terminal": []}
+
+    class Request:
+        def __init__(self, **kwargs):
+            self.__dict__.update(kwargs)
+
+    monkeypatch.setattr(server, "_radar_service", lambda: Radar())
+    monkeypatch.setattr(server, "_daily_trader_service", lambda: DailyTrader())
+    monkeypatch.setattr(server, "DailyTraderScanRequest", Request)
+    stages = {}
+    result = _run_discovery_stages("discovery-test", lambda name, payload: stages.update({name: payload}), lambda: False, max_symbols=DISCOVERY_MAX_SYMBOLS)
+
+    assert result["status"] == "COMPLETED"
+    assert len(calls) == 3
+    assert [len(batch[1]) for batch in calls] == [100, 100, 5]
+    assert stages["PRODUCTION_SCANNER"]["batch_count"] == 3
+    assert stages["PRODUCTION_SCANNER"]["candidate_count"] == 0
+    assert result["proposal_ids"] == []
 
 
 def _insert_review_job(manager, scan_id, parent_scan_id):

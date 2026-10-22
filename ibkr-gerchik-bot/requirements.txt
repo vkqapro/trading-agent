@@ -1,4 +1,5 @@
-ib_insync
+ib_insync==0.9.86
+fastapi==0.115.6
 pandas
 numpy
 requests
@@ -6,5 +7,5 @@ python-dotenv
 slack_sdk
 openpyxl
 mcp>=1.0.0,<2
-uvicorn>=0.30.0
+uvicorn==0.34.0
 Pillow>=10.0.0

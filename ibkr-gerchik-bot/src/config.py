@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import ast
 import logging
 import logging.handlers
 import os
@@ -14,11 +15,51 @@ from typing import Dict, List, Tuple
 
 from src.decision.models import AgentMode
 
+def _load_env_file_fallback(path: str | Path, *, override: bool = False) -> bool:
+    """Load simple KEY=VALUE entries when python-dotenv is unavailable.
+
+    This intentionally supports only the repository's non-secret configuration
+    format. It never logs values and never replaces an explicitly supplied
+    environment variable unless override=True.
+    """
+    loaded = False
+    try:
+        lines = Path(path).read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return False
+    for raw_line in lines:
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("export "):
+            line = line[7:].lstrip()
+        if "=" not in line:
+            continue
+        name, raw_value = line.split("=", 1)
+        name = name.strip()
+        if not name or not all(char.isalnum() or char == "_" for char in name) or name[0].isdigit():
+            continue
+        value = raw_value.strip()
+        if len(value) >= 2 and value[0] in {"'", '"'}:
+            closing = value.find(value[0], 1)
+            literal = value if closing < 0 else value[: closing + 1]
+            try:
+                value = str(ast.literal_eval(literal))
+            except (SyntaxError, ValueError):
+                value = literal[1:-1]
+        elif " #" in value:
+            value = value.split(" #", 1)[0].rstrip()
+        if override or name not in os.environ:
+            os.environ[name] = value
+        loaded = True
+    return loaded
+
+
 try:
     from dotenv import load_dotenv
 except ImportError:  # pragma: no cover
-    def load_dotenv(*_args: object, **_kwargs: object) -> bool:
-        return False
+    def load_dotenv(path: str | Path, *, override: bool = False, **_kwargs: object) -> bool:
+        return _load_env_file_fallback(path, override=override)
 
 
 BASE_DIR = Path(__file__).resolve().parents[1]

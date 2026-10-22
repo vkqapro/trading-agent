@@ -26,13 +26,14 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlparse
 from urllib.request import Request, urlopen
 
-
 DEFAULT_BASE_URL = "http://127.0.0.1:8550"
 REQUEST_TIMEOUT_SECONDS = 15.0
 POLL_INTERVAL_SECONDS = 2.0
 READINESS_REVALIDATION_ATTEMPTS = 3
 READINESS_REVALIDATION_DELAY_SECONDS = 0.25
 MARKET_SCAN_TERMINAL_STATES = {"COMPLETED", "FAILED", "CANCELLED"}
+DISCOVERY_DEFAULT_MAX_SYMBOLS = 25
+DISCOVERY_MAX_SYMBOLS = 400
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -232,6 +233,54 @@ class TradingWorkOperator:
         from ops.trading_platform_ops import Supervisor
 
         return Supervisor().run(start_missing=False)
+
+    @staticmethod
+    def _operations_probe_host_assisted(process_evidence: Mapping[str, Any]) -> Mapping[str, Any]:
+        """Run the normal Supervisor against one transient direct-host inventory.
+
+        This path is explicitly interactive-only. The caller supplies the
+        inventory through the current PowerShell pipeline; it is not read from
+        a durable artifact and is not used by unattended Operator commands.
+        """
+        from ops.trading_platform_ops import ProcessInfo, Supervisor, _parse_evidence_time
+
+        if process_evidence.get("context") != "direct-codex-host":
+            raise OperatorError("Host process evidence must come from the direct Codex host context")
+        if process_evidence.get("complete") is not True:
+            raise OperatorError("Host process inventory is incomplete")
+        rows = process_evidence.get("processes")
+        if not isinstance(rows, list) or not rows:
+            raise OperatorError("Host process inventory is empty")
+        parsed: list[ProcessInfo] = []
+        for row in rows:
+            if not isinstance(row, Mapping):
+                raise OperatorError("Host process inventory contains an invalid row")
+            try:
+                pid = int(row["pid"])
+            except (KeyError, TypeError, ValueError) as exc:
+                raise OperatorError("Host process inventory contains an invalid PID") from exc
+            if pid <= 0:
+                raise OperatorError("Host process inventory contains a non-positive PID")
+            parent = row.get("parent_pid")
+            parsed.append(ProcessInfo(
+                pid,
+                str(row.get("command_line") or ""),
+                int(parent) if parent not in (None, "") else None,
+                str(row.get("executable") or row.get("name") or ""),
+                str(row.get("created") or ""),
+            ))
+        target = process_evidence.get("target")
+        if not isinstance(target, Mapping):
+            raise OperatorError("Host process evidence is missing the Market Data target")
+        target_pid = int(target.get("pid") or 0)
+        target_row = next((row for row in parsed if row.pid == target_pid), None)
+        if target_row is None or "--job market_data" not in target_row.command_line.lower():
+            raise OperatorError("Host process evidence does not identify the Market Data Collector")
+        if not target_row.executable or target_row.parent_pid is None or not _parse_evidence_time(target_row.start_time):
+            raise OperatorError("Host process evidence is missing executable, parent, or creation-time identity")
+        if not any(row.pid == target_row.parent_pid for row in parsed):
+            raise OperatorError("Host process evidence is missing the Market Data parent process")
+        return Supervisor(process_provider=lambda: parsed).run(start_missing=False)
 
     @staticmethod
     def _environment_probe_default() -> Mapping[str, Any]:
@@ -472,6 +521,13 @@ class TradingWorkOperator:
             "execution_intents_created": 0,
         }
 
+    def host_preflight(self, process_evidence: Mapping[str, Any]) -> dict[str, Any]:
+        """Run the standard preflight with a transient direct-host inventory."""
+        # Validate before entering preflight's structured-error boundary so a
+        # bad interactive handoff cannot be mistaken for a normal service row.
+        self._operations_probe_host_assisted(process_evidence)
+        return self.preflight(operations_probe=lambda: self._operations_probe_host_assisted(process_evidence))
+
     @staticmethod
     def _ai_token_configured() -> bool:
         try:
@@ -616,6 +672,21 @@ class TradingWorkOperator:
             raise OperatorError("Full market scan is blocked because an active scan appeared during final revalidation")
         return self._request("/api/ai-trade-desk/scans/full-market", method="POST", payload={}, role="human")
 
+    def submit_full_market_discovery(self, *, authorized: bool, max_symbols: int = DISCOVERY_DEFAULT_MAX_SYMBOLS) -> dict[str, Any]:
+        """Submit the separately authorized Radar-only discovery workflow."""
+        if not authorized:
+            raise OperatorError("Full market discovery requires explicit per-run user authorization")
+        if isinstance(max_symbols, bool) or int(max_symbols) != max_symbols or not 1 <= int(max_symbols) <= DISCOVERY_MAX_SYMBOLS:
+            raise OperatorError(f"max_symbols must be an integer between 1 and {DISCOVERY_MAX_SYMBOLS}")
+        readiness = self.preflight()
+        if readiness.get("status") != "READY_FOR_OPERATOR_REVIEW":
+            blockers = ", ".join(readiness.get("blocked_dependencies") or []) or str(readiness.get("status"))
+            raise OperatorError(f"Full market discovery is blocked until analytics preflight is ready: {blockers}")
+        active = self._request("/api/ai-trade-desk/scans?limit=20").get("runs") or []
+        if any(isinstance(run, Mapping) and str(run.get("status") or "").upper() in {"QUEUED", "RUNNING", "CANCEL_REQUESTED"} for run in active):
+            raise OperatorError("Full market discovery is blocked because an active scan appeared during final revalidation")
+        return self._request("/api/ai-trade-desk/scans/full-market-discovery", method="POST", payload={"max_symbols": int(max_symbols)}, role="human")
+
     def locate_gpt_review_job(self, market_scan_id: str) -> dict[str, Any] | None:
         parent_scan_id = str(market_scan_id or "").strip()
         if not parent_scan_id:
@@ -758,23 +829,36 @@ def _read_reviews(path: str) -> list[dict[str, Any]]:
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Local ChatGPT Work AI Trade Desk operator")
-    parser.add_argument("command", choices=("preflight", "recover-analytics", "submit-market-scan", "submit-gpt-review", "scan-status", "review-payload", "publish-reviews", "reconcile-review"))
+    parser.add_argument("command", choices=("preflight", "host-preflight", "recover-analytics", "submit-market-scan", "submit-market-discovery", "submit-gpt-review", "scan-status", "review-payload", "publish-reviews", "reconcile-review"))
     parser.add_argument("--scan-id")
     parser.add_argument("--market-scan-id")
     parser.add_argument("--reviews", help="JSON review file path, or - for stdin")
     parser.add_argument("--authorize-market-scan", action="store_true")
+    parser.add_argument("--authorize-market-discovery", action="store_true")
     parser.add_argument("--authorize-gpt-review", action="store_true")
     parser.add_argument("--authorize-safe-start", action="store_true")
     parser.add_argument("--max-wait-seconds", type=float, default=300.0)
+    parser.add_argument("--max-symbols", type=int, default=DISCOVERY_DEFAULT_MAX_SYMBOLS)
     args = parser.parse_args(argv)
     operator = TradingWorkOperator()
     try:
         if args.command == "preflight":
             result = operator.preflight()
+        elif args.command == "host-preflight":
+            raw = sys.stdin.read()
+            if not raw.strip():
+                raise OperatorError("host-preflight requires direct-host evidence on stdin")
+            evidence = json.loads(raw)
+            if not isinstance(evidence, Mapping):
+                raise OperatorError("host-preflight evidence must be a JSON object")
+            result = operator.host_preflight(evidence)
         elif args.command == "recover-analytics":
             result = operator.recover_analytics(authorized=args.authorize_safe_start)
         elif args.command == "submit-market-scan":
             submitted = operator.submit_full_market_scan(authorized=args.authorize_market_scan)
+            result = operator.poll_market_scan(str(submitted.get("scan_id") or ""), max_wait_seconds=args.max_wait_seconds)
+        elif args.command == "submit-market-discovery":
+            submitted = operator.submit_full_market_discovery(authorized=args.authorize_market_discovery, max_symbols=args.max_symbols)
             result = operator.poll_market_scan(str(submitted.get("scan_id") or ""), max_wait_seconds=args.max_wait_seconds)
         elif args.command == "submit-gpt-review":
             result = operator.ensure_gpt_review_job(str(args.market_scan_id or ""), authorized=args.authorize_gpt_review)
