@@ -1319,3 +1319,11 @@ INFO:     Started server process [9332]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [44640]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [24644]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)

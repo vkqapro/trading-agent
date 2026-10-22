@@ -607,7 +607,7 @@ def _register_dashboard_routes() -> None:
         require_human(request)
         from src.decision.ai_trade_desk import calculate_trade_metrics
         try:
-            values = calculate_trade_metrics(direction=body.get("direction"), entry=body.get("entry"), stop=body.get("stop"), target=body.get("target"), rr=body.get("rr"), cash_allocation=body.get("cash_allocation"), max_risk_pct=body.get("max_risk_pct"), quantity=body.get("quantity"), keep_target=bool(body.get("keep_target", False)))
+            values = calculate_trade_metrics(direction=body.get("direction"), entry=body.get("entry"), stop=body.get("stop"), target=body.get("target"), rr=body.get("rr"), cash_allocation=body.get("cash_allocation"), max_risk_pct=body.get("max_risk_pct"), quantity=body.get("quantity"), keep_target=bool(body.get("keep_target", False)), calculation_driver=str(body.get("calculation_driver") or "rr"))
         except (TypeError, ValueError) as exc:
             raise HTTPException(422, str(exc)) from exc
         return {"preview": values, "read_only": True, "orders_submitted": 0, "execution_intents_created": 0}

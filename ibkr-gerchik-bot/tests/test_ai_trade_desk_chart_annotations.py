@@ -43,3 +43,30 @@ def test_trade_desk_keeps_screener_chart_controls_and_proposal_overlays():
     assert "label:'TARGET ZONE'" in source
     assert "label:'RISK ZONE'" in source
     assert 'lineLabelPosition="middle"' in source
+
+
+def test_trade_desk_target_edit_drives_preview_and_saved_metrics():
+    source = Path("dashboard_react/index.html").read_text(encoding="utf-8")
+
+    assert "if(key==='target') setCalculationDriver('target')" in source
+    assert "if(key==='rr') setCalculationDriver('rr')" in source
+    assert "JSON.stringify({...edit,calculation_driver:calculationDriver})" in source
+    assert "JSON.stringify({...edit,calculation_driver:calculationDriver,revision:proposal.revision" in source
+    assert "calculationDriver==='target' && !previewValues.error ? previewValues.rr" in source
+
+
+def test_trade_desk_cash_sizing_and_indicator_defaults():
+    source = Path("dashboard_react/index.html").read_text(encoding="utf-8")
+
+    assert "cash_allocation:p.manual_override_status==='OVERRIDDEN'?p.cash_allocation:1000" in source
+    assert "cash_allocation:1000" in source
+    assert "max_risk_pct:p.manual_override_status==='OVERRIDDEN'?p.max_risk_pct:5" in source
+    assert "max_risk_pct:5" in source
+    assert "field('cash_allocation','Cash $',{step:100})" in source
+    assert "key==='quantity' && !previewValues.error && previewValues.quantity!=null ? previewValues.quantity" in source
+    assert "{previewValues.quantity??'—'} SH" in source
+    assert "const [showStrategy,setShowStrategy] = React.useState(false);" in source
+    assert "const [showStrategy2,setShowStrategy2] = React.useState(false);" in source
+    assert "const [showGaussian,setShowGaussian] = React.useState(false);" in source
+    assert "const [showGaussianSignals,setShowGaussianSignals] = React.useState(false);" in source
+    assert "if(!selected) return; setShowStrategy(false); setShowStrategy2(false); setShowGaussian(false); setShowGaussianSignals(false);" in source

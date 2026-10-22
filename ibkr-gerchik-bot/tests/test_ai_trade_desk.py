@@ -51,6 +51,67 @@ def test_direction_aware_trade_math_matches_brief():
     assert short_metrics["rr"] == 3
 
 
+def test_manual_target_edit_drives_profit_and_rr_without_changing_risk(tmp_path: Path):
+    baseline = calculate_trade_metrics(
+        direction="LONG", entry=303.751, stop=299.8945, target=311.464,
+        rr=2, cash_allocation=39183.88, max_risk_pct=0.5, quantity=50,
+        calculation_driver="target",
+    )
+    raised_target = calculate_trade_metrics(
+        direction="LONG", entry=303.751, stop=299.8945, target=328.464,
+        rr=2, cash_allocation=39183.88, max_risk_pct=0.5, quantity=50,
+        calculation_driver="target",
+    )
+
+    assert raised_target["target"] == 328.464
+    assert raised_target["actual_risk"] == baseline["actual_risk"]
+    assert raised_target["potential_profit"] > baseline["potential_profit"]
+    assert raised_target["rr"] > baseline["rr"]
+
+    store = AITradeDeskStore(tmp_path / "decision.db")
+    source = {
+        **candidate(),
+        "entry": 303.751,
+        "planned_entry": 303.751,
+        "stop": 299.8945,
+        "target": 311.464,
+        "rr": 2,
+        "position_size": 50,
+        "cash_allocation": 39183.88,
+        "risk_pct": 0.5,
+    }
+    proposal = store.ingest(source, idempotency_key="manual-target-driver")
+    updated = store.update(
+        proposal["proposal_id"],
+        {"target": 328.464, "calculation_driver": "target"},
+        actor="fixture-human",
+        reason="target edit regression",
+    )
+    assert updated["target"] == 328.464
+    assert updated["actual_risk"] == proposal["actual_risk"]
+    assert updated["potential_profit"] > proposal["potential_profit"]
+
+
+def test_cash_allocation_recalculates_whole_share_quantity_and_totals():
+    one_thousand = calculate_trade_metrics(
+        direction="LONG", entry=303.751, stop=299.8945, target=306.464,
+        rr=2.5, cash_allocation=1000, max_risk_pct=0.5, quantity=50,
+        calculation_driver="target",
+    )
+    two_thousand = calculate_trade_metrics(
+        direction="LONG", entry=303.751, stop=299.8945, target=306.464,
+        rr=2.5, cash_allocation=2000, max_risk_pct=0.5, quantity=50,
+        calculation_driver="target",
+    )
+
+    assert one_thousand["quantity"] == 1
+    assert one_thousand["actual_risk"] == 3.86
+    assert one_thousand["potential_profit"] == 2.71
+    assert two_thousand["quantity"] == 2
+    assert two_thousand["actual_risk"] == 7.71
+    assert two_thousand["potential_profit"] == 5.43
+
+
 @pytest.mark.parametrize(
     "values",
     [

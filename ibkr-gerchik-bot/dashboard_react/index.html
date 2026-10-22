@@ -7486,21 +7486,30 @@ const TradeDeskCard = ({proposal,onOpen}) => {
   </div>;
 };
 
-const TradeDeskManualSetup = ({detail,source,edit,setEdit,previewValues,busy,act,setEditFrom}) => {
+const TradeDeskManualSetup = ({detail,source,edit,setEdit,previewValues,busy,act,setEditFrom,calculationDriver,setCalculationDriver}) => {
   const proposal = detail.proposal;
-  const update = (key,value) => setEdit(previous=>({...previous,[key]:value}));
+  const update = (key,value) => {
+    if(key==='target') setCalculationDriver('target');
+    if(key==='rr') setCalculationDriver('rr');
+    setEdit(previous=>({...previous,[key]:value}));
+  };
   const resetToSignal = () => setEditFrom({...proposal,
     entry:source.entry??source.planned_entry??proposal.entry,
     stop:source.stop??proposal.stop,
     target:source.target??proposal.target,
     rr:source.rr??proposal.rr,
     quantity:source.position_size??proposal.quantity,
-    cash_allocation:source.cash_allocation??proposal.cash_allocation,
-    max_risk_pct:source.risk_pct??proposal.max_risk_pct,
+    cash_allocation:1000,
+    max_risk_pct:5,
     direction:source.side??proposal.direction,
     order_type:source.order_type??proposal.order_type,
   });
-  const field = (key,label,options={}) => <label key={key}>{label}<input type="number" step="any" value={edit[key]??''} onChange={event=>update(key,event.target.value)} /></label>;
+  const field = (key,label,options={}) => {
+    const value = key==='rr' && calculationDriver==='target' && !previewValues.error ? previewValues.rr
+      : key==='quantity' && !previewValues.error && previewValues.quantity!=null ? previewValues.quantity
+      : edit[key];
+    return <label key={key}>{label}<input type="number" step={options.step??'any'} value={value??''} onChange={event=>update(key,event.target.value)} /></label>;
+  };
   return <div className="trade-desk-manual-setup">
     <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',gap:10,marginBottom:8}}><div style={{fontSize:11,color:C.ocean,letterSpacing:1.1,fontWeight:700}}>MANUAL TRADE SETUP</div><span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:9,color:C.muted}}>PREVIEW ONLY UNTIL SAVED</span></div>
     <div className="trade-desk-manual-setup__row">
@@ -7511,17 +7520,17 @@ const TradeDeskManualSetup = ({detail,source,edit,setEdit,previewValues,busy,act
       {field('target','Target')}
       {field('rr','R:R')}
       <button type="button" className="trade-desk-manual-setup__use-signal" onClick={resetToSignal}>USE SIGNAL</button>
-      {field('cash_allocation','Cash $')}
+      {field('cash_allocation','Cash $',{step:100})}
       {field('max_risk_pct','Max Risk %')}
     </div>
     <div className="trade-desk-manual-setup__row trade-desk-manual-setup__row--metrics">
       {field('quantity','Quantity')}
       <span className="trade-desk-manual-setup__chip trade-desk-manual-setup__chip--risk">RISK ${deskNumber(previewValues.actual_risk)}</span>
       <span className="trade-desk-manual-setup__chip trade-desk-manual-setup__chip--reward">PROFIT ${deskNumber(previewValues.potential_profit)}</span>
-      <span className="trade-desk-manual-setup__chip trade-desk-manual-setup__chip--qty">{edit.quantity||'—'} SH</span>
+      <span className="trade-desk-manual-setup__chip trade-desk-manual-setup__chip--qty">{previewValues.quantity??'—'} SH</span>
       <span className="trade-desk-manual-setup__chip">R:R {deskNumber(previewValues.rr,2)}</span>
       <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:previewValues.error?C.err:C.muted}}>{previewValues.error||`Exposure $${deskNumber(previewValues.notional_exposure)}`}</span>
-      <div className="trade-desk-manual-setup__actions"><button disabled={busy} onClick={()=>act('/api/ai-trade-desk/proposals/'+proposal.proposal_id,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({...edit,revision:proposal.revision,reason:'Manual Trade Desk recalculation'})})} style={S.secondaryBtn}>SAVE</button><button disabled={busy} onClick={resetToSignal} style={S.secondaryBtn}>RESET</button></div>
+      <div className="trade-desk-manual-setup__actions"><button disabled={busy} onClick={()=>act('/api/ai-trade-desk/proposals/'+proposal.proposal_id,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({...edit,calculation_driver:calculationDriver,revision:proposal.revision,reason:'Manual Trade Desk recalculation'})})} style={S.secondaryBtn}>SAVE</button><button disabled={busy} onClick={resetToSignal} style={S.secondaryBtn}>RESET</button></div>
     </div>
   </div>;
 };
@@ -7534,6 +7543,7 @@ function TabAITradeDesk(){
   const [busy,setBusy] = React.useState(false);
   const [notice,setNotice] = React.useState('');
   const [edit,setEdit] = React.useState({});
+  const [calculationDriver,setCalculationDriver] = React.useState('rr');
   const [chartBars,setChartBars] = React.useState([]);
   const [chartInfo,setChartInfo] = React.useState({stale:false,lastDate:null});
   const [chartPlan,setChartPlan] = React.useState(null);
@@ -7542,10 +7552,10 @@ function TabAITradeDesk(){
   const [showVol,setShowVol] = React.useState(true);
   const [showRaw,setShowRaw] = React.useState(false);
   const [showTrade,setShowTrade] = React.useState(true);
-  const [showStrategy,setShowStrategy] = React.useState(true);
+  const [showStrategy,setShowStrategy] = React.useState(false);
   const [showStrategy2,setShowStrategy2] = React.useState(false);
   const [showGaussian,setShowGaussian] = React.useState(false);
-  const [showGaussianSignals,setShowGaussianSignals] = React.useState(true);
+  const [showGaussianSignals,setShowGaussianSignals] = React.useState(false);
   const [preview,setPreview] = React.useState(null);
   const [scanRuns,setScanRuns] = React.useState([]);
   const [scanBusy,setScanBusy] = React.useState(false);
@@ -7557,7 +7567,8 @@ function TabAITradeDesk(){
     setDetail(null);
     setPreview(null);
   },[]);
-  const setEditFrom = p => setEdit({entry:p.entry,stop:p.stop,target:p.target,rr:p.rr,quantity:p.quantity,cash_allocation:p.cash_allocation,max_risk_pct:p.max_risk_pct,direction:p.direction,order_type:p.order_type||'LIMIT'});
+  React.useEffect(()=>{ if(!selected) return; setShowStrategy(false); setShowStrategy2(false); setShowGaussian(false); setShowGaussianSignals(false); },[selected]);
+  const setEditFrom = p => { setCalculationDriver('rr'); setEdit({entry:p.entry,stop:p.stop,target:p.target,rr:p.rr,quantity:p.quantity,cash_allocation:p.manual_override_status==='OVERRIDDEN'?p.cash_allocation:1000,max_risk_pct:p.manual_override_status==='OVERRIDDEN'?p.max_risk_pct:5,direction:p.direction,order_type:p.order_type||'LIMIT'}); };
    const load = React.useCallback(async()=>{ try { const r=await fetch('/api/ai-trade-desk/proposals'); const j=await r.json(); setItems(uniqueTradeDeskProposals(j.proposals)); } catch(e){setNotice('Trade Desk unavailable: '+e.message);} },[]);
   React.useEffect(()=>{load();},[load]);
   React.useEffect(()=>{ fetch('/api/ai-trade-desk/scans').then(r=>r.ok?r.json():{runs:[]}).then(j=>setScanRuns(j.runs||[])).catch(()=>{}); },[]);
@@ -7584,7 +7595,7 @@ function TabAITradeDesk(){
   const transition = (id,status) => act('/api/ai-trade-desk/proposals/'+id+'/status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({status})});
   const source = detail?.proposal?.source || {};
   const chartSource = reviewedProposalScreenerSignal(detail);
-  React.useEffect(()=>{ if(!detail?.proposal) return; let live=true; const run=async()=>{ try { const r=await fetch('/api/ai-trade-desk/preview',{method:'POST',headers:{'Content-Type':'application/json',...headers},body:JSON.stringify(edit)}); const j=await r.json(); if(live) setPreview(r.ok?j.preview:{error:j.detail||'Preview rejected'}); } catch(e){ if(live) setPreview({error:e.message}); } }; const timer=setTimeout(run,80); return ()=>{live=false;clearTimeout(timer);}; },[edit,detail]);
+  React.useEffect(()=>{ if(!detail?.proposal) return; let live=true; const run=async()=>{ try { const r=await fetch('/api/ai-trade-desk/preview',{method:'POST',headers:{'Content-Type':'application/json',...headers},body:JSON.stringify({...edit,calculation_driver:calculationDriver})}); const j=await r.json(); if(live) setPreview(r.ok?j.preview:{error:j.detail||'Preview rejected'}); } catch(e){ if(live) setPreview({error:e.message}); } }; const timer=setTimeout(run,80); return ()=>{live=false;clearTimeout(timer);}; },[edit,detail,calculationDriver]);
   const previewValues = preview || {risk:0,reward:0,rr:0,notional:0,error:'Calculating…'};
   const chartLines = [['target',C.lime,'TARGET'],['entry',C.ocean,'ENTRY'],['stop',C.err,'STOP']].map(([k,color,label])=>({p:Number(edit[k]),color,label:`${label} ${deskNumber(edit[k])}`})).filter(x=>Number.isFinite(x.p));
   const chartBarsForSignal = React.useMemo(()=>{
@@ -7615,7 +7626,7 @@ function TabAITradeDesk(){
       <div className="trade-desk-detail__header" style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:16,position:'sticky',top:0,zIndex:2,paddingBottom:12,background:C.bg}}><div style={{minWidth:0}}><div style={{fontSize:11,color:C.ocean,letterSpacing:1.4}}>PROPOSAL DETAIL</div><h2 style={{margin:'6px 0',fontSize:27}}>{detail.proposal.symbol} <span style={{fontSize:13,color:detail.proposal.direction==='LONG'?C.lime:C.chartDown2}}>{detail.proposal.direction}</span></h2><div style={{display:'flex',alignItems:'center',gap:8,flexWrap:'wrap',fontSize:12,color:C.muted}}><span>{detail.proposal.strategy}</span><Pill text={detail.proposal.status} color={deskStatusColor(detail.proposal.status)}/><Pill text={`AI ${detail.proposal.ai_review_status||'NOT_REVIEWED'}`} color={detail.proposal.ai_review_status==='COMPLETED'?C.lime:C.ocean}/><span>REV {detail.proposal.revision}</span></div></div><button onClick={closeDetail} style={S.iconBtn} title="Close detail" aria-label="Close proposal detail">×</button></div>
        <details style={{marginTop:8,border:'1px solid '+C.border,background:'rgba(255,255,255,.025)',fontSize:12}}><summary style={{cursor:'pointer',padding:'11px 12px',fontWeight:700,color:C.onSurf}}>SOURCE INTEGRITY <span style={{fontWeight:400,color:C.muted}}>· verify scanner provenance and reviewed observation</span></summary><div style={{padding:'0 12px 12px'}}><div style={{color:C.muted,marginTop:7}}>Scanner: {detail.proposal.scanner_status} · lifecycle: {detail.proposal.scanner_lifecycle} · AI review: {detail.proposal.ai_review_status||'NOT_REVIEWED'}</div><div style={{color:C.muted,marginTop:4}}>Source run: {detail.proposal.source_scan_id||'—'} · timestamp: {detail.proposal.source_timestamp||'—'}</div><div style={{color:C.muted,marginTop:4}}>Authoritative signal: Entry {deskNumber(source.entry??source.planned_entry??detail.proposal.entry)} · Stop {deskNumber(source.stop??detail.proposal.stop)} · Target {deskNumber(source.target??detail.proposal.target)} · R:R {deskNumber(source.rr??detail.proposal.rr,2)} · source quantity {source.position_size??'—'} · effective quantity {detail.proposal.quantity}</div></div></details>
       <div className="trade-desk-detail__chart" style={{order:2,marginTop:18,border:'1px solid '+C.border,background:'rgba(255,255,255,.02)'}}><div style={{padding:'10px 12px',borderBottom:'1px solid '+C.border,display:'flex',justifyContent:'space-between',alignItems:'center',gap:8}}><b>Signal Chart · {detail.proposal.symbol}</b><TfPills value={tf} onChange={setTf}/></div><div style={{padding:'10px 12px',display:'flex',gap:14,flexWrap:'wrap'}}><Toggle on={showSignal} label="Signal" onChange={setShowSignal}/><Toggle on={showRaw} label="Raw levels" onChange={setShowRaw}/><Toggle on={showTrade} label="Trade zones" onChange={setShowTrade}/><Toggle on={showVol} label="Volume" onChange={setShowVol}/><Toggle on={showStrategy} label="BMSB strategy" onChange={setShowStrategy}/><Toggle on={showStrategy2} label="BMSB strategy 2" onChange={setShowStrategy2}/><Toggle on={showGaussian} label="Gaussian channel" onChange={v=>{setShowGaussian(v);if(v)setShowGaussianSignals(true);}}/><Toggle on={showGaussianSignals} label="Gaussian signals" onChange={setShowGaussianSignals}/></div><div style={{padding:'0 12px 12px',minHeight:420}}><ScreenerSignalChart chartKey={`ai-trade-desk-${detail.proposal.proposal_id}-${tf}`} signal={showSignal?chartSource.signal:null} unavailableReason={showSignal?chartSource.warning:''} bars={chartBarsForSignal} levels={buildChartLevels(chartPlan?.trade_levels,chartPlan?.raw_levels,showTrade,showRaw)} lines={chartLines} zones={[{p1:Number(edit.entry),p2:Number(edit.target),color:C.lime,label:'TARGET ZONE'},{p1:Number(edit.entry),p2:Number(edit.stop),color:C.err,label:'RISK ZONE'}].filter(z=>Number.isFinite(z.p1)&&Number.isFinite(z.p2))} strategyOverlay={strategyOverlay} gaussianOverlay={gaussianOverlay} showVol={showVol} height={Math.max(500,Math.min(760,window.innerHeight-360))} stale={chartInfo.stale} lastDate={chartInfo.lastDate} lineLabelPosition="middle"/></div></div>
-       {['DISCOVERED','UNDER_REVIEW','READY'].includes(detail.proposal.status)&&<TradeDeskManualSetup detail={detail} source={source} edit={edit} setEdit={setEdit} previewValues={previewValues} busy={busy} act={act} setEditFrom={setEditFrom}/>} 
+       {['DISCOVERED','UNDER_REVIEW','READY'].includes(detail.proposal.status)&&<TradeDeskManualSetup detail={detail} source={source} edit={edit} setEdit={setEdit} previewValues={previewValues} busy={busy} act={act} setEditFrom={setEditFrom} calculationDriver={calculationDriver} setCalculationDriver={setCalculationDriver}/>}
       {detail.events&&detail.events.length>0&&<div style={{marginTop:22}}><div style={{fontSize:11,color:C.ocean,letterSpacing:1.1,fontWeight:700,marginBottom:8}}>AUDIT HISTORY</div>{detail.events.slice().reverse().map(e=><div key={e.event_id} style={{fontSize:11,borderBottom:'1px solid '+C.border,padding:'7px 0',display:'flex',justifyContent:'space-between',gap:8}}><span>{e.event_type} · {e.actor}</span><span style={{color:C.muted}}>{String(e.created_at||'').slice(0,19).replace('T',' ')}</span></div>)}</div>}
       {detail.proposal.status==='UNDER_REVIEW'&&!readyTransitionCheck(detail.proposal).eligible&&<div style={{marginTop:18,padding:10,border:'1px solid '+R(C.lemon,0.3),background:R(C.lemon,0.07),fontSize:11,color:C.lemon}}>READY BLOCKED · {readyTransitionCheck(detail.proposal).reason_code} · {readyTransitionCheck(detail.proposal).reason}</div>}
       <div style={{display:'flex',flexWrap:'wrap',gap:8,marginTop:20}}><button onClick={prepareDirectReview} disabled={busy} style={S.secondaryBtn}>RUN AI REVIEW</button>{detail.proposal.status==='DISCOVERED'&&<button onClick={()=>transition(detail.proposal.proposal_id,'UNDER_REVIEW')} style={S.secondaryBtn}>START REVIEW</button>}{detail.proposal.status==='UNDER_REVIEW'&&<button disabled={!readyTransitionCheck(detail.proposal).eligible} onClick={()=>transition(detail.proposal.proposal_id,'READY')} style={readyTransitionCheck(detail.proposal).eligible?S.primaryBtn:S.secondaryBtn} title={readyTransitionCheck(detail.proposal).reason}>MARK READY</button>}{['DISCOVERED','UNDER_REVIEW','READY'].includes(detail.proposal.status)&&<button onClick={()=>act('/api/ai-trade-desk/proposals/'+detail.proposal.proposal_id+'/reject',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reason:'Human rejected in dashboard'})})} style={S.dangerBtn}>REJECT</button>}{detail.proposal.status==='READY'&&<button onClick={()=>setNotice('Approval is fail-closed until the existing execution worker heartbeat is healthy. No approval was sent.')} style={S.secondaryBtn} title="Approval is gated by the existing execution worker">APPROVAL GATED</button>}</div>

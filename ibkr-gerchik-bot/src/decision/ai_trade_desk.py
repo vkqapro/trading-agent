@@ -63,6 +63,7 @@ def calculate_trade_metrics(
     max_risk_pct: Any | None = None,
     quantity: Any | None = None,
     keep_target: bool = False,
+    calculation_driver: str = "rr",
 ) -> dict[str, Any]:
     """Calculate a proposal preview using direction-aware whole-share math."""
     side = str(direction or "").strip().upper()
@@ -81,10 +82,13 @@ def calculate_trade_metrics(
     if reward_per_share <= 0:
         raise ValueError(f"invalid {side} target relationship")
 
+    driver = str(calculation_driver or "rr").strip().lower()
+    if driver not in {"rr", "target"}:
+        raise ValueError("calculation_driver must be rr or target")
     rr_value = _finite_number(rr, "rr") if rr not in (None, "") else reward_per_share / risk_per_share
-    if rr_value <= 0:
-        raise ValueError("rr must be positive")
     if keep_target:
+        if rr_value <= 0:
+            raise ValueError("rr must be positive")
         if side == "LONG":
             stop_value = entry_value - reward_per_share / rr_value
         else:
@@ -92,7 +96,11 @@ def calculate_trade_metrics(
         risk_per_share = entry_value - stop_value if side == "LONG" else stop_value - entry_value
         if risk_per_share <= 0:
             raise ValueError("adjusted stop is invalid")
+    elif driver == "target":
+        rr_value = reward_per_share / risk_per_share
     else:
+        if rr_value <= 0:
+            raise ValueError("rr must be positive")
         target_value = entry_value + risk_per_share * rr_value if side == "LONG" else entry_value - risk_per_share * rr_value
         reward_per_share = target_value - entry_value if side == "LONG" else entry_value - target_value
 
@@ -521,6 +529,7 @@ class AITradeDeskStore:
             max_risk_pct=changes.get("max_risk_pct", current["max_risk_pct"]),
             quantity=changes.get("quantity", current["quantity"]),
             keep_target=bool(changes.get("keep_target", False)),
+            calculation_driver=str(changes.get("calculation_driver") or "rr"),
         )
         updated = {**current, **metrics, "direction": direction, "order_type": order_type, "manual_override_status": "OVERRIDDEN", "revision": int(current["revision"]) + 1}
         now = _now()
