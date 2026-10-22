@@ -490,6 +490,51 @@ def test_later_attached_observation_review_preserves_origin_and_is_idempotent(tm
     assert json.loads(event["details_json"])["reviewed_observation_id"] == reviewed["observation_id"]
 
 
+def test_direct_review_payload_selects_latest_observation_and_preserves_history(tmp_path: Path):
+    store = AITradeDeskStore(tmp_path / "decision.db")
+    origin = {**candidate(), "source_scan_id": "direct-origin", "scan_timestamp": "2026-10-20T00:00:00+00:00", "anchor_date": "2026-10-19"}
+    proposal = store.ingest(origin, idempotency_key="direct-origin")
+    latest = {**origin, "source_scan_id": "direct-latest", "scan_timestamp": "2026-10-21T00:00:00+00:00"}
+    store.ingest(latest, idempotency_key="direct-latest")
+
+    payload = store.direct_review_payload(proposal["proposal_id"])
+    assert payload["proposal_origin_source_scan_id"] == "direct-origin"
+    assert payload["reviewed_source_scan_id"] == "direct-latest"
+    assert payload["reviewed_observation_id"] == store.observations(proposal["proposal_id"])[1]["observation_id"]
+
+    review = {
+        **{key: payload[key] for key in ("proposal_id", "opportunity_id", "proposal_origin_source_scan_id", "proposal_origin_source_candidate_id", "reviewed_observation_id", "reviewed_source_candidate_id", "source_scan_id", "symbol", "strategy", "direction", "lifecycle_status")},
+        "ai_reasoning": "Direct observation review",
+        "strengths": ["identity verified"],
+        "weaknesses": ["entry may already be triggered"],
+        "risk_observations": ["human approval remains required"],
+        "review_result": "AI_APPROVED",
+        "model_provider": "fixture",
+    }
+    published = store.publish_ai_review(proposal["proposal_id"], review, actor="fixture-ai")
+    repeated = store.publish_ai_review(proposal["proposal_id"], review, actor="fixture-ai")
+    assert published["status"] == "DISCOVERED"
+    assert published["ai_review"]["review_result"] == "AI_APPROVED"
+    assert repeated["ai_review"] == published["ai_review"]
+    assert len(store.review_history(proposal["proposal_id"])) == 1
+    assert len([event for event in store.events(proposal["proposal_id"]) if event["event_type"] == "AI_REVIEW_PUBLISHED"]) == 1
+
+
+def test_direct_review_rejects_changed_content_for_same_observation(tmp_path: Path):
+    store = AITradeDeskStore(tmp_path / "decision.db")
+    proposal = store.ingest(candidate(), idempotency_key="direct-conflict")
+    payload = store.direct_review_payload(proposal["proposal_id"])
+    review = {
+        **{key: payload[key] for key in ("proposal_id", "opportunity_id", "proposal_origin_source_scan_id", "proposal_origin_source_candidate_id", "reviewed_observation_id", "reviewed_source_candidate_id", "source_scan_id", "symbol", "strategy", "direction", "lifecycle_status")},
+        "ai_reasoning": "First review", "strengths": [], "weaknesses": [], "risk_observations": [],
+        "review_result": "HUMAN_REVIEW_REQUIRED", "model_provider": "fixture",
+    }
+    store.publish_ai_review(proposal["proposal_id"], review, actor="fixture-ai")
+    review["ai_reasoning"] = "Conflicting second review"
+    with pytest.raises(ValueError, match="review_conflict"):
+        store.publish_ai_review(proposal["proposal_id"], review, actor="fixture-ai")
+
+
 def test_later_observation_review_rejects_unattached_or_conflicting_identity(tmp_path: Path):
     store = AITradeDeskStore(tmp_path / "decision.db")
     first = store.ingest({**candidate(), "source_scan_id": "origin-a", "anchor_date": "2026-10-19"}, idempotency_key="a", ai_review_status="PENDING")
@@ -590,6 +635,50 @@ def test_isolated_authenticated_fixture_review_import_is_idempotent(tmp_path: Pa
     assert len(store.events(proposal["proposal_id"])) == 2
     assert response.json()["orders_submitted"] == 0
     assert response.json()["execution_intents_created"] == 0
+
+
+def test_direct_proposal_review_route_uses_ai_boundary_without_parent_scan(tmp_path: Path):
+    from dashboard_react import server
+
+    store = AITradeDeskStore(tmp_path / "direct-route.db")
+    proposal = store.ingest(candidate(), idempotency_key="direct-route")
+    old_store = server._AI_TRADE_DESK_STORE
+    try:
+        server._AI_TRADE_DESK_STORE = store
+        with patch.dict(os.environ, {"AI_TRADE_DESK_AI_TOKEN": "direct-token"}, clear=False):
+            client = TestClient(server.app)
+            prepare = client.post(
+                f"/api/ai-trade-desk/proposals/{proposal['proposal_id']}/ai-review/prepare",
+                headers={"X-AI-Trade-Desk-Role": "human", "X-AI-Trade-Desk-Actor": "fixture-human"},
+            )
+            assert prepare.status_code == 200
+            payload = prepare.json()["review_payload"]
+            review = {
+                **{key: payload[key] for key in ("proposal_id", "opportunity_id", "proposal_origin_source_scan_id", "proposal_origin_source_candidate_id", "reviewed_observation_id", "reviewed_source_candidate_id", "source_scan_id", "symbol", "strategy", "direction", "lifecycle_status")},
+                "ai_reasoning": "Direct authenticated fixture review",
+                "strengths": ["persisted setup"],
+                "weaknesses": ["entry-triggered state"],
+                "risk_observations": ["human approval remains required"],
+                "review_result": "HUMAN_REVIEW_REQUIRED",
+                "model_provider": "fixture",
+            }
+            denied = client.post(
+                f"/api/ai-trade-desk/proposals/{proposal['proposal_id']}/ai-review",
+                json=review,
+            )
+            assert denied.status_code == 403
+            submitted = client.post(
+                f"/api/ai-trade-desk/proposals/{proposal['proposal_id']}/ai-review",
+                headers={"X-AI-Trade-Desk-Role": "ai", "X-AI-Trade-Desk-Actor": "fixture-ai", "X-AI-Trade-Desk-Token": "direct-token"},
+                json=review,
+            )
+            assert submitted.status_code == 200
+            assert submitted.json()["analytical_decision"] == "HUMAN_REVIEW_REQUIRED"
+            assert submitted.json()["orders_submitted"] == 0
+            assert submitted.json()["execution_intents_created"] == 0
+            assert store.get(proposal["proposal_id"])["status"] == "DISCOVERED"
+    finally:
+        server._AI_TRADE_DESK_STORE = old_store
 
 
 def test_store_rejects_candidate_without_source_provenance(tmp_path: Path):

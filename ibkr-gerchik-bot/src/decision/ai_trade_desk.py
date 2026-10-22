@@ -269,6 +269,18 @@ class AITradeDeskStore:
                     details_json TEXT NOT NULL,
                     created_at TEXT NOT NULL
                 );
+                CREATE TABLE IF NOT EXISTS ai_trade_review_history (
+                    review_id TEXT PRIMARY KEY,
+                    proposal_id TEXT NOT NULL,
+                    reviewed_observation_id TEXT NOT NULL,
+                    reviewed_source_scan_id TEXT NOT NULL,
+                    review_fingerprint TEXT NOT NULL,
+                    review_json TEXT NOT NULL,
+                    created_at TEXT NOT NULL,
+                    UNIQUE(proposal_id, reviewed_observation_id, review_fingerprint)
+                );
+                CREATE INDEX IF NOT EXISTS idx_ai_trade_review_history_proposal
+                    ON ai_trade_review_history(proposal_id, created_at);
                 """
             )
             columns = {row[1] for row in con.execute("PRAGMA table_info(ai_trade_proposals)").fetchall()}
@@ -392,6 +404,97 @@ class AITradeDeskStore:
                 return observation
         return None
 
+    @staticmethod
+    def _review_fingerprint(review: Mapping[str, Any]) -> str:
+        comparable = {str(key): value for key, value in review.items() if key != "review_timestamp"}
+        return hashlib.sha256(_json(comparable).encode()).hexdigest()
+
+    def review_history(self, proposal_id: str) -> list[dict[str, Any]]:
+        with self._connection() as con:
+            rows = con.execute(
+                "SELECT * FROM ai_trade_review_history WHERE proposal_id=? ORDER BY created_at, review_id",
+                (proposal_id,),
+            ).fetchall()
+            result = []
+            for row in rows:
+                item = dict(row)
+                try:
+                    item["review"] = json.loads(item.pop("review_json"))
+                except (TypeError, ValueError):
+                    item["review"] = {}
+                result.append(item)
+            return result
+
+    def latest_reviewable_observation(self, proposal_id: str) -> dict[str, Any]:
+        """Select only the newest attached observation; never fall back silently."""
+        observations = self.observations(proposal_id)
+        if not observations:
+            raise ValueError("NO_ATTACHED_OBSERVATION: proposal has no persisted scanner observation")
+        latest = max(
+            observations,
+            key=lambda item: (str(item.get("observed_at") or ""), str(item.get("observation_id") or "")),
+        )
+        candidate = latest.get("candidate") if isinstance(latest.get("candidate"), Mapping) else {}
+        scanner_status = str(candidate.get("scanner_status") or "").upper()
+        lifecycle = str(candidate.get("lifecycle_status") or "").upper()
+        if scanner_status in {"NO_SETUP", "NO_SCAN", "NOT_SCANNED", "ERROR"}:
+            raise ValueError(f"LATEST_OBSERVATION_NOT_REVIEWABLE: scanner_status={scanner_status}")
+        if lifecycle in TERMINAL_LIFECYCLES:
+            raise ValueError(f"LATEST_OBSERVATION_NOT_REVIEWABLE: lifecycle={lifecycle}")
+        required = ("observation_id", "source_scan_id", "source_candidate_id")
+        missing = [field for field in required if not str(latest.get(field) or "").strip()]
+        if missing:
+            raise ValueError("SOURCE_PROVENANCE_UNVERIFIED: observation missing " + ",".join(missing))
+        return latest
+
+    def direct_review_payload(self, proposal_id: str) -> dict[str, Any]:
+        """Build an authenticated, proposal-scoped review envelope."""
+        proposal = self.get(proposal_id)
+        if proposal is None:
+            raise KeyError("proposal_not_found")
+        observation = self.latest_reviewable_observation(proposal_id)
+        candidate = observation.get("candidate") if isinstance(observation.get("candidate"), Mapping) else {}
+        direction = str(candidate.get("side") or candidate.get("direction") or proposal["direction"]).upper()
+        if str(candidate.get("symbol") or proposal["symbol"]).upper() != str(proposal["symbol"]).upper():
+            raise ValueError("SOURCE_PROVENANCE_UNVERIFIED: observation symbol does not match proposal")
+        if str(candidate.get("strategy") or proposal["strategy"]).upper() != str(proposal["strategy"]).upper():
+            raise ValueError("SOURCE_PROVENANCE_UNVERIFIED: observation strategy does not match proposal")
+        if direction != str(proposal["direction"]).upper():
+            raise ValueError("SOURCE_PROVENANCE_UNVERIFIED: observation direction does not match proposal")
+        return {
+            "proposal_id": proposal["proposal_id"],
+            "opportunity_id": proposal.get("opportunity_id"),
+            "proposal_origin_source_scan_id": proposal["source_scan_id"],
+            "proposal_origin_source_candidate_id": proposal["source_candidate_id"],
+            "reviewed_observation_id": observation["observation_id"],
+            "reviewed_source_scan_id": observation["source_scan_id"],
+            "reviewed_source_candidate_id": observation["source_candidate_id"],
+            # The review contract uses source_scan_id for the observation being
+            # analyzed; proposal origin remains separate above.
+            "source_scan_id": observation["source_scan_id"],
+            "symbol": proposal["symbol"],
+            "strategy": proposal["strategy"],
+            "direction": direction,
+            "lifecycle_status": candidate.get("lifecycle_status") or proposal.get("scanner_lifecycle"),
+            "scanner_status": candidate.get("scanner_status") or proposal.get("scanner_status"),
+            "scanner_score": candidate.get("score") or proposal.get("scanner_score"),
+            "source_timestamp": candidate.get("scan_timestamp") or proposal.get("source_timestamp"),
+            "entry": candidate.get("entry", candidate.get("planned_entry", proposal.get("entry"))),
+            "stop": candidate.get("stop", proposal.get("stop")),
+            "target": candidate.get("target", proposal.get("target")),
+            "rr": candidate.get("rr", proposal.get("rr")),
+            "quantity": candidate.get("position_size", proposal.get("quantity")),
+            "cash_allocation": candidate.get("cash_allocation", proposal.get("cash_allocation")),
+            "max_risk_pct": candidate.get("risk_pct", proposal.get("max_risk_pct")),
+            "warnings": proposal.get("warnings") or [],
+            "source": candidate,
+            "human_status": proposal.get("status"),
+            "ai_review_status": proposal.get("ai_review_status"),
+            "orders_submitted": 0,
+            "approvals_created": 0,
+            "execution_intents_created": 0,
+        }
+
     def update(self, proposal_id: str, changes: Mapping[str, Any], *, actor: str, reason: str = "") -> dict[str, Any]:
         current = self.get(proposal_id)
         if current is None:
@@ -510,12 +613,55 @@ class AITradeDeskStore:
         normalized["opportunity_id"] = current.get("opportunity_id")
         normalized["proposal_origin_source_scan_id"] = current["source_scan_id"]
         normalized["proposal_origin_source_candidate_id"] = current["source_candidate_id"]
+        reviewed_observation_id = str(normalized.get("reviewed_observation_id") or "").strip()
+        fingerprint = self._review_fingerprint(normalized)
+        legacy_history_seed: tuple[str, str, str, str] | None = None
         if current.get("ai_review_status") == "COMPLETED":
-            # Review publication is idempotent: a retry must not overwrite the
-            # persisted model result or create a duplicate audit event.
-            return current
+            # A retry for the same observation and content is idempotent. A
+            # changed review for that observation requires an explicit policy;
+            # a later attached observation is a separate auditable review.
+            if not reviewed_observation_id:
+                # Preserve the legacy batch-review behavior for old payloads
+                # that predate observation-aware review history.
+                return current
+            existing_history = self.review_history(proposal_id)
+            if not existing_history:
+                existing = current.get("ai_review") if isinstance(current.get("ai_review"), Mapping) else {}
+                existing_observation_id = str(existing.get("reviewed_observation_id") or "")
+                existing_fingerprint = self._review_fingerprint(existing) if existing else ""
+                if existing_observation_id == reviewed_observation_id and existing_fingerprint == fingerprint:
+                    with self._connection() as con:
+                        con.execute(
+                            "INSERT OR IGNORE INTO ai_trade_review_history(review_id,proposal_id,reviewed_observation_id,reviewed_source_scan_id,review_fingerprint,review_json,created_at) VALUES(?,?,?,?,?,?,?)",
+                            ("review-" + uuid.uuid4().hex, proposal_id, reviewed_observation_id, str(normalized.get("reviewed_source_scan_id") or normalized.get("source_scan_id")), fingerprint, _json(existing), str(existing.get("review_timestamp") or _now())),
+                        )
+                    return current
+                if existing_observation_id == reviewed_observation_id:
+                    raise ValueError("review_conflict: a different review already exists for this observation")
+                if existing_observation_id:
+                    legacy_history_seed = (
+                        existing_observation_id,
+                        str(existing.get("reviewed_source_scan_id") or existing.get("source_scan_id") or current["source_scan_id"]),
+                        existing_fingerprint,
+                        _json(existing),
+                    )
+            for history in existing_history:
+                if str(history.get("reviewed_observation_id")) == reviewed_observation_id:
+                    if str(history.get("review_fingerprint")) == fingerprint:
+                        return current
+                    raise ValueError("review_conflict: a different review already exists for this observation")
         with self._connection() as con:
             con.execute("UPDATE ai_trade_proposals SET ai_reasoning=?,ai_model=?,ai_review_status='COMPLETED',ai_review_json=?,updated_at=? WHERE proposal_id=?", (str(normalized["ai_reasoning"]), str(normalized["model_provider"]), _json(normalized), normalized["review_timestamp"], proposal_id))
+            if legacy_history_seed is not None:
+                old_observation_id, old_source_scan_id, old_fingerprint, old_json = legacy_history_seed
+                con.execute(
+                    "INSERT OR IGNORE INTO ai_trade_review_history(review_id,proposal_id,reviewed_observation_id,reviewed_source_scan_id,review_fingerprint,review_json,created_at) VALUES(?,?,?,?,?,?,?)",
+                    ("review-" + uuid.uuid4().hex, proposal_id, old_observation_id, old_source_scan_id, old_fingerprint, old_json, str((current.get("ai_review") or {}).get("review_timestamp") or _now())),
+                )
+            con.execute(
+                "INSERT INTO ai_trade_review_history(review_id,proposal_id,reviewed_observation_id,reviewed_source_scan_id,review_fingerprint,review_json,created_at) VALUES(?,?,?,?,?,?,?)",
+                ("review-" + uuid.uuid4().hex, proposal_id, reviewed_observation_id, str(normalized.get("reviewed_source_scan_id") or normalized.get("source_scan_id")), fingerprint, _json(normalized), normalized["review_timestamp"]),
+            )
             con.execute("INSERT INTO ai_trade_proposal_events(proposal_id,event_type,actor,details_json,created_at) VALUES(?,?,?,?,?)", (proposal_id, "AI_REVIEW_PUBLISHED", actor, _json({"review_result": normalized.get("review_result"), "opportunity_id": normalized.get("opportunity_id"), "proposal_origin_source_scan_id": normalized.get("proposal_origin_source_scan_id"), "reviewed_observation_id": normalized.get("reviewed_observation_id"), "reviewed_source_scan_id": normalized.get("reviewed_source_scan_id"), "reviewed_source_candidate_id": normalized.get("reviewed_source_candidate_id")}), normalized["review_timestamp"]))
             row = con.execute("SELECT * FROM ai_trade_proposals WHERE proposal_id=?", (proposal_id,)).fetchone()
             return self._decode(row)

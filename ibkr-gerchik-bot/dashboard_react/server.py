@@ -3030,7 +3030,59 @@ def api_ai_trade_desk_proposal(proposal_id: str):
     proposal = _ai_trade_desk_store().get(proposal_id)
     if proposal is None:
         raise HTTPException(404, "proposal not found")
-    return {"proposal": proposal, "events": _ai_trade_desk_store().events(proposal_id), "revisions": _ai_trade_desk_store().revisions(proposal_id), "observations": _ai_trade_desk_store().observations(proposal_id), "read_only": True, "orders_submitted": 0}
+    store = _ai_trade_desk_store()
+    return {"proposal": proposal, "events": store.events(proposal_id), "revisions": store.revisions(proposal_id), "observations": store.observations(proposal_id), "review_history": store.review_history(proposal_id), "read_only": True, "orders_submitted": 0}
+
+
+@app.post("/api/ai-trade-desk/proposals/{proposal_id}/ai-review/prepare")
+def api_ai_trade_desk_prepare_review(request: Request, proposal_id: str):
+    """Prepare a proposal-scoped review payload; no model or mutation is performed."""
+    _ai_trade_desk_role(request, "human")
+    try:
+        payload = _ai_trade_desk_store().direct_review_payload(proposal_id)
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
+    return {"review_payload": payload, "review_status": "READY_FOR_AI_REVIEW", "read_only": True, "orders_submitted": 0, "approvals_created": 0, "execution_intents_created": 0}
+
+
+@app.post("/api/ai-trade-desk/proposals/{proposal_id}/ai-review")
+def api_ai_trade_desk_submit_review(request: Request, proposal_id: str, body: dict):
+    """Persist a model-generated direct review through the existing AI boundary."""
+    actor = _ai_trade_desk_role(request, "ai")
+    if not isinstance(body, dict):
+        raise HTTPException(400, "review payload must be an object")
+    review = body.get("review") if isinstance(body.get("review"), Mapping) else body
+    decision = str(review.get("review_result") or "").strip().upper()
+    if decision not in {"AI_APPROVED", "AI_REJECTED", "HUMAN_REVIEW_REQUIRED"}:
+        raise HTTPException(422, "review_result must be AI_APPROVED, AI_REJECTED, or HUMAN_REVIEW_REQUIRED")
+    try:
+        authoritative = _ai_trade_desk_store().direct_review_payload(proposal_id)
+        # Identity fields come only from the persisted proposal/observation;
+        # model reasoning and decision fields remain caller-supplied.
+        enriched = dict(review)
+        for key in (
+            "proposal_id", "opportunity_id", "proposal_origin_source_scan_id",
+            "proposal_origin_source_candidate_id", "reviewed_observation_id",
+            "reviewed_source_scan_id", "reviewed_source_candidate_id", "symbol",
+            "strategy", "direction", "lifecycle_status", "source_scan_id",
+        ):
+            enriched[key] = authoritative.get(key)
+        result = _ai_trade_desk_store().publish_ai_review(proposal_id, enriched, actor=actor)
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(409 if "conflict" in str(exc) else 422, str(exc)) from exc
+    return {
+        "proposal": result,
+        "analytical_decision": enriched.get("review_result"),
+        "review_history": _ai_trade_desk_store().review_history(proposal_id),
+        "read_only": True,
+        "orders_submitted": 0,
+        "approvals_created": 0,
+        "execution_intents_created": 0,
+    }
 
 
 @app.post("/api/ai-trade-desk/proposals/import-persisted")

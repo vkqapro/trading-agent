@@ -90,9 +90,9 @@
     "semantic_hash": ""
   },
   "dashboard_react/server.py": {
-    "mtime": 1792553569.5120726,
-    "seen": 1792553676.7056787,
-    "ast_hash": "0aa7deacc1c41c8202dc677ce48eb5d6",
+    "mtime": 1792640229.4216242,
+    "seen": 1792640315.0396981,
+    "ast_hash": "fc7547978348690074a2bbfc3ae04e61",
     "semantic_hash": ""
   },
   "design_handoff/trading-bot-dashboard/project/ibkr-gerchik-bot/dashboard/app.py": {
@@ -162,8 +162,8 @@
     "semantic_hash": "a47f92efff8d7a388062745b50785c68"
   },
   "memory/order_requests.json": {
-    "mtime": 1792618285.1011455,
-    "seen": 1792618286.6388967,
+    "mtime": 1792640313.877485,
+    "seen": 1792640315.0427356,
     "ast_hash": "5517cc71ee2d5bdaee3698b881fc42b5",
     "semantic_hash": ""
   },
@@ -1194,9 +1194,9 @@
     "semantic_hash": ""
   },
   "dashboard_react/index.html": {
-    "mtime": 1792590755.1237106,
-    "seen": 1792590895.4464848,
-    "ast_hash": "c3a65b5dd977645f626c749c8e3d85fd",
+    "mtime": 1792640053.7699099,
+    "seen": 1792640172.2382934,
+    "ast_hash": "c783426ee47121ed9c8ed4c8083dabed",
     "semantic_hash": ""
   },
   "design_handoff/trading-bot-dashboard/README.md": {
@@ -4746,15 +4746,15 @@
     "semantic_hash": ""
   },
   "src/decision/ai_trade_desk.py": {
-    "mtime": 1792584408.295057,
-    "seen": 1792584801.7008178,
-    "ast_hash": "b20c6cfcd2006dec428ba38929c0245b",
+    "mtime": 1792640223.6214845,
+    "seen": 1792640315.0556006,
+    "ast_hash": "abfe8565d71d2a3a37d7965a362c759f",
     "semantic_hash": ""
   },
   "tests/test_ai_trade_desk.py": {
-    "mtime": 1792603550.3551512,
-    "seen": 1792603763.0588212,
-    "ast_hash": "f6e070e90da6f463b5e1d4233ddb09f5",
+    "mtime": 1792640072.5627074,
+    "seen": 1792640172.196148,
+    "ast_hash": "5f6727c97d62ae1b8e9ff6e174cfbc1a",
     "semantic_hash": ""
   },
   "docs/chatgpt-integration-audit/07-AI-TRADE-DESK.md": {
@@ -5093,142 +5093,10 @@
     "ast_hash": "fb51df00ffde25dd4fcdaa31c58559ce",
     "semantic_hash": ""
   },
-  ".venv312/Scripts/Activate.ps1": {
-    "mtime": 1792608989.6641788,
-    "seen": 1792609757.0205438,
-    "ast_hash": "9fb7261d806bafffd5afd29a92df8580",
-    "semantic_hash": ""
-  },
-  ".venv312/Scripts/pywin32_postinstall.py": {
-    "mtime": 1787142162.194007,
-    "seen": 1792618115.086504,
-    "ast_hash": "150c3bc834b83cd5da70f1b23afc84e6",
-    "semantic_hash": ""
-  },
-  ".venv312/Scripts/pywin32_testall.py": {
-    "mtime": 1787142162.201008,
-    "seen": 1792618115.0865116,
-    "ast_hash": "6c82608c96d5716d31c564e02adb11b7",
-    "semantic_hash": ""
-  },
-  ".venv312/etc/jupyter/nbconfig/notebook.d/pydeck.json": {
-    "mtime": 1792611150.2997432,
-    "seen": 1792618115.0865164,
-    "ast_hash": "9862b53a8912028d4078fe0d147e21e8",
-    "semantic_hash": ""
-  },
-  ".venv312/share/jupyter/labextensions/jupyterlab-plotly/install.json": {
-    "mtime": 1792611156.02936,
-    "seen": 1792618115.0865197,
-    "ast_hash": "07b12b034540dbfa808fa6cb3cd0a66a",
-    "semantic_hash": ""
-  },
-  ".venv312/share/jupyter/labextensions/jupyterlab-plotly/package.json": {
-    "mtime": 1792611156.010599,
-    "seen": 1792618115.086523,
-    "ast_hash": "24e0a2dcf9ae1d43cd6957bdb0dad2aa",
-    "semantic_hash": ""
-  },
-  ".venv312/share/jupyter/labextensions/jupyterlab-plotly/static/1.3ad216e94ff8bdcd7b73.js": {
-    "mtime": 1792611156.0253446,
-    "seen": 1792618115.0865257,
-    "ast_hash": "0b150f7ac3387a6cc740ae69d3344a81",
-    "semantic_hash": ""
-  },
-  ".venv312/share/jupyter/labextensions/jupyterlab-plotly/static/remoteEntry.58c394332ed33325ffe5.js": {
-    "mtime": 1792611156.0263593,
-    "seen": 1792618115.0865285,
-    "ast_hash": "b7cc1839b046700ba3295a16a336244c",
-    "semantic_hash": ""
-  },
-  ".venv312/share/jupyter/labextensions/jupyterlab-plotly/static/style.js": {
-    "mtime": 1792611156.0273597,
-    "seen": 1792618115.0865314,
-    "ast_hash": "8259c5c9dd06dde49a5e3abaad871e37",
-    "semantic_hash": ""
-  },
-  ".venv312/share/jupyter/labextensions/jupyterlab-plotly/static/third-party-licenses.json": {
-    "mtime": 1792611156.02836,
-    "seen": 1792618115.0865338,
-    "ast_hash": "d81b2495a0a1ee1a6c87fd7de8a0f43c",
-    "semantic_hash": ""
-  },
-  ".venv312/share/jupyter/nbextensions/pydeck/extensionRequires.js": {
-    "mtime": 1792611150.306252,
-    "seen": 1792618115.0865378,
-    "ast_hash": "917fa0380eae8e2b2da69914eebc9eac",
-    "semantic_hash": ""
-  },
-  ".venv312/share/jupyter/nbextensions/pydeck/index.js": {
-    "mtime": 1792611150.435717,
-    "seen": 1792618115.0865402,
-    "ast_hash": "518224fad4a4d9bf924368bf8c0be712",
-    "semantic_hash": ""
-  },
   "scripts/trading_operator_host_preflight.ps1": {
     "mtime": 1792618122.0217636,
     "seen": 1792618147.9148724,
     "ast_hash": "d2fd2d092a07dcfa7c86a07a12d71891",
-    "semantic_hash": ""
-  },
-  ".venv312/share/jupyter/labextensions/jupyterlab-plotly/static/1.3ad216e94ff8bdcd7b73.js.LICENSE.txt": {
-    "mtime": 1792611156.0253446,
-    "seen": 1792618115.3118331,
-    "ast_hash": "6dd85c5bae3d3cf3b9ee55dbc5282285",
-    "semantic_hash": ""
-  },
-  "pytest-of-Vitaly/pytest-7/test_market_data_lock_owner_mi0/memory/runtime/market_data_collector_status.json": {
-    "mtime": 1792618129.6087294,
-    "seen": 1792618286.6398,
-    "ast_hash": "2ea2a3e2878e68a5b5aa941ab8313723",
-    "semantic_hash": ""
-  },
-  "pytest-of-Vitaly/pytest-7/test_market_data_pid_reuse_wit0/memory/runtime/market_data_collector_status.json": {
-    "mtime": 1792618129.7122147,
-    "seen": 1792618286.6398022,
-    "ast_hash": "ff0f8c8eb40dcbafd4c35f905b8225ae",
-    "semantic_hash": ""
-  },
-  "pytest-of-Vitaly/pytest-7/test_market_data_targeted_proc0/memory/runtime/market_data_collector_status.json": {
-    "mtime": 1792618129.6807423,
-    "seen": 1792618286.6398036,
-    "ast_hash": "3613bba4590b7f49855c6421d2b14627",
-    "semantic_hash": ""
-  },
-  "pytest-of-Vitaly/pytest-7/test_market_data_targeted_proc1/memory/runtime/market_data_collector_status.json": {
-    "mtime": 1792618129.6965673,
-    "seen": 1792618286.639806,
-    "ast_hash": "de3befad9d43f837a789cd2acae50971",
-    "semantic_hash": ""
-  },
-  "pytest-of-Vitaly/pytest-8/test_market_data_lock_owner_mi0/memory/runtime/market_data_collector_status.json": {
-    "mtime": 1792618169.4544857,
-    "seen": 1792618286.639807,
-    "ast_hash": "8ef79c8777a629545da39a66259e8374",
-    "semantic_hash": ""
-  },
-  "pytest-of-Vitaly/pytest-8/test_market_data_pid_reuse_wit0/memory/runtime/market_data_collector_status.json": {
-    "mtime": 1792618169.501821,
-    "seen": 1792618286.6398094,
-    "ast_hash": "183c4ac220827a10a5b2502c5809b152",
-    "semantic_hash": ""
-  },
-  "pytest-of-Vitaly/pytest-8/test_market_data_targeted_proc0/memory/runtime/market_data_collector_status.json": {
-    "mtime": 1792618169.469703,
-    "seen": 1792618286.6398134,
-    "ast_hash": "a172ef204d8d55e96173f16f935cfc81",
-    "semantic_hash": ""
-  },
-  "pytest-of-Vitaly/pytest-8/test_market_data_targeted_proc1/memory/runtime/market_data_collector_status.json": {
-    "mtime": 1792618169.4861152,
-    "seen": 1792618286.6398175,
-    "ast_hash": "ba588b7461e9830f53ffc834154329ee",
-    "semantic_hash": ""
-  },
-  "pytest-of-Vitaly/pytest-8/test_market_data_uses_fresh_st0/memory/runtime/market_data_collector_status.json": {
-    "mtime": 1792618169.2084866,
-    "seen": 1792618286.63982,
-    "ast_hash": "98ebd6850373d4fc201c390bce13910f",
     "semantic_hash": ""
   }
 }
