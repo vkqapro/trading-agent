@@ -20,6 +20,7 @@ from typing import Any, Mapping
 PROPOSAL_STATUSES = {
     "DISCOVERED",
     "UNDER_REVIEW",
+    "HUMAN_REVIEWED_BLOCKED",
     "READY",
     "INVALIDATED",
     "APPROVED",
@@ -29,7 +30,7 @@ PROPOSAL_STATUSES = {
     "CANCELLED",
     "EXPIRED",
 }
-ACTIVE_PROPOSAL_STATUSES = {"DISCOVERED", "UNDER_REVIEW", "READY"}
+ACTIVE_PROPOSAL_STATUSES = {"DISCOVERED", "UNDER_REVIEW", "HUMAN_REVIEWED_BLOCKED", "READY"}
 TERMINAL_LIFECYCLES = {"INVALIDATED", "EXPIRED", "NO_SETUP", "AMBIGUOUS_INTRABAR_ORDER"}
 SUPPORTED_ORDER_TYPES = {"LIMIT", "MARKET", "STOP_LIMIT"}
 
@@ -362,7 +363,7 @@ class AITradeDeskStore:
             con.execute("BEGIN IMMEDIATE")
             existing = con.execute("SELECT * FROM ai_trade_proposals WHERE idempotency_key=?", (key,)).fetchone()
             if existing is None:
-                existing = con.execute("SELECT * FROM ai_trade_proposals WHERE opportunity_id=? AND status IN ('DISCOVERED','UNDER_REVIEW','READY') ORDER BY created_at LIMIT 1", (opportunity_id,)).fetchone()
+                existing = con.execute("SELECT * FROM ai_trade_proposals WHERE opportunity_id=? AND status IN ('DISCOVERED','UNDER_REVIEW','HUMAN_REVIEWED_BLOCKED','READY') ORDER BY created_at LIMIT 1", (opportunity_id,)).fetchone()
             if existing:
                 existing_id = str(existing["proposal_id"])
                 con.execute("INSERT OR IGNORE INTO ai_trade_observations(observation_id,proposal_id,opportunity_id,source_scan_id,source_candidate_id,observed_at,candidate_json) VALUES(?,?,?,?,?,?,?)", (observation_id, existing_id, opportunity_id, source_scan_id, source_candidate_id, timestamp, _json(dict(candidate))))
@@ -507,7 +508,7 @@ class AITradeDeskStore:
         current = self.get(proposal_id)
         if current is None:
             raise KeyError("proposal_not_found")
-        if current["status"] in {"INVALIDATED", "EXPIRED", "REJECTED", "FILLED", "CANCELLED"}:
+        if current["status"] in {"INVALIDATED", "EXPIRED", "REJECTED", "SUBMITTED", "FILLED", "CANCELLED"}:
             raise ValueError("terminal proposal cannot be edited")
         direction = str(changes.get("direction", current["direction"])).upper()
         source_direction = str((current.get("source") or {}).get("side") or current["direction"]).upper()
@@ -686,10 +687,21 @@ class AITradeDeskStore:
             ready_check = self.ready_transition_check(current)
             if not ready_check["eligible"]:
                 raise ValueError(f"READY transition blocked: {ready_check['reason_code']}: {ready_check['reason']}")
+        transition_details = dict(details or {})
+        if normalized == "HUMAN_REVIEWED_BLOCKED":
+            ready_check = self.ready_transition_check(current)
+            if ready_check["eligible"]:
+                raise ValueError("current setup is READY-eligible and should not be marked execution-blocked")
+            transition_details.update({
+                "execution_eligibility": "BLOCKED",
+                "ready_block_reason_code": ready_check["reason_code"],
+                "ready_block_reason": ready_check["reason"],
+            })
         allowed = {
             "DISCOVERED": {"UNDER_REVIEW", "READY", "INVALIDATED", "REJECTED"},
-            "UNDER_REVIEW": {"DISCOVERED", "READY", "INVALIDATED", "REJECTED"},
-            "READY": {"UNDER_REVIEW", "APPROVED", "INVALIDATED", "REJECTED"},
+            "UNDER_REVIEW": {"DISCOVERED", "HUMAN_REVIEWED_BLOCKED", "READY", "INVALIDATED", "REJECTED"},
+            "HUMAN_REVIEWED_BLOCKED": {"UNDER_REVIEW", "SUBMITTED", "INVALIDATED", "REJECTED"},
+            "READY": {"UNDER_REVIEW", "SUBMITTED", "APPROVED", "INVALIDATED", "REJECTED"},
             "APPROVED": {"SUBMITTED", "REJECTED", "EXPIRED"},
         }
         if normalized not in allowed.get(current["status"], set()) and normalized != current["status"]:
@@ -697,11 +709,16 @@ class AITradeDeskStore:
         now = _now()
         with self._connection() as con:
             con.execute("UPDATE ai_trade_proposals SET status=?,updated_at=? WHERE proposal_id=?", (normalized, now, proposal_id))
-            con.execute("INSERT INTO ai_trade_proposal_events(proposal_id,event_type,actor,details_json,created_at) VALUES(?,?,?,?,?)", (proposal_id, "STATUS_CHANGED", actor, _json({"from": current["status"], "to": normalized, **dict(details or {})}), now))
+            con.execute("INSERT INTO ai_trade_proposal_events(proposal_id,event_type,actor,details_json,created_at) VALUES(?,?,?,?,?)", (proposal_id, "STATUS_CHANGED", actor, _json({"from": current["status"], "to": normalized, **transition_details}), now))
             row = con.execute("SELECT * FROM ai_trade_proposals WHERE proposal_id=?", (proposal_id,)).fetchone()
             return self._decode(row)
 
     def attach_approval(self, proposal_id: str, approval_id: str, *, actor: str) -> dict[str, Any]:
+        current = self.get(proposal_id)
+        if current is None:
+            raise KeyError("proposal_not_found")
+        if current["status"] != "READY":
+            raise ValueError("approval can only be attached to READY proposal")
         now = _now()
         with self._connection() as con:
             con.execute("UPDATE ai_trade_proposals SET approval_id=?,updated_at=? WHERE proposal_id=?", (str(approval_id), now, proposal_id))

@@ -3006,7 +3006,7 @@ def api_daily_trader_setups(side: str = ""):
 @app.get("/api/ai-trade-desk/proposals")
 def api_ai_trade_desk_proposals(status: str = ""):
     normalized = str(status or "").strip().upper() or None
-    if normalized and normalized not in {"DISCOVERED", "UNDER_REVIEW", "READY", "INVALIDATED", "APPROVED", "REJECTED", "SUBMITTED", "FILLED", "CANCELLED", "EXPIRED"}:
+    if normalized and normalized not in {"DISCOVERED", "UNDER_REVIEW", "HUMAN_REVIEWED_BLOCKED", "READY", "INVALIDATED", "APPROVED", "REJECTED", "SUBMITTED", "FILLED", "CANCELLED", "EXPIRED"}:
         raise HTTPException(400, "unsupported proposal status")
     proposals = _ai_trade_desk_store().list(status=normalized)
     active_counts = {}
@@ -3021,7 +3021,7 @@ def api_ai_trade_desk_proposals(status: str = ""):
             if opportunity_id and proposal.get("status") in ACTIVE_PROPOSAL_STATUSES and active_counts.get(opportunity_id) == 1
             else "HISTORICAL_ARCHIVED"
         )
-    counts = {key: sum(1 for proposal in proposals if proposal.get("status") == key) for key in ("DISCOVERED", "UNDER_REVIEW", "READY", "INVALIDATED")}
+    counts = {key: sum(1 for proposal in proposals if proposal.get("status") == key) for key in ("DISCOVERED", "UNDER_REVIEW", "HUMAN_REVIEWED_BLOCKED", "READY", "INVALIDATED")}
     return {"proposals": proposals, "active_opportunities": [p for p in proposals if p["kanban_projection"] == "ACTIVE_OPPORTUNITY"], "historical_archived": [p for p in proposals if p["kanban_projection"] == "HISTORICAL_ARCHIVED"], "counts": counts, "read_only": True, "orders_submitted": 0, "approvals_created": 0, "execution_intents_created": 0}
 
 
@@ -3138,7 +3138,97 @@ def api_ai_trade_desk_status(request: Request, proposal_id: str, body: dict):
         raise HTTPException(404, str(exc)) from exc
     except ValueError as exc:
         raise HTTPException(409, str(exc)) from exc
-    return {"proposal": proposal, "read_only": True, "orders_submitted": 0}
+    return {"proposal": proposal, "read_only": True, "orders_submitted": 0, "approvals_created": 0, "execution_intents_created": 0}
+
+
+@app.post("/api/ai-trade-desk/proposals/{proposal_id}/place")
+def api_ai_trade_desk_place(request: Request, proposal_id: str, body: dict):
+    """Queue a persisted Ready-lane setup through the existing Paper worker."""
+    _ai_trade_desk_role(request, "human")
+    if not isinstance(body, dict) or body.get("confirmed") is not True:
+        raise HTTPException(400, "explicit order confirmation is required")
+    store = _ai_trade_desk_store()
+    proposal = store.get(proposal_id)
+    if proposal is None:
+        raise HTTPException(404, "proposal not found")
+    status = str(proposal.get("status") or "")
+    manual_lifecycle_override = status == "HUMAN_REVIEWED_BLOCKED"
+    if proposal["status"] not in {"READY", "HUMAN_REVIEWED_BLOCKED"}:
+        raise HTTPException(409, "order placement requires a proposal in the READY lane")
+    readiness = store.ready_transition_check(proposal)
+    if manual_lifecycle_override:
+        if body.get("acknowledge_blocked_signal") is not True:
+            raise HTTPException(409, "manual lifecycle override acknowledgment is required")
+    elif not readiness["eligible"]:
+        raise HTTPException(409, f"READY gate failed: {readiness['reason_code']}: {readiness['reason']}")
+    try:
+        expected_revision = int(body.get("revision"))
+    except (TypeError, ValueError):
+        raise HTTPException(400, "proposal revision is required")
+    if expected_revision != int(proposal["revision"]):
+        raise HTTPException(409, "proposal revision changed; reopen the confirmation")
+    if not SETTINGS.paper_trading:
+        raise HTTPException(409, "AI Trade Desk order placement is Paper-only")
+
+    direction = str(proposal.get("direction") or "").upper()
+    order_type = str(proposal.get("order_type") or "LIMIT").upper()
+    if direction not in {"LONG", "SHORT"}:
+        raise HTTPException(422, "proposal direction is unsupported")
+    if order_type not in {"LIMIT", "MARKET", "STOP_LIMIT"}:
+        raise HTTPException(422, "proposal order type is unsupported")
+    try:
+        entry = float(proposal["entry"])
+        stop = float(proposal["stop"])
+        target = float(proposal["target"])
+        quantity = int(proposal["quantity"])
+    except (TypeError, ValueError, KeyError):
+        raise HTTPException(422, "proposal order parameters are incomplete")
+    valid_levels = stop < entry < target if direction == "LONG" else target < entry < stop
+    if entry <= 0 or stop <= 0 or target <= 0 or quantity <= 0 or not valid_levels:
+        raise HTTPException(422, "proposal order parameters are invalid")
+
+    from src.execution import order_requests as oq
+
+    setup = {
+        "symbol": proposal["symbol"],
+        "signal": "BUY" if direction == "LONG" else "SELL",
+        "direction": direction.lower(),
+        "entry": entry,
+        "stop": stop,
+        "target": target,
+        "reward_risk": proposal.get("rr"),
+        "quantity": quantity,
+        "entry_order_type": order_type,
+        "manual_setup": True,
+        "strategy": f"ai_trade_desk_{str(proposal.get('strategy') or '').lower()}_manual_setup",
+        "source": "AI_TRADE_DESK_MANUAL_OVERRIDE" if manual_lifecycle_override else "AI_TRADE_DESK_MANUAL",
+        "level_type": "ai_trade_desk_proposal",
+        "confidence": proposal.get("ai_confidence") or proposal.get("score") or 1,
+        "proposal_id": proposal_id,
+        "proposal_revision": int(proposal["revision"]),
+        "manual_lifecycle_override": manual_lifecycle_override,
+        "scanner_lifecycle": proposal.get("scanner_lifecycle"),
+        "ready_gate_reason_code": readiness.get("reason_code"),
+    }
+    request_id, created = oq.submit_place_once(
+        setup,
+        idempotency_key=f"ai-trade-desk:{proposal_id}:revision:{proposal['revision']}",
+        live=False,
+    )
+    return {
+        "ok": True,
+        "id": request_id,
+        "created": created,
+        "dry_run": SETTINGS.dry_run_mode,
+        "message": (
+            f"Queued Paper order for {proposal['symbol']}; respects DRY_RUN."
+            if created
+            else f"Paper order for {proposal['symbol']} was already queued for this proposal revision."
+        ),
+        "manual_lifecycle_override": manual_lifecycle_override,
+        "proposal_id": proposal_id,
+        "proposal_revision": proposal["revision"],
+    }
 
 
 @app.post("/api/ai-trade-desk/proposals/{proposal_id}/reject")

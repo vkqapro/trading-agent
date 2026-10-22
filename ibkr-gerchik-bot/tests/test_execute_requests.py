@@ -276,6 +276,22 @@ class OrderRequestQueueTests(unittest.TestCase):
         record = oq.list_requests()[0]
         self.assertEqual(record["status"], oq.PROCESSING)
 
+    def test_idempotent_place_request_is_queued_only_once(self) -> None:
+        setup = {
+            "symbol": "AAPL", "signal": "BUY", "direction": "long",
+            "entry": 100, "stop": 99, "target": 104,
+            "proposal_id": "proposal-1", "proposal_revision": 2,
+        }
+        first_id, first_created = oq.submit_place_once(setup, idempotency_key="proposal-1:2", live=False)
+        second_id, second_created = oq.submit_place_once(setup, idempotency_key="proposal-1:2", live=False)
+
+        self.assertEqual(first_id, second_id)
+        self.assertTrue(first_created)
+        self.assertFalse(second_created)
+        self.assertEqual(len(oq.list_requests()), 1)
+        self.assertEqual(oq.list_requests()[0]["proposal_id"], "proposal-1")
+        self.assertEqual(oq.list_requests()[0]["proposal_revision"], 2)
+
     def test_telegram_intent_uses_the_shared_place_request_shape(self) -> None:
         request_id = oq.submit_approval_intent({
             "approval_id": "approval-1", "execution_intent_id": "intent-1",
@@ -332,6 +348,34 @@ class ExecuteWorkerTests(unittest.TestCase):
         self.assertEqual(om.dry_run, False)  # live request forces real submission
         self.assertEqual(len(tracked), 1)
         self.assertEqual(tracked[0]["symbol"], "AAPL")
+
+    def test_successful_ai_trade_desk_submission_archives_proposal(self) -> None:
+        transitions = []
+
+        class Store:
+            def __init__(self, _path):
+                pass
+
+            def get(self, _proposal_id):
+                return {"proposal_id": "proposal-1", "status": "READY"}
+
+            def transition(self, proposal_id, status, *, actor, details):
+                transitions.append((proposal_id, status, actor, details))
+                return {"proposal_id": proposal_id, "status": status}
+
+        oq.submit_place({
+            "symbol": "AAPL", "signal": "BUY", "direction": "long",
+            "entry": 100, "stop": 99, "target": 104, "proposal_id": "proposal-1",
+        }, live=False)
+        om = FakeOrderManager(ok=True, payload={"status": "submitted", "quantity": 5})
+        settings = _paper(dry_run=False)
+        settings.decision_agent = SimpleNamespace(database_path="isolated-decision.db")
+        with patch.object(worker, "SETTINGS", settings), patch.object(worker, "AITradeDeskStore", Store):
+            processed = worker.process_pending_once(FakeBroker(), om, 100_000.0, 100_000.0, [])
+
+        self.assertEqual(processed[0]["status"], oq.DONE)
+        self.assertEqual(transitions[0][0:3], ("proposal-1", "SUBMITTED", "execute-worker"))
+        self.assertEqual(transitions[0][3]["order_request_id"], processed[0]["id"])
 
     def test_place_respects_dry_run_when_not_live(self) -> None:
         oq.submit_place({"symbol": "AAPL", "signal": "BUY", "direction": "long",

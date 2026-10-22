@@ -19,6 +19,7 @@ from src.config import LOGGER, SETTINGS
 from src.config import fx_pair_components
 from src.execution import order_requests as oq
 from src.execution.order_manager import OrderManager
+from src.decision.ai_trade_desk import AITradeDeskStore
 from src.decision.telegram_approval import ApprovalStore, EXECUTED, EXECUTION_FAILED, SUBMITTING, enqueue_existing_worker
 from src.risk.position_size import calculate_position_size, position_value_ok
 from src.strategy.signal_models import TradeSignal
@@ -520,12 +521,39 @@ def process_pending_once(
             message=outcome.get("message", ""),
             result=outcome.get("result"),
         )
+        if outcome.get("status") == oq.DONE and request.get("proposal_id"):
+            _mark_ai_trade_desk_submitted(request, outcome)
         LOGGER.info(
             "Processed %s request %s for %s -> %s",
             request.get("action"), request.get("id"), request.get("symbol"), outcome["status"],
         )
         processed.append({**request, **outcome})
     return processed
+
+
+def _mark_ai_trade_desk_submitted(request: Dict[str, Any], outcome: Dict[str, Any]) -> None:
+    """Archive a Trade Desk proposal only after the broker worker confirms submission."""
+    proposal_id = str(request.get("proposal_id") or "").strip()
+    if not proposal_id:
+        return
+    try:
+        store = AITradeDeskStore(SETTINGS.decision_agent.database_path)
+        proposal = store.get(proposal_id)
+        if proposal is None or proposal.get("status") not in {"READY", "HUMAN_REVIEWED_BLOCKED"}:
+            return
+        store.transition(
+            proposal_id,
+            "SUBMITTED",
+            actor="execute-worker",
+            details={
+                "order_request_id": str(request.get("id") or ""),
+                "submission_status": outcome.get("status"),
+                "manual_lifecycle_override": bool(request.get("manual_lifecycle_override")),
+                "scanner_lifecycle": request.get("scanner_lifecycle"),
+            },
+        )
+    except Exception:
+        LOGGER.exception("Could not archive AI Trade Desk proposal after broker submission proposal_id=%s", proposal_id)
 
 
 def run_execute_requests(

@@ -129,6 +129,84 @@ def test_trade_desk_uses_proposal_identity_and_fail_closed_ready_gate():
     assert "MANUAL OVERRIDE" in dashboard
 
 
+def test_trade_desk_blocked_ready_action_is_human_acknowledgement_only():
+    dashboard = _text("dashboard_react/index.html")
+    backend = _text("src/decision/ai_trade_desk.py")
+
+    assert "HUMAN_REVIEWED_BLOCKED" in dashboard
+    assert "MARK HUMAN REVIEWED" in dashboard
+    assert "EXECUTION REMAINS BLOCKED" in dashboard
+    assert "KEEP UNDER REVIEW" in dashboard
+    assert "HUMAN_REVIEWED_BLOCKED" in backend
+    assert '"execution_eligibility": "BLOCKED"' in backend
+    assert '"HUMAN_REVIEWED_BLOCKED": {"UNDER_REVIEW", "SUBMITTED", "INVALIDATED", "REJECTED"}' in backend
+    assert "{id:'UNDER_REVIEW',statuses:['UNDER_REVIEW']" in dashboard
+    assert "{id:'READY',statuses:['READY','HUMAN_REVIEWED_BLOCKED']" in dashboard
+
+
+def test_trade_desk_place_uses_two_step_ready_lane_proposal_flow():
+    dashboard = _text("dashboard_react/index.html")
+    server = _text("dashboard_react/server.py")
+
+    assert "Confirm AI Trade Desk Manual Order" in dashboard
+    assert "const tradeDeskPlaceEligible = proposal => ['READY','HUMAN_REVIEWED_BLOCKED'].includes(proposal?.status);" in dashboard
+    assert "'/api/ai-trade-desk/proposals/'+proposal.proposal_id+'/place'" in dashboard
+    assert "confirmed:true" in dashboard
+    assert "acknowledge_blocked_signal:proposal.status==='HUMAN_REVIEWED_BLOCKED'" in dashboard
+    assert "MANUAL LIFECYCLE OVERRIDE" in dashboard
+    assert '@app.post("/api/ai-trade-desk/proposals/{proposal_id}/place")' in server
+    assert 'proposal["status"] not in {"READY", "HUMAN_REVIEWED_BLOCKED"}' in server
+    assert 'body.get("acknowledge_blocked_signal") is not True' in server
+    assert "ready_transition_check(proposal)" in server
+
+
+def test_trade_desk_cards_expose_existing_review_and_reject_actions():
+    dashboard = _text("dashboard_react/index.html")
+
+    assert "const TradeDeskCard = ({proposal,onOpen,onPlace,onStartReview,onReject,onRunReview,onMarkReady})" in dashboard
+    assert "START REVIEW" in dashboard
+    assert "REJECT" in dashboard
+    assert "onStartReview(proposal)" in dashboard
+    assert "onReject(proposal)" in dashboard
+    assert "const startReview = proposal => transition(proposal.proposal_id,'UNDER_REVIEW'" in dashboard
+    assert "Kanban card." in dashboard
+    assert "onClick={event=>{event.stopPropagation();onStartReview(proposal);}}" in dashboard
+    assert "onClick={event=>{event.stopPropagation();onReject(proposal);}}" in dashboard
+
+
+def test_trade_desk_under_review_cards_expose_review_and_ready_actions():
+    dashboard = _text("dashboard_react/index.html")
+
+    assert "onRunReview,onMarkReady" in dashboard
+    assert "proposal.status==='UNDER_REVIEW'&&<><button type=\"button\"" in dashboard
+    assert ">RUN AI REVIEW</button>" in dashboard
+    assert ">MARK READY</button>" in dashboard
+    assert "const runAiReviewForCard = async proposal" in dashboard
+    assert "const requestReadyForProposal = proposal =>" in dashboard
+    assert "Human marked the current source-verified setup READY from the Kanban card." in dashboard
+
+
+def test_trade_desk_archives_only_after_worker_submission():
+    backend = _text("src/jobs/execute_requests.py")
+    store = _text("src/decision/ai_trade_desk.py")
+    dashboard = _text("dashboard_react/index.html")
+
+    assert "if outcome.get(\"status\") == oq.DONE and request.get(\"proposal_id\")" in backend
+    assert 'store.transition(\n            proposal_id,\n            "SUBMITTED"' in backend
+    assert '"SUBMITTED", "INVALIDATED", "REJECTED"' in store
+    assert "waitForPlacedOrder" in dashboard
+    assert "SHOW HISTORICAL" in dashboard
+    assert "id:'HISTORICAL',statuses:['APPROVED','SUBMITTED','FILLED','CANCELLED','EXPIRED','REJECTED']" in dashboard
+
+
+def test_trade_desk_ready_lane_hides_human_reviewed_blocked_card_badge():
+    dashboard = _text("dashboard_react/index.html")
+
+    assert "const showWorkflowBadge = workflowState!=='HUMAN_REVIEWED_BLOCKED';" in dashboard
+    assert "{showWorkflowBadge&&<span" in dashboard
+    assert "detail.proposal.status!=='HUMAN_REVIEWED_BLOCKED'&&<Pill text={detail.proposal.status}" in dashboard
+
+
 def test_startup_report_is_read_only_and_requires_heartbeat_lock_ownership():
     report = _text("scripts/report_autonomous_stock_worker_start.py")
     assert "autonomous_stock_worker.json" in report

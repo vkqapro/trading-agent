@@ -2,6 +2,7 @@ from pathlib import Path
 import json
 import time
 import os
+from dataclasses import replace
 from datetime import datetime, timezone
 from unittest.mock import patch
 
@@ -161,6 +162,110 @@ def test_ready_transition_rejects_entry_triggered_partial_quality_signal(tmp_pat
         store.transition(proposal["proposal_id"], "READY", actor="tester")
 
 
+def test_human_can_acknowledge_blocked_setup_without_execution_eligibility(tmp_path: Path):
+    store = AITradeDeskStore(tmp_path / "decision.db")
+    proposal = store.ingest(
+        {
+            **candidate(),
+            "source_timestamp": datetime.now(timezone.utc).isoformat(),
+            "data_quality_complete": True,
+        },
+        idempotency_key="human-reviewed-blocked",
+    )
+    store.transition(proposal["proposal_id"], "UNDER_REVIEW", actor="tester")
+
+    acknowledged = store.transition(
+        proposal["proposal_id"],
+        "HUMAN_REVIEWED_BLOCKED",
+        actor="tester",
+        details={"reason": "Human acknowledged the scanner lifecycle block."},
+    )
+
+    assert acknowledged["status"] == "HUMAN_REVIEWED_BLOCKED"
+    assert acknowledged["approval_id"] is None
+    assert store.ready_transition_check(acknowledged)["reason_code"] == "SIGNAL_NOT_CURRENTLY_READY"
+    event = store.events(proposal["proposal_id"])[-1]
+    details = json.loads(event["details_json"])
+    assert details["execution_eligibility"] == "BLOCKED"
+    assert details["ready_block_reason_code"] == "SIGNAL_NOT_CURRENTLY_READY"
+
+    with pytest.raises(ValueError, match="invalid transition"):
+        store.transition(proposal["proposal_id"], "APPROVED", actor="tester")
+    with pytest.raises(ValueError, match="approval can only be attached to READY"):
+        store.attach_approval(proposal["proposal_id"], "approval-forbidden", actor="tester")
+
+
+def test_submitted_transition_archives_ready_lane_proposal(tmp_path: Path):
+    store = AITradeDeskStore(tmp_path / "decision.db")
+    proposal = store.ingest(
+        {**candidate(), "lifecycle_status": "READY", "scan_timestamp": datetime.now(timezone.utc).isoformat(), "data_quality_complete": True},
+        idempotency_key="submitted-transition",
+    )
+    store.transition(proposal["proposal_id"], "UNDER_REVIEW", actor="tester")
+    ready = store.transition(proposal["proposal_id"], "READY", actor="tester")
+
+    submitted = store.transition(
+        proposal["proposal_id"],
+        "SUBMITTED",
+        actor="execute-worker",
+        details={"order_request_id": "request-1", "submission_status": "done"},
+    )
+
+    assert ready["status"] == "READY"
+    assert submitted["status"] == "SUBMITTED"
+    with pytest.raises(ValueError, match="terminal proposal cannot be edited"):
+        store.update(proposal["proposal_id"], {"target": 90}, actor="tester", reason="must remain immutable")
+
+
+def test_human_reviewed_blocked_opportunity_is_reused_without_duplicate_card(tmp_path: Path):
+    store = AITradeDeskStore(tmp_path / "decision.db")
+    first_source = {**candidate(), "source_scan_id": "scanner-observation-blocked-1"}
+    first = store.ingest(first_source, idempotency_key="blocked:1")
+    store.transition(first["proposal_id"], "UNDER_REVIEW", actor="tester")
+    store.transition(first["proposal_id"], "HUMAN_REVIEWED_BLOCKED", actor="tester")
+
+    reused = store.ingest(
+        {**first_source, "source_scan_id": "scanner-observation-blocked-2"},
+        idempotency_key="blocked:2",
+    )
+
+    assert reused["proposal_id"] == first["proposal_id"]
+    assert reused["status"] == "HUMAN_REVIEWED_BLOCKED"
+    assert reused["observation_count"] == 2
+
+
+def test_human_reviewed_blocked_status_route_has_no_execution_side_effects(tmp_path: Path):
+    from dashboard_react import server
+
+    store = AITradeDeskStore(tmp_path / "decision.db")
+    proposal = store.ingest(candidate(), idempotency_key="blocked-route")
+    store.transition(proposal["proposal_id"], "UNDER_REVIEW", actor="fixture-human")
+    old_store = server._AI_TRADE_DESK_STORE
+    try:
+        server._AI_TRADE_DESK_STORE = store
+        client = TestClient(server.app)
+        response = client.post(
+            f"/api/ai-trade-desk/proposals/{proposal['proposal_id']}/status",
+            headers={"X-AI-Trade-Desk-Role": "human", "X-AI-Trade-Desk-Actor": "fixture-human"},
+            json={
+                "status": "HUMAN_REVIEWED_BLOCKED",
+                "reason": "Human acknowledged the source lifecycle block.",
+            },
+        )
+        listing = client.get("/api/ai-trade-desk/proposals")
+    finally:
+        server._AI_TRADE_DESK_STORE = old_store
+
+    assert response.status_code == 200
+    assert response.json()["proposal"]["status"] == "HUMAN_REVIEWED_BLOCKED"
+    assert response.json()["orders_submitted"] == 0
+    assert response.json()["approvals_created"] == 0
+    assert response.json()["execution_intents_created"] == 0
+    assert listing.status_code == 200
+    assert listing.json()["counts"]["HUMAN_REVIEWED_BLOCKED"] == 1
+    assert listing.json()["active_opportunities"][0]["proposal_id"] == proposal["proposal_id"]
+
+
 def test_ready_transition_requires_provenance_and_fresh_complete_source(tmp_path: Path):
     store = AITradeDeskStore(tmp_path / "decision.db")
     valid = {**candidate(), "lifecycle_status": "READY", "scan_timestamp": datetime.now(timezone.utc).isoformat(), "data_quality_complete": True}
@@ -169,6 +274,128 @@ def test_ready_transition_requires_provenance_and_fresh_complete_source(tmp_path
     ready = store.transition(proposal["proposal_id"], "READY", actor="tester")
     assert ready["status"] == "READY"
     assert store.ready_transition_check(ready)["eligible"] is True
+    attached = store.attach_approval(proposal["proposal_id"], "approval-fixture", actor="tester")
+    assert attached["approval_id"] == "approval-fixture"
+
+
+def test_ready_proposal_place_route_queues_authoritative_setup_once(tmp_path: Path):
+    from dashboard_react import server
+    from src.execution import order_requests as oq
+
+    store = AITradeDeskStore(tmp_path / "decision.db")
+    source = {
+        **candidate(),
+        "lifecycle_status": "READY",
+        "scan_timestamp": datetime.now(timezone.utc).isoformat(),
+        "data_quality_complete": True,
+        "order_type": "LIMIT",
+    }
+    proposal = store.ingest(source, idempotency_key="ready-place-route")
+    store.transition(proposal["proposal_id"], "UNDER_REVIEW", actor="fixture-human")
+    proposal = store.transition(proposal["proposal_id"], "READY", actor="fixture-human")
+    queue_path = tmp_path / "order_requests.json"
+    old_store = server._AI_TRADE_DESK_STORE
+    headers = {"X-AI-Trade-Desk-Role": "human", "X-AI-Trade-Desk-Actor": "fixture-human"}
+    try:
+        server._AI_TRADE_DESK_STORE = store
+        with (
+            patch.object(oq, "ORDER_REQUESTS_PATH", queue_path),
+            patch.object(oq, "LOCK_PATH", queue_path.with_suffix(".json.lock")),
+            patch.object(server, "SETTINGS", replace(server.SETTINGS, paper_trading=True)),
+        ):
+            client = TestClient(server.app)
+            body = {
+                "revision": proposal["revision"],
+                "confirmed": True,
+                # These must never override the authoritative persisted proposal.
+                "symbol": "EVIL",
+                "entry": 1,
+                "quantity": 999999,
+            }
+            first = client.post(
+                f"/api/ai-trade-desk/proposals/{proposal['proposal_id']}/place",
+                headers=headers,
+                json=body,
+            )
+            duplicate = client.post(
+                f"/api/ai-trade-desk/proposals/{proposal['proposal_id']}/place",
+                headers=headers,
+                json=body,
+            )
+            queued = oq.list_requests()
+    finally:
+        server._AI_TRADE_DESK_STORE = old_store
+
+    assert first.status_code == 200
+    assert duplicate.status_code == 200
+    assert first.json()["id"] == duplicate.json()["id"]
+    assert first.json()["created"] is True
+    assert duplicate.json()["created"] is False
+    assert len(queued) == 1
+    assert queued[0]["symbol"] == proposal["symbol"]
+    assert queued[0]["entry"] == proposal["entry"]
+    assert queued[0]["quantity"] == proposal["quantity"]
+    assert queued[0]["proposal_id"] == proposal["proposal_id"]
+    assert queued[0]["proposal_revision"] == proposal["revision"]
+
+
+def test_place_route_requires_explicit_override_for_human_reviewed_blocked_proposal(tmp_path: Path):
+    from dashboard_react import server
+    from src.execution import order_requests as oq
+
+    store = AITradeDeskStore(tmp_path / "decision.db")
+    proposal = store.ingest(
+        {
+            **candidate(),
+            "scan_timestamp": datetime.now(timezone.utc).isoformat(),
+            "data_quality_complete": True,
+        },
+        idempotency_key="blocked-place-route",
+    )
+    store.transition(proposal["proposal_id"], "UNDER_REVIEW", actor="fixture-human")
+    blocked = store.transition(proposal["proposal_id"], "HUMAN_REVIEWED_BLOCKED", actor="fixture-human")
+    queue_path = tmp_path / "order_requests.json"
+    old_store = server._AI_TRADE_DESK_STORE
+    headers = {"X-AI-Trade-Desk-Role": "human", "X-AI-Trade-Desk-Actor": "fixture-human"}
+    try:
+        server._AI_TRADE_DESK_STORE = store
+        with (
+            patch.object(oq, "ORDER_REQUESTS_PATH", queue_path),
+            patch.object(oq, "LOCK_PATH", queue_path.with_suffix(".json.lock")),
+            patch.object(server, "SETTINGS", replace(server.SETTINGS, paper_trading=True)),
+        ):
+            client = TestClient(server.app)
+            blocked_response = client.post(
+                f"/api/ai-trade-desk/proposals/{blocked['proposal_id']}/place",
+                headers=headers,
+                json={"revision": blocked["revision"], "confirmed": True},
+            )
+            unconfirmed_response = client.post(
+                f"/api/ai-trade-desk/proposals/{blocked['proposal_id']}/place",
+                headers=headers,
+                json={"revision": blocked["revision"], "confirmed": False},
+            )
+            override_response = client.post(
+                f"/api/ai-trade-desk/proposals/{blocked['proposal_id']}/place",
+                headers=headers,
+                json={
+                    "revision": blocked["revision"],
+                    "confirmed": True,
+                    "acknowledge_blocked_signal": True,
+                },
+            )
+            queued = oq.list_requests()
+    finally:
+        server._AI_TRADE_DESK_STORE = old_store
+
+    assert blocked_response.status_code == 409
+    assert "manual lifecycle override acknowledgment" in blocked_response.json()["detail"]
+    assert unconfirmed_response.status_code == 400
+    assert override_response.status_code == 200
+    assert len(queued) == 1
+    assert queued[0]["proposal_id"] == blocked["proposal_id"]
+    assert queued[0]["manual_lifecycle_override"] is True
+    assert queued[0]["scanner_lifecycle"] == "ENTRY_TRIGGERED"
 
 
 def test_ready_transition_rejects_stale_source_observation(tmp_path: Path):

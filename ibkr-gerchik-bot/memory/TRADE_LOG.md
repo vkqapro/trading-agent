@@ -237156,3 +237156,115 @@ Reasons:
   }
 }
 ```
+
+## Market Open (2026-10-22T09:53:00)
+- **executed**: none
+- **skipped**: [{'symbol': 'PFE', 'reason': 'no_signal'}, {'symbol': 'PH', 'reason': 'no_signal'}, {'symbol': 'URI', 'reason': 'no_signal'}, {'symbol': 'PINS', 'reason': 'no_signal'}, {'symbol': 'CSX', 'reason': 'no_signal'}, {'symbol': 'PNC', 'reason': 'no_signal'}, {'symbol': 'LMT', 'reason': 'no_signal'}, {'symbol': 'NOC', 'reason': 'no_signal'}, {'symbol': 'PSX', 'reason': 'no_signal'}, {'symbol': 'GD', 'reason': 'no_signal'}, {'symbol': 'RBLX', 'reason': 'no_signal'}, {'symbol': 'RDDT', 'reason': 'no_signal'}, {'symbol': 'CARR', 'reason': 'no_signal'}, {'symbol': 'REGN', 'reason': 'no_signal'}, {'symbol': 'NKE', 'reason': 'no_signal'}, {'symbol': 'ROST', 'reason': 'no_signal'}, {'symbol': 'SBUX', 'reason': 'no_signal'}, {'symbol': 'LOW', 'reason': 'no_signal'}, {'symbol': 'SCHW', 'reason': 'no_signal'}, {'symbol': 'SHOP', 'reason': 'no_signal'}, {'symbol': 'TJX', 'reason': 'no_signal'}, {'symbol': 'BKNG', 'reason': 'no_signal'}, {'symbol': 'MAR', 'reason': 'no_signal'}, {'symbol': 'CMG', 'reason': 'no_signal'}, {'symbol': 'ORLY', 'reason': 'no_signal'}, {'symbol': 'TGT', 'reason': 'no_signal'}, {'symbol': 'PEP', 'reason': 'no_signal'}, {'symbol': 'MDLZ', 'reason': 'no_signal'}, {'symbol': 'CL', 'reason': 'no_signal'}, {'symbol': 'KHC', 'reason': 'no_signal'}, {'symbol': 'GIS', 'reason': 'no_signal'}, {'symbol': 'KR', 'reason': 'no_signal'}, {'symbol': 'EL', 'reason': 'no_signal'}, {'symbol': 'SLB', 'reason': 'no_signal'}, {'symbol': 'SNAP', 'reason': 'no_signal'}, {'symbol': 'OXY', 'reason': 'no_signal'}, {'symbol': 'SNOW', 'reason': 'no_signal'}, {'symbol': 'MPC', 'reason': 'no_signal'}, {'symbol': 'SYK', 'reason': 'no_signal'}, {'symbol': 'TEAM', 'reason': 'no_signal'}, {'symbol': 'VLO', 'reason': 'no_signal'}, {'symbol': 'TFC', 'reason': 'no_signal'}, {'symbol': 'HAL', 'reason': 'no_signal'}, {'symbol': 'FCX', 'reason': 'no_signal'}, {'symbol': 'NUE', 'reason': 'no_signal'}, {'symbol': 'TMUS', 'reason': 'no_signal'}, {'symbol': 'APD', 'reason': 'no_signal'}, {'symbol': 'TSM', 'reason': 'no_signal'}, {'symbol': 'DUK', 'reason': 'no_signal'}, {'symbol': 'UNH', 'reason': 'no_signal'}, {'symbol': 'UBER', 'reason': 'no_signal'}, {'symbol': 'AEP', 'reason': 'no_signal'}, {'symbol': 'UPS', 'reason': 'no_signal'}, {'symbol': 'CCI', 'reason': 'no_signal'}, {'symbol': 'EQIX', 'reason': 'no_signal'}, {'symbol': 'USB', 'reason': 'no_signal'}, {'symbol': 'VRTX', 'reason': 'no_signal'}, {'symbol': 'ZS', 'reason': 'no_signal'}, {'symbol': 'WMT', 'reason': 'no_signal'}, {'symbol': 'GSHD', 'reason': 'no_signal'}, {'symbol': 'MRSH', 'reason': 'no_signal'}, {'symbol': 'SEI', 'reason': 'no_signal'}, {'symbol': 'SANM', 'reason': 'no_signal'}, {'symbol': 'AAPL', 'reason': 'no_signal'}, {'symbol': 'MSFT', 'reason': 'no_signal'}, {'symbol': 'TSLA', 'reason': 'no_signal'}, {'symbol': 'AMZN', 'reason': 'no_signal'}, {'symbol': 'AGPU', 'reason': 'no_signal'}, {'symbol': 'ALOY', 'reason': 'no_signal'}, {'symbol': 'MRLN', 'reason': 'no_signal'}, {'symbol': 'OPTX', 'reason': 'no_signal'}, {'symbol': 'ROLR', 'reason': 'no_signal'}, {'symbol': 'SKYQ', 'reason': 'no_signal'}, {'symbol': 'KO', 'reason': 'no_signal'}, {'symbol': 'GCTS', 'reason': 'no_signal'}, {'symbol': 'NCEW', 'reason': 'no_signal'}, {'symbol': 'ICCC', 'reason': 'no_signal'}, {'symbol': 'VAL', 'reason': 'no_signal'}, {'symbol': 'AMH', 'reason': 'no_signal'}, {'symbol': 'BIDU', 'reason': 'no_signal'}, {'symbol': 'KYTX', 'reason': 'no_signal'}, {'symbol': 'SRAD', 'reason': ['technical_atr_too_low', 'atr_travel_exhausted']}, {'symbol': 'MDU', 'reason': 'no_signal'}, {'symbol': 'SION', 'reason': 'no_signal'}, {'symbol': 'TREX', 'reason': 'no_signal'}, {'symbol': 'SMA', 'reason': ['technical_atr_too_low', 'atr_travel_exhausted']}, {'symbol': 'ASND', 'reason': 'no_signal'}, {'symbol': 'MSEX', 'reason': 'no_signal'}, {'symbol': 'ZTO', 'reason': 'no_signal'}, {'symbol': 'SPOT', 'reason': 'no_signal'}, {'symbol': 'WTBA', 'reason': 'no_signal'}, {'symbol': 'NEOV', 'reason': 'no_signal'}, {'symbol': 'AMAT', 'reason': 'no_signal'}, {'symbol': 'XP', 'reason': 'no_signal'}, {'symbol': 'LVO', 'reason': 'no_signal'}, {'symbol': 'ITIC', 'reason': 'no_signal'}, {'symbol': 'DAL', 'reason': 'no_signal'}, {'symbol': 'PDD', 'reason': 'no_signal'}, {'symbol': 'AMP', 'reason': 'no_signal'}, {'symbol': 'KMDA', 'reason': 'no_signal'}, {'symbol': 'NVDA', 'reason': 'no_signal'}, {'symbol': 'MU', 'reason': 'no_signal'}, {'symbol': 'PLTR', 'reason': 'no_signal'}, {'symbol': 'BRKH', 'reason': 'missing_live_data'}, {'symbol': 'NXTC', 'reason': 'no_signal'}, {'symbol': 'TGHL', 'reason': 'no_signal'}, {'symbol': 'MRAI', 'reason': 'missing_live_data'}, {'symbol': 'CPHI', 'reason': 'no_signal'}, {'symbol': 'MAAS', 'reason': 'no_signal'}, {'symbol': 'LEDS', 'reason': 'no_signal'}, {'symbol': 'APLM', 'reason': 'no_signal'}, {'symbol': 'PYPG', 'reason': 'no_signal'}, {'symbol': 'VEEE', 'reason': 'no_signal'}, {'symbol': 'EAF', 'reason': 'no_signal'}, {'symbol': 'YYAI', 'reason': 'no_signal'}, {'symbol': 'TOP', 'reason': 'no_signal'}, {'symbol': 'RCEL', 'reason': 'no_signal'}, {'symbol': 'SYRA', 'reason': 'missing_live_data'}, {'symbol': 'CRMT', 'reason': 'no_signal'}, {'symbol': 'NAKA', 'reason': 'no_signal'}, {'symbol': 'MAN', 'reason': 'no_signal'}, {'symbol': 'GOOGL', 'reason': 'no_signal'}, {'symbol': 'JPM', 'reason': 'no_signal'}, {'symbol': 'BAC', 'reason': 'no_signal'}, {'symbol': 'GS', 'reason': 'no_signal'}, {'symbol': 'V', 'reason': 'no_signal'}, {'symbol': 'LLY', 'reason': 'no_signal'}, {'symbol': 'JNJ', 'reason': 'no_signal'}, {'symbol': 'ABBV', 'reason': 'no_signal'}, {'symbol': 'TMO', 'reason': 'no_signal'}, {'symbol': 'CAT', 'reason': 'no_signal'}, {'symbol': 'GE', 'reason': 'no_signal'}, {'symbol': 'RTX', 'reason': 'no_signal'}, {'symbol': 'ETN', 'reason': 'no_signal'}, {'symbol': 'COST', 'reason': 'no_signal'}, {'symbol': 'PG', 'reason': 'no_signal'}, {'symbol': 'XOM', 'reason': 'no_signal'}, {'symbol': 'CVX', 'reason': 'no_signal'}, {'symbol': 'COP', 'reason': 'no_signal'}, {'symbol': 'NEE', 'reason': 'no_signal'}, {'symbol': 'SO', 'reason': 'no_signal'}, {'symbol': 'PLD', 'reason': 'no_signal'}, {'symbol': 'AMT', 'reason': 'no_signal'}, {'symbol': 'LIN', 'reason': 'no_signal'}, {'symbol': 'SHW', 'reason': 'no_signal'}, {'symbol': 'HD', 'reason': 'no_signal'}, {'symbol': 'MCD', 'reason': 'no_signal'}, {'symbol': 'META', 'reason': 'no_signal'}, {'symbol': 'NFLX', 'reason': 'no_signal'}, {'symbol': 'AVGO', 'reason': 'no_signal'}, {'symbol': 'ORCL', 'reason': 'no_signal'}, {'symbol': 'AMD', 'reason': 'no_signal'}, {'symbol': 'INTC', 'reason': 'no_signal'}, {'symbol': 'QCOM', 'reason': 'no_signal'}, {'symbol': 'ASML', 'reason': 'no_signal'}, {'symbol': 'KLAC', 'reason': 'no_signal'}, {'symbol': 'LRCX', 'reason': 'no_signal'}, {'symbol': 'MRVL', 'reason': 'no_signal'}, {'symbol': 'ADI', 'reason': 'no_signal'}, {'symbol': 'NXPI', 'reason': 'no_signal'}, {'symbol': 'ON', 'reason': 'no_signal'}, {'symbol': 'MCHP', 'reason': 'no_signal'}, {'symbol': 'CRM', 'reason': 'no_signal'}, {'symbol': 'NOW', 'reason': 'no_signal'}, {'symbol': 'PANW', 'reason': 'no_signal'}, {'symbol': 'CRWD', 'reason': 'no_signal'}, {'symbol': 'DDOG', 'reason': 'no_signal'}, {'symbol': 'NET', 'reason': 'no_signal'}, {'symbol': 'MDB', 'reason': 'no_signal'}, {'symbol': 'FTNT', 'reason': 'no_signal'}, {'symbol': 'APP', 'reason': 'no_signal'}, {'symbol': 'ABNB', 'reason': 'no_signal'}, {'symbol': 'DASH', 'reason': 'no_signal'}, {'symbol': 'C', 'reason': 'no_signal'}, {'symbol': 'MS', 'reason': 'no_signal'}, {'symbol': 'AXP', 'reason': 'no_signal'}, {'symbol': 'MA', 'reason': 'no_signal'}, {'symbol': 'COF', 'reason': 'no_signal'}, {'symbol': 'BLK', 'reason': 'no_signal'}, {'symbol': 'CME', 'reason': 'no_signal'}, {'symbol': 'ICE', 'reason': 'no_signal'}, {'symbol': 'MRK', 'reason': 'no_signal'}, {'symbol': 'ABT', 'reason': 'no_signal'}, {'symbol': 'MDT', 'reason': 'no_signal'}, {'symbol': 'ISRG', 'reason': 'no_signal'}, {'symbol': 'GILD', 'reason': 'no_signal'}, {'symbol': 'AMGN', 'reason': 'no_signal'}, {'symbol': 'BSX', 'reason': 'no_signal'}, {'symbol': 'BA', 'reason': 'no_signal'}, {'symbol': 'DE', 'reason': 'no_signal'}, {'symbol': 'HON', 'reason': 'no_signal'}, {'symbol': 'FDX', 'reason': 'no_signal'}, {'symbol': 'EOG', 'reason': 'no_signal'}, {'symbol': 'EUR.USD', 'reason': 'no_signal'}, {'symbol': 'GOOG', 'reason': 'no_signal'}, {'symbol': 'CSCO', 'reason': 'no_signal'}, {'symbol': 'PM', 'reason': 'no_signal'}, {'symbol': 'GEV', 'reason': 'no_signal'}, {'symbol': 'TXN', 'reason': 'no_signal'}, {'symbol': 'WFC', 'reason': 'no_signal'}, {'symbol': 'ANET', 'reason': 'no_signal'}, {'symbol': 'SNDK', 'reason': 'no_signal'}, {'symbol': 'IBM', 'reason': 'no_signal'}, {'symbol': 'APH', 'reason': 'no_signal'}, {'symbol': 'DIS', 'reason': 'no_signal'}, {'symbol': 'VZ', 'reason': 'no_signal'}, {'symbol': 'DELL', 'reason': 'no_signal'}, {'symbol': 'STX', 'reason': 'no_signal'}, {'symbol': 'UNP', 'reason': 'no_signal'}, {'symbol': 'WELL', 'reason': 'no_signal'}, {'symbol': 'T', 'reason': 'no_signal'}, {'symbol': 'WDC', 'reason': 'no_signal'}, {'symbol': 'DHR', 'reason': 'no_signal'}, {'symbol': 'ACN', 'reason': 'no_signal'}, {'symbol': 'PGR', 'reason': 'no_signal'}, {'symbol': 'SPGI', 'reason': 'no_signal'}, {'symbol': 'NEM', 'reason': 'no_signal'}, {'symbol': 'CB', 'reason': 'no_signal'}, {'symbol': 'MO', 'reason': 'no_signal'}, {'symbol': 'BMY', 'reason': 'no_signal'}, {'symbol': 'GLW', 'reason': 'no_signal'}, {'symbol': 'CVS', 'reason': 'no_signal'}, {'symbol': 'MCK', 'reason': 'no_signal'}, {'symbol': 'ADP', 'reason': 'no_signal'}, {'symbol': 'TT', 'reason': 'no_signal'}, {'symbol': 'PWR', 'reason': 'no_signal'}, {'symbol': 'CEG', 'reason': 'no_signal'}, {'symbol': 'BNY', 'reason': 'no_signal'}, {'symbol': 'SNPS', 'reason': 'no_signal'}, {'symbol': 'CDNS', 'reason': 'no_signal'}, {'symbol': 'ADBE', 'reason': 'no_signal'}, {'symbol': 'JCI', 'reason': 'no_signal'}, {'symbol': 'HPE', 'reason': 'no_signal'}, {'symbol': 'VRT', 'reason': 'no_signal'}, {'symbol': 'ELV', 'reason': 'no_signal'}, {'symbol': 'WMB', 'reason': 'no_signal'}, {'symbol': 'EMR', 'reason': 'no_signal'}, {'symbol': 'LITE', 'reason': 'no_signal'}, {'symbol': 'HWM', 'reason': 'no_signal'}, {'symbol': 'HOOD', 'reason': 'no_signal'}, {'symbol': 'BX', 'reason': 'no_signal'}, {'symbol': 'INTU', 'reason': 'no_signal'}, {'symbol': 'MMM', 'reason': 'no_signal'}, {'symbol': 'MRNA', 'reason': 'no_signal'}, {'symbol': 'WM', 'reason': 'no_signal'}, {'symbol': 'TRV', 'reason': 'no_signal'}, {'symbol': 'BE', 'reason': 'no_signal'}, {'symbol': 'CI', 'reason': 'no_signal'}, {'symbol': 'MSI', 'reason': 'no_signal'}, {'symbol': 'HLT', 'reason': 'no_signal'}, {'symbol': 'CMCSA', 'reason': 'no_signal'}, {'symbol': 'CMI', 'reason': 'no_signal'}, {'symbol': 'GM', 'reason': 'no_signal'}, {'symbol': 'NSC', 'reason': 'no_signal'}, {'symbol': 'ECL', 'reason': 'no_signal'}, {'symbol': 'CTAS', 'reason': 'no_signal'}, {'symbol': 'MCO', 'reason': 'no_signal'}, {'symbol': 'RCL', 'reason': 'no_signal'}, {'symbol': 'ITW', 'reason': 'no_signal'}, {'symbol': 'HCA', 'reason': 'no_signal'}, {'symbol': 'SPG', 'reason': 'no_signal'}, {'symbol': 'MPWR', 'reason': 'no_signal'}, {'symbol': 'KMI', 'reason': 'no_signal'}, {'symbol': 'KEYS', 'reason': 'no_signal'}, {'symbol': 'KKR', 'reason': 'no_signal'}, {'symbol': 'DLR', 'reason': 'no_signal'}, {'symbol': 'TEL', 'reason': 'no_signal'}, {'symbol': 'MNST', 'reason': 'no_signal'}, {'symbol': 'TRGP', 'reason': 'no_signal'}, {'symbol': 'COR', 'reason': 'no_signal'}, {'symbol': 'TDG', 'reason': 'no_signal'}, {'symbol': 'TER', 'reason': 'no_signal'}, {'symbol': 'AJG', 'reason': 'no_signal'}, {'symbol': 'FAST', 'reason': 'no_signal'}, {'symbol': 'ALL', 'reason': 'no_signal'}, {'symbol': 'AON', 'reason': 'no_signal'}, {'symbol': 'OKE', 'reason': 'no_signal'}, {'symbol': 'FIX', 'reason': 'no_signal'}, {'symbol': 'AME', 'reason': 'no_signal'}, {'symbol': 'CIEN', 'reason': 'no_signal'}, {'symbol': 'PCAR', 'reason': 'no_signal'}, {'symbol': 'GWW', 'reason': 'no_signal'}, {'symbol': 'COHR', 'reason': 'no_signal'}, {'symbol': 'APO', 'reason': 'no_signal'}, {'symbol': 'BKR', 'reason': 'no_signal'}, {'symbol': 'CAH', 'reason': 'no_signal'}, {'symbol': 'D', 'reason': 'no_signal'}, {'symbol': 'CRH', 'reason': 'no_signal'}, {'symbol': 'DVN', 'reason': 'no_signal'}, {'symbol': 'SRE', 'reason': 'no_signal'}, {'symbol': 'MET', 'reason': 'no_signal'}, {'symbol': 'HUM', 'reason': 'no_signal'}, {'symbol': 'O', 'reason': 'no_signal'}, {'symbol': 'AFL', 'reason': 'no_signal'}, {'symbol': 'P', 'reason': 'no_signal'}, {'symbol': 'BDX', 'reason': 'no_signal'}, {'symbol': 'VYLR', 'reason': 'missing_required_chart_history', 'missing': ['daily', 'weekly']}, {'symbol': 'HONA', 'reason': 'no_signal'}, {'symbol': 'VST', 'reason': 'no_signal'}, {'symbol': 'EW', 'reason': 'no_signal'}, {'symbol': 'ADSK', 'reason': 'no_signal'}, {'symbol': 'PSA', 'reason': 'no_signal'}, {'symbol': 'A', 'reason': 'no_signal'}, {'symbol': 'ETR', 'reason': 'no_signal'}, {'symbol': 'ROK', 'reason': 'no_signal'}, {'symbol': 'WAB', 'reason': 'no_signal'}, {'symbol': 'STT', 'reason': 'no_signal'}, {'symbol': 'PYPL', 'reason': 'no_signal'}, {'symbol': 'AZO', 'reason': 'no_signal'}, {'symbol': 'F', 'reason': 'no_signal'}, {'symbol': 'NTAP', 'reason': 'no_signal'}, {'symbol': 'XEL', 'reason': 'no_signal'}, {'symbol': 'FITB', 'reason': 'no_signal'}, {'symbol': 'EBAY', 'reason': 'no_signal'}, {'symbol': 'KDP', 'reason': 'no_signal'}, {'symbol': 'LHX', 'reason': 'no_signal'}, {'symbol': 'GRMN', 'reason': 'no_signal'}, {'symbol': 'VEEV', 'reason': 'no_signal'}, {'symbol': 'VMRK', 'reason': 'no_signal'}, {'symbol': 'TWLO', 'reason': 'no_signal'}, {'symbol': 'EXC', 'reason': 'no_signal'}, {'symbol': 'FLEX', 'reason': 'no_signal'}, {'symbol': 'IQV', 'reason': 'no_signal'}, {'symbol': 'RSG', 'reason': 'no_signal'}, {'symbol': 'VTR', 'reason': 'no_signal'}, {'symbol': 'CVNA', 'reason': 'no_signal'}, {'symbol': 'FERG', 'reason': 'no_signal'}, {'symbol': 'WAT', 'reason': 'no_signal'}, {'symbol': 'ILMN', 'reason': 'no_signal'}, {'symbol': 'NDAQ', 'reason': 'no_signal'}, {'symbol': 'XYZ', 'reason': 'no_signal'}, {'symbol': 'MSCI', 'reason': 'no_signal'}, {'symbol': 'IDXX', 'reason': 'no_signal'}, {'symbol': 'AIG', 'reason': 'no_signal'}, {'symbol': 'COIN', 'reason': 'no_signal'}, {'symbol': 'YUM', 'reason': 'no_signal'}, {'symbol': 'FANG', 'reason': 'no_signal'}, {'symbol': 'IBKR', 'reason': 'no_signal'}, {'symbol': 'ED', 'reason': 'no_signal'}, {'symbol': 'PRU', 'reason': 'no_signal'}, {'symbol': 'ADM', 'reason': 'no_signal'}, {'symbol': 'SYY', 'reason': 'no_signal'}, {'symbol': 'WDAY', 'reason': 'no_signal'}, {'symbol': 'CBRE', 'reason': 'no_signal'}, {'symbol': 'TTWO', 'reason': 'no_signal'}, {'symbol': 'ROP', 'reason': 'no_signal'}, {'symbol': 'PEG', 'reason': 'no_signal'}, {'symbol': 'HIG', 'reason': 'no_signal'}, {'symbol': 'EME', 'reason': 'no_signal'}, {'symbol': 'IRM', 'reason': 'no_signal'}, {'symbol': 'KVUE', 'reason': 'no_signal'}, {'symbol': 'WEC', 'reason': 'no_signal'}, {'symbol': 'DHI', 'reason': 'no_signal'}, {'symbol': 'BIIB', 'reason': 'no_signal'}, {'symbol': 'UAL', 'reason': 'no_signal'}, {'symbol': 'ODFL', 'reason': 'no_signal'}, {'symbol': 'RMD', 'reason': 'no_signal'}, {'symbol': 'CCL', 'reason': 'no_signal'}, {'symbol': 'AXON', 'reason': 'no_signal'}, {'symbol': 'PAYX', 'reason': 'no_signal'}, {'symbol': 'EQT', 'reason': 'no_signal'}, {'symbol': 'CNC', 'reason': 'no_signal'}, {'symbol': 'ACGL', 'reason': 'no_signal'}, {'symbol': 'KMB', 'reason': 'no_signal'}, {'symbol': 'JBL', 'reason': 'no_signal'}, {'symbol': 'DXCM', 'reason': 'no_signal'}, {'symbol': 'STLD', 'reason': 'no_signal'}, {'symbol': 'VMC', 'reason': 'no_signal'}, {'symbol': 'MTB', 'reason': 'no_signal'}, {'symbol': 'MTD', 'reason': 'no_signal'}, {'symbol': 'HBAN', 'reason': 'no_signal'}, {'symbol': 'ZTS', 'reason': 'no_signal'}, {'symbol': 'CBOE', 'reason': 'no_signal'}, {'symbol': 'NTRS', 'reason': 'no_signal'}, {'symbol': 'EXPE', 'reason': 'no_signal'}, {'symbol': 'GEHC', 'reason': 'no_signal'}, {'symbol': 'PCG', 'reason': 'no_signal'}, {'symbol': 'MLM', 'reason': 'no_signal'}, {'symbol': 'AEE', 'reason': 'no_signal'}, {'symbol': 'TDY', 'reason': 'no_signal'}, {'symbol': 'EXR', 'reason': 'no_signal'}, {'symbol': 'WSM', 'reason': 'no_signal'}, {'symbol': 'DG', 'reason': 'no_signal'}, {'symbol': 'WTW', 'reason': 'no_signal'}, {'symbol': 'RJF', 'reason': 'no_signal'}, {'symbol': 'ATO', 'reason': 'no_signal'}, {'symbol': 'HPQ', 'reason': 'no_signal'}, {'symbol': 'IR', 'reason': 'no_signal'}, {'symbol': 'CFG', 'reason': 'no_signal'}, {'symbol': 'LYV', 'reason': 'no_signal'}, {'symbol': 'CTSH', 'reason': 'no_signal'}, {'symbol': 'FFIV', 'reason': 'no_signal'}, {'symbol': 'DTE', 'reason': 'no_signal'}]
+- **manual_candidates**: none
+- **scan_count**: 1
+- **skip_reason_summary**: {'no_signal': 387, 'technical_atr_too_low, atr_travel_exhausted': 2, 'missing_live_data': 3, 'missing_required_chart_history': 1}
+
+## Manual Trade MMM (2026-10-22T11:50:09)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: MMM
+- **strategy**: market_screener_prb1_manual_setup
+- **level_type**: resistance
+- **direction**: long
+- **signal**: BUY
+- **entry**: 174.95
+- **stop_loss**: 171.93
+- **target**: 182.49999999999994
+- **reward_risk**: 2.5
+- **partial_targets**: []
+- **quantity**: 5
+- **market_order_id**: 1179
+- **stop_order_id**: 1180
+- **limit_order_id**: 1181
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Manual Trade FITB (2026-10-22T12:13:19)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: FITB
+- **strategy**: market_screener_prb2_manual_setup
+- **level_type**: resistance
+- **direction**: long
+- **signal**: BUY
+- **entry**: 52.67
+- **stop_loss**: 52.17
+- **target**: 53.92
+- **reward_risk**: 2.5
+- **partial_targets**: []
+- **quantity**: 18
+- **market_order_id**: 1183
+- **stop_order_id**: 1184
+- **limit_order_id**: 1185
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'PreSubmitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Manual Trade FITB (2026-10-22T13:35:07)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: FITB
+- **strategy**: ai_trade_desk_prb1_manual_setup
+- **level_type**: ai_trade_desk_proposal
+- **direction**: long
+- **signal**: BUY
+- **entry**: 47.87
+- **stop_loss**: 45.2023
+- **target**: 53.2054
+- **reward_risk**: 2.0
+- **partial_targets**: []
+- **quantity**: 18
+- **market_order_id**: 1194
+- **stop_order_id**: 1195
+- **limit_order_id**: 1196
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Manual Trade APD (2026-10-22T13:52:48)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: APD
+- **strategy**: ai_trade_desk_prb1_manual_setup
+- **level_type**: ai_trade_desk_proposal
+- **direction**: long
+- **signal**: BUY
+- **entry**: 293.751
+- **stop_loss**: 285.8945
+- **target**: 309.464
+- **reward_risk**: 2.0
+- **partial_targets**: []
+- **quantity**: 3
+- **market_order_id**: 1205
+- **stop_order_id**: 1206
+- **limit_order_id**: 1207
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}
+
+## Manual Trade APD (2026-10-22T14:42:34)
+- **status**: executed
+- **dry_run**: False
+- **symbol**: APD
+- **strategy**: ai_trade_desk_prb2_manual_setup
+- **level_type**: ai_trade_desk_proposal
+- **direction**: long
+- **signal**: BUY
+- **entry**: 303.7723
+- **stop_loss**: 299.4938
+- **target**: 314.46855
+- **reward_risk**: 2.5
+- **partial_targets**: []
+- **quantity**: 2
+- **market_order_id**: 1220
+- **stop_order_id**: 1221
+- **limit_order_id**: 1222
+- **manual_override**: True
+- **entry_order_type**: LIMIT
+- **broker_statuses**: {'market_order': 'Submitted', 'stop_order': 'PreSubmitted', 'limit_order': 'PreSubmitted'}

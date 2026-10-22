@@ -24,7 +24,7 @@ from src.config import LOGGER, MEMORY_DIR, ensure_directories
 
 # Bump when the request schema or public API changes so the dashboard reloads a
 # cached copy (Streamlit keeps imported modules alive across reruns).
-ORDER_REQUESTS_VERSION = 2
+ORDER_REQUESTS_VERSION = 3
 ORDER_REQUESTS_PATH = MEMORY_DIR / "order_requests.json"
 LOCK_PATH = ORDER_REQUESTS_PATH.with_suffix(".json.lock")
 HEARTBEAT_PATH = MEMORY_DIR / "runtime" / "execute_worker.json"
@@ -158,6 +158,12 @@ def _place_record(
         "nearest_lower_level": setup.get("nearest_lower_level"),
         "reward_risk": setup.get("reward_risk"),
         "confidence": setup.get("confidence"),
+        "proposal_id": setup.get("proposal_id"),
+        "proposal_revision": setup.get("proposal_revision"),
+        "idempotency_key": setup.get("idempotency_key"),
+        "manual_lifecycle_override": bool(setup.get("manual_lifecycle_override")),
+        "scanner_lifecycle": setup.get("scanner_lifecycle"),
+        "ready_gate_reason_code": setup.get("ready_gate_reason_code"),
         # Size shown in the forecast ledger, so the placed order matches what the
         # user reviewed instead of being re-sized from the bot's live config.
         "quantity": setup.get("quantity"),
@@ -173,6 +179,37 @@ def submit_place(setup: Dict[str, Any], *, live: bool = False) -> str:
     _mutate(lambda data: data["requests"].append(record))
     LOGGER.info("Queued place request %s for %s (live=%s)", request_id, record["symbol"], live)
     return request_id
+
+
+def submit_place_once(
+    setup: Dict[str, Any],
+    *,
+    idempotency_key: str,
+    live: bool = False,
+) -> tuple[str, bool]:
+    """Queue one place request for a stable reviewed setup identity.
+
+    The queue lock makes the lookup and append atomic, preventing repeated UI
+    confirmation clicks from creating duplicate broker-bound requests.
+    """
+    key = str(idempotency_key or "").strip()
+    if not key:
+        raise ValueError("idempotency_key is required")
+    request_id = uuid.uuid4().hex[:12]
+    normalized = {**setup, "idempotency_key": key}
+    record = _place_record(normalized, request_id=request_id, live=live)
+
+    def _append_once(data: Dict[str, Any]) -> tuple[str, bool]:
+        for existing in data.get("requests", []):
+            if isinstance(existing, dict) and str(existing.get("idempotency_key") or "") == key:
+                return str(existing.get("id") or ""), False
+        data["requests"].append(record)
+        return request_id, True
+
+    result = _mutate(_append_once)
+    if result[1]:
+        LOGGER.info("Queued idempotent place request %s for %s (live=%s)", result[0], record["symbol"], live)
+    return result
 
 
 def submit_approval_intent(intent: Dict[str, Any]) -> str:

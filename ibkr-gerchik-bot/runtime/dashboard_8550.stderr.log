@@ -1327,3 +1327,41 @@ INFO:     Started server process [24644]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [34448]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [27776]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [22732]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-10-22 11:50:06 | INFO | ibkr-gerchik-bot | Queued place request 1638e67496c4 for MMM (live=False)
+2026-10-22 12:13:15 | INFO | ibkr-gerchik-bot | Queued place request 1910a16027b4 for FITB (live=False)
+INFO:     Started server process [20684]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [19172]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-10-22 13:35:05 | INFO | ibkr-gerchik-bot | Queued idempotent place request dac7757d5bb6 for FITB (live=False)
+INFO:     Started server process [8808]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-10-22 13:52:45 | INFO | ibkr-gerchik-bot | Queued idempotent place request b7e259032148 for APD (live=False)
+2026-10-22 13:54:36 | INFO | ibkr-gerchik-bot | Queued idempotent place request 48d2aab1206c for FITB (live=False)
+INFO:     Started server process [42448]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [11236]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-10-22 14:42:33 | INFO | ibkr-gerchik-bot | Queued idempotent place request 10282bf0d4ae for APD (live=False)

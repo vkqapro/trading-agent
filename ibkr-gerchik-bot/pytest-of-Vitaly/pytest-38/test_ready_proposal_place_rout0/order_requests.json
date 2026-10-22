@@ -1,0 +1,39 @@
+{
+  "requests": [
+    {
+      "id": "4053d03349ec",
+      "action": "place",
+      "status": "pending",
+      "created_at": "2026-10-22T14:27:02",
+      "updated_at": "2026-10-22T14:27:02",
+      "source": "AI_TRADE_DESK_MANUAL",
+      "live": false,
+      "immutable_intent": false,
+      "symbol": "TEST",
+      "signal": "BUY",
+      "direction": "long",
+      "entry": 81.08,
+      "stop": 79.92,
+      "target": 84.27,
+      "market_only": false,
+      "manual_setup": true,
+      "entry_order_type": "LIMIT",
+      "level_price": null,
+      "level_type": "ai_trade_desk_proposal",
+      "strategy": "ai_trade_desk_lp1_manual_setup",
+      "nearest_upper_level": null,
+      "nearest_lower_level": null,
+      "reward_risk": 2.75,
+      "confidence": 1,
+      "proposal_id": "aitd-f4afa1af2fd445a3a00dd756626a4b74",
+      "proposal_revision": 0,
+      "idempotency_key": "ai-trade-desk:aitd-f4afa1af2fd445a3a00dd756626a4b74:revision:0",
+      "manual_lifecycle_override": false,
+      "scanner_lifecycle": "READY",
+      "ready_gate_reason_code": null,
+      "quantity": 12,
+      "result": null,
+      "message": "Queued for the bot worker."
+    }
+  ]
+}
