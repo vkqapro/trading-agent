@@ -82,6 +82,76 @@ def _result_has_fill(result: dict[str, Any]) -> bool:
     return isinstance(statuses, dict) and any(_upper(value) in {"FILLED", "EXECUTED"} for value in statuses.values())
 
 
+def _order_ids(payload: dict[str, Any]) -> set[str]:
+    """Return persisted broker order identifiers from a request or position."""
+    return {
+        str(payload.get(key))
+        for key in (
+            "market_order_id",
+            "order_id",
+            "entry_order_id",
+            "parent_order_id",
+            "stop_order_id",
+            "limit_order_id",
+            "target_order_id",
+        )
+        if payload.get(key) not in (None, "", 0, "0")
+    }
+
+
+def _active_position_matches_request(
+    position: dict[str, Any],
+    request: dict[str, Any],
+    result: dict[str, Any],
+) -> bool:
+    """Match an active position to this request without symbol-only promotion.
+
+    Multiple requests for the same symbol are valid. A symbol-level active
+    check therefore turns already-closed requests into OPEN rows whenever a
+    later position remains active. Prefer an explicit request id or shared
+    broker order id; only use a short timestamp fallback when neither side
+    persisted identifiers.
+    """
+    recorded_request_id = str(position.get("request_id") or "")
+    if recorded_request_id:
+        return recorded_request_id == str(request.get("id") or "")
+
+    position_ids = _order_ids(position)
+    request_ids = _order_ids(result)
+    if position_ids or request_ids:
+        return bool(position_ids & request_ids)
+
+    requested = parse_timestamp(request.get("updated_at") or request.get("created_at"))
+    opened = parse_timestamp(position.get("opened_at") or position.get("first_seen_at"))
+    return bool(
+        requested
+        and opened
+        and _upper(position.get("symbol")) == _upper(request.get("symbol"))
+        and abs((opened - requested).total_seconds()) <= 5 * 60
+    )
+
+
+def _latest_observed_close(
+    closed_positions: list[dict[str, Any]],
+    request: dict[str, Any],
+) -> dict[str, Any] | None:
+    """Choose the latest execution-backed close for a request id."""
+    matches = [
+        item
+        for item in closed_positions
+        if isinstance(item, dict)
+        and str(item.get("request_id") or "") == str(request.get("id") or "")
+        and item.get("exit_execution_id")
+    ]
+    if not matches:
+        return None
+    return max(
+        matches,
+        key=lambda item: parse_timestamp(item.get("closed_at"))
+        or datetime.min.replace(tzinfo=EASTERN),
+    )
+
+
 class OrderJournalReader:
     """Expose normalized Trades from supplied rows or the current JSON ledgers."""
 
@@ -131,7 +201,6 @@ class OrderJournalReader:
         for request in requests:
             if isinstance(request, dict) and _upper(request.get("action")) == "CLOSE":
                 closes_by_symbol.setdefault(_upper(request.get("symbol")), []).append(request)
-        active_symbols = {_upper(position.get("symbol")) for position in tracked_positions if isinstance(position, dict)}
         result: list[dict[str, Any]] = []
         for request in requests:
             if not isinstance(request, dict) or _upper(request.get("action")) != "PLACE":
@@ -147,17 +216,18 @@ class OrderJournalReader:
                 ),
                 None,
             )
-            observed = next(
+            observed = _latest_observed_close(closed_positions, request)
+            raw_status = _upper(request.get("status"))
+            active_position = next(
                 (
-                    item for item in closed_positions
-                    if isinstance(item, dict)
-                    and str(item.get("request_id") or "") == str(request.get("id") or "")
-                    and item.get("exit_execution_id")
+                    position
+                    for position in tracked_positions
+                    if isinstance(position, dict)
+                    and _active_position_matches_request(position, request, broker_result)
                 ),
                 None,
             )
-            raw_status = _upper(request.get("status"))
-            if symbol in active_symbols:
+            if active_position:
                 status = "OPEN"
             elif observed:
                 status = "CLOSED_OBSERVED"

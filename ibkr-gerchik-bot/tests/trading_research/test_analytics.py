@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import json
 from datetime import date
 from decimal import Decimal
 from pathlib import Path
 
 from trading_research.analytics_service import ReviewRequest, TradingResearchService
 from trading_research.candle_reader import CandleReader
+from trading_research.config import ProductionDataPaths
 from trading_research.journal_reader import OrderJournalReader, parse_timestamp
 from trading_research.models import Candle
 from trading_research.timezones import USNewYorkFallback
@@ -127,6 +129,153 @@ def test_embedded_production_strategy_id_is_normalized_without_guessing() -> Non
         _row("prb2", symbol="PRB", strategy="MARKET_SCREENER_PRB2_MANUAL_SETUP", side="LONG", entry=10, exit_price=11, stop=9, target=12)
     ])
     assert reader.read()[0].strategy == "PRB2"
+
+
+def test_request_matching_does_not_promote_same_symbol_closed_trade_to_open(tmp_path: Path) -> None:
+    """Closed rows must match the request, not merely an active same-symbol position."""
+    paths = ProductionDataPaths(repository_root=tmp_path)
+    (tmp_path / "memory").mkdir()
+    (tmp_path / "memory" / "runtime").mkdir()
+    (tmp_path / "memory" / "order_requests.json").write_text(
+        json.dumps(
+            {
+                "requests": [
+                    {
+                        "id": "closed-fitb",
+                        "action": "place",
+                        "status": "done",
+                        "created_at": "2026-10-21T12:16:05",
+                        "updated_at": "2026-10-21T12:16:12",
+                        "symbol": "FITB",
+                        "signal": "BUY",
+                        "entry": 52.87,
+                        "stop": 50.2,
+                        "target": 59.54,
+                        "quantity": 5,
+                        "result": {"market_order_id": 1001, "status": "executed"},
+                    },
+                    {
+                        "id": "open-fitb",
+                        "action": "place",
+                        "status": "done",
+                        "created_at": "2026-10-22T12:13:15",
+                        "updated_at": "2026-10-22T12:13:19",
+                        "symbol": "FITB",
+                        "signal": "BUY",
+                        "entry": 52.67,
+                        "stop": 52.17,
+                        "target": 53.92,
+                        "quantity": 18,
+                        "result": {"market_order_id": 2001, "status": "executed"},
+                    },
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    (tmp_path / "memory" / "runtime" / "closed_positions.json").write_text(
+        json.dumps(
+            {
+                "positions": [
+                    {
+                        "symbol": "FITB",
+                        "request_id": "closed-fitb",
+                        "closed_at": "2026-10-22T16:11:39+00:00",
+                        "exit_price": 52.96,
+                        "exit_quantity": 5,
+                        "exit_execution_id": "fitb-close",
+                        "broker_realized_pnl": -1.55547,
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    (tmp_path / "memory" / "runtime" / "state.json").write_text(
+        json.dumps(
+            {
+                "tracked_positions": [
+                    {
+                        "symbol": "FITB",
+                        "market_order_id": 2001,
+                        "opened_at": "2026-10-22T12:13:19-04:00",
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    rows = {row.trade_id: row for row in OrderJournalReader(paths=paths).read()}
+
+    assert rows["stock:req:closed-fitb"].status == "CLOSED_OBSERVED"
+    assert rows["stock:req:closed-fitb"].realized_pnl == Decimal("-1.55547")
+    assert rows["stock:req:open-fitb"].status == "OPEN"
+
+
+def test_duplicate_request_closes_use_latest_execution_backed_close(tmp_path: Path) -> None:
+    """A repeated request id must resolve to its latest persisted close."""
+    paths = ProductionDataPaths(repository_root=tmp_path)
+    (tmp_path / "memory").mkdir()
+    (tmp_path / "memory" / "runtime").mkdir()
+    (tmp_path / "memory" / "order_requests.json").write_text(
+        json.dumps(
+            {
+                "requests": [
+                    {
+                        "id": "mrsh-request",
+                        "action": "place",
+                        "status": "done",
+                        "created_at": "2026-07-29T10:41:14",
+                        "updated_at": "2026-07-29T10:41:19",
+                        "symbol": "MRSH",
+                        "signal": "BUY",
+                        "entry": 191.63,
+                        "stop": 187.56,
+                        "target": 199.77,
+                        "quantity": 5,
+                        "result": {"market_order_id": 627, "status": "executed"},
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    (tmp_path / "memory" / "runtime" / "closed_positions.json").write_text(
+        json.dumps(
+            {
+                "positions": [
+                    {
+                        "symbol": "MRSH",
+                        "request_id": "mrsh-request",
+                        "closed_at": "2026-08-13T15:29:09+00:00",
+                        "exit_price": 187.3,
+                        "exit_execution_id": "mrsh-old",
+                    },
+                    {
+                        "symbol": "MRSH",
+                        "request_id": "mrsh-request",
+                        "closed_at": "2026-10-22T20:37:28+00:00",
+                        "exit_price": 195.48,
+                        "exit_quantity": 5,
+                        "exit_execution_id": "mrsh-new",
+                        "broker_realized_pnl": 40.429851,
+                    },
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    (tmp_path / "memory" / "runtime" / "state.json").write_text(
+        json.dumps({"tracked_positions": []}),
+        encoding="utf-8",
+    )
+
+    row = OrderJournalReader(paths=paths).read()[0]
+
+    assert row.status == "CLOSED_OBSERVED"
+    assert row.exit_time == parse_timestamp("2026-10-22T20:37:28+00:00")
+    assert row.realized_pnl == Decimal("40.429851")
 
 
 def test_research_package_has_no_execution_or_production_module_dependency() -> None:

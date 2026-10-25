@@ -407,7 +407,13 @@ def _closed_positions_by_symbol() -> Dict[str, List[Dict[str, Any]]]:
         ):
             by_symbol.setdefault(symbol, []).append(position)
     for items in by_symbol.values():
-        items.sort(key=lambda item: str(item.get("closed_at") or ""), reverse=True)
+        def close_sort_key(item: Dict[str, Any]) -> tuple[Any, int]:
+            parsed = _parse_dt(item.get("closed_at"))
+            source = str(item.get("source") or "").upper()
+            source_rank = 3 if source == "IBKR_ACCOUNT_TRADES" else 2 if source == "IBKR_FLEX_STATEMENT" else 1
+            return (parsed or datetime.min.replace(tzinfo=timezone.utc), source_rank)
+
+        items.sort(key=close_sort_key, reverse=True)
     return by_symbol
 
 
@@ -459,7 +465,7 @@ def _observed_close_matches_request(position: Dict[str, Any], request: Dict[str,
     recorded_request_id = str(position.get("request_id") or "")
     if recorded_request_id:
         return recorded_request_id == str(request.get("id") or "")
-    if _upper(position.get("source")) == "IBKR":
+    if _upper(position.get("source")) in {"IBKR", "IBKR_ACCOUNT_TRADES"}:
         # Broker-only executions are authoritative closures but are not proof
         # that any particular historical same-symbol request was their entry.
         return False
@@ -716,6 +722,31 @@ def _rows_from_unlinked_broker_closes() -> List[Dict[str, Any]]:
     if not isinstance(positions, list):
         return []
     requests_by_id = _order_requests_by_id()
+    # A local request can be associated with more than one broker close (for
+    # example, a partial/manual close followed by a later exit).  The request
+    # row consumes the newest matching observation; expose older observations
+    # as separate broker rows instead of silently dropping them.
+    selected_close_ids: set[str] = set()
+    for request in requests_by_id.values():
+        if not isinstance(request, dict):
+            continue
+        request_id = str(request.get("id") or "")
+        result = request.get("result") if isinstance(request.get("result"), dict) else {}
+        candidates = [
+            position for position in positions
+            if isinstance(position, dict)
+            and str(position.get("request_id") or "") == request_id
+            and _observed_close_matches_request(position, request, result)
+        ]
+        if candidates:
+            selected = sorted(
+                candidates,
+                key=lambda item: str(item.get("closed_at") or ""),
+                reverse=True,
+            )[0]
+            execution_id = str(selected.get("exit_execution_id") or "")
+            if execution_id:
+                selected_close_ids.add(execution_id)
     rows: List[Dict[str, Any]] = []
     for position in positions:
         if not isinstance(position, dict):
@@ -724,7 +755,8 @@ def _rows_from_unlinked_broker_closes() -> List[Dict[str, Any]]:
         if request_id:
             request = requests_by_id.get(request_id)
             result = request.get("result") if isinstance(request, dict) and isinstance(request.get("result"), dict) else {}
-            if isinstance(request, dict) and _observed_close_matches_request(position, request, result):
+            execution_id = str(position.get("exit_execution_id") or "")
+            if isinstance(request, dict) and execution_id in selected_close_ids:
                 continue
         execution_id = str(position.get("exit_execution_id") or "")
         if not execution_id:

@@ -162,9 +162,9 @@
     "semantic_hash": "a47f92efff8d7a388062745b50785c68"
   },
   "memory/order_requests.json": {
-    "mtime": 1792693594.2735908,
-    "seen": 1792693599.1451468,
-    "ast_hash": "28b8ce32966954aa53c78f85013f97f6",
+    "mtime": 1792716712.2163608,
+    "seen": 1792716716.1898952,
+    "ast_hash": "98f0832843fb433f50b5efd76b47332e",
     "semantic_hash": ""
   },
   "migrations/001_inefficiency_reclaim_down.sql": {
@@ -474,9 +474,9 @@
     "semantic_hash": ""
   },
   "src/journal/order_journal.py": {
-    "mtime": 1791903292.5965073,
-    "seen": 1791903360.4898906,
-    "ast_hash": "8728cd573ac7cbc7b19e772c68822fa2",
+    "mtime": 1792716600.2798407,
+    "seen": 1792716716.208373,
+    "ast_hash": "47bfc9c2a7bde6a17b2621ff81e6cdcc",
     "semantic_hash": ""
   },
   "src/main.py": {
@@ -1014,9 +1014,9 @@
     "semantic_hash": ""
   },
   "tests/test_order_journal.py": {
-    "mtime": 1791903038.464261,
-    "seen": 1791903360.5187721,
-    "ast_hash": "dfda7d96e827e085fbcb33414966d268",
+    "mtime": 1792716605.275406,
+    "seen": 1792716716.2347069,
+    "ast_hash": "ce290671ad87b9c3958e992bdccb7278",
     "semantic_hash": ""
   },
   "tests/test_p0_fixes.py": {
@@ -1194,9 +1194,9 @@
     "semantic_hash": ""
   },
   "dashboard_react/index.html": {
-    "mtime": 1792693539.5836139,
-    "seen": 1792693599.216534,
-    "ast_hash": "e67ed2e1b84b143b6e7f38feeba3534d",
+    "mtime": 1792694015.0796294,
+    "seen": 1792694085.6544454,
+    "ast_hash": "126d86fa617ecca77a8f67693f591586",
     "semantic_hash": ""
   },
   "design_handoff/trading-bot-dashboard/README.md": {
@@ -1230,9 +1230,9 @@
     "semantic_hash": ""
   },
   "memory/TRADE_LOG.md": {
-    "mtime": 1792691568.3064244,
-    "seen": 1792693599.225576,
-    "ast_hash": "5f08a7249c5058291da75ba29aa0f760",
+    "mtime": 1792705377.6542652,
+    "seen": 1792716530.4685566,
+    "ast_hash": "ff57cfabb21ef66b45e71e9275393024",
     "semantic_hash": ""
   },
   "memory/TRADING_STRATEGY.md": {
@@ -1710,9 +1710,9 @@
     "semantic_hash": ""
   },
   "src/journal/flex_statement.py": {
-    "mtime": 1791290624.4385781,
-    "seen": 1791290722.1244934,
-    "ast_hash": "7bae3f02eabb5ed9329d630ac6dfc61f",
+    "mtime": 1792716549.735245,
+    "seen": 1792716716.2083702,
+    "ast_hash": "84a93a6e4a0b1d1eea47acb4138137cc",
     "semantic_hash": ""
   },
   "tests/test_decision_agent.py": {
@@ -1758,9 +1758,9 @@
     "semantic_hash": ""
   },
   "tests/test_flex_statement.py": {
-    "mtime": 1791290648.9285073,
-    "seen": 1791290722.1390896,
-    "ast_hash": "46d594742c955f4ce970f275e8984b34",
+    "mtime": 1792716504.1024134,
+    "seen": 1792716530.4254754,
+    "ast_hash": "935be8e97a7f795e23ddeace6b008385",
     "semantic_hash": ""
   },
   ".playwright-mcp/page-2026-08-27T22-49-43-742Z.yml": {
@@ -1932,9 +1932,9 @@
     "semantic_hash": ""
   },
   "tests/test_unified_stack_lifecycle.py": {
-    "mtime": 1792693539.5836139,
-    "seen": 1792693599.1943939,
-    "ast_hash": "2fb8be2c32cc61df851eae8d60d4a400",
+    "mtime": 1792694030.19115,
+    "seen": 1792694085.633178,
+    "ast_hash": "25240cf6a60a5a020f492ffea0fe1b5c",
     "semantic_hash": ""
   },
   "docs/UNIFIED_DASHBOARD_STACK_IMPLEMENTATION_REPORT.md": {
@@ -4764,9 +4764,9 @@
     "semantic_hash": ""
   },
   "memory/RESEARCH_LOG.md": {
-    "mtime": 1792677180.5996518,
-    "seen": 1792678003.4557924,
-    "ast_hash": "6d4f691c291a597c87b58e1afb8116ab",
+    "mtime": 1792698600.7625785,
+    "seen": 1792716530.4685545,
+    "ast_hash": "e7f4bb266f39ba61a75cecca202dbfce",
     "semantic_hash": ""
   },
   "src/decision/ai_trade_desk_scan.py": {
@@ -5147,40 +5147,40 @@
     "ast_hash": "2cbedd405dc172dcfafc26044f958b82",
     "semantic_hash": ""
   },
-  "pytest-of-Vitaly/pytest-35/test_place_route_requires_expl0/order_requests.json": {
-    "mtime": 1792690744.0783992,
-    "seen": 1792690795.883337,
-    "ast_hash": "36ce8cdfcf08584a8035afab44a6bf30",
+  "pytest-of-Vitaly/pytest-38/test_place_route_requires_expl0/order_requests.json": {
+    "mtime": 1792693622.4786956,
+    "seen": 1792694085.5897293,
+    "ast_hash": "c5e6d900c4d458af1cfb176f5be8897a",
     "semantic_hash": ""
   },
-  "pytest-of-Vitaly/pytest-35/test_ready_proposal_place_rout0/order_requests.json": {
-    "mtime": 1792690743.9319527,
-    "seen": 1792690795.883339,
-    "ast_hash": "a98c586494c3186d5abec826d510c9bc",
+  "pytest-of-Vitaly/pytest-38/test_ready_proposal_place_rout0/order_requests.json": {
+    "mtime": 1792693622.399617,
+    "seen": 1792694085.5897317,
+    "ast_hash": "6e16cca0f322b938a722c9198104f3d1",
     "semantic_hash": ""
   },
-  "pytest-of-Vitaly/pytest-36/test_place_route_requires_expl0/order_requests.json": {
-    "mtime": 1792690811.7187533,
-    "seen": 1792690862.167847,
-    "ast_hash": "aba570a0a6b398df8610907aa7d00fe8",
+  "pytest-of-Vitaly/pytest-39/test_place_route_requires_expl0/order_requests.json": {
+    "mtime": 1792694021.861477,
+    "seen": 1792694085.589733,
+    "ast_hash": "d713e256de0d6bba0676f12d7a318868",
     "semantic_hash": ""
   },
-  "pytest-of-Vitaly/pytest-36/test_ready_proposal_place_rout0/order_requests.json": {
-    "mtime": 1792690811.5918715,
-    "seen": 1792690862.1678495,
-    "ast_hash": "e2457e8e6e6b55f99c7b1ebd3e8ae055",
+  "pytest-of-Vitaly/pytest-39/test_ready_proposal_place_rout0/order_requests.json": {
+    "mtime": 1792694021.7231905,
+    "seen": 1792694085.5897338,
+    "ast_hash": "1fd0fb43a41f754e0b2f8abd0a9ebd2d",
     "semantic_hash": ""
   },
-  "pytest-of-Vitaly/pytest-37/test_place_route_requires_expl0/order_requests.json": {
-    "mtime": 1792693546.2353585,
-    "seen": 1792693599.1464999,
-    "ast_hash": "ef39f1661b0b566c463af927de985920",
+  "pytest-of-Vitaly/pytest-40/test_place_route_requires_expl0/order_requests.json": {
+    "mtime": 1792694036.597229,
+    "seen": 1792694085.5897353,
+    "ast_hash": "34f019a02bb6c4067dece1f01362bd61",
     "semantic_hash": ""
   },
-  "pytest-of-Vitaly/pytest-37/test_ready_proposal_place_rout0/order_requests.json": {
-    "mtime": 1792693546.0898526,
-    "seen": 1792693599.1465015,
-    "ast_hash": "cb21102e511b94c8e6643078b25b3af0",
+  "pytest-of-Vitaly/pytest-40/test_ready_proposal_place_rout0/order_requests.json": {
+    "mtime": 1792694036.514764,
+    "seen": 1792694085.589737,
+    "ast_hash": "e55f4fd85e5862f342bca1d53f38b99c",
     "semantic_hash": ""
   }
 }

@@ -87,3 +87,126 @@ class FlexStatementTests(TestCase):
                 second = flex_statement.run_flex_catch_up()
         self.assertEqual(len(first["trades"]), 1)
         self.assertEqual(second["trades"], [])
+
+    def test_statement_close_merges_early_live_callback(self) -> None:
+        with TemporaryDirectory() as directory:
+            root = flex_statement.Path(directory)
+            runtime = root / "runtime"
+            runtime.mkdir()
+            requests_path = root / "order_requests.json"
+            closes_path = runtime / "closed_positions.json"
+            unmatched_path = runtime / "unmatched.json"
+            requests_path.write_text(
+                '{"requests":[{"id":"req-1","symbol":"AVGO","quantity":2,"entry":360.0,"result":{"limit_order_id":"target-1"}}]}',
+                encoding="utf-8",
+            )
+            closes_path.write_text(
+                '{"positions":[{"symbol":"AVGO","quantity":2,"entry":360.0,"closed_at":"2026-10-08T15:00:00-04:00","exit_price":367.34,"exit_quantity":2,"exit_order_id":"target-1","exit_execution_id":"live-exec","request_id":"req-1","broker_realized_pnl":0.0,"source":"IBKR"}]}',
+                encoding="utf-8",
+            )
+            with (
+                patch.object(flex_statement, "MEMORY_DIR", root),
+                patch.object(flex_statement, "FLEX_UNMATCHED_PATH", unmatched_path),
+            ):
+                result = flex_statement.reconcile_statement_trades(
+                    [{
+                        "symbol": "AVGO", "side": "SELL", "quantity": 2.0,
+                        "price": 367.34, "trade_time": "2026-10-08T15:04:00-04:00",
+                        "order_id": "target-1", "exec_id": "flex-exec",
+                        "commission": -0.10, "fee": 0.0, "realized_pnl": 7.58,
+                    }],
+                    return_details=True,
+                )
+            payload = __import__("json").loads(closes_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(result, {"added": 1, "unmatched": 0})
+        self.assertEqual(len(payload["positions"]), 1)
+        self.assertEqual(payload["positions"][0]["exit_execution_id"], "flex-exec")
+        self.assertEqual(payload["positions"][0]["source"], "IBKR_FLEX_STATEMENT")
+        self.assertAlmostEqual(payload["positions"][0]["broker_realized_pnl"], 7.58)
+
+    def test_broker_only_statement_close_is_persisted_for_order_journal(self) -> None:
+        with TemporaryDirectory() as directory:
+            root = flex_statement.Path(directory)
+            runtime = root / "runtime"
+            runtime.mkdir()
+            requests_path = root / "order_requests.json"
+            closes_path = runtime / "closed_positions.json"
+            unmatched_path = runtime / "unmatched.json"
+            requests_path.write_text('{"requests":[]}', encoding="utf-8")
+            closes_path.write_text('{"positions":[]}', encoding="utf-8")
+            with (
+                patch.object(flex_statement, "MEMORY_DIR", root),
+                patch.object(flex_statement, "FLEX_UNMATCHED_PATH", unmatched_path),
+            ):
+                result = flex_statement.reconcile_statement_trades(
+                    [{
+                        "symbol": "SNAP", "side": "SELL", "quantity": 77.0,
+                        "price": 6.20, "trade_time": "2026-10-14T10:00:00-04:00",
+                        "exec_id": "snap-flex", "realized_pnl": -24.34,
+                        "commission": -1.0, "fee": 0.0,
+                    }],
+                    return_details=True,
+                )
+            payload = __import__("json").loads(closes_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(result, {"added": 1, "unmatched": 0})
+        self.assertEqual(payload["positions"][0]["request_id"], "")
+        self.assertEqual(payload["positions"][0]["source"], "IBKR_FLEX_STATEMENT")
+        self.assertAlmostEqual(payload["positions"][0]["broker_realized_pnl"], -24.34)
+
+    def test_existing_live_and_statement_duplicates_are_canonicalized(self) -> None:
+        with TemporaryDirectory() as directory:
+            root = flex_statement.Path(directory)
+            runtime = root / "runtime"
+            runtime.mkdir()
+            (root / "order_requests.json").write_text('{"requests":[]}', encoding="utf-8")
+            closes_path = runtime / "closed_positions.json"
+            closes_path.write_text(
+                '{"positions":['
+                '{"symbol":"AVGO","quantity":1,"exit_quantity":1,"exit_price":378.23,"closed_at":"2026-10-06T16:51:00+00:00","exit_order_id":"758221299","exit_execution_id":"live","request_id":"req-1","broker_realized_pnl":0,"source":"IBKR"},'
+                '{"symbol":"AVGO","quantity":1,"exit_quantity":1,"exit_price":378.23,"closed_at":"2026-10-06T16:51:00-04:00","exit_order_id":"758221299","exit_execution_id":"flex","request_id":"req-1","broker_realized_pnl":12.93,"source":"IBKR_FLEX_STATEMENT"}'
+                ']}',
+                encoding="utf-8",
+            )
+            with (
+                patch.object(flex_statement, "MEMORY_DIR", root),
+                patch.object(flex_statement, "FLEX_UNMATCHED_PATH", runtime / "unmatched.json"),
+            ):
+                result = flex_statement.reconcile_statement_trades([], return_details=True)
+            payload = __import__("json").loads(closes_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(result, {"added": 0, "unmatched": 0})
+        self.assertEqual(len(payload["positions"]), 1)
+        self.assertEqual(payload["positions"][0]["source"], "IBKR_FLEX_STATEMENT")
+        self.assertAlmostEqual(payload["positions"][0]["broker_realized_pnl"], 12.93)
+
+    def test_account_trades_record_is_not_overwritten_by_older_tws_record(self) -> None:
+        with TemporaryDirectory() as directory:
+            root = flex_statement.Path(directory)
+            runtime = root / "runtime"
+            runtime.mkdir()
+            (root / "order_requests.json").write_text('{"requests":[]}', encoding="utf-8")
+            closes_path = runtime / "closed_positions.json"
+            closes_path.write_text(
+                '{"positions":[{"symbol":"PG","quantity":6,"exit_quantity":6,"exit_price":164.15,"closed_at":"2026-10-22T13:30:54Z","exit_execution_id":"ibkr-api","request_id":"req-1","broker_realized_pnl":27.139693,"source":"IBKR_ACCOUNT_TRADES"}]}',
+                encoding="utf-8",
+            )
+            with (
+                patch.object(flex_statement, "MEMORY_DIR", root),
+                patch.object(flex_statement, "FLEX_UNMATCHED_PATH", runtime / "unmatched.json"),
+            ):
+                result = flex_statement.reconcile_statement_trades([
+                    {
+                        "symbol": "PG", "side": "SELL", "quantity": 6,
+                        "price": 164.15, "trade_time": "2026-10-22T13:30:54-04:00",
+                        "exec_id": "tws-pg", "order_id": "",
+                        "realized_pnl": 113.7, "commission": 0.0, "fee": 0.0,
+                    }
+                ], return_details=True)
+            payload = __import__("json").loads(closes_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(result, {"added": 0, "unmatched": 0})
+        self.assertEqual(len(payload["positions"]), 1)
+        self.assertEqual(payload["positions"][0]["source"], "IBKR_ACCOUNT_TRADES")
+        self.assertAlmostEqual(payload["positions"][0]["broker_realized_pnl"], 27.139693)

@@ -582,3 +582,44 @@ class OrderJournalTests(TestCase):
         self.assertEqual(closed_today[0]["id"], "stock:broker:mrsh-today")
         self.assertEqual(closed_today[0]["quantity"], 5)
         self.assertEqual(closed_today[0]["opened_at"], "")
+
+    def test_additional_close_for_one_request_remains_visible(self) -> None:
+        order_requests = {
+            "requests": [{
+                "id": "mrsh-request",
+                "action": "place",
+                "status": "done",
+                "created_at": "2026-10-01T09:00:00",
+                "updated_at": "2026-10-01T09:00:05",
+                "symbol": "MRSH",
+                "quantity": 5,
+                "entry": 180.0,
+                "result": {"market_order_id": 100, "limit_order_id": 101},
+            }]
+        }
+        closed_positions = {"positions": [
+            {
+                "symbol": "MRSH", "quantity": 5, "exit_quantity": 5,
+                "entry": 180.0, "exit_price": 182.33,
+                "closed_at": "2026-10-15T13:30:11-04:00",
+                "exit_execution_id": "mrsh-old-close", "request_id": "mrsh-request",
+                "source": "IBKR_FLEX_STATEMENT", "broker_realized_pnl": 30.28,
+            },
+            {
+                "symbol": "MRSH", "quantity": 5, "exit_quantity": 5,
+                "entry": 180.0, "exit_price": 195.48,
+                "closed_at": "2026-10-22T20:37:28-04:00",
+                "exit_execution_id": "mrsh-new-close", "request_id": "mrsh-request",
+                "source": "IBKR_FLEX_STATEMENT", "broker_realized_pnl": 77.4,
+            },
+        ]}
+
+        with patch(
+            "src.journal.order_journal._read_json",
+            side_effect=self._read_json(order_requests, closed_positions),
+        ):
+            rows = order_journal._rows_from_unlinked_broker_closes()
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["execution_id"], "mrsh-old-close")
+        self.assertEqual(rows[0]["actual_exit"], 182.33)

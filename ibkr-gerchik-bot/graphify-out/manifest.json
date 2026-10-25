@@ -162,9 +162,9 @@
     "semantic_hash": "a47f92efff8d7a388062745b50785c68"
   },
   "memory/order_requests.json": {
-    "mtime": 1792694080.0634131,
-    "seen": 1792694085.5890396,
-    "ast_hash": "28b8ce32966954aa53c78f85013f97f6",
+    "mtime": 1792780513.5392761,
+    "seen": 1792797891.4020517,
+    "ast_hash": "4370008b77885cf8f29360200526a610",
     "semantic_hash": ""
   },
   "migrations/001_inefficiency_reclaim_down.sql": {
@@ -474,9 +474,9 @@
     "semantic_hash": ""
   },
   "src/journal/order_journal.py": {
-    "mtime": 1791903292.5965073,
-    "seen": 1791903360.4898906,
-    "ast_hash": "8728cd573ac7cbc7b19e772c68822fa2",
+    "mtime": 1792717251.456334,
+    "seen": 1792717338.9097412,
+    "ast_hash": "42a7d3d6488600b8ef4e71a25aa9f65f",
     "semantic_hash": ""
   },
   "src/main.py": {
@@ -1014,9 +1014,9 @@
     "semantic_hash": ""
   },
   "tests/test_order_journal.py": {
-    "mtime": 1791903038.464261,
-    "seen": 1791903360.5187721,
-    "ast_hash": "dfda7d96e827e085fbcb33414966d268",
+    "mtime": 1792716605.275406,
+    "seen": 1792716716.2347069,
+    "ast_hash": "ce290671ad87b9c3958e992bdccb7278",
     "semantic_hash": ""
   },
   "tests/test_p0_fixes.py": {
@@ -1224,15 +1224,15 @@
     "semantic_hash": ""
   },
   "memory/LEVELS_LOG.md": {
-    "mtime": 1792672287.7260263,
-    "seen": 1792673690.9717932,
-    "ast_hash": "a0b1028c438b6d8c90e22634b029e75d",
+    "mtime": 1792758734.6554954,
+    "seen": 1792797891.484077,
+    "ast_hash": "80e6047b89d98495516ade2a2bc469ab",
     "semantic_hash": ""
   },
   "memory/TRADE_LOG.md": {
-    "mtime": 1792691568.3064244,
-    "seen": 1792693599.225576,
-    "ast_hash": "5f08a7249c5058291da75ba29aa0f760",
+    "mtime": 1792786205.8310397,
+    "seen": 1792797891.4840827,
+    "ast_hash": "76a6db02c8a7bcd02c0d359421821a9c",
     "semantic_hash": ""
   },
   "memory/TRADING_STRATEGY.md": {
@@ -1242,9 +1242,9 @@
     "semantic_hash": ""
   },
   "memory/WEEKLY_LOG.md": {
-    "mtime": 1792182305.8419063,
-    "seen": 1792368050.6774738,
-    "ast_hash": "6fa922d13b6dc0a57e8dd40e439c0704",
+    "mtime": 1792787107.6016614,
+    "seen": 1792797891.4842486,
+    "ast_hash": "45620b2daa33e47b25bae16d5c3fbe1e",
     "semantic_hash": ""
   },
   "memory/WEEKLY_REVIEW.md": {
@@ -1710,9 +1710,9 @@
     "semantic_hash": ""
   },
   "src/journal/flex_statement.py": {
-    "mtime": 1791290624.4385781,
-    "seen": 1791290722.1244934,
-    "ast_hash": "7bae3f02eabb5ed9329d630ac6dfc61f",
+    "mtime": 1792717205.0023162,
+    "seen": 1792717338.9097383,
+    "ast_hash": "647a7c9fc18fc155f3c493bad712cd4f",
     "semantic_hash": ""
   },
   "tests/test_decision_agent.py": {
@@ -1758,9 +1758,9 @@
     "semantic_hash": ""
   },
   "tests/test_flex_statement.py": {
-    "mtime": 1791290648.9285073,
-    "seen": 1791290722.1390896,
-    "ast_hash": "46d594742c955f4ce970f275e8984b34",
+    "mtime": 1792717218.6641285,
+    "seen": 1792717338.931779,
+    "ast_hash": "5ed5e6022e3df275ac265686b2b813f4",
     "semantic_hash": ""
   },
   ".playwright-mcp/page-2026-08-27T22-49-43-742Z.yml": {
@@ -4122,9 +4122,9 @@
     "semantic_hash": ""
   },
   "tests/trading_research/test_analytics.py": {
-    "mtime": 1791605457.6477795,
-    "seen": 1791605516.844699,
-    "ast_hash": "09db31911e157a259d84f622191f7195",
+    "mtime": 1792797750.8878615,
+    "seen": 1792797891.4496276,
+    "ast_hash": "2487d0564f09f75e0f531ea544c11012",
     "semantic_hash": ""
   },
   "tests/trading_research/test_safety.py": {
@@ -4176,9 +4176,9 @@
     "semantic_hash": ""
   },
   "trading_research/journal_reader.py": {
-    "mtime": 1791605457.6442485,
-    "seen": 1791605516.8457785,
-    "ast_hash": "a9cc9dadc0a23ae2bcff034fdbb42182",
+    "mtime": 1792797678.4348557,
+    "seen": 1792797891.4523108,
+    "ast_hash": "605741fbdff4dbc30c32b4d07d3dfd88",
     "semantic_hash": ""
   },
   "trading_research/metrics.py": {
@@ -4728,9 +4728,9 @@
     "semantic_hash": ""
   },
   "docs/chatgpt-integration-audit/04-HERMES-MIGRATION-PLAN.md": {
-    "mtime": 1792530083.7082484,
-    "seen": 1792530209.5434365,
-    "ast_hash": "32d9c025b4e992596772786a5d79108b",
+    "mtime": 1792758401.3739688,
+    "seen": 1792797891.4829571,
+    "ast_hash": "ecd2804ce11847daf96307c6b5f62639",
     "semantic_hash": ""
   },
   "docs/chatgpt-integration-audit/05-READ-ONLY-POC-RESULTS.md": {
@@ -4764,9 +4764,9 @@
     "semantic_hash": ""
   },
   "memory/RESEARCH_LOG.md": {
-    "mtime": 1792677180.5996518,
-    "seen": 1792678003.4557924,
-    "ast_hash": "6d4f691c291a597c87b58e1afb8116ab",
+    "mtime": 1792785000.120646,
+    "seen": 1792797891.4840803,
+    "ast_hash": "10868693f5dc030256a3d9976b1a3325",
     "semantic_hash": ""
   },
   "src/decision/ai_trade_desk_scan.py": {
@@ -5181,6 +5181,24 @@
     "mtime": 1792694036.514764,
     "seen": 1792694085.589737,
     "ast_hash": "e55f4fd85e5862f342bca1d53f38b99c",
+    "semantic_hash": ""
+  },
+  "scripts/reconcile_order_journal_from_ibkr_csv.py": {
+    "mtime": 1792717178.621335,
+    "seen": 1792717338.8937488,
+    "ast_hash": "036e6efc5a90521347dc3fdf7d965f17",
+    "semantic_hash": ""
+  },
+  "runtime/auto_radar_refresh.ps1": {
+    "mtime": 1792731008.3722973,
+    "seen": 1792797891.40409,
+    "ast_hash": "ae8a44cec70d719bea7966a8610965fb",
+    "semantic_hash": ""
+  },
+  "runtime/auto_radar_refresh_result.json": {
+    "mtime": 1792731073.190547,
+    "seen": 1792797891.404093,
+    "ast_hash": "7ad1945e938bcab27188b66b2795815a",
     "semantic_hash": ""
   }
 }

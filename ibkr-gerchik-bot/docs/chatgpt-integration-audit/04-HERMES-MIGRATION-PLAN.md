@@ -41,3 +41,20 @@ Telegram can be reduced to notifications, but not immediately. The repository ha
 ## Rollback
 
 Rollback is a routing/configuration decision: point reports and notifications back to Hermes, leave the local execution core untouched, and preserve all source artifact IDs. No strategy or order code should be changed to roll back the conversational layer.
+
+## IBKR MCP connector — October 23, 2026
+
+The official Interactive Brokers MCP connector is configured for these Hermes profiles:
+
+- `default` — OAuth completed; `hermes --profile default mcp test ibkr` passed
+- `trading-analyst` — endpoint, OAuth configuration, and 45-tool discovery installed; reauthorization is required after the default-profile authorization because the current IBKR session invalidated its token
+- `trading-ops-supervisor` — previously connected and verified
+
+Shared connector details:
+
+- Endpoint: `https://api.ibkr.com/v1/api/mcp-public`
+- Transport: Streamable HTTP
+- Authentication: OAuth 2.0 with PKCE
+- Verified discovery: 45 tools
+
+Observed behavior: in this setup, authorizing one Hermes profile invalidates the other profile's cached IBKR token. The profiles are configured correctly, but IBKR authentication is not simultaneously valid in both profiles; re-run `hermes --profile trading-analyst mcp login ibkr` when switching the active authenticated profile. Hermes must be restarted or the active session refreshed before newly discovered tools appear in a running conversation. Live order submission remains a consequential action and requires explicit approval; do not treat connector availability as trading authorization.

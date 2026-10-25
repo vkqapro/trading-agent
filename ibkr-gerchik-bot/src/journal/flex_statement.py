@@ -58,6 +58,16 @@ def normalize_trade_timestamp(value: Any) -> str:
     return text
 
 
+def _source_rank(value: Any) -> int:
+    """Return authority order for persisted broker-close sources."""
+    source = str(value or "").upper()
+    if source == "IBKR_ACCOUNT_TRADES":
+        return 3
+    if source == "IBKR_FLEX_STATEMENT":
+        return 2
+    return 1
+
+
 def _read_state() -> Dict[str, Any]:
     try:
         return json.loads(FLEX_STATE_PATH.read_text(encoding="utf-8"))
@@ -379,7 +389,14 @@ def run_flex_catch_up(
 
 
 def reconcile_statement_trades(trades: Iterable[Dict[str, Any]], return_details: bool = False) -> int | Dict[str, int]:
-    """Persist statement-backed closes matched to local bracket requests."""
+    """Persist statement-backed closes and preserve broker-only close evidence.
+
+    A live IBKR callback can arrive before the TWS/Flex report.  Those records
+    have different execution IDs and timestamps, but represent the same broker
+    close.  The statement record is the authoritative version because it has
+    the broker P&L and commission fields, so it must replace/merge the early
+    callback rather than create a second journal row.
+    """
     requests_path = MEMORY_DIR / "order_requests.json"
     closes_path = MEMORY_DIR / "runtime" / "closed_positions.json"
     try:
@@ -393,24 +410,93 @@ def reconcile_statement_trades(trades: Iterable[Dict[str, Any]], return_details:
     positions = payload.get("positions") if isinstance(payload, dict) else []
     if not isinstance(positions, list):
         positions = []
+
+    def close_key(item: Dict[str, Any]) -> tuple[Any, ...]:
+        timestamp = normalize_trade_timestamp(item.get("closed_at") or item.get("trade_time"))
+        return (
+            str(item.get("symbol") or "").upper(),
+            abs(float(item.get("exit_quantity") or item.get("quantity") or 0)),
+            round(float(item.get("exit_price") or item.get("price") or 0), 8),
+            timestamp.split("T", 1)[0],
+        )
+
+    def same_close_identity(left: Dict[str, Any], right: Dict[str, Any]) -> bool:
+        if close_key(left) != close_key(right):
+            return False
+        left_request = str(left.get("request_id") or "")
+        right_request = str(right.get("request_id") or "")
+        if left_request and right_request and left_request == right_request:
+            return True
+        # The TWS export may not carry the local request ID.  Once a
+        # statement-backed record is present, an exact same-day symbol/qty/
+        # price match supersedes an earlier non-statement callback.
+        if max(_source_rank(left.get("source")), _source_rank(right.get("source"))) >= 2:
+            return True
+        left_order = str(left.get("exit_order_id") or left.get("order_id") or "")
+        right_order = str(right.get("exit_order_id") or right.get("order_id") or "")
+        return bool(left_order and right_order and left_order == right_order)
+
+    def merge_statement_record(existing: Dict[str, Any], candidate: Dict[str, Any]) -> Dict[str, Any]:
+        if _source_rank(candidate.get("source")) > _source_rank(existing.get("source")):
+            merged = dict(existing)
+            merged.update({key: value for key, value in candidate.items() if value not in (None, "")})
+            return merged
+        return existing
+
     # Older report imports could generate different synthetic IDs for the same
     # HTML summary/detail row. Collapse those duplicates before reconciling.
     deduped_positions: List[Dict[str, Any]] = []
     seen_position_keys: set[tuple[Any, ...]] = set()
+    positions_changed = False
     for item in positions:
         if not isinstance(item, dict):
             continue
-        key = (str(item.get("symbol") or "").upper(), abs(float(item.get("exit_quantity") or item.get("quantity") or 0)), round(float(item.get("exit_price") or 0), 8), " ".join(str(item.get("closed_at") or "").replace(",", " ").split()))
+        matching_index = next((
+            index for index, existing in enumerate(deduped_positions)
+            if same_close_identity(existing, item)
+        ), None)
+        if matching_index is not None:
+            deduped_positions[matching_index] = merge_statement_record(deduped_positions[matching_index], item)
+            positions_changed = True
+            continue
+        key = (
+            str(item.get("symbol") or "").upper(),
+            abs(float(item.get("exit_quantity") or item.get("quantity") or 0)),
+            round(float(item.get("exit_price") or 0), 8),
+            " ".join(str(item.get("closed_at") or "").replace(",", " ").split()),
+        )
         if key in seen_position_keys:
             continue
         seen_position_keys.add(key)
         deduped_positions.append(item)
-    positions_changed = len(deduped_positions) != len(positions)
+    positions_changed = positions_changed or len(deduped_positions) != len(positions)
     positions = deduped_positions
     existing_ids = {str(item.get("exit_execution_id")) for item in positions if isinstance(item, dict)}
+
+    def find_existing(sell: Dict[str, Any], request_id: str = "") -> Dict[str, Any] | None:
+        sell_key = close_key(sell)
+        for item in positions:
+            if not isinstance(item, dict) or close_key(item) != sell_key:
+                continue
+            if str(item.get("exit_execution_id") or "") == str(sell.get("exec_id") or ""):
+                return item
+            # A statement close may replace the earlier live callback for the
+            # same bracket request.  Do not merge unrelated broker-only closes
+            # merely because their price and quantity happen to match.
+            if request_id and str(item.get("request_id") or "") == request_id:
+                return item
+            if str(item.get("source") or "") != "IBKR_FLEX_STATEMENT":
+                return item
+            if sell.get("order_id") and str(item.get("exit_order_id") or "") == str(sell.get("order_id")):
+                return item
+        return None
     existing_natural = {
-        (str(item.get("symbol") or "").upper(), abs(float(item.get("exit_quantity") or item.get("quantity") or 0)),
-         round(float(item.get("exit_price") or 0), 8), " ".join(str(item.get("closed_at") or "").replace(",", " ").split()))
+        (
+            str(item.get("symbol") or "").upper(),
+            abs(float(item.get("exit_quantity") or item.get("quantity") or 0)),
+            round(float(item.get("exit_price") or 0), 8),
+            " ".join(str(item.get("closed_at") or "").replace(",", " ").split()),
+        )
         for item in positions if isinstance(item, dict)
     }
     try:
@@ -451,12 +537,40 @@ def reconcile_statement_trades(trades: Iterable[Dict[str, Any]], return_details:
             elif float(request.get("quantity") or result.get("quantity") or 0) == quantity:
                 candidates.append(request)
         if not candidates:
-            if execution_id not in unmatched_ids:
-                unmatched.append(dict(sell))
-                unmatched_ids.add(execution_id)
+            # Keep a broker-only close visible in Order Journal.  It may have
+            # been opened before this app started or outside this app; placing
+            # it in the unmatched sidecar alone made the close disappear from
+            # the user-facing journal.
+            existing = find_existing(sell)
+            if existing is not None:
+                existing_ids.add(execution_id)
+                continue
+            position = {
+                "symbol": symbol, "quantity": quantity, "entry": None, "avg_cost": None,
+                "opened_at": None, "closed_at": sell.get("trade_time"),
+                "exit_price": float(sell.get("price") or 0), "exit_quantity": quantity,
+                "exit_order_id": sell.get("order_id"), "exit_execution_id": execution_id,
+                "exit_reason": "BROKER_SELL_EXECUTION",
+                "request_id": "", "commission": float(sell.get("commission") or 0),
+                "fee": float(sell.get("fee") or 0),
+                "broker_realized_pnl": (
+                    float(sell["realized_pnl"])
+                    if sell.get("realized_pnl") is not None else None
+                ),
+                "source": "IBKR_FLEX_STATEMENT",
+                "entry_price_source": "unavailable_broker_only",
+            }
+            positions.append(position)
+            existing_ids.add(execution_id)
+            positions_changed = True
+            added += 1
+            unmatched = [item for item in unmatched if str(item.get("exec_id") or "") != execution_id]
+            unmatched_ids.discard(execution_id)
             continue
         request = candidates[0]
         result = request.get("result") if isinstance(request.get("result"), dict) else {}
+        request_id = str(request.get("id") or "")
+        existing = find_existing(sell, request_id)
         entry = float(request.get("entry") or result.get("entry") or 0)
         matching_buys = [trade for trade in trades if str(trade.get("symbol") or "").upper() == symbol and str(trade.get("side", "")).upper() in {"BUY", "BOT"} and abs(float(trade.get("quantity") or 0)) == quantity]
         buy_costs = 0.0
@@ -484,15 +598,24 @@ def reconcile_statement_trades(trades: Iterable[Dict[str, Any]], return_details:
                 else "BROKER_SELL_EXECUTION"
             ),
             "market_order_id": result.get("market_order_id"), "stop_order_id": result.get("stop_order_id"),
-            "limit_order_id": result.get("limit_order_id"), "request_id": str(request.get("id") or ""),
+            "limit_order_id": result.get("limit_order_id"), "request_id": request_id,
             "commission": float(sell.get("commission") or 0), "fee": float(sell.get("fee") or 0),
             "broker_realized_pnl": float(net_pnl), "source": "IBKR_FLEX_STATEMENT",
             "entry_price_source": "ibkr_flex_statement",
         }
-        positions.append(position)
+        if existing is not None:
+            # Preserve the local request linkage and any fields not present in
+            # the statement, while replacing the early callback's identity and
+            # P&L with the authoritative statement values.
+            if _source_rank(position.get("source")) > _source_rank(existing.get("source")):
+                existing.update({key: value for key, value in position.items() if value not in (None, "")})
+                positions_changed = True
+                added += 1
+        else:
+            positions.append(position)
+            added += 1
         existing_ids.add(execution_id)
         existing_natural.add(natural_key)
-        added += 1
     if added or positions_changed:
         payload["positions"] = positions
         closes_path.parent.mkdir(parents=True, exist_ok=True)
