@@ -1,0 +1,7049 @@
+{
+  "queried_at_utc": "2026-10-26T21:15:11+00:00",
+  "base_url": "https://us.okx.com",
+  "x_simulated_trading": "1",
+  "instrument_counts": {
+    "SPOT": 567,
+    "SWAP": 187
+  },
+  "demo_account_acct_lv": null,
+  "demo_account_check": {
+    "code": "0",
+    "msg": "",
+    "currencies_nonzero": [
+      {
+        "ccy": "USDT",
+        "availBal": "4999993.622847851",
+        "eq": "5000093.622847851"
+      },
+      {
+        "ccy": "USD",
+        "availBal": "61598.915466676655",
+        "eq": "61598.915466676655"
+      },
+      {
+        "ccy": "USDC",
+        "availBal": "5000",
+        "eq": "5000"
+      },
+      {
+        "ccy": "BTC",
+        "availBal": "0.002561412625",
+        "eq": "0.002561412625"
+      },
+      {
+        "ccy": "DOGE",
+        "availBal": "1705.7883552298",
+        "eq": "1705.7883552298"
+      },
+      {
+        "ccy": "LTC",
+        "availBal": "0.508215",
+        "eq": "0.508215"
+      },
+      {
+        "ccy": "ETH",
+        "availBal": "0.000000006",
+        "eq": "0.000000006"
+      }
+    ]
+  },
+  "configured_symbols_validated": [
+    {
+      "configured_symbol": "INDEX:BTCUSD",
+      "okx_inst_id": "BTC-USDT",
+      "inst_type": "SPOT",
+      "available_in_paper": true,
+      "state": "live",
+      "base_ccy": "BTC",
+      "quote_ccy": "USDT",
+      "tick_sz": "0.1",
+      "min_sz": "0.00002",
+      "lot_sz": "0.00000001"
+    },
+    {
+      "configured_symbol": "OKX:WLDUSDT",
+      "okx_inst_id": "WLD-USDT",
+      "inst_type": "SPOT",
+      "available_in_paper": true,
+      "state": "live",
+      "base_ccy": "WLD",
+      "quote_ccy": "USDT",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "configured_symbol": "OKX:XLMUSDT",
+      "okx_inst_id": "XLM-USDT",
+      "inst_type": "SPOT",
+      "available_in_paper": true,
+      "state": "live",
+      "base_ccy": "XLM",
+      "quote_ccy": "USDT",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.000001"
+    },
+    {
+      "configured_symbol": "OKX:LITUSDT",
+      "okx_inst_id": "LIT-USDT",
+      "inst_type": "SPOT",
+      "available_in_paper": true,
+      "state": "live",
+      "base_ccy": "LIT",
+      "quote_ccy": "USDT",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "configured_symbol": "OKX:KITEUSDT",
+      "okx_inst_id": "KITE-USDT",
+      "inst_type": "SPOT",
+      "available_in_paper": false,
+      "state": null,
+      "base_ccy": null,
+      "quote_ccy": null,
+      "tick_sz": null,
+      "min_sz": null,
+      "lot_sz": null
+    },
+    {
+      "configured_symbol": "OKX:CCUSD",
+      "okx_inst_id": "CC-USD",
+      "inst_type": "SPOT",
+      "available_in_paper": false,
+      "state": null,
+      "base_ccy": null,
+      "quote_ccy": null,
+      "tick_sz": null,
+      "min_sz": null,
+      "lot_sz": null
+    },
+    {
+      "configured_symbol": "OKX:ONDOUSDT",
+      "okx_inst_id": "ONDO-USDT",
+      "inst_type": "SPOT",
+      "available_in_paper": true,
+      "state": "live",
+      "base_ccy": "ONDO",
+      "quote_ccy": "USDT",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "configured_symbol": "OKX:INJUSDT",
+      "okx_inst_id": "INJ-USDT",
+      "inst_type": "SPOT",
+      "available_in_paper": true,
+      "state": "live",
+      "base_ccy": "INJ",
+      "quote_ccy": "USDT",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.00001"
+    },
+    {
+      "configured_symbol": "OKX:GRAMUSDT",
+      "okx_inst_id": "GRAM-USDT",
+      "inst_type": "SPOT",
+      "available_in_paper": true,
+      "state": "live",
+      "base_ccy": "GRAM",
+      "quote_ccy": "USDT",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "configured_symbol": "OKX:LUNRUSDT.P",
+      "okx_inst_id": "LUNR-USDT-SWAP",
+      "inst_type": "SWAP",
+      "available_in_paper": false,
+      "state": null,
+      "base_ccy": null,
+      "quote_ccy": null,
+      "tick_sz": null,
+      "min_sz": null,
+      "lot_sz": null
+    },
+    {
+      "configured_symbol": "OKX:JTOUSDT",
+      "okx_inst_id": "JTO-USDT",
+      "inst_type": "SPOT",
+      "available_in_paper": false,
+      "state": null,
+      "base_ccy": null,
+      "quote_ccy": null,
+      "tick_sz": null,
+      "min_sz": null,
+      "lot_sz": null
+    },
+    {
+      "configured_symbol": "OKX:ZECUSDT",
+      "okx_inst_id": "ZEC-USDT",
+      "inst_type": "SPOT",
+      "available_in_paper": false,
+      "state": null,
+      "base_ccy": null,
+      "quote_ccy": null,
+      "tick_sz": null,
+      "min_sz": null,
+      "lot_sz": null
+    },
+    {
+      "configured_symbol": "OKX:NEARUSDT",
+      "okx_inst_id": "NEAR-USDT",
+      "inst_type": "SPOT",
+      "available_in_paper": true,
+      "state": "live",
+      "base_ccy": "NEAR",
+      "quote_ccy": "USDT",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.00000001"
+    },
+    {
+      "configured_symbol": "OKX:HYPEUSDT",
+      "okx_inst_id": "HYPE-USDT",
+      "inst_type": "SPOT",
+      "available_in_paper": true,
+      "state": "live",
+      "base_ccy": "HYPE",
+      "quote_ccy": "USDT",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "configured_symbol": "OKX:MORPHOUSD",
+      "okx_inst_id": "MORPHO-USD",
+      "inst_type": "SPOT",
+      "available_in_paper": false,
+      "state": null,
+      "base_ccy": null,
+      "quote_ccy": null,
+      "tick_sz": null,
+      "min_sz": null,
+      "lot_sz": null
+    },
+    {
+      "configured_symbol": "OKX:LTCUSDT",
+      "okx_inst_id": "LTC-USDT",
+      "inst_type": "SPOT",
+      "available_in_paper": true,
+      "state": "live",
+      "base_ccy": "LTC",
+      "quote_ccy": "USDT",
+      "tick_sz": "0.01",
+      "min_sz": "0.001",
+      "lot_sz": "0.000001"
+    },
+    {
+      "configured_symbol": "DOGE-USD",
+      "okx_inst_id": "DOGE-USD",
+      "inst_type": "SPOT",
+      "available_in_paper": false,
+      "state": null,
+      "base_ccy": null,
+      "quote_ccy": null,
+      "tick_sz": null,
+      "min_sz": null,
+      "lot_sz": null
+    }
+  ],
+  "paper_spot_instruments": [
+    {
+      "inst_id": "1INCH-USDT",
+      "base_ccy": "1INCH",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "2Z-USDT",
+      "base_ccy": "2Z",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "A-USDT",
+      "base_ccy": "A",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "AAPLX-USDT",
+      "base_ccy": "AAPLX",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "AAVE-BTC",
+      "base_ccy": "AAVE",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "0.01",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "AAVE-EUR",
+      "base_ccy": "AAVE",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "AAVE-USDT",
+      "base_ccy": "AAVE",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "ACE-USDT",
+      "base_ccy": "ACE",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "ACT-BTC",
+      "base_ccy": "ACT",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "ACT-ETH",
+      "base_ccy": "ACT",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "ACT-TRY",
+      "base_ccy": "ACT",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "ACT-USDT",
+      "base_ccy": "ACT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "500",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "ADA-BTC",
+      "base_ccy": "ADA",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "10",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "ADA-DAI",
+      "base_ccy": "ADA",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "ADA-ETH",
+      "base_ccy": "ADA",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "ADA-OKB",
+      "base_ccy": "ADA",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "ADA-SOL",
+      "base_ccy": "ADA",
+      "quote_ccy": "SOL",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "ADA-USDT",
+      "base_ccy": "ADA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.01",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "AEVO-USDT",
+      "base_ccy": "AEVO",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "AGIX-USDT",
+      "base_ccy": "AGIX",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "AI16Z-USDT",
+      "base_ccy": "AI16Z",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "AIDOGE-USDT",
+      "base_ccy": "AIDOGE",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0000000000001",
+      "min_sz": "10000000000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "ALGO-OKB",
+      "base_ccy": "ALGO",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "ALGO-USD",
+      "base_ccy": "ALGO",
+      "quote_ccy": "USD",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ALGO-USDT",
+      "base_ccy": "ALGO",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "ALLO-EUR",
+      "base_ccy": "ALLO",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "ALLO-USDT",
+      "base_ccy": "ALLO",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ALPHA-USDT",
+      "base_ccy": "ALPHA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "AMZNX-USDT",
+      "base_ccy": "AMZNX",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "ANIME-BRL",
+      "base_ccy": "ANIME",
+      "quote_ccy": "BRL",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ANIME-BTC",
+      "base_ccy": "ANIME",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.000000001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "ANIME-DAI",
+      "base_ccy": "ANIME",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "ANIME-ETH",
+      "base_ccy": "ANIME",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "ANIME-SOL",
+      "base_ccy": "ANIME",
+      "quote_ccy": "SOL",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "ANIME-USDT",
+      "base_ccy": "ANIME",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "API3-USDT",
+      "base_ccy": "API3",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "APT-EUR",
+      "base_ccy": "APT",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "APT-USD",
+      "base_ccy": "APT",
+      "quote_ccy": "USD",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "APT-USDT",
+      "base_ccy": "APT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "ARB-USD",
+      "base_ccy": "ARB",
+      "quote_ccy": "USD",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ARB-USDC",
+      "base_ccy": "ARB",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "ARKM-BTC",
+      "base_ccy": "ARKM",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "ARKM-ETH",
+      "base_ccy": "ARKM",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "ARKM-OKB",
+      "base_ccy": "ARKM",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "ARKM-TRY",
+      "base_ccy": "ARKM",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "ARKM-USDT",
+      "base_ccy": "ARKM",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "ASP-USDT",
+      "base_ccy": "ASP",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ASTER-DAI",
+      "base_ccy": "ASTER",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "ASTER-USDT",
+      "base_ccy": "ASTER",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "ATH-USDT",
+      "base_ccy": "ATH",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "ATOM-BTC",
+      "base_ccy": "ATOM",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "ATOM-ETH",
+      "base_ccy": "ATOM",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "ATOM-EUR",
+      "base_ccy": "ATOM",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "ATOM-OKB",
+      "base_ccy": "ATOM",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "ATOM-USDT",
+      "base_ccy": "ATOM",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.005",
+      "min_sz": "1",
+      "lot_sz": "0.0000001"
+    },
+    {
+      "inst_id": "AUCTION-USDT",
+      "base_ccy": "AUCTION",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "AVAX-BTC",
+      "base_ccy": "AVAX",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "AVAX-HKD",
+      "base_ccy": "AVAX",
+      "quote_ccy": "HKD",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "AVAX-OKB",
+      "base_ccy": "AVAX",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "AVAX-TRY",
+      "base_ccy": "AVAX",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "AVAX-USDT",
+      "base_ccy": "AVAX",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "AXS-HKD",
+      "base_ccy": "AXS",
+      "quote_ccy": "HKD",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "AZY-ETH",
+      "base_ccy": "AZY",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "10",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "BABY-DAI",
+      "base_ccy": "BABY",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "BABY-USDT",
+      "base_ccy": "BABY",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "BABYDOGE-USDT",
+      "base_ccy": "BABYDOGE",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000000000001",
+      "min_sz": "1000000000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "BAL-OKB",
+      "base_ccy": "BAL",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "BAL-USDT",
+      "base_ccy": "BAL",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "BANANA-BTC",
+      "base_ccy": "BANANA",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "0.0001",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "BANANA-DAI",
+      "base_ccy": "BANANA",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "BANANA-ETH",
+      "base_ccy": "BANANA",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.001",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "BANANA-SOL",
+      "base_ccy": "BANANA",
+      "quote_ccy": "SOL",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "BANANA-USDT",
+      "base_ccy": "BANANA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "BAND-OKB",
+      "base_ccy": "BAND",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "BAND-USDT",
+      "base_ccy": "BAND",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "BARD-USDT",
+      "base_ccy": "BARD",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "BCH-BTC",
+      "base_ccy": "BCH",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "0.01",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "BCH-EUR",
+      "base_ccy": "BCH",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "BCH-USDT",
+      "base_ccy": "BCH",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "BERA-DAI",
+      "base_ccy": "BERA",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "BERA-USDT",
+      "base_ccy": "BERA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "7",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "BETH-ETH",
+      "base_ccy": "BETH",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.001",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "BETH-USDT",
+      "base_ccy": "BETH",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.001",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "BIGTIME-USDT",
+      "base_ccy": "BIGTIME",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "BIO-AUD",
+      "base_ccy": "BIO",
+      "quote_ccy": "AUD",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "BIO-USDC",
+      "base_ccy": "BIO",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "BIO-USDT",
+      "base_ccy": "BIO",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "BNB-EUR",
+      "base_ccy": "BNB",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "BNB-USDC",
+      "base_ccy": "BNB",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "BNB-USDT",
+      "base_ccy": "BNB",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.001",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "BNT-OKB",
+      "base_ccy": "BNT",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "BNT-USDT",
+      "base_ccy": "BNT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "BOME-BTC",
+      "base_ccy": "BOME",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000000001",
+      "min_sz": "1000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "BOME-ETH",
+      "base_ccy": "BOME",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.000000001",
+      "min_sz": "1000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "BOME-USDT",
+      "base_ccy": "BOME",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "BREV-DAI",
+      "base_ccy": "BREV",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "BREV-USDT",
+      "base_ccy": "BREV",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "BSV-USDT",
+      "base_ccy": "BSV",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "BTC-AED",
+      "base_ccy": "BTC",
+      "quote_ccy": "AED",
+      "state": "live",
+      "tick_sz": "1",
+      "min_sz": "0.000001",
+      "lot_sz": "0.000000001"
+    },
+    {
+      "inst_id": "BTC-BRL",
+      "base_ccy": "BTC",
+      "quote_ccy": "BRL",
+      "state": "live",
+      "tick_sz": "1",
+      "min_sz": "0.0001",
+      "lot_sz": "0.00000001"
+    },
+    {
+      "inst_id": "BTC-EUR",
+      "base_ccy": "BTC",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.00001",
+      "lot_sz": "0.00000001"
+    },
+    {
+      "inst_id": "BTC-HKD",
+      "base_ccy": "BTC",
+      "quote_ccy": "HKD",
+      "state": "live",
+      "tick_sz": "1",
+      "min_sz": "0.00001",
+      "lot_sz": "0.00000001"
+    },
+    {
+      "inst_id": "BTC-PLN",
+      "base_ccy": "BTC",
+      "quote_ccy": "PLN",
+      "state": "live",
+      "tick_sz": "1",
+      "min_sz": "0.00001",
+      "lot_sz": "0.00000001"
+    },
+    {
+      "inst_id": "BTC-SGD",
+      "base_ccy": "BTC",
+      "quote_ccy": "SGD",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.000001",
+      "lot_sz": "0.000000001"
+    },
+    {
+      "inst_id": "BTC-TRY",
+      "base_ccy": "BTC",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "1",
+      "min_sz": "0.0001",
+      "lot_sz": "0.00000001"
+    },
+    {
+      "inst_id": "BTC-USDC",
+      "base_ccy": "BTC",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "1",
+      "min_sz": "0.00001",
+      "lot_sz": "0.00000001"
+    },
+    {
+      "inst_id": "BTC-USDT",
+      "base_ccy": "BTC",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.00002",
+      "lot_sz": "0.00000001"
+    },
+    {
+      "inst_id": "BTM-OKB",
+      "base_ccy": "BTM",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "10",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "BTT-USDT",
+      "base_ccy": "BTT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0000000001",
+      "min_sz": "10",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "BZZ-OKB",
+      "base_ccy": "BZZ",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "BZZ-USDT",
+      "base_ccy": "BZZ",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "CAP-USDC",
+      "base_ccy": "CAP",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "CAT-USDT",
+      "base_ccy": "CAT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000000001",
+      "min_sz": "100000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "CC-USDT",
+      "base_ccy": "CC",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "CELO-OKB",
+      "base_ccy": "CELO",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "CELO-USDT",
+      "base_ccy": "CELO",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "CELR-USDT",
+      "base_ccy": "CELR",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "100",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "CETUS-USDT",
+      "base_ccy": "CETUS",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "CFX-USDT",
+      "base_ccy": "CFX",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "CHAT-USDT",
+      "base_ccy": "CHAT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "CHZ-BTC",
+      "base_ccy": "CHZ",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.000000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "CHZ-DAI",
+      "base_ccy": "CHZ",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "CHZ-ETH",
+      "base_ccy": "CHZ",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "CHZ-USDT",
+      "base_ccy": "CHZ",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "CNTM-BTC",
+      "base_ccy": "CNTM",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "COMP-USDT",
+      "base_ccy": "COMP",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "CONV-USDT",
+      "base_ccy": "CONV",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "CRO-OKB",
+      "base_ccy": "CRO",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "CRV-BTC",
+      "base_ccy": "CRV",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "10",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "CRV-OKB",
+      "base_ccy": "CRV",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "CRV-USDT",
+      "base_ccy": "CRV",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "CSPR-BTC",
+      "base_ccy": "CSPR",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.000000001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "CSPR-DAI",
+      "base_ccy": "CSPR",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "CSPR-USDT",
+      "base_ccy": "CSPR",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "CT-USDC",
+      "base_ccy": "CT",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "CT-USDT",
+      "base_ccy": "CT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "CTC-ETH",
+      "base_ccy": "CTC",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "1000",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "CTC-USDT",
+      "base_ccy": "CTC",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "CVC-BTC",
+      "base_ccy": "CVC",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "10",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "CVC-ETH",
+      "base_ccy": "CVC",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "10",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "CVC-OKB",
+      "base_ccy": "CVC",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "DEGEN-BTC",
+      "base_ccy": "DEGEN",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000000001",
+      "min_sz": "1000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "DEGEN-ETH",
+      "base_ccy": "DEGEN",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.000000001",
+      "min_sz": "1000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "DEGEN-OKB",
+      "base_ccy": "DEGEN",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "DEGEN-USDT",
+      "base_ccy": "DEGEN",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "100",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "DEP-OKB",
+      "base_ccy": "DEP",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "DEP-USDT",
+      "base_ccy": "DEP",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "100",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "DGB-BTC",
+      "base_ccy": "DGB",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.000000001",
+      "min_sz": "100",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "DMAIL-USDT",
+      "base_ccy": "DMAIL",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "DMG-USDT",
+      "base_ccy": "DMG",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "DOGE-BTC",
+      "base_ccy": "DOGE",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "10",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "DOGE-ETH",
+      "base_ccy": "DOGE",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "10",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "DOGE-EUR",
+      "base_ccy": "DOGE",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "DOGE-TRY",
+      "base_ccy": "DOGE",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "DOGE-USDC",
+      "base_ccy": "DOGE",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "DOGE-USDT",
+      "base_ccy": "DOGE",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00005",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "DOGS-BTC",
+      "base_ccy": "DOGS",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000000001",
+      "min_sz": "1000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "DOGS-ETH",
+      "base_ccy": "DOGS",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.000000001",
+      "min_sz": "1000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "DOGS-OKB",
+      "base_ccy": "DOGS",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "DOGS-USDT",
+      "base_ccy": "DOGS",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "DORA-USDT",
+      "base_ccy": "DORA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "100",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "DOT-BTC",
+      "base_ccy": "DOT",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.000000001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "DOT-USDT",
+      "base_ccy": "DOT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "EDGE1-USDT",
+      "base_ccy": "EDGE1",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "EGLD-BTC",
+      "base_ccy": "EGLD",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "EGLD-DAI",
+      "base_ccy": "EGLD",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "EGLD-ETH",
+      "base_ccy": "EGLD",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "EGLD-USDT",
+      "base_ccy": "EGLD",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "ENA-TRY",
+      "base_ccy": "ENA",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "ENJ-USDT",
+      "base_ccy": "ENJ",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "ESP-USDT",
+      "base_ccy": "ESP",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ETC-BTC",
+      "base_ccy": "ETC",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "0.1",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "ETC-USD",
+      "base_ccy": "ETC",
+      "quote_ccy": "USD",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "ETC-USDT",
+      "base_ccy": "ETC",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "ETH-AED",
+      "base_ccy": "ETH",
+      "quote_ccy": "AED",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.0001",
+      "lot_sz": "0.0000001"
+    },
+    {
+      "inst_id": "ETH-BRL",
+      "base_ccy": "ETH",
+      "quote_ccy": "BRL",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.001",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "ETH-BTC",
+      "base_ccy": "ETH",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "0.0001",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "ETH-EUR",
+      "base_ccy": "ETH",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.0001",
+      "lot_sz": "0.0000001"
+    },
+    {
+      "inst_id": "ETH-HKD",
+      "base_ccy": "ETH",
+      "quote_ccy": "HKD",
+      "state": "live",
+      "tick_sz": "1",
+      "min_sz": "0.00001",
+      "lot_sz": "0.0000001"
+    },
+    {
+      "inst_id": "ETH-SOL",
+      "base_ccy": "ETH",
+      "quote_ccy": "SOL",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "ETH-TRY",
+      "base_ccy": "ETH",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "1",
+      "min_sz": "0.001",
+      "lot_sz": "0.0000001"
+    },
+    {
+      "inst_id": "ETH-USDC",
+      "base_ccy": "ETH",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "1",
+      "min_sz": "0.001",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "ETH-USDT",
+      "base_ccy": "ETH",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.00073",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "ETHFI-USDT",
+      "base_ccy": "ETHFI",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "ETHW-USDT",
+      "base_ccy": "ETHW",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "ETM-USDT",
+      "base_ccy": "ETM",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "EUR-USDT",
+      "base_ccy": "EUR",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "FET-EUR",
+      "base_ccy": "FET",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "FET-TRY",
+      "base_ccy": "FET",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "FET-USDT",
+      "base_ccy": "FET",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "FIL-BTC",
+      "base_ccy": "FIL",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "FIL-ETH",
+      "base_ccy": "FIL",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "FIL-OKB",
+      "base_ccy": "FIL",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "FIL-USDT",
+      "base_ccy": "FIL",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "FITFI-USDT",
+      "base_ccy": "FITFI",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "100",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "FLOKI-TRY",
+      "base_ccy": "FLOKI",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "FLOKI-USDT",
+      "base_ccy": "FLOKI",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "100000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "FLOW-USDT",
+      "base_ccy": "FLOW",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "FLUID-USDT",
+      "base_ccy": "FLUID",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.001",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "FRONT-USDT",
+      "base_ccy": "FRONT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "FTM-OKB",
+      "base_ccy": "FTM",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "FTM-USDT",
+      "base_ccy": "FTM",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "GALA-USDT",
+      "base_ccy": "GALA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "GARI-USDT",
+      "base_ccy": "GARI",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "GAS-DAI",
+      "base_ccy": "GAS",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "GAS-USDT",
+      "base_ccy": "GAS",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "GEAR-USDT",
+      "base_ccy": "GEAR",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "GF-USDT",
+      "base_ccy": "GF",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "GMX-USDT",
+      "base_ccy": "GMX",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "GOAT-BTC",
+      "base_ccy": "GOAT",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "GOAT-DAI",
+      "base_ccy": "GOAT",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "GOAT-ETH",
+      "base_ccy": "GOAT",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "GOAT-USDT",
+      "base_ccy": "GOAT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "GPT-USDT",
+      "base_ccy": "GPT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "GRAM-USDT",
+      "base_ccy": "GRAM",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "GRASS-EUR",
+      "base_ccy": "GRASS",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "GRT-USDT",
+      "base_ccy": "GRT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "GUN-USDT",
+      "base_ccy": "GUN",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "H-USDT",
+      "base_ccy": "H",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "HBAR-USD",
+      "base_ccy": "HBAR",
+      "quote_ccy": "USD",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "HBAR-USDT",
+      "base_ccy": "HBAR",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "HYPE-EUR",
+      "base_ccy": "HYPE",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "HYPE-USD",
+      "base_ccy": "HYPE",
+      "quote_ccy": "USD",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "HYPE-USDC",
+      "base_ccy": "HYPE",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "HYPE-USDT",
+      "base_ccy": "HYPE",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "ICP-ETH",
+      "base_ccy": "ICP",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "0.1",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ICP-EUR",
+      "base_ccy": "ICP",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "ICP-OKB",
+      "base_ccy": "ICP",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.01",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "ICP-USDT",
+      "base_ccy": "ICP",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "ICX-USDT",
+      "base_ccy": "ICX",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ID-USDT",
+      "base_ccy": "ID",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "IMX-EUR",
+      "base_ccy": "IMX",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "IMX-USDT",
+      "base_ccy": "IMX",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "INIT-USDT",
+      "base_ccy": "INIT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "INJ-USDT",
+      "base_ccy": "INJ",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "IOST-BTC",
+      "base_ccy": "IOST",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000000001",
+      "min_sz": "1000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "IOST-ETH",
+      "base_ccy": "IOST",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "1000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "IOST-USDT",
+      "base_ccy": "IOST",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "100",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "IOTA-USDT",
+      "base_ccy": "IOTA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "IP-DAI",
+      "base_ccy": "IP",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "IP-ETH",
+      "base_ccy": "IP",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "IP-USDT",
+      "base_ccy": "IP",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "JELLYJELLY-TRY",
+      "base_ccy": "JELLYJELLY",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "JFI-OKB",
+      "base_ccy": "JFI",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "JITOSOL-USDT",
+      "base_ccy": "JITOSOL",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.001",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "JOE-USDT",
+      "base_ccy": "JOE",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "JUP-USDT",
+      "base_ccy": "JUP",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "KAITO-BTC",
+      "base_ccy": "KAITO",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "KAITO-DAI",
+      "base_ccy": "KAITO",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "KAITO-ETH",
+      "base_ccy": "KAITO",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "KAITO-USDT",
+      "base_ccy": "KAITO",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "KISHU-USDT",
+      "base_ccy": "KISHU",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0000000000001",
+      "min_sz": "1000000000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "KLAY-ETH",
+      "base_ccy": "KLAY",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "KLAY-OKB",
+      "base_ccy": "KLAY",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "KLAY-USDT",
+      "base_ccy": "KLAY",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "KMNO-USDT",
+      "base_ccy": "KMNO",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "KNC-USDT",
+      "base_ccy": "KNC",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "KSM-USDT",
+      "base_ccy": "KSM",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "LAB-USDT",
+      "base_ccy": "LAB",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "LAT-USDT",
+      "base_ccy": "LAT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "100",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "LDO-USDT",
+      "base_ccy": "LDO",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "LINK-BTC",
+      "base_ccy": "LINK",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "10",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "LINK-ETH",
+      "base_ccy": "LINK",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "0.1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "LINK-EUR",
+      "base_ccy": "LINK",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "LINK-HKD",
+      "base_ccy": "LINK",
+      "quote_ccy": "HKD",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "LINK-OKB",
+      "base_ccy": "LINK",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "LINK-USDC",
+      "base_ccy": "LINK",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "LINK-USDT",
+      "base_ccy": "LINK",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "LIT-USDT",
+      "base_ccy": "LIT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "LPT-OKB",
+      "base_ccy": "LPT",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "LPT-USDT",
+      "base_ccy": "LPT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "LQTY-USDT",
+      "base_ccy": "LQTY",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "LRC-USDT",
+      "base_ccy": "LRC",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "LSK-BTC",
+      "base_ccy": "LSK",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "LSK-OKB",
+      "base_ccy": "LSK",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "LSK-USDT",
+      "base_ccy": "LSK",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.00000001"
+    },
+    {
+      "inst_id": "LTC-BTC",
+      "base_ccy": "LTC",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "0.01",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "LTC-USD",
+      "base_ccy": "LTC",
+      "quote_ccy": "USD",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "LTC-USDC",
+      "base_ccy": "LTC",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "LTC-USDT",
+      "base_ccy": "LTC",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.001",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "LUNA-USDT",
+      "base_ccy": "LUNA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "MAGIC-USDT",
+      "base_ccy": "MAGIC",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "MANA-BTC",
+      "base_ccy": "MANA",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "MANA-ETH",
+      "base_ccy": "MANA",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "MANA-USDT",
+      "base_ccy": "MANA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "MASK-ETH",
+      "base_ccy": "MASK",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "MASK-USDT",
+      "base_ccy": "MASK",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "MATIC-BTC",
+      "base_ccy": "MATIC",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "MATIC-USDT",
+      "base_ccy": "MATIC",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "MAX-BTC",
+      "base_ccy": "MAX",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "10",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "MAX-ETH",
+      "base_ccy": "MAX",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "MAX-USDT",
+      "base_ccy": "MAX",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ME-BTC",
+      "base_ccy": "ME",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "ME-USDT",
+      "base_ccy": "ME",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "MEGA-USDT",
+      "base_ccy": "MEGA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "MEME-BTC",
+      "base_ccy": "MEME",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000000001",
+      "min_sz": "100",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "MEME-ETH",
+      "base_ccy": "MEME",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "100",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "MEME-USDT",
+      "base_ccy": "MEME",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "MERL-USDT",
+      "base_ccy": "MERL",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "MET-USDC",
+      "base_ccy": "MET",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "MET-USDT",
+      "base_ccy": "MET",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "MINA-USDT",
+      "base_ccy": "MINA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.01",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "MON-USDT",
+      "base_ccy": "MON",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "MOODENG-USDT",
+      "base_ccy": "MOODENG",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "MSN-BTC",
+      "base_ccy": "MSN",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "MUBARAK-USDC",
+      "base_ccy": "MUBARAK",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "MUBARAK-USDT",
+      "base_ccy": "MUBARAK",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "MYRIA-USDT",
+      "base_ccy": "MYRIA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "100",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "NAS-BTC",
+      "base_ccy": "NAS",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000000001",
+      "min_sz": "1000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "NAVX-USDT",
+      "base_ccy": "NAVX",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "10",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "NC-BTC",
+      "base_ccy": "NC",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.000000001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "NC-DAI",
+      "base_ccy": "NC",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "NC-USDT",
+      "base_ccy": "NC",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "NEAR-EUR",
+      "base_ccy": "NEAR",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "NEAR-OKB",
+      "base_ccy": "NEAR",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "NEAR-USD",
+      "base_ccy": "NEAR",
+      "quote_ccy": "USD",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "NEAR-USDC",
+      "base_ccy": "NEAR",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "NEAR-USDT",
+      "base_ccy": "NEAR",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.00000001"
+    },
+    {
+      "inst_id": "NEO-DAI",
+      "base_ccy": "NEO",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "NEO-USDT",
+      "base_ccy": "NEO",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.01",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "NIGHT-EUR",
+      "base_ccy": "NIGHT",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "NIGHT-USDC",
+      "base_ccy": "NIGHT",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "NIGHT-USDT",
+      "base_ccy": "NIGHT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "NIL-USDT",
+      "base_ccy": "NIL",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "NOT-USDT",
+      "base_ccy": "NOT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1000",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "NYM-OKB",
+      "base_ccy": "NYM",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "NYM-USDT",
+      "base_ccy": "NYM",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "OAS-USDT",
+      "base_ccy": "OAS",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "OKB-BTC",
+      "base_ccy": "OKB",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "0.01",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "OKB-ETH",
+      "base_ccy": "OKB",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "0.1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "OKB-USDT",
+      "base_ccy": "OKB",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "OKSOL-SOL",
+      "base_ccy": "OKSOL",
+      "quote_ccy": "SOL",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.001",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "OKSOL-USDT",
+      "base_ccy": "OKSOL",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.001",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "OM-BTC",
+      "base_ccy": "OM",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.000000001",
+      "min_sz": "1",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "OM-USDT",
+      "base_ccy": "OM",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "OMG-BTC",
+      "base_ccy": "OMG",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "OMG-USDT",
+      "base_ccy": "OMG",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "ONDO-EUR",
+      "base_ccy": "ONDO",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ONDO-USDC",
+      "base_ccy": "ONDO",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ONDO-USDT",
+      "base_ccy": "ONDO",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "ONE-USDT",
+      "base_ccy": "ONE",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "100",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ONT-USDT",
+      "base_ccy": "ONT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "OP-USDT",
+      "base_ccy": "OP",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "OPN-DAI",
+      "base_ccy": "OPN",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "OPN-USDC",
+      "base_ccy": "OPN",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "OPN-USDT",
+      "base_ccy": "OPN",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ORBS-DAI",
+      "base_ccy": "ORBS",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "ORBS-USDT",
+      "base_ccy": "ORBS",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "PARTI-BTC",
+      "base_ccy": "PARTI",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "PARTI-ETH",
+      "base_ccy": "PARTI",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "PARTI-TRY",
+      "base_ccy": "PARTI",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "PAX-BTC",
+      "base_ccy": "PAX",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "PAX-ETH",
+      "base_ccy": "PAX",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "PAX-OKB",
+      "base_ccy": "PAX",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "PENGU-BTC",
+      "base_ccy": "PENGU",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "PENGU-DAI",
+      "base_ccy": "PENGU",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "PENGU-ETH",
+      "base_ccy": "PENGU",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "PENGU-SOL",
+      "base_ccy": "PENGU",
+      "quote_ccy": "SOL",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "PENGU-TRY",
+      "base_ccy": "PENGU",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "PENGU-USDT",
+      "base_ccy": "PENGU",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "PEPE-TRY",
+      "base_ccy": "PEPE",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "10000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "PEPE-USDT",
+      "base_ccy": "PEPE",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000000001",
+      "min_sz": "100000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "PI-DAI",
+      "base_ccy": "PI",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "PI-ETH",
+      "base_ccy": "PI",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "0.0001",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "PI-USDT",
+      "base_ccy": "PI",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "PIXEL-BTC",
+      "base_ccy": "PIXEL",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.000000001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "PIXEL-ETH",
+      "base_ccy": "PIXEL",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "PIXEL-OKB",
+      "base_ccy": "PIXEL",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "PIXEL-USDT",
+      "base_ccy": "PIXEL",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "PNUT-USDT",
+      "base_ccy": "PNUT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "POL-BTC",
+      "base_ccy": "POL",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.000000001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "POL-ETH",
+      "base_ccy": "POL",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "POL-OKB",
+      "base_ccy": "POL",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "POL-USD",
+      "base_ccy": "POL",
+      "quote_ccy": "USD",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "POL-USDT",
+      "base_ccy": "POL",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "PROS-USDT",
+      "base_ccy": "PROS",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "PUMP-EUR",
+      "base_ccy": "PUMP",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "PUMP-TRY",
+      "base_ccy": "PUMP",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "PUMP-USDT",
+      "base_ccy": "PUMP",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "PYTH-USDT",
+      "base_ccy": "PYTH",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "QTUM-BTC",
+      "base_ccy": "QTUM",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "QTUM-DAI",
+      "base_ccy": "QTUM",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "QTUM-OKB",
+      "base_ccy": "QTUM",
+      "quote_ccy": "OKB",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "QTUM-USDT",
+      "base_ccy": "QTUM",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "RACA-USDT",
+      "base_ccy": "RACA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "1000",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "RAY-USDT",
+      "base_ccy": "RAY",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "RDNT-USDT",
+      "base_ccy": "RDNT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "RE-USDT",
+      "base_ccy": "RE",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "RESOLV-TRY",
+      "base_ccy": "RESOLV",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "RESOLV-USDT",
+      "base_ccy": "RESOLV",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "RIO-USDT",
+      "base_ccy": "RIO",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "RLUSD-USDT",
+      "base_ccy": "RLUSD",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "ROAD-USDT",
+      "base_ccy": "ROAD",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "100",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "RSR-USDT",
+      "base_ccy": "RSR",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "100",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "RVN-USDT",
+      "base_ccy": "RVN",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "SAFE-USDT",
+      "base_ccy": "SAFE",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "SAHARA-DAI",
+      "base_ccy": "SAHARA",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "SAHARA-USDT",
+      "base_ccy": "SAHARA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "SAND-ETH",
+      "base_ccy": "SAND",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "SAND-USDT",
+      "base_ccy": "SAND",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "SATS-USDT",
+      "base_ccy": "SATS",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0000000000001",
+      "min_sz": "2000000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "SC-DAI",
+      "base_ccy": "SC",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "SC-USDT",
+      "base_ccy": "SC",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "100",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "SCR-DAI",
+      "base_ccy": "SCR",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "SCR-SOL",
+      "base_ccy": "SCR",
+      "quote_ccy": "SOL",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "SCR-USDT",
+      "base_ccy": "SCR",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "SENT-USDT",
+      "base_ccy": "SENT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "SFG-USDT",
+      "base_ccy": "SFG",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "SHELL-BTC",
+      "base_ccy": "SHELL",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "SHELL-DAI",
+      "base_ccy": "SHELL",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "SHELL-ETH",
+      "base_ccy": "SHELL",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "SHELL-SOL",
+      "base_ccy": "SHELL",
+      "quote_ccy": "SOL",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "SHELL-USDT",
+      "base_ccy": "SHELL",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "SHIB-BTC",
+      "base_ccy": "SHIB",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000000000001",
+      "min_sz": "100000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "SHIB-USDT",
+      "base_ccy": "SHIB",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000000001",
+      "min_sz": "100000",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "SIGN-DAI",
+      "base_ccy": "SIGN",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "SIGN-USDT",
+      "base_ccy": "SIGN",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "SKL-BTC",
+      "base_ccy": "SKL",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.000000001",
+      "min_sz": "10",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "SKL-USDT",
+      "base_ccy": "SKL",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.0000001"
+    },
+    {
+      "inst_id": "SLERF-BTC",
+      "base_ccy": "SLERF",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "SLERF-USDT",
+      "base_ccy": "SLERF",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "SLX-AED",
+      "base_ccy": "SLX",
+      "quote_ccy": "AED",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "SLX-AUD",
+      "base_ccy": "SLX",
+      "quote_ccy": "AUD",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "SLX-BRL",
+      "base_ccy": "SLX",
+      "quote_ccy": "BRL",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "SLX-EUR",
+      "base_ccy": "SLX",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "SLX-SGD",
+      "base_ccy": "SLX",
+      "quote_ccy": "SGD",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "SLX-TRY",
+      "base_ccy": "SLX",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "SLX-USDC",
+      "base_ccy": "SLX",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "SLX-USDT",
+      "base_ccy": "SLX",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "SNT-BTC",
+      "base_ccy": "SNT",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "SNT-ETH",
+      "base_ccy": "SNT",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "10",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "SNT-USDT",
+      "base_ccy": "SNT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "SOL-BRL",
+      "base_ccy": "SOL",
+      "quote_ccy": "BRL",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "SOL-BTC",
+      "base_ccy": "SOL",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "0.01",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "SOL-ETH",
+      "base_ccy": "SOL",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "0.001",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "SOL-EUR",
+      "base_ccy": "SOL",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "SOL-USDC",
+      "base_ccy": "SOL",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "SOL-USDT",
+      "base_ccy": "SOL",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.001",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "SOLV-DAI",
+      "base_ccy": "SOLV",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "0.1",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "SOLV-ETH",
+      "base_ccy": "SOLV",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "SONIC-USDT",
+      "base_ccy": "SONIC",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "SOPH-DAI",
+      "base_ccy": "SOPH",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "SOPH-USDT",
+      "base_ccy": "SOPH",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "SPELL-USDT",
+      "base_ccy": "SPELL",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1000",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "SPK-USDT",
+      "base_ccy": "SPK",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "SSWP-BTC",
+      "base_ccy": "SSWP",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "SSWP-DAI",
+      "base_ccy": "SSWP",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "SSWP-USDT",
+      "base_ccy": "SSWP",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "10",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "STETH-USDT",
+      "base_ccy": "STETH",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.001",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "STRK-USDT",
+      "base_ccy": "STRK",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "5",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "STX-USDT",
+      "base_ccy": "STX",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "SUI-EUR",
+      "base_ccy": "SUI",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "SUI-TRY",
+      "base_ccy": "SUI",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "SUI-USDC",
+      "base_ccy": "SUI",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "SUI-USDT",
+      "base_ccy": "SUI",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "SUSHI-USDT",
+      "base_ccy": "SUSHI",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "SWRV-USDT",
+      "base_ccy": "SWRV",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "SYRUP-DAI",
+      "base_ccy": "SYRUP",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "SYRUP-USDT",
+      "base_ccy": "SYRUP",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "TAMA-USDT",
+      "base_ccy": "TAMA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "THETA-USDT",
+      "base_ccy": "THETA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "TIA-BTC",
+      "base_ccy": "TIA",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "TIA-ETH",
+      "base_ccy": "TIA",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "TIA-USDT",
+      "base_ccy": "TIA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "TMTG-USDT",
+      "base_ccy": "TMTG",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "TORN-USDT",
+      "base_ccy": "TORN",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "TRUMP-BTC",
+      "base_ccy": "TRUMP",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "TRUMP-DAI",
+      "base_ccy": "TRUMP",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "TRUMP-ETH",
+      "base_ccy": "TRUMP",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "TRUMP-SOL",
+      "base_ccy": "TRUMP",
+      "quote_ccy": "SOL",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "TRUMP-USDT",
+      "base_ccy": "TRUMP",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.001",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "TRX-BTC",
+      "base_ccy": "TRX",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.000000001",
+      "min_sz": "100",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "TRX-DAI",
+      "base_ccy": "TRX",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "TRX-TRY",
+      "base_ccy": "TRX",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "TRX-USDT",
+      "base_ccy": "TRX",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "TSLAX-USDT",
+      "base_ccy": "TSLAX",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "TURBO-USDT",
+      "base_ccy": "TURBO",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1000",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "TUSD-USDT",
+      "base_ccy": "TUSD",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "ULTI-USDT",
+      "base_ccy": "ULTI",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "UMA-USDT",
+      "base_ccy": "UMA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "UNI-USD",
+      "base_ccy": "UNI",
+      "quote_ccy": "USD",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "UNI-USDT",
+      "base_ccy": "UNI",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "USDC-SGD",
+      "base_ccy": "USDC",
+      "quote_ccy": "SGD",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "USDC-TRY",
+      "base_ccy": "USDC",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "USDC-USDT",
+      "base_ccy": "USDC",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "USDG-USDT",
+      "base_ccy": "USDG",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "USDT-AED",
+      "base_ccy": "USDT",
+      "quote_ccy": "AED",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "USDT-AUD",
+      "base_ccy": "USDT",
+      "quote_ccy": "AUD",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "USDT-BRL",
+      "base_ccy": "USDT",
+      "quote_ccy": "BRL",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "USDT-EUR",
+      "base_ccy": "USDT",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "USDT-HKD",
+      "base_ccy": "USDT",
+      "quote_ccy": "HKD",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "USDT-SGD",
+      "base_ccy": "USDT",
+      "quote_ccy": "SGD",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "USDT-TRY",
+      "base_ccy": "USDT",
+      "quote_ccy": "TRY",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "USDT-USD",
+      "base_ccy": "USDT",
+      "quote_ccy": "USD",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "VANA-BTC",
+      "base_ccy": "VANA",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "VELA-USDT",
+      "base_ccy": "VELA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "VINE-BTC",
+      "base_ccy": "VINE",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "10",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "VINE-ETH",
+      "base_ccy": "VINE",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "10",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "VINE-USDT",
+      "base_ccy": "VINE",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "0.01",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "VRA-USDT",
+      "base_ccy": "VRA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "100",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "W-USDT",
+      "base_ccy": "W",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "WCT-USDC",
+      "base_ccy": "WCT",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "WCT-USDT",
+      "base_ccy": "WCT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "WIF-USDT",
+      "base_ccy": "WIF",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "2",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "WIFI-USDT",
+      "base_ccy": "WIFI",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "WLD-USDC",
+      "base_ccy": "WLD",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "WLD-USDT",
+      "base_ccy": "WLD",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "WLFI-USDT",
+      "base_ccy": "WLFI",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "XAMD-USDT",
+      "base_ccy": "XAMD",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "XASML-USDT",
+      "base_ccy": "XASML",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "1",
+      "min_sz": "0.001",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "XAUT-USDT",
+      "base_ccy": "XAUT",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "1",
+      "min_sz": "0.001",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "XAVGO-USDT",
+      "base_ccy": "XAVGO",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "XCSCO-USDT",
+      "base_ccy": "XCSCO",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "XCU-USDT",
+      "base_ccy": "XCU",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "XDELL-USDC",
+      "base_ccy": "XDELL",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "XDELL-USDT",
+      "base_ccy": "XDELL",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "XEM-BTC",
+      "base_ccy": "XEM",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000000001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "XEM-ETH",
+      "base_ccy": "XEM",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "XEM-USDT",
+      "base_ccy": "XEM",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "XGME-USDT",
+      "base_ccy": "XGME",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "XGOOGL-USDT",
+      "base_ccy": "XGOOGL",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "XHIMS-USDT",
+      "base_ccy": "XHIMS",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "XINTC-USD",
+      "base_ccy": "XINTC",
+      "quote_ccy": "USD",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "XINTC-USDT",
+      "base_ccy": "XINTC",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "XIWM-USDT",
+      "base_ccy": "XIWM",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "XLITE-USDT",
+      "base_ccy": "XLITE",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "XLM-EUR",
+      "base_ccy": "XLM",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "XLM-USDC",
+      "base_ccy": "XLM",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "XLM-USDT",
+      "base_ccy": "XLM",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "XMR-USDT",
+      "base_ccy": "XMR",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "XMRVL-USDT",
+      "base_ccy": "XMRVL",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "XMSTR-USDC",
+      "base_ccy": "XMSTR",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "XMSTR-USDT",
+      "base_ccy": "XMSTR",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "XMU-USDT",
+      "base_ccy": "XMU",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.001",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "XNVDA-USDT",
+      "base_ccy": "XNVDA",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "XPL-USDT",
+      "base_ccy": "XPL",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "XPLTR-USDT",
+      "base_ccy": "XPLTR",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "XPO-BTC",
+      "base_ccy": "XPO",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "XPO-USDT",
+      "base_ccy": "XPO",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "XQQQ-USDC",
+      "base_ccy": "XQQQ",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "XQQQ-USDT",
+      "base_ccy": "XQQQ",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "XRP-BTC",
+      "base_ccy": "XRP",
+      "quote_ccy": "BTC",
+      "state": "live",
+      "tick_sz": "0.000000001",
+      "min_sz": "10",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "XRP-ETH",
+      "base_ccy": "XRP",
+      "quote_ccy": "ETH",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "XRP-EUR",
+      "base_ccy": "XRP",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "XRP-USDT",
+      "base_ccy": "XRP",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "XSPCX-USDC",
+      "base_ccy": "XSPCX",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "XSPCX-USDT",
+      "base_ccy": "XSPCX",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "XSPY-USDC",
+      "base_ccy": "XSPY",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "XTSM-USDT",
+      "base_ccy": "XTSM",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "XTZ-USDT",
+      "base_ccy": "XTZ",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "XUC-USDT",
+      "base_ccy": "XUC",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "XXIAOMI-USD",
+      "base_ccy": "XXIAOMI",
+      "quote_ccy": "USD",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "XXIAOMI-USDC",
+      "base_ccy": "XXIAOMI",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "YB-AUD",
+      "base_ccy": "YB",
+      "quote_ccy": "AUD",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "YB-DAI",
+      "base_ccy": "YB",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "YB-USDC",
+      "base_ccy": "YB",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "YB-USDT",
+      "base_ccy": "YB",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "YFI-USDT",
+      "base_ccy": "YFI",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "1",
+      "min_sz": "0.0001",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "YFII-USDT",
+      "base_ccy": "YFII",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.001",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "YGG-USDT",
+      "base_ccy": "YGG",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.000001"
+    },
+    {
+      "inst_id": "YOU-USDT",
+      "base_ccy": "YOU",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "ZAMA-DAI",
+      "base_ccy": "ZAMA",
+      "quote_ccy": "DAI",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "10",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ZAMA-EUR",
+      "base_ccy": "ZAMA",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "ZAMA-USDC",
+      "base_ccy": "ZAMA",
+      "quote_ccy": "USDC",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "100",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "ZECT-EUR",
+      "base_ccy": "ZECT",
+      "quote_ccy": "EUR",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.00001"
+    },
+    {
+      "inst_id": "ZK-USDT",
+      "base_ccy": "ZK",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "ZRO-USDT",
+      "base_ccy": "ZRO",
+      "quote_ccy": "USDT",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "0.001"
+    }
+  ],
+  "paper_swap_instruments": [
+    {
+      "inst_id": "1INCH-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "1INCH-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "2Z-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "A-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "AAOI-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "AAPL-USDC-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "AAVE-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "ACT-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.000005",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "ADA-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "ADA-USDC-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "ADA-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0002",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ADBE-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "AI16Z-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "ALGO-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "AMD-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "AMZN-USDC-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "ANTHROPIC-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ARB-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "ASML-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "ASTER-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "ASTS-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ASTS-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ATOM-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "AUCTION-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "AVAX-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "AXS-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "BABYDOGE-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "BAND-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "BARD-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "BCH-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "BCH-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "BIO-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "BNB-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "BOME-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "BRETT-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "BTC-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "BTC-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "BZ-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "BZ-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "CAP-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "CAT-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.000000001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "CATI-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "CELO-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "CFX-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "CHZ-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "CITY-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.001",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "CL-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "COAI-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "COMP-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "COST-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "CRCL-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "CRO-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "CRV-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "CRWD-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "CRWV-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "CSCO-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "CSOPSAMSUNG2L-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "CSOPSKHYNIX2L-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "CT-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "DELL-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "DOGE-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "DOGE-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "DOT-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.005",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "DOT-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "ENA-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "ETC-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "ETC-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.001",
+      "lot_sz": "0.001"
+    },
+    {
+      "inst_id": "ETH-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "ETH-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ETHFI-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "ETHW-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "EWJ-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "EWJ-USD_UM-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "FIL-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "FIL-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "GMT-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "GOOGL-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "GPRO-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "GRAM-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "GRAM-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "GRASS-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "GRT-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "H-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "HANMI-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "HBAR-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "HIMS-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "HMSTR-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "HOME-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "HOOD-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "HYPE-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "HYPE-USD_UM-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "HYUNDAI-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ICP-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "IMX-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "INJ-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "IOTA-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "IRYS-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "IWM-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "JELLYJELLY-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "JUP-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "KAITO-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "KIOXIA-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "KSM-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "LAB-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "LINEA-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "LINK-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "LINK-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "LIT-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "LLY-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "LPT-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "LQTY-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "LTC-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0002",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "LTC-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "MAGIC-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "MAJOR-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "MASK-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "MET-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "MINA-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "MRVL-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "MSFT-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "MU-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "NAVER-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "NEAR-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "NEO-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "NES-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "NG-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "NOT-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "NOW-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "NVDA-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "OP-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "OPENAI-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "ORCL-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "PEPE-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "PIGGY-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "PLTR-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "PURR-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "QQQ-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "QTUM-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "RE-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "RESOLV-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "SAMSUNG-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "SAND-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "SCR-USDC-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "SCR-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "SENT-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "SHIB-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00000001",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "SKY-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "SLX-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "SLX-USD_UM-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "SOL-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "SOL-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "SPK-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "SPY-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "SUI-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "SUI-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "SUSHI-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "SUSHI-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "SYRUP-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "THETA-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "TRIA-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "TRX-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "TSLA-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.02",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "TSM-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "UNI-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "US100-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "1",
+      "min_sz": "0.0001",
+      "lot_sz": "0.0001"
+    },
+    {
+      "inst_id": "USAR4-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "USDC-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "XAG-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "XAG-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "XAU-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "XCU-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "XLM-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "XPL-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "XQQQ-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "XRP-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.01",
+      "lot_sz": "0.01"
+    },
+    {
+      "inst_id": "XTZ-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "YB-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "YFI-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.1",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "YGG-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "0.1",
+      "lot_sz": "0.1"
+    },
+    {
+      "inst_id": "ZAMA-USD-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "ZAMA-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "ZBCN-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0000001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "ZEC-USDC-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "ZETA-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.00001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "ZHONGJI-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.01",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "ZIL-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.000001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    },
+    {
+      "inst_id": "ZRO-USDT-SWAP",
+      "base_ccy": "",
+      "quote_ccy": "",
+      "state": "live",
+      "tick_sz": "0.0001",
+      "min_sz": "1",
+      "lot_sz": "1"
+    }
+  ],
+  "paper_spot_live_count": 567,
+  "paper_swap_live_count": 187
+}

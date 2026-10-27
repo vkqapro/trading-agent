@@ -12183,3 +12183,616 @@ Traceback (most recent call last):
     ov.getresult()
 ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
 2026-10-23 21:22:39 | WARNING | ibkr-gerchik-bot | Order journal broker reconciliation failed: Unable to connect to IBKR after retries: [WinError 1225] The remote computer refused the network connection
+INFO:     Started server process [30288]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-10-26 10:15:48 | INFO | ibkr-gerchik-bot | Queued idempotent place request bbd18fdd703a for HON (live=False)
+INFO:     Started server process [29476]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-10-26 12:25:38 | INFO | ibkr-gerchik-bot | Queued place request 4764014fac6f for WM (live=False)
+2026-10-26 12:27:15 | INFO | ibkr-gerchik-bot | Queued place request 9ef588c321e4 for VST (live=False)
+INFO:     Started server process [24924]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-10-27 07:50:58 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 07:50:58 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 07:50:59 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 07:51:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 07:51:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 07:51:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 07:52:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 07:52:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 07:52:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 07:52:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 07:52:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 07:52:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 07:53:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 07:53:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 07:53:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 07:53:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 07:53:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 07:53:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 07:54:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 07:54:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 07:54:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 07:54:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 07:54:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 07:54:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 07:55:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 07:55:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 07:55:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 07:55:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 07:55:31 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 07:55:32 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 07:56:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 07:56:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 07:56:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 07:56:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 07:56:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 07:56:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 07:57:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 07:57:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 07:57:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 07:57:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 07:57:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 07:57:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 07:58:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 07:58:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 07:58:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 07:58:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 07:58:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 07:58:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 07:59:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 07:59:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 07:59:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 07:59:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 07:59:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 07:59:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:00:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:00:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:00:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:00:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:00:31 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:00:32 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:01:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:01:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:01:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:01:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:01:31 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:01:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:02:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:02:01 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:02:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:02:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:02:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:02:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:03:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:03:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:03:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:03:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:03:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:03:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:04:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:04:01 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:04:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:04:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:04:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:04:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:05:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:05:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:05:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:05:31 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:05:32 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:05:32 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:06:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:06:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:06:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:06:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:06:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:06:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:07:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:07:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:07:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:07:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:07:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:07:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:08:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:08:01 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:08:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:08:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:08:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:08:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:09:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:09:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:09:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:09:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:09:31 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:09:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:10:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:10:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:10:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:10:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:10:31 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:10:32 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:11:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:11:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:11:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:11:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:11:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:11:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:12:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:12:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:12:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:12:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:12:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:12:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:13:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:13:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:13:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:13:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:13:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:13:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:14:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:14:01 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:14:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:14:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:14:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:14:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:15:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:15:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:15:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:16:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:16:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:16:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:17:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:17:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:17:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:18:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:18:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:18:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:19:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:19:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:19:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:20:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:20:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:20:46 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:21:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:21:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:21:46 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:22:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:22:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:22:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:23:28 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:23:29 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:23:29 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:24:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:24:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:24:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:24:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:24:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:24:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:25:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:25:02 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:25:02 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:25:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:25:31 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:25:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:26:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:26:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:26:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:26:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:26:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:26:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:27:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:27:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:27:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:27:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:27:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:27:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:28:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:28:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:28:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:28:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:28:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:28:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:29:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:29:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:29:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:29:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:29:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:29:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:30:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:30:02 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:30:03 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:30:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:30:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:30:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:31:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:31:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:31:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:31:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:31:31 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:31:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:32:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:32:05 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:32:11 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:32:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:32:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:32:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:33:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:33:01 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:33:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:33:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:33:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:33:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:34:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:34:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:34:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:34:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:34:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:34:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:35:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:35:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:35:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:35:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:35:31 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:35:32 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:36:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:36:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:36:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:36:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:36:31 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:36:32 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:37:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:37:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:37:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:37:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:37:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:37:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:38:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:38:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:38:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:38:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:38:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:38:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:39:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:39:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:39:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:39:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:39:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:39:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:40:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:40:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:40:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:40:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:40:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:40:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:41:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:41:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:41:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:41:31 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:41:31 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:41:32 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:42:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:42:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:42:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:42:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:42:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:42:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:43:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:43:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:43:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:43:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:43:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:43:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:44:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:44:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:44:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:44:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:44:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:44:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:45:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:45:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:45:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:45:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:45:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:45:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:46:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:46:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:46:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:46:31 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:46:32 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:46:32 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:47:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:47:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:47:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:47:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:47:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:47:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:48:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:48:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:48:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:48:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:48:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:48:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:49:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:49:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:49:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:49:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:49:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:49:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:50:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:50:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:50:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:50:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:50:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:50:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:51:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:51:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:51:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:51:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:51:32 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:51:32 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:52:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:52:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:52:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:52:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:52:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:52:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:53:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:53:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:53:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:53:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:53:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:53:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:54:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:54:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:54:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:54:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:54:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:54:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:55:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:55:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:55:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:55:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:55:31 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:55:32 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:56:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:56:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:56:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:56:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:56:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:56:32 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:57:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:57:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:57:02 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:57:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:57:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:57:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:58:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:58:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:58:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:58:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:58:30 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:58:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:59:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:59:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:59:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 08:59:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 08:59:31 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 08:59:31 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:00:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:00:00 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:00:01 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:00:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:00:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:00:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:01:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:01:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:01:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:02:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:02:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:02:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:03:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:03:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:03:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:04:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:04:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:04:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:05:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:05:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:05:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:06:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:06:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:06:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:07:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:07:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:07:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:08:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:08:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:08:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:09:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:09:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:09:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:10:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:10:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:10:46 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:11:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:11:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:11:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:12:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:12:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:12:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:13:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:13:46 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:13:47 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:14:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:14:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:14:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:15:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:15:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:15:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:16:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:16:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:16:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:17:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:17:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:17:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:18:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:18:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:18:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:19:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:19:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:19:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:20:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:20:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:20:46 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:21:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:21:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:21:46 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:22:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:22:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:22:46 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:23:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:23:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:23:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:24:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:24:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:24:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:25:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:25:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:25:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:26:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:26:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:26:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:27:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:27:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:27:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:28:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:28:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:28:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:29:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:29:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:29:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:30:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:30:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:30:46 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:31:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:31:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:31:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:32:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:32:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:32:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:33:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:33:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:33:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:34:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:34:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:34:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:35:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:35:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:35:46 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:36:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:36:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:36:46 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:37:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:37:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:37:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:38:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:38:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:38:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:39:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:39:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:39:46 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:40:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:40:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:40:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:41:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:41:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:41:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:42:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:42:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:42:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:43:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:43:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:43:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:44:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:44:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:44:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:45:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:45:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:45:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:46:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:46:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:46:46 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:47:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:47:46 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:47:47 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:48:45 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:48:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:48:47 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:49:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:49:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:49:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:50:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:50:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:50:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:51:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:51:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:51:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:52:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:52:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:52:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:53:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:53:50 | ERROR | ibkr-gerchik-bot | IBKR connection attempt 1 failed.
+Traceback (most recent call last):
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\ibkr-gerchik-bot\src\brokers\ibkr.py", line 219, in connect
+    self.ib.connect(
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 341, in run
+    result = loop.run_until_complete(task)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 1782, in connectAsync
+    await asyncio.wait_for(self.reqExecutionsAsync(), timeout)
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 519, in wait_for
+    async with timeouts.timeout(timeout):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\timeouts.py", line 115, in __aexit__
+    raise TimeoutError from exc_val
+TimeoutError
+2026-10-27 09:53:52 | WARNING | ibkr-gerchik-bot | Order journal broker reconciliation failed: Unable to connect to IBKR after retries: 
+2026-10-27 09:54:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:54:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:54:46 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:55:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:55:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:55:46 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:56:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:56:45 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:56:46 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:57:44 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:57:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:57:45 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-10-27 09:58:41 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-27 09:58:41 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-10-27 09:58:43 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.

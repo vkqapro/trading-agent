@@ -250783,3 +250783,18 @@ Processing request of type CallToolRequest
 Terminating session: None
 Processing request of type CallToolRequest
 Terminating session: None
+Trading Bot Data MCP server started transport=streamable-http host=127.0.0.1 port=8765 tools=10
+INFO:     Started server process [26872]
+INFO:     Waiting for application startup.
+StreamableHTTP session manager started
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8765 (Press CTRL+C to quit)
+Trading Bot Data MCP server started transport=streamable-http host=127.0.0.1 port=8765 tools=10
+INFO:     Started server process [13352]
+INFO:     Waiting for application startup.
+StreamableHTTP session manager started
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8765 (Press CTRL+C to quit)
+Terminating session: None
+Processing request of type ListToolsRequest
+Terminating session: None
