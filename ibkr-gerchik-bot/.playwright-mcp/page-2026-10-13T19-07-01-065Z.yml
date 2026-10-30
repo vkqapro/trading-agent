@@ -1,0 +1,233 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]: candlestick_chart
+    - generic [ref=e9]:
+      - generic "Dashboard" [ref=e10] [cursor=pointer]: space_dashboard
+      - generic "Watchlist" [ref=e12] [cursor=pointer]: visibility
+      - generic "Pre-Open" [ref=e14] [cursor=pointer]: wb_twilight
+      - generic "Screener Stocks" [ref=e16] [cursor=pointer]: radar
+      - generic "Trend Radar" [ref=e18] [cursor=pointer]: radar
+      - generic "Screener Crypto" [ref=e20] [cursor=pointer]: track_changes
+      - generic "Inefficiency Reclaim" [ref=e22] [cursor=pointer]: deployed_code
+      - generic "Intraday" [ref=e24] [cursor=pointer]: monitoring
+      - generic "Strategy Stocks" [ref=e26] [cursor=pointer]: insights
+      - generic "Strategy Crypto" [ref=e28] [cursor=pointer]: currency_bitcoin
+      - generic "Crypto" [ref=e30] [cursor=pointer]: currency_bitcoin
+      - generic "Orders Journal" [ref=e32] [cursor=pointer]: receipt_long
+      - generic "Forex" [ref=e34] [cursor=pointer]: currency_exchange
+      - generic "Trades & Positions" [ref=e36] [cursor=pointer]: swap_horiz
+      - generic "Forecast" [ref=e38] [cursor=pointer]: calculate
+      - generic "Reports" [ref=e40] [cursor=pointer]: description
+      - generic "Decision Lab" [ref=e42] [cursor=pointer]: psychology
+    - button "Switch to light theme" [ref=e44] [cursor=pointer]:
+      - generic [ref=e45]: light_mode
+    - button "keyboard_double_arrow_right" [ref=e47] [cursor=pointer]
+    - button "Logout and stop dashboard services" [ref=e50] [cursor=pointer]:
+      - generic [ref=e51]: logout
+  - main [ref=e52]:
+    - generic [ref=e53]:
+      - generic [ref=e54]:
+        - generic [ref=e55]: OPERATIONS DESK
+        - generic [ref=e56]: /
+        - generic [ref=e57]: Screener Stocks
+      - generic [ref=e58]:
+        - generic [ref=e59]: SYNCED 15:06:58 ET
+        - generic [ref=e62]: PAPER · READ-ONLY
+        - generic [ref=e63]:
+          - generic [ref=e64]: check_circle
+          - generic [ref=e65]: Market OPEN
+        - button "cloud_download FETCH CANDLES" [ref=e66] [cursor=pointer]:
+          - generic [ref=e67]: cloud_download
+          - text: FETCH CANDLES
+        - button "refresh REFRESH" [ref=e68] [cursor=pointer]:
+          - generic [ref=e69]: refresh
+          - text: REFRESH
+        - button "restart_alt HARD RESET" [ref=e70] [cursor=pointer]:
+          - generic [ref=e71]: restart_alt
+          - text: HARD RESET
+    - generic [ref=e73]:
+      - generic [ref=e75]:
+        - heading "Market Screener Stocks" [level=1] [ref=e81]
+        - paragraph [ref=e77]: LP1 / LP2 / PRB1 / PRB2 patterns · saved stock OHLCV · IBKR paper flow
+      - generic [ref=e82]:
+        - generic [ref=e83]:
+          - generic [ref=e84]:
+            - generic [ref=e85]:
+              - generic [ref=e86]: Universe
+              - generic [ref=e87]: radar
+            - generic [ref=e88]:
+              - generic [ref=e89]: "0"
+              - generic [ref=e90]: idle
+          - generic [ref=e91]:
+            - generic [ref=e92]:
+              - generic [ref=e93]: Signals
+              - generic [ref=e94]: bolt
+            - generic [ref=e95]:
+              - generic [ref=e96]: "0"
+              - generic [ref=e97]: LP / PRB matches
+          - generic [ref=e98]:
+            - generic [ref=e99]:
+              - generic [ref=e100]: Ready
+              - generic [ref=e101]: task_alt
+            - generic [ref=e102]:
+              - generic [ref=e103]: "0"
+              - generic [ref=e104]: position size valid
+          - generic [ref=e105]:
+            - generic [ref=e106]:
+              - generic [ref=e107]: Rejected
+              - generic [ref=e108]: filter_alt
+            - generic [ref=e109]:
+              - generic [ref=e110]: "0"
+              - generic [ref=e111]: quality / data filters
+          - generic [ref=e112]:
+            - generic [ref=e113]:
+              - generic [ref=e114]: Near Misses
+              - generic [ref=e115]: adjust
+            - generic [ref=e116]:
+              - generic [ref=e117]: "0"
+              - generic [ref=e118]: levels found, pattern incomplete
+          - generic [ref=e119]:
+            - generic [ref=e120]:
+              - generic [ref=e121]: Anchor
+              - generic [ref=e122]: event
+            - generic [ref=e123]:
+              - generic [ref=e124]: 2026-10-13
+              - generic [ref=e125]: entry / decision day
+        - generic [ref=e126]:
+          - generic [ref=e127]:
+            - generic [ref=e128]:
+              - button "1D" [ref=e129] [cursor=pointer]
+              - button "4H" [ref=e130] [cursor=pointer]
+              - button "1H" [ref=e131] [cursor=pointer]
+              - button "LP1" [ref=e132] [cursor=pointer]
+              - button "LP2" [ref=e133] [cursor=pointer]
+              - button "PRB1" [ref=e134] [cursor=pointer]
+              - button "PRB2" [ref=e135] [cursor=pointer]
+              - combobox [ref=e136]:
+                - option "ALL" [selected]
+                - option "LONG"
+                - option "SHORT"
+              - generic [ref=e137]:
+                - button "ALL UNIVERSE" [ref=e138] [cursor=pointer]
+                - button "RADAR SETUPS" [active] [ref=e139] [cursor=pointer]
+            - generic [ref=e140]:
+              - button "tune" [ref=e141] [cursor=pointer]
+              - button "refresh SCAN" [disabled] [ref=e143]:
+                - generic [ref=e144]: refresh
+                - text: SCAN
+          - generic [ref=e145]:
+            - generic [ref=e146]:
+              - generic [ref=e147]: event
+              - generic [ref=e148]: Anchor day
+              - textbox "Anchor day" [ref=e149]: 2026-10-13
+              - generic [ref=e150]:
+                - button "Next anchor day" [ref=e151] [cursor=pointer]:
+                  - generic [ref=e152]: keyboard_arrow_up
+                - button "Previous anchor day" [ref=e153] [cursor=pointer]:
+                  - generic [ref=e154]: keyboard_arrow_down
+            - generic [ref=e155]:
+              - generic [ref=e156]: Min score
+              - spinbutton "Min score" [ref=e157]: "0"
+            - generic [ref=e158]:
+              - generic [ref=e159]: RR
+              - spinbutton "RR" [ref=e160]: "2"
+            - generic [ref=e161]:
+              - generic [ref=e162]: Risk %
+              - spinbutton "Risk %" [ref=e163]: "0.5"
+            - generic [ref=e164]:
+              - generic [ref=e165]: search
+              - textbox "search" [ref=e166]:
+                - /placeholder: Symbol
+          - generic [ref=e280]:
+            - generic [ref=e281]:
+              - generic [ref=e282]: "Radar candidates: 0 symbols"
+              - generic [ref=e283]: "Source: Trend Radar"
+              - generic [ref=e284]: "Snapshot: 10/13/2026, 01:01 PM EDT"
+            - generic [ref=e285]: Trend Radar snapshot is available, but it contains no eligible scanner setup statuses.
+            - group [ref=e286]:
+              - generic "Eligible ticker list" [ref=e287] [cursor=pointer]
+        - generic [ref=e167]:
+          - generic [ref=e168]:
+            - generic [ref=e169]:
+              - generic [ref=e170]: radar
+              - generic [ref=e171]: Screener Signals
+              - generic [ref=e172]: 0 shown
+            - button "ALL" [ref=e174] [cursor=pointer]
+          - table [ref=e176]:
+            - rowgroup [ref=e177]:
+              - row [ref=e178]:
+                - columnheader "Ticker" [ref=e179]
+                - columnheader "Strategy" [ref=e180]
+                - columnheader "Side" [ref=e181]
+                - columnheader "Status" [ref=e182]
+                - columnheader "Level" [ref=e183]
+                - columnheader "Entry" [ref=e184]
+                - columnheader "Stop" [ref=e185]
+                - columnheader "TP" [ref=e186]
+                - columnheader "RR" [ref=e187]
+                - columnheader "ATR" [ref=e188]
+                - columnheader "Score" [ref=e189]
+                - columnheader "Shares" [ref=e190]
+                - columnheader "Filters" [ref=e191]
+                - columnheader "Reasoning" [ref=e192]
+            - rowgroup
+          - generic [ref=e193]:
+            - generic [ref=e194]: filter_alt_off
+            - text: Pick an anchor day and click Scan to run the screener.
+        - generic [ref=e196]:
+          - generic [ref=e198]:
+            - generic [ref=e199]: candlestick_chart
+            - generic [ref=e200]: Signal Chart
+            - generic [ref=e201]: no signal
+          - generic [ref=e202]:
+            - generic [ref=e203]: Chart TF
+            - button "1D" [ref=e204] [cursor=pointer]
+            - button "4H" [ref=e205] [cursor=pointer]
+            - button "1H" [ref=e206] [cursor=pointer]
+            - button "30 min" [ref=e207] [cursor=pointer]
+            - button "15 min" [ref=e208] [cursor=pointer]
+            - button "5 min" [ref=e209] [cursor=pointer]
+            - generic [ref=e210] [cursor=pointer]: Signal
+            - generic [ref=e214] [cursor=pointer]: Trade zones
+            - generic [ref=e218] [cursor=pointer]: Raw levels
+            - generic [ref=e222] [cursor=pointer]: BMSB strategy
+            - generic [ref=e226] [cursor=pointer]: BMSB strategy 2
+            - generic [ref=e230] [cursor=pointer]: Gaussian channel
+            - generic [ref=e234] [cursor=pointer]: Gaussian signals
+            - generic [ref=e238] [cursor=pointer]: Volume
+            - generic [ref=e242] [cursor=pointer]: Manual setup
+          - generic [ref=e246]:
+            - generic [ref=e247]: candlestick_chart
+            - text: Run a scan and select a signal to view its chart.
+        - generic [ref=e248]:
+          - generic [ref=e249]:
+            - generic [ref=e250]:
+              - generic [ref=e251]: filter_list
+              - generic [ref=e252]: Rejected Reasons
+              - generic [ref=e253]: 0 rejected
+            - table [ref=e255]:
+              - rowgroup [ref=e256]:
+                - row [ref=e257]:
+                  - columnheader "Reason" [ref=e258]
+                  - columnheader "Count" [ref=e259]
+              - rowgroup
+          - generic [ref=e260]:
+            - generic [ref=e261]:
+              - generic [ref=e262]: adjust
+              - generic [ref=e263]: Near Misses
+              - generic [ref=e264]: 0 tracked
+            - table [ref=e266]:
+              - rowgroup [ref=e267]:
+                - row [ref=e268]:
+                  - columnheader "Ticker" [ref=e269]
+                  - columnheader "Reason" [ref=e270]
+                  - columnheader "Nearest Level" [ref=e271]
+                  - columnheader "Distance ATR" [ref=e272]
+                  - columnheader "Levels" [ref=e273]
+              - rowgroup
+        - generic [ref=e274]:
+          - generic [ref=e275]:
+            - generic [ref=e276]: data_object
+            - generic [ref=e277]: JSON Payload
+            - generic [ref=e278]: latest
+          - generic [ref=e279]: "{ \"timeframe\": \"1D\", \"universe_size\": 0, \"signals_found\": 0, \"signals\": [], \"rejected\": [] }"

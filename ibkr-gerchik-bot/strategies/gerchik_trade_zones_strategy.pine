@@ -1,0 +1,456 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// Gerchik-style level and trade-zone visualizer inspired by the local IBKR bot's src/strategy/levels.py.
+//
+// Practical note:
+// The Python bot calculates official levels from DAILY candles. For the closest match, add this script
+// to a 1D TradingView chart. On intraday charts it still works, but it uses the chart's current candles.
+
+//@version=6
+strategy("Gerchik Trade Zones Strategy", overlay=true,
+     initial_capital=1000,
+     default_qty_type=strategy.percent_of_equity,
+     default_qty_value=100,
+     commission_type=strategy.commission.percent,
+     commission_value=0.1,
+     slippage=0,
+     margin_long=0,
+     margin_short=0,
+     use_bar_magnifier=false,
+     calc_on_order_fills=false,
+     calc_on_every_tick=false,
+     fill_orders_on_standard_ohlc=true,
+     max_bars_back=700,
+     max_lines_count=500,
+     max_boxes_count=100,
+     max_labels_count=100)
+
+// -- Inputs matching the bot defaults ----------------------------------------
+i_lookback = input.int(252, "Level lookback bars", minval=50, maxval=600,
+     tooltip="Recent candles scanned for swing, repeated, abnormal, consolidation, and gap levels.")
+i_atr_period = input.int(5, "ATR period", minval=3, maxval=20,
+     tooltip="Bot-style short ATR period used to size level zones.")
+i_zone_buffer_atr = input.float(0.12, "Zone buffer x ATR", minval=0.01, step=0.01,
+     tooltip="Bot default LEVEL_ZONE_BUFFER_ATR_PCT. Each raw level starts as price +/- this ATR fraction.")
+i_merge_distance_atr = input.float(0.25, "Merge distance x ATR", minval=0.01, step=0.01,
+     tooltip="Bot default LEVEL_MERGE_DISTANCE_ATR_PCT. Nearby evidence merges into one trade zone.")
+i_ultra_close_atr = input.float(0.08, "Ultra-close merge x ATR", minval=0.01, step=0.01,
+     tooltip="Bot default LEVEL_ULTRA_CLOSE_ATR_PCT. Very close levels merge regardless of family.")
+i_max_zone_width_atr = input.float(0.50, "Max zone width x ATR", minval=0.05, step=0.05,
+     tooltip="Bot default MAX_LEVEL_ZONE_WIDTH_ATR_PCT. Prevents giant unreadable zones.")
+i_min_touches = input.int(3, "Preferred minimum touches", minval=1, maxval=20,
+     tooltip="Bot default MIN_TRADE_LEVEL_TOUCHES. Strict zones prefer this many touches.")
+i_min_clean_gap_atr = input.float(1.50, "Min clean gap x ATR", minval=0.0, step=0.1,
+     tooltip="Bot default MIN_CLEAN_LEVEL_GAP_ATR_PCT. Used to keep displayed trade zones separated.")
+i_consolidation_window = input.int(20, "Consolidation window", minval=5, maxval=100,
+     tooltip="Bot default CONSOLIDATION_WINDOW.")
+i_abnormal_mult = input.float(2.0, "Abnormal candle range x average", minval=1.0, step=0.1,
+     tooltip="Bot default ABNORMAL_RANGE_MULTIPLIER.")
+i_gap_pct = input.float(1.0, "Gap threshold (%)", minval=0.1, step=0.1,
+     tooltip="Bot uses 1% open-vs-prior-close gap levels.")
+
+// -- Visual controls ----------------------------------------------------------
+i_show_zones = input.bool(true, "Show trade zones")
+i_show_centers = input.bool(true, "Show zone center lines")
+i_show_raw = input.bool(false, "Show raw level evidence")
+i_show_labels = input.bool(true, "Show zone labels")
+i_max_zones = input.int(12, "Max displayed zones", minval=1, maxval=30)
+i_max_raw = input.int(80, "Max raw evidence lines", minval=0, maxval=250)
+i_extend_right = input.int(80, "Extend zones right bars", minval=10, maxval=300)
+i_zone_transparency = input.int(76, "Zone transparency", minval=40, maxval=95)
+i_fallback_draw = input.bool(true, "Fallback: draw best zones even below touch filter",
+     tooltip="Keeps TradingView from showing a blank chart when strict bot filters find no zones.")
+i_show_status = input.bool(true, "Show scanner status label")
+i_enable_demo_orders = input.bool(false, "Enable demo strategy orders",
+     tooltip="Off by default. When enabled, places simple demo orders when price breaks nearest zones. Use the bot for real execution/risk.")
+
+// -- Constants / arrays -------------------------------------------------------
+int FAMILY_STRUCTURAL = 1
+int FAMILY_GAP = 2
+int KIND_HISTORICAL = 1
+int KIND_LIMIT_PLAYER = 2
+int KIND_MIRROR = 3
+int KIND_ABNORMAL = 4
+int KIND_CONSOLIDATION = 5
+int KIND_GAP = 6
+
+var float[] raw_prices = array.new_float()
+var int[] raw_families = array.new_int()
+var int[] raw_kinds = array.new_int()
+
+var float[] zone_lows = array.new_float()
+var float[] zone_highs = array.new_float()
+var float[] zone_centers = array.new_float()
+var float[] zone_strengths = array.new_float()
+var int[] zone_touches = array.new_int()
+var int[] zone_false_breakouts = array.new_int()
+var int[] zone_kinds = array.new_int()
+var int[] zone_families = array.new_int()
+
+var box[] zone_boxes = array.new_box()
+var line[] zone_lines = array.new_line()
+var line[] raw_lines = array.new_line()
+var label[] zone_labels = array.new_label()
+var int[] selected_zone_indices = array.new_int()
+var label status_label = na
+
+// Hoisted series calculations keep Pine happy and avoid warnings about calling
+// ta.* functions only conditionally.
+int avg_range_length = math.min(i_lookback, 500)
+float avg_range_series = ta.sma(high - low, avg_range_length)
+float consolidation_high_series = ta.highest(high, i_consolidation_window)
+float consolidation_low_series = ta.lowest(low, i_consolidation_window)
+
+// -- Helpers ------------------------------------------------------------------
+f_round2(float x) =>
+    math.round(x * 100.0) / 100.0
+
+f_kind_name(int kind) =>
+    switch kind
+        KIND_LIMIT_PLAYER => "limit"
+        KIND_MIRROR => "mirror"
+        KIND_ABNORMAL => "abnormal"
+        KIND_CONSOLIDATION => "consolidation"
+        KIND_GAP => "gap"
+        => "swing"
+
+f_clear_drawings() =>
+    if array.size(zone_boxes) > 0
+        for j = 0 to array.size(zone_boxes) - 1
+            box.delete(array.get(zone_boxes, j))
+    if array.size(zone_lines) > 0
+        for j = 0 to array.size(zone_lines) - 1
+            line.delete(array.get(zone_lines, j))
+    if array.size(raw_lines) > 0
+        for j = 0 to array.size(raw_lines) - 1
+            line.delete(array.get(raw_lines, j))
+    if array.size(zone_labels) > 0
+        for j = 0 to array.size(zone_labels) - 1
+            label.delete(array.get(zone_labels, j))
+    if not na(status_label)
+        label.delete(status_label)
+    array.clear(zone_boxes)
+    array.clear(zone_lines)
+    array.clear(raw_lines)
+    array.clear(zone_labels)
+
+f_clear_work_arrays() =>
+    array.clear(raw_prices)
+    array.clear(raw_families)
+    array.clear(raw_kinds)
+    array.clear(zone_lows)
+    array.clear(zone_highs)
+    array.clear(zone_centers)
+    array.clear(zone_strengths)
+    array.clear(zone_touches)
+    array.clear(zone_false_breakouts)
+    array.clear(zone_kinds)
+    array.clear(zone_families)
+
+f_bot_atr(int period) =>
+    int p = math.max(period, 3)
+    float total_range = 0.0
+    for k = 0 to p - 1
+        total_range += high[k] - low[k]
+    float avg_range = total_range / p
+    float filtered_total = 0.0
+    int filtered_count = 0
+    if avg_range > 0
+        for k = 0 to p - 1
+            float r = high[k] - low[k]
+            if r < 2.0 * avg_range and r > avg_range / 3.0
+                filtered_total += r
+                filtered_count += 1
+    filtered_count > 0 ? filtered_total / filtered_count : avg_range
+
+f_add_candidate(float price, int family, int kind) =>
+    if not na(price) and price > 0
+        array.push(raw_prices, f_round2(price))
+        array.push(raw_families, family)
+        array.push(raw_kinds, kind)
+
+f_touches(float z_low, float z_high, int bars_to_scan) =>
+    int touches = 0
+    for k = 0 to bars_to_scan
+        if high[k] >= z_low and low[k] <= z_high
+            touches += 1
+    touches
+
+f_false_breakouts(float z_low, float z_high, int bars_to_scan) =>
+    int count = 0
+    float center = (z_low + z_high) / 2.0
+    for k = 0 to bars_to_scan
+        bool long_false = low[k] < z_low and close[k] > z_low and close[k] <= z_high
+        bool short_false = high[k] > z_high and close[k] < z_high and close[k] >= z_low
+        bool center_reclaim = low[k] < center and close[k] > center and close[k] <= z_high
+        bool center_reject = high[k] > center and close[k] < center and close[k] >= z_low
+        if long_false or short_false or center_reclaim or center_reject
+            count += 1
+    count
+
+f_recency_score(float z_low, float z_high, int bars_to_scan) =>
+    float score = 0.0
+    bool found = false
+    for k = 0 to bars_to_scan
+        if not found and high[k] >= z_low and low[k] <= z_high
+            score := 2.0 * (1.0 - math.min(float(k) / math.max(float(bars_to_scan), 1.0), 1.0))
+            found := true
+    score
+
+f_round_bonus(float price) =>
+    float fractional = f_round2(math.abs(price - math.floor(price)))
+    fractional == 0.0 or fractional == 0.5 ? 0.75 : 0.0
+
+f_strength(float z_low, float z_high, float center, int touches, int false_breakouts, int kind, int bars_to_scan) =>
+    float score = float(touches) + float(false_breakouts) * 2.0 + 2.0 + f_recency_score(z_low, z_high, bars_to_scan)
+    score += kind == KIND_MIRROR ? 1.0 : 0.0
+    score += kind == KIND_ABNORMAL ? 1.0 : 0.0
+    score += f_round_bonus(center)
+    math.round(score * 100.0) / 100.0
+
+f_same_family(int left_family, int right_family) =>
+    left_family == right_family
+
+f_merge_or_add_zone(float price, int family, int kind, float zone_buffer, float merge_distance, float ultra_close_distance, float max_zone_width, int bars_to_scan) =>
+    float candidate_low = f_round2(price - zone_buffer)
+    float candidate_high = f_round2(price + zone_buffer)
+    int candidate_touches = f_touches(candidate_low, candidate_high, bars_to_scan)
+    int candidate_false = f_false_breakouts(candidate_low, candidate_high, bars_to_scan)
+    // Collect every touched candidate first. The strict min-touch filter is
+    // applied later while selecting what to draw, which is closer to the bot's
+    // merge-first/filter-second workflow.
+    if candidate_touches >= 1
+        int merge_index = -1
+        if array.size(zone_centers) > 0
+            for z = 0 to array.size(zone_centers) - 1
+                float current_center = array.get(zone_centers, z)
+                int current_family = array.get(zone_families, z)
+                float distance = math.abs(price - current_center)
+                bool should_merge = distance <= ultra_close_distance or (distance <= merge_distance and f_same_family(current_family, family))
+                float prospective_low = math.min(array.get(zone_lows, z), candidate_low)
+                float prospective_high = math.max(array.get(zone_highs, z), candidate_high)
+                bool width_ok = max_zone_width <= 0 or prospective_high - prospective_low <= max_zone_width
+                if merge_index == -1 and should_merge and width_ok
+                    merge_index := z
+        if merge_index >= 0
+            float merged_low = math.min(array.get(zone_lows, merge_index), candidate_low)
+            float merged_high = math.max(array.get(zone_highs, merge_index), candidate_high)
+            float merged_center = f_round2((merged_low + merged_high) / 2.0)
+            int merged_touches = f_touches(merged_low, merged_high, bars_to_scan)
+            int merged_false = f_false_breakouts(merged_low, merged_high, bars_to_scan)
+            int old_kind = array.get(zone_kinds, merge_index)
+            int representative_kind = candidate_touches > array.get(zone_touches, merge_index) ? kind : old_kind
+            float strength = f_strength(merged_low, merged_high, merged_center, merged_touches, merged_false, representative_kind, bars_to_scan)
+            array.set(zone_lows, merge_index, merged_low)
+            array.set(zone_highs, merge_index, merged_high)
+            array.set(zone_centers, merge_index, merged_center)
+            array.set(zone_touches, merge_index, merged_touches)
+            array.set(zone_false_breakouts, merge_index, merged_false)
+            array.set(zone_strengths, merge_index, strength)
+            array.set(zone_kinds, merge_index, representative_kind)
+        else
+            float center = f_round2((candidate_low + candidate_high) / 2.0)
+            float strength = f_strength(candidate_low, candidate_high, center, candidate_touches, candidate_false, kind, bars_to_scan)
+            array.push(zone_lows, candidate_low)
+            array.push(zone_highs, candidate_high)
+            array.push(zone_centers, center)
+            array.push(zone_touches, candidate_touches)
+            array.push(zone_false_breakouts, candidate_false)
+            array.push(zone_strengths, strength)
+            array.push(zone_kinds, kind)
+            array.push(zone_families, family)
+
+f_zone_is_too_close_to_selected(int zone_index, array<int> selected, float clean_gap) =>
+    bool too_close = false
+    if array.size(selected) > 0
+        for s = 0 to array.size(selected) - 1
+            int selected_index = array.get(selected, s)
+            float left_low = array.get(zone_lows, zone_index)
+            float left_high = array.get(zone_highs, zone_index)
+            float right_low = array.get(zone_lows, selected_index)
+            float right_high = array.get(zone_highs, selected_index)
+            bool overlap = not (left_high < right_low or right_high < left_low)
+            float lower_high = left_low < right_low ? left_high : right_high
+            float upper_low = left_low < right_low ? right_low : left_low
+            float gap = math.max(upper_low - lower_high, 0.0)
+            if overlap or gap < clean_gap
+                too_close := true
+    too_close
+
+// -- Candidate detection / zone build ----------------------------------------
+int bars_available = math.min(i_lookback, bar_index - 2)
+float bot_atr = f_bot_atr(i_atr_period)
+float zone_buffer = bot_atr * i_zone_buffer_atr
+float merge_distance = bot_atr * i_merge_distance_atr
+float ultra_close_distance = bot_atr * i_ultra_close_atr
+float max_zone_width = bot_atr * i_max_zone_width_atr
+float clean_gap = bot_atr * i_min_clean_gap_atr
+
+if barstate.islast and bars_available >= 10 and bot_atr > 0
+    f_clear_drawings()
+    f_clear_work_arrays()
+
+    // Swing highs/lows.
+    for k = 1 to bars_available - 1
+        if high[k] >= high[k + 1] and high[k] >= high[k - 1]
+            f_add_candidate(high[k], FAMILY_STRUCTURAL, KIND_HISTORICAL)
+        if low[k] <= low[k + 1] and low[k] <= low[k - 1]
+            f_add_candidate(low[k], FAMILY_STRUCTURAL, KIND_HISTORICAL)
+
+    // Repeated rounded highs/lows.
+    for k = 0 to bars_available
+        float rounded_low = f_round2(low[k])
+        float rounded_high = f_round2(high[k])
+        int low_count = 0
+        int high_count = 0
+        for m = 0 to bars_available
+            low_count += f_round2(low[m]) == rounded_low ? 1 : 0
+            high_count += f_round2(high[m]) == rounded_high ? 1 : 0
+        if low_count >= 3
+            f_add_candidate(rounded_low, FAMILY_STRUCTURAL, KIND_LIMIT_PLAYER)
+        if high_count >= 3
+            f_add_candidate(rounded_high, FAMILY_STRUCTURAL, KIND_MIRROR)
+
+    // Abnormal candle levels.
+    float avg_range = avg_range_series
+    if avg_range > 0
+        for k = 0 to bars_available
+            if high[k] - low[k] >= i_abnormal_mult * avg_range
+                f_add_candidate(high[k], FAMILY_STRUCTURAL, KIND_ABNORMAL)
+                f_add_candidate(low[k], FAMILY_STRUCTURAL, KIND_ABNORMAL)
+
+    // Consolidation boundaries from the latest window.
+    f_add_candidate(consolidation_high_series, FAMILY_STRUCTURAL, KIND_CONSOLIDATION)
+    f_add_candidate(consolidation_low_series, FAMILY_STRUCTURAL, KIND_CONSOLIDATION)
+
+    // Gap levels.
+    for k = 0 to bars_available - 1
+        float prior_close = close[k + 1]
+        float current_open = open[k]
+        if prior_close > 0 and math.abs(current_open - prior_close) / prior_close >= i_gap_pct / 100.0
+            f_add_candidate(math.max(prior_close, current_open), FAMILY_GAP, KIND_GAP)
+            f_add_candidate(math.min(prior_close, current_open), FAMILY_GAP, KIND_GAP)
+
+    // Merge raw evidence into trade zones.
+    if array.size(raw_prices) > 0
+        for r = 0 to array.size(raw_prices) - 1
+            f_merge_or_add_zone(
+                 array.get(raw_prices, r),
+                 array.get(raw_families, r),
+                 array.get(raw_kinds, r),
+                 zone_buffer,
+                 merge_distance,
+                 ultra_close_distance,
+                 max_zone_width,
+                 bars_available)
+
+    // Optional raw evidence lines.
+    if i_show_raw and i_max_raw > 0 and array.size(raw_prices) > 0
+        int raw_count = math.min(i_max_raw, array.size(raw_prices))
+        for r = 0 to raw_count - 1
+            float raw_price = array.get(raw_prices, r)
+            line raw_line = line.new(bar_index - bars_available, raw_price, bar_index + i_extend_right, raw_price,
+                 xloc=xloc.bar_index, extend=extend.none, color=color.new(color.gray, 72),
+                 style=line.style_dotted, width=1)
+            array.push(raw_lines, raw_line)
+
+    // Select strongest separated zones and draw.
+    array.clear(selected_zone_indices)
+    int selectable_count = array.size(zone_strengths)
+    int max_to_draw = math.min(i_max_zones, selectable_count)
+    if selectable_count > 0
+        for pick = 0 to max_to_draw - 1
+            float best_strength = -1.0
+            int best_index = -1
+            for z = 0 to selectable_count - 1
+                bool already_selected = array.includes(selected_zone_indices, z)
+                bool separated = not f_zone_is_too_close_to_selected(z, selected_zone_indices, clean_gap)
+                bool touch_ok = array.get(zone_touches, z) >= i_min_touches
+                float strength = array.get(zone_strengths, z)
+                if not already_selected and separated and touch_ok and strength > best_strength
+                    best_strength := strength
+                    best_index := z
+            if best_index >= 0
+                array.push(selected_zone_indices, best_index)
+
+    // Fallback mode: if strict bot filters select nothing, draw the strongest
+    // separated zones anyway so the chart is never blank.
+    if i_fallback_draw and selectable_count > 0 and array.size(selected_zone_indices) == 0
+        int fallback_count = math.min(i_max_zones, selectable_count)
+        for pick = 0 to fallback_count - 1
+            float best_strength = -1.0
+            int best_index = -1
+            for z = 0 to selectable_count - 1
+                bool already_selected = array.includes(selected_zone_indices, z)
+                bool separated = not f_zone_is_too_close_to_selected(z, selected_zone_indices, bot_atr * 0.25)
+                float strength = array.get(zone_strengths, z)
+                if not already_selected and separated and strength > best_strength
+                    best_strength := strength
+                    best_index := z
+            if best_index >= 0
+                array.push(selected_zone_indices, best_index)
+
+    if i_show_zones and array.size(selected_zone_indices) > 0
+        for s = 0 to array.size(selected_zone_indices) - 1
+            int z = array.get(selected_zone_indices, s)
+            float z_low = array.get(zone_lows, z)
+            float z_high = array.get(zone_highs, z)
+            float z_center = array.get(zone_centers, z)
+            int touches = array.get(zone_touches, z)
+            int false_breakouts = array.get(zone_false_breakouts, z)
+            float strength = array.get(zone_strengths, z)
+            int kind = array.get(zone_kinds, z)
+
+            color zone_color = z_center >= close ? color.new(color.aqua, i_zone_transparency) : color.new(color.lime, i_zone_transparency)
+            color border_color = z_center >= close ? color.new(color.aqua, 25) : color.new(color.lime, 25)
+            box b = box.new(bar_index - bars_available, z_high, bar_index + i_extend_right, z_low,
+                 xloc=xloc.bar_index, border_color=border_color, border_width=1, bgcolor=zone_color)
+            array.push(zone_boxes, b)
+
+            if i_show_centers
+                line center_line = line.new(bar_index - bars_available, z_center, bar_index + i_extend_right, z_center,
+                     xloc=xloc.bar_index, extend=extend.none, color=color.new(color.white, 0),
+                     style=line.style_dashed, width=1)
+                array.push(zone_lines, center_line)
+
+            if i_show_labels
+                string label_text = f_kind_name(kind) + " zone  " + str.tostring(z_low, format.mintick) + " - " + str.tostring(z_high, format.mintick) +
+                     "  T:" + str.tostring(touches) + " FB:" + str.tostring(false_breakouts) + " S:" + str.tostring(strength)
+                label l = label.new(bar_index + i_extend_right, z_center, label_text,
+                     xloc=xloc.bar_index, style=label.style_label_left,
+                     textcolor=color.white, color=color.new(color.black, 35), size=size.small)
+                array.push(zone_labels, l)
+
+    if i_show_status
+        string status_text = "Gerchik zones  raw:" + str.tostring(array.size(raw_prices)) +
+             "  merged:" + str.tostring(array.size(zone_strengths)) +
+             "  drawn:" + str.tostring(array.size(selected_zone_indices)) +
+             "  ATR:" + str.tostring(bot_atr, format.mintick)
+        status_label := label.new(bar_index, high, status_text,
+             xloc=xloc.bar_index, style=label.style_label_down,
+             textcolor=color.white, color=color.new(color.teal, 25), size=size.small)
+
+// -- Optional demo strategy orders / alert hooks ------------------------------
+float nearest_support_high = na
+float nearest_resistance_low = na
+if array.size(zone_centers) > 0
+    for z = 0 to array.size(zone_centers) - 1
+        float z_center = array.get(zone_centers, z)
+        float z_low = array.get(zone_lows, z)
+        float z_high = array.get(zone_highs, z)
+        if z_center < close and (na(nearest_support_high) or z_high > nearest_support_high)
+            nearest_support_high := z_high
+        if z_center > close and (na(nearest_resistance_low) or z_low < nearest_resistance_low)
+            nearest_resistance_low := z_low
+
+bool demo_long = i_enable_demo_orders and not na(nearest_support_high) and ta.crossover(close, nearest_support_high)
+bool demo_short = i_enable_demo_orders and not na(nearest_resistance_low) and ta.crossunder(close, nearest_resistance_low)
+
+if demo_long
+    strategy.entry("Zone Long", strategy.long)
+if demo_short
+    strategy.entry("Zone Short", strategy.short)
+
+alertcondition(demo_long, "Gerchik zone long breakout", "Price crossed above nearest support zone high.")
+alertcondition(demo_short, "Gerchik zone short breakdown", "Price crossed below nearest resistance zone low.")
+
+plot(bot_atr, "Bot-style ATR", display=display.data_window, color=color.new(color.aqua, 100))

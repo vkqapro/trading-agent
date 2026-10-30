@@ -1,0 +1,56 @@
+{
+  "reviews": [
+    {
+      "proposal_id": "aitd-70202915a0684dbb9d32cc318054e171",
+      "source_scan_id": "scanner-observation-816df1548be24193f54f9ec7480d533f",
+      "symbol": "ISRG",
+      "strategy": "PRB1",
+      "ai_reasoning": "Persisted PRB1 candidate for ISRG is LONG with ENTRY_TRIGGERED lifecycle, entry touch at 2026-10-20T13:45:00Z, planned/actual entry 435.3747, stop 427.3577, target 451.4087, RR 2.0, and position size 62. Radar independently records GREEN trend, bullish breakout, positive momentum, high liquidity, radar score 74.9, and price 437.66 as of 2026-10-20. The source_scan_id is the authoritative scanner observation attached to this proposal. This is an analytical review only; it is not approval or execution authorization.",
+      "strengths": [
+        "PRB1 lifecycle is persisted as ENTRY_TRIGGERED with a nonempty source_scan_id and exact proposal identity.",
+        "Radar direction is BULLISH and agrees with the LONG side; trend is GREEN with positive momentum and high liquidity.",
+        "Persisted plan has RR 2.0 and a defined stop and target."
+      ],
+      "weaknesses": [
+        "data_quality_complete is false and spread, corporate_actions, listing_status, and split_adjustment are missing.",
+        "The persisted evidence is an ENTRY_ONLY event from intraday_5m rather than a complete quality-confirmed lifecycle.",
+        "The entry is above the resistance level, so follow-through and slippage remain unverified from the payload."
+      ],
+      "risk_observations": [
+        "Risk is capped in the persisted plan at risk_pct 0.5%, but actual tradability and transaction-cost impact cannot be confirmed without the missing spread data.",
+        "Corporate-action and split-adjustment fields are missing, so the price series and stop/target relationship require human verification.",
+        "Keep this proposal in HUMAN_REVIEW_REQUIRED; do not create approval or execution intent from this review."
+      ],
+      "review_result": "HUMAN_REVIEW_REQUIRED",
+      "review_priority": "HIGH",
+      "model_provider": "OpenAI Codex interactive-session review",
+      "review_timestamp": "2026-10-21T03:28:00Z"
+    },
+    {
+      "proposal_id": "aitd-1faeea7772574a57a3a2d4ad0beb0e6a",
+      "source_scan_id": "scanner-observation-a8fe7be86807b62c57f79df53845dd26",
+      "symbol": "AIG",
+      "strategy": "PRB2",
+      "ai_reasoning": "Persisted PRB2 candidate for AIG is LONG with ENTRY_TRIGGERED lifecycle, entry touch at 2026-10-20T13:30:00Z, planned entry 79.9497, observed entry 81.08, stop 79.9176, target 83.4047, RR 2.0, and position size 424. Radar independently records GREEN trend, bullish breakout, positive momentum, high liquidity, radar score 71.85, and price 81.55 as of 2026-10-20. The source_scan_id is the authoritative scanner observation attached to this proposal. The persisted status is chased_gap_skip, so this is a review of a recorded candidate, not a recommendation to enter.",
+      "strengths": [
+        "PRB2 lifecycle is persisted as ENTRY_TRIGGERED with a nonempty source_scan_id and exact proposal identity.",
+        "Radar direction is BULLISH and agrees with the LONG side; trend is GREEN with positive momentum and high liquidity.",
+        "Pattern quality is 0.986 and the persisted plan defines stop, target, RR 2.0, and risk_pct 0.5%."
+      ],
+      "weaknesses": [
+        "The persisted status is chased_gap_skip, indicating the observed entry 81.08 materially differs from the planned entry 79.9497.",
+        "data_quality_complete is false and spread, corporate_actions, listing_status, and split_adjustment are missing.",
+        "The stop is only narrowly below the observed entry, so gap/slippage and execution feasibility cannot be inferred from the payload alone."
+      ],
+      "risk_observations": [
+        "A chased-gap condition is a direct reason not to treat this as a fresh executable opportunity; human review must resolve whether the lifecycle remains valid.",
+        "Missing spread and corporate-action/split data prevent reliable assessment of transaction costs and price normalization.",
+        "Keep this proposal in HUMAN_REVIEW_REQUIRED; do not create approval or execution intent from this review."
+      ],
+      "review_result": "HUMAN_REVIEW_REQUIRED",
+      "review_priority": "HIGH",
+      "model_provider": "OpenAI Codex interactive-session review",
+      "review_timestamp": "2026-10-21T03:28:00Z"
+    }
+  ]
+}

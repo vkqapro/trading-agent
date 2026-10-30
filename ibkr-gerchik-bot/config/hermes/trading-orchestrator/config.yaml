@@ -1,0 +1,63 @@
+_config_version: 49
+model:
+  default: AtomicChat/Ornith-1.5-35B-A3B-GGUF:IQ3_XXS
+  provider: unslouth
+  base_url: http://localhost:8888/v1
+  api_mode: chat_completions
+  key_env: HERMES_CUSTOM_UNSLOUTH_API_KEY
+providers:
+  unslouth:
+    name: Unslouth
+    base_url: http://localhost:8888/v1
+    model: AtomicChat/Ornith-1.5-35B-A3B-GGUF:IQ3_XXS
+    discover_models: true
+    context_length: 120000
+    key_env: HERMES_CUSTOM_UNSLOUTH_API_KEY
+    models:
+      AtomicChat/Ornith-1.5-35B-A3B-GGUF:IQ3_XXS:
+        context_length: 120000
+skills:
+  creation_nudge_interval: 0
+  external_dirs: []
+  primary: trading-readiness-orchestrator
+  allowed:
+    - trading-readiness-orchestrator
+platform_toolsets:
+  cli:
+    - a2a
+    - skills
+  telegram:
+    - hermes-telegram
+    - a2a
+approvals:
+  mode: manual
+  cron_mode: deny
+  single_query_mode: deny
+  unattended_mode: deny
+  deny:
+    - "*run_*.cmd*"
+    - "*stop_*.cmd*"
+    - "*create*approval*"
+    - "*execution_intent*"
+    - "*execute_manual_order*"
+    - "*sqlite3*decision_lab.db*"
+
+# The shared Hermes gateway exposes these loopback-only routed agent paths.
+# Keep the full route names and do not substitute the latest scan implicitly.
+a2a_agents:
+  trading-ops-supervisor:
+    url: http://127.0.0.1:9900/trading-ops-supervisor
+    timeout: 300
+    capabilities:
+      - ops_preflight
+  daily-trader:
+    url: http://127.0.0.1:9900/daily-trader
+    timeout: 300
+    capabilities:
+      - market_context
+      - daily_trader_scan
+  pre-trade-reviewer:
+    url: http://127.0.0.1:9900/pre-trade-reviewer
+    timeout: 300
+    capabilities:
+      - exact_scan_review

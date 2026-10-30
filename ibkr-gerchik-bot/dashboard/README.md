@@ -1,6 +1,6 @@
 # Trading Operations Dashboard
 
-Interactive Streamlit operations dashboard for the IBKR Gerchik Bot. It is a
+Interactive Streamlit operations dashboard for Vitaly's Trading Bot. It is a
 read-only viewer over files under `memory/`. It never connects to IBKR and never
 mutates trading state.
 

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+import os
 import time
 from datetime import datetime, timedelta
 from typing import Callable, Dict
@@ -12,8 +14,140 @@ from src.jobs.session_utils import (
     collect_watchlist_intraday_bars,
     next_scan_time,
     session_now,
-    sleep_until,
 )
+
+
+def _collector_session_bounds(now: datetime) -> tuple[datetime, datetime]:
+    """Return the intraday collection window for the date represented by ``now``."""
+    start = now.replace(
+        hour=SETTINGS.trading_hours.market_open_hour,
+        minute=SETTINGS.trading_hours.market_open_minute,
+        second=0,
+        microsecond=0,
+    )
+    end = now.replace(
+        hour=SETTINGS.trading_hours.market_data_collector_end_hour,
+        minute=SETTINGS.trading_hours.market_data_collector_end_minute,
+        second=0,
+        microsecond=0,
+    )
+    return start, end
+
+
+def _collector_session_is_open(now: datetime) -> bool:
+    if now.weekday() >= 5:
+        return False
+    start, end = _collector_session_bounds(now)
+    return start <= now <= end
+
+
+def _collector_session_state(now: datetime) -> str:
+    if now.weekday() >= 5:
+        return "WEEKEND_OR_HOLIDAY"
+    start, end = _collector_session_bounds(now)
+    if now < start:
+        return "PRE_SESSION"
+    if now <= end:
+        return "ACTIVE_SESSION"
+    return "POST_SESSION"
+
+
+def _next_collector_open(now: datetime) -> datetime:
+    next_open = now.replace(
+        hour=SETTINGS.trading_hours.market_open_hour,
+        minute=SETTINGS.trading_hours.market_open_minute,
+        second=0,
+        microsecond=0,
+    )
+    if now >= next_open:
+        next_open += timedelta(days=1)
+    while next_open.weekday() >= 5:
+        next_open += timedelta(days=1)
+    return next_open
+
+
+def _write_status_artifact(payload: Dict[str, object]) -> None:
+    """Write bounded, read-only collector health for diagnostics."""
+    path = SETTINGS.paths.runtime_dir / "market_data_collector_status.json"
+    temp = path.with_name(f"{path.name}.{os.getpid()}.tmp")
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        temp.write_text(json.dumps(payload, indent=2, default=str), encoding="utf-8")
+        os.replace(temp, path)
+    except OSError as exc:
+        LOGGER.warning("Failed to write market-data status artifact: %s", exc)
+    finally:
+        try:
+            temp.unlink(missing_ok=True)
+        except OSError:
+            pass
+
+
+def _status_payload(
+    totals: Dict[str, object],
+    *,
+    state: str,
+    session_state: str,
+    next_run_at: datetime | None = None,
+    next_session_at: datetime | None = None,
+    cycle_health: Dict[str, object] | None = None,
+) -> Dict[str, object]:
+    payload: Dict[str, object] = {
+        "status": state,
+        "state": state,
+        "pid": os.getpid(),
+        "last_heartbeat": datetime.now().astimezone().isoformat(),
+        "current_session": session_state,
+        "market_data_status": (cycle_health or {}).get("health", "unknown"),
+        "last_cycle_at": (totals.get("last_cycle") or {}).get("completed_at") if isinstance(totals.get("last_cycle"), dict) else None,
+        "latest_fresh_cycle_at": totals.get("latest_fresh_cycle_at"),
+        "cycle": totals.get("cycles", 0),
+        "health": cycle_health or (totals.get("last_cycle") if isinstance(totals.get("last_cycle"), dict) else None),
+    }
+    if next_run_at is not None:
+        payload["next_run_at"] = next_run_at.isoformat()
+    if next_session_at is not None:
+        payload["next_session_at"] = next_session_at.isoformat()
+    return payload
+
+
+def _write_runtime_status(
+    totals: Dict[str, object],
+    *,
+    state: str,
+    now: datetime,
+    next_run_at: datetime | None = None,
+    next_session_at: datetime | None = None,
+    cycle_health: Dict[str, object] | None = None,
+) -> None:
+    _write_status_artifact(
+        _status_payload(
+            totals,
+            state=state,
+            session_state=_collector_session_state(now),
+            next_run_at=next_run_at,
+            next_session_at=next_session_at,
+            cycle_health=cycle_health,
+        )
+    )
+
+
+def _sleep_until_with_status(
+    target: datetime,
+    now_fn: Callable[[], datetime],
+    sleep_fn: Callable[[float], None],
+    heartbeat: Callable[[datetime], None],
+    *,
+    heartbeat_seconds: float = 60.0,
+) -> None:
+    """Sleep in bounded chunks so waiting collectors keep proving liveness."""
+    while True:
+        current = now_fn()
+        remaining = (target - current).total_seconds()
+        if remaining <= 0:
+            return
+        heartbeat(current)
+        sleep_fn(min(max(remaining, 0.0), heartbeat_seconds))
 
 
 def run_market_data_collector(
@@ -22,56 +156,131 @@ def run_market_data_collector(
     *,
     interval_seconds: int = 300,
     once: bool = False,
+    force: bool = False,
     now_provider: Callable[[], datetime] | None = None,
     sleep_provider: Callable[[float], None] | None = None,
 ) -> Dict[str, object]:
     """Collect bars without account synchronization, signals, or orders."""
     now_fn = now_provider or session_now
     sleep_fn = sleep_provider or time.sleep
-    totals = {"cycles": 0, "symbols_requested": 0, "symbols_persisted": 0, "failed": []}
+    totals = {
+        "cycles": 0,
+        "symbols_requested": 0,
+        "symbols_received": 0,
+        "symbols_persisted": 0,
+        "symbols_fresh": 0,
+        "symbols_advanced": 0,
+        "symbols_unchanged_but_fresh": 0,
+        "symbols_stale": 0,
+        "symbols_no_data": 0,
+        "symbols_errors": 0,
+        "symbols_chart_history_blocked": 0,
+        "failed": [],
+        "last_cycle": None,
+        "latest_fresh_cycle_at": None,
+    }
+    _write_runtime_status(totals, state="STARTING", now=now_fn())
 
     while True:
         now = now_fn()
-        if not market_data.market_is_open(now):
+        if not force and not _collector_session_is_open(now):
+            next_open = _next_collector_open(now)
+            _write_runtime_status(totals, state="WAITING_FOR_SESSION", now=now, next_session_at=next_open)
             if once:
                 break
-            next_open = now.replace(
-                hour=SETTINGS.trading_hours.market_open_hour,
-                minute=SETTINGS.trading_hours.market_open_minute,
-                second=0,
-                microsecond=0,
-            )
-            if now >= next_open:
-                next_open += timedelta(days=1)
-            while next_open.weekday() >= 5:
-                next_open += timedelta(days=1)
             LOGGER.info("Market-data collector waiting until %s", next_open.isoformat())
-            sleep_until(next_open, now_fn, sleep_fn)
+            _sleep_until_with_status(
+                next_open,
+                now_fn,
+                sleep_fn,
+                lambda current: _write_runtime_status(
+                    totals,
+                    state="WAITING_FOR_SESSION",
+                    now=current,
+                    next_session_at=next_open,
+                ),
+            )
             continue
+        if force:
+            LOGGER.info("Market-data collector force cycle requested outside normal session window check.")
 
-        result = collect_watchlist_intraday_bars(market_data, watchlist)
+        _write_runtime_status(totals, state="COLLECTING", now=now)
+        result = collect_watchlist_intraday_bars(
+            market_data,
+            watchlist,
+            current_time=now,
+        )
+        stale_count = int(result.get("symbols_stale", 0) or 0)
+        requested_count = int(result.get("symbols_requested", 0) or 0)
+        if requested_count and stale_count >= max(1, requested_count // 2):
+            LOGGER.warning(
+                "Market-data collector received stale bars for %s/%s symbols; reconnecting and retrying once.",
+                stale_count,
+                requested_count,
+            )
+            try:
+                market_data.reconnect()
+                result = collect_watchlist_intraday_bars(
+                    market_data,
+                    watchlist,
+                    current_time=now,
+                )
+            except Exception as exc:
+                LOGGER.warning("Market-data collector reconnect retry failed: %s", exc)
         totals["cycles"] = int(totals["cycles"]) + 1
-        totals["symbols_requested"] = int(totals["symbols_requested"]) + int(
-            result.get("symbols_requested", 0)
-        )
-        totals["symbols_persisted"] = int(totals["symbols_persisted"]) + int(
-            result.get("symbols_persisted", 0)
-        )
+        for key in (
+            "symbols_requested", "symbols_received", "symbols_persisted", "symbols_fresh",
+            "symbols_advanced", "symbols_unchanged_but_fresh", "symbols_stale",
+            "symbols_no_data", "symbols_errors", "symbols_chart_history_blocked",
+        ):
+            totals[key] = int(totals[key]) + int(result.get(key, 0) or 0)
         failures = result.get("failed", [])
         if isinstance(failures, list):
             totals["failed"].extend(failures)
-
+        cycle_at = datetime.now().astimezone().isoformat()
+        cycle_health = {
+            "requested": int(result.get("symbols_requested", 0) or 0),
+            "received": int(result.get("symbols_received", 0) or 0),
+            "fresh": int(result.get("symbols_fresh", 0) or 0),
+            "advanced": int(result.get("symbols_advanced", 0) or 0),
+            "unchanged_but_fresh": int(result.get("symbols_unchanged_but_fresh", 0) or 0),
+            "stale": int(result.get("symbols_stale", 0) or 0),
+            "no_data": int(result.get("symbols_no_data", 0) or 0),
+            "errors": int(result.get("symbols_errors", 0) or 0),
+            "health": (
+                "healthy"
+                if not any(result.get(key, 0) for key in ("symbols_stale", "symbols_no_data", "symbols_errors"))
+                else "degraded"
+            ),
+            "stale_symbols": result.get("stale", []),
+            "provenance": result.get("symbol_provenance", []),
+        }
+        totals["last_cycle"] = {"completed_at": cycle_at, **cycle_health}
+        if cycle_health["fresh"]:
+            totals["latest_fresh_cycle_at"] = cycle_at
+        _write_runtime_status(totals, state="CYCLE_COMPLETE", now=now, cycle_health=cycle_health)
         LOGGER.info(
-            "Market-data collector cycle=%s requested=%s persisted=%s failed=%s",
-            totals["cycles"],
-            result.get("symbols_requested", 0),
-            result.get("symbols_persisted", 0),
-            len(failures) if isinstance(failures, list) else 0,
+            "Market-data cycle %s requested=%s received=%s fresh=%s advanced=%s fresh_unchanged=%s stale=%s no_data=%s errors=%s stale_symbols=%s",
+            totals["cycles"], cycle_health["requested"], cycle_health["received"], cycle_health["fresh"],
+            cycle_health["advanced"], cycle_health["unchanged_but_fresh"], cycle_health["stale"],
+            cycle_health["no_data"], cycle_health["errors"], cycle_health["stale_symbols"],
         )
         if once:
             break
 
         next_run = next_scan_time(now, max(60, int(interval_seconds)))
-        sleep_until(next_run, now_fn, sleep_fn)
+        _write_runtime_status(totals, state="WAITING_NEXT_CYCLE", now=now, next_run_at=next_run, cycle_health=cycle_health)
+        _sleep_until_with_status(
+            next_run,
+            now_fn,
+            sleep_fn,
+            lambda current: _write_runtime_status(
+                totals,
+                state="WAITING_NEXT_CYCLE",
+                now=current,
+                next_run_at=next_run,
+                cycle_health=cycle_health,
+            ),
+        )
 
     return totals

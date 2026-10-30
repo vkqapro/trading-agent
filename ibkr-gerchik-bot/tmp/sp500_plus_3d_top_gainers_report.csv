@@ -1,0 +1,23 @@
+section,symbol,company,change_pct,three_day_price,current_price
+marketbeat_top_3_day_gainer,BRKH,Burtech Acquisition,386.1,2.05,9.97
+marketbeat_top_3_day_gainer,NXTC,NextCure,187.8,2.18,6.27
+marketbeat_top_3_day_gainer,TGHL,GrowHub,114.5,0.64,1.37
+marketbeat_top_3_day_gainer,MRAI,Marpai,113.4,0.67,1.43
+marketbeat_top_3_day_gainer,CPHI,China Pharma,73.1,0.63,1.08
+marketbeat_top_3_day_gainer,MAAS,Maase,63.8,13.24,21.68
+marketbeat_top_3_day_gainer,LEDS,SemiLEDS,59.8,1.52,2.43
+marketbeat_top_3_day_gainer,APLM,Apollomics,55.2,14.21,22.05
+marketbeat_top_3_day_gainer,ATAI,Atai Beckley,43.4,4.97,7.13
+marketbeat_top_3_day_gainer,PYPG,Leverage Shares 2X Long PYPL Daily ETF,39.4,6.20,8.64
+marketbeat_top_3_day_gainer,VEEE,Twin Vee PowerCats,37.2,24.84,34.08
+marketbeat_top_3_day_gainer,EAF,GrafTech International,35.5,5.70,7.72
+marketbeat_top_3_day_gainer,YYAI,AiRWA,35.0,7.81,10.54
+marketbeat_top_3_day_gainer,TOP,TOP Financial Group,33.4,1.84,2.45
+marketbeat_top_3_day_gainer,RCEL,Avita Medical,32.8,3.95,5.25
+marketbeat_top_3_day_gainer,SYRA,Syra Health,31.9,0.65,0.86
+marketbeat_top_3_day_gainer,CRMT,America's Car-Mart,30.3,3.02,3.94
+marketbeat_top_3_day_gainer,NAKA,KindlyMD,28.8,3.37,4.34
+marketbeat_top_3_day_gainer,MAN,ManpowerGroup,28.6,40.60,52.22
+marketbeat_top_3_day_gainer,OSRH,OSR,28.4,0.36,0.46
+skipped_invalid_for_bot,BF.B,Brown-Forman,,,
+skipped_invalid_for_bot,BRK.B,Berkshire Hathaway,,,

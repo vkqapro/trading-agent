@@ -1,0 +1,50 @@
+{
+  "reviews": [
+    {
+      "proposal_id": "aitd-48e35a931fe2493da5534a2341adbbe0",
+      "source_scan_id": "scanner-observation-24c259e738b511bfb15cd596d064471b",
+      "symbol": "ISRG",
+      "strategy": "PRB1",
+      "ai_reasoning": "The persisted PRB1 LONG observation has bullish Radar context, including a green trend, range compression, positive momentum, and a recorded bullish breakout. Its planned Entry 435.3747, Stop 427.3577, Target 451.4087, and R:R 2.0 are internally consistent with the authoritative scanner record. It is not a new entry: the scanner lifecycle is ENTRY_TRIGGERED and the source marks the entry touch at 2026-10-20T13:45:00+00:00. Data quality is incomplete for spread, corporate actions, listing status, and split adjustment, so a human must validate the stale signal and missing safeguards before any further workflow action.",
+      "strengths": [
+        "Radar context is green with range compression, positive momentum, high liquidity, and a bullish breakout.",
+        "The authoritative PRB1 LONG entry, stop, target, and 2.0 R:R are present and internally consistent."
+      ],
+      "weaknesses": [
+        "The lifecycle is ENTRY_TRIGGERED, so the setup is no longer a fresh entry opportunity.",
+        "Spread, corporate-action, listing-status, and split-adjustment quality checks are incomplete."
+      ],
+      "risk_observations": [
+        "Do not promote this historical ENTRY_TRIGGERED observation to READY based on this review.",
+        "Confirm current market data, position exposure, and duplicate-entry risk before any separate human decision."
+      ],
+      "review_result": "HUMAN_REVIEW_REQUIRED",
+      "review_priority": "MEDIUM",
+      "model_provider": "OpenAI Codex interactive-session review",
+      "review_timestamp": "2026-10-21T11:58:00+00:00"
+    },
+    {
+      "proposal_id": "aitd-dadc0e2d9e994a57a54f454c84a14339",
+      "source_scan_id": "scanner-observation-9d37ace69ad659e5b2a0d401939328d8",
+      "symbol": "AIG",
+      "strategy": "PRB2",
+      "ai_reasoning": "The persisted PRB2 LONG observation has green Radar context, range compression, positive momentum, high liquidity, and a bullish breakout. Its authoritative values are Entry 81.08, Stop 79.9176, Target 83.4047, and R:R 2.0. The scanner marks it ENTRY_TRIGGERED, while its source status is chased_gap_skip and the entry touch was already recorded at 2026-10-20T13:30:00+00:00. Missing spread, corporate-action, listing-status, and split-adjustment checks prevent treating this as a fresh or execution-ready opportunity. The correct outcome is documented human review only.",
+      "strengths": [
+        "Radar context is green with range compression, positive momentum, high liquidity, and a bullish breakout.",
+        "The authoritative PRB2 LONG price levels and 2.0 R:R are present and internally consistent."
+      ],
+      "weaknesses": [
+        "The source status is chased_gap_skip and the lifecycle is ENTRY_TRIGGERED, not a fresh setup.",
+        "Spread, corporate-action, listing-status, and split-adjustment quality checks are incomplete."
+      ],
+      "risk_observations": [
+        "Do not treat this review as permission to re-enter or promote the chased setup to READY.",
+        "Validate current price position, position exposure, and duplicate-entry risk before any separate human decision."
+      ],
+      "review_result": "HUMAN_REVIEW_REQUIRED",
+      "review_priority": "LOW",
+      "model_provider": "OpenAI Codex interactive-session review",
+      "review_timestamp": "2026-10-21T11:58:00+00:00"
+    }
+  ]
+}

@@ -5,7 +5,8 @@ from __future__ import annotations
 from typing import Dict, List, Optional, Sequence, Tuple
 
 from src.config import SETTINGS, append_markdown_log
-from src.data.bar_store import save_bars
+from src.data.bar_store import load_bars, save_bars
+from src.data.chart_history import ensure_required_chart_history
 from src.data.market_data import MarketDataService
 from src.data.news import NewsService
 from src.data.news_filter import NewsRiskFilter
@@ -15,6 +16,33 @@ from src.strategy.atr import calculate_daily_atr, calculate_technical_atr
 from src.strategy.level_strength import filter_strong_levels
 from src.strategy.levels import Level, detect_levels, optimize_trade_levels
 from src.workflow_log import append_workflow_snapshot
+
+
+def _duration_to_trading_rows(duration: str) -> int:
+    parts = str(duration or "").strip().upper().split()
+    if len(parts) != 2:
+        return 504
+    try:
+        amount = int(float(parts[0]))
+    except ValueError:
+        return 504
+    unit = parts[1]
+    if unit.startswith("Y"):
+        return max(amount * 252, 1)
+    if unit.startswith("M"):
+        return max(amount * 21, 1)
+    if unit.startswith("W"):
+        return max(amount * 5, 1)
+    if unit.startswith("D"):
+        return max(amount, 1)
+    return 504
+
+
+def _level_daily_window(daily_bars):
+    max_rows = _duration_to_trading_rows(SETTINGS.strategy.chart_daily_duration)
+    if daily_bars is None or daily_bars.empty or len(daily_bars) <= max_rows:
+        return daily_bars
+    return daily_bars.tail(max_rows).reset_index(drop=True)
 
 
 def _level_zone(level: Level) -> Tuple[float, float]:
@@ -131,26 +159,35 @@ def run_premarket(
     watchlist: Dict[str, object] = {}
     levels_log: Dict[str, object] = {}
     ideas: List[Dict[str, object]] = []
+    chart_history_blocked: Dict[str, object] = {}
     macro_risk = news_filter.get_macro_risk_context()
     earnings = news_service.fetch_earnings_calendar(symbols)
     earnings_by_symbol = {str(item.get("symbol", "")): item for item in earnings}
 
     for symbol in symbols:
-        daily_bars = market_data.get_daily_bars(symbol)
+        chart_history = ensure_required_chart_history(market_data, symbol)
+        if not chart_history.get("ready"):
+            chart_history_blocked[symbol] = chart_history
+            continue
+
+        daily_bars = load_bars(symbol, "daily")
+        if daily_bars.empty:
+            daily_bars = market_data.get_daily_bars(symbol, duration=SETTINGS.strategy.chart_daily_duration)
         intraday_bars = market_data.get_intraday_bars(symbol, duration="2 D", bar_size="15 mins")
         if daily_bars.empty or intraday_bars.empty:
             continue
+        level_daily_bars = _level_daily_window(daily_bars)
         # Persist bars for the dashboard so charts render without a live TWS
         # connection. Best-effort: failures must never break the scan.
         save_bars(symbol, "daily", daily_bars)
         save_bars(symbol, "intraday_15m", intraday_bars)
-        detected_levels = detect_levels(symbol, daily_bars, intraday_bars)
+        detected_levels = detect_levels(symbol, level_daily_bars, intraday_bars)
         strong_levels = filter_strong_levels(detected_levels)
         if not strong_levels:
             continue
 
         current_price = float(intraday_bars.iloc[-1]["close"])
-        daily_atr = calculate_daily_atr(daily_bars)
+        daily_atr = calculate_daily_atr(level_daily_bars)
         raw_level_dicts = [level.to_dict() for level in strong_levels]
         optimized_levels = optimize_trade_levels(strong_levels, daily_atr)
         lower_level = max((level.price for level in optimized_levels if level.price < current_price), default=None)
@@ -168,6 +205,7 @@ def run_premarket(
             "news_provider_hits": symbol_news.get("provider_hits", []),
             "news_source_types": symbol_news.get("source_types", []),
             "earnings_event": earnings_by_symbol.get(symbol, {}),
+            "chart_history": chart_history,
             "level_spacing": spacing,
             "raw_levels": raw_level_dicts,
             "levels": [level.to_dict() for level in optimized_levels],
@@ -200,6 +238,7 @@ def run_premarket(
             "macro_risk": macro_risk["blocked"],
             "macro_news_sources": macro_risk.get("provider_hits", []),
             "macro_news_source_types": macro_risk.get("source_types", []),
+            "chart_history_blocked": chart_history_blocked or "none",
             "actionable_ideas": ideas or "none",
             "trade_decision": "HOLD" if macro_risk["blocked"] else "READY_FOR_OPEN_VALIDATION",
         },
@@ -217,6 +256,7 @@ def run_premarket(
             "macro_risk": macro_risk,
             "ideas": ideas,
             "research_symbols": list(symbols),
+            "chart_history_blocked": chart_history_blocked,
         },
     )
     report_path = export_premarket_levels_report(watchlist)

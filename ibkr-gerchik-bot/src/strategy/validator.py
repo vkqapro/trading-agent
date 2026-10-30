@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from typing import Dict, List, Tuple
 
 from src.config import SETTINGS
@@ -85,7 +86,12 @@ def validate_trade(
         reasons.append("missing_target")
     if risk_per_share <= 0:
         reasons.append("invalid_risk_per_share")
-    if reward_risk_ratio(entry, stop_price, target) < SETTINGS.risk.min_reward_risk_ratio:
+    reward_risk = reward_risk_ratio(entry, stop_price, target)
+    minimum_reward_risk = SETTINGS.risk.min_reward_risk_ratio
+    # Plans are persisted as decimal prices but evaluated as floats. Treat a
+    # representational value such as 1.9999999999999947 as the configured 2.0
+    # boundary while still rejecting materially smaller plans.
+    if not math.isclose(reward_risk, minimum_reward_risk, rel_tol=1e-9, abs_tol=1e-9) and reward_risk < minimum_reward_risk:
         reasons.append("reward_risk_too_low")
     if next_level_price is not None:
         if signal.get("direction") == "long" and target > next_level_price:

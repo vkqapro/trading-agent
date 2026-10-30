@@ -1,0 +1,55 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]: candlestick_chart
+    - generic [ref=e9]:
+      - generic "Dashboard" [ref=e10] [cursor=pointer]: space_dashboard
+      - generic "Watchlist" [ref=e12] [cursor=pointer]: visibility
+      - generic "Pre-Open" [ref=e14] [cursor=pointer]: wb_twilight
+      - generic "Screener Stocks" [ref=e16] [cursor=pointer]: radar
+      - generic "Trend Radar" [ref=e18] [cursor=pointer]: radar
+      - generic "AI Trade Desk" [ref=e20] [cursor=pointer]: auto_awesome
+      - generic "Screener Crypto" [ref=e22] [cursor=pointer]: track_changes
+      - generic "Inefficiency Reclaim" [ref=e24] [cursor=pointer]: deployed_code
+      - generic "Intraday" [ref=e26] [cursor=pointer]: monitoring
+      - generic "Strategy Stocks" [ref=e28] [cursor=pointer]: insights
+      - generic "Strategy Crypto" [ref=e30] [cursor=pointer]: currency_bitcoin
+      - generic "Crypto" [ref=e32] [cursor=pointer]: currency_bitcoin
+      - generic "Orders Journal" [ref=e34] [cursor=pointer]: receipt_long
+      - generic "Forex" [ref=e36] [cursor=pointer]: currency_exchange
+      - generic "Trades & Positions" [ref=e38] [cursor=pointer]: swap_horiz
+      - generic "Forecast" [ref=e40] [cursor=pointer]: calculate
+      - generic "Reports" [ref=e42] [cursor=pointer]: description
+      - generic "Decision Lab" [ref=e44] [cursor=pointer]: psychology
+    - button "Switch to light theme" [ref=e46] [cursor=pointer]:
+      - generic [ref=e47]: light_mode
+    - button "keyboard_double_arrow_right" [ref=e49] [cursor=pointer]
+    - button "Logout and stop dashboard services" [ref=e52] [cursor=pointer]:
+      - generic [ref=e53]: logout
+  - main [ref=e54]:
+    - generic [ref=e55]:
+      - generic [ref=e56]:
+        - generic [ref=e57]: OPERATIONS DESK
+        - generic [ref=e58]: /
+        - generic [ref=e59]: Dashboard
+      - generic [ref=e60]:
+        - generic [ref=e61]: SYNCED — ET
+        - generic [ref=e64]: PAPER · READ-ONLY
+        - generic [ref=e65]:
+          - generic [ref=e66]: schedule
+          - generic [ref=e67]: Market —
+        - button "cloud_download FETCH CANDLES" [ref=e68] [cursor=pointer]:
+          - generic [ref=e69]: cloud_download
+          - text: FETCH CANDLES
+        - button "refresh REFRESH" [ref=e70] [cursor=pointer]:
+          - generic [ref=e71]: refresh
+          - text: REFRESH
+        - button "restart_alt HARD RESET" [ref=e72] [cursor=pointer]:
+          - generic [ref=e73]: restart_alt
+          - text: HARD RESET
+    - generic [ref=e75]:
+      - generic [ref=e77]:
+        - heading "Command Overview" [level=1] [ref=e78]
+        - paragraph [ref=e79]: All systems nominal · scan cycle 5m · paper account
+      - generic [ref=e81]:
+        - generic [ref=e82]: hourglass_top
+        - text: Loading…

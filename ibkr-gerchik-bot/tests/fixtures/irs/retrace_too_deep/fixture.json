@@ -1,0 +1,12 @@
+{
+  "name": "retrace_too_deep",
+  "input_bars": {
+    "zone": [{"direction": "IRS_LONG", "zone_low": 100.00, "zone_high": 101.00}],
+    "15m": [
+      {"timestamp": "2026-07-07T13:45:00-04:00", "open": 101.20, "high": 101.30, "low": 99.10, "close": 99.60, "volume": 260000}
+    ]
+  },
+  "config": {"max_retrace_depth": 0.85},
+  "expected": {"accepted": false, "rejection_reason": "RETRACE_TOO_DEEP"}
+}
+

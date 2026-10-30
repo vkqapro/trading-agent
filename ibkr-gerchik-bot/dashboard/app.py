@@ -1,4 +1,4 @@
-"""Luminous Obsidian — read-only operations dashboard for the Gerchik bot.
+"""Luminous Obsidian — read-only operations dashboard for Vitaly's Trading Bot.
 
 A professional, glassmorphic trading control surface built on the design system
 in ``stitch_trading_bot_dashboard``. It only reads the files the bot writes under
@@ -126,7 +126,7 @@ CHART_CONFIG = {
 }
 
 st.set_page_config(
-    page_title="Gerchik Bot · Luminous Obsidian",
+    page_title="Vitaly's Trading Bot · Luminous Obsidian",
     page_icon="📈",
     layout="wide",
     initial_sidebar_state="expanded",

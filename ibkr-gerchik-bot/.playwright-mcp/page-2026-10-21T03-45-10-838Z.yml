@@ -1,0 +1,95 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]: candlestick_chart
+    - generic [ref=e9]:
+      - generic "Dashboard" [ref=e10] [cursor=pointer]: space_dashboard
+      - generic "Watchlist" [ref=e12] [cursor=pointer]: visibility
+      - generic "Pre-Open" [ref=e14] [cursor=pointer]: wb_twilight
+      - generic "Screener Stocks" [ref=e16] [cursor=pointer]: radar
+      - generic "Trend Radar" [ref=e18] [cursor=pointer]: radar
+      - generic "AI Trade Desk" [ref=e20] [cursor=pointer]: auto_awesome
+      - generic "Screener Crypto" [ref=e22] [cursor=pointer]: track_changes
+      - generic "Inefficiency Reclaim" [ref=e24] [cursor=pointer]: deployed_code
+      - generic "Intraday" [ref=e26] [cursor=pointer]: monitoring
+      - generic "Strategy Stocks" [ref=e28] [cursor=pointer]: insights
+      - generic "Strategy Crypto" [ref=e30] [cursor=pointer]: currency_bitcoin
+      - generic "Crypto" [ref=e32] [cursor=pointer]: currency_bitcoin
+      - generic "Orders Journal" [ref=e34] [cursor=pointer]: receipt_long
+      - generic "Forex" [ref=e36] [cursor=pointer]: currency_exchange
+      - generic "Trades & Positions" [ref=e38] [cursor=pointer]: swap_horiz
+      - generic "Forecast" [ref=e40] [cursor=pointer]: calculate
+      - generic "Reports" [ref=e42] [cursor=pointer]: description
+      - generic "Decision Lab" [ref=e44] [cursor=pointer]: psychology
+    - button "Switch to light theme" [ref=e46] [cursor=pointer]:
+      - generic [ref=e47]: light_mode
+    - button "keyboard_double_arrow_right" [ref=e49] [cursor=pointer]
+    - button "Logout and stop dashboard services" [ref=e52] [cursor=pointer]:
+      - generic [ref=e53]: logout
+  - main [ref=e54]:
+    - generic [ref=e55]:
+      - generic [ref=e56]:
+        - generic [ref=e57]: OPERATIONS DESK
+        - generic [ref=e58]: /
+        - generic [ref=e59]: AI Trade Desk
+      - generic [ref=e60]:
+        - generic [ref=e61]: SYNCED 23:45:06 ET
+        - generic [ref=e64]: PAPER · READ-ONLY
+        - generic [ref=e65]:
+          - generic [ref=e66]: schedule
+          - generic [ref=e67]: Market CLOSED
+        - button "cloud_download FETCH CANDLES" [ref=e68] [cursor=pointer]:
+          - generic [ref=e69]: cloud_download
+          - text: FETCH CANDLES
+        - button "refresh REFRESH" [ref=e70] [cursor=pointer]:
+          - generic [ref=e71]: refresh
+          - text: REFRESH
+        - button "restart_alt HARD RESET" [ref=e72] [cursor=pointer]:
+          - generic [ref=e73]: restart_alt
+          - text: HARD RESET
+    - generic [ref=e75]:
+      - generic [ref=e77]:
+        - heading "AI Trade Desk" [level=1] [ref=e802]
+        - paragraph [ref=e79]: Candidate review · deterministic risk · human approval only
+      - generic [ref=e803]:
+        - generic [ref=e804]:
+          - generic [ref=e805]:
+            - generic [ref=e806]: AI TRADE DESK
+            - heading "Candidate management" [level=1] [ref=e807]
+            - generic [ref=e808]: AI may propose and explain. Only a human can change state or approve.
+          - generic [ref=e809]:
+            - textbox "Filter symbol, strategy, status" [ref=e810]
+            - button "SHOW HISTORICAL" [active] [ref=e1256] [cursor=pointer]
+            - button "↻ IMPORT PERSISTED" [ref=e812] [cursor=pointer]
+            - button "RUN FULL MARKET SCAN" [ref=e813] [cursor=pointer]
+            - button "RUN GPT CANDIDATE REVIEW" [ref=e814] [cursor=pointer]
+            - button "RUN FULL AI SCAN" [ref=e815] [cursor=pointer]
+        - generic [ref=e816]:
+          - generic [ref=e817]: SCAN PROGRESS & HISTORY
+          - generic [ref=e818]: "Latest: GPT_REVIEW · COMPLETED · aitd-scan-7447812935134bbf948f01f8e797d868"
+          - generic [ref=e819]:
+            - generic [ref=e820]: GPT ANALYSIS
+            - generic [ref=e821]: COMPLETED · 2
+          - generic [ref=e822]:
+            - generic [ref=e823]: KANBAN PUBLICATION
+            - generic [ref=e824]: COMPLETED · —
+        - generic [ref=e826]:
+          - generic [ref=e827]:
+            - generic [ref=e828]:
+              - generic [ref=e829]: DISCOVERED
+              - generic [ref=e830]: "0"
+            - generic [ref=e831]: Authoritative scanner candidates
+          - generic [ref=e832]:
+            - generic [ref=e833]:
+              - generic [ref=e834]: UNDER REVIEW
+              - generic [ref=e835]: "0"
+            - generic [ref=e836]: Human validation in progress
+          - generic [ref=e837]:
+            - generic [ref=e838]:
+              - generic [ref=e839]: READY
+              - generic [ref=e840]: "0"
+            - generic [ref=e841]: Eligible for human approval
+          - generic [ref=e842]:
+            - generic [ref=e843]:
+              - generic [ref=e844]: INVALIDATED
+              - generic [ref=e845]: "0"
+            - generic [ref=e846]: Closed or no longer eligible

@@ -1,0 +1,11 @@
+{
+  "name": "no_target_space",
+  "input_bars": {
+    "plan": [
+      {"direction": "IRS_LONG", "entry": 101.00, "stop": 99.00, "next_structural_target": 102.20, "estimated_costs": 0.015}
+    ]
+  },
+  "config": {"hard_minimum_r": 0.90},
+  "expected": {"accepted": false, "rejection_reason": "INSUFFICIENT_TARGET_SPACE", "structural_r_below": 0.90}
+}
+

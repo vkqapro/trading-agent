@@ -1,0 +1,97 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]: candlestick_chart
+        - generic [ref=e9]:
+          - generic [ref=e10]: Vitaly's Trading Bot
+          - generic [ref=e11]: IBKR · PAPER
+      - button "keyboard_double_arrow_left" [ref=e12] [cursor=pointer]
+    - generic [ref=e14]:
+      - generic [ref=e15] [cursor=pointer]:
+        - generic [ref=e16]: space_dashboard
+        - generic [ref=e17]: Dashboard
+      - generic [ref=e18] [cursor=pointer]:
+        - generic [ref=e19]: visibility
+        - generic [ref=e20]: Watchlist
+      - generic [ref=e21] [cursor=pointer]:
+        - generic [ref=e22]: wb_twilight
+        - generic [ref=e23]: Pre-Open
+      - generic [ref=e24] [cursor=pointer]:
+        - generic [ref=e25]: radar
+        - generic [ref=e26]: Screener Stocks
+      - generic [ref=e27] [cursor=pointer]:
+        - generic [ref=e28]: track_changes
+        - generic [ref=e29]: Screener Crypto
+      - generic [ref=e30] [cursor=pointer]:
+        - generic [ref=e31]: deployed_code
+        - generic [ref=e32]: Inefficiency Reclaim
+      - generic [ref=e33] [cursor=pointer]:
+        - generic [ref=e34]: monitoring
+        - generic [ref=e35]: Intraday
+      - generic [ref=e36] [cursor=pointer]:
+        - generic [ref=e37]: insights
+        - generic [ref=e38]: Strategy Stocks
+      - generic [ref=e39] [cursor=pointer]:
+        - generic [ref=e40]: currency_bitcoin
+        - generic [ref=e41]: Strategy Crypto
+      - generic [ref=e42] [cursor=pointer]:
+        - generic [ref=e43]: currency_bitcoin
+        - generic [ref=e44]: Crypto
+      - generic [ref=e45] [cursor=pointer]:
+        - generic [ref=e46]: receipt_long
+        - generic [ref=e47]: Orders Journal
+      - generic [ref=e48] [cursor=pointer]:
+        - generic [ref=e49]: currency_exchange
+        - generic [ref=e50]: Forex
+      - generic [ref=e51] [cursor=pointer]:
+        - generic [ref=e52]: swap_horiz
+        - generic [ref=e53]: Trades & Positions
+      - generic [ref=e54] [cursor=pointer]:
+        - generic [ref=e55]: calculate
+        - generic [ref=e56]: Forecast
+      - generic [ref=e57] [cursor=pointer]:
+        - generic [ref=e58]: description
+        - generic [ref=e59]: Reports
+    - button "Switch to light theme" [ref=e60] [cursor=pointer]:
+      - generic [ref=e61]:
+        - generic [ref=e62]: light_mode
+        - generic [ref=e63]: Light theme
+    - generic [ref=e66]:
+      - generic [ref=e67]: Read-only mode
+      - generic [ref=e70]: Never connects to IBKR.Views memory/ only.
+    - generic [ref=e71]:
+      - generic [ref=e72] [cursor=pointer]:
+        - generic [ref=e73]: help
+        - text: Docs
+      - generic [ref=e74] [cursor=pointer]:
+        - generic [ref=e75]: settings
+        - text: Settings
+  - main [ref=e76]:
+    - generic [ref=e77]:
+      - generic [ref=e78]:
+        - generic [ref=e79]: OPERATIONS DESK
+        - generic [ref=e80]: /
+        - generic [ref=e81]: Dashboard
+      - generic [ref=e82]:
+        - generic [ref=e83]: SYNCED — ET
+        - generic [ref=e86]: PAPER · READ-ONLY
+        - generic [ref=e87]:
+          - generic [ref=e88]: schedule
+          - generic [ref=e89]: Market —
+        - button "cloud_download FETCH CANDLES" [ref=e90] [cursor=pointer]:
+          - generic [ref=e91]: cloud_download
+          - text: FETCH CANDLES
+        - button "refresh REFRESH" [ref=e92] [cursor=pointer]:
+          - generic [ref=e93]: refresh
+          - text: REFRESH
+        - button "restart_alt HARD RESET" [ref=e94] [cursor=pointer]:
+          - generic [ref=e95]: restart_alt
+          - text: HARD RESET
+    - generic [ref=e97]:
+      - generic [ref=e99]:
+        - heading "Command Overview" [level=1] [ref=e100]
+        - paragraph [ref=e101]: All systems nominal · scan cycle 5m · paper account
+      - generic [ref=e103]:
+        - generic [ref=e104]: hourglass_top
+        - text: Loading…

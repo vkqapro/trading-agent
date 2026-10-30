@@ -1,0 +1,17 @@
+{
+  "name": "bullish_low_overlap_valid",
+  "input_bars": {
+    "hourly": [
+      {"timestamp": "2026-07-02T10:30:00-04:00", "open": 48.80, "high": 49.40, "low": 48.60, "close": 49.10, "volume": 700000},
+      {"timestamp": "2026-07-02T11:30:00-04:00", "open": 49.10, "high": 49.70, "low": 48.95, "close": 49.50, "volume": 650000},
+      {"timestamp": "2026-07-02T12:30:00-04:00", "open": 49.55, "high": 52.20, "low": 49.45, "close": 51.95, "volume": 1600000}
+    ],
+    "15m": [
+      {"timestamp": "2026-07-02T14:00:00-04:00", "open": 50.30, "high": 50.45, "low": 49.65, "close": 49.95, "volume": 180000},
+      {"timestamp": "2026-07-02T14:15:00-04:00", "open": 49.95, "high": 50.70, "low": 49.50, "close": 50.60, "volume": 240000}
+    ]
+  },
+  "config": {"max_overlap_ratio": 0.25, "min_retrace_wait_1h_bars": 1},
+  "expected": {"accepted": true, "direction": "IRS_LONG", "zone_type": "LOW_OVERLAP_DISPLACEMENT"}
+}
+

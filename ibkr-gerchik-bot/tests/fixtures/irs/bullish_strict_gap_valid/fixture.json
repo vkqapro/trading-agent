@@ -1,0 +1,17 @@
+{
+  "name": "bullish_strict_gap_valid",
+  "input_bars": {
+    "hourly": [
+      {"timestamp": "2026-07-01T10:30:00-04:00", "open": 99.40, "high": 100.00, "low": 99.20, "close": 99.80, "volume": 600000},
+      {"timestamp": "2026-07-01T11:30:00-04:00", "open": 99.80, "high": 100.10, "low": 99.60, "close": 99.90, "volume": 550000},
+      {"timestamp": "2026-07-01T12:30:00-04:00", "open": 100.50, "high": 103.20, "low": 100.40, "close": 102.90, "volume": 1400000}
+    ],
+    "15m": [
+      {"timestamp": "2026-07-01T14:00:00-04:00", "open": 101.00, "high": 101.20, "low": 100.15, "close": 100.70, "volume": 160000},
+      {"timestamp": "2026-07-01T14:15:00-04:00", "open": 100.70, "high": 101.35, "low": 99.95, "close": 101.20, "volume": 210000}
+    ]
+  },
+  "config": {"min_retrace_wait_1h_bars": 1, "max_retrace_wait_1h_bars": 7},
+  "expected": {"accepted": true, "direction": "IRS_LONG", "zone_type": "STRICT_THREE_BAR_GAP", "zone_low": 100.00, "zone_high": 100.40}
+}
+

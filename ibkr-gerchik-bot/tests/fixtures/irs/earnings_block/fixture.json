@@ -1,0 +1,11 @@
+{
+  "name": "earnings_block",
+  "input_bars": {
+    "risk_snapshot": [
+      {"timestamp": "2026-07-10T11:30:00-04:00", "earnings_status": "BLOCKED", "news_status": "CLEAR", "corporate_action_status": "CLEAR", "halt_status": "CLEAR"}
+    ]
+  },
+  "config": {"fail_closed": true},
+  "expected": {"accepted": false, "rejection_reason": "EARNINGS_BLOCK"}
+}
+

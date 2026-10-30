@@ -1,0 +1,300 @@
+// This Pine Script® code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © kingshukghosh71
+ 
+//@version=5
+indicator("Gann Sq9 & Sq144 Dashboard [KG]", overlay=true, max_lines_count=500, max_boxes_count=500)
+ 
+// ─── DARK THEME PALETTE ─────────────────────────────────────
+var color BG_PAGE       = color.rgb(13, 17, 23)
+var color BG_PANEL      = color.rgb(22, 27, 34)
+var color BG_CARD       = color.rgb(28, 33, 40)
+var color BG_HEADER     = color.rgb(33, 38, 45)
+ 
+var color ACCENT_BLUE   = color.rgb(31, 111, 235)
+var color ACCENT_GOLD   = color.rgb(210, 153, 34)
+ 
+var color RES_NEAR      = color.rgb(218, 54, 51)
+var color RES_MAJOR     = color.rgb(61, 31, 31)
+var color SUP_NEAR      = color.rgb(35, 134, 54)
+var color SUP_MAJOR     = color.rgb(27, 45, 31)
+ 
+var color CARDINAL_RES  = color.rgb(74, 26, 10)
+var color CARDINAL_SUP  = color.rgb(10, 42, 26)
+var color FIXED_RES     = color.rgb(45, 27, 27)
+var color FIXED_SUP     = color.rgb(23, 38, 25)
+ 
+var color TXT_PRIMARY   = color.rgb(230, 237, 243)
+var color TXT_SECONDARY = color.rgb(139, 148, 158)
+var color TXT_GOLD      = color.rgb(240, 192, 64)
+var color TXT_RED       = color.rgb(255, 123, 114)
+var color TXT_GREEN     = color.rgb(126, 231, 135)
+var color TXT_BLUE      = color.rgb(121, 192, 255)
+var color TXT_ORANGE    = color.rgb(255, 166, 87)
+ 
+// ─── INPUTS ─────────────────────────────────────────────────
+grp_settings = "⚙ Settings"
+mode_input   = input.string("144", "Mode", options=["9", "144"], group=grp_settings)
+price_src    = input.source(close, "Price Source", group=grp_settings)
+trend_filter = input.bool(true, "Use Trend Filter (MA)", group=grp_settings)
+ma_len       = input.int(50, "MA Length", group=grp_settings)
+show_lines   = input.bool(true, "Show Levels on Chart", group=grp_settings)
+// ─── DISPLAY INPUTS ─────────────────────────────────────────
+grp_display      = "📐 Display Settings"
+pos_main_input   = input.string("top_right",    "Main Table Position",       options=["top_left","top_center","top_right","middle_left","middle_center","middle_right","bottom_left","bottom_center","bottom_right"], group=grp_display)
+pos_time_input   = input.string("bottom_right", "Time Table Position",       options=["top_left","top_center","top_right","middle_left","middle_center","middle_right","bottom_left","bottom_center","bottom_right"], group=grp_display)
+pos_conf_input   = input.string("top_left",     "Confluence Table Position", options=["top_left","top_center","top_right","middle_left","middle_center","middle_right","bottom_left","bottom_center","bottom_right"], group=grp_display)
+txt_size_input   = input.string("small",        "Text Size",                 options=["tiny","small","normal","large","huge"], group=grp_display)
+ 
+// ─── GLOBAL VARIABLES (For Plotting MA) ─────────────────────
+float maVal = ta.sma(price_src, ma_len)
+ 
+// ─── GANN ANGLE DEFINITIONS ─────────────────────────────────
+type AngleData
+    int deg
+    float inc
+    bool major
+    string cross
+ 
+var array<AngleData> ANGLES = array.new<AngleData>()
+if array.size(ANGLES) == 0
+    array.push(ANGLES, AngleData.new(45,  0.125, false, "Fixed"))
+    array.push(ANGLES, AngleData.new(90,  0.250, true,  "Cardinal"))
+    array.push(ANGLES, AngleData.new(135, 0.375, false, "Fixed"))
+    array.push(ANGLES, AngleData.new(180, 0.500, true,  "Cardinal"))
+    array.push(ANGLES, AngleData.new(225, 0.625, false, "Fixed"))
+    array.push(ANGLES, AngleData.new(270, 0.750, false, "Cardinal"))
+    array.push(ANGLES, AngleData.new(315, 0.875, false, "Fixed"))
+    array.push(ANGLES, AngleData.new(360, 1.000, true,  "Cardinal"))
+ 
+// ─── CORE CALCULATION LOGIC ─────────────────────────────────
+type Level
+    float price
+    string type // "Resistance" or "Support"
+    int deg
+    int n
+    float dist
+    float pct
+    bool isNearest
+    bool isMajor
+    string cross
+    string angleLabel
+    string strength
+ 
+calcLevels(float p, string mode) =>
+    int steps = mode == "9" ? 8 : 12
+    float sqrtP = math.sqrt(p)
+    array<Level> localLevels = array.new<Level>()
+    
+    for n = 1 to steps
+        for i = 0 to array.size(ANGLES) - 1
+            AngleData a = array.get(ANGLES, i)
+            
+            // Resistance
+            float iR = sqrtP + (n * a.inc)
+            float lR = iR * iR
+            float dR = lR - p
+            float pR = (dR / p) * 100
+            
+            Level lObjR = Level.new(lR, "Resistance", a.deg, n, dR, pR, false, a.major, a.cross, str.tostring(n) + "x" + str.tostring(a.deg) + "°", "")
+            array.push(localLevels, lObjR)
+            
+            // Support
+            float iS = sqrtP - (n * a.inc)
+            if iS > 0
+                float lS = iS * iS
+                float dS = p - lS
+                float pS = (dS / p) * 100 
+                
+                Level lObjS = Level.new(lS, "Support", a.deg, n, dS, pS, false, a.major, a.cross, str.tostring(n) + "x" + str.tostring(a.deg) + "°", "")
+                array.push(localLevels, lObjS)
+ 
+    // Find nearest distances
+    float minResDist = 9999999.0
+    float minSupDist = 9999999.0
+    
+    for i = 0 to array.size(localLevels) - 1
+        Level l = array.get(localLevels, i)
+        if l.type == "Resistance" and l.dist < minResDist
+            minResDist := l.dist
+        if l.type == "Support" and l.dist < minSupDist
+            minSupDist := l.dist
+ 
+    // Tag nearest and assign strength
+    for i = 0 to array.size(localLevels) - 1
+        Level l = array.get(localLevels, i)
+        l.isNearest := (l.type == "Resistance" and math.abs(l.dist - minResDist) < 0.001) or (l.type == "Support" and math.abs(l.dist - minSupDist) < 0.001)
+        
+        string strTxt = ""
+        if l.isNearest
+            strTxt := "★ Nearest"
+        else if l.deg == 360
+            strTxt := "▮▮▮▮▮ V.Strong"
+        else if l.deg == 180 or l.deg == 90
+            strTxt := "▮▮▮▮ Strong"
+        else if l.deg == 270
+            strTxt := "▮▮▮ Mod+"
+        else if l.n == 1
+            strTxt := "▮▮ Moderate"
+        else
+            strTxt := "▮ Weak"
+        l.strength := strTxt
+        
+        array.set(localLevels, i, l)
+        
+    localLevels
+ 
+// ─── DASHBOARD VARIABLES  ───
+var table mainTable = table.new(pos_main_input, 9, 15, bgcolor=BG_PANEL, border_width=1)
+var table timeTable = table.new(pos_time_input, 6, 8, bgcolor=BG_PANEL, border_width=1)
+var table confTable = table.new(pos_conf_input, 5, 6, bgcolor=BG_PANEL, border_width=1)
+var line lineRes = na
+var line lineSup = na
+ 
+// ─── MAIN EXECUTION (Only on Last Bar) ─────────────────────
+ 
+if barstate.islast
+    // 1. Calculate Levels
+    array<Level> allLevels = calcLevels(price_src, mode_input)
+    
+    // 2. Trend Logic
+    string trend = "Neutral"
+    if trend_filter
+        trend := price_src > maVal ? "Bullish" : "Bearish"
+ 
+    // 3. Filter Levels
+    array<Level> filteredLevels = array.new<Level>()
+    if trend_filter and trend != "Neutral"
+        for i = 0 to array.size(allLevels) - 1
+            Level l = array.get(allLevels, i)
+            if (trend == "Bullish" and l.type == "Resistance") or (trend == "Bearish" and l.type == "Support")
+                array.push(filteredLevels, l)
+    else
+        filteredLevels := allLevels
+ 
+    
+    // 5. Render Tables 
+    table.delete(mainTable)
+    table.delete(timeTable)
+    table.delete(confTable)
+    
+    mainTable := table.new(pos_main_input, 9, 15, bgcolor=BG_PANEL, border_width=1)
+    timeTable := table.new(pos_time_input, 6, 8, bgcolor=BG_PANEL, border_width=1)
+    confTable := table.new(pos_conf_input, 5, 6, bgcolor=BG_PANEL, border_width=1)
+    
+    // --- Main Table Headers  ---
+    table.cell(mainTable, 0, 0, "Angle",    bgcolor=BG_HEADER, text_color=TXT_GOLD, text_size=txt_size_input)
+    table.cell(mainTable, 1, 0, "Level",    bgcolor=BG_HEADER, text_color=TXT_GOLD, text_size=txt_size_input)
+    table.cell(mainTable, 2, 0, "Type",     bgcolor=BG_HEADER, text_color=TXT_GOLD, text_size=txt_size_input)
+    table.cell(mainTable, 3, 0, "Distance", bgcolor=BG_HEADER, text_color=TXT_GOLD, text_size=txt_size_input)
+    table.cell(mainTable, 4, 0, "%",        bgcolor=BG_HEADER, text_color=TXT_GOLD, text_size=txt_size_input)
+    table.cell(mainTable, 5, 0, "Strength", bgcolor=BG_HEADER, text_color=TXT_GOLD, text_size=txt_size_input)
+    table.cell(mainTable, 6, 0, "Cross",    bgcolor=BG_HEADER, text_color=TXT_GOLD, text_size=txt_size_input)
+    table.cell(mainTable, 7, 0, "notes",    bgcolor=BG_HEADER, text_color=TXT_GOLD, text_size=txt_size_input)
+    // No merge on header row – all columns now show their labels
+    
+    // Title Row (row 1)
+    table.cell(mainTable, 0, 1, "GANN SQ" + mode_input + " CALCULATOR", text_color=TXT_PRIMARY, text_size=txt_size_input, bgcolor=BG_CARD)
+    table.merge_cells(mainTable, 0, 1, 8, 1)
+    
+    // Summary Row (row 2)
+    string summText = "Price: " + str.tostring(price_src, "#.##") + " | Trend: " + trend
+    table.cell(mainTable, 0, 2, summText, text_color=TXT_SECONDARY, text_size=txt_size_input, bgcolor=BG_CARD)
+    table.merge_cells(mainTable, 0, 2, 8, 2)
+ 
+    // Data Rows (starting row 3)
+    int rowCount = 3
+    int limit = math.min(array.size(filteredLevels), 12)
+    
+    for i = 0 to limit - 1
+        Level l = array.get(filteredLevels, i)
+        color bg_c = color.white
+        color txt_c = color.white
+        
+        if l.isNearest
+            bg_c := l.type == "Resistance" ? RES_NEAR : SUP_NEAR
+            txt_c := TXT_PRIMARY
+        else if l.isMajor
+            bg_c := l.type == "Resistance" ? RES_MAJOR : SUP_MAJOR
+            txt_c := l.type == "Resistance" ? TXT_RED : TXT_GREEN
+        else if l.cross == "Cardinal"
+            bg_c := l.type == "Resistance" ? CARDINAL_RES : CARDINAL_SUP
+            txt_c := TXT_ORANGE
+        else if l.type == "Resistance"
+            bg_c := color.rgb(20, 10, 10)
+            txt_c := TXT_RED
+        else
+            bg_c := color.rgb(10, 20, 10)
+            txt_c := TXT_GREEN
+ 
+        table.cell(mainTable, 0, rowCount, l.angleLabel, bgcolor=bg_c, text_color=txt_c, text_size=txt_size_input)
+        table.cell(mainTable, 1, rowCount, str.tostring(l.price, "#.##"), bgcolor=bg_c, text_color=txt_c, text_size=txt_size_input)
+        table.cell(mainTable, 2, rowCount, l.type, bgcolor=bg_c, text_color=txt_c, text_size=txt_size_input)
+        table.cell(mainTable, 3, rowCount, str.tostring(l.dist, "#.##"), bgcolor=bg_c, text_color=txt_c, text_size=txt_size_input)
+        table.cell(mainTable, 4, rowCount, str.tostring(l.pct, "#.##") + "%", bgcolor=bg_c, text_color=txt_c, text_size=txt_size_input)
+        table.cell(mainTable, 5, rowCount, l.strength, bgcolor=bg_c, text_color=txt_c, text_size=txt_size_input)
+        table.cell(mainTable, 6, rowCount, l.cross, bgcolor=bg_c, text_color=txt_c, text_size=txt_size_input)
+        
+        string notes = ""
+        if l.isNearest and l.type == "Resistance" 
+            notes := "Nearest Res"
+        else if l.isNearest and l.type == "Support" 
+            notes := "Nearest Sup"
+        else if l.deg == 360 
+            notes := "360 Cycle"
+        
+        table.cell(mainTable, 7, rowCount, notes, bgcolor=bg_c, text_color=txt_c, text_size=txt_size_input)
+        table.merge_cells(mainTable, 7, rowCount, 8, rowCount) 
+        
+        rowCount := rowCount + 1
+ 
+    // --- Time Cycles Table ---
+    table.cell(timeTable, 0, 0, "TIME CYCLES (Projected)", text_color=TXT_GOLD, bgcolor=BG_HEADER, text_size=txt_size_input)
+    table.merge_cells(timeTable, 0, 0, 5, 0)
+    
+    table.cell(timeTable, 0, 1, "ANGLE", bgcolor=BG_CARD, text_color=TXT_SECONDARY, text_size=txt_size_input)
+    table.cell(timeTable, 1, 1, "DAYS",  bgcolor=BG_CARD, text_color=TXT_SECONDARY, text_size=txt_size_input)
+    table.cell(timeTable, 2, 1, "RES LVL", bgcolor=BG_CARD, text_color=TXT_SECONDARY, text_size=txt_size_input)
+    table.cell(timeTable, 3, 1, "SUP LVL", bgcolor=BG_CARD, text_color=TXT_SECONDARY, text_size=txt_size_input)
+    table.cell(timeTable, 4, 1, "TYPE",    bgcolor=BG_CARD, text_color=TXT_SECONDARY, text_size=txt_size_input)
+    
+    int tRow = 2
+    var array<int> timeAngles = array.from<int>(45, 90, 180, 360)
+    for i = 0 to array.size(timeAngles) - 1
+        int deg = array.get(timeAngles, i)
+        int days = deg 
+        float sqrtP = math.sqrt(price_src)
+        float incT = deg / 360.0
+        float tRes = math.pow(sqrtP + incT, 2)
+        float tSup = math.pow(sqrtP - incT, 2)
+        
+        table.cell(timeTable, 0, tRow, str.tostring(deg) + "°", bgcolor=BG_PANEL, text_color=TXT_PRIMARY, text_size=txt_size_input)
+        table.cell(timeTable, 1, tRow, str.tostring(days),      bgcolor=BG_PANEL, text_color=TXT_PRIMARY, text_size=txt_size_input)
+        table.cell(timeTable, 2, tRow, str.tostring(tRes, "#.##"), bgcolor=BG_PANEL, text_color=TXT_RED,   text_size=txt_size_input)
+        table.cell(timeTable, 3, tRow, str.tostring(tSup, "#.##"), bgcolor=BG_PANEL, text_color=TXT_GREEN, text_size=txt_size_input)
+        table.cell(timeTable, 4, tRow, deg == 360 ? "Strong" : "Mod", bgcolor=BG_PANEL, text_color=TXT_GOLD, text_size=txt_size_input)
+        tRow := tRow + 1
+ 
+    // 6. Chart Lines
+    if show_lines
+        float nRes = na
+        float nSup = na
+        
+        for i = 0 to array.size(allLevels) - 1
+            Level l = array.get(allLevels, i)
+            if l.isNearest and l.type == "Resistance"
+                nRes := l.price
+            if l.isNearest and l.type == "Support"
+                nSup := l.price
+ 
+        if not na(nRes)
+            line.delete(lineRes)
+            lineRes := line.new(bar_index - 20, nRes, bar_index + 50, nRes, color=RES_NEAR, width=2, style=line.style_dashed)
+            label.new(bar_index, nRes, "NEAREST RES", color=RES_NEAR, textcolor=color.white, style=label.style_label_down, size=size.tiny)
+ 
+        if not na(nSup)
+            line.delete(lineSup)
+            lineSup := line.new(bar_index - 20, nSup, bar_index + 50, nSup, color=SUP_NEAR, width=2, style=line.style_dashed)
+            label.new(bar_index, nSup, "NEAREST SUP", color=SUP_NEAR, textcolor=color.white, style=label.style_label_up, size=size.tiny)
+ 
+// Plot MA for visual reference
+plot(maVal, "MA Trend", color=color.gray, linewidth=1, display=display.none)

@@ -1,0 +1,4973 @@
+{
+  "updated_at": "2026-07-16T23:04:54+00:00",
+  "positions": {
+    "LTC-USDT": {
+      "inst_id": "LTC-USDT",
+      "ticker": "LTCUSD",
+      "side": "LONG",
+      "entry": 44.98,
+      "qty": 0.51,
+      "quote_amount": 22.9398,
+      "opened_at": "2026-07-14T20:02:57+00:00",
+      "okx_order_id": "3743231052921683968",
+      "source": "TradingView webhook"
+    }
+  },
+  "executions": [
+    {
+      "id": "7191826c3c464a8aa934db6ed3fbefd1",
+      "created_at": "2026-07-16T23:04:54+00:00",
+      "action": "SELL",
+      "ticker": "DOGEUSD",
+      "inst_id": "DOGE-USDT",
+      "price": 0.07759,
+      "order_size": "",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-16T23:00:00Z",
+      "status": "skipped",
+      "okx_order_id": null,
+      "message": "No open local position to close.",
+      "raw": {
+        "action": "sell",
+        "ticker": "DOGEUSD",
+        "position_size": "0",
+        "schema": "2",
+        "timestamp": "2026-07-16T23:00:00Z",
+        "bot_id": "cun6OuYM"
+      }
+    },
+    {
+      "id": "d90b9c07796d4e848592334dc774216a",
+      "created_at": "2026-07-16T15:12:26+00:00",
+      "action": "SELL",
+      "ticker": "DOGEUSD",
+      "inst_id": "DOGE-USDT",
+      "price": 0.0733,
+      "order_size": "",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-16T15:00:00Z",
+      "status": "submitted",
+      "okx_order_id": "3748444368614969344",
+      "message": "Demo market SELL close submitted to OKX.",
+      "raw": {
+        "action": "sell",
+        "ticker": "DOGEUSD",
+        "position_size": "0",
+        "schema": "2",
+        "timestamp": "2026-07-16T15:00:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "estimated_qty": 493.468,
+      "entry": 0.0744,
+      "opened_at": "2026-07-15T18:11:43+00:00",
+      "estimated_pnl": -0.5428148,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellDOGEUSDT74bd3cb5e7c6",
+            "ordId": "3748444368614969344",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1784214747525"
+          }
+        ],
+        "inTime": "1784214747456866",
+        "msg": "",
+        "outTime": "1784214747594703"
+      },
+      "onboarding": {
+        "symbol": "DOGE-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "60187096e9af4123833499af59766e44",
+      "created_at": "2026-07-15T18:11:43+00:00",
+      "action": "BUY",
+      "ticker": "DOGEUSD",
+      "inst_id": "DOGE-USDT",
+      "price": 0.0744,
+      "order_size": "",
+      "tv_position_size": 493.468,
+      "schema": "2",
+      "tv_timestamp": "2026-07-15T18:00:00Z",
+      "status": "submitted",
+      "okx_order_id": "3745906240545083392",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "raw": {
+        "action": "buy",
+        "ticker": "DOGEUSD",
+        "position_size": "493.468",
+        "schema": "2",
+        "timestamp": "2026-07-15T18:00:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "quote_amount": 36.7140192,
+      "estimated_qty": 493.468,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyDOGEUSDT8e39a9380cca",
+            "ordId": "3745906240545083392",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1784139105414"
+          }
+        ],
+        "inTime": "1784139105346278",
+        "msg": "",
+        "outTime": "1784139105482633"
+      },
+      "onboarding": {
+        "symbol": "DOGE-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "70d05d638ba74724baeab36cf0a85aa9",
+      "created_at": "2026-07-15T00:09:39+00:00",
+      "action": "SELL",
+      "ticker": "DOGEUSD",
+      "inst_id": "DOGE-USDT",
+      "price": 0.07435,
+      "order_size": "",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-15T00:00:00Z",
+      "status": "submitted",
+      "okx_order_id": "3743727817898835968",
+      "message": "Demo market SELL close submitted to OKX.",
+      "raw": {
+        "action": "sell",
+        "ticker": "DOGEUSD",
+        "position_size": "0",
+        "schema": "2",
+        "timestamp": "2026-07-15T00:00:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "estimated_qty": 492.86,
+      "entry": 0.0743,
+      "opened_at": "2026-07-14T22:00:18+00:00",
+      "estimated_pnl": 0.024643,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellDOGEUSDT1b2c249526be",
+            "ordId": "3743727817898835968",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1784074183360"
+          }
+        ],
+        "inTime": "1784074183292792",
+        "msg": "",
+        "outTime": "1784074183428306"
+      },
+      "onboarding": {
+        "symbol": "DOGE-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "4220d452f68d4f7b8d62bff59eb9d514",
+      "created_at": "2026-07-14T22:00:18+00:00",
+      "action": "BUY",
+      "ticker": "DOGEUSD",
+      "inst_id": "DOGE-USDT",
+      "price": 0.0743,
+      "order_size": "",
+      "tv_position_size": 492.86,
+      "schema": "2",
+      "tv_timestamp": "2026-07-14T22:00:00Z",
+      "status": "submitted",
+      "okx_order_id": "3743467299577511936",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "raw": {
+        "action": "buy",
+        "ticker": "DOGEUSD",
+        "position_size": "492.86",
+        "schema": "2",
+        "timestamp": "2026-07-14T22:00:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "quote_amount": 36.619498,
+      "estimated_qty": 492.86,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyDOGEUSDTba316d43a034",
+            "ordId": "3743467299577511936",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1784066419309"
+          }
+        ],
+        "inTime": "1784066419242790",
+        "msg": "",
+        "outTime": "1784066419376761"
+      },
+      "onboarding": {
+        "symbol": "DOGE-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "a5ddd55467a4473b87db948a45a0d57b",
+      "created_at": "2026-07-14T20:02:57+00:00",
+      "action": "BUY",
+      "ticker": "LTCUSD",
+      "inst_id": "LTC-USDT",
+      "price": 44.98,
+      "order_size": "",
+      "tv_position_size": 0.51,
+      "schema": "2",
+      "tv_timestamp": "2026-07-14T20:00:00Z",
+      "status": "submitted",
+      "okx_order_id": "3743231052921683968",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "raw": {
+        "action": "buy",
+        "ticker": "LTCUSD",
+        "position_size": "0.51",
+        "schema": "2",
+        "timestamp": "2026-07-14T20:00:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "quote_amount": 22.9398,
+      "estimated_qty": 0.51,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyLTCUSDTb05395dde853",
+            "ordId": "3743231052921683968",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1784059378610"
+          }
+        ],
+        "inTime": "1784059378543050",
+        "msg": "",
+        "outTime": "1784059378679052"
+      },
+      "onboarding": {
+        "symbol": "LTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "3be1a43f600c4306a99de1a8319f5614",
+      "created_at": "2026-07-08T21:12:34+00:00",
+      "action": "SELL",
+      "ticker": "HYPEUSD",
+      "inst_id": "HYPE-USDT",
+      "price": 66.962,
+      "order_size": "",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-08T21:00:00Z",
+      "status": "skipped",
+      "okx_order_id": null,
+      "message": "No open local position to close.",
+      "raw": {
+        "action": "sell",
+        "ticker": "HYPEUSD",
+        "position_size": "0",
+        "schema": "2",
+        "timestamp": "2026-07-08T21:00:00Z",
+        "bot_id": "cun6OuYM"
+      }
+    },
+    {
+      "id": "93e0c86e663948eebbfa9dd12f11fb51",
+      "created_at": "2026-07-08T01:04:52+00:00",
+      "action": "SELL",
+      "ticker": "DOGEUSD",
+      "inst_id": "DOGE-USDT",
+      "price": 0.07759,
+      "order_size": "",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-08T01:00:00Z",
+      "status": "skipped",
+      "okx_order_id": null,
+      "message": "No open local position to close.",
+      "raw": {
+        "action": "sell",
+        "ticker": "DOGEUSD",
+        "position_size": "0",
+        "schema": "2",
+        "timestamp": "2026-07-08T01:00:00Z",
+        "bot_id": "cun6OuYM"
+      }
+    },
+    {
+      "id": "3acfdfec188b4ae68735588fa69636be",
+      "created_at": "2026-07-07T13:35:41+00:00",
+      "action": "BUY",
+      "ticker": "DOGSUSD",
+      "inst_id": "DOGS-USDT",
+      "price": null,
+      "order_size": "",
+      "tv_position_size": 1526236.927,
+      "schema": "2",
+      "tv_timestamp": "2026-07-07T13:00:00Z",
+      "status": "error",
+      "okx_order_id": null,
+      "message": "OKX error code=1 msg=All operations failed details=sCode=51155 sMsg=You can't trade this pair or borrow this crypto due to local compliance restrictions. ",
+      "raw": {
+        "action": "buy",
+        "ticker": "DOGSUSD",
+        "position_size": "1526236.92700000",
+        "schema": "2",
+        "timestamp": "2026-07-07T13:00:00Z",
+        "bot_id": "cun6OuYM"
+      }
+    },
+    {
+      "id": "fa039708208048d195e33425270f9a18",
+      "created_at": "2026-07-05T23:47:27+00:00",
+      "action": "SELL",
+      "ticker": "DOGEUSD",
+      "inst_id": "DOGE-USDT",
+      "price": 0.07785,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T23:47:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717591078121754624",
+      "message": "Demo market SELL close submitted to OKX.",
+      "raw": {
+        "action": "sell",
+        "ticker": "DOGEUSD",
+        "order_size": "100%",
+        "position_size": "0",
+        "schema": "2",
+        "timestamp": "2026-07-05T23:47:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "estimated_qty": 499.307074,
+      "entry": 0.0776,
+      "opened_at": "2026-07-05T21:23:18+00:00",
+      "estimated_pnl": 0.12482677,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellDOGEUSDT13d51a1abb2b",
+            "ordId": "3717591078121754624",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783295247815"
+          }
+        ],
+        "inTime": "1783295247746403",
+        "msg": "",
+        "outTime": "1783295247885366"
+      },
+      "onboarding": {
+        "symbol": "DOGE-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "0ff3ccb69d094ebd86db973e90404062",
+      "created_at": "2026-07-05T23:25:01+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63708.0,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T23:25:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717545911910125568",
+      "message": "Demo market SELL close submitted to OKX.",
+      "raw": {
+        "action": "sell",
+        "ticker": "BTCUSDT",
+        "order_size": "100%",
+        "position_size": "0",
+        "schema": "2",
+        "timestamp": "2026-07-05T23:25:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "estimated_qty": 0.00554885,
+      "entry": 62821.67699108824,
+      "opened_at": "2026-07-05T21:19:01+00:00",
+      "estimated_pnl": 4.91807343,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDT789ff81095de",
+            "ordId": "3717545911910125568",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783293901757"
+          }
+        ],
+        "inTime": "1783293901690243",
+        "msg": "",
+        "outTime": "1783293901825710"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "131497dffefb4b6b8d80083ac807eba4",
+      "created_at": "2026-07-05T23:24:01+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1795.0,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T23:24:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717543901999648768",
+      "message": "Demo market SELL close submitted to OKX.",
+      "raw": {
+        "action": "sell",
+        "ticker": "ETHUSD",
+        "order_size": "100%",
+        "position_size": "0",
+        "schema": "2",
+        "timestamp": "2026-07-05T23:24:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "estimated_qty": 0.0187,
+      "entry": 1796.55,
+      "opened_at": "2026-07-05T23:12:02+00:00",
+      "estimated_pnl": -0.028985,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDTde967ef81d77",
+            "ordId": "3717543901999648768",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783293841857"
+          }
+        ],
+        "inTime": "1783293841790228",
+        "msg": "",
+        "outTime": "1783293841925891"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "c5c6c3fe6626454e81664f6041650408",
+      "created_at": "2026-07-05T23:12:02+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1796.55,
+      "order_size": "100%",
+      "tv_position_size": 0.0187,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T23:12:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717519776061050880",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "raw": {
+        "action": "buy",
+        "ticker": "ETHUSD",
+        "order_size": "100%",
+        "position_size": "0.0187",
+        "schema": "2",
+        "timestamp": "2026-07-05T23:12:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "quote_amount": 33.595485,
+      "estimated_qty": 0.0187,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDT4d53dc8a35c1",
+            "ordId": "3717519776061050880",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783293122848"
+          }
+        ],
+        "inTime": "1783293122781261",
+        "msg": "",
+        "outTime": "1783293122918310"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "80c9abaf13014a25b8297bf5225697b2",
+      "created_at": "2026-07-05T22:42:03+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1792.39,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T22:42:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717459415093989376",
+      "message": "Demo market SELL close submitted to OKX.",
+      "raw": {
+        "action": "sell",
+        "ticker": "ETHUSD",
+        "order_size": "100%",
+        "position_size": "0",
+        "schema": "2",
+        "timestamp": "2026-07-05T22:42:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "estimated_qty": 0.0188,
+      "entry": 1779.34,
+      "opened_at": "2026-07-05T21:20:03+00:00",
+      "estimated_pnl": 0.24534,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDT0c098c4afc08",
+            "ordId": "3717459415093989376",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783291323951"
+          }
+        ],
+        "inTime": "1783291323883331",
+        "msg": "",
+        "outTime": "1783291324021078"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "dc2e724aedb1483baa36a0739debdf92",
+      "created_at": "2026-07-05T21:23:18+00:00",
+      "action": "BUY",
+      "ticker": "DOGEUSD",
+      "inst_id": "DOGE-USDT",
+      "price": 0.0776,
+      "order_size": "100%",
+      "tv_position_size": 499.629,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T21:23:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717300888488628224",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "raw": {
+        "action": "buy",
+        "ticker": "DOGEUSD",
+        "order_size": "100%",
+        "position_size": "499.629",
+        "schema": "2",
+        "timestamp": "2026-07-05T21:23:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "quote_amount": 38.74622894,
+      "estimated_qty": 499.307074,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyDOGEUSDT8294abf6d45e",
+            "ordId": "3717300888488628224",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783286599490"
+          }
+        ],
+        "inTime": "1783286599421041",
+        "msg": "",
+        "outTime": "1783286599559246"
+      },
+      "onboarding": {
+        "symbol": "DOGE-USDT",
+        "needed": true,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "collection": {
+          "symbols": 1,
+          "persisted": 4,
+          "failed": []
+        },
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "949c46244ca3413685268874760c12e7",
+      "created_at": "2026-07-05T21:20:03+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1779.34,
+      "order_size": "100%",
+      "tv_position_size": 0.0188,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T21:20:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717294344904626176",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "raw": {
+        "action": "buy",
+        "ticker": "ETHUSD",
+        "order_size": "100%",
+        "position_size": "0.0188",
+        "schema": "2",
+        "timestamp": "2026-07-05T21:20:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "quote_amount": 33.451592,
+      "estimated_qty": 0.0188,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDT915f1741617f",
+            "ordId": "3717294344904626176",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783286404476"
+          }
+        ],
+        "inTime": "1783286404409205",
+        "msg": "",
+        "outTime": "1783286404545746"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "450090a6876348f39c4f03e76019096d",
+      "created_at": "2026-07-05T21:19:01+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62821.67699108824,
+      "order_size": "100%",
+      "tv_position_size": 0.005549,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T21:19:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717292246309785600",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "raw": {
+        "action": "buy",
+        "ticker": "BTCUSDT",
+        "order_size": "100%",
+        "position_size": "0.005549",
+        "schema": "2",
+        "timestamp": "2026-07-05T21:19:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "quote_amount": 348.58806237,
+      "estimated_qty": 0.00554885,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDT0c32e6efef05",
+            "ordId": "3717292246309785600",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783286341933"
+          }
+        ],
+        "inTime": "1783286341865475",
+        "msg": "",
+        "outTime": "1783286342002233"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "cca2b6fee9b5441e90e1b6283090e104",
+      "created_at": "2026-07-05T20:39:57+00:00",
+      "action": "SELL",
+      "ticker": "DOGEUSD",
+      "inst_id": "DOGE-USDT",
+      "price": null,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T20:39:00Z",
+      "status": "skipped",
+      "okx_order_id": null,
+      "message": "No open local position to close.",
+      "raw": {
+        "action": "sell",
+        "ticker": "DOGEUSD",
+        "order_size": "100%",
+        "position_size": "0",
+        "schema": "2",
+        "timestamp": "2026-07-05T20:39:00Z",
+        "bot_id": "cun6OuYM"
+      }
+    },
+    {
+      "id": "ff1bea8e94164bbab98044a16b8361b5",
+      "created_at": "2026-07-05T20:17:00+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62804.5,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T20:17:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717167412514902016",
+      "message": "Demo market SELL close submitted to OKX.",
+      "raw": {
+        "action": "sell",
+        "ticker": "BTCUSDT",
+        "order_size": "100%",
+        "position_size": "0",
+        "schema": "2",
+        "timestamp": "2026-07-05T20:17:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "estimated_qty": 0.005561,
+      "entry": 62822.0,
+      "opened_at": "2026-07-05T20:16:01+00:00",
+      "estimated_pnl": -0.0973175,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDT3a745fe40c64",
+            "ordId": "3717167412514902016",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783282621596"
+          }
+        ],
+        "inTime": "1783282621528959",
+        "msg": "",
+        "outTime": "1783282621665698"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "dadeb1ad6e4047dc90bd093c0713748a",
+      "created_at": "2026-07-05T20:16:01+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62822.0,
+      "order_size": "100%",
+      "tv_position_size": 0.005561,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T20:16:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717165415824871424",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "raw": {
+        "action": "buy",
+        "ticker": "BTCUSDT",
+        "order_size": "100%",
+        "position_size": "0.005561",
+        "schema": "2",
+        "timestamp": "2026-07-05T20:16:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "quote_amount": 349.353142,
+      "estimated_qty": 0.005561,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDTf64f2d64c205",
+            "ordId": "3717165415824871424",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783282562090"
+          }
+        ],
+        "inTime": "1783282562021743",
+        "msg": "",
+        "outTime": "1783282562159584"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "2de250a138024222a1ed216af27b6656",
+      "created_at": "2026-07-05T20:14:02+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62820.4,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T20:14:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717161436604780544",
+      "message": "Demo market SELL close submitted to OKX.",
+      "raw": {
+        "action": "sell",
+        "ticker": "BTCUSDT",
+        "order_size": "100%",
+        "position_size": "0",
+        "schema": "2",
+        "timestamp": "2026-07-05T20:14:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "estimated_qty": 0.00557249,
+      "entry": 62830.01507333347,
+      "opened_at": "2026-07-05T20:10:00+00:00",
+      "estimated_pnl": -0.0535799,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDT5459e40a1c3c",
+            "ordId": "3717161436604780544",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783282443500"
+          }
+        ],
+        "inTime": "1783282443432101",
+        "msg": "",
+        "outTime": "1783282443569659"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "b68f56086d004f2c94faec292c9430ea",
+      "created_at": "2026-07-05T20:10:00+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62830.01507333347,
+      "order_size": "100%",
+      "tv_position_size": 0.005573,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T20:10:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717153315224276992",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "raw": {
+        "action": "buy",
+        "ticker": "BTCUSDT",
+        "order_size": "100%",
+        "position_size": "0.005573",
+        "schema": "2",
+        "timestamp": "2026-07-05T20:10:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "quote_amount": 350.1196307,
+      "estimated_qty": 0.00557249,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDTd45d4c6ef150",
+            "ordId": "3717153315224276992",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783282201464"
+          }
+        ],
+        "inTime": "1783282201395869",
+        "msg": "",
+        "outTime": "1783282201533374"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "e1f23e769b74460bba2a92aa265c5e20",
+      "created_at": "2026-07-05T19:35:02+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62801.8,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T19:35:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717082917556178944",
+      "message": "Demo market SELL close submitted to OKX.",
+      "raw": {
+        "action": "sell",
+        "ticker": "BTCUSDT",
+        "order_size": "100%",
+        "position_size": "0",
+        "schema": "2",
+        "timestamp": "2026-07-05T19:35:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "estimated_qty": 0.005586,
+      "entry": 62821.3,
+      "opened_at": "2026-07-05T19:34:01+00:00",
+      "estimated_pnl": -0.108927,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDTf308bdca4ff7",
+            "ordId": "3717082917556178944",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783280103450"
+          }
+        ],
+        "inTime": "1783280103382456",
+        "msg": "",
+        "outTime": "1783280103522708"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "c51292dbf9994c63b8cb87cddf82cdf7",
+      "created_at": "2026-07-05T19:34:01+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62821.3,
+      "order_size": "100%",
+      "tv_position_size": 0.005586,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T19:34:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717080855770550272",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "raw": {
+        "action": "buy",
+        "ticker": "BTCUSDT",
+        "order_size": "100%",
+        "position_size": "0.005586",
+        "schema": "2",
+        "timestamp": "2026-07-05T19:34:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "quote_amount": 350.9197818,
+      "estimated_qty": 0.005586,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDT0818f6e144d7",
+            "ordId": "3717080855770550272",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783280042004"
+          }
+        ],
+        "inTime": "1783280041936517",
+        "msg": "",
+        "outTime": "1783280042074201"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "c2e8c7f38619443a8dcefd681ba09410",
+      "created_at": "2026-07-05T19:25:35+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1780.95,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T19:25:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717063899910754304",
+      "message": "Demo market SELL close submitted to OKX.",
+      "raw": {
+        "action": "sell",
+        "ticker": "ETHUSD",
+        "order_size": "100%",
+        "position_size": "0",
+        "schema": "2",
+        "timestamp": "2026-07-05T19:25:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "estimated_qty": 0.0188,
+      "entry": 1781.51,
+      "opened_at": "2026-07-05T19:00:35+00:00",
+      "estimated_pnl": -0.010528,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDT6e44dc1250c3",
+            "ordId": "3717063899910754304",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783279536680"
+          }
+        ],
+        "inTime": "1783279536612162",
+        "msg": "",
+        "outTime": "1783279536749125"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "d52596cc2c804407987b38606a0f28f2",
+      "created_at": "2026-07-05T19:25:01+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62766.09033107143,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T19:25:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717062745202085888",
+      "message": "Demo market SELL close submitted to OKX.",
+      "raw": {
+        "action": "sell",
+        "ticker": "BTCUSDT",
+        "order_size": "100%",
+        "position_size": "0",
+        "schema": "2",
+        "timestamp": "2026-07-05T19:25:00Z",
+        "bot_id": "cun6OuYM"
+      },
+      "estimated_qty": 0.0056,
+      "entry": 62712.1,
+      "opened_at": "2026-07-05T18:34:02+00:00",
+      "estimated_pnl": 0.30234585,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDTa97c81cffc12",
+            "ordId": "3717062745202085888",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783279502267"
+          }
+        ],
+        "inTime": "1783279502197828",
+        "msg": "",
+        "outTime": "1783279502336423"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "f85474c58f504b6fac5cff8201fc494c",
+      "created_at": "2026-07-05T19:00:35+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1781.51,
+      "order_size": "100%",
+      "tv_position_size": 0.0188,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T19:00:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717013559706374144",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 33.492388,
+      "estimated_qty": 0.0188,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDT7ea844a8edae",
+            "ordId": "3717013559706374144",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783278036425"
+          }
+        ],
+        "inTime": "1783278036357084",
+        "msg": "",
+        "outTime": "1783278036494647"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "0fe783dc29b446b6bd682324d188da35",
+      "created_at": "2026-07-05T18:59:16+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1781.07,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:59:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717010891692822528",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.0189,
+      "entry": 1781.32,
+      "opened_at": "2026-07-05T18:57:05+00:00",
+      "estimated_pnl": -0.004725,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDT7f44afdd93e5",
+            "ordId": "3717010891692822528",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783277956912"
+          }
+        ],
+        "inTime": "1783277956844130",
+        "msg": "",
+        "outTime": "1783277956982710"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "aa26d59a3c0540df8332d2aedca691b1",
+      "created_at": "2026-07-05T18:57:05+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1781.32,
+      "order_size": "100%",
+      "tv_position_size": 0.0189,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:57:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717006504215957504",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 33.666948,
+      "estimated_qty": 0.0189,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDT8f091ffe73de",
+            "ordId": "3717006504215957504",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783277826155"
+          }
+        ],
+        "inTime": "1783277826087359",
+        "msg": "",
+        "outTime": "1783277826226816"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "11142b847e664fa0b8f5e6bbe874e43e",
+      "created_at": "2026-07-05T18:56:21+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1781.89,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:56:00Z",
+      "status": "submitted",
+      "okx_order_id": "3717005007923171328",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.018897,
+      "entry": 1781.8716706355506,
+      "opened_at": "2026-07-05T18:49:09+00:00",
+      "estimated_pnl": 0.00034637,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDTd875feb8c0c6",
+            "ordId": "3717005007923171328",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783277781562"
+          }
+        ],
+        "inTime": "1783277781494947",
+        "msg": "",
+        "outTime": "1783277781631615"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "94098828589e4c948af8a0007ba4f630",
+      "created_at": "2026-07-05T18:49:09+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1781.8716706355506,
+      "order_size": "100%",
+      "tv_position_size": 0.0189,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:49:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716990529219317760",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 33.67202896,
+      "estimated_qty": 0.018897,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDTecd4560cdd6a",
+            "ordId": "3716990529219317760",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783277350063"
+          }
+        ],
+        "inTime": "1783277349994814",
+        "msg": "",
+        "outTime": "1783277350132508"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "c37649a6202e46f2981460e3a872852a",
+      "created_at": "2026-07-05T18:46:21+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1780.31,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:46:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716984892947156992",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.019,
+      "entry": 1781.15,
+      "opened_at": "2026-07-05T18:40:26+00:00",
+      "estimated_pnl": -0.01596,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDTc81881450e7e",
+            "ordId": "3716984892947156992",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783277182089"
+          }
+        ],
+        "inTime": "1783277182021415",
+        "msg": "",
+        "outTime": "1783277182158446"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "3931269eec3042269f5671b84617c0d2",
+      "created_at": "2026-07-05T18:40:26+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1781.15,
+      "order_size": "100%",
+      "tv_position_size": 0.019,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:40:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716972976426176512",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 33.84185,
+      "estimated_qty": 0.019,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDTb3e916ae9492",
+            "ordId": "3716972976426176512",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783276826949"
+          }
+        ],
+        "inTime": "1783276826881709",
+        "msg": "",
+        "outTime": "1783276827018460"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "78ad4b8406054c20aec611ca6cb13fca",
+      "created_at": "2026-07-05T18:34:17+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1779.78,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:34:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716960611651538944",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.018999,
+      "entry": 1780.3123148586767,
+      "opened_at": "2026-07-05T18:33:47+00:00",
+      "estimated_pnl": -0.01011345,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDT0e9baebb8596",
+            "ordId": "3716960611651538944",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783276458450"
+          }
+        ],
+        "inTime": "1783276458381774",
+        "msg": "",
+        "outTime": "1783276458518899"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "930ab8093bdc43c3949223288a892a5a",
+      "created_at": "2026-07-05T18:34:02+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62712.1,
+      "order_size": "100%",
+      "tv_position_size": 0.0056,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:34:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716960112395145216",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 351.18776,
+      "estimated_qty": 0.0056,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDT2dc4251f2ed2",
+            "ordId": "3716960112395145216",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783276443571"
+          }
+        ],
+        "inTime": "1783276443504028",
+        "msg": "",
+        "outTime": "1783276443641057"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "d43fda3c27d347369539158aabcb351c",
+      "created_at": "2026-07-05T18:33:47+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1780.3123148586767,
+      "order_size": "100%",
+      "tv_position_size": 0.019,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:33:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716959577235509248",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 33.82415367,
+      "estimated_qty": 0.018999,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDTb9d9d0ff530f",
+            "ordId": "3716959577235509248",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783276427622"
+          }
+        ],
+        "inTime": "1783276427553040",
+        "msg": "",
+        "outTime": "1783276427691554"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "ae6ad65353684a90976f017a9e5dd466",
+      "created_at": "2026-07-05T18:33:00+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62642.751030815816,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:33:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716958022155358208",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.005614,
+      "entry": 62699.0,
+      "opened_at": "2026-07-05T18:31:01+00:00",
+      "estimated_pnl": -0.31578171,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDT640531bd358f",
+            "ordId": "3716958022155358208",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783276381277"
+          }
+        ],
+        "inTime": "1783276381210066",
+        "msg": "",
+        "outTime": "1783276381346800"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "3066fd50c6154515af7f9905ee9c28cc",
+      "created_at": "2026-07-05T18:31:01+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62699.0,
+      "order_size": "100%",
+      "tv_position_size": 0.005614,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:31:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716954017165463552",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 351.992186,
+      "estimated_qty": 0.005614,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDTb60c15698c82",
+            "ordId": "3716954017165463552",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783276261919"
+          }
+        ],
+        "inTime": "1783276261847449",
+        "msg": "",
+        "outTime": "1783276261989078"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "018b61f577804257947d75dbfb224d7d",
+      "created_at": "2026-07-05T18:30:03+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62690.8,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:30:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716952089463345152",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.005626,
+      "entry": 62707.2,
+      "opened_at": "2026-07-05T18:26:04+00:00",
+      "estimated_pnl": -0.0922664,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDTe5c368685f50",
+            "ordId": "3716952089463345152",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783276204469"
+          }
+        ],
+        "inTime": "1783276204400583",
+        "msg": "",
+        "outTime": "1783276204538430"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "ecd134d674af4c729e680d8dd1d7a7a1",
+      "created_at": "2026-07-05T18:29:04+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1780.4091241644296,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:29:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716950114046824448",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.018999,
+      "entry": 1781.3057881993789,
+      "opened_at": "2026-07-05T18:27:40+00:00",
+      "estimated_pnl": -0.01703572,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDTebc4e231ee8e",
+            "ordId": "3716950114046824448",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783276145597"
+          }
+        ],
+        "inTime": "1783276145529352",
+        "msg": "",
+        "outTime": "1783276145666971"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "3a3f8c6eeb9b4627b4c67027f959b57e",
+      "created_at": "2026-07-05T18:27:40+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1781.3057881993789,
+      "order_size": "100%",
+      "tv_position_size": 0.019,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:27:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716947281012576256",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 33.84302867,
+      "estimated_qty": 0.018999,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDT97f6121fac9f",
+            "ordId": "3716947281012576256",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783276061166"
+          }
+        ],
+        "inTime": "1783276061097488",
+        "msg": "",
+        "outTime": "1783276061235569"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      }
+    },
+    {
+      "id": "189d38a4392747e3a664354626394876",
+      "created_at": "2026-07-05T18:26:04+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62707.2,
+      "order_size": "100%",
+      "tv_position_size": 0.005626,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:26:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716944074383282176",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 352.7907072,
+      "estimated_qty": 0.005626,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDTa12682723082",
+            "ordId": "3716944074383282176",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783275965601"
+          }
+        ],
+        "inTime": "1783275965532519",
+        "msg": "",
+        "outTime": "1783275965670213"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "62707.2",
+        "accFillSz": "0.005626",
+        "fee": "-0.000019691",
+        "feeCcy": "BTC",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "cea0abfae6d74cdcbe479bab31b4fc80",
+      "created_at": "2026-07-05T18:25:14+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62691.6,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:25:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716942368509513728",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.005638,
+      "entry": 62697.34678964172,
+      "opened_at": "2026-07-05T18:21:00+00:00",
+      "estimated_pnl": -0.0324004,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDTb16fc9415837",
+            "ordId": "3716942368509513728",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783275914762"
+          }
+        ],
+        "inTime": "1783275914690355",
+        "msg": "",
+        "outTime": "1783275914832791"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "62691.6",
+        "accFillSz": "0.005638",
+        "fee": "-1.2370933428",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "c4ea5fa8f8c041a5849752e7fd5adcee",
+      "created_at": "2026-07-05T18:21:00+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62697.34678964172,
+      "order_size": "100%",
+      "tv_position_size": 0.005638,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:21:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716933870279184384",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 353.5026,
+      "estimated_qty": 0.005638,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDT8dad587bcdb8",
+            "ordId": "3716933870279184384",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783275661495"
+          }
+        ],
+        "inTime": "1783275661428138",
+        "msg": "",
+        "outTime": "1783275661563913"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "62697.3467896417169209",
+        "accFillSz": "0.005638",
+        "fee": "-0.000019733",
+        "feeCcy": "BTC",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "e864954ed07f429697e9683a2cfedd9c",
+      "created_at": "2026-07-05T18:19:20+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1779.98,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:19:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716930509400166400",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.0191,
+      "entry": 1780.44,
+      "opened_at": "2026-07-05T18:17:11+00:00",
+      "estimated_pnl": -0.008786,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDT7f49720feb16",
+            "ordId": "3716930509400166400",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783275561333"
+          }
+        ],
+        "inTime": "1783275561265031",
+        "msg": "",
+        "outTime": "1783275561402810"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1779.98",
+        "accFillSz": "0.0191",
+        "fee": "-0.118991663",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "7b0248980d904d4fb64ebdecb3d5350a",
+      "created_at": "2026-07-05T18:18:13+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62695.5,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:18:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716928245549748224",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.00565,
+      "entry": 62707.7,
+      "opened_at": "2026-07-05T18:17:00+00:00",
+      "estimated_pnl": -0.06893,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDTf5ca6a2dc08f",
+            "ordId": "3716928245549748224",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783275493865"
+          }
+        ],
+        "inTime": "1783275493796824",
+        "msg": "",
+        "outTime": "1783275493934667"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "62695.5",
+        "accFillSz": "0.00565",
+        "fee": "-1.2398035125",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "fc1ed3eaab4441c591edf2ae69826be4",
+      "created_at": "2026-07-05T18:17:11+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1780.44,
+      "order_size": "100%",
+      "tv_position_size": 0.0191,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:17:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716926187220226048",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 33.751037,
+      "estimated_qty": 0.0191,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDTffe7b9d20ee5",
+            "ordId": "3716926187220226048",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783275432522"
+          }
+        ],
+        "inTime": "1783275432454081",
+        "msg": "",
+        "outTime": "1783275432590398"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1780.44",
+        "accFillSz": "0.0191",
+        "fee": "-0.00006685",
+        "feeCcy": "ETH",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "721e34d2d66e4526be26b77c629f8272",
+      "created_at": "2026-07-05T18:17:00+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62707.7,
+      "order_size": "100%",
+      "tv_position_size": 0.00565,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:17:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716925815537782784",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 354.255,
+      "estimated_qty": 0.00565,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDT982fea16c931",
+            "ordId": "3716925815537782784",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783275421445"
+          }
+        ],
+        "inTime": "1783275421375853",
+        "msg": "",
+        "outTime": "1783275421515386"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "62707.7",
+        "accFillSz": "0.00565",
+        "fee": "-0.000019775",
+        "feeCcy": "BTC",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "3bc9019d78d641868cd2b81c56bb1a48",
+      "created_at": "2026-07-05T18:12:27+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1779.5,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T18:12:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716916657727983616",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.0192,
+      "entry": 1780.87,
+      "opened_at": "2026-07-05T17:48:11+00:00",
+      "estimated_pnl": -0.026304,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDTb0e7b8f6f325",
+            "ordId": "3716916657727983616",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783275148521"
+          }
+        ],
+        "inTime": "1783275148453779",
+        "msg": "",
+        "outTime": "1783275148589952"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1779.5",
+        "accFillSz": "0.0192",
+        "fee": "-0.1195824",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "7dcfef3e1ac0410d811592041bff4109",
+      "created_at": "2026-07-05T17:48:11+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1780.87,
+      "order_size": "100%",
+      "tv_position_size": 0.0192,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T17:48:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716867785362231296",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 33.927744,
+      "estimated_qty": 0.0192,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDT43b5c17fb311",
+            "ordId": "3716867785362231296",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783273692011"
+          }
+        ],
+        "inTime": "1783273691943630",
+        "msg": "",
+        "outTime": "1783273692081254"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1780.87",
+        "accFillSz": "0.0192",
+        "fee": "-0.0000672",
+        "feeCcy": "ETH",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "9c11d7e6c77146609c3c42f31b23ba30",
+      "created_at": "2026-07-05T17:45:08+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1776.36,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T17:45:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716861656578117632",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.0192,
+      "entry": 1774.8134699723944,
+      "opened_at": "2026-07-05T17:03:20+00:00",
+      "estimated_pnl": 0.02969338,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDTca3d64e4978a",
+            "ordId": "3716861656578117632",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783273509359"
+          }
+        ],
+        "inTime": "1783273509290819",
+        "msg": "",
+        "outTime": "1783273509428828"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1776.36",
+        "accFillSz": "0.0192",
+        "fee": "-0.119371392",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "587294095e1446af845a35b4dc872d9f",
+      "created_at": "2026-07-05T17:32:01+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62700.7,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T17:32:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716835250649419776",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.005662,
+      "entry": 62705.59646765431,
+      "opened_at": "2026-07-05T17:31:01+00:00",
+      "estimated_pnl": -0.0277238,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDT6645ddedb215",
+            "ordId": "3716835250649419776",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783272722401"
+          }
+        ],
+        "inTime": "1783272722332465",
+        "msg": "",
+        "outTime": "1783272722470107"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "62700.7",
+        "accFillSz": "0.005662",
+        "fee": "-1.2425397719",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "0de19048866b4ae1b527353218913c2a",
+      "created_at": "2026-07-05T17:31:01+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62705.59646765431,
+      "order_size": "100%",
+      "tv_position_size": 0.005662,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T17:31:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716833214767812608",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 355.2242546,
+      "estimated_qty": 0.00566196,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDT455884a2cb1e",
+            "ordId": "3716833214767812608",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783272661727"
+          }
+        ],
+        "inTime": "1783272661658225",
+        "msg": "",
+        "outTime": "1783272661796047"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "62705.5964676543105215",
+        "accFillSz": "0.00566196",
+        "fee": "-0.00001981686",
+        "feeCcy": "BTC",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "44d14843a27447a7b237e70be84f3d8a",
+      "created_at": "2026-07-05T17:29:04+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62693.7,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T17:29:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716829289503248384",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.005674,
+      "entry": 62733.1,
+      "opened_at": "2026-07-05T17:05:03+00:00",
+      "estimated_pnl": -0.2235556,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDT0c9f8fc27fc4",
+            "ordId": "3716829289503248384",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783272544745"
+          }
+        ],
+        "inTime": "1783272544676858",
+        "msg": "",
+        "outTime": "1783272544814994"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "62693.7",
+        "accFillSz": "0.005674",
+        "fee": "-1.2450341883",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "7dc272c9371d4f728549787156e1ee6d",
+      "created_at": "2026-07-05T17:05:03+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62733.1,
+      "order_size": "100%",
+      "tv_position_size": 0.005674,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T17:05:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716780930352533504",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 355.6905772,
+      "estimated_qty": 0.005674,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDTd7da54ac93e1",
+            "ordId": "3716780930352533504",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783271103530"
+          }
+        ],
+        "inTime": "1783271103462384",
+        "msg": "",
+        "outTime": "1783271103600657"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "62733.1",
+        "accFillSz": "0.005674",
+        "fee": "-0.000019859",
+        "feeCcy": "BTC",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "3a78f799ca3840a29fce7847b435aea1",
+      "created_at": "2026-07-05T17:03:20+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1774.8134699723944,
+      "order_size": "100%",
+      "tv_position_size": 0.0192,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T17:03:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716777492969410560",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 33.927744,
+      "estimated_qty": 0.019199,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDT2dc3443c04f2",
+            "ordId": "3716777492969410560",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783271001088"
+          }
+        ],
+        "inTime": "1783271001019027",
+        "msg": "",
+        "outTime": "1783271001158143"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1774.8134699723943956",
+        "accFillSz": "0.019199",
+        "fee": "-0.0000671965",
+        "feeCcy": "ETH",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "fe5fa8ecba564874a301da5510a5cbd7",
+      "created_at": "2026-07-05T16:07:01+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1774.964489119171,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T16:07:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716664112745009152",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.0193,
+      "entry": 1776.07,
+      "opened_at": "2026-07-05T16:06:05+00:00",
+      "estimated_pnl": -0.02133636,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDT154af95c33de",
+            "ordId": "3716664112745009152",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783267622094"
+          }
+        ],
+        "inTime": "1783267622026264",
+        "msg": "",
+        "outTime": "1783267622162792"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1774.9644891191709844",
+        "accFillSz": "0.0193",
+        "fee": "-0.11989885124",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "08abd9ad28484b1486a85d7943deeb5b",
+      "created_at": "2026-07-05T16:06:05+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1776.07,
+      "order_size": "100%",
+      "tv_position_size": 0.0193,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T16:06:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716662237018705920",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 34.104451,
+      "estimated_qty": 0.0193,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDTb64ca9e63585",
+            "ordId": "3716662237018705920",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783267566193"
+          }
+        ],
+        "inTime": "1783267566125030",
+        "msg": "",
+        "outTime": "1783267566263463"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1776.07",
+        "accFillSz": "0.0193",
+        "fee": "-0.00006755",
+        "feeCcy": "ETH",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "7d25943b646947beac36738106407c41",
+      "created_at": "2026-07-05T16:05:27+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1776.22,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T16:05:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716660962218725376",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.0193,
+      "entry": 1776.27,
+      "opened_at": "2026-07-05T16:03:09+00:00",
+      "estimated_pnl": -0.000965,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDT013dce632beb",
+            "ordId": "3716660962218725376",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783267528201"
+          }
+        ],
+        "inTime": "1783267528133013",
+        "msg": "",
+        "outTime": "1783267528269762"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1776.22",
+        "accFillSz": "0.0193",
+        "fee": "-0.119983661",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "9a4de5c306fe4c9a8c78a8c6985ed1c4",
+      "created_at": "2026-07-05T16:03:09+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1776.27,
+      "order_size": "100%",
+      "tv_position_size": 0.0193,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T16:03:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716656330197159936",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 34.104451,
+      "estimated_qty": 0.019299,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDTef36a40d3fa8",
+            "ordId": "3716656330197159936",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783267390156"
+          }
+        ],
+        "inTime": "1783267390088522",
+        "msg": "",
+        "outTime": "1783267390225492"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1776.27",
+        "accFillSz": "0.019299",
+        "fee": "-0.0000675465",
+        "feeCcy": "ETH",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "7bdd4d3637e3421480970e70661d5495",
+      "created_at": "2026-07-05T15:58:35+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1774.25,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T15:58:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716647126048690176",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.0194,
+      "entry": 1775.2,
+      "opened_at": "2026-07-05T15:56:12+00:00",
+      "estimated_pnl": -0.01843,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDTa12abfae71cb",
+            "ordId": "3716647126048690176",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783267115851"
+          }
+        ],
+        "inTime": "1783267115783234",
+        "msg": "",
+        "outTime": "1783267115919817"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1774.25",
+        "accFillSz": "0.0194",
+        "fee": "-0.120471575",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "6441c4680d8f4c1988b6b9b0cfd35574",
+      "created_at": "2026-07-05T15:56:12+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1775.2,
+      "order_size": "100%",
+      "tv_position_size": 0.0194,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T15:56:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716642333167177728",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 34.281158,
+      "estimated_qty": 0.0194,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDT8202fb199022",
+            "ordId": "3716642333167177728",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783266973012"
+          }
+        ],
+        "inTime": "1783266972944240",
+        "msg": "",
+        "outTime": "1783266973081620"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1775.2",
+        "accFillSz": "0.0194",
+        "fee": "-0.0000679",
+        "feeCcy": "ETH",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "fd7aa1c700c14332af179537482673e3",
+      "created_at": "2026-07-05T15:42:08+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1772.6637273195877,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T15:42:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716614004603080704",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.0194,
+      "entry": 1768.37,
+      "opened_at": "2026-07-05T14:55:10+00:00",
+      "estimated_pnl": 0.08329831,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDT14537704bd18",
+            "ordId": "3716614004603080704",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783266128755"
+          }
+        ],
+        "inTime": "1783266128687550",
+        "msg": "",
+        "outTime": "1783266128824431"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1772.6637273195876288",
+        "accFillSz": "0.0194",
+        "fee": "-0.120363867085",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "5bcd8f0806074e63bb1fea19f84b1204",
+      "created_at": "2026-07-05T15:39:00+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62809.3,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T15:39:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716607706738184192",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.005679,
+      "entry": 62838.49199647113,
+      "opened_at": "2026-07-05T15:36:00+00:00",
+      "estimated_pnl": -0.16578135,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDT500be9d090d9",
+            "ordId": "3716607706738184192",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783265941064"
+          }
+        ],
+        "inTime": "1783265940996585",
+        "msg": "",
+        "outTime": "1783265941133976"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "62809.3",
+        "accFillSz": "0.005679",
+        "fee": "-1.24842905145",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "f967be56184242c4bf578b2d1d3423c2",
+      "created_at": "2026-07-05T15:36:00+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62838.49199647113,
+      "order_size": "100%",
+      "tv_position_size": 0.005679,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T15:36:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716601679288455168",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 356.6900394,
+      "estimated_qty": 0.00567887,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDT92d1da7b28f7",
+            "ordId": "3716601679288455168",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783265761432"
+          }
+        ],
+        "inTime": "1783265761362440",
+        "msg": "",
+        "outTime": "1783265761501489"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "62838.4919964711289394",
+        "accFillSz": "0.00567887",
+        "fee": "-0.000019876045",
+        "feeCcy": "BTC",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "985e396a95704986808b45891323cdc8",
+      "created_at": "2026-07-05T15:22:02+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62762.4,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T15:22:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716573546514468864",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.005697,
+      "entry": 62797.2,
+      "opened_at": "2026-07-05T15:21:01+00:00",
+      "estimated_pnl": -0.1982556,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDTf99f83fa21f4",
+            "ordId": "3716573546514468864",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783264923010"
+          }
+        ],
+        "inTime": "1783264922942229",
+        "msg": "",
+        "outTime": "1783264923078818"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "62762.4",
+        "accFillSz": "0.005697",
+        "fee": "-1.2514508748",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "4bb935cdff6f41a5bf79a5abe74978e1",
+      "created_at": "2026-07-05T15:21:01+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62797.2,
+      "order_size": "100%",
+      "tv_position_size": 0.005697,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T15:21:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716571501573165056",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 357.7852728,
+      "estimated_qty": 0.005697,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDTec8c22b95c86",
+            "ordId": "3716571501573165056",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783264862066"
+          }
+        ],
+        "inTime": "1783264861998019",
+        "msg": "",
+        "outTime": "1783264862135747"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "62797.2",
+        "accFillSz": "0.005697",
+        "fee": "-0.0000199395",
+        "feeCcy": "BTC",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "3579c47ed1f1459d8d5e16e6eee0980c",
+      "created_at": "2026-07-05T15:20:00+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62784.8,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T15:20:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716569455658782720",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.00571,
+      "entry": 62770.0,
+      "opened_at": "2026-07-05T14:56:01+00:00",
+      "estimated_pnl": 0.084508,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDT6e3e212de6c4",
+            "ordId": "3716569455658782720",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783264801093"
+          }
+        ],
+        "inTime": "1783264801025376",
+        "msg": "",
+        "outTime": "1783264801162588"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "62784.8",
+        "accFillSz": "0.00571",
+        "fee": "-1.254754228",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "0b9422ed809440e8a81ffee739307623",
+      "created_at": "2026-07-05T14:56:01+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62770.0,
+      "order_size": "100%",
+      "tv_position_size": 0.00571,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T14:56:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716521157241589760",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 358.150614,
+      "estimated_qty": 0.00570951,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDT5f44c0948a96",
+            "ordId": "3716521157241589760",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783263361688"
+          }
+        ],
+        "inTime": "1783263361619743",
+        "msg": "",
+        "outTime": "1783263361760039"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "62770",
+        "accFillSz": "0.00570951",
+        "fee": "-0.000019983285",
+        "feeCcy": "BTC",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "4375dcca08ca4439acab332b4c05e81d",
+      "created_at": "2026-07-05T14:55:10+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1768.37,
+      "order_size": "100%",
+      "tv_position_size": 0.0194,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T14:55:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716519463782961152",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 34.281158,
+      "estimated_qty": 0.0194,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDT57dfaf6ec7dc",
+            "ordId": "3716519463782961152",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783263311219"
+          }
+        ],
+        "inTime": "1783263311151476",
+        "msg": "",
+        "outTime": "1783263311288172"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1768.37",
+        "accFillSz": "0.0194",
+        "fee": "-0.0000679",
+        "feeCcy": "ETH",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "28dd5743c5ed45e184c02dc8fc5a6b73",
+      "created_at": "2026-07-05T14:53:09+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1767.98,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T14:53:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716515414165671936",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.0195,
+      "entry": 1768.67,
+      "opened_at": "2026-07-05T14:39:06+00:00",
+      "estimated_pnl": -0.013455,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDT884e52348836",
+            "ordId": "3716515414165671936",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783263190531"
+          }
+        ],
+        "inTime": "1783263190462520",
+        "msg": "",
+        "outTime": "1783263190600649"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1767.98",
+        "accFillSz": "0.0195",
+        "fee": "-0.120664635",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "841f1b5540724d1dbe53da2d62a74585",
+      "created_at": "2026-07-05T14:39:06+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1768.67,
+      "order_size": "100%",
+      "tv_position_size": 0.0195,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T14:39:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716487122612113408",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 34.457865,
+      "estimated_qty": 0.0195,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDTd7f26ba3a415",
+            "ordId": "3716487122612113408",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783262347377"
+          }
+        ],
+        "inTime": "1783262347308508",
+        "msg": "",
+        "outTime": "1783262347446966"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1768.67",
+        "accFillSz": "0.0195",
+        "fee": "-0.00006825",
+        "feeCcy": "ETH",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "a630d2f7910f4b6a8fbcbbf42541b0c5",
+      "created_at": "2026-07-05T14:33:48+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1766.12,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T14:33:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716476458678079488",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.0195,
+      "entry": 1767.5626979893311,
+      "opened_at": "2026-07-05T14:31:21+00:00",
+      "estimated_pnl": -0.02813261,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDT641d12e43eb9",
+            "ordId": "3716476458678079488",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783262029567"
+          }
+        ],
+        "inTime": "1783262029499556",
+        "msg": "",
+        "outTime": "1783262029637066"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1766.12",
+        "accFillSz": "0.0195",
+        "fee": "-0.12053769",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "cd96fe11706340ee89e800229bf19624",
+      "created_at": "2026-07-05T14:31:21+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1767.5626979893311,
+      "order_size": "100%",
+      "tv_position_size": 0.0195,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T14:31:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716471511546843136",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 34.457865,
+      "estimated_qty": 0.019496,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDT5005c9dcafd7",
+            "ordId": "3716471511546843136",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783261882131"
+          }
+        ],
+        "inTime": "1783261882062376",
+        "msg": "",
+        "outTime": "1783261882202693"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1767.5626979893311449",
+        "accFillSz": "0.019496",
+        "fee": "-0.000068236",
+        "feeCcy": "ETH",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "0a590ecd5d66481fad075d5cdf36b8e6",
+      "created_at": "2026-07-05T14:29:13+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1767.27,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T14:29:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716467212989222912",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.0196,
+      "entry": 1767.08,
+      "opened_at": "2026-07-05T14:10:18+00:00",
+      "estimated_pnl": 0.003724,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDT57995775ef0c",
+            "ordId": "3716467212989222912",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783261754024"
+          }
+        ],
+        "inTime": "1783261753955356",
+        "msg": "",
+        "outTime": "1783261754093411"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1767.27",
+        "accFillSz": "0.0196",
+        "fee": "-0.121234722",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "bd6974363b9d4319bc276f1988d2856d",
+      "created_at": "2026-07-05T14:10:18+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1767.08,
+      "order_size": "100%",
+      "tv_position_size": 0.0196,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T14:10:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716429129715535872",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 34.634572,
+      "estimated_qty": 0.0196,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDT3769804c4be8",
+            "ordId": "3716429129715535872",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783260619054"
+          }
+        ],
+        "inTime": "1783260618986065",
+        "msg": "",
+        "outTime": "1783260619122568"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1767.08",
+        "accFillSz": "0.0196",
+        "fee": "-0.0000686",
+        "feeCcy": "ETH",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "aa28bdf4780f4f60a944ba97c51b5560",
+      "created_at": "2026-07-05T14:06:18+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1767.55,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T14:06:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716421061619470336",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.0196,
+      "entry": 1766.7890962902486,
+      "opened_at": "2026-07-05T14:01:02+00:00",
+      "estimated_pnl": 0.01491371,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDT113221dcacd9",
+            "ordId": "3716421061619470336",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783260378606"
+          }
+        ],
+        "inTime": "1783260378538532",
+        "msg": "",
+        "outTime": "1783260378675858"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1767.55",
+        "accFillSz": "0.0196",
+        "fee": "-0.12125393",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "0c8d195fb9f64f9bb2b38e6f67da9cdd",
+      "created_at": "2026-07-05T14:04:02+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62720.8,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T14:04:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716416502746566656",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.005725,
+      "entry": 62802.2,
+      "opened_at": "2026-07-05T13:46:10+00:00",
+      "estimated_pnl": -0.466015,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDTf9b3ccf6b589",
+            "ordId": "3716416502746566656",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783260242741"
+          }
+        ],
+        "inTime": "1783260242673728",
+        "msg": "",
+        "outTime": "1783260242811078"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "62720.8",
+        "accFillSz": "0.005725",
+        "fee": "-1.25676803",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "ab5460e1ffe542a384cfc2bc9ac9bef9",
+      "created_at": "2026-07-05T14:01:02+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1766.7890962902486,
+      "order_size": "100%",
+      "tv_position_size": 0.0196,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T14:01:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716410459190710272",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 34.634572,
+      "estimated_qty": 0.019597,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDT6676aef115f8",
+            "ordId": "3716410459190710272",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783260062629"
+          }
+        ],
+        "inTime": "1783260062560684",
+        "msg": "",
+        "outTime": "1783260062698127"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1766.7890962902485075",
+        "accFillSz": "0.019597",
+        "fee": "-0.0000685895",
+        "feeCcy": "ETH",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "19725028ffb74f5e86e519dafe3c9b35",
+      "created_at": "2026-07-05T13:59:31+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1766.12,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T13:59:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716407437278564352",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.0197,
+      "entry": 1767.1376119402985,
+      "opened_at": "2026-07-05T13:46:02+00:00",
+      "estimated_pnl": -0.02004696,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellETHUSDTb72bfaf65af6",
+            "ordId": "3716407437278564352",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783259972569"
+          }
+        ],
+        "inTime": "1783259972500492",
+        "msg": "",
+        "outTime": "1783259972638037"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1766.12",
+        "accFillSz": "0.0197",
+        "fee": "-0.121773974",
+        "feeCcy": "USDT",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "69e8fa2343c54d49a24a441cc8f9219e",
+      "created_at": "2026-07-05T13:46:10+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62802.2,
+      "order_size": "100%",
+      "tv_position_size": 0.005725,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T13:46:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716380549072015360",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 359.1309675,
+      "estimated_qty": 0.005725,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDTc37d222ac952",
+            "ordId": "3716380549072015360",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783259171238"
+          }
+        ],
+        "inTime": "1783259171168995",
+        "msg": "",
+        "outTime": "1783259171306526"
+      },
+      "onboarding": {
+        "symbol": "BTC-USDT",
+        "needed": false,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "62802.2",
+        "accFillSz": "0.005725",
+        "fee": "-0.0000200375",
+        "feeCcy": "BTC",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "5130b96d9184464ab4ba2bdcf7df77d1",
+      "created_at": "2026-07-05T13:46:02+00:00",
+      "action": "BUY",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": 1767.1376119402985,
+      "order_size": "100%",
+      "tv_position_size": 0.0197,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T13:46:00Z",
+      "status": "submitted",
+      "okx_order_id": "3716380262517166080",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": null,
+      "estimated_qty": 0.019698,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyETHUSDT096702b0c68e",
+            "ordId": "3716380262517166080",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783259162698"
+          }
+        ],
+        "inTime": "1783259162629844",
+        "msg": "",
+        "outTime": "1783259162768345"
+      },
+      "onboarding": {
+        "symbol": "ETH-USDT",
+        "needed": true,
+        "status": "updated",
+        "message": "Post-trade crypto bars and analysis updated.",
+        "collection": {
+          "symbols": 1,
+          "persisted": 4,
+          "failed": []
+        },
+        "analysis_ready": true
+      },
+      "okx_fill": {
+        "avgPx": "1767.1376119402985075",
+        "accFillSz": "0.019698",
+        "fee": "-0.000068943",
+        "feeCcy": "ETH",
+        "state": "filled"
+      }
+    },
+    {
+      "id": "28893cc5187244eba8f0014669652a80",
+      "created_at": "2026-07-05T13:28:21+00:00",
+      "action": "SELL",
+      "ticker": "ETHUSD",
+      "inst_id": "ETH-USDT",
+      "price": null,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T13:28:00Z",
+      "status": "skipped",
+      "okx_order_id": null,
+      "message": "No open local position to close."
+    },
+    {
+      "id": "3e5352c5bbd4422fbd9c20871ab0a5fe",
+      "created_at": "2026-07-05T02:32:05+00:00",
+      "action": "BUY",
+      "ticker": "LITUSDT",
+      "inst_id": "LIT-USDT",
+      "price": 2.1964,
+      "order_size": "100%",
+      "tv_position_size": 14.159,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T02:32:00Z",
+      "status": "error",
+      "okx_order_id": null,
+      "message": "OKX error code=1 msg=All operations failed details=sCode=51001 sMsg=Instrument ID, Instrument ID code, or Spread ID doesn't exist."
+    },
+    {
+      "id": "5584b415bcd54a54bcdb46fafbc28cec",
+      "created_at": "2026-07-05T02:31:02+00:00",
+      "action": "SELL",
+      "ticker": "LITUSDT",
+      "inst_id": "LIT-USDT",
+      "price": 2.1913,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T02:31:00Z",
+      "status": "skipped",
+      "okx_order_id": null,
+      "message": "No open local position to close."
+    },
+    {
+      "id": "bfd054a22cb24f3d8781dd7c66caacc6",
+      "created_at": "2026-07-05T02:30:00+00:00",
+      "action": "BUY",
+      "ticker": "LITUSDT",
+      "inst_id": "LIT-USDT",
+      "price": 2.1913,
+      "order_size": "100%",
+      "tv_position_size": 14.215,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T02:30:00Z",
+      "status": "error",
+      "okx_order_id": null,
+      "message": "OKX error code=1 msg=All operations failed details=sCode=51001 sMsg=Instrument ID, Instrument ID code, or Spread ID doesn't exist."
+    },
+    {
+      "id": "32854885876e49d2a011f905bdc32ff6",
+      "created_at": "2026-07-05T02:27:15+00:00",
+      "action": "SELL",
+      "ticker": "LITUSDT",
+      "inst_id": "LIT-USDT",
+      "price": 2.1913,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T02:27:00Z",
+      "status": "skipped",
+      "okx_order_id": null,
+      "message": "No open local position to close."
+    },
+    {
+      "id": "5632ad2f69b841a2ac3e84243c1efa0a",
+      "created_at": "2026-07-05T02:26:01+00:00",
+      "action": "BUY",
+      "ticker": "LITUSDT",
+      "inst_id": "LIT-USDT",
+      "price": 2.1937,
+      "order_size": "100%",
+      "tv_position_size": 14.264,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T02:26:00Z",
+      "status": "error",
+      "okx_order_id": null,
+      "message": "OKX error code=1 msg=All operations failed details=sCode=51001 sMsg=Instrument ID, Instrument ID code, or Spread ID doesn't exist."
+    },
+    {
+      "id": "b40b7d816a2e448aab51e7d3d8e237e3",
+      "created_at": "2026-07-05T02:25:03+00:00",
+      "action": "SELL",
+      "ticker": "LITUSDT",
+      "inst_id": "LIT-USDT",
+      "price": 2.1937,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T02:25:00Z",
+      "status": "skipped",
+      "okx_order_id": null,
+      "message": "No open local position to close."
+    },
+    {
+      "id": "17c36cfbf7a54528bd9b4754d211a0b3",
+      "created_at": "2026-07-05T02:20:03+00:00",
+      "action": "BUY",
+      "ticker": "LITUSDT",
+      "inst_id": "LIT-USDT",
+      "price": 2.1932,
+      "order_size": "100%",
+      "tv_position_size": 14.318,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T02:20:00Z",
+      "status": "error",
+      "okx_order_id": null,
+      "message": "OKX error code=1 msg=All operations failed details=sCode=51001 sMsg=Instrument ID, Instrument ID code, or Spread ID doesn't exist."
+    },
+    {
+      "id": "daa955ce0bff45a58b53b0ba858d6bce",
+      "created_at": "2026-07-05T02:18:03+00:00",
+      "action": "SELL",
+      "ticker": "LITUSDT",
+      "inst_id": "LIT-USDT",
+      "price": 2.1932,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T02:18:00Z",
+      "status": "skipped",
+      "okx_order_id": null,
+      "message": "No open local position to close."
+    },
+    {
+      "id": "080a1ddebc524679b846071ec67319da",
+      "created_at": "2026-07-05T02:17:07+00:00",
+      "action": "BUY",
+      "ticker": "LITUSDT",
+      "inst_id": "LIT-USDT",
+      "price": 2.1932,
+      "order_size": "100%",
+      "tv_position_size": 14.359,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T02:17:00Z",
+      "status": "error",
+      "okx_order_id": null,
+      "message": "OKX error code=1 msg=All operations failed details=sCode=51001 sMsg=Instrument ID, Instrument ID code, or Spread ID doesn't exist."
+    },
+    {
+      "id": "799d5a4bf3014af6a2f73ae6acf23ed9",
+      "created_at": "2026-07-05T02:16:02+00:00",
+      "action": "SELL",
+      "ticker": "LITUSDT",
+      "inst_id": "LIT-USDT",
+      "price": 2.1914,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T02:16:00Z",
+      "status": "skipped",
+      "okx_order_id": null,
+      "message": "No open local position to close."
+    },
+    {
+      "id": "4e84583b640f4ca6b3e6c0bad6bee1d4",
+      "created_at": "2026-07-05T02:09:11+00:00",
+      "action": "BUY",
+      "ticker": "LITUSDT",
+      "inst_id": "LIT-USDT",
+      "price": 2.1897,
+      "order_size": "100%",
+      "tv_position_size": 14.405,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T02:09:00Z",
+      "status": "error",
+      "okx_order_id": null,
+      "message": "OKX error code=1 msg=All operations failed details=sCode=51001 sMsg=Instrument ID, Instrument ID code, or Spread ID doesn't exist."
+    },
+    {
+      "id": "d1b5b0f255d54b79bfc75d315b8dc936",
+      "created_at": "2026-07-05T02:09:04+00:00",
+      "action": "SELL",
+      "ticker": "INJUSDT",
+      "inst_id": "INJ-USDT",
+      "price": 4.791,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T02:09:00Z",
+      "status": "skipped",
+      "okx_order_id": null,
+      "message": "No open local position to close."
+    },
+    {
+      "id": "eca4f3d13b404c5a9b15c8dbdf79b3c0",
+      "created_at": "2026-07-05T02:07:02+00:00",
+      "action": "SELL",
+      "ticker": "LITUSDT",
+      "inst_id": "LIT-USDT",
+      "price": 2.1897,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T02:07:00Z",
+      "status": "skipped",
+      "okx_order_id": null,
+      "message": "No open local position to close."
+    },
+    {
+      "id": "b10e1dba4e214311a834ab7c9e0f9e31",
+      "created_at": "2026-07-05T02:04:22+00:00",
+      "action": "BUY",
+      "ticker": "INJUSDT",
+      "inst_id": "INJ-USDT",
+      "price": 4.798,
+      "order_size": "100%",
+      "tv_position_size": 6.717,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T02:04:00Z",
+      "status": "error",
+      "okx_order_id": null,
+      "message": "OKX error code=1 msg=All operations failed details=sCode=51155 sMsg=You can't trade this pair or borrow this crypto due to local compliance restrictions. "
+    },
+    {
+      "id": "8b896106ad86460a99e1b67494cf86df",
+      "created_at": "2026-07-05T01:54:54+00:00",
+      "action": "SELL",
+      "ticker": "INJUSDT",
+      "inst_id": "INJ-USDT",
+      "price": 4.798,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T01:54:00Z",
+      "status": "skipped",
+      "okx_order_id": null,
+      "message": "No open local position to close."
+    },
+    {
+      "id": "91edfdfaf56140c1860f7f01a5e7fdb5",
+      "created_at": "2026-07-05T01:53:16+00:00",
+      "action": "BUY",
+      "ticker": "LITUSDT",
+      "inst_id": "LIT-USDT",
+      "price": 2.1916,
+      "order_size": "100%",
+      "tv_position_size": 14.433,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T01:53:00Z",
+      "status": "error",
+      "okx_order_id": null,
+      "message": "OKX error code=1 msg=All operations failed details=sCode=51001 sMsg=Instrument ID, Instrument ID code, or Spread ID doesn't exist."
+    },
+    {
+      "id": "98085dd96edf43e59858f0b634c512e3",
+      "created_at": "2026-07-05T01:51:09+00:00",
+      "action": "BUY",
+      "ticker": "INJUSDT",
+      "inst_id": "INJ-USDT",
+      "price": 4.795,
+      "order_size": "100%",
+      "tv_position_size": 6.746,
+      "schema": "2",
+      "tv_timestamp": "2026-07-05T01:51:00Z",
+      "status": "error",
+      "okx_order_id": null,
+      "message": "OKX error code=1 msg=All operations failed details=sCode=51155 sMsg=You can't trade this pair or borrow this crypto due to local compliance restrictions. "
+    },
+    {
+      "id": "be04508287244cc2ba30ae1a0e9ec404",
+      "created_at": "2026-07-04T23:11:01+00:00",
+      "action": "SELL",
+      "ticker": "LITUSDT",
+      "inst_id": "LIT-USDT",
+      "price": 2.2645,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T23:11:00Z",
+      "status": "skipped",
+      "okx_order_id": null,
+      "message": "No open local position to close."
+    },
+    {
+      "id": "d7778afe00a440988fb19c9f13dfc37e",
+      "created_at": "2026-07-04T23:10:03+00:00",
+      "action": "BUY",
+      "ticker": "LITUSDT",
+      "inst_id": "LIT-USDT",
+      "price": 2.2621,
+      "order_size": "100%",
+      "tv_position_size": 14.02,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T23:10:00Z",
+      "status": "error",
+      "okx_order_id": null,
+      "message": "OKX error code=1 msg=All operations failed details=sCode=51001 sMsg=Instrument ID, Instrument ID code, or Spread ID doesn't exist."
+    },
+    {
+      "id": "6717df00f3dc479aba202325da009b17",
+      "created_at": "2026-07-04T21:42:03+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63359.6,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T21:42:00Z",
+      "status": "submitted",
+      "okx_order_id": "3714439511315042304",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.00598,
+      "entry": 63218.6,
+      "estimated_pnl": 0.84318,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDTa69dda1feddf",
+            "ordId": "3714439511315042304",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783201323805"
+          }
+        ],
+        "inTime": "1783201323737017",
+        "msg": "",
+        "outTime": "1783201323874645"
+      }
+    },
+    {
+      "id": "aac71408145541b0ac36e17ffc324d9a",
+      "created_at": "2026-07-04T21:14:00+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63218.6,
+      "order_size": "100%",
+      "tv_position_size": 0.00598,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T21:14:00Z",
+      "status": "submitted",
+      "okx_order_id": "3714383051017146368",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 378.047228,
+      "estimated_qty": 0.00598,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDTd01d3f273d64",
+            "ordId": "3714383051017146368",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783199641157"
+          }
+        ],
+        "inTime": "1783199641088835",
+        "msg": "",
+        "outTime": "1783199641226617"
+      }
+    },
+    {
+      "id": "dad7048303c643caba6e1db1a7341214",
+      "created_at": "2026-07-04T20:57:02+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63305.7,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T20:57:00Z",
+      "status": "submitted",
+      "okx_order_id": "3714348872640483328",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.005999,
+      "entry": 63325.3,
+      "estimated_pnl": -0.1175804,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDT1a5e3945bd37",
+            "ordId": "3714348872640483328",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783198622562"
+          }
+        ],
+        "inTime": "1783198622491374",
+        "msg": "",
+        "outTime": "1783198622631086"
+      }
+    },
+    {
+      "id": "2172dadf92ef4bbdb2355eaf9a05bb50",
+      "created_at": "2026-07-04T20:55:07+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63325.3,
+      "order_size": "100%",
+      "tv_position_size": 0.005999,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T20:55:00Z",
+      "status": "submitted",
+      "okx_order_id": "3714345035523411968",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 379.8884747,
+      "estimated_qty": 0.005999,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDT1e5f40a71ff0",
+            "ordId": "3714345035523411968",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783198508207"
+          }
+        ],
+        "inTime": "1783198508138908",
+        "msg": "",
+        "outTime": "1783198508276759"
+      }
+    },
+    {
+      "id": "740624358ef6439c828dfb8cdcd63c68",
+      "created_at": "2026-07-04T20:52:01+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63325.3,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T20:52:00Z",
+      "status": "submitted",
+      "okx_order_id": "3714338778460704768",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.006013,
+      "entry": 63312.3,
+      "estimated_pnl": 0.078169,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDT4ae6ab66c06b",
+            "ordId": "3714338778460704768",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783198321732"
+          }
+        ],
+        "inTime": "1783198321665030",
+        "msg": "",
+        "outTime": "1783198321801339"
+      }
+    },
+    {
+      "id": "c0c7eecfebcd4c80aa4e7023ae40d2f9",
+      "created_at": "2026-07-04T20:50:01+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63312.3,
+      "order_size": "100%",
+      "tv_position_size": 0.006013,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T20:50:00Z",
+      "status": "submitted",
+      "okx_order_id": "3714334761525432320",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 380.6968599,
+      "estimated_qty": 0.006013,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDTfb67e7e25faa",
+            "ordId": "3714334761525432320",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783198202018"
+          }
+        ],
+        "inTime": "1783198201950271",
+        "msg": "",
+        "outTime": "1783198202086981"
+      }
+    },
+    {
+      "id": "afe8bca89c4040788626c248f1954175",
+      "created_at": "2026-07-04T20:15:02+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63340.1,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T20:15:00Z",
+      "status": "submitted",
+      "okx_order_id": "3714264326544805888",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.006023,
+      "entry": 63340.1,
+      "estimated_pnl": 0.0,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDTecf25f6cfce6",
+            "ordId": "3714264326544805888",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783196102892"
+          }
+        ],
+        "inTime": "1783196102825028",
+        "msg": "",
+        "outTime": "1783196102963113"
+      }
+    },
+    {
+      "id": "f1b313e3229c4f948e2ff751687edc23",
+      "created_at": "2026-07-04T20:12:04+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63340.1,
+      "order_size": "100%",
+      "tv_position_size": 0.006023,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T20:12:00Z",
+      "status": "submitted",
+      "okx_order_id": "3714258364056457216",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 381.4974223,
+      "estimated_qty": 0.006023,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDT6ee00f5413f0",
+            "ordId": "3714258364056457216",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783195925196"
+          }
+        ],
+        "inTime": "1783195925128138",
+        "msg": "",
+        "outTime": "1783195925266097"
+      }
+    },
+    {
+      "id": "f027312701564c05842749fb2df8c15a",
+      "created_at": "2026-07-04T20:11:01+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63340.1,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T20:11:00Z",
+      "status": "submitted",
+      "okx_order_id": "3714256235027746816",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.006036,
+      "entry": 63366.0,
+      "estimated_pnl": -0.1563324,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDT26f32b4c5b15",
+            "ordId": "3714256235027746816",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783195861746"
+          }
+        ],
+        "inTime": "1783195861678823",
+        "msg": "",
+        "outTime": "1783195861815396"
+      }
+    },
+    {
+      "id": "2a48a76c3995496bb2702c7ed1fe07a6",
+      "created_at": "2026-07-04T20:08:07+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63366.0,
+      "order_size": "100%",
+      "tv_position_size": 0.006036,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T20:08:00Z",
+      "status": "submitted",
+      "okx_order_id": "3714250396556578816",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 382.477176,
+      "estimated_qty": 0.006036,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDT76e2d457ab3d",
+            "ordId": "3714250396556578816",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783195687746"
+          }
+        ],
+        "inTime": "1783195687678165",
+        "msg": "",
+        "outTime": "1783195687815494"
+      }
+    },
+    {
+      "id": "04a6031f27634237b70fe7758ec04bf8",
+      "created_at": "2026-07-04T20:07:01+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63366.0,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T20:07:00Z",
+      "status": "submitted",
+      "okx_order_id": "3714248196056928256",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.00605,
+      "entry": 63299.4,
+      "estimated_pnl": 0.40293,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDT977525f6f90e",
+            "ordId": "3714248196056928256",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783195622166"
+          }
+        ],
+        "inTime": "1783195622097571",
+        "msg": "",
+        "outTime": "1783195622235704"
+      }
+    },
+    {
+      "id": "c94bd2a73de445cf8fab0d0faf8c4174",
+      "created_at": "2026-07-04T20:02:01+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63299.4,
+      "order_size": "100%",
+      "tv_position_size": 0.00605,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T20:02:00Z",
+      "status": "submitted",
+      "okx_order_id": "3714238117144416256",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 382.96137,
+      "estimated_qty": 0.00605,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDTc7aa12f4d4b4",
+            "ordId": "3714238117144416256",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783195321791"
+          }
+        ],
+        "inTime": "1783195321723456",
+        "msg": "",
+        "outTime": "1783195321861072"
+      }
+    },
+    {
+      "id": "d6971829af5d46ea9ccc60015ad5baf2",
+      "created_at": "2026-07-04T19:59:01+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63293.7,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T19:59:00Z",
+      "status": "submitted",
+      "okx_order_id": "3714232069629136896",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.006084,
+      "entry": 63195.1,
+      "estimated_pnl": 0.5998824,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDTf920e065ed7d",
+            "ordId": "3714232069629136896",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783195141561"
+          }
+        ],
+        "inTime": "1783195141493281",
+        "msg": "",
+        "outTime": "1783195141630732"
+      }
+    },
+    {
+      "id": "f9646c9249444109adfff9acc368354d",
+      "created_at": "2026-07-04T19:58:01+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63293.7,
+      "order_size": "100%",
+      "tv_position_size": 0.006069,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T19:58:00Z",
+      "status": "skipped",
+      "okx_order_id": null,
+      "message": "Position already open in local TradingView/OKX ledger."
+    },
+    {
+      "id": "27cdd9c325744137826392280f81b38b",
+      "created_at": "2026-07-04T19:55:02+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63299.4,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T19:55:00Z",
+      "status": "error",
+      "okx_order_id": null,
+      "message": "OKX HTTP 500 code=50013 msg=Systems are busy. Please try again later."
+    },
+    {
+      "id": "cc868b30fd9842788a4bbe97422fb5eb",
+      "created_at": "2026-07-04T19:17:02+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63195.1,
+      "order_size": "100%",
+      "tv_position_size": 0.006084,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T19:17:00Z",
+      "status": "submitted",
+      "okx_order_id": "3714147569402368000",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 384.4789884,
+      "estimated_qty": 0.006084,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDT4da072878056",
+            "ordId": "3714147569402368000",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783192623258"
+          }
+        ],
+        "inTime": "1783192623190779",
+        "msg": "",
+        "outTime": "1783192623328523"
+      }
+    },
+    {
+      "id": "720484464bd14c40a715ac559a4ba7d8",
+      "created_at": "2026-07-04T19:13:01+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63231.5,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T19:13:00Z",
+      "status": "submitted",
+      "okx_order_id": "3714139465268842496",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.006097,
+      "entry": 63214.1,
+      "estimated_pnl": 0.1060878,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDT94d760760514",
+            "ordId": "3714139465268842496",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783192381736"
+          }
+        ],
+        "inTime": "1783192381667866",
+        "msg": "",
+        "outTime": "1783192381807837"
+      }
+    },
+    {
+      "id": "3cafdc5d72884dd0a6028330171feaab",
+      "created_at": "2026-07-04T19:09:02+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63214.1,
+      "order_size": "100%",
+      "tv_position_size": 0.006097,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T19:09:00Z",
+      "status": "submitted",
+      "okx_order_id": "3714131460791980032",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 385.4163677,
+      "estimated_qty": 0.006097,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDT0d315a21959b",
+            "ordId": "3714131460791980032",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783192143184"
+          }
+        ],
+        "inTime": "1783192143116215",
+        "msg": "",
+        "outTime": "1783192143254451"
+      }
+    },
+    {
+      "id": "8065ca60bda44f6e813e547ad910aac2",
+      "created_at": "2026-07-04T19:05:03+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63184.3,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T19:05:00Z",
+      "status": "submitted",
+      "okx_order_id": "3714123438027952128",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.006109,
+      "entry": 63184.3,
+      "estimated_pnl": 0.0,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDT303225a05e89",
+            "ordId": "3714123438027952128",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783191904087"
+          }
+        ],
+        "inTime": "1783191904019997",
+        "msg": "",
+        "outTime": "1783191904157532"
+      }
+    },
+    {
+      "id": "66dfa85ff69745eda88e1d5a9cb8991d",
+      "created_at": "2026-07-04T19:03:01+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63184.3,
+      "order_size": "100%",
+      "tv_position_size": 0.006109,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T19:03:00Z",
+      "status": "submitted",
+      "okx_order_id": "3714119326871834624",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 385.9928887,
+      "estimated_qty": 0.006109,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDT04afee85f8c6",
+            "ordId": "3714119326871834624",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783191781565"
+          }
+        ],
+        "inTime": "1783191781497006",
+        "msg": "",
+        "outTime": "1783191781634567"
+      }
+    },
+    {
+      "id": "3497d52ac8164ccab2dd9299cb1fb03c",
+      "created_at": "2026-07-04T18:22:02+00:00",
+      "action": "SELL",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63273.4,
+      "order_size": "100%",
+      "tv_position_size": 0.0,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T18:22:00Z",
+      "status": "submitted",
+      "okx_order_id": "3714036845447467008",
+      "message": "Demo market SELL close submitted to OKX.",
+      "estimated_qty": 0.006139,
+      "entry": 63273.4,
+      "estimated_pnl": 0.0,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvsellBTCUSDT83dfa8bd8d66",
+            "ordId": "3714036845447467008",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783189323427"
+          }
+        ],
+        "inTime": "1783189323358691",
+        "msg": "",
+        "outTime": "1783189323498175"
+      }
+    },
+    {
+      "id": "da69e70168e54688a2159252c0457ae9",
+      "created_at": "2026-07-04T18:21:12+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63273.4,
+      "order_size": "100%",
+      "tv_position_size": 0.006139,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T18:21:12Z",
+      "status": "submitted",
+      "okx_order_id": "3714035154371203072",
+      "message": "Demo market BUY submitted to OKX using TradingView position_size.",
+      "quote_amount": 388.4354026,
+      "estimated_qty": 0.006139,
+      "okx_response": {
+        "code": "0",
+        "data": [
+          {
+            "clOrdId": "tvbuyBTCUSDT4f40d7b00d44",
+            "ordId": "3714035154371203072",
+            "sCode": "0",
+            "sMsg": "Order placed",
+            "subCode": "",
+            "tag": "",
+            "ts": "1783189273029"
+          }
+        ],
+        "inTime": "1783189272960302",
+        "msg": "",
+        "outTime": "1783189273098989"
+      }
+    },
+    {
+      "id": "ca9f412936b94eecbb538558eff35147",
+      "created_at": "2026-07-04T18:13:55+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63226.9,
+      "order_size": "100%",
+      "tv_position_size": 0.006139,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T18:13:55Z",
+      "status": "error",
+      "okx_order_id": null,
+      "message": "OKX error code=1 msg=All operations failed details=sCode=51008 sMsg=Order failed. Your available balance is insufficient. "
+    },
+    {
+      "id": "f47f2d97e5314b8884d428781f390200",
+      "created_at": "2026-07-04T18:10:16+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63226.9,
+      "order_size": "100%",
+      "tv_position_size": 0.006139,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T18:10:16Z",
+      "status": "error",
+      "okx_order_id": null,
+      "message": "OKX error code=1 msg=All operations failed details=sCode=51020 sMsg=Your order should meet or exceed the minimum order amount."
+    },
+    {
+      "id": "c4a6bb56f3064c8eb840d72ee764d51c",
+      "created_at": "2026-07-04T18:09:42+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63226.9,
+      "order_size": "100%",
+      "tv_position_size": 0.006139,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T18:09:42Z",
+      "status": "error",
+      "okx_order_id": null,
+      "message": "OKX error code=1 msg=All operations failed"
+    },
+    {
+      "id": "4f75a6994bfd4ca2b84416444d50f790",
+      "created_at": "2026-07-04T17:53:03+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63134.0,
+      "order_size": "100%",
+      "tv_position_size": 0.006139,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T17:10:00Z",
+      "status": "error",
+      "okx_order_id": null,
+      "message": "OKX HTTP 401 code=50119 msg=API key doesn't exist"
+    },
+    {
+      "id": "b0e874a259e74cefbd322c91fa86efa6",
+      "created_at": "2026-07-04T17:39:13+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63134.0,
+      "order_size": "100%",
+      "tv_position_size": 0.006139,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T17:39:13Z",
+      "status": "error",
+      "okx_order_id": null,
+      "message": "OKX HTTP 401 code=50119 msg=API key doesn't exist"
+    },
+    {
+      "id": "ed2ec71dc2504c66b1c8f12d14bab3a8",
+      "created_at": "2026-07-04T17:31:24+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 63015.5,
+      "order_size": "100%",
+      "tv_position_size": 0.006139,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T17:31:24Z",
+      "status": "error",
+      "okx_order_id": null,
+      "message": "401 Client Error: Unauthorized for url: https://www.okx.com/api/v5/trade/order"
+    },
+    {
+      "id": "ee82dd86f17e4ffba47a79ee461cadec",
+      "created_at": "2026-07-04T17:26:00+00:00",
+      "action": "BUY",
+      "ticker": "BTCUSDT",
+      "inst_id": "BTC-USDT",
+      "price": 62929.5,
+      "order_size": "100%",
+      "tv_position_size": 0.006123,
+      "schema": "2",
+      "tv_timestamp": "2026-07-04T17:26:00Z",
+      "status": "error",
+      "okx_order_id": null,
+      "message": "401 Client Error: Unauthorized for url: https://www.okx.com/api/v5/trade/order"
+    }
+  ]
+}

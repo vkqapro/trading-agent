@@ -27,6 +27,12 @@ from src.execution import order_requests as order_requests_store
 from src.jobs.eod import run_eod
 from src.jobs.execute_requests import run_execute_requests
 from src.jobs.intraday import run_intraday
+from src.jobs.inefficiency_reclaim import (
+    IRS_WORKFLOW_MODES,
+    active_confirmation_symbols,
+    record_irs_runtime_status,
+    run_inefficiency_reclaim_job,
+)
 from src.jobs.market_data_collector import run_market_data_collector
 from src.jobs.open import run_open
 from src.jobs.premarket import run_premarket
@@ -39,7 +45,10 @@ from src.jobs.session_utils import (
     session_now,
     sync_tracked_positions_with_broker,
 )
+from src.jobs.symbol_onboarding import run_symbol_onboarding, run_symbol_onboarding_from_saved_bars
 from src.jobs.weekly import run_weekly
+from src.journal.position_history import archive_positions
+from src.journal.flex_statement import commit_flex_checkpoint, reconcile_statement_trades, run_flex_catch_up
 from src.risk.kill_switch import should_trigger_kill_switch
 from src.risk.risk_manager import RiskManager
 from src.risk.take_profit import reward_risk_ratio
@@ -109,6 +118,7 @@ def _load_state(state_path: Path) -> Dict[str, object]:
 
 
 def _save_state(state_path: Path, payload: Dict[str, object]) -> None:
+    payload = _preserve_existing_watchlist_on_save(state_path, payload)
     temp_path = state_path.with_suffix(f"{state_path.suffix}.tmp")
     last_error: Optional[OSError] = None
     for attempt in range(STATE_SAVE_RETRY_ATTEMPTS):
@@ -125,6 +135,60 @@ def _save_state(state_path: Path, payload: Dict[str, object]) -> None:
 
     if last_error is not None:
         raise last_error
+
+
+def _preserve_existing_watchlist_on_save(
+    state_path: Path,
+    payload: Dict[str, object],
+) -> Dict[str, object]:
+    """Merge runtime watchlists instead of silently shrinking them.
+
+    Several jobs share ``memory/runtime/state.json``. A partial workflow, for
+    example Forex-only or a single-symbol run, should not erase symbols that
+    were already onboarded for the stock dashboard. Explicit removals still
+    work because they update the state file before later jobs load and merge it.
+    """
+
+    if state_path != SETTINGS.paths.state_file or not state_path.exists():
+        return payload
+
+    try:
+        existing = json.loads(state_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return payload
+
+    existing_watchlist = existing.get("watchlist") if isinstance(existing, dict) else None
+    if not isinstance(existing_watchlist, dict) or not existing_watchlist:
+        return payload
+
+    payload_watchlist = payload.get("watchlist")
+    merged_payload = dict(payload)
+    if isinstance(payload_watchlist, dict):
+        merged_watchlist = dict(existing_watchlist)
+        merged_watchlist.update(payload_watchlist)
+        merged_payload["watchlist"] = merged_watchlist
+    else:
+        merged_payload["watchlist"] = existing_watchlist
+
+    return merged_payload
+
+
+def _merge_onboarded_watchlist(
+    state: Dict[str, object],
+    onboarding: Dict[str, object],
+    latest_state: Optional[Dict[str, object]] = None,
+) -> Dict[str, object]:
+    if isinstance(latest_state, dict) and latest_state:
+        state.clear()
+        state.update(latest_state)
+    existing_watchlist = state.get("watchlist", {})
+    if not isinstance(existing_watchlist, dict):
+        existing_watchlist = {}
+    onboarded_watchlist = onboarding.get("watchlist", {})
+    if isinstance(onboarded_watchlist, dict):
+        existing_watchlist.update(onboarded_watchlist)
+    state["watchlist"] = existing_watchlist
+    return existing_watchlist
 
 
 def _hydrate_from_logs(state: Dict[str, object]) -> Dict[str, object]:
@@ -372,9 +436,10 @@ def _quote_check_once(symbol: str, market_data: MarketDataService) -> Dict[str, 
     bid = _finite_or_zero(quote.get("bid", 0.0))
     ask = _finite_or_zero(quote.get("ask", 0.0))
     last = _finite_or_zero(quote.get("last", 0.0))
-    mid = ((bid + ask) / 2.0) if bid > 0 and ask > 0 else last
-    spread = abs(ask - bid) if bid > 0 and ask > 0 else 0.0
-    spread_pct = (spread / mid) if mid > 0 else 1.0
+    has_two_sided_quote = bid > 0 and ask > 0
+    mid = ((bid + ask) / 2.0) if has_two_sided_quote else last
+    spread = abs(ask - bid) if has_two_sided_quote else 0.0
+    spread_pct = (spread / mid) if has_two_sided_quote and mid > 0 else 1.0
     max_spread_dollars = (mid * SETTINGS.risk.max_spread_pct) if mid > 0 else 0.0
     return {
         "job": "quote_check",
@@ -382,6 +447,10 @@ def _quote_check_once(symbol: str, market_data: MarketDataService) -> Dict[str, 
         "bid": bid,
         "ask": ask,
         "last": last,
+        "quote_status": str(quote.get("quote_status", "unknown") or "unknown"),
+        "market_data_type": str(
+            quote.get("market_data_type", "unknown") or "unknown"
+        ),
         "mid": round(mid, 6),
         "spread": round(spread, 6),
         "spread_pct": round(spread_pct, 6),
@@ -389,7 +458,9 @@ def _quote_check_once(symbol: str, market_data: MarketDataService) -> Dict[str, 
         "max_spread_pct": SETTINGS.risk.max_spread_pct,
         "max_spread_pct_percent": round(SETTINGS.risk.max_spread_pct * 100.0, 4),
         "max_spread_dollars": round(max_spread_dollars, 6),
-        "passes_spread_filter": spread_pct <= SETTINGS.risk.max_spread_pct,
+        "passes_spread_filter": (
+            has_two_sided_quote and spread_pct <= SETTINGS.risk.max_spread_pct
+        ),
     }
 
 
@@ -456,11 +527,14 @@ def run_manual_watch(
         cash_available = _cash_from_summary(account_summary)
         positions = broker.get_positions()
         open_orders = broker.get_open_orders()
+        previous_positions = state.get("tracked_positions", [])
+        archive_positions(previous_positions)
         state["tracked_positions"] = sync_tracked_positions_with_broker(
-            state.get("tracked_positions", []),
+            previous_positions,
             positions,
             open_orders,
         )
+        archive_positions(state["tracked_positions"])
         account_snapshot = {"account": account_summary, "positions": positions, "open_orders": open_orders}
         _save_state(state_path, state)
 
@@ -576,6 +650,35 @@ def run_job_with_context(
         metrics = run_weekly(state.get("weekly_results", []))
         return {"job": job_name, "metrics": metrics, "dry_run": dry_run}
 
+    if job_name == "onboard_symbol":
+        symbol = str((command_context or {}).get("symbol", "") or "").strip().upper()
+        if not symbol:
+            raise ValueError("onboard_symbol requires: symbol")
+        saved_onboarding = run_symbol_onboarding_from_saved_bars(symbol=symbol)
+        if saved_onboarding.get("watchlist"):
+            existing_watchlist = _merge_onboarded_watchlist(
+                state,
+                saved_onboarding,
+                latest_state=_load_state(state_path),
+            )
+            _save_state(state_path, state)
+            return {
+                "job": job_name,
+                "symbol": saved_onboarding.get("symbol", symbol),
+                "ready": saved_onboarding.get("ready"),
+                "reason": saved_onboarding.get("reason"),
+                "levels": saved_onboarding.get("levels"),
+                "raw_levels": saved_onboarding.get("raw_levels"),
+                "watchlist_count": len(existing_watchlist),
+                "chart_history": saved_onboarding.get("chart_history"),
+                "dry_run": dry_run,
+            }
+        LOGGER.info(
+            "Saved bars are not sufficient for %s onboarding; falling back to IBKR fetch. reason=%s",
+            symbol,
+            saved_onboarding.get("reason"),
+        )
+
     if job_name == "execute_requests" and order_requests_store.worker_is_alive():
         # A fresh heartbeat means another worker already owns the IBKR connection.
         # Refuse instead of starting a second one that would collide and let the
@@ -602,6 +705,43 @@ def run_job_with_context(
                 command_context=command_context,
             )
 
+    if job_name == "irs_scan":
+        mode = str((command_context or {}).get("irs_mode") or "HOURLY_SETUP_SCAN").strip().upper()
+        with job_loop_lock("irs_scan") as acquired:
+            if not acquired:
+                LOGGER.info("Skipping irs_scan because another IRS workflow is already active.")
+                return {
+                    "job": job_name,
+                    "blocked": True,
+                    "reasons": ["irs_scan_already_running"],
+                    "dry_run": True,
+                }
+            record_irs_runtime_status("starting", mode=mode, connected=False)
+            try:
+                result = _run_connected_job(
+                    job_name,
+                    state_path,
+                    state,
+                    True,
+                    command_context=command_context,
+                )
+                record_irs_runtime_status(
+                    "complete",
+                    mode=mode,
+                    connected=False,
+                    symbol_count=int(result.get("universe_size", 0) or 0),
+                    signals_found=int(result.get("signals_found", 0) or 0),
+                )
+                return result
+            except Exception as exc:
+                record_irs_runtime_status(
+                    "failed",
+                    mode=mode,
+                    connected=False,
+                    error=str(exc),
+                )
+                raise
+
     preconnect_lock_name = None
     if job_name == "open":
         preconnect_lock_name = "open_session"
@@ -613,7 +753,12 @@ def run_job_with_context(
             if not acquired:
                 LOGGER.info("Skipping %s job because %s is already active.", job_name, preconnect_lock_name)
                 SlackAlerter().send_channel_message(_duplicate_session_message(job_name))
-                return {"job": job_name, "blocked": True, "reasons": ["session_already_running"], "dry_run": dry_run}
+                return {
+                    "job": job_name,
+                    "blocked": True,
+                    "reasons": ["session_already_running"],
+                    "dry_run": dry_run,
+                }
 
             market_lock_wait_seconds = (
                 SETTINGS.broker.market_session_lock_wait_seconds
@@ -643,6 +788,33 @@ def run_job_with_context(
                     }
                 return _run_connected_job(job_name, state_path, state, dry_run, command_context=command_context)
 
+    if job_name == "eod":
+        try:
+            return _run_connected_job(job_name, state_path, state, dry_run, command_context=command_context)
+        except Exception as exc:
+            # Flex is an independent HTTPS service.  Keep EOD reconciliation
+            # available when TWS/IB Gateway was offline during the session.
+            LOGGER.warning("EOD broker connection unavailable; attempting Flex-only catch-up: %s", exc)
+            flex_result = run_flex_catch_up(commit=False)
+            flex_details = (
+                reconcile_statement_trades(flex_result.get("trades", []), return_details=True)
+                if flex_result.get("status") == "success"
+                else {"added": 0, "unmatched": 0}
+            )
+            if flex_result.get("status") == "success" and flex_details.get("unmatched", 0) == 0:
+                commit_flex_checkpoint(flex_result)
+            summary = {
+                "flex_statement": {
+                    "status": flex_result.get("status"),
+                    "reconciled": flex_details.get("added", 0),
+                    "unmatched": flex_details.get("unmatched", 0),
+                    "archive": flex_result.get("archive"),
+                    "reason": flex_result.get("reason"),
+                    "broker_connected": False,
+                }
+            }
+            append_workflow_snapshot(SETTINGS.paths.trade_log, "EOD Flex-Only Reconciliation", summary)
+            return {"job": job_name, "summary": summary, "dry_run": dry_run, "broker_connected": False}
     return _run_connected_job(job_name, state_path, state, dry_run, command_context=command_context)
 
 
@@ -659,6 +831,14 @@ def _run_connected_job(
     broker = _connect_broker_with_startup_retry(job_name)
     try:
         market_data = MarketDataService(broker)
+        if job_name in {"market_data", "quote_check", "irs_scan"}:
+            market_data.enable_delayed_fallback()
+        if job_name == "irs_scan":
+            record_irs_runtime_status(
+                "running",
+                mode=str((command_context or {}).get("irs_mode") or "HOURLY_SETUP_SCAN"),
+                connected=True,
+            )
         if job_name == "market_data":
             watchlist = state.get("watchlist", {})
             if not isinstance(watchlist, dict) or not watchlist:
@@ -668,6 +848,7 @@ def _run_connected_job(
                 watchlist,
                 interval_seconds=int((command_context or {}).get("interval_seconds", 300) or 300),
                 once=bool((command_context or {}).get("once", False)),
+                force=bool((command_context or {}).get("force", False)),
             )
             return {"job": job_name, **collector, "dry_run": True}
 
@@ -686,16 +867,115 @@ def _run_connected_job(
         cash_available = _cash_from_summary(account_summary)
         positions = broker.get_positions()
         open_orders = broker.get_open_orders()
+        previous_positions = state.get("tracked_positions", [])
+        archive_positions(previous_positions)
         state["tracked_positions"] = sync_tracked_positions_with_broker(
-            state.get("tracked_positions", []),
+            previous_positions,
             positions,
             open_orders,
         )
+        archive_positions(state["tracked_positions"])
         research_symbols = _build_research_symbols(positions)
         risk_manager = RiskManager(account_equity)
         repo_root = SETTINGS.paths.trade_log.parents[1]
         account_snapshot = {"account": account_summary, "positions": positions, "open_orders": open_orders}
         _save_state(state_path, state)
+
+        manual_run_poll_callback = None
+        if command_context and command_context.get("worker"):
+            from src.decision.strategy_controller import (
+                AnalysisExecutionContext,
+                get_strategy_analysis_controller,
+            )
+
+            strategy_controller = get_strategy_analysis_controller()
+
+            def build_analysis_context() -> AnalysisExecutionContext:
+                return AnalysisExecutionContext(
+                    order_manager=order_manager,
+                    market_data=market_data,
+                    account_equity=account_equity,
+                    cash_available=cash_available,
+                    current_positions=list(state.get("tracked_positions", [])),
+                    open_risk_amount=float(risk_manager.get_state()["open_risk_amount"]),
+                    market_open=job_name in {"open", "intraday"},
+                )
+
+            def poll_manual_runs() -> None:
+                strategy_controller.drain_pending_manual(build_analysis_context())
+                status_callback = command_context.get("manual_status_callback")
+                if callable(status_callback):
+                    status_callback()
+
+            manual_run_poll_callback = poll_manual_runs
+            poll_manual_runs()
+
+        if job_name == "irs_scan":
+            watchlist = state.get("watchlist", {})
+            if not isinstance(watchlist, dict):
+                watchlist = {}
+            requested_symbol = str((command_context or {}).get("symbol", "") or "").strip().upper()
+            mode = str((command_context or {}).get("irs_mode") or "HOURLY_SETUP_SCAN").strip().upper()
+            symbols = (
+                [requested_symbol]
+                if requested_symbol
+                else active_confirmation_symbols()
+                if mode == "FIFTEEN_MIN_CONFIRMATION_SCAN"
+                else sorted(
+                    symbol
+                    for symbol in set(SETTINGS.stock_symbols) | set(watchlist)
+                    if SETTINGS.symbol_security_type(symbol) == "STK"
+                )
+            )
+            return {
+                "job": job_name,
+                "symbol_selection": (
+                    "requested"
+                    if requested_symbol
+                    else "active_setups"
+                    if mode == "FIFTEEN_MIN_CONFIRMATION_SCAN"
+                    else "full_universe"
+                ),
+                **run_inefficiency_reclaim_job(
+                    market_data=market_data,
+                    symbols=symbols,
+                    watchlist=watchlist,
+                    account_summary=account_summary,
+                    positions=positions,
+                    open_orders=open_orders,
+                    mode=mode,
+                    hydrate=not bool((command_context or {}).get("no_hydrate", False)),
+                    alerter=alerter,
+                    broker=broker,
+                ),
+                "dry_run": True,
+            }
+
+        if job_name == "onboard_symbol":
+            symbol = str((command_context or {}).get("symbol", "") or "").strip().upper()
+            if not symbol:
+                raise ValueError("onboard_symbol requires: symbol")
+            onboarding = run_symbol_onboarding(
+                symbol=symbol,
+                market_data=market_data,
+                news_service=news_service,
+                news_filter=news_filter,
+                account_snapshot=account_snapshot,
+            )
+            existing_watchlist = _merge_onboarded_watchlist(
+                state,
+                onboarding,
+                latest_state=_load_state(state_path),
+            )
+            _save_state(state_path, state)
+            return {
+                "job": job_name,
+                "symbol": onboarding.get("symbol", symbol),
+                "ready": onboarding.get("ready"),
+                "watchlist_count": len(existing_watchlist),
+                "chart_history": onboarding.get("chart_history"),
+                "dry_run": dry_run,
+            }
 
         internal_positions = state.get("tracked_positions", [])
         kill_switch, reasons = should_trigger_kill_switch(
@@ -728,15 +1008,16 @@ def _run_connected_job(
             watchlist = premarket_summary.get("watchlist", {})
             state["watchlist"] = watchlist
             _save_state(state_path, state)
-            alerter.send_premarket_summary(premarket_summary)
+            alerter.send_premarket_summary(premarket_summary, automated_report=True)
             report_path = premarket_summary.get("report_path")
             if isinstance(report_path, str) and report_path:
                 uploaded = alerter.upload_file(
                     Path(report_path),
                     title="Premarket Strong Levels",
                     initial_comment="Daily premarket levels report (strength_score > 7).",
+                    automated_report=True,
                 )
-                if not uploaded:
+                if not uploaded and SETTINGS.slack_automated_reports_enabled:
                     alerter.send(f"Premarket levels report generated: {Path(report_path).name}")
             maybe_commit_and_push(
                 repo_root,
@@ -760,6 +1041,16 @@ def _run_connected_job(
                 watchlist = state.get("watchlist", {})
             tracked_positions = state.get("tracked_positions", [])
             risk_manager.update_open_risk(tracked_positions)
+            open_options = {}
+            if command_context and "allow_new_entries" in command_context:
+                open_options["allow_new_entries"] = bool(command_context["allow_new_entries"])
+                open_options["stop_event"] = command_context.get("stop_event")
+            if command_context and command_context.get("worker"):
+                from src.decision.strategy_controller import completed_scan_callback
+
+                open_options["decision_controlled"] = True
+                open_options["manual_run_poll_callback"] = manual_run_poll_callback
+                open_options["scan_complete_callback"] = completed_scan_callback
             executed = run_open(
                 market_data=market_data,
                 order_manager=order_manager,
@@ -769,6 +1060,7 @@ def _run_connected_job(
                 cash_available=cash_available,
                 current_positions=positions,
                 open_risk_amount=float(risk_manager.get_state()["open_risk_amount"]),
+                **open_options,
             )
             tracked_positions.extend(executed)
             state["tracked_positions"] = tracked_positions
@@ -782,12 +1074,32 @@ def _run_connected_job(
             return {"job": job_name, "executed": executed, "dry_run": dry_run}
 
         if job_name == "intraday":
+            # TWS periodically overwrites its configured trade_report file.
+            # Ingest it on every intraday cycle so a later EOD run cannot miss
+            # a close that existed only in an earlier 15-minute export.
+            trade_report_result = run_flex_catch_up(commit=False)
+            trade_report_details = (
+                reconcile_statement_trades(trade_report_result.get("trades", []), return_details=True)
+                if trade_report_result.get("status") == "success"
+                else {"added": 0, "unmatched": 0}
+            )
+            if trade_report_result.get("status") == "success" and trade_report_details.get("unmatched", 0) == 0:
+                commit_flex_checkpoint(trade_report_result)
             tracked_positions = state.get("tracked_positions", [])
             intraday_options = (
                 {"initial_trading_halt_reasons": initial_intraday_halt_reasons}
                 if initial_intraday_halt_reasons
                 else {}
             )
+            if command_context and "allow_new_entries" in command_context:
+                intraday_options["allow_new_entries"] = bool(command_context["allow_new_entries"])
+                intraday_options["stop_event"] = command_context.get("stop_event")
+            if command_context and command_context.get("worker"):
+                from src.decision.strategy_controller import completed_scan_callback
+
+                intraday_options["decision_controlled"] = True
+                intraday_options["scan_complete_callback"] = completed_scan_callback
+                intraday_options["manual_run_poll_callback"] = manual_run_poll_callback
             actions = run_intraday(
                 broker,
                 alerter,
@@ -805,10 +1117,37 @@ def _run_connected_job(
                     [SETTINGS.paths.trade_log, SETTINGS.paths.research_log, SETTINGS.paths.state_file],
                     "workflow: intraday adjustments",
                 )
-            return {"job": job_name, "actions": actions, "dry_run": dry_run}
+            return {
+                "job": job_name,
+                "actions": actions,
+                "trade_report": {
+                    "status": trade_report_result.get("status"),
+                    "reconciled": trade_report_details.get("added", 0),
+                    "unmatched": trade_report_details.get("unmatched", 0),
+                    "source": trade_report_result.get("source"),
+                },
+                "dry_run": dry_run,
+            }
 
         if job_name == "eod":
+            flex_result = run_flex_catch_up(commit=False)
+            flex_details = reconcile_statement_trades(flex_result.get("trades", []), return_details=True) if flex_result.get("status") == "success" else {"added": 0, "unmatched": 0}
+            if flex_result.get("status") == "success" and flex_details.get("unmatched", 0) == 0:
+                commit_flex_checkpoint(flex_result)
+            flex_reconciled = flex_details.get("added", 0)
             summary = run_eod(risk_manager, account_snapshot, state.get("tracked_positions", []), daily_pnl=0.0, alerter=alerter)
+            summary["flex_statement"] = {
+                "status": flex_result.get("status"),
+                "reconciled": flex_reconciled,
+                "archive": flex_result.get("archive"),
+                "reason": flex_result.get("reason"),
+                "unmatched": flex_details.get("unmatched", 0),
+            }
+            append_workflow_snapshot(
+                SETTINGS.paths.trade_log,
+                "EOD Flex Reconciliation",
+                {"summary": summary["flex_statement"]},
+            )
             maybe_commit_and_push(
                 repo_root,
                 [SETTINGS.paths.trade_log, SETTINGS.paths.state_file],
@@ -916,10 +1255,10 @@ def _connect_broker_with_startup_retry(job_name: str) -> IBKRClient:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="IBKR Gerchik bot job runner.")
-    parser.add_argument("--job", required=True, choices=["premarket", "open", "intraday", "market_data", "eod", "weekly", "slack", "manual_watch", "validate_watchlist", "quote_check", "execute_requests"])
+    parser.add_argument("--job", required=True, choices=["premarket", "open", "intraday", "market_data", "irs_scan", "eod", "weekly", "slack", "manual_watch", "validate_watchlist", "quote_check", "execute_requests", "onboard_symbol"])
     parser.add_argument("--dry-run", action="store_true", help="Simulate trades without placing broker orders.")
     parser.add_argument("--client-id", type=int, help="Override IBKR API client id for this process (avoid collisions).")
-    parser.add_argument("--symbol", help="Ticker symbol for manual_watch jobs.")
+    parser.add_argument("--symbol", help="Ticker symbol for single-symbol jobs.")
     parser.add_argument("--entry", type=float, help="Entry price for manual_watch jobs.")
     parser.add_argument("--stop", type=float, help="Stop price for manual_watch jobs.")
     parser.add_argument("--target", type=float, help="Target price for manual_watch jobs.")
@@ -945,10 +1284,26 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--once", action="store_true", help="For market_data: collect one cycle and exit.")
     parser.add_argument(
+        "--force",
+        action="store_true",
+        help="For market_data: run immediately even outside the normal collector window.",
+    )
+    parser.add_argument(
         "--interval-seconds",
         type=int,
         default=300,
         help="For market_data: collection cadence while the market is open.",
+    )
+    parser.add_argument(
+        "--irs-mode",
+        choices=sorted(IRS_WORKFLOW_MODES),
+        default="HOURLY_SETUP_SCAN",
+        help="IRS workflow event to run. It remains analysis-only.",
+    )
+    parser.add_argument(
+        "--no-hydrate",
+        action="store_true",
+        help="For irs_scan: use only saved bars and skip IBKR history refresh.",
     )
     return parser.parse_args()
 
@@ -995,13 +1350,32 @@ def main() -> int:
                 dry_run_override=False,
                 command_context={"symbol": str(args.symbol)},
             )
+        elif args.job == "onboard_symbol":
+            if not args.symbol:
+                raise ValueError("onboard_symbol requires: symbol")
+            result = run_job_with_context(
+                "onboard_symbol",
+                dry_run_override=True,
+                command_context={"symbol": str(args.symbol)},
+            )
         elif args.job == "market_data":
             result = run_job_with_context(
                 "market_data",
                 dry_run_override=True,
                 command_context={
                     "once": bool(args.once),
+                    "force": bool(args.force),
                     "interval_seconds": max(60, int(args.interval_seconds)),
+                },
+            )
+        elif args.job == "irs_scan":
+            result = run_job_with_context(
+                "irs_scan",
+                dry_run_override=True,
+                command_context={
+                    "irs_mode": str(args.irs_mode),
+                    "no_hydrate": bool(args.no_hydrate),
+                    "symbol": str(args.symbol or ""),
                 },
             )
         else:

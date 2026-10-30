@@ -123,10 +123,12 @@ class IntradayReportTests(unittest.TestCase):
             def __init__(self) -> None:
                 self.uploads = []
 
-            def send_intraday_heartbeat(self, _payload):
+            def send_intraday_heartbeat(self, _payload, *, automated_report=False):
                 return True
 
-            def upload_file(self, file_path: Path, title: str, initial_comment: str = ""):
+            def upload_file(
+                self, file_path: Path, title: str, initial_comment: str = "", *, automated_report=False
+            ):
                 self.uploads.append((file_path, title, initial_comment))
                 return True
 

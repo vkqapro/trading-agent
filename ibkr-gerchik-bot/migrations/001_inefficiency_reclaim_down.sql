@@ -1,0 +1,12 @@
+DROP TABLE IF EXISTS news_checks;
+DROP TABLE IF EXISTS risk_snapshots;
+DROP TABLE IF EXISTS fills;
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS order_plans;
+DROP TABLE IF EXISTS strategy_rejections;
+DROP TABLE IF EXISTS strategy_signals;
+DROP TABLE IF EXISTS strategy_state_transitions;
+DROP TABLE IF EXISTS strategy_setups;
+DROP TABLE IF EXISTS inefficiency_zones;
+DROP TABLE IF EXISTS scanner_runs;
+DELETE FROM schema_migrations WHERE version = '001_inefficiency_reclaim';

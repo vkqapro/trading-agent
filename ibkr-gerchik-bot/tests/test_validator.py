@@ -44,6 +44,22 @@ class ValidatorTests(unittest.TestCase):
         self.assertTrue(valid)
         self.assertEqual(reasons, [])
 
+    def test_reward_risk_boundary_accepts_exact_and_float_rounding(self) -> None:
+        for target in (102.0, 101.99999999999999, 102.01):
+            signal = self._base_signal()
+            signal.update({"entry": 100.0, "stop": 99.0, "target": target})
+            valid, reasons = self._validate(signal)
+            self.assertTrue(valid, (target, reasons))
+            self.assertNotIn("reward_risk_too_low", reasons)
+
+    def test_reward_risk_below_two_fails_closed(self) -> None:
+        for target in (101.99, 101.5):
+            signal = self._base_signal()
+            signal.update({"entry": 100.0, "stop": 99.0, "target": target})
+            valid, reasons = self._validate(signal)
+            self.assertFalse(valid)
+            self.assertIn("reward_risk_too_low", reasons)
+
     def test_rejects_missing_signal_fields(self) -> None:
         signal = self._base_signal()
         signal.update({"signal": "NONE", "entry": None, "stop": None, "target": None, "risk_per_share": 0.0})

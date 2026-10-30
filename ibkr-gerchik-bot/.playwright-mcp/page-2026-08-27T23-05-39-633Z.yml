@@ -1,0 +1,97 @@
+- generic [ref=f1e3]:
+  - complementary [ref=f1e4]:
+    - generic [ref=f1e5]:
+      - generic [ref=f1e6]:
+        - generic [ref=f1e7]: candlestick_chart
+        - generic [ref=f1e9]:
+          - generic [ref=f1e10]: Vitaly's Trading Bot
+          - generic [ref=f1e11]: IBKR · PAPER
+      - button "keyboard_double_arrow_left" [ref=f1e12] [cursor=pointer]
+    - generic [ref=f1e14]:
+      - generic [ref=f1e15] [cursor=pointer]:
+        - generic [ref=f1e16]: space_dashboard
+        - generic [ref=f1e17]: Dashboard
+      - generic [ref=f1e18] [cursor=pointer]:
+        - generic [ref=f1e19]: visibility
+        - generic [ref=f1e20]: Watchlist
+      - generic [ref=f1e21] [cursor=pointer]:
+        - generic [ref=f1e22]: wb_twilight
+        - generic [ref=f1e23]: Pre-Open
+      - generic [ref=f1e24] [cursor=pointer]:
+        - generic [ref=f1e25]: radar
+        - generic [ref=f1e26]: Screener Stocks
+      - generic [ref=f1e27] [cursor=pointer]:
+        - generic [ref=f1e28]: track_changes
+        - generic [ref=f1e29]: Screener Crypto
+      - generic [ref=f1e30] [cursor=pointer]:
+        - generic [ref=f1e31]: deployed_code
+        - generic [ref=f1e32]: Inefficiency Reclaim
+      - generic [ref=f1e33] [cursor=pointer]:
+        - generic [ref=f1e34]: monitoring
+        - generic [ref=f1e35]: Intraday
+      - generic [ref=f1e36] [cursor=pointer]:
+        - generic [ref=f1e37]: insights
+        - generic [ref=f1e38]: Strategy Stocks
+      - generic [ref=f1e39] [cursor=pointer]:
+        - generic [ref=f1e40]: currency_bitcoin
+        - generic [ref=f1e41]: Strategy Crypto
+      - generic [ref=f1e42] [cursor=pointer]:
+        - generic [ref=f1e43]: currency_bitcoin
+        - generic [ref=f1e44]: Crypto
+      - generic [ref=f1e45] [cursor=pointer]:
+        - generic [ref=f1e46]: receipt_long
+        - generic [ref=f1e47]: Orders Journal
+      - generic [ref=f1e48] [cursor=pointer]:
+        - generic [ref=f1e49]: currency_exchange
+        - generic [ref=f1e50]: Forex
+      - generic [ref=f1e51] [cursor=pointer]:
+        - generic [ref=f1e52]: swap_horiz
+        - generic [ref=f1e53]: Trades & Positions
+      - generic [ref=f1e54] [cursor=pointer]:
+        - generic [ref=f1e55]: calculate
+        - generic [ref=f1e56]: Forecast
+      - generic [ref=f1e57] [cursor=pointer]:
+        - generic [ref=f1e58]: description
+        - generic [ref=f1e59]: Reports
+    - button "Switch to light theme" [ref=f1e60] [cursor=pointer]:
+      - generic [ref=f1e61]:
+        - generic [ref=f1e62]: light_mode
+        - generic [ref=f1e63]: Light theme
+    - generic [ref=f1e66]:
+      - generic [ref=f1e67]: Read-only mode
+      - generic [ref=f1e70]: Never connects to IBKR.Views memory/ only.
+    - generic [ref=f1e71]:
+      - generic [ref=f1e72] [cursor=pointer]:
+        - generic [ref=f1e73]: help
+        - text: Docs
+      - generic [ref=f1e74] [cursor=pointer]:
+        - generic [ref=f1e75]: settings
+        - text: Settings
+  - main [ref=f1e76]:
+    - generic [ref=f1e77]:
+      - generic [ref=f1e78]:
+        - generic [ref=f1e79]: OPERATIONS DESK
+        - generic [ref=f1e80]: /
+        - generic [ref=f1e81]: Dashboard
+      - generic [ref=f1e82]:
+        - generic [ref=f1e83]: SYNCED 19:05:39 ET
+        - generic [ref=f1e86]: PAPER · READ-ONLY
+        - generic [ref=f1e87]:
+          - generic [ref=f1e88]: schedule
+          - generic [ref=f1e89]: Market AFTER-HOURS
+        - button "cloud_download FETCH CANDLES" [ref=f1e90] [cursor=pointer]:
+          - generic [ref=f1e91]: cloud_download
+          - text: FETCH CANDLES
+        - button "refresh REFRESH" [ref=f1e92] [cursor=pointer]:
+          - generic [ref=f1e93]: refresh
+          - text: REFRESH
+        - button "restart_alt HARD RESET" [ref=f1e94] [cursor=pointer]:
+          - generic [ref=f1e95]: restart_alt
+          - text: HARD RESET
+    - generic [ref=f1e97]:
+      - generic [ref=f1e99]:
+        - heading "Command Overview" [level=1] [ref=f1e100]
+        - paragraph [ref=f1e101]: All systems nominal · scan cycle 5m · paper account
+      - generic [ref=f1e103]:
+        - generic [ref=f1e104]: hourglass_top
+        - text: Loading…

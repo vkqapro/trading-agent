@@ -1,0 +1,157 @@
+{
+  "schema_version": "1.1",
+  "verification_date": "2026-10-10",
+  "strategies": {
+    "BMSB": {
+      "display_name": "BMSB",
+      "enabled": true,
+      "definition_status": "implementation_confirmed_analysis_only",
+      "execution_capability": "ANALYSIS_ONLY",
+      "activation": "Registered by the default Decision Lab source registry.",
+      "documentation": "BMSB/current.md",
+      "authoritative_code": ["dashboard_react/server.py:_bmsb_scan_symbol", "src/decision/strategy_sources.py:_monitor_snapshots"],
+      "authoritative_tests": ["tests/test_strategy_sources.py"]
+    },
+    "CONFIRMED_BREAKOUT": {
+      "display_name": "Confirmed Breakout",
+      "enabled": true,
+      "definition_status": "implementation_confirmed",
+      "activation": "Included in the source default StrategyConfig.enabled_strategies and evaluated by route_strategies.",
+      "documentation": "CONFIRMED_BREAKOUT/current.md",
+      "authoritative_code": ["src/strategy/breakout.py:detect_breakout", "src/strategy/strategy_router.py:route_strategies"],
+      "authoritative_tests": ["tests/test_breakout.py", "tests/test_breakout_signal.py", "tests/test_strategy_router.py"]
+    },
+    "FALSE_BREAKOUT_COMPLEX": {
+      "display_name": "Complex False Breakout",
+      "enabled": false,
+      "definition_status": "implementation_confirmed_runtime_selectable",
+      "activation": "Evaluated by route_strategies only when false_breakout_complex is in StrategyConfig.enabled_strategies; it is not in the source default list.",
+      "documentation": "FALSE_BREAKOUT_COMPLEX/current.md",
+      "authoritative_code": ["src/strategy/false_breakout_complex.py:detect_false_breakout_complex", "src/strategy/strategy_router.py:route_strategies"],
+      "authoritative_tests": ["tests/test_false_breakouts.py", "tests/test_strategy_router.py"]
+    },
+    "FALSE_BREAKOUT_CONTINUATION": {
+      "display_name": "False Breakout Continuation",
+      "enabled": false,
+      "definition_status": "implementation_confirmed_runtime_selectable",
+      "activation": "Evaluated by route_strategies only when false_breakout_continuation is in StrategyConfig.enabled_strategies; it is not in the source default list.",
+      "documentation": "FALSE_BREAKOUT_CONTINUATION/current.md",
+      "authoritative_code": ["src/strategy/false_breakout_continuation.py:detect_false_breakout_continuation", "src/strategy/strategy_router.py:route_strategies"],
+      "authoritative_tests": ["tests/test_false_breakout_continuation.py", "tests/test_strategy_router.py"]
+    },
+    "FALSE_BREAKOUT_ONE_BAR": {
+      "display_name": "One-Bar False Breakout",
+      "enabled": true,
+      "definition_status": "implementation_confirmed",
+      "activation": "Included in the source default StrategyConfig.enabled_strategies and evaluated by route_strategies.",
+      "documentation": "FALSE_BREAKOUT_ONE_BAR/current.md",
+      "authoritative_code": ["src/strategy/false_breakout_one_bar.py:detect_false_breakout_one_bar", "src/strategy/strategy_router.py:route_strategies"],
+      "authoritative_tests": ["tests/test_false_breakouts.py", "tests/test_strategy_router.py"]
+    },
+    "FALSE_BREAKOUT_TWO_BAR": {
+      "display_name": "Two-Bar False Breakout",
+      "enabled": false,
+      "definition_status": "implementation_confirmed_runtime_selectable",
+      "activation": "Evaluated by route_strategies only when false_breakout_two_bar is in StrategyConfig.enabled_strategies; it is not in the source default list.",
+      "documentation": "FALSE_BREAKOUT_TWO_BAR/current.md",
+      "authoritative_code": ["src/strategy/false_breakout_two_bar.py:detect_false_breakout_two_bar", "src/strategy/strategy_router.py:route_strategies"],
+      "authoritative_tests": ["tests/test_false_breakouts.py", "tests/test_strategy_router.py"]
+    },
+    "GAUSSIAN": {
+      "display_name": "Gaussian Channel",
+      "enabled": true,
+      "definition_status": "implementation_confirmed_analysis_only",
+      "execution_capability": "ANALYSIS_ONLY",
+      "activation": "Registered by the default Decision Lab source registry.",
+      "documentation": "GAUSSIAN/current.md",
+      "authoritative_code": ["dashboard_react/server.py:_gaussian_scan_symbol", "src/decision/strategy_sources.py:_monitor_snapshots"],
+      "authoritative_tests": ["tests/test_strategy_sources.py"]
+    },
+    "INEFFICIENCY_RECLAIM": {
+      "display_name": "Inefficiency Reclaim",
+      "enabled": false,
+      "definition_status": "implementation_confirmed_feature_flagged",
+      "activation": "The separately scheduled scanner runs only when INEFFICIENCY_RECLAIM_ENABLED is true; source default is false and the settings validator keeps the subsystem paper-only.",
+      "documentation": "INEFFICIENCY_RECLAIM/current.md",
+      "authoritative_code": ["src/strategy/inefficiency_reclaim.py:evaluate_strategy", "src/scanners/inefficiency_reclaim.py:run_inefficiency_reclaim_screener", "src/jobs/inefficiency_reclaim.py:run_inefficiency_reclaim_job"],
+      "authoritative_tests": ["tests/test_inefficiency_reclaim.py", "tests/test_inefficiency_reclaim_scanner.py", "tests/test_inefficiency_reclaim_jobs.py"]
+    },
+    "LB1": {
+      "display_name": "LB1",
+      "enabled": false,
+      "definition_status": "source_definition_unavailable",
+      "documentation": "LB1/current.md",
+      "note": "No LB1 source implementation was found in this checkout on 2026-10-10."
+    },
+    "LB2": {
+      "display_name": "LB2",
+      "enabled": false,
+      "definition_status": "source_definition_unavailable",
+      "documentation": "LB2/current.md",
+      "note": "No LB2 source implementation was found in this checkout on 2026-10-10."
+    },
+    "LP1": {
+      "display_name": "LP1",
+      "enabled": true,
+      "definition_status": "implementation_confirmed",
+      "version": "market-screener-lp-prb-strategy-2",
+      "activation": "Static production scanner allowlist.",
+      "documentation": "LP1/current.md",
+      "authoritative_code": ["backtest_engine_v24.4/scanner/registry.py", "backtest_engine_v24.4/scanner/adapters/lp_prb.py:evaluate_symbol_canonical", "dashboard_react/market_screener.py:_detect_signals"],
+      "authoritative_tests": ["backtest_engine_v24.4/tests/test_scanner_mcp.py", "backtest_engine_v24.4/tests/test_canonical_live_v1.py"]
+    },
+    "LP2": {
+      "display_name": "LP2",
+      "enabled": true,
+      "definition_status": "implementation_confirmed",
+      "version": "market-screener-lp-prb-strategy-2",
+      "activation": "Static production scanner allowlist.",
+      "documentation": "LP2/current.md",
+      "authoritative_code": ["backtest_engine_v24.4/scanner/registry.py", "backtest_engine_v24.4/scanner/adapters/lp_prb.py:evaluate_symbol_canonical", "dashboard_react/market_screener.py:_detect_signals"],
+      "authoritative_tests": ["backtest_engine_v24.4/tests/test_scanner_mcp.py", "backtest_engine_v24.4/tests/test_canonical_live_v1.py"]
+    },
+    "PB1": {
+      "display_name": "PB1",
+      "enabled": false,
+      "definition_status": "source_definition_unavailable",
+      "documentation": "PB1/current.md",
+      "note": "No PB1 source implementation was found in this checkout on 2026-10-10."
+    },
+    "PB2": {
+      "display_name": "PB2",
+      "enabled": false,
+      "definition_status": "source_definition_unavailable",
+      "documentation": "PB2/current.md",
+      "note": "No PB2 source implementation was found in this checkout on 2026-10-10."
+    },
+    "PRB1": {
+      "display_name": "PRB1",
+      "enabled": true,
+      "definition_status": "implementation_confirmed",
+      "version": "market-screener-lp-prb-strategy-2",
+      "activation": "Static production scanner allowlist.",
+      "documentation": "PRB1/current.md",
+      "authoritative_code": ["backtest_engine_v24.4/scanner/registry.py", "backtest_engine_v24.4/scanner/adapters/lp_prb.py:evaluate_symbol_canonical", "dashboard_react/market_screener.py:_detect_signals"],
+      "authoritative_tests": ["backtest_engine_v24.4/tests/test_scanner_mcp.py", "backtest_engine_v24.4/tests/test_canonical_live_v1.py", "tests/test_web_mcp_scanner_parity.py"]
+    },
+    "PRB2": {
+      "display_name": "PRB2",
+      "enabled": true,
+      "definition_status": "implementation_confirmed",
+      "version": "market-screener-lp-prb-strategy-2",
+      "activation": "Static production scanner allowlist.",
+      "documentation": "PRB2/current.md",
+      "authoritative_code": ["backtest_engine_v24.4/scanner/registry.py", "backtest_engine_v24.4/scanner/adapters/lp_prb.py:evaluate_symbol_canonical", "dashboard_react/market_screener.py:_detect_signals"],
+      "authoritative_tests": ["backtest_engine_v24.4/tests/test_scanner_mcp.py", "backtest_engine_v24.4/tests/test_canonical_live_v1.py"]
+    },
+    "REBOUND": {
+      "display_name": "Rebound",
+      "enabled": true,
+      "definition_status": "implementation_confirmed",
+      "activation": "Included in the source default StrategyConfig.enabled_strategies and evaluated by route_strategies.",
+      "documentation": "REBOUND/current.md",
+      "authoritative_code": ["src/strategy/rebound.py:detect_rebound", "src/strategy/strategy_router.py:route_strategies"],
+      "authoritative_tests": ["tests/test_rebound_signal.py", "tests/test_strategy_router.py"]
+    }
+  }
+}

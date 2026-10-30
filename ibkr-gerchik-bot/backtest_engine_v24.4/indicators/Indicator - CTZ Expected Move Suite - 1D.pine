@@ -1,0 +1,402 @@
+//@version=5
+indicator("CTZ Expected Move Suite v8", overlay=true, max_lines_count=500, max_labels_count=500)
+
+// ─── Inputs ───────────────────────────────────────────────────────────────────
+grp1 = "Expected Move"
+atr_len      = input.int(14,    "ATR length",              group=grp1)
+em_mult1     = input.float(1.0, "EM multiplier 1×",        group=grp1, step=0.1)
+em_mult2     = input.float(1.5, "EM multiplier 1.5×",      group=grp1, step=0.1)
+show_em_band = input.bool(true, "Show EM band",            group=grp1)
+
+grp2 = "Support & Resistance"
+sr_lookback  = input.int(20,   "S/R lookback (bars)",     group=grp2, minval=5)
+show_sr      = input.bool(true,"Show S/R levels",         group=grp2)
+
+grp3 = "Fibonacci"
+show_fib      = input.bool(true, "Show Fibonacci levels",  group=grp3)
+fib_lookback  = input.int(50,   "Fib lookback (bars)",     group=grp3, minval=10)
+fib_extend    = input.bool(false,"Extend Fib lines right", group=grp3,
+     tooltip="When on, Fib lines extend infinitely to the right edge of the chart")
+
+grp4 = "Risk / Reward"
+show_rr      = input.bool(true, "Show R/R tool",          group=grp4)
+rr_stop_mult = input.float(0.5, "Stop distance (× ATR)",  group=grp4, step=0.1)
+rr_tp_mult   = input.float(2.0, "Full TP distance (× ATR)",group=grp4, step=0.1)
+range_thresh = input.float(0.15,"Ranging threshold (%)",  group=grp4, step=0.01,
+     tooltip="EMA separation below this % = ranging, no setup drawn")
+max_bars     = input.int(10,   "Setup expiry (bars)",     group=grp4, minval=1,
+     tooltip="Setup auto-expires after this many bars if not stopped out")
+
+grp5 = "Trend"
+ema_fast     = input.int(9,    "Fast EMA",                group=grp5)
+ema_slow     = input.int(21,   "Slow EMA",                group=grp5)
+show_ema     = input.bool(true,"Show EMAs",               group=grp5)
+
+grp6 = "Momentum (RSI)"
+rsi_len      = input.int(14,   "RSI length",              group=grp6)
+show_rsi_sig = input.bool(true,"Show RSI signal labels",  group=grp6)
+
+grp7 = "Alerts"
+alert_long   = input.bool(true, "Alert on long trigger",      group=grp7)
+alert_short  = input.bool(true, "Alert on short trigger",     group=grp7)
+alert_inv    = input.bool(true, "Alert on setup invalidated", group=grp7)
+alert_ob     = input.bool(true, "Alert on RSI overbought",    group=grp7)
+alert_os     = input.bool(true, "Alert on RSI oversold",      group=grp7)
+
+// ─── Core calculations ─────────────────────────────────────────────────────────
+atr_val   = ta.atr(atr_len)
+ema_f     = ta.ema(close, ema_fast)
+ema_s     = ta.ema(close, ema_slow)
+rsi_val   = ta.rsi(close, rsi_len)
+bull_bias = ema_f > ema_s
+
+// ─── Expected Move ─────────────────────────────────────────────────────────────
+em_up1 = close + atr_val * em_mult1
+em_dn1 = close - atr_val * em_mult1
+em_up2 = close + atr_val * em_mult2
+em_dn2 = close - atr_val * em_mult2
+
+em_up1_plot = plot(em_up1, "EM +1×",   color=color.new(color.blue,80), linewidth=1)
+em_dn1_plot = plot(em_dn1, "EM -1×",   color=color.new(color.blue,80), linewidth=1)
+em_up2_plot = plot(em_up2, "EM +1.5×", color=color.new(color.blue,60), linewidth=1, style=plot.style_circles)
+em_dn2_plot = plot(em_dn2, "EM -1.5×", color=color.new(color.blue,60), linewidth=1, style=plot.style_circles)
+fill(em_up1_plot, em_dn1_plot, color=show_em_band ? color.new(color.blue,93) : na)
+
+// ─── S/R ──────────────────────────────────────────────────────────────────────
+var line  r1_line = na
+var line  s1_line = na
+var label r1_lbl  = na
+var label s1_lbl  = na
+
+swing_high = ta.highest(high, sr_lookback)
+swing_low  = ta.lowest(low,  sr_lookback)
+
+if show_sr and barstate.islast
+    line.delete(r1_line)
+    line.delete(s1_line)
+    label.delete(r1_lbl)
+    label.delete(s1_lbl)
+    r1_line := line.new(bar_index - sr_lookback, swing_high, bar_index, swing_high,
+         color=color.new(color.red,30), width=1, style=line.style_dashed, extend=extend.right)
+    s1_line := line.new(bar_index - sr_lookback, swing_low, bar_index, swing_low,
+         color=color.new(color.green,30), width=1, style=line.style_dashed, extend=extend.right)
+    r1_lbl := label.new(bar_index + 2, swing_high,
+         "R  " + str.tostring(swing_high,"#.##"),
+         color=color.new(color.red,20), textcolor=color.white,
+         style=label.style_label_left, size=size.small)
+    s1_lbl := label.new(bar_index + 2, swing_low,
+         "S  " + str.tostring(swing_low,"#.##"),
+         color=color.new(color.green,20), textcolor=color.white,
+         style=label.style_label_left, size=size.small)
+
+// ─── Fibonacci ─────────────────────────────────────────────────────────────────
+var float  fib_high_prev = na
+var float  fib_low_prev  = na
+var line[]  fib_lines    = array.new_line()
+var label[] fib_labels   = array.new_label()
+
+fib_high  = ta.highest(high, fib_lookback)
+fib_low   = ta.lowest(low,  fib_lookback)
+fib_range = fib_high - fib_low
+
+fib_ratios = array.from(0.0, 0.236, 0.382, 0.5, 0.618, 0.786, 1.0)
+fib_cols   = array.from(
+     color.new(color.gray,50),
+     color.new(color.orange,40),
+     color.new(color.yellow,20),
+     color.new(color.blue,30),
+     color.new(color.yellow,20),
+     color.new(color.orange,40),
+     color.new(color.gray,50))
+
+if show_fib and barstate.islast
+    if fib_high != fib_high_prev or fib_low != fib_low_prev or array.size(fib_lines) == 0
+        for l in fib_lines
+            line.delete(l)
+        for lb in fib_labels
+            label.delete(lb)
+        array.clear(fib_lines)
+        array.clear(fib_labels)
+
+        fib_ext = fib_extend ? extend.right : extend.none
+
+        for i = 0 to array.size(fib_ratios) - 1
+            ratio = array.get(fib_ratios, i)
+            lvl   = fib_high - fib_range * ratio
+            col   = array.get(fib_cols, i)
+            near  = math.abs(close - lvl) < atr_val * 0.2
+            lw    = near ? 2 : 1
+            ln = line.new(bar_index - fib_lookback, lvl, bar_index, lvl,
+                 color=col, width=lw, style=line.style_solid, extend=fib_ext)
+            lb = label.new(bar_index + 2, lvl,
+                 str.tostring(ratio * 100,"#.#") + "%  " + str.tostring(lvl,"#.##"),
+                 color=color.new(color.black,100), textcolor=col,
+                 style=label.style_label_left, size=size.small)
+            array.push(fib_lines,  ln)
+            array.push(fib_labels, lb)
+
+        fib_high_prev := fib_high
+        fib_low_prev  := fib_low
+
+// ─── Setup detection ───────────────────────────────────────────────────────────
+ema_sep        = math.abs(ema_f - ema_s) / close * 100
+is_ranging     = ema_sep < range_thresh
+is_long_setup  = not is_ranging and bull_bias and close > ema_s and close < swing_high
+is_short_setup = not is_ranging and not bull_bias and close < ema_s and close > swing_low
+
+long_trigger  = is_long_setup  and not is_long_setup[1]
+short_trigger = is_short_setup and not is_short_setup[1]
+any_trigger   = long_trigger or short_trigger
+
+// ─── Locked entry state ────────────────────────────────────────────────────────
+var float locked_entry       = na
+var float locked_stop        = na
+var float locked_tp1         = na
+var float locked_tp2         = na
+var float locked_tp3         = na
+var bool  locked_long        = na
+var int   bars_since_trigger = 0
+
+setup_active = not na(locked_entry)
+
+if any_trigger
+    full_dist          = atr_val * rr_tp_mult
+    locked_entry       := close
+    locked_stop        := long_trigger ? close - atr_val * rr_stop_mult : close + atr_val * rr_stop_mult
+    locked_tp1         := long_trigger ? close + full_dist * 0.30 : close - full_dist * 0.30
+    locked_tp2         := long_trigger ? close + full_dist * 0.60 : close - full_dist * 0.60
+    locked_tp3         := long_trigger ? close + full_dist        : close - full_dist
+    locked_long        := long_trigger
+    bars_since_trigger := 0
+else
+    bars_since_trigger := setup_active ? bars_since_trigger + 1 : 0
+
+long_invalidated  = setup_active and locked_long     and (close < locked_stop or not bull_bias or bars_since_trigger > max_bars)
+short_invalidated = setup_active and not locked_long and (close > locked_stop or bull_bias     or bars_since_trigger > max_bars)
+invalidated       = long_invalidated or short_invalidated
+
+if invalidated
+    locked_entry       := na
+    locked_stop        := na
+    locked_tp1         := na
+    locked_tp2         := na
+    locked_tp3         := na
+    locked_long        := na
+    bars_since_trigger := 0
+
+// ─── Alerts ───────────────────────────────────────────────────────────────────
+rsi_ob = rsi_val >= 70 and rsi_val[1] < 70
+rsi_os = rsi_val <= 30 and rsi_val[1] > 30
+sym    = syminfo.ticker
+
+if alert_long and long_trigger
+    full_dist = atr_val * rr_tp_mult
+    alert(sym + " LONG SETUP" +
+         "  Entry: " + str.tostring(close,"#.##") +
+         "  SL: "    + str.tostring(close - atr_val * rr_stop_mult,"#.##") +
+         "  TP1: "   + str.tostring(close + full_dist * 0.30,"#.##") + " (30%)" +
+         "  TP2: "   + str.tostring(close + full_dist * 0.60,"#.##") + " (30%)" +
+         "  TP3: "   + str.tostring(close + full_dist,       "#.##") + " (40%)" +
+         "  R/R: "   + str.tostring(rr_tp_mult / rr_stop_mult,"#.#") + "R",
+         alert.freq_once_per_bar_close)
+
+if alert_short and short_trigger
+    full_dist = atr_val * rr_tp_mult
+    alert(sym + " SHORT SETUP" +
+         "  Entry: " + str.tostring(close,"#.##") +
+         "  SL: "    + str.tostring(close + atr_val * rr_stop_mult,"#.##") +
+         "  TP1: "   + str.tostring(close - full_dist * 0.30,"#.##") + " (30%)" +
+         "  TP2: "   + str.tostring(close - full_dist * 0.60,"#.##") + " (30%)" +
+         "  TP3: "   + str.tostring(close - full_dist,       "#.##") + " (40%)" +
+         "  R/R: "   + str.tostring(rr_tp_mult / rr_stop_mult,"#.#") + "R",
+         alert.freq_once_per_bar_close)
+
+if alert_inv and invalidated
+    alert(sym + " SETUP INVALIDATED — price: " + str.tostring(close,"#.##"),
+         alert.freq_once_per_bar_close)
+
+if alert_ob and rsi_ob
+    alert(sym + " RSI OVERBOUGHT (" + str.tostring(rsi_val,"#.#") + ")",
+         alert.freq_once_per_bar_close)
+
+if alert_os and rsi_os
+    alert(sym + " RSI OVERSOLD (" + str.tostring(rsi_val,"#.#") + ")",
+         alert.freq_once_per_bar_close)
+
+// ─── R/R boxes ────────────────────────────────────────────────────────────────
+var box   sl_box    = na
+var box   tp1_box   = na
+var box   tp2_box   = na
+var box   tp3_box   = na
+var label sl_lbl    = na
+var label tp1_lbl   = na
+var label tp2_lbl   = na
+var label tp3_lbl   = na
+var label entry_lbl = na
+var label dir_lbl   = na
+
+if barstate.islast
+    box.delete(sl_box)
+    box.delete(tp1_box)
+    box.delete(tp2_box)
+    box.delete(tp3_box)
+    label.delete(sl_lbl)
+    label.delete(tp1_lbl)
+    label.delete(tp2_lbl)
+    label.delete(tp3_lbl)
+    label.delete(entry_lbl)
+    label.delete(dir_lbl)
+
+    if show_rr and setup_active and not na(locked_entry)
+        rr_ratio  = math.abs(locked_tp3 - locked_entry) / math.abs(locked_entry - locked_stop)
+        is_long   = locked_long
+
+        tp_col    = is_long ? color.green : color.red
+        sl_col    = is_long ? color.red   : color.green
+        dir_txt   = is_long ? "LONG"      : "SHORT"
+        dir_col   = is_long ? color.new(color.green,20) : color.new(color.red,20)
+
+        left_bar  = bar_index - 2
+        right_bar = bar_index + 10
+        lbl_bar   = bar_index + 11
+
+        sl_top = is_long ? locked_entry : locked_stop
+        sl_bot = is_long ? locked_stop  : locked_entry
+        sl_box := box.new(left_bar, sl_top, right_bar, sl_bot,
+             bgcolor=color.new(sl_col,88), border_color=color.new(sl_col,50), border_width=1)
+
+        tp1_top = is_long ? locked_tp1   : locked_entry
+        tp1_bot = is_long ? locked_entry : locked_tp1
+        tp1_box := box.new(left_bar, tp1_top, right_bar, tp1_bot,
+             bgcolor=color.new(tp_col,85), border_color=color.new(tp_col,50), border_width=1)
+
+        tp2_top = is_long ? locked_tp2 : locked_tp1
+        tp2_bot = is_long ? locked_tp1 : locked_tp2
+        tp2_box := box.new(left_bar, tp2_top, right_bar, tp2_bot,
+             bgcolor=color.new(tp_col,78), border_color=color.new(tp_col,40), border_width=1)
+
+        tp3_top = is_long ? locked_tp3 : locked_tp2
+        tp3_bot = is_long ? locked_tp2 : locked_tp3
+        tp3_box := box.new(left_bar, tp3_top, right_bar, tp3_bot,
+             bgcolor=color.new(tp_col,70), border_color=color.new(tp_col,30), border_width=1)
+
+        sl_lbl := label.new(lbl_bar, locked_stop,
+             "SL  " + str.tostring(locked_stop,"#.##"),
+             color=color.new(sl_col,20), textcolor=color.white,
+             style=label.style_label_left, size=size.normal)
+
+        entry_lbl := label.new(lbl_bar, locked_entry,
+             "Entry  " + str.tostring(locked_entry,"#.##"),
+             color=color.new(color.gray,30), textcolor=color.white,
+             style=label.style_label_left, size=size.normal)
+
+        tp1_lbl := label.new(lbl_bar, locked_tp1,
+             "TP1  " + str.tostring(locked_tp1,"#.##") + "  (30%)",
+             color=color.new(tp_col,50), textcolor=color.white,
+             style=label.style_label_left, size=size.normal)
+
+        tp2_lbl := label.new(lbl_bar, locked_tp2,
+             "TP2  " + str.tostring(locked_tp2,"#.##") + "  (30%)",
+             color=color.new(tp_col,35), textcolor=color.white,
+             style=label.style_label_left, size=size.normal)
+
+        tp3_lbl := label.new(lbl_bar, locked_tp3,
+             "TP3  " + str.tostring(locked_tp3,"#.##") + "  (40%)  " + str.tostring(rr_ratio,"#.##") + "R",
+             color=color.new(tp_col,20), textcolor=color.white,
+             style=label.style_label_left, size=size.normal)
+
+        dir_lbl := label.new(left_bar,
+             is_long ? locked_tp3 + atr_val * 0.3 : locked_tp3 - atr_val * 0.3,
+             dir_txt, color=dir_col, textcolor=color.white,
+             style=label.style_label_right, size=size.large)
+
+// ─── Signal arrows ─────────────────────────────────────────────────────────────
+plotshape(long_trigger,  "Long signal",  shape.triangleup,
+     location.belowbar, color=color.new(color.green,20), size=size.small)
+plotshape(short_trigger, "Short signal", shape.triangledown,
+     location.abovebar, color=color.new(color.red,20),   size=size.small)
+
+// ─── EMAs ──────────────────────────────────────────────────────────────────────
+plot(show_ema ? ema_f : na, "EMA fast",
+     color=bull_bias ? color.new(color.teal,20) : color.new(color.red,20), linewidth=1)
+plot(show_ema ? ema_s : na, "EMA slow",
+     color=bull_bias ? color.new(color.teal,50) : color.new(color.red,50), linewidth=2)
+
+// ─── RSI signal labels ─────────────────────────────────────────────────────────
+if show_rsi_sig
+    if rsi_ob
+        label.new(bar_index, high + atr_val * 0.3, "OB",
+             color=color.new(color.red,20), textcolor=color.white,
+             style=label.style_label_down, size=size.normal)
+    if rsi_os
+        label.new(bar_index, low - atr_val * 0.3, "OS",
+             color=color.new(color.green,20), textcolor=color.white,
+             style=label.style_label_up, size=size.normal)
+
+// ─── Candle momentum shapes ────────────────────────────────────────────────────
+body     = math.abs(close - open)
+avg_body = ta.sma(body, 5)
+expand   = body > avg_body * 1.5
+
+plotshape(expand and close > open, "Momentum bull", shape.triangleup,
+     location.belowbar, color=color.new(color.teal,40), size=size.tiny)
+plotshape(expand and close < open, "Momentum bear", shape.triangledown,
+     location.abovebar, color=color.new(color.red,40), size=size.tiny)
+
+// ─── Stats table ───────────────────────────────────────────────────────────────
+var table stats = table.new(position.top_right, 2, 12,
+     bgcolor=color.new(color.white,10), border_width=1,
+     border_color=color.new(color.gray,70), frame_width=1,
+     frame_color=color.new(color.gray,60))
+
+if barstate.islast
+    rr_ratio_live = setup_active and not na(locked_entry) ?
+         math.abs(locked_tp3 - locked_entry) / math.abs(locked_entry - locked_stop) : 0.0
+
+    setup_txt = is_ranging               ? "Ranging" :
+         setup_active and locked_long     ? str.tostring(rr_ratio_live,"#.##") + "R Long" :
+         setup_active and not locked_long ? str.tostring(rr_ratio_live,"#.##") + "R Short" :
+         "No setup"
+    setup_col = is_ranging               ? color.new(color.gray,20) :
+         setup_active and locked_long     ? color.new(color.teal,20) :
+         setup_active and not locked_long ? color.new(color.red,20)  :
+         color.new(color.gray,20)
+
+    bias_txt  = bull_bias ? "Bullish" : "Bearish"
+    bias_col  = bull_bias ? color.new(color.teal,20) : color.new(color.red,20)
+    rsi_txt   = rsi_val >= 70 ? "Overbought" : rsi_val <= 30 ? "Oversold" : str.tostring(rsi_val,"#.#")
+    rsi_col   = rsi_val >= 70 ? color.new(color.red,20) : rsi_val <= 30 ? color.new(color.green,20) : color.new(color.gray,20)
+
+    bars_txt  = setup_active ? str.tostring(bars_since_trigger) + " / " + str.tostring(max_bars) : "—"
+    entry_txt = setup_active and not na(locked_entry) ? str.tostring(locked_entry,"#.##") : "—"
+    stop_txt  = setup_active and not na(locked_stop)  ? str.tostring(locked_stop, "#.##") : "—"
+    tp1_txt   = setup_active and not na(locked_tp1)   ? str.tostring(locked_tp1,  "#.##") : "—"
+    tp2_txt   = setup_active and not na(locked_tp2)   ? str.tostring(locked_tp2,  "#.##") : "—"
+    tp3_txt   = setup_active and not na(locked_tp3)   ? str.tostring(locked_tp3,  "#.##") : "—"
+
+    rows = array.from("ATR","EM +1×","EM -1×","Bias","RSI","Setup","Bars","Entry","SL","TP1 30%","TP2 30%","TP3 40%")
+    vals = array.from(
+         str.tostring(atr_val,"#.##"),
+         str.tostring(em_up1,"#.##"),
+         str.tostring(em_dn1,"#.##"),
+         bias_txt, rsi_txt, setup_txt, bars_txt,
+         entry_txt, stop_txt, tp1_txt, tp2_txt, tp3_txt)
+    colors = array.from(
+         color.new(color.gray,20),
+         color.new(color.blue,20),
+         color.new(color.blue,20),
+         bias_col, rsi_col, setup_col,
+         color.new(color.gray,20),
+         color.new(color.gray,20),
+         color.new(color.red,20),
+         color.new(color.green,40),
+         color.new(color.green,25),
+         color.new(color.green,10))
+
+    for i = 0 to 11
+        table.cell(stats, 0, i, array.get(rows,i),
+             text_color=color.new(color.gray,30), text_size=size.small,
+             bgcolor=color.new(color.gray,92))
+        table.cell(stats, 1, i, array.get(vals,i),
+             text_color=array.get(colors,i), text_size=size.small,
+             bgcolor=color.new(color.white,85))

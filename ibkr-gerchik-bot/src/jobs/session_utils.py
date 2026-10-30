@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 import time
 from contextlib import contextmanager
@@ -17,7 +18,11 @@ import pandas as pd
 from src.alerts.slack import SlackAlerter
 from src.brokers.ibkr import IBKRClient
 from src.config import LOGGER, SETTINGS, append_markdown_log
-from src.data.bar_store import save_bars
+from src.decision.agent import AgentRuntimeContext, default_agent
+from src.decision.market import quote_age_seconds
+from src.decision.models import AgentMode
+from src.data.bar_store import load_bars, save_bars
+from src.data.chart_history import ensure_required_chart_history
 from src.data.market_data import MarketDataService
 from src.data.news import NewsService
 from src.data.news_filter import NewsRiskFilter
@@ -119,16 +124,40 @@ def next_scan_time(current_time: datetime, interval_seconds: int) -> datetime:
     return current_time + timedelta(seconds=sleep_seconds)
 
 
-def sleep_until(next_run: datetime, now_provider: NowProvider, sleep_provider: SleepProvider) -> None:
+def sleep_until(
+    next_run: datetime,
+    now_provider: NowProvider,
+    sleep_provider: SleepProvider,
+    stop_event: object | None = None,
+    poll_callback: Callable[[], object] | None = None,
+) -> None:
     """Sleep in bounded chunks until the requested time."""
     while True:
+        if stop_event is not None and bool(getattr(stop_event, "is_set", lambda: False)()):
+            return
         remaining = (next_run - now_provider()).total_seconds()
         if remaining <= 0:
             return
         sleep_provider(min(remaining, 30.0))
+        if poll_callback is not None:
+            try:
+                poll_callback()
+            except Exception:
+                LOGGER.debug("Bounded worker poll callback failed", exc_info=True)
 
 
 def _lock_is_stale(lock_path: Path) -> bool:
+    try:
+        owner_text = lock_path.read_text(encoding="utf-8").split("|", 1)[0].strip()
+        owner_pid = int(owner_text)
+        try:
+            os.kill(owner_pid, 0)
+        except PermissionError:
+            return False
+        except OSError:
+            return True
+    except (OSError, TypeError, ValueError):
+        pass
     try:
         modified_at = datetime.fromtimestamp(lock_path.stat().st_mtime)
     except OSError:
@@ -208,12 +237,18 @@ def load_runtime_state() -> Dict[str, object]:
 
     premarket = read_latest_workflow_snapshot(SETTINGS.paths.research_log, "Premarket")
     if isinstance(premarket, dict) and isinstance(premarket.get("watchlist"), dict) and premarket["watchlist"]:
-        state["watchlist"] = premarket["watchlist"]
+        existing_watchlist = state.get("watchlist", {})
+        if not isinstance(existing_watchlist, dict):
+            existing_watchlist = {}
+        merged_watchlist = dict(existing_watchlist)
+        merged_watchlist.update(premarket["watchlist"])
+        state["watchlist"] = merged_watchlist
     return state
 
 
 def save_runtime_state(state: Dict[str, object]) -> None:
     """Persist runtime state atomically from within long-running jobs."""
+    state = _preserve_existing_runtime_watchlist(state)
     temp_path = SETTINGS.paths.state_file.with_suffix(".json.tmp")
     last_error: Optional[OSError] = None
     for attempt in range(STATE_SAVE_RETRY_ATTEMPTS):
@@ -229,6 +264,33 @@ def save_runtime_state(state: Dict[str, object]) -> None:
 
     if last_error is not None:
         raise last_error
+
+
+def _preserve_existing_runtime_watchlist(state: Dict[str, object]) -> Dict[str, object]:
+    """Preserve already-onboarded symbols when a partial job saves state."""
+
+    state_path = SETTINGS.paths.state_file
+    if not state_path.exists():
+        return state
+    try:
+        existing = json.loads(state_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return state
+
+    existing_watchlist = existing.get("watchlist") if isinstance(existing, dict) else None
+    if not isinstance(existing_watchlist, dict) or not existing_watchlist:
+        return state
+
+    state_watchlist = state.get("watchlist")
+    merged_state = dict(state)
+    if isinstance(state_watchlist, dict):
+        merged_watchlist = dict(existing_watchlist)
+        merged_watchlist.update(state_watchlist)
+        merged_state["watchlist"] = merged_watchlist
+    else:
+        merged_state["watchlist"] = existing_watchlist
+
+    return merged_state
 
 
 def _normalize_skip_reason(reason: object) -> str:
@@ -347,6 +409,12 @@ def _signal_detail(
         "nearest_level": _price_value(nearest_level),
         "nearest_level_type": nearest_level_type,
         "reward_risk": _price_value(signal.reward_risk),
+        "atr": _price_value(signal.atr or signal.atr_used),
+        "risk_per_share": _price_value(signal.risk_per_share),
+        "confidence": _price_value(signal.confidence),
+        "source_bar_timestamp": signal.metadata.get("source_bar_timestamp"),
+        "signal_timestamp": signal.metadata.get("signal_timestamp"),
+        "metadata": dict(signal.metadata or {}),
         "status": status,
         "reason": _normalize_skip_reason(reason),
     }
@@ -356,7 +424,38 @@ def _tracked_symbol_needs_stop(position: Dict[str, object]) -> bool:
     quantity = int(float(position.get("quantity", 0) or 0))
     direction = str(position.get("direction", "")).strip().lower()
     symbol = str(position.get("symbol", "")).strip().upper()
-    return bool(symbol and quantity > 0 and direction in {"long", "short"})
+    protection_policy = str(position.get("protection_policy", "") or "").strip().lower()
+    if protection_policy == "alert_managed_no_stop":
+        return False
+    if protection_policy == "manual_unmanaged":
+        return False
+    if protection_policy == "bracket_managed":
+        return bool(symbol and quantity > 0 and direction in {"long", "short"})
+
+    # Backward compatibility for positions created before protection policies:
+    # bot/dashboard bracket positions carried stop/target metadata; broker-only
+    # or TradingView market-only positions should not be forced through this
+    # stop-integrity gate.
+    source = str(position.get("source", "") or "").strip().lower()
+    if source == "tradingview" or bool(position.get("market_only")):
+        return False
+    has_bracket_metadata = any(
+        position.get(key) not in (None, "", 0, "0")
+        for key in ("stop_loss", "target", "stop_order_id", "limit_order_id")
+    )
+    return bool(symbol and quantity > 0 and direction in {"long", "short"} and has_bracket_metadata)
+
+
+def _bot_may_manage_position_exit(position: Dict[str, object]) -> bool:
+    """Return True when intraday logic may close/trail this position."""
+
+    policy = str(position.get("protection_policy", "") or "").strip().lower()
+    if policy in {"alert_managed_no_stop", "manual_unmanaged"}:
+        return False
+    source = str(position.get("source", "") or "").strip().lower()
+    if source == "tradingview" or bool(position.get("market_only")):
+        return False
+    return True
 
 
 def _position_is_within_stop_grace(position: Dict[str, object], now: datetime) -> bool:
@@ -461,14 +560,22 @@ def sync_tracked_positions_with_broker(
         if symbol:
             existing_by_symbol[symbol] = dict(position)
 
-    stop_order_ids_by_symbol: Dict[str, int] = {}
+    stop_orders_by_symbol: Dict[str, Dict[str, object]] = {}
+    limit_orders_by_symbol: Dict[str, Dict[str, object]] = {}
+    stop_orders_by_id: Dict[int, Dict[str, object]] = {}
+    limit_orders_by_id: Dict[int, Dict[str, object]] = {}
     for order in open_orders:
-        if str(order.get("type", "")).strip().upper() != "STP":
-            continue
+        order_type = str(order.get("type", "")).strip().upper()
         symbol = str(order.get("symbol", "")).strip().upper()
         order_id = int(float(order.get("order_id", 0) or 0))
-        if symbol and order_id > 0 and symbol not in stop_order_ids_by_symbol:
-            stop_order_ids_by_symbol[symbol] = order_id
+        if not symbol or order_id <= 0:
+            continue
+        if order_type in {"STP", "STP LMT"}:
+            stop_orders_by_id[order_id] = order
+            stop_orders_by_symbol.setdefault(symbol, order)
+        elif order_type == "LMT":
+            limit_orders_by_id[order_id] = order
+            limit_orders_by_symbol.setdefault(symbol, order)
 
     synced: List[Dict[str, object]] = []
     seen: set[str] = set()
@@ -491,6 +598,18 @@ def sync_tracked_positions_with_broker(
 
         base_position = existing_by_symbol.get(symbol, {})
         merged_position = dict(base_position)
+        protection_policy = str(merged_position.get("protection_policy", "") or "").strip()
+        if not protection_policy:
+            source = str(merged_position.get("source", "") or "").strip().lower()
+            if source == "tradingview" or bool(merged_position.get("market_only")):
+                protection_policy = "alert_managed_no_stop"
+            elif any(
+                merged_position.get(key) not in (None, "", 0, "0")
+                for key in ("stop_loss", "target", "stop_order_id", "limit_order_id")
+            ):
+                protection_policy = "bracket_managed"
+            else:
+                protection_policy = "manual_unmanaged"
         merged_position.update(
             {
                 "symbol": symbol,
@@ -499,12 +618,39 @@ def sync_tracked_positions_with_broker(
                 "avg_cost": avg_cost,
                 "direction": direction,
                 "sec_type": sec_type,
+                "protection_policy": protection_policy,
             }
         )
 
-        stop_order_id = stop_order_ids_by_symbol.get(symbol)
-        if stop_order_id is not None:
+        existing_stop_order_id = int(float(merged_position.get("stop_order_id", 0) or 0))
+        stop_order = stop_orders_by_id.get(existing_stop_order_id) if existing_stop_order_id > 0 else None
+        if stop_order is None:
+            stop_order = stop_orders_by_symbol.get(symbol)
+        if stop_order is not None:
+            stop_order_id = int(float(stop_order.get("order_id", 0) or 0))
+            stop_price = float(stop_order.get("stop_price", 0.0) or stop_order.get("aux_price", 0.0) or 0.0)
             merged_position["stop_order_id"] = stop_order_id
+            merged_position["current_stop_order_status"] = stop_order.get("status")
+            if stop_price > 0:
+                if merged_position.get("planned_stop_loss") in (None, "", 0, "0") and merged_position.get("stop_loss") not in (None, "", 0, "0"):
+                    merged_position["planned_stop_loss"] = merged_position.get("stop_loss")
+                merged_position["stop_loss"] = stop_price
+                merged_position["current_stop_loss"] = stop_price
+
+        existing_limit_order_id = int(float(merged_position.get("limit_order_id", 0) or 0))
+        limit_order = limit_orders_by_id.get(existing_limit_order_id) if existing_limit_order_id > 0 else None
+        if limit_order is None:
+            limit_order = limit_orders_by_symbol.get(symbol)
+        if limit_order is not None:
+            limit_order_id = int(float(limit_order.get("order_id", 0) or 0))
+            limit_price = float(limit_order.get("limit_price", 0.0) or 0.0)
+            merged_position["limit_order_id"] = limit_order_id
+            merged_position["current_target_order_status"] = limit_order.get("status")
+            if limit_price > 0:
+                if merged_position.get("planned_target") in (None, "", 0, "0") and merged_position.get("target") not in (None, "", 0, "0"):
+                    merged_position["planned_target"] = merged_position.get("target")
+                merged_position["target"] = limit_price
+                merged_position["current_target"] = limit_price
 
         synced.append(merged_position)
 
@@ -524,9 +670,18 @@ def run_entry_scan(
     open_risk_amount: float,
     scan_time: Optional[datetime] = None,
     intraday_bars_by_symbol: Optional[Dict[str, pd.DataFrame]] = None,
+    decision_agent: object | None = None,
+    decision_controlled: bool = False,
 ) -> Dict[str, object]:
     """Run one deterministic entry scan over the prepared watchlist."""
     current_time = scan_time or session_now()
+    if decision_agent is None:
+        decision_agent = default_agent(order_manager)
+    agent_mode = getattr(decision_agent, "mode", AgentMode.OFF)
+    autonomous_ai_enabled = agent_mode is not AgentMode.OFF
+    autonomous_ai_uses_news = bool(
+        getattr(getattr(decision_agent, "config", None), "use_news", False)
+    )
     executed: List[Dict[str, object]] = []
     skipped: List[Dict[str, object]] = []
     manual_candidates: List[Dict[str, object]] = []
@@ -537,8 +692,131 @@ def run_entry_scan(
 
     LOGGER.info("%s scan started at %s", stage_name, current_time.isoformat())
 
-    macro_context = news_filter.get_macro_risk_context()
-    if macro_context.get("risk_level") == "HIGH":
+    news_disabled_for_ai = autonomous_ai_enabled and not autonomous_ai_uses_news
+    shadow_legacy_news_deferred = agent_mode is AgentMode.SHADOW and news_disabled_for_ai and not decision_controlled
+
+    def _news_disabled_context() -> Dict[str, object]:
+        return {
+            "risk_level": "DISABLED",
+            "provider_hits": [],
+            "matched_headlines": [],
+            "source": "disabled_for_autonomous_ai",
+        }
+
+    macro_context: Dict[str, object] = _news_disabled_context()
+    legacy_macro_loaded = False
+    legacy_macro_blocked = False
+
+    def _load_legacy_macro_context() -> Dict[str, object]:
+        nonlocal legacy_macro_loaded, macro_context
+        if legacy_macro_loaded:
+            return macro_context
+        try:
+            macro_context = news_filter.get_macro_risk_context()
+        except Exception as exc:
+            macro_context = {"risk_level": "UNKNOWN", "error": "news_unavailable"}
+            LOGGER.warning("%s legacy macro news lookup failed: %s", stage_name, exc)
+        legacy_macro_loaded = True
+        return macro_context
+
+    def _stamp_source_bar(signal: TradeSignal, intraday_bars: pd.DataFrame) -> None:
+        if not intraday_bars.empty and "date" in intraday_bars.columns:
+            # Strategy constructors predate the autonomous adapter and do not
+            # all carry setup provenance. The completed source bar is durable,
+            # deterministic identity material available here.
+            source_bar_timestamp = intraday_bars.iloc[-1].get("date")
+            if source_bar_timestamp is not None:
+                signal.metadata = {
+                    **signal.metadata,
+                    "source_bar_timestamp": str(source_bar_timestamp),
+                }
+
+    def _technical_metrics(
+        signal: TradeSignal,
+        plan: object,
+        session_low: float,
+        session_high: float,
+    ) -> tuple[float, float, bool, bool]:
+        plan_mapping = plan if isinstance(plan, dict) else {}
+        technical_atr = float(plan_mapping.get("technical_atr", 0.0))
+        daily_atr = float(plan_mapping.get("daily_atr", 0.0))
+        atr_ok = technical_atr_has_room(technical_atr, signal.entry)
+        trend_ok = atr_travel_filter(
+            signal.entry,
+            session_low,
+            session_high,
+            daily_atr,
+            bool(signal.is_new_extreme),
+        )
+        return technical_atr, daily_atr, atr_ok, trend_ok
+
+    def _submit_agent_signal(
+        signal: TradeSignal,
+        *,
+        technical_atr: float,
+        daily_atr: float,
+        atr_ok: bool,
+        trend_ok: bool,
+        symbol_news_context: Dict[str, object],
+        macro_context: Dict[str, object],
+        quote: Dict[str, object],
+    ) -> object:
+        # Legacy Shadow News may already have been loaded for an earlier
+        # symbol. Keep every autonomous request isolated even after that
+        # lookup: disabled News must not leak risk or headline context into a
+        # later candidate.
+        ai_symbol_news_context = (
+            _news_disabled_context() if news_disabled_for_ai else symbol_news_context
+        )
+        ai_macro_context = _news_disabled_context() if news_disabled_for_ai else macro_context
+        quote_last = float(quote.get("last", 0.0) or 0.0)
+        quote_age = quote_age_seconds(quote)
+        try:
+            first_unstable_minutes = market_data.unstable_open_window(current_time)
+        except TypeError:
+            # Keep lightweight/test market-data adapters compatible with the
+            # original no-argument protocol while production adapters can use
+            # an explicit session timestamp.
+            first_unstable_minutes = market_data.unstable_open_window()
+        agent_context = AgentRuntimeContext(
+            account_id=getattr(getattr(order_manager, "broker", None), "account_id", None),
+            account_equity=account_equity,
+            cash_available=cash_available,
+            current_positions=tuple(dict(item) for item in current_positions),
+            open_risk_amount=open_risk_amount,
+            spread_pct=OrderManager._spread_pct(quote),
+            broker_connected=bool(getattr(order_manager.broker, "is_connected", False)),
+            account_synced=False,
+            market_open=market_data.market_is_open(current_time),
+            first_unstable_minutes=first_unstable_minutes,
+            symbol_news_risk=(ai_symbol_news_context.get("risk_level") == "HIGH") if autonomous_ai_uses_news else False,
+            macro_risk=(ai_macro_context.get("risk_level") == "HIGH") if autonomous_ai_uses_news else False,
+            atr_has_room=atr_ok and trend_ok,
+            data_age_seconds=quote_age,
+            current_price=quote_last if quote_last > 0 else intraday_reference_price,
+            daily_realized_pnl=0.0,
+            quote=quote,
+            market_context={
+                "next_major_level": signal.nearest_upper_level
+                if signal.direction == "long"
+                else signal.nearest_lower_level,
+                "news_risk": ai_symbol_news_context.get("risk_level", "UNKNOWN"),
+                "macro_risk": ai_macro_context.get("risk_level", "UNKNOWN"),
+                "technical_atr": technical_atr,
+                "daily_atr": daily_atr,
+                "atr_used": signal.atr_used,
+            },
+            isolated_paper=agent_mode is AgentMode.PAPER_AUTONOMOUS,
+        )
+        return decision_agent.submit_signal(signal, context=agent_context)
+
+    if news_disabled_for_ai:
+        # Paper/Live never need the legacy News path. Shadow defers it until
+        # after the neutral AI candidate has been submitted.
+        macro_context = _news_disabled_context()
+    else:
+        macro_context = _load_legacy_macro_context()
+    if macro_context.get("risk_level") == "HIGH" and not (autonomous_ai_enabled and not autonomous_ai_uses_news):
         LOGGER.warning(
             "%s scan blocked by macro risk providers=%s matches=%s",
             stage_name,
@@ -558,6 +836,31 @@ def run_entry_scan(
 
     for symbol, plan in watchlist.items():
         scanned_symbols += 1
+        chart_history = plan.get("chart_history") if isinstance(plan, dict) else None
+        if not isinstance(chart_history, dict) or not chart_history.get("ready"):
+            chart_history = ensure_required_chart_history(market_data, symbol)
+        if not chart_history.get("ready"):
+            skipped.append({
+                "symbol": symbol,
+                "reason": "missing_required_chart_history",
+                "missing": chart_history.get("missing", []),
+            })
+            report_rows.append(
+                _symbol_report_row(
+                    symbol=symbol,
+                    plan=plan,
+                    quote=None,
+                    reason="missing_required_chart_history",
+                )
+            )
+            LOGGER.info(
+                "%s skip %s: missing_required_chart_history missing=%s",
+                stage_name,
+                symbol,
+                chart_history.get("missing", []),
+            )
+            continue
+
         intraday_bars = (
             intraday_bars_by_symbol.get(symbol, pd.DataFrame())
             if intraday_bars_by_symbol is not None
@@ -572,8 +875,15 @@ def run_entry_scan(
         if intraday_bars_by_symbol is None:
             save_bars(symbol, "intraday_5m", intraday_bars)
 
-        symbol_news_context = news_filter.get_symbol_risk_context(symbol)
-        if symbol_news_context.get("risk_level") == "HIGH":
+        if news_disabled_for_ai:
+            symbol_news_context = _news_disabled_context()
+        else:
+            try:
+                symbol_news_context = news_filter.get_symbol_risk_context(symbol)
+            except Exception as exc:
+                symbol_news_context = {"risk_level": "UNKNOWN", "error": "news_unavailable"}
+                LOGGER.warning("%s legacy symbol news lookup failed for %s: %s", stage_name, symbol, exc)
+        if symbol_news_context.get("risk_level") == "HIGH" and not (autonomous_ai_enabled and not autonomous_ai_uses_news):
             reason = {
                 "symbol": symbol,
                 "reason": "symbol_news_risk",
@@ -622,7 +932,8 @@ def run_entry_scan(
             continue
 
         levels = [Level(**level) for level in plan.get("levels", [])]
-        candidate_signals = route_strategies(symbol, intraday_bars, levels, news_context=symbol_news_context)
+        ai_news_context = _news_disabled_context() if news_disabled_for_ai else symbol_news_context
+        candidate_signals = route_strategies(symbol, intraday_bars, levels, news_context=ai_news_context)
         signals_detected += len(candidate_signals)
         if not candidate_signals:
             skipped.append({"symbol": symbol, "reason": "no_signal"})
@@ -643,16 +954,69 @@ def run_entry_scan(
         session_high = float(session_bars["high"].max())
         symbol_result_recorded = False
         symbol_reasons: List[str] = []
+
+        # Shadow must preserve the legacy News-dependent route, but the AI
+        # candidate must be created and queued before that legacy lookup. The
+        # neutral pass reuses the same bars, levels, quote, and ATR gate; only
+        # the legacy strategy pass is repeated with actual News context.
+        shadow_ai_pre_submitted = False
+        if shadow_legacy_news_deferred:
+            shadow_ai_pre_submitted = True
+            for signal in candidate_signals:
+                _stamp_source_bar(signal, intraday_bars)
+                technical_atr, daily_atr, atr_ok, trend_ok = _technical_metrics(
+                    signal,
+                    plan,
+                    session_low,
+                    session_high,
+                )
+                if not atr_ok or not trend_ok:
+                    continue
+                _submit_agent_signal(
+                    signal,
+                    technical_atr=technical_atr,
+                    daily_atr=daily_atr,
+                    atr_ok=atr_ok,
+                    trend_ok=trend_ok,
+                    symbol_news_context=symbol_news_context,
+                    macro_context=macro_context,
+                    quote=quote,
+                )
+
+            if not legacy_macro_blocked:
+                legacy_macro_context = _load_legacy_macro_context()
+                if legacy_macro_context.get("risk_level") == "HIGH":
+                    legacy_macro_blocked = True
+                else:
+                    try:
+                        symbol_news_context = news_filter.get_symbol_risk_context(symbol)
+                    except Exception as exc:
+                        symbol_news_context = {"risk_level": "UNKNOWN", "error": "news_unavailable"}
+                        LOGGER.warning("%s legacy symbol news lookup failed for %s: %s", stage_name, symbol, exc)
+                    if symbol_news_context.get("risk_level") == "HIGH":
+                        candidate_signals = []
+                        skipped.append({"symbol": symbol, "reason": "symbol_news_risk", "legacy_only": True})
+                    else:
+                        candidate_signals = route_strategies(
+                            symbol,
+                            intraday_bars,
+                            levels,
+                            news_context=symbol_news_context,
+                        )
+            else:
+                candidate_signals = []
+
+            if legacy_macro_blocked:
+                skipped.append({"symbol": symbol, "reason": "macro_risk", "legacy_only": True})
+                candidate_signals = []
+
         for signal in candidate_signals:
-            technical_atr = float(plan.get("technical_atr", 0.0))
-            daily_atr = float(plan.get("daily_atr", 0.0))
-            atr_ok = technical_atr_has_room(technical_atr, signal.entry)
-            trend_ok = atr_travel_filter(
-                signal.entry,
+            _stamp_source_bar(signal, intraday_bars)
+            technical_atr, daily_atr, atr_ok, trend_ok = _technical_metrics(
+                signal,
+                plan,
                 session_low,
                 session_high,
-                daily_atr,
-                bool(signal.is_new_extreme),
             )
             if not atr_ok or not trend_ok:
                 atr_summary_reason, atr_detail_reason = _atr_filter_reason_details(
@@ -679,13 +1043,70 @@ def run_entry_scan(
                 LOGGER.info("%s skip %s: %s", stage_name, symbol, atr_detail_reason)
                 continue
 
-            success, payload = order_manager.execute_trade(
-                signal,
-                account_equity=account_equity,
-                cash_available=cash_available,
-                current_positions=current_positions,
-                open_risk_amount=open_risk_amount,
-            )
+            if decision_controlled and agent_mode is not AgentMode.OFF and not shadow_ai_pre_submitted:
+                # Decision Lab owns the next LLM step. Preserve the completed
+                # deterministic signal as evidence and do not fall through to
+                # either the legacy LLM submission or a direct broker order.
+                signal_details.append(
+                    _signal_detail(
+                        signal=signal,
+                        plan=plan,
+                        quote=quote,
+                        reason="decision_lab_controlled",
+                        status="available",
+                        reference_price=intraday_reference_price,
+                    )
+                )
+                symbol_reasons.append("decision_lab_controlled")
+                symbol_result_recorded = True
+                continue
+
+            if agent_mode is not AgentMode.OFF and not shadow_ai_pre_submitted:
+                agent_result = _submit_agent_signal(
+                    signal,
+                    technical_atr=technical_atr,
+                    daily_atr=daily_atr,
+                    atr_ok=atr_ok,
+                    trend_ok=trend_ok,
+                    symbol_news_context=symbol_news_context,
+                    macro_context=macro_context,
+                    quote=quote,
+                )
+                if agent_mode is not AgentMode.SHADOW:
+                    scheduled_reason = agent_result.reasons or ("agent_decision_scheduled",)
+                    skipped.append({"symbol": symbol, "reason": list(scheduled_reason), "source": "LLM_AGENT"})
+                    symbol_reasons.append(_normalize_skip_reason(scheduled_reason))
+                    signal_details.append(
+                        _signal_detail(
+                            signal=signal,
+                            plan=plan,
+                            quote=quote,
+                            reason=list(scheduled_reason),
+                            status=agent_result.status,
+                            reference_price=intraday_reference_price,
+                        )
+                    )
+                    symbol_result_recorded = True
+                    break
+
+            try:
+                success, payload = order_manager.execute_trade(
+                    signal,
+                    account_equity=account_equity,
+                    cash_available=cash_available,
+                    current_positions=current_positions,
+                    open_risk_amount=open_risk_amount,
+                )
+            except Exception as exc:
+                # When autonomous News is explicitly disabled, a legacy News
+                # adapter failure must not turn a completed Shadow AI
+                # observation into an AI-path failure. Legacy execution is
+                # reported as unavailable and no fallback order is attempted.
+                if agent_mode is AgentMode.SHADOW and autonomous_ai_enabled and not autonomous_ai_uses_news:
+                    skipped.append({"symbol": symbol, "reason": "legacy_execution_unavailable", "detail": str(exc)})
+                    symbol_reasons.append("legacy_execution_unavailable")
+                    continue
+                raise
             if success:
                 executed.append(payload)
                 signal_details.append(
@@ -800,34 +1221,192 @@ def run_entry_scan(
 def collect_watchlist_intraday_bars(
     market_data: MarketDataService,
     watchlist: Dict[str, object],
+    *,
+    current_time: datetime | None = None,
 ) -> Dict[str, object]:
     """Fetch and persist bars without evaluating signals or account state."""
     bars_by_symbol: Dict[str, pd.DataFrame] = {}
     failed: List[Dict[str, str]] = []
+    stale: List[Dict[str, str]] = []
+    chart_history_blocked: List[Dict[str, object]] = []
+    provenance: List[Dict[str, object]] = []
     persisted = 0
-
+    received = 0
+    advanced = 0
+    fresh = 0
+    stale_count = 0
+    unchanged_but_fresh = 0
+    no_data = 0
+    errors = 0
+    now = current_time or session_now()
+    market_open = now.replace(
+        hour=SETTINGS.trading_hours.market_open_hour,
+        minute=SETTINGS.trading_hours.market_open_minute,
+        second=0,
+        microsecond=0,
+    )
     for symbol in watchlist:
         try:
-            bars = market_data.get_intraday_bars(
-                symbol,
-                duration=SETTINGS.strategy.intraday_bar_duration,
-                bar_size=SETTINGS.strategy.intraday_bar_size,
+            chart_history = ensure_required_chart_history(market_data, symbol)
+            if not chart_history.get("ready"):
+                bars_by_symbol[symbol] = load_bars(symbol, "intraday_5m")
+                blocked = {
+                    "symbol": symbol,
+                    "missing": chart_history.get("missing", []),
+                    "status": "CHART_HISTORY_BLOCKED",
+                }
+                chart_history_blocked.append(blocked)
+                provenance.append(blocked)
+                failed.append({
+                    "symbol": symbol,
+                    "reason": "missing_required_chart_history",
+                })
+                errors += 1
+                continue
+
+            existing = load_bars(symbol, "intraday_5m")
+            existing_latest = (
+                pd.to_datetime(existing["date"], errors="coerce").max()
+                if existing is not None and not existing.empty
+                else pd.NaT
             )
-            bars_by_symbol[symbol] = bars
-            if save_bars(symbol, "intraday_5m", bars) is not None:
+            request_duration = (
+                SETTINGS.strategy.intraday_bar_duration
+                if existing is None or existing.empty
+                else "1 D"
+            )
+            if hasattr(market_data, "get_intraday_bars_result"):
+                source_result = market_data.get_intraday_bars_result(
+                    symbol,
+                    duration=request_duration,
+                    bar_size=SETTINGS.strategy.intraday_bar_size,
+                    reference_time=now,
+                    include_current_session=existing is None or existing.empty,
+                )
+                bars = source_result.bars
+                source = source_result.source
+                freshness_status = source_result.freshness_status
+                freshness_seconds = source_result.freshness_seconds
+                latest_text = source_result.latest_bar_timestamp
+                attempted_sources = list(source_result.attempted_sources)
+                selection_reason = source_result.selection_reason
+                warning = source_result.warning
+            else:
+                bars = market_data.get_intraday_bars(
+                    symbol,
+                    duration=request_duration,
+                    bar_size=SETTINGS.strategy.intraday_bar_size,
+                    include_current_session=existing is None or existing.empty,
+                )
+                source = "UNKNOWN"
+                freshness_seconds = None
+                latest_text = None
+                attempted_sources = ["UNKNOWN"]
+                selection_reason = "legacy market-data interface"
+                warning = None
+                freshness_status = "NO_DATA" if bars is None or bars.empty else "FRESH"
+
+            incoming_latest = (
+                pd.to_datetime(bars["date"], errors="coerce").max()
+                if bars is not None and not bars.empty and "date" in bars
+                else pd.NaT
+            )
+            if bars is not None and not bars.empty:
+                received += 1
+            active_session = market_open <= now <= now.replace(
+                hour=SETTINGS.trading_hours.market_close_hour,
+                minute=SETTINGS.trading_hours.market_close_minute,
+                second=0,
+                microsecond=0,
+            )
+            if source == "UNKNOWN" and active_session and pd.notna(incoming_latest) and incoming_latest.date() != now.date():
+                freshness_status = "STALE"
+            if not active_session and freshness_status in {"FRESH", "STALE"}:
+                freshness_status = "OFF_SESSION"
+            saved_path = save_bars(symbol, "intraday_5m", bars)
+            if saved_path is not None:
                 persisted += 1
+                stored = load_bars(symbol, "intraday_5m")
+                stored_latest = (
+                    pd.to_datetime(stored["date"], errors="coerce").max()
+                    if stored is not None and not stored.empty
+                    else pd.NaT
+                )
+                bars_by_symbol[symbol] = stored
+                did_advance = pd.notna(stored_latest) and (
+                    pd.isna(existing_latest) or stored_latest > existing_latest
+                )
+                if did_advance:
+                    advanced += 1
+                if freshness_status == "FRESH":
+                    fresh += 1
+                    if not did_advance:
+                        unchanged_but_fresh += 1
+                elif freshness_status == "STALE":
+                    stale_count += 1
+                    stale.append({"symbol": symbol, "reason": f"latest_bar={stored_latest or latest_text}", "source": source})
+                elif freshness_status == "NO_DATA":
+                    no_data += 1
+                elif freshness_status == "ERROR":
+                    errors += 1
+                status = (
+                    "ADVANCED" if did_advance and freshness_status in {"FRESH", "OFF_SESSION"}
+                    else "UNCHANGED_BUT_FRESH" if freshness_status == "FRESH"
+                    else "STALE_ADVANCED" if did_advance and freshness_status == "STALE"
+                    else freshness_status
+                )
+                provenance.append({
+                    "symbol": symbol,
+                    "source": source,
+                    "attempted_sources": attempted_sources,
+                    "request_reference_at": now.isoformat(),
+                    "latest_bar_timestamp": latest_text or (str(stored_latest) if pd.notna(stored_latest) else None),
+                    "freshness_seconds": freshness_seconds,
+                    "freshness_status": freshness_status,
+                    "status": status,
+                    "advanced_since_previous": bool(did_advance),
+                    "existing_latest": str(existing_latest) if pd.notna(existing_latest) else None,
+                    "selection_reason": selection_reason,
+                    "warning": warning,
+                })
             elif bars is None or bars.empty:
-                failed.append({"symbol": symbol, "reason": "empty_bars"})
+                bars_by_symbol[symbol] = existing
+                no_data += 1
+                provenance.append({"symbol": symbol, "source": source, "status": "NO_DATA", "attempted_sources": attempted_sources, "warning": warning})
+                failed.append({"symbol": symbol, "reason": warning or "empty_bars"})
+            elif pd.isna(incoming_latest):
+                bars_by_symbol[symbol] = existing
+                errors += 1
+                provenance.append({"symbol": symbol, "source": source, "status": "ERROR", "attempted_sources": attempted_sources, "warning": "invalid_bar_timestamps"})
+                failed.append({"symbol": symbol, "reason": "invalid_bar_timestamps"})
+            else:
+                bars_by_symbol[symbol] = existing
+                errors += 1
+                provenance.append({"symbol": symbol, "source": source, "status": "ERROR", "attempted_sources": attempted_sources, "warning": "persist_failed"})
+                failed.append({"symbol": symbol, "reason": "persist_failed"})
         except Exception as exc:
             LOGGER.warning("Market-data collection failed for %s: %s", symbol, exc)
             bars_by_symbol[symbol] = pd.DataFrame()
+            provenance.append({"symbol": symbol, "status": "ERROR", "error": str(exc)})
+            errors += 1
             failed.append({"symbol": symbol, "reason": str(exc)})
 
     return {
         "bars_by_symbol": bars_by_symbol,
         "symbols_requested": len(watchlist),
         "symbols_persisted": persisted,
+        "symbols_received": received,
+        "symbols_fresh": fresh,
+        "symbols_advanced": advanced,
+        "symbols_unchanged_but_fresh": unchanged_but_fresh,
+        "symbols_stale": stale_count,
+        "symbols_no_data": no_data,
+        "symbols_errors": errors,
+        "symbols_chart_history_blocked": len(chart_history_blocked),
+        "chart_history_blocked": chart_history_blocked,
+        "stale": stale,
         "failed": failed,
+        "symbol_provenance": provenance,
     }
 
 
@@ -858,9 +1437,29 @@ def manage_positions(
         stop_integrity_ok=stop_integrity_ok,
     )
     if kill_switch:
+        if "missing_protective_stop" in reasons:
+            payload = {
+                "event": "protective_stop_missing_halt",
+                "reasons": reasons,
+                "message": "Trading halted; positions were not auto-flattened.",
+            }
+            actions.append(payload)
+            LOGGER.warning(
+                "Intraday protective-stop halt: reasons=%s. Positions were not auto-flattened.",
+                reasons,
+            )
+            return {"actions": actions, "macro_risk": macro_risk, "kill_switch": True, "reasons": reasons}
         for position in tracked_positions:
             quantity = int(position.get("quantity", 0))
             if quantity <= 0:
+                continue
+            if not _bot_may_manage_position_exit(position):
+                LOGGER.warning(
+                    "Skipping auto-flatten for unmanaged position %s policy=%s source=%s",
+                    position.get("symbol"),
+                    position.get("protection_policy"),
+                    position.get("source"),
+                )
                 continue
             action = "SELL" if position.get("direction") == "long" else "BUY"
             if not dry_run:
@@ -873,12 +1472,39 @@ def manage_positions(
         return {"actions": actions, "macro_risk": macro_risk, "kill_switch": True, "reasons": reasons}
 
     for position in tracked_positions:
+        if not _bot_may_manage_position_exit(position):
+            continue
         symbol = str(position["symbol"])
         quote = broker.get_market_price(symbol)
-        current_price = float(quote.get("last", 0.0))
+        try:
+            current_price = float(quote.get("last", 0.0))
+        except (TypeError, ValueError):
+            current_price = 0.0
         entry = float(position.get("entry", 0.0))
         quantity = int(position.get("quantity", 0))
         direction = str(position.get("direction", "long"))
+        quote_status = str(quote.get("quote_status", "unknown") or "unknown")
+        quote_valid = math.isfinite(current_price) and current_price > 0
+        if not quote_valid:
+            # A missing/blocked quote must never become a synthetic -100% loss.
+            # IBKR error 10089 can leave ``last`` at zero when the API lacks a
+            # live subscription; wait for a usable quote before price-based
+            # loss cuts or trailing-stop adjustments.
+            if news_filter.has_high_risk_news(symbol) and quantity > 0:
+                if not dry_run:
+                    broker.place_market_order(symbol, "SELL" if direction == "long" else "BUY", quantity)
+                actions.append({"symbol": symbol, "event": "thesis_break_news"})
+                closed_symbols.add(symbol)
+                LOGGER.info("Intraday action %s: thesis_break_news", symbol)
+            else:
+                actions.append({"symbol": symbol, "event": "quote_unavailable", "quote_status": quote_status})
+                LOGGER.warning(
+                    "Skipping price-based management for %s: invalid market quote last=%s status=%s",
+                    symbol,
+                    current_price,
+                    quote_status,
+                )
+            continue
         pnl_pct = (
             ((current_price - entry) / entry) * 100.0
             if direction == "long" and entry

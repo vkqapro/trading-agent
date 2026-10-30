@@ -1,4 +1,4 @@
-"""Luminous Obsidian — read-only operations dashboard for the Gerchik bot.
+"""Luminous Obsidian — read-only operations dashboard for Vitaly's Trading Bot.
 
 A professional, glassmorphic trading control surface built on the design system
 in ``stitch_trading_bot_dashboard``. It only reads the files the bot writes under
@@ -122,7 +122,7 @@ CHART_CONFIG = {
 }
 
 st.set_page_config(
-    page_title="Gerchik Bot · Luminous Obsidian",
+    page_title="Vitaly's Trading Bot · Luminous Obsidian",
     page_icon="📈",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -193,7 +193,7 @@ def render_header() -> dict[str, Any]:
 
     market_chip = ("check_circle", f"Market {session}", "ok" if session == "OPEN" else "")
     topbar(
-        f"{'Active' if online else 'Idle'} · Gerchik level engine · "
+        f"{'Active' if online else 'Idle'} · level engine · "
         f"{'DRY-RUN' if SETTINGS.dry_run_mode else 'LIVE'}",
         [
             ("schedule", f"Data {data_age}", "cyan"),

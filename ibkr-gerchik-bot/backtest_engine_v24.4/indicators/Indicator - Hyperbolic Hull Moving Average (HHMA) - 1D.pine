@@ -1,0 +1,112 @@
+// This script is licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+// https://creativecommons.org/licenses/by-nc-sa/4.0/
+// © QuantAlgo
+
+//@version=6
+indicator('Hyperbolic Hull Moving Average (HHMA) [QuantAlgo]', 'HHMA [QuantAlgo]', overlay = true)
+
+//              ╔════════════════════════════════╗              //
+//              ║      USER-DEFINED SETTINGS     ║              //
+//              ╚════════════════════════════════╝              //
+
+var string calculation_settings = '════════ Calculation Parameters ════════'
+var string visual_settings      = '════════ Visualization Settings ════════'
+
+tooltip_src          = 'Price data used as input for the HHMA calculation. Close is standard and works well in most conditions. Using hl2 or hlc3 incorporates more of the bar range and produces a slightly smoother response. ohlc4 includes the open price and can reduce distortions caused by single wicks. Changing this input affects all three smoothing passes equally.'
+tooltip_length       = 'Period for the Hyperbolic Hull Moving Average. Shorter periods (10-18) produce a highly reactive line that closely follows price action, capturing quick momentum shifts, ideal for intraday and scalping timeframes. Medium periods (20-30) balance responsiveness with noise filtering, suitable for swing trading on 4H and daily charts. Longer periods (36-55) establish a stable trend baseline with fewer but higher-conviction direction changes, best for position trading and primary trend identification. Standard value is 24 for balanced performance across most trading styles.'
+tooltip_tension      = 'Controls the recency bias of the sinh weighting kernel. Lower values (0.5-1.0) distribute weight more evenly across the lookback, producing smoother output closer to a standard WMA. Higher values (2.5-4.0) concentrate weight heavily on the most recent bars, increasing responsiveness but also sensitivity to short-term noise. At the default tension of 2.0, the most recent bar carries roughly 44x the weight of the oldest bar across a 24-period window.'
+tooltip_preset       = 'Select a predefined configuration optimised for different trading styles and timeframes.'
+tooltip_preset_det   = 'Default (24, 2.0): Standard configuration suitable for swing trading on 4H and daily charts. Balanced length and tension capture meaningful trend changes while filtering minor fluctuations.\n\nFast Response (14, 2.8): Aggressive configuration for intraday and scalping on 5min-1H charts. Shorter length and higher tension react quickly to recent price shifts, best for active traders monitoring positions closely.\n\nSmooth Trend (48, 1.4): Conservative configuration for position trading on daily and weekly charts. Extended length and lower tension establish a stable trend baseline with minimal false signals, best for patient traders seeking primary trend direction.'
+tooltip_color_preset = 'Pre-configured colour schemes optimised for different chart themes and visual preferences. Classic uses traditional green/red. Aqua provides ocean-inspired blues and oranges. Cosmic offers futuristic cyan and purple. Cyber features warm orange and cool cyan contrast. Neon delivers high-contrast yellow and magenta for maximum visibility. Custom allows full colour customisation.'
+tooltip_bullish      = 'Colour applied to the HHMA line and bars when the indicator is trending upward. Use vibrant colours to highlight uptrend zones and potential long opportunities.'
+tooltip_bearish      = 'Colour applied to the HHMA line and bars when the indicator is trending downward. Use warning colours to signal downtrend zones and potential short opportunities or exit signals.'
+tooltip_glow         = 'Enable/disable the neon glow effect around the HHMA line. When enabled, creates a layered visual effect with overlapping plots at increasing transparency, making the trend line more prominent and easier to track. Disable for a cleaner, minimalist appearance or when running many indicators where visual clarity is paramount.'
+tooltip_barcolor     = 'Enable/disable bar colouring based on current HHMA direction. When enabled, price bars are tinted with the bullish or bearish colour, providing instant visual confirmation of trend state without reading the indicator line directly. Disable if you prefer default bar colours or use another bar colouring indicator.'
+tooltip_bartrans     = 'Transparency of the bar colouring overlay. Lower values (0-30) produce vivid, fully saturated bars that make trend direction immediately obvious. Higher values (70-90) apply a subtle tint that signals trend state without overwhelming price action visibility. Standard value is 60 for a balanced overlay that complements the HHMA glow without dominating the chart.'
+
+src     = input.source(close,  'Price Source',          group = calculation_settings, tooltip = tooltip_src)
+length  = input.int(24,        'Length',  minval = 2,   group = calculation_settings, tooltip = tooltip_length)
+tension = input.float(2.0,     'Tension', minval = 0.1, step = 0.1, group = calculation_settings, tooltip = tooltip_tension)
+preset  = input.string('Default', 'Preset Configuration', options = ['Default', 'Fast Response', 'Smooth Trend'], group = calculation_settings, tooltip = tooltip_preset + '\n\n' + tooltip_preset_det)
+
+color_preset    = input.string('Custom', 'Color Preset', options = ['Classic', 'Aqua', 'Cosmic', 'Cyber', 'Neon', 'Custom'], group = visual_settings, tooltip = tooltip_color_preset)
+bullish_input   = input.color(#00ffaa, 'Bullish Color',             group = visual_settings, tooltip = tooltip_bullish)
+bearish_input   = input.color(#ff0000, 'Bearish Color',             group = visual_settings, tooltip = tooltip_bearish)
+enable_glow     = input.bool(true,  'Enable Neon Glow Effect',      group = visual_settings, tooltip = tooltip_glow)
+enable_barcolor = input.bool(false,  'Enable Bar Coloring',          group = visual_settings, tooltip = tooltip_barcolor)
+bar_trans       = input.int(60, 'Bar Color Transparency', minval = 0, maxval = 100, group = visual_settings, tooltip = tooltip_bartrans)
+
+if preset == 'Fast Response'
+    length  := 14
+    tension := 2.8
+else if preset == 'Smooth Trend'
+    length  := 48
+    tension := 1.4
+
+[bullish_color, bearish_color] = switch color_preset
+    'Classic' => [#00ff00, #ff0000]
+    'Aqua'    => [#00d4ff, #ff8c00]
+    'Cosmic'  => [#49ffce, #9932cc]
+    'Cyber'   => [#00cccc, #ff6600]
+    'Neon'    => [#ffff00, #ff00ff]
+    'Custom'  => [bullish_input, bearish_input]
+
+//              ╔════════════════════════════════╗              //
+//              ║        CORE CALCULATION        ║              //
+//              ╚════════════════════════════════╝              //
+
+f_sinh_weight(_src, _len, _t) =>
+    float _weightSum   = 0.0
+    float _weightedVal = 0.0
+    for i = 0 to _len - 1
+        float _x = (_len - i) / _len * _t
+        float _w = (math.exp(_x) - math.exp(-_x)) / 2
+        _weightedVal := _weightedVal + _src[i] * _w
+        _weightSum   := _weightSum + _w
+    _weightedVal / _weightSum
+
+halfLen = math.max(1, math.floor(length / 2))
+sqrtLen = math.max(1, math.floor(math.sqrt(length)))
+
+fastSinh = f_sinh_weight(src, halfLen, tension)
+slowSinh = f_sinh_weight(src, length, tension)
+rawHull  = 2 * fastSinh - slowSinh
+hhma     = f_sinh_weight(rawHull, sqrtLen, tension)
+
+isBullish = hhma > hhma[1]
+
+turned_bullish = isBullish and not isBullish[1]
+turned_bearish = not isBullish and isBullish[1]
+trend_changed  = turned_bullish or turned_bearish
+
+trend_color = isBullish ? bullish_color : bearish_color
+
+//              ╔════════════════════════════════╗              //
+//              ║          VISUALIZATION         ║              //
+//              ╚════════════════════════════════╝              //
+
+plot(enable_glow ? hhma : na, 'HHMA Glow Outer', color.new(trend_color, 88), 20)
+plot(enable_glow ? hhma : na, 'HHMA Glow Mid',   color.new(trend_color, 75), 10)
+plot(enable_glow ? hhma : na, 'HHMA Glow Inner', color.new(trend_color, 50),  5)
+plot(hhma, 'HHMA', color.new(trend_color, 0), 2)
+
+barcolor(enable_barcolor ? color.new(trend_color, bar_trans) : na, title = 'Trend Bar Color')
+
+//              ╔════════════════════════════════╗              //
+//              ║             ALERTS             ║              //
+//              ╚════════════════════════════════╝              //
+
+alertcondition(turned_bullish, title = 'Bullish Trend Signal',    message = 'Hyperbolic Hull MA: BULLISH trend confirmed on {{exchange}}:{{ticker}} - {{interval}}')
+alertcondition(turned_bearish, title = 'Bearish Trend Signal',    message = 'Hyperbolic Hull MA: BEARISH trend confirmed on {{exchange}}:{{ticker}} - {{interval}}')
+alertcondition(trend_changed,  title = 'Trend Direction Changed', message = 'Hyperbolic Hull MA: Trend direction changed on {{exchange}}:{{ticker}} - {{interval}}')
+
+//              ╔════════════════════════════════╗              //
+//              ║           CREATED BY           ║              //
+//              ╚════════════════════════════════╝              //
+
+// ██████╗ ██╗   ██╗ █████╗ ███╗   ██╗████████╗     █████╗ ██╗      ██████╗  ██████╗ 
+//██╔═══██╗██║   ██║██╔══██╗████╗  ██║╚══██╔══╝    ██╔══██╗██║     ██╔════╝ ██╔═══██╗
+//██║   ██║██║   ██║███████║██╔██╗ ██║   ██║       ███████║██║     ██║  ███╗██║   ██║
+//██║▄▄ ██║██║   ██║██╔══██║██║╚██╗██║   ██║       ██╔══██║██║     ██║   ██║██║   ██║
+//╚██████╔╝╚██████╔╝██║  ██║██║ ╚████║   ██║       ██║  ██║███████╗╚██████╔╝╚██████╔╝
+// ╚══▀▀═╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝       ╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝

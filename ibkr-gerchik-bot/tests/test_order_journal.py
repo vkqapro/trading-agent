@@ -1,0 +1,625 @@
+from __future__ import annotations
+
+from unittest import TestCase
+from unittest.mock import patch
+
+from src.journal import order_journal
+
+
+class OrderJournalTests(TestCase):
+    def _read_json(self, order_requests: dict, closed_positions: dict):
+        def fake_read(path, default):
+            path_text = str(path)
+            if path_text.endswith("order_requests.json"):
+                return order_requests
+            if path_text.endswith("closed_positions.json"):
+                return closed_positions
+            return default
+
+        return fake_read
+
+    def test_observed_broker_close_wins_over_bracket_bar_inference(self) -> None:
+        order_requests = {
+            "requests": [
+                {
+                    "id": "entry1",
+                    "action": "place",
+                    "status": "done",
+                    "created_at": "2026-07-09T15:16:26",
+                    "updated_at": "2026-07-09T15:16:32",
+                    "source": "PROJECTED",
+                    "symbol": "GCTS",
+                    "signal": "BUY",
+                    "entry": 2.57,
+                    "stop": 2.36,
+                    "target": 3.1475,
+                    "quantity": 71,
+                    "result": {"market_order_id": 458, "quantity": 71, "price": 2.57},
+                }
+            ]
+        }
+        closed_positions = {
+            "positions": [
+                {
+                    "symbol": "GCTS",
+                    "market_order_id": 458,
+                    "opened_at": "2026-07-09T15:16:32",
+                    "closed_at": "2026-07-15T14:30:00+00:00",
+                    "exit_execution_id": "gcts-exec",
+                    "exit_reason": "BROKER_POSITION_CLOSED",
+                }
+            ]
+        }
+
+        with (
+            patch("src.journal.order_journal._read_json", side_effect=self._read_json(order_requests, closed_positions)),
+            patch("src.journal.order_journal._infer_bracket_exit_from_bars") as infer_exit,
+        ):
+            rows = order_journal._rows_from_order_requests({})
+
+        infer_exit.assert_not_called()
+        self.assertEqual(rows[0]["status"], "CLOSED_OBSERVED")
+        self.assertEqual(rows[0]["closed_at"], "2026-07-15T14:30:00+00:00")
+        self.assertEqual(rows[0]["exit_reason"], "BROKER_POSITION_CLOSED")
+
+    def test_zero_broker_pnl_does_not_override_nonzero_price_pnl(self) -> None:
+        order_requests = {
+            "requests": [
+                {
+                    "id": "snap-entry",
+                    "action": "place",
+                    "status": "done",
+                    "created_at": "2026-10-13T09:30:00",
+                    "updated_at": "2026-10-13T09:30:05",
+                    "source": "MARKET_SCREENER_MANUAL",
+                    "symbol": "SNAP",
+                    "signal": "BUY",
+                    "entry": 6.38,
+                    "stop": 6.13,
+                    "target": 6.99,
+                    "quantity": 109,
+                    "result": {"market_order_id": 1001, "quantity": 109, "price": 6.40917705},
+                }
+            ]
+        }
+        closed_positions = {
+            "positions": [
+                {
+                    "symbol": "SNAP",
+                    "market_order_id": 1001,
+                    "avg_cost": 6.40917705,
+                    "closed_at": "2026-10-13T13:54:45+00:00",
+                    "exit_price": 6.64,
+                    "exit_quantity": 109,
+                    "exit_execution_id": "snap-exec",
+                    "broker_realized_pnl": 0.0,
+                    "request_id": "snap-entry",
+                }
+            ]
+        }
+
+        with patch(
+            "src.journal.order_journal._read_json",
+            side_effect=self._read_json(order_requests, closed_positions),
+        ):
+            rows = order_journal._rows_from_order_requests({})
+
+        self.assertEqual(rows[0]["status"], "CLOSED_OBSERVED")
+        self.assertAlmostEqual(rows[0]["pnl"], 25.15970155)
+
+    def test_observed_close_before_request_is_not_linked_by_request_id(self) -> None:
+        order_requests = {
+            "requests": [
+                {
+                    "id": "snap-later",
+                    "action": "place",
+                    "status": "done",
+                    "created_at": "2026-10-13T10:38:07",
+                    "updated_at": "2026-10-13T10:38:09",
+                    "source": "MARKET_SCREENER_MANUAL",
+                    "symbol": "SNAP",
+                    "signal": "BUY",
+                    "entry": 6.49,
+                    "stop": 6.1983,
+                    "target": 7.21925,
+                    "quantity": 77,
+                    "result": {"market_order_id": 1032, "stop_order_id": 1033, "limit_order_id": 1034},
+                }
+            ]
+        }
+        closed_positions = {
+            "positions": [
+                {
+                    "symbol": "SNAP",
+                    "market_order_id": 1032,
+                    "closed_at": "2026-10-13T13:54:45+00:00",
+                    "exit_price": 6.64,
+                    "exit_quantity": 109,
+                    "exit_execution_id": "snap-earlier",
+                    "request_id": "snap-later",
+                }
+            ]
+        }
+
+        with patch(
+            "src.journal.order_journal._read_json",
+            side_effect=self._read_json(order_requests, closed_positions),
+        ):
+            rows = order_journal._rows_from_order_requests({})
+
+        self.assertNotEqual(rows[0]["status"], "CLOSED_OBSERVED")
+        self.assertEqual(rows[0]["closed_at"], "")
+
+    def test_unverified_broker_position_close_is_ignored(self) -> None:
+        order_requests = {
+            "requests": [
+                {
+                    "id": "trex-working-entry",
+                    "action": "place",
+                    "status": "done",
+                    "created_at": "2026-08-05T11:30:45",
+                    "updated_at": "2026-08-05T11:30:49",
+                    "source": "MARKET_SCREENER_MANUAL",
+                    "symbol": "TREX",
+                    "signal": "BUY",
+                    "entry": 47.70,
+                    "stop": 45.50,
+                    "target": 52.10,
+                    "quantity": 12,
+                    "result": {
+                        "status": "executed",
+                        "quantity": 12,
+                        "market_order_id": 725,
+                        "stop_order_id": 726,
+                        "limit_order_id": 727,
+                        "broker_statuses": {
+                            "market_order": "Submitted",
+                            "stop_order": "PreSubmitted",
+                            "limit_order": "PreSubmitted",
+                        },
+                    },
+                }
+            ]
+        }
+        stale_close = {
+            "positions": [
+                {
+                    "symbol": "TREX",
+                    "market_order_id": 725,
+                    "opened_at": "2026-08-05T11:30:49",
+                    "closed_at": "2026-08-05T16:30:58+00:00",
+                    "exit_reason": "BROKER_POSITION_CLOSED",
+                }
+            ]
+        }
+
+        with patch(
+            "src.journal.order_journal._read_json",
+            side_effect=self._read_json(order_requests, stale_close),
+        ):
+            rows = order_journal._rows_from_order_requests({})
+
+        self.assertEqual(rows[0]["status"], "UNFILLED")
+        self.assertEqual(rows[0]["closed_at"], "")
+        self.assertIsNone(rows[0]["actual_entry"])
+
+    def test_real_order_without_close_event_does_not_infer_exit_from_bars(self) -> None:
+        order_requests = {
+            "requests": [
+                {
+                    "id": "entry1",
+                    "action": "place",
+                    "status": "done",
+                    "created_at": "2026-07-09T15:16:26",
+                    "updated_at": "2026-07-09T15:16:32",
+                    "source": "PROJECTED",
+                    "symbol": "GCTS",
+                    "signal": "BUY",
+                    "entry": 2.57,
+                    "stop": 2.36,
+                    "target": 3.1475,
+                    "quantity": 71,
+                    "result": {"market_order_id": 458, "quantity": 71, "price": 2.57, "dry_run": False},
+                }
+            ]
+        }
+
+        with (
+            patch("src.journal.order_journal._read_json", side_effect=self._read_json(order_requests, {"positions": []})),
+            patch("src.journal.order_journal._infer_bracket_exit_from_bars") as infer_exit,
+        ):
+            rows = order_journal._rows_from_order_requests({})
+
+        infer_exit.assert_not_called()
+        self.assertEqual(rows[0]["status"], "CLOSED_UNKNOWN")
+        self.assertEqual(rows[0]["closed_at"], "")
+        self.assertEqual(rows[0]["exit_reason"], "UNKNOWN_OR_BROKER")
+
+    def test_tradingview_round_trip_is_one_canonical_filled_row(self) -> None:
+        order_requests = {
+            "requests": [
+                {
+                    "id": "entry1",
+                    "action": "place",
+                    "status": "done",
+                    "created_at": "2026-07-28T11:30:13",
+                    "updated_at": "2026-07-28T11:30:18",
+                    "source": "tradingview",
+                    "symbol": "AMZN",
+                    "signal": "BUY",
+                    "market_only": True,
+                    "quantity": 2,
+                    "result": {
+                        "status": "Filled",
+                        "filled": 2,
+                        "avg_fill_price": 230.26,
+                    },
+                },
+                {
+                    "id": "close1",
+                    "action": "close",
+                    "status": "done",
+                    "created_at": "2026-07-30T10:30:13",
+                    "updated_at": "2026-07-30T10:30:20",
+                    "source": "dashboard",
+                    "symbol": "AMZN",
+                    "result": {
+                        "status": "Filled",
+                        "filled": 2,
+                        "avg_fill_price": 237.28,
+                    },
+                },
+            ]
+        }
+        stock_state = {
+            "executions": [
+                {
+                    "id": "tv-entry",
+                    "created_at": "2026-07-28T15:30:13+00:00",
+                    "action": "BUY",
+                    "symbol": "AMZN",
+                    "quantity": 2,
+                    "tv_position_size": 2,
+                    "status": "queued",
+                    "request_id": "entry1",
+                },
+                {
+                    "id": "tv-close",
+                    "created_at": "2026-07-30T14:30:13+00:00",
+                    "action": "SELL",
+                    "symbol": "AMZN",
+                    "tv_position_size": 0,
+                    "status": "queued",
+                    "request_id": "close1",
+                },
+            ]
+        }
+
+        def fake_read(path, default):
+            path_text = str(path)
+            if path_text.endswith("order_requests.json"):
+                return order_requests
+            if path_text.endswith("tradingview_stock_state.json"):
+                return stock_state
+            if path_text.endswith("tradingview_forex_state.json"):
+                return {"executions": []}
+            if path_text.endswith("closed_positions.json"):
+                return {"positions": []}
+            return default
+
+        with patch("src.journal.order_journal._read_json", side_effect=fake_read):
+            payload = order_journal.load_order_journal()
+
+        rows = [row for row in payload["rows"] if row["symbol"] == "AMZN"]
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["id"], "stock:req:entry1")
+        self.assertEqual(rows[0]["status"], "CLOSED")
+        self.assertEqual(rows[0]["actual_entry"], 230.26)
+        self.assertEqual(rows[0]["actual_exit"], 237.28)
+        self.assertEqual(rows[0]["quantity"], 2.0)
+        self.assertAlmostEqual(rows[0]["pnl"], 14.04)
+
+    def test_unfilled_tradingview_market_request_is_not_a_trade(self) -> None:
+        order_requests = {
+            "requests": [
+                {
+                    "id": "entry-unfilled",
+                    "action": "place",
+                    "status": "done",
+                    "created_at": "2026-07-24T11:30:19",
+                    "updated_at": "2026-07-25T11:56:49",
+                    "source": "tradingview",
+                    "symbol": "AMZN",
+                    "signal": "BUY",
+                    "market_only": True,
+                    "quantity": 2,
+                    "result": {
+                        "status": "PreSubmitted",
+                        "filled": 0,
+                        "remaining": 2,
+                        "avg_fill_price": 0,
+                    },
+                }
+            ]
+        }
+
+        with (
+            patch("src.journal.order_journal._read_json", side_effect=self._read_json(order_requests, {"positions": []})),
+            patch("src.journal.order_journal._infer_bracket_exit_from_bars") as infer_exit,
+        ):
+            rows = order_journal._rows_from_order_requests({})
+
+        infer_exit.assert_not_called()
+        self.assertEqual(rows, [])
+
+    def test_open_bracket_position_matches_by_child_order_id(self) -> None:
+        order_requests = {
+            "requests": [
+                {
+                    "id": "trex-entry",
+                    "action": "place",
+                    "status": "done",
+                    "created_at": "2026-07-27T10:01:37",
+                    "updated_at": "2026-07-27T10:01:41",
+                    "source": "MARKET_SCREENER_MANUAL",
+                    "symbol": "TREX",
+                    "signal": "BUY",
+                    "entry": 44.08,
+                    "stop": 41.23,
+                    "target": 49.79,
+                    "quantity": 8,
+                    "result": {
+                        "status": "executed",
+                        "entry": 44.08,
+                        "quantity": 8,
+                        "market_order_id": 589,
+                        "stop_order_id": 590,
+                        "limit_order_id": 591,
+                    },
+                }
+            ]
+        }
+        open_positions = {
+            "TREX": {
+                "symbol": "TREX",
+                "quantity": 8,
+                "avg_cost": 44.205,
+                "direction": "long",
+                "stop_order_id": 590,
+                "current_stop_loss": 41.23,
+                "limit_order_id": 591,
+                "current_target": 49.79,
+            }
+        }
+
+        with patch(
+            "src.journal.order_journal._read_json",
+            side_effect=self._read_json(order_requests, {"positions": []}),
+        ):
+            rows = order_journal._rows_from_order_requests(open_positions)
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["status"], "OPEN")
+        self.assertEqual(rows[0]["quantity"], 8.0)
+        self.assertEqual(rows[0]["actual_entry"], 44.205)
+
+    def test_tradingview_position_matches_by_open_timestamp_without_order_id(self) -> None:
+        order_requests = {
+            "requests": [
+                {
+                    "id": "ko-entry",
+                    "action": "place",
+                    "status": "done",
+                    "created_at": "2026-07-28T09:30:19",
+                    "updated_at": "2026-07-28T09:30:24",
+                    "source": "tradingview",
+                    "symbol": "KO",
+                    "signal": "BUY",
+                    "market_only": True,
+                    "quantity": 6,
+                    "result": {"status": "Filled", "filled": 6, "avg_fill_price": 87.26},
+                }
+            ]
+        }
+        open_positions = {
+            "KO": {
+                "symbol": "KO",
+                "quantity": 6,
+                "opened_at": "2026-07-28T09:30:24",
+                "avg_cost": 87.42666665,
+                "direction": "long",
+            }
+        }
+
+        with patch(
+            "src.journal.order_journal._read_json",
+            side_effect=self._read_json(order_requests, {"positions": []}),
+        ):
+            rows = order_journal._rows_from_order_requests(open_positions)
+
+        self.assertEqual(rows[0]["status"], "OPEN")
+        self.assertEqual(rows[0]["actual_entry"], 87.42666665)
+
+    def test_unfilled_manual_screener_request_is_unfilled_not_open(self) -> None:
+        order_requests = {
+            "requests": [
+                {
+                    "id": "mrsh-unfilled",
+                    "action": "place",
+                    "status": "done",
+                    "created_at": "2026-07-29T10:45:08",
+                    "updated_at": "2026-07-29T10:45:10",
+                    "source": "MARKET_SCREENER_MANUAL",
+                    "symbol": "MRSH",
+                    "signal": "BUY",
+                    "entry": 191.63,
+                    "quantity": 2,
+                    "result": {
+                        "status": "executed",
+                        "entry": 191.63,
+                        "quantity": 2,
+                        "market_order_id": 639,
+                        "stop_order_id": 640,
+                        "limit_order_id": 641,
+                        "broker_statuses": {
+                            "market_order": "Submitted",
+                            "stop_order": "PreSubmitted",
+                            "limit_order": "PreSubmitted",
+                        },
+                    },
+                }
+            ]
+        }
+
+        with patch(
+            "src.journal.order_journal._read_json",
+            side_effect=self._read_json(order_requests, {"positions": []}),
+        ):
+            rows = order_journal._rows_from_order_requests({})
+
+        self.assertEqual(rows[0]["status"], "UNFILLED")
+        self.assertEqual(rows[0]["exit_reason"], "")
+        self.assertIsNone(rows[0]["actual_entry"])
+
+    def test_unlinked_broker_execution_is_visible_in_public_journal(self) -> None:
+        closed_positions = {
+            "positions": [
+                {
+                    "symbol": "LIN",
+                    "quantity": 2,
+                    "avg_cost": 480.62,
+                    "entry": 480.62,
+                    "direction": "long",
+                    "stop_loss": 481.47,
+                    "current_stop_loss": 481.47,
+                    "planned_stop_loss": 479.65,
+                    "target": 500.66,
+                    "current_target": 500.66,
+                    "planned_target": 500.66,
+                    "source": "IBKR",
+                    "opened_at": "2026-08-24",
+                    "closed_at": "2026-08-27T13:31:07+00:00",
+                    "exit_price": 531.25,
+                    "exit_quantity": 2,
+                    "exit_order_id": 832,
+                    "exit_execution_id": "lin-exec",
+                    "exit_reason": "BROKER_SELL_EXECUTION",
+                    "request_id": "",
+                }
+            ]
+        }
+
+        with patch(
+            "src.journal.order_journal._read_json",
+            side_effect=self._read_json({"requests": []}, closed_positions),
+        ):
+            payload = order_journal.load_order_journal()
+
+        rows = [row for row in payload["rows"] if row["symbol"] == "LIN"]
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["status"], "CLOSED_OBSERVED")
+        self.assertEqual(rows[0]["opened_at"], "2026-08-24T00:00:00-04:00")
+        self.assertEqual(rows[0]["closed_at"], "2026-08-27T13:31:07+00:00")
+        self.assertEqual(rows[0]["actual_exit"], 531.25)
+        self.assertEqual(rows[0]["quantity"], 2)
+        self.assertEqual(rows[0]["execution_id"], "lin-exec")
+        self.assertAlmostEqual(rows[0]["pnl"], 101.26)
+        self.assertEqual(rows[0]["side"], "BUY")
+        self.assertEqual(rows[0]["planned_entry"], 480.62)
+        self.assertEqual(rows[0]["actual_entry"], 480.62)
+        self.assertEqual(rows[0]["current_stop"], 481.47)
+        self.assertEqual(rows[0]["planned_stop"], 479.65)
+        self.assertEqual(rows[0]["current_target"], 500.66)
+        self.assertEqual(rows[0]["planned_target"], 500.66)
+
+    def test_unlinked_broker_execution_does_not_close_historical_same_symbol_requests(self) -> None:
+        order_requests = {
+            "requests": [
+                {
+                    "id": "mrsh-old",
+                    "action": "place",
+                    "status": "done",
+                    "created_at": "2026-07-29T10:41:14",
+                    "updated_at": "2026-07-29T10:41:19",
+                    "source": "MARKET_SCREENER_MANUAL",
+                    "symbol": "MRSH",
+                    "signal": "BUY",
+                    "entry": 191.63,
+                    "quantity": 5,
+                    "result": {"market_order_id": 627, "stop_order_id": 628, "limit_order_id": 629},
+                }
+            ]
+        }
+        closed_positions = {
+            "positions": [
+                {
+                    "symbol": "MRSH",
+                    "quantity": 5,
+                    "source": "IBKR",
+                    "closed_at": "2026-08-27T13:30:25+00:00",
+                    "exit_price": 190.19,
+                    "exit_quantity": 5,
+                    "exit_order_id": 831,
+                    "exit_execution_id": "mrsh-today",
+                    "exit_reason": "BROKER_SELL_EXECUTION",
+                    "request_id": "",
+                }
+            ]
+        }
+
+        with patch(
+            "src.journal.order_journal._read_json",
+            side_effect=self._read_json(order_requests, closed_positions),
+        ):
+            payload = order_journal.load_order_journal()
+
+        closed_today = [
+            row
+            for row in payload["rows"]
+            if row["symbol"] == "MRSH" and str(row.get("closed_at") or "").startswith("2026-08-27")
+        ]
+        self.assertEqual(len(closed_today), 1)
+        self.assertEqual(closed_today[0]["id"], "stock:broker:mrsh-today")
+        self.assertEqual(closed_today[0]["quantity"], 5)
+        self.assertEqual(closed_today[0]["opened_at"], "")
+
+    def test_additional_close_for_one_request_remains_visible(self) -> None:
+        order_requests = {
+            "requests": [{
+                "id": "mrsh-request",
+                "action": "place",
+                "status": "done",
+                "created_at": "2026-10-01T09:00:00",
+                "updated_at": "2026-10-01T09:00:05",
+                "symbol": "MRSH",
+                "quantity": 5,
+                "entry": 180.0,
+                "result": {"market_order_id": 100, "limit_order_id": 101},
+            }]
+        }
+        closed_positions = {"positions": [
+            {
+                "symbol": "MRSH", "quantity": 5, "exit_quantity": 5,
+                "entry": 180.0, "exit_price": 182.33,
+                "closed_at": "2026-10-15T13:30:11-04:00",
+                "exit_execution_id": "mrsh-old-close", "request_id": "mrsh-request",
+                "source": "IBKR_FLEX_STATEMENT", "broker_realized_pnl": 30.28,
+            },
+            {
+                "symbol": "MRSH", "quantity": 5, "exit_quantity": 5,
+                "entry": 180.0, "exit_price": 195.48,
+                "closed_at": "2026-10-22T20:37:28-04:00",
+                "exit_execution_id": "mrsh-new-close", "request_id": "mrsh-request",
+                "source": "IBKR_FLEX_STATEMENT", "broker_realized_pnl": 77.4,
+            },
+        ]}
+
+        with patch(
+            "src.journal.order_journal._read_json",
+            side_effect=self._read_json(order_requests, closed_positions),
+        ):
+            rows = order_journal._rows_from_unlinked_broker_closes()
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["execution_id"], "mrsh-old-close")
+        self.assertEqual(rows[0]["actual_exit"], 182.33)

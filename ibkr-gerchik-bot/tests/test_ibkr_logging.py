@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+from concurrent.futures import ThreadPoolExecutor
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -41,6 +42,12 @@ class _FakeIB:
 
 
 class IBKRLoggingTests(unittest.TestCase):
+    def test_client_initializes_in_worker_thread_without_event_loop_error(self) -> None:
+        with patch("src.brokers.ibkr.IB", _FakeIB):
+            with ThreadPoolExecutor(max_workers=1) as executor:
+                client = executor.submit(IBKRClient).result()
+            self.assertIsInstance(client.ib, _FakeIB)
+
     def test_subscription_errors_are_logged_and_handler_detaches(self) -> None:
         contract = SimpleNamespace(symbol="MSFT", exchange="SMART", primaryExchange="NASDAQ", currency="USD")
 

@@ -1,0 +1,72 @@
+description: Deterministic local trading-platform startup and health reporting. Never trade or edit production.
+description_auto: false
+_config_version: 49
+model:
+  default: AtomicChat/Ornith-1.5-35B-A3B-GGUF:IQ3_XXS
+  provider: unslouth
+  base_url: http://localhost:8888/v1
+  api_mode: chat_completions
+  key_env: HERMES_CUSTOM_UNSLOUTH_API_KEY
+providers:
+  unslouth:
+    name: Unslouth
+    base_url: http://localhost:8888/v1
+    model: AtomicChat/Ornith-1.5-35B-A3B-GGUF:IQ3_XXS
+    discover_models: true
+    context_length: 120000
+    key_env: HERMES_CUSTOM_UNSLOUTH_API_KEY
+skills:
+  creation_nudge_interval: 0
+  external_dirs: []
+  primary: trading-platform-morning-startup
+  allowed:
+    - trading-platform-morning-startup
+    - trading-platform-health
+    - trading-platform-service-status
+    - trading-platform-readiness-recheck
+  disabled:
+    - trading-live-long
+    - trading-scan-long
+    - trading-show-setup
+    - autonomous-ai-agents
+platform_toolsets:
+  cli:
+    - skills
+    - terminal
+approvals:
+  mode: manual
+  cron_mode: deny
+  single_query_mode: deny
+  unattended_mode: deny
+  deny:
+    - "*Set-Content*"
+    - "*Add-Content*"
+    - "*Out-File*"
+    - "*Remove-Item*"
+    - "*Move-Item*"
+    - "*Copy-Item*"
+    - "*requirements.txt*"
+    - "*pip install*"
+    - "*pip uninstall*"
+    - "*python -m pip*"
+    - "*uv pip*"
+    - "*git apply*"
+    - "*git checkout*"
+    - "*git clean*"
+    - "*git commit*"
+    - "*git merge*"
+    - "*git push*"
+    - "*git rebase*"
+    - "*git reset*"
+    - "*run_react_dashboard.cmd*"
+    - "*run_execute_worker.cmd*"
+    - "*run_market_data_collector.cmd*"
+    - "*run_autonomous_stock_worker.cmd*"
+    - "*run_crypto_worker.cmd*"
+    - "*run_trading_bot_mcp.cmd*"
+    - "*start-strategy-scanner-mcp.cmd*"
+    - "*stop-*.cmd*"
+    - "*execute_manual_order*"
+    - "*create*approval*"
+    - "*execution_intent*"
+    - "*sqlite3*decision_lab.db*"

@@ -1,0 +1,23 @@
+{
+  "run_id": "scan_20261001T163456Z_8189a6",
+  "errors": [
+    {
+      "symbol": "AAPL",
+      "scope": "symbol",
+      "reason": "TypeError",
+      "message": "Object of type Timestamp is not JSON serializable"
+    },
+    {
+      "symbol": "MAAS",
+      "scope": "symbol",
+      "reason": "TypeError",
+      "message": "Object of type Timestamp is not JSON serializable"
+    },
+    {
+      "symbol": "V",
+      "scope": "symbol",
+      "reason": "TypeError",
+      "message": "Object of type Timestamp is not JSON serializable"
+    }
+  ]
+}

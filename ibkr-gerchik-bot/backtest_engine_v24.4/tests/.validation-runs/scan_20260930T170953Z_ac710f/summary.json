@@ -1,0 +1,29 @@
+{
+  "run_id": "scan_20260930T170953Z_ac710f",
+  "symbols_requested": 2,
+  "symbols_available": 2,
+  "symbols_scanned": 2,
+  "symbols_skipped": 0,
+  "strategies": {
+    "lp1": {
+      "evaluated": 2,
+      "entry_signals": 0,
+      "rejected": 0,
+      "no_signal": 2,
+      "insufficient_data": 0,
+      "errors": 0
+    },
+    "lp2": {
+      "evaluated": 2,
+      "entry_signals": 0,
+      "rejected": 0,
+      "no_signal": 2,
+      "insufficient_data": 0,
+      "errors": 0
+    }
+  },
+  "unique_candidate_symbols": 0,
+  "candidate_symbols": [],
+  "errors": 0,
+  "runtime_seconds": 0.248296
+}

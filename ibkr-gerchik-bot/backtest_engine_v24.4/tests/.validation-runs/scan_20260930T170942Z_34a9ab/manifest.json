@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.1",
+  "run_id": "scan_20260930T170942Z_34a9ab",
+  "started_at": "2026-09-30T17:09:42.408394Z",
+  "completed_at": "2026-09-30T17:09:42.644537Z",
+  "direction": "LONG",
+  "strategy_ids": [
+    "lp1",
+    "lp2"
+  ],
+  "strategy_versions": {
+    "lp1": "market-screener-lp-prb-strategy-2",
+    "lp2": "market-screener-lp-prb-strategy-2"
+  },
+  "symbol_universe_source": "C:\\Users\\Vitaly\\Documents\\GitHub\\trading-agent\\ibkr-gerchik-bot\\config\\STOCK_SYMBOLS.csv",
+  "requested_symbols": [
+    "MAAS",
+    "V"
+  ],
+  "available_symbols": [
+    "MAAS",
+    "V"
+  ],
+  "scanned_symbols": [
+    "MAAS",
+    "V"
+  ],
+  "skipped_symbols": [],
+  "requested_symbol_count": 2,
+  "available_symbol_count": 2,
+  "scanned_symbol_count": 2,
+  "timeframe": "1D",
+  "closed_bars_only": true,
+  "data_source": "Trading Bot persisted bar store (memory/bars via src.mcp.trading_data_service)",
+  "network_fallback_enabled": false,
+  "scanner_version": "0.2.0",
+  "errors_count": 0,
+  "runtime_seconds": 0.236148,
+  "source_code_hashes": {
+    "backtest_engine_v24.4\\strategies\\market_screener_lp_prb_strategy_2.py": "ff69a91600962c249261200a15d776eeda10094642ec2ee099c3721285484709"
+  }
+}

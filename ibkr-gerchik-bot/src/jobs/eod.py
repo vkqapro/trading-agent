@@ -280,5 +280,5 @@ def run_eod(
         },
     )
     append_workflow_snapshot(SETTINGS.paths.trade_log, "EOD", {"summary": summary})
-    alerter.send_daily_summary(summary)
+    alerter.send_daily_summary(summary, automated_report=True)
     return summary

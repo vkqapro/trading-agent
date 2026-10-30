@@ -1,0 +1,63 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © et20tradeview
+
+//@version=6
+indicator("Pumori", overlay=false)
+
+// User toggle
+showOnPrice = input.bool(false, "Show on Main Chart?")
+mode = input.string("Defaut (RSI)", "Input Mode", options=["Defaut (RSI)", "Diagnostic (RSI SMA)",  "Price", "Custom"])
+
+// user input
+source = input(close, title="Custom Mode")
+factor = input.float(defval= 0.1 , minval=0.1, step=0.1)
+factor2 = input.float(defval= 0.1 , minval=0.1, step=0.1)
+rsiLengthInput = input.int(14, "RSI Length")
+maLengthInput = input.int(14, "MA Length")
+
+fillColor =#69359C
+
+pine_ema(src, length) => 
+    alpha = 2 / (length + 1)
+    sum = src
+    
+    //The original code by Tradingview
+    // sum = 0
+    //sum := na(sum[1]) ? sma(src, length) : alpha * src + (1 - alpha) * nz(sum[1])
+    
+    sum := alpha * src + (1 - alpha) * nz(sum[1])
+
+
+
+// Calculate RSI and MA of RSI 
+rsi_input= ta.rsi(close, rsiLengthInput)
+rsi_ma = ta.sma(rsi_input, maLengthInput)
+
+
+//Select mode of input
+float seriesP = switch mode
+    "Defaut (RSI)"   => rsi_input
+    "Diagnostic (RSI SMA)"   => rsi_ma
+    "Price" => close
+    => source
+
+
+
+//Generate EMA
+ln1 = pine_ema(seriesP, factor)
+ln2 = pine_ema(ln1, factor2)
+
+// 1. Plot in the SEPARATE PANE (hidden if showOnPrice is true)
+p2 = plot(ln2, "EMA", color=color.purple, display = showOnPrice ? display.none : display.all)
+p3 =  plot(ln2, "EMA offset" , offset=-1, color=color.purple,display = showOnPrice ? display.none : display.all)
+pc = plot(seriesP,"source", color =color.new(color.rgb(255, 235, 59), 75), display = showOnPrice ? display.none : display.all )
+
+// 2. Plot on the PRICE CHART (hidden if showOnPrice is false)
+p4 = plot(ln2, "EMA", color=color.purple,force_overlay = true,  display = showOnPrice ? display.all : display.none)
+p5 =  plot(ln2, "EMA offset" , offset=-1, color=color.purple, force_overlay = true, display = showOnPrice ? display.all : display.none)
+ppc = plot(seriesP,"source", color =color.new(color.rgb(255, 235, 59), 75), force_overlay = true,display = showOnPrice ? display.all : display.none)
+
+
+//fill(ln2, ln2, fillColor)
+fill(p2, p3, color=color.new(#69359C, 70), title="Lag Shading", display = showOnPrice ? display.none : display.all)
+fill(p4, p5, color=color.new(#69359C, 70), title="Lag Shading", display = showOnPrice ? display.all : display.none)

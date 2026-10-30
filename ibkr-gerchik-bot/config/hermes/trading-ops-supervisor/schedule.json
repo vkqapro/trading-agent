@@ -1,0 +1,10 @@
+{
+  "name": "Trading Morning Startup",
+  "schedule": "0 7 * * 1-5",
+  "timezone": "America/New_York",
+  "profile": "trading-ops-supervisor",
+  "skill": "trading-platform-morning-startup",
+  "prompt": "Run the trading-platform-morning-startup skill exactly and report its structured local readiness result. Do not edit files, install packages, call direct launchers, create approvals, create execution intents, submit orders, or use notifications.",
+  "deliver": "local",
+  "telegram": false
+}

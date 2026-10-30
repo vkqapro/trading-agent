@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Dict, List
 from unittest.mock import patch
 
-from src.main import _run_connected_job
+from src.main import _quote_check_once, _run_connected_job
 
 
 class _BrokerStub:
@@ -34,14 +34,20 @@ class _BrokerStub:
 
 class _MarketDataServiceStub:
     def __init__(self, _broker: object) -> None:
-        pass
+        self.delayed = False
 
-    def get_quote(self, symbol: str) -> Dict[str, float]:
+    def enable_delayed_fallback(self) -> None:
+        self.delayed = True
+
+    def get_quote(self, symbol: str) -> Dict[str, object]:
         if symbol == "MSFT":
-            return {"bid": 421.0, "ask": 421.52, "last": 421.3, "close": 420.5}
+            quote = {"bid": 421.0, "ask": 421.52, "last": 421.3, "close": 420.5}
+            return {**quote, "market_data_type": "delayed" if self.delayed else "live"}
         if symbol == "NANQ":
-            return {"bid": float("nan"), "ask": float("nan"), "last": float("nan"), "close": 0.0}
-        return {"bid": 0.0, "ask": 0.0, "last": 0.0, "close": 0.0}
+            quote = {"bid": float("nan"), "ask": float("nan"), "last": float("nan"), "close": 0.0}
+            return {**quote, "market_data_type": "delayed" if self.delayed else "live"}
+        quote = {"bid": 0.0, "ask": 0.0, "last": 0.0, "close": 0.0}
+        return {**quote, "market_data_type": "delayed" if self.delayed else "live"}
 
 
 class _NewsRiskFilterStub:
@@ -91,6 +97,24 @@ class QuoteCheckJobTests(unittest.TestCase):
         self.assertAlmostEqual(result["spread_pct"], 0.001234, places=6)
         self.assertEqual(result["spread_pct_percent"], 0.1234)
         self.assertTrue(result["passes_spread_filter"])
+        self.assertEqual(result["market_data_type"], "delayed")
+
+    def test_quote_check_requires_bid_and_ask_for_spread_pass(self) -> None:
+        market_data = _MarketDataServiceStub(object())
+        market_data.enable_delayed_fallback()
+        market_data.get_quote = lambda _symbol: {
+            "bid": 0.0,
+            "ask": 0.0,
+            "last": 85.08,
+            "quote_status": "partial",
+            "market_data_type": "delayed",
+        }
+
+        result = _quote_check_once("DAL", market_data)
+
+        self.assertEqual(result["last"], 85.08)
+        self.assertEqual(result["spread_pct"], 1.0)
+        self.assertFalse(result["passes_spread_filter"])
 
     def test_quote_check_treats_nan_quote_as_failed_spread(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

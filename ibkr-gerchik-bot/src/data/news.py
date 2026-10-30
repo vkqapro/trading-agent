@@ -55,6 +55,8 @@ SYMBOL_QUERY_MAP: Dict[str, Dict[str, object]] = {
     },
 }
 
+_MISSING_NEWS_API_KEY_LOGGED = False
+
 
 class NewsService:
     """Fetch symbol, macro, and earnings context from NewsAPI.ai / Event Registry."""
@@ -195,7 +197,10 @@ class NewsService:
 
     def _request(self, url: str, params: Dict[str, object]) -> object:
         if not self.config.api_key:
-            LOGGER.info("NEWS_API_KEY is not configured. News requests will return empty results.")
+            global _MISSING_NEWS_API_KEY_LOGGED
+            if not _MISSING_NEWS_API_KEY_LOGGED:
+                LOGGER.info("NEWS_API_KEY is not configured. News requests will return empty results.")
+                _MISSING_NEWS_API_KEY_LOGGED = True
             return {"articles": {"results": []}}
 
         try:

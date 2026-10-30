@@ -3,19 +3,63 @@
 from __future__ import annotations
 
 import csv
+import ast
 import logging
 import logging.handlers
 import os
 from dataclasses import dataclass, field
 from datetime import datetime
+from decimal import Decimal
 from pathlib import Path
 from typing import Dict, List, Tuple
+
+from src.decision.models import AgentMode
+
+def _load_env_file_fallback(path: str | Path, *, override: bool = False) -> bool:
+    """Load simple KEY=VALUE entries when python-dotenv is unavailable.
+
+    This intentionally supports only the repository's non-secret configuration
+    format. It never logs values and never replaces an explicitly supplied
+    environment variable unless override=True.
+    """
+    loaded = False
+    try:
+        lines = Path(path).read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return False
+    for raw_line in lines:
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("export "):
+            line = line[7:].lstrip()
+        if "=" not in line:
+            continue
+        name, raw_value = line.split("=", 1)
+        name = name.strip()
+        if not name or not all(char.isalnum() or char == "_" for char in name) or name[0].isdigit():
+            continue
+        value = raw_value.strip()
+        if len(value) >= 2 and value[0] in {"'", '"'}:
+            closing = value.find(value[0], 1)
+            literal = value if closing < 0 else value[: closing + 1]
+            try:
+                value = str(ast.literal_eval(literal))
+            except (SyntaxError, ValueError):
+                value = literal[1:-1]
+        elif " #" in value:
+            value = value.split(" #", 1)[0].rstrip()
+        if override or name not in os.environ:
+            os.environ[name] = value
+        loaded = True
+    return loaded
+
 
 try:
     from dotenv import load_dotenv
 except ImportError:  # pragma: no cover
-    def load_dotenv(*_args: object, **_kwargs: object) -> bool:
-        return False
+    def load_dotenv(path: str | Path, *, override: bool = False, **_kwargs: object) -> bool:
+        return _load_env_file_fallback(path, override=override)
 
 
 BASE_DIR = Path(__file__).resolve().parents[1]
@@ -168,12 +212,169 @@ class RiskConfig:
     max_daily_loss_pct: float = _env_float("MAX_DAILY_LOSS", 0.02)
     max_positions: int = _env_int("MAX_OPEN_POSITIONS", 5)
     max_open_risk_pct: float = _env_float("MAX_OPEN_RISK", 0.03)
-    min_reward_risk_ratio: float = _env_float("MIN_REWARD_RISK", 3.0)
+    min_reward_risk_ratio: float = _env_float("MIN_REWARD_RISK", 2.0)
     max_spread_pct: float = _env_float("MAX_SPREAD_PCT", 0.003)
     max_position_value: float = _env_float("MAX_POSITION_VALUE", 25000.0)
     calculated_stop_pct: float = _env_float("CALCULATED_STOP_PCT", 0.0015)
     max_stop_vs_calculated_multiplier: float = _env_float("MAX_STOP_VS_CALCULATED_MULTIPLIER", 1.2)
     first_unstable_minutes: int = _env_int("FIRST_UNSTABLE_MINUTES", 5)
+
+
+def _optional_env_float(name: str) -> float | None:
+    raw = os.getenv(name, "").strip()
+    if not raw:
+        return None
+    return float(raw)
+
+
+@dataclass(frozen=True)
+class DecisionAgentConfig:
+    """Configuration for the bounded LLM decision layer.
+
+    ``mode=off`` is the safe default. Credentials are read only at process
+    startup and are never included in decision snapshots or audit payloads.
+    """
+
+    mode: str = _env_str("LLM_AGENT_MODE", AgentMode.OFF.value).lower()
+    agent_id: str = _env_str("LLM_AGENT_ID", "GERCHIK_LLM_01")
+    provider: str = _env_str("LLM_DECISION_PROVIDER", "local_openai").lower()
+    model: str = _env_str("LLM_DECISION_MODEL", "")
+    timeout_seconds: float = _env_float("LLM_DECISION_TIMEOUT_SECONDS", 15.0)
+    max_completion_tokens: int = _env_int("LLM_DECISION_MAX_COMPLETION_TOKENS", 900)
+    local_base_url: str = _env_str("LLM_LOCAL_BASE_URL", "")
+    local_model: str = _env_str("LLM_LOCAL_MODEL", "")
+    openai_base_url: str = _env_str("LLM_OPENAI_BASE_URL", "https://api.openai.com/v1")
+    deepseek_base_url: str = _env_str("LLM_DEEPSEEK_BASE_URL", "https://api.deepseek.com/v1")
+    anthropic_base_url: str = _env_str("LLM_ANTHROPIC_BASE_URL", "https://api.anthropic.com/v1")
+    openai_api_key: str = _env_str("LLM_OPENAI_API_KEY", "")
+    deepseek_api_key: str = _env_str("LLM_DEEPSEEK_API_KEY", "")
+    anthropic_api_key: str = _env_str("LLM_ANTHROPIC_API_KEY", "")
+    position_review_enabled: bool = _env_bool("LLM_POSITION_REVIEW_ENABLED", False)
+    use_news: bool = _env_bool("LLM_AGENT_USE_NEWS", False)
+    multi_provider_shadow: bool = _env_bool("LLM_MULTI_PROVIDER_SHADOW", False)
+    shadow_providers: Tuple[str, ...] = tuple(
+        item.lower() for item in _csv_env(
+            "LLM_SHADOW_PROVIDERS", "local_openai,deepseek,openai,anthropic"
+        ) if item
+    )
+    max_open_positions: int = _env_int("LLM_MAX_OPEN_POSITIONS", 5)
+    risk_per_trade_pct: float = _env_float("LLM_RISK_PER_TRADE_PCT", 1.0)
+    max_daily_r: float = _env_float("LLM_MAX_DAILY_R", 0.0)
+    max_data_age_seconds: float = _env_float("LLM_MAX_DATA_AGE_SECONDS", 30.0)
+    max_entry_chase_pct: float = _env_float("LLM_MAX_ENTRY_CHASE_PCT", 0.01)
+    decision_workers: int = _env_int("LLM_DECISION_WORKERS", 2)
+    decision_queue_depth: int = _env_int("LLM_DECISION_QUEUE_DEPTH", 16)
+    candidate_expiry_seconds: float = _env_float("LLM_CANDIDATE_EXPIRY_SECONDS", 45.0)
+    shadow_dedup_minutes: float = _env_float("LLM_SHADOW_DEDUP_MINUTES", 5.0)
+    paper_protection_interval_seconds: float = _env_float("LLM_PAPER_PROTECTION_INTERVAL_SECONDS", 5.0)
+    position_review_interval_seconds: float = _env_float("LLM_POSITION_REVIEW_INTERVAL_SECONDS", 300.0)
+    provider_health_max_age_seconds: float = _env_float("LLM_PROVIDER_HEALTH_MAX_AGE_SECONDS", 900.0)
+    provider_health_interval_seconds: float = _env_float("LLM_PROVIDER_HEALTH_INTERVAL_SECONDS", 300.0)
+    auto_analysis_interval_minutes: float = _env_float("LLM_AUTO_ANALYSIS_INTERVAL_MINUTES", 30.0)
+    database_path: Path = field(
+        default_factory=lambda: _resolve_env_path(_env_str("LLM_DECISION_DATABASE_PATH", "memory/decision_lab.db"))
+    )
+    allow_live_trading: bool = _env_bool("ALLOW_LLM_LIVE_TRADING", False)
+    live_account_allowlist: Tuple[str, ...] = tuple(
+        item for item in _csv_env("LLM_LIVE_ACCOUNT_ALLOWLIST", "") if item
+    )
+    allow_ibkr_paper_trading: bool = _env_bool("ALLOW_LLM_IBKR_PAPER_TRADING", False)
+    ibkr_paper_account_allowlist: Tuple[str, ...] = tuple(
+        item for item in _csv_env("LLM_IBKR_PAPER_ACCOUNT_ALLOWLIST", "") if item
+    )
+    ibkr_paper_max_open_positions: int = _env_int("LLM_IBKR_PAPER_MAX_OPEN_POSITIONS", 1)
+    ibkr_paper_max_trades_per_day: int = _env_int("LLM_IBKR_PAPER_MAX_TRADES_PER_DAY", 3)
+    ibkr_paper_risk_per_trade_pct: float = _env_float("LLM_IBKR_PAPER_RISK_PER_TRADE_PCT", 0.10)
+    minimum_confidence: float | None = field(default_factory=lambda: _optional_env_float("LLM_MIN_CONFIDENCE"))
+    slippage_pct: float = _env_float("LLM_PAPER_SLIPPAGE_PCT", 0.0005)
+    commission_per_share: float = _env_float("LLM_PAPER_COMMISSION_PER_SHARE", 0.0)
+
+    def mode_enum(self) -> AgentMode:
+        return AgentMode.from_value(self.mode)
+
+    def validate(
+        self,
+        *,
+        paper_trading: bool | None = None,
+        dry_run: bool | None = None,
+        account_id: str | None = None,
+        paper_account_verified: bool | None = None,
+        live_trading_enabled: bool | None = None,
+    ) -> None:
+        mode = self.mode_enum()
+        if self.timeout_seconds <= 0:
+            raise ValueError("LLM_DECISION_TIMEOUT_SECONDS must be positive")
+        if self.max_completion_tokens < 600 or self.max_completion_tokens > 2000:
+            raise ValueError("LLM_DECISION_MAX_COMPLETION_TOKENS must be between 600 and 2000")
+        if self.max_open_positions < 1:
+            raise ValueError("LLM_MAX_OPEN_POSITIONS must be positive")
+        if self.risk_per_trade_pct <= 0:
+            raise ValueError("LLM_RISK_PER_TRADE_PCT must be positive")
+        if self.max_daily_r < 0:
+            raise ValueError("LLM_MAX_DAILY_R cannot be negative")
+        if self.max_data_age_seconds <= 0 or self.max_entry_chase_pct < 0:
+            raise ValueError("LLM data-age/chase limits are invalid")
+        if self.decision_workers < 1 or self.decision_queue_depth < 1:
+            raise ValueError("LLM decision worker/queue settings must be positive")
+        if self.candidate_expiry_seconds <= 0 or self.shadow_dedup_minutes < 0:
+            raise ValueError("LLM candidate expiry/dedup settings are invalid")
+        if self.paper_protection_interval_seconds <= 0 or self.position_review_interval_seconds <= 0:
+            raise ValueError("LLM paper safety intervals must be positive")
+        if self.provider_health_max_age_seconds <= 0:
+            raise ValueError("LLM provider health age must be positive")
+        if self.provider_health_interval_seconds <= 0:
+            raise ValueError("LLM provider health interval must be positive")
+        if self.minimum_confidence is not None and not 0.0 <= self.minimum_confidence <= 1.0:
+            raise ValueError("LLM_MIN_CONFIDENCE must be between 0 and 1")
+        if self.slippage_pct < 0 or self.commission_per_share < 0:
+            raise ValueError("LLM paper cost settings cannot be negative")
+        if self.ibkr_paper_max_open_positions < 1:
+            raise ValueError("LLM_IBKR_PAPER_MAX_OPEN_POSITIONS must be positive")
+        if self.ibkr_paper_max_trades_per_day < 1:
+            raise ValueError("LLM_IBKR_PAPER_MAX_TRADES_PER_DAY must be positive")
+        if self.ibkr_paper_risk_per_trade_pct <= 0:
+            raise ValueError("LLM_IBKR_PAPER_RISK_PER_TRADE_PCT must be positive")
+        unsupported_shadow = set(self.shadow_providers) - {"local_openai", "openai", "deepseek", "anthropic"}
+        if unsupported_shadow:
+            raise ValueError(f"unsupported LLM shadow provider(s): {', '.join(sorted(unsupported_shadow))}")
+        if mode is AgentMode.LIVE_AUTONOMOUS:
+            if not self.allow_live_trading:
+                raise ValueError("live_autonomous requires ALLOW_LLM_LIVE_TRADING=true")
+            if paper_trading is not False:
+                raise ValueError("live_autonomous requires PAPER_TRADING=false")
+            if not self.live_account_allowlist:
+                raise ValueError("live_autonomous requires LLM_LIVE_ACCOUNT_ALLOWLIST")
+            if not account_id:
+                raise ValueError("live_autonomous requires a verified broker account ID")
+            if account_id not in self.live_account_allowlist:
+                raise ValueError("broker account is not in the LLM live account allowlist")
+        if mode is AgentMode.IBKR_PAPER_AUTONOMOUS:
+            if not self.allow_ibkr_paper_trading:
+                raise ValueError("ibkr_paper_autonomous requires ALLOW_LLM_IBKR_PAPER_TRADING=true")
+            if self.ibkr_paper_max_open_positions > 1:
+                raise ValueError("ibkr_paper_autonomous max open positions cannot exceed 1")
+            if self.ibkr_paper_max_trades_per_day > 3:
+                raise ValueError("ibkr_paper_autonomous daily trade cap cannot exceed 3")
+            if self.ibkr_paper_risk_per_trade_pct > 0.10:
+                raise ValueError("ibkr_paper_autonomous risk cap cannot exceed 0.10 percent")
+            if paper_trading is not True:
+                raise ValueError("ibkr_paper_autonomous requires PAPER_TRADING=true")
+            if dry_run is not False:
+                raise ValueError("ibkr_paper_autonomous requires DRY_RUN_MODE=false")
+            if self.allow_live_trading:
+                raise ValueError("ibkr_paper_autonomous forbids ALLOW_LLM_LIVE_TRADING=true")
+            if live_trading_enabled is True:
+                raise ValueError("ibkr_paper_autonomous forbids legacy live trading")
+            if not self.ibkr_paper_account_allowlist:
+                raise ValueError("ibkr_paper_autonomous requires LLM_IBKR_PAPER_ACCOUNT_ALLOWLIST")
+            if not account_id:
+                raise ValueError("ibkr_paper_autonomous requires a verified broker account ID")
+            if paper_account_verified is not True:
+                raise ValueError("ibkr_paper_autonomous requires verified IBKR Paper account evidence")
+            if account_id not in self.ibkr_paper_account_allowlist:
+                raise ValueError("broker account is not in the IBKR Paper account allowlist")
+        if mode is not AgentMode.OFF and not self.model and not self.local_model:
+            raise ValueError("an LLM model is required when the agent is enabled")
 
 
 @dataclass(frozen=True)
@@ -190,6 +391,9 @@ class StrategyConfig:
     premarket_daily_lookback_days: int = _env_int("PREMARKET_DAILY_LOOKBACK_DAYS", 60)
     intraday_bar_duration: str = _env_str("INTRADAY_BAR_DURATION", "5 D")
     intraday_bar_size: str = _env_str("INTRADAY_BAR_SIZE", "5 mins")
+    chart_daily_duration: str = _env_str("CHART_DAILY_DURATION", "2 Y")
+    chart_weekly_duration: str = _env_str("CHART_WEEKLY_DURATION", "2 Y")
+    chart_4h_duration: str = _env_str("CHART_4H_DURATION", "180 D")
     level_tolerance_pct: float = _env_float("LEVEL_TOLERANCE_PCT", 0.0025)
     consolidation_window: int = _env_int("CONSOLIDATION_WINDOW", 20)
     abnormal_range_multiplier: float = _env_float("ABNORMAL_RANGE_MULTIPLIER", 2.0)
@@ -208,6 +412,157 @@ class StrategyConfig:
 
 
 @dataclass(frozen=True)
+class InefficiencyReclaimSettings:
+    """Validated environment-facing settings for the isolated IRS subsystem."""
+
+    enabled: bool = _env_bool("INEFFICIENCY_RECLAIM_ENABLED", False)
+    trading_mode: str = _env_str("IRS_TRADING_MODE", "paper").lower()
+    allow_live_trading: bool = _env_bool("ALLOW_LIVE_TRADING", False)
+    version: str = _env_str("IRS_STRATEGY_VERSION", "1.0")
+    database_path: Path = field(
+        default_factory=lambda: _resolve_env_path(
+            _env_str("IRS_DATABASE_PATH", "memory/inefficiency_reclaim.db")
+        )
+    )
+    daily_history_years: int = _env_int("IRS_DAILY_HISTORY_YEARS", 10)
+    min_daily_history_rows: int = _env_int("IRS_MIN_DAILY_HISTORY_ROWS", 1000)
+    hourly_history_years: int = _env_int("IRS_HOURLY_HISTORY_YEARS", 3)
+    fifteen_minute_history_years: int = _env_int("IRS_15M_HISTORY_YEARS", 2)
+    five_minute_history_months: int = _env_int("IRS_5M_HISTORY_MONTHS", 12)
+    one_minute_history_months: int = _env_int("IRS_1M_HISTORY_MONTHS", 6)
+    history_request_delay_seconds: float = _env_float("IRS_HISTORY_REQUEST_DELAY_SECONDS", 2.0)
+    history_timeout_retry_count: int = _env_int("IRS_HISTORY_TIMEOUT_RETRY_COUNT", 1)
+    history_timeout_retry_delay_seconds: float = _env_float("IRS_HISTORY_TIMEOUT_RETRY_DELAY_SECONDS", 12.0)
+    min_true_range_atr_multiple: float = _env_float("IRS_MIN_TR_ATR_MULTIPLE", 1.40)
+    min_body_ratio: float = _env_float("IRS_MIN_BODY_RATIO", 0.65)
+    min_close_location: float = _env_float("IRS_MIN_CLOSE_LOCATION", 0.75)
+    min_directional_efficiency: float = _env_float("IRS_MIN_DIRECTIONAL_EFFICIENCY", 0.70)
+    max_overlap_ratio: float = _env_float("IRS_MAX_OVERLAP_RATIO", 0.25)
+    min_relative_volume: float = _env_float("IRS_MIN_RELATIVE_VOLUME", 1.30)
+    min_zone_width_atr: float = _env_float("IRS_MIN_ZONE_WIDTH_ATR", 0.08)
+    max_zone_width_atr: float = _env_float("IRS_MAX_ZONE_WIDTH_ATR", 0.60)
+    minimum_display_score: float = _env_float("IRS_MINIMUM_DISPLAY_SCORE", 80.0)
+    minimum_order_score: float = _env_float("IRS_MINIMUM_ORDER_SCORE", 85.0)
+    risk_percent_per_trade: float = _env_float("IRS_RISK_PERCENT_PER_TRADE", 0.25)
+    max_fixed_risk_cash: float = _env_float("IRS_MAX_FIXED_RISK_CASH", 1000.0)
+    min_price: float = _env_float("IRS_MIN_PRICE", 5.0)
+    max_price: float = _env_float("IRS_MAX_PRICE", 1000.0)
+    min_average_daily_volume: int = _env_int("IRS_MIN_AVERAGE_DAILY_VOLUME", 750000)
+    min_average_daily_dollar_volume: float = _env_float(
+        "IRS_MIN_AVERAGE_DAILY_DOLLAR_VOLUME", 20000000.0
+    )
+    max_spread_percent: float = _env_float("IRS_MAX_SPREAD_PERCENT", 0.20)
+    max_quote_age_seconds: int = _env_int("IRS_MAX_QUOTE_AGE_SECONDS", 5)
+
+    def validate(self) -> None:
+        if self.trading_mode != "paper":
+            raise ValueError("IRS_TRADING_MODE must remain 'paper'.")
+        if self.allow_live_trading:
+            raise ValueError("ALLOW_LIVE_TRADING must remain false for IRS.")
+        if not (0.0 < self.risk_percent_per_trade <= 1.0):
+            raise ValueError("IRS_RISK_PERCENT_PER_TRADE must be in percent units (0, 1].")
+        if not (0.0 <= self.min_zone_width_atr < self.max_zone_width_atr <= 1.0):
+            raise ValueError("IRS zone-width limits are invalid.")
+        if not (0.0 <= self.minimum_display_score <= self.minimum_order_score <= 100.0):
+            raise ValueError("IRS score thresholds are invalid.")
+        if min(
+            self.daily_history_years,
+            self.min_daily_history_rows,
+            self.hourly_history_years,
+            self.fifteen_minute_history_years,
+            self.five_minute_history_months,
+            self.one_minute_history_months,
+        ) <= 0:
+            raise ValueError("IRS historical horizons must be positive.")
+        if min(
+            self.history_request_delay_seconds,
+            self.history_timeout_retry_count,
+            self.history_timeout_retry_delay_seconds,
+        ) < 0:
+            raise ValueError("IRS history pacing settings must be non-negative.")
+
+    def strategy_config(self):
+        """Build the pure strategy config without making that module read env."""
+        from src.strategy.inefficiency_reclaim import IRSConfig
+
+        self.validate()
+        config = IRSConfig(
+            version=self.version,
+            min_true_range_atr_multiple=Decimal(str(self.min_true_range_atr_multiple)),
+            min_body_ratio=Decimal(str(self.min_body_ratio)),
+            min_close_location=Decimal(str(self.min_close_location)),
+            min_directional_efficiency=Decimal(str(self.min_directional_efficiency)),
+            max_overlap_ratio=Decimal(str(self.max_overlap_ratio)),
+            min_relative_volume=Decimal(str(self.min_relative_volume)),
+            min_zone_width_atr=Decimal(str(self.min_zone_width_atr)),
+            max_zone_width_atr=Decimal(str(self.max_zone_width_atr)),
+            minimum_display_score=Decimal(str(self.minimum_display_score)),
+            minimum_order_score=Decimal(str(self.minimum_order_score)),
+            risk_percent_per_trade=Decimal(str(self.risk_percent_per_trade)) / Decimal("100"),
+            max_fixed_risk_cash=Decimal(str(self.max_fixed_risk_cash)),
+            min_price=Decimal(str(self.min_price)),
+            max_price=Decimal(str(self.max_price)),
+            min_average_daily_volume=self.min_average_daily_volume,
+            min_average_daily_dollar_volume=Decimal(str(self.min_average_daily_dollar_volume)),
+            max_spread_percent=Decimal(str(self.max_spread_percent)),
+            max_quote_age_seconds=self.max_quote_age_seconds,
+        )
+        config.validate()
+        return config
+
+
+@dataclass(frozen=True)
+class NasdaqDataConfig:
+    """Optional Nasdaq market-data fallback for historical candles."""
+
+    enabled: bool = _env_bool("NASDAQ_DATA_PROVIDER_ENABLED", False)
+    data_link_api_key: str = _env_str("NASDAQ_DATA_LINK_API_KEY", _env_str("NDL_APIKEY", ""))
+    data_link_base_url: str = _env_str("NASDAQ_DATA_LINK_BASE_URL", "https://data.nasdaq.com/api/v3")
+    data_link_eod_database: str = _env_str("NASDAQ_DATA_LINK_EOD_DATABASE", "EOD")
+    cloud_base_url: str = _env_str("NASDAQ_CLOUD_BASE_URL", "")
+    cloud_client_id: str = _env_str("NASDAQ_CLOUD_CLIENT_ID", "")
+    cloud_client_secret: str = _env_str("NASDAQ_CLOUD_CLIENT_SECRET", "")
+    cloud_source: str = _env_str("NASDAQ_CLOUD_SOURCE", "CQT")
+    cloud_offset: str = _env_str("NASDAQ_CLOUD_OFFSET", "delayed")
+    request_timeout_seconds: int = _env_int("NASDAQ_REQUEST_TIMEOUT_SECONDS", 20)
+
+    @property
+    def data_link_configured(self) -> bool:
+        return bool(self.data_link_api_key)
+
+    @property
+    def cloud_configured(self) -> bool:
+        return bool(self.cloud_base_url and self.cloud_client_id and self.cloud_client_secret)
+
+
+@dataclass(frozen=True)
+class RadarConfig:
+    """Deterministic, daily-data market discovery settings.
+
+    The database defaults to the existing Decision Lab SQLite database so
+    Radar adds a table to an established persistence layer rather than
+    creating a second database family.
+    """
+
+    enabled: bool = _env_bool("RADAR_ENABLED", True)
+    min_price: float = _env_float("RADAR_MIN_PRICE", 5.0)
+    min_avg_dollar_volume: float = _env_float("RADAR_MIN_AVG_DOLLAR_VOLUME", 20_000_000.0)
+    lookback_days: int = _env_int("RADAR_LOOKBACK_DAYS", 250)
+    min_history_days: int = _env_int("RADAR_MIN_HISTORY_DAYS", 120)
+    max_universe_size: int = _env_int("RADAR_MAX_UNIVERSE_SIZE", 1000)
+    trend_green_threshold: float = _env_float("RADAR_TREND_GREEN_THRESHOLD", 60.0)
+    trend_red_threshold: float = _env_float("RADAR_TREND_RED_THRESHOLD", 40.0)
+    compression_threshold: float = _env_float("RADAR_COMPRESSION_THRESHOLD", 45.0)
+    range_window: int = _env_int("RADAR_RANGE_WINDOW", 20)
+    slope_window: int = _env_int("RADAR_SLOPE_WINDOW", 20)
+    database_path: Path = field(
+        default_factory=lambda: _resolve_env_path(
+            _env_str("RADAR_DATABASE_PATH", "memory/decision_lab.db")
+        )
+    )
+
+
+@dataclass(frozen=True)
 class TradingHours:
     timezone: str = _env_str("TRADING_TIMEZONE", "America/New_York")
     market_open_hour: int = _env_int("MARKET_OPEN_HOUR", 9)
@@ -218,6 +573,8 @@ class TradingHours:
     open_scan_end_minute: int = _env_int("OPEN_SCAN_END_MINUTE", 30)
     market_close_hour: int = _env_int("MARKET_CLOSE_HOUR", 16)
     market_close_minute: int = _env_int("MARKET_CLOSE_MINUTE", 0)
+    market_data_collector_end_hour: int = _env_int("MARKET_DATA_COLLECTOR_END_HOUR", 17)
+    market_data_collector_end_minute: int = _env_int("MARKET_DATA_COLLECTOR_END_MINUTE", 30)
     no_new_entry_after_hour: int = _env_int("NO_NEW_ENTRY_AFTER_HOUR", 15)
     no_new_entry_after_minute: int = _env_int("NO_NEW_ENTRY_AFTER_MINUTE", 45)
     intraday_end_hour: int = _env_int("INTRADAY_END_HOUR", 15)
@@ -276,6 +633,9 @@ class PathsConfig:
     weekly_review_log: Path = MEMORY_DIR / "WEEKLY_REVIEW.md"
     strategy_doc: Path = MEMORY_DIR / "TRADING_STRATEGY.md"
     reports_dir: Path = MEMORY_DIR / "reports"
+    # TWS Export Reports directory.  Defaults to the repository-level reports
+    # folder configured in the user's Trader Workstation screenshot.
+    trade_report_dir: Path = _resolve_env_path(_env_str("IBKR_TRADE_REPORT_DIR", str(BASE_DIR / "reports")))
     runtime_dir: Path = LOG_DIR
     state_file: Path = LOG_DIR / "state.json"
 
@@ -299,7 +659,11 @@ class Settings:
     fx_symbols: List[str] = field(default_factory=lambda: _csv_env("FX_SYMBOLS", ""))
     broker: BrokerConfig = field(default_factory=BrokerConfig)
     risk: RiskConfig = field(default_factory=RiskConfig)
+    decision_agent: DecisionAgentConfig = field(default_factory=DecisionAgentConfig)
     strategy: StrategyConfig = field(default_factory=StrategyConfig)
+    inefficiency_reclaim: InefficiencyReclaimSettings = field(default_factory=InefficiencyReclaimSettings)
+    radar: RadarConfig = field(default_factory=RadarConfig)
+    nasdaq_data: NasdaqDataConfig = field(default_factory=NasdaqDataConfig)
     trading_hours: TradingHours = field(default_factory=TradingHours)
     news: NewsConfig = field(default_factory=NewsConfig)
     paths: PathsConfig = field(default_factory=PathsConfig)
@@ -307,9 +671,36 @@ class Settings:
     slack_bot_token: str = _env_str("SLACK_BOT_TOKEN", "")
     slack_channel: str = _env_str("SLACK_CHANNEL", "")
     slack_commands_enabled: bool = _env_bool("SLACK_COMMANDS_ENABLED", True)
+    slack_automated_reports_enabled: bool = _env_bool("SLACK_AUTOMATED_REPORTS_ENABLED", False)
     slack_command_prefix: str = _env_str("SLACK_COMMAND_PREFIX", "ibkr").strip().lower()
     slack_allowed_user_ids: List[str] = field(default_factory=lambda: _csv_env("SLACK_ALLOWED_USER_IDS", ""))
+    # Telegram approval is a reference-only human gate. It never carries order fields.
+    telegram_approval_ttl_seconds: int = _env_int("TELEGRAM_APPROVAL_TTL_SECONDS", 900)
+    telegram_approval_preparation_ttl_seconds: int = _env_int("TELEGRAM_APPROVAL_PREPARATION_TTL_SECONDS", 300)
+    telegram_allowed_user_ids: List[str] = field(default_factory=lambda: _csv_env("TELEGRAM_APPROVAL_ALLOWED_USER_IDS", ""))
+    telegram_allowed_chat_ids: List[str] = field(default_factory=lambda: _csv_env("TELEGRAM_APPROVAL_ALLOWED_CHAT_IDS", ""))
     premarket_levels_export_min_strength: float = _env_float("PREMARKET_LEVELS_EXPORT_MIN_STRENGTH", 7.0)
+    flex_statement_enabled: bool = _env_bool("IBKR_FLEX_STATEMENT_ENABLED", False)
+    flex_statement_token: str = _env_str("IBKR_FLEX_STATEMENT_TOKEN", "")
+    flex_statement_query_id: str = _env_str("IBKR_FLEX_STATEMENT_QUERY_ID", "")
+    flex_statement_lookback_days: int = _env_int("IBKR_FLEX_STATEMENT_LOOKBACK_DAYS", 7)
+
+    def __post_init__(self) -> None:
+        # Invalid IRS config must fail closed without weakening the rest of the
+        # bot. The scanner reports this validation error and IRS stays disabled.
+        try:
+            self.inefficiency_reclaim.validate()
+        except ValueError as exc:
+            object.__setattr__(
+                self,
+                "inefficiency_reclaim",
+                InefficiencyReclaimSettings(
+                    enabled=False,
+                    trading_mode="paper",
+                    allow_live_trading=False,
+                ),
+            )
+            logging.getLogger(__name__).error("IRS disabled by invalid configuration: %s", exc)
 
     @property
     def symbols(self) -> List[str]:
@@ -332,6 +723,27 @@ class Settings:
 
 
 SETTINGS = Settings()
+
+
+class SafeRotatingFileHandler(logging.handlers.RotatingFileHandler):
+    """Rotating file handler that tolerates Windows multi-process log locks."""
+
+    def doRollover(self) -> None:  # noqa: N802 - logging API method name
+        try:
+            super().doRollover()
+        except PermissionError:
+            # Another bot/dashboard process can briefly hold application.log on
+            # Windows while this process decides it is time to rotate. Avoid
+            # flooding stderr with logging tracebacks by switching this process
+            # to its own overflow log instead of retrying the locked rollover on
+            # every subsequent INFO line.
+            if self.stream:
+                self.stream.close()
+                self.stream = None
+            original = Path(self.baseFilename)
+            self.baseFilename = str(original.with_name(f"{original.stem}.{os.getpid()}.log"))
+            if not self.delay:
+                self.stream = self._open()
 
 
 def ensure_directories() -> None:
@@ -357,7 +769,7 @@ def setup_logging() -> logging.Logger:
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
 
-    file_handler = logging.handlers.RotatingFileHandler(
+    file_handler = SafeRotatingFileHandler(
         SETTINGS.paths.runtime_dir / "application.log",
         maxBytes=10 * 1024 * 1024,
         backupCount=5,

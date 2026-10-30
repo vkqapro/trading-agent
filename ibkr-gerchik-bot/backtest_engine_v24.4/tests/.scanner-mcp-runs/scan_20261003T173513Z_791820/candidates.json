@@ -1,0 +1,473 @@
+{
+  "run_id": "scan_20261003T173513Z_791820",
+  "candidates": [
+    {
+      "run_id": "scan_20261003T173513Z_791820",
+      "symbol": "MAAS",
+      "strategy_id": "lp2",
+      "strategy_version": "market-screener-lp-prb-strategy-2",
+      "direction": "LONG",
+      "timeframe": "1D",
+      "as_of": "2026-09-28 00:00:00",
+      "status": "ENTRY_SIGNAL",
+      "matched": true,
+      "signal": {
+        "pattern": "LP2",
+        "signal_bar": "2026-09-28T00:00:00",
+        "signal_bar_date": "2026-09-28T00:00:00",
+        "signal_bar_index": 1884.0,
+        "triggered": true
+      },
+      "market": {
+        "close": 17.95,
+        "atr": 1.7500656258614928,
+        "ema50": 16.019711855552398,
+        "ema200": 234.27461222921193,
+        "rsi": 58.33985612188937
+      },
+      "level": {
+        "price": 14.85,
+        "level_type": "support",
+        "zone_low": null,
+        "zone_high": null
+      },
+      "trade_plan": {
+        "entry": 15.725032812930746,
+        "stop": 11.582483593534626,
+        "target": 24.010131251722985,
+        "rr": 2.0,
+        "reward_risk": 2.0,
+        "quantity": 120.0
+      },
+      "quality": {
+        "score": 75.99810695028238
+      },
+      "evidence": {
+        "candidate": true,
+        "side": 1,
+        "triggered": true,
+        "gap_atr": 0.0,
+        "chase_atr": -0.20286828544271115,
+        "overextended": false,
+        "regime_ok": true,
+        "rsi_ok": true,
+        "qty": 120.0,
+        "ema50": 16.019711855552398,
+        "ema200": 234.27461222921193,
+        "rsi": 58.33985612188937,
+        "authoritative_function": "market_screener_lp_prb_strategy_2.prepare",
+        "strategy_params": {
+          "lp1": false,
+          "lp2": true,
+          "prb1": false,
+          "prb2": false,
+          "side": "Long Only",
+          "pivot_k": 5,
+          "min_touches": 2,
+          "touch_lookback": 120,
+          "level_tol_atr": 0.1,
+          "open_tol_atr": 0.15,
+          "allow_role_flip": true,
+          "atr_length": 14,
+          "volume_length": 20,
+          "entry_atr_pct": 0.5,
+          "lp1_delta_break": 0.05,
+          "lp1_delta_close": 0.03,
+          "lp2_delta_break": 0.05,
+          "lp2_delta_close": 0.03,
+          "prb1_delta_break": 0.05,
+          "prb1_delta_close": 0.05,
+          "prb2_delta_break": 0.05,
+          "prb2_delta_close": 0.05,
+          "prb2_hold_epsilon_atr": 0.05,
+          "range_cap": 2.5,
+          "two_bar_range_cap": 4.0,
+          "lp1_volume_mult": 1.0,
+          "lp2_volume_mult": 1.0,
+          "prb_volume_mult": 1.2,
+          "approach_lookback": 4,
+          "approach_min_atr": 0.05,
+          "lp2_overextended_atr": 1.2,
+          "rr": 2.0,
+          "stop_buffer_atr": 0.25,
+          "stop_variant": "Strategy Default",
+          "gap_max_atr": 1.2,
+          "chase_max_atr": 0.3,
+          "sizing_equity": 100000.0,
+          "risk_pct": 0.005,
+          "max_shares": 10000,
+          "min_score": 0.0,
+          "require_trigger": true,
+          "close_on_opposite": true,
+          "ema_regime": "Off",
+          "rsi_filter": "Off",
+          "max_signal_atr": 0.0,
+          "trend_exit": false,
+          "prb1_regime": "Off",
+          "exclude_long_prb2": false,
+          "exclude_long_prb1": false,
+          "exclude_short_prb1": false,
+          "exclude_short_prb2": false
+        },
+        "explainability_schema_version": "1.0"
+      },
+      "pattern_definition": {
+        "strategy": "LP2",
+        "direction": "LONG",
+        "pattern_family": "level_reclaim_two_bar",
+        "semantic_steps": [
+          "price approaches an eligible level from above",
+          "the penetration bar trades and closes below the level",
+          "the reclaim bar closes back above the level and passes volume/range conditions",
+          "the following signal bar reaches the planned entry trigger"
+        ]
+      },
+      "pattern_bars": {
+        "bar_1": {
+          "date": "2026-09-24",
+          "timestamp": "2026-09-24T00:00:00",
+          "index": 1882,
+          "role": "penetration_bar",
+          "open": 15.1,
+          "high": 15.25,
+          "low": 12.02,
+          "close": 14.03,
+          "volume": 1425718.0
+        },
+        "bar_2": {
+          "date": "2026-09-25",
+          "timestamp": "2026-09-25T00:00:00",
+          "index": 1883,
+          "role": "reclaim_bar",
+          "open": 13.97,
+          "high": 16.01,
+          "low": 13.97,
+          "close": 15.37,
+          "volume": 142503.0
+        },
+        "signal_bar": {
+          "date": "2026-09-28",
+          "timestamp": "2026-09-28T00:00:00",
+          "index": 1884,
+          "role": "trigger_bar",
+          "open": 15.37,
+          "high": 18.78,
+          "low": 15.25,
+          "close": 17.95,
+          "volume": 303456.0
+        }
+      },
+      "trigger_evidence": {
+        "level_available": true,
+        "approach_from_above": true,
+        "pre_pattern_close_at_or_above_level": true,
+        "volume_valid": true,
+        "penetrated_below_level": true,
+        "penetration_close_below_level": true,
+        "reclaim_close_above_level": true,
+        "two_bar_range_valid": true,
+        "pattern_confirmation_valid": true,
+        "entry_triggered": true,
+        "score_threshold_passed": true,
+        "stop_valid": true,
+        "quantity_valid": true,
+        "gap_filter_passed": true,
+        "chase_filter_passed": true,
+        "overextended": false,
+        "overextended_filter_passed": true,
+        "trigger_requirement_passed": true,
+        "regime_ok": true,
+        "rsi_ok": true,
+        "gap_atr": 0.0,
+        "chase_atr": -0.20286828544271115
+      },
+      "rejection_evidence": [],
+      "chart_annotations": [
+        {
+          "date": "2026-09-24",
+          "timestamp": "2026-09-24T00:00:00",
+          "index": 1882,
+          "bar_key": "bar_1",
+          "role": "penetration_bar",
+          "label": "Penetration",
+          "type": "bar_marker"
+        },
+        {
+          "date": "2026-09-25",
+          "timestamp": "2026-09-25T00:00:00",
+          "index": 1883,
+          "bar_key": "bar_2",
+          "role": "reclaim_bar",
+          "label": "Reclaim",
+          "type": "bar_marker"
+        },
+        {
+          "date": "2026-09-28",
+          "timestamp": "2026-09-28T00:00:00",
+          "index": 1884,
+          "bar_key": "signal_bar",
+          "role": "trigger_bar",
+          "label": "Signal",
+          "type": "bar_marker"
+        },
+        {
+          "price": 14.85,
+          "label": "Level",
+          "type": "horizontal_level"
+        },
+        {
+          "price": 15.725032812930746,
+          "label": "Entry",
+          "type": "trade_line"
+        },
+        {
+          "price": 11.582483593534626,
+          "label": "Stop",
+          "type": "trade_line"
+        },
+        {
+          "price": 24.010131251722985,
+          "label": "Target",
+          "type": "trade_line"
+        }
+      ],
+      "reason_codes": [],
+      "rejection_reasons": [],
+      "data": {
+        "first_bar_timestamp": "2019-03-29 00:00:00",
+        "last_bar_timestamp": "2026-09-28 00:00:00",
+        "last_bar_closed": true,
+        "bars_used": 1885,
+        "data_source": "Trading Bot persisted bar store (memory/bars via src.mcp.trading_data_service)",
+        "input_hash": "a8f0a185b210c5b36ece2cc7e45a9f054cddec86b5b65c706d8e6da0dd54b12c"
+      },
+      "warnings": [],
+      "schema_version": "1.1"
+    },
+    {
+      "run_id": "scan_20261003T173513Z_791820",
+      "symbol": "V",
+      "strategy_id": "lp1",
+      "strategy_version": "market-screener-lp-prb-strategy-2",
+      "direction": "LONG",
+      "timeframe": "1D",
+      "as_of": "2026-09-28 00:00:00",
+      "status": "ENTRY_SIGNAL",
+      "matched": true,
+      "signal": {
+        "pattern": "LP1",
+        "signal_bar": "2026-09-28T00:00:00",
+        "signal_bar_date": "2026-09-28T00:00:00",
+        "signal_bar_index": 533.0,
+        "triggered": true
+      },
+      "market": {
+        "close": 367.74,
+        "atr": 5.952242841824288,
+        "ema50": 365.0262039502294,
+        "ema200": 344.75010266456945,
+        "rsi": 48.38684227141915
+      },
+      "level": {
+        "price": 365.52,
+        "level_type": "support",
+        "zone_low": null,
+        "zone_high": null
+      },
+      "trade_plan": {
+        "entry": 368.4961214209121,
+        "stop": 362.30193928954395,
+        "target": 380.88448568364845,
+        "rr": 2.0,
+        "reward_risk": 2.0,
+        "quantity": 80.0
+      },
+      "quality": {
+        "score": 87.83998404000984
+      },
+      "evidence": {
+        "candidate": true,
+        "side": 1,
+        "triggered": true,
+        "gap_atr": 0.11424265072350365,
+        "chase_atr": -0.30175540021509617,
+        "overextended": false,
+        "regime_ok": true,
+        "rsi_ok": true,
+        "qty": 80.0,
+        "ema50": 365.0262039502294,
+        "ema200": 344.75010266456945,
+        "rsi": 48.38684227141915,
+        "authoritative_function": "market_screener_lp_prb_strategy_2.prepare",
+        "strategy_params": {
+          "lp1": true,
+          "lp2": false,
+          "prb1": false,
+          "prb2": false,
+          "side": "Long Only",
+          "pivot_k": 5,
+          "min_touches": 2,
+          "touch_lookback": 120,
+          "level_tol_atr": 0.1,
+          "open_tol_atr": 0.15,
+          "allow_role_flip": true,
+          "atr_length": 14,
+          "volume_length": 20,
+          "entry_atr_pct": 0.5,
+          "lp1_delta_break": 0.05,
+          "lp1_delta_close": 0.03,
+          "lp2_delta_break": 0.05,
+          "lp2_delta_close": 0.03,
+          "prb1_delta_break": 0.05,
+          "prb1_delta_close": 0.05,
+          "prb2_delta_break": 0.05,
+          "prb2_delta_close": 0.05,
+          "prb2_hold_epsilon_atr": 0.05,
+          "range_cap": 2.5,
+          "two_bar_range_cap": 4.0,
+          "lp1_volume_mult": 1.0,
+          "lp2_volume_mult": 1.0,
+          "prb_volume_mult": 1.2,
+          "approach_lookback": 4,
+          "approach_min_atr": 0.05,
+          "lp2_overextended_atr": 1.2,
+          "rr": 2.0,
+          "stop_buffer_atr": 0.25,
+          "stop_variant": "Strategy Default",
+          "gap_max_atr": 1.2,
+          "chase_max_atr": 0.3,
+          "sizing_equity": 100000.0,
+          "risk_pct": 0.005,
+          "max_shares": 10000,
+          "min_score": 0.0,
+          "require_trigger": true,
+          "close_on_opposite": true,
+          "ema_regime": "Off",
+          "rsi_filter": "Off",
+          "max_signal_atr": 0.0,
+          "trend_exit": false,
+          "prb1_regime": "Off",
+          "exclude_long_prb2": false,
+          "exclude_long_prb1": false,
+          "exclude_short_prb1": false,
+          "exclude_short_prb2": false
+        },
+        "explainability_schema_version": "1.0"
+      },
+      "pattern_definition": {
+        "strategy": "LP1",
+        "direction": "LONG",
+        "pattern_family": "level_reclaim",
+        "semantic_steps": [
+          "price approaches an eligible level from above",
+          "one bar penetrates below the level and closes back above it",
+          "the reclaim bar passes range, wick, close-position, and volume conditions",
+          "the following signal bar reaches the planned entry trigger"
+        ]
+      },
+      "pattern_bars": {
+        "bar_1": {
+          "date": "2026-09-25",
+          "timestamp": "2026-09-25T00:00:00",
+          "index": 532,
+          "role": "penetration_reclaim_bar",
+          "open": 366.02,
+          "high": 368.34,
+          "low": 363.79,
+          "close": 367.38,
+          "volume": 2624529.0
+        },
+        "signal_bar": {
+          "date": "2026-09-28",
+          "timestamp": "2026-09-28T00:00:00",
+          "index": 533,
+          "role": "trigger_bar",
+          "open": 366.7,
+          "high": 370.5,
+          "low": 366.06,
+          "close": 367.74,
+          "volume": 2992250.0
+        }
+      },
+      "trigger_evidence": {
+        "level_available": true,
+        "approach_from_above": true,
+        "prior_close_at_or_above_level": true,
+        "volume_valid": true,
+        "signal_open_at_or_above_level": true,
+        "penetrated_below_level": true,
+        "closed_back_above_level": true,
+        "signal_range_valid": true,
+        "lower_wick_at_least_body": true,
+        "close_position_valid": true,
+        "pattern_confirmation_valid": true,
+        "entry_triggered": true,
+        "score_threshold_passed": true,
+        "stop_valid": true,
+        "quantity_valid": true,
+        "gap_filter_passed": true,
+        "chase_filter_passed": true,
+        "overextended": false,
+        "overextended_filter_passed": true,
+        "trigger_requirement_passed": true,
+        "regime_ok": true,
+        "rsi_ok": true,
+        "gap_atr": 0.11424265072350365,
+        "chase_atr": -0.30175540021509617
+      },
+      "rejection_evidence": [],
+      "chart_annotations": [
+        {
+          "date": "2026-09-25",
+          "timestamp": "2026-09-25T00:00:00",
+          "index": 532,
+          "bar_key": "bar_1",
+          "role": "penetration_reclaim_bar",
+          "label": "Penetration / Reclaim",
+          "type": "bar_marker"
+        },
+        {
+          "date": "2026-09-28",
+          "timestamp": "2026-09-28T00:00:00",
+          "index": 533,
+          "bar_key": "signal_bar",
+          "role": "trigger_bar",
+          "label": "Signal",
+          "type": "bar_marker"
+        },
+        {
+          "price": 365.52,
+          "label": "Level",
+          "type": "horizontal_level"
+        },
+        {
+          "price": 368.4961214209121,
+          "label": "Entry",
+          "type": "trade_line"
+        },
+        {
+          "price": 362.30193928954395,
+          "label": "Stop",
+          "type": "trade_line"
+        },
+        {
+          "price": 380.88448568364845,
+          "label": "Target",
+          "type": "trade_line"
+        }
+      ],
+      "reason_codes": [],
+      "rejection_reasons": [],
+      "data": {
+        "first_bar_timestamp": "2024-08-12 00:00:00",
+        "last_bar_timestamp": "2026-09-28 00:00:00",
+        "last_bar_closed": true,
+        "bars_used": 534,
+        "data_source": "Trading Bot persisted bar store (memory/bars via src.mcp.trading_data_service)",
+        "input_hash": "d53465d602ec948c10380075dd64d06374fc0ff106d1750faa8632368bc41e23"
+      },
+      "warnings": [],
+      "schema_version": "1.1"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "run_id": "scan_20261001T163406Z_36214b",
+  "errors": [
+    {
+      "symbol": "AAPL",
+      "scope": "symbol",
+      "reason": "DataError",
+      "message": "Maximum candles is 500"
+    },
+    {
+      "symbol": "MAAS",
+      "scope": "symbol",
+      "reason": "DataError",
+      "message": "Maximum candles is 500"
+    },
+    {
+      "symbol": "V",
+      "scope": "symbol",
+      "reason": "DataError",
+      "message": "Maximum candles is 500"
+    }
+  ]
+}

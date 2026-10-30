@@ -1,1 +1,1 @@
-"""Streamlit dashboard package for the IBKR Gerchik Bot."""
+"""Streamlit dashboard package for Vitaly's Trading Bot."""

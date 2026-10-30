@@ -1,0 +1,24 @@
+INFO:     Started server process [38144]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-08-24 10:05:18 | INFO | ibkr-gerchik-bot | Queued place request 5a1de07ba984 for XP (live=False)
+2026-08-24 10:07:24 | INFO | ibkr-gerchik-bot | Queued place request df5c5379f4d0 for PG (live=False)
+2026-08-24 11:24:43 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-08-24 11:24:43 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-08-24 11:24:43 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-08-24 11:25:20 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-08-24 11:25:21 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-08-24 11:25:21 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-08-24 11:25:51 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-08-24 11:25:51 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-08-24 11:25:51 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-08-24 11:26:20 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-08-24 11:26:21 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-08-24 11:26:21 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-08-24 11:26:50 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-08-24 11:26:51 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-08-24 11:26:51 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+2026-08-24 11:27:21 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-08-24 11:27:21 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+2026-08-24 11:27:22 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.

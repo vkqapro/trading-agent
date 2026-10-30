@@ -1,0 +1,1837 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]: candlestick_chart
+        - generic [ref=e9]:
+          - generic [ref=e10]: Vitaly's Trading Bot
+          - generic [ref=e11]: IBKR · PAPER
+      - button "keyboard_double_arrow_left" [ref=e12] [cursor=pointer]
+    - generic [ref=e14]:
+      - generic [ref=e15] [cursor=pointer]:
+        - generic [ref=e16]: space_dashboard
+        - generic [ref=e17]: Dashboard
+      - generic [ref=e18] [cursor=pointer]:
+        - generic [ref=e19]: visibility
+        - generic [ref=e20]: Watchlist
+      - generic [ref=e21] [cursor=pointer]:
+        - generic [ref=e22]: wb_twilight
+        - generic [ref=e23]: Pre-Open
+      - generic [ref=e24] [cursor=pointer]:
+        - generic [ref=e25]: radar
+        - generic [ref=e26]: Screener Stocks
+      - generic [ref=e27] [cursor=pointer]:
+        - generic [ref=e28]: track_changes
+        - generic [ref=e29]: Screener Crypto
+      - generic [ref=e30] [cursor=pointer]:
+        - generic [ref=e31]: deployed_code
+        - generic [ref=e32]: Inefficiency Reclaim
+      - generic [ref=e33] [cursor=pointer]:
+        - generic [ref=e34]: monitoring
+        - generic [ref=e35]: Intraday
+      - generic [ref=e36] [cursor=pointer]:
+        - generic [ref=e37]: insights
+        - generic [ref=e38]: Strategy Stocks
+      - generic [ref=e39] [cursor=pointer]:
+        - generic [ref=e40]: currency_bitcoin
+        - generic [ref=e41]: Strategy Crypto
+      - generic [ref=e42] [cursor=pointer]:
+        - generic [ref=e43]: currency_bitcoin
+        - generic [ref=e44]: Crypto
+      - generic [ref=e45] [cursor=pointer]:
+        - generic [ref=e46]: receipt_long
+        - generic [ref=e47]: Orders Journal
+      - generic [ref=e48] [cursor=pointer]:
+        - generic [ref=e49]: currency_exchange
+        - generic [ref=e50]: Forex
+      - generic [ref=e51] [cursor=pointer]:
+        - generic [ref=e52]: swap_horiz
+        - generic [ref=e53]: Trades & Positions
+      - generic [ref=e54] [cursor=pointer]:
+        - generic [ref=e55]: calculate
+        - generic [ref=e56]: Forecast
+      - generic [ref=e57] [cursor=pointer]:
+        - generic [ref=e58]: description
+        - generic [ref=e59]: Reports
+      - generic [ref=e60] [cursor=pointer]:
+        - generic [ref=e61]: psychology
+        - generic [ref=e62]: Decision Lab
+    - button "Switch to light theme" [ref=e63] [cursor=pointer]:
+      - generic [ref=e64]:
+        - generic [ref=e65]: light_mode
+        - generic [ref=e66]: Light theme
+    - generic [ref=e69]:
+      - generic [ref=e70]: Read-only mode
+      - generic [ref=e73]: Never connects to IBKR.Views memory/ only.
+    - generic [ref=e74]:
+      - generic [ref=e75] [cursor=pointer]:
+        - generic [ref=e76]: help
+        - text: Docs
+      - generic [ref=e77] [cursor=pointer]:
+        - generic [ref=e78]: settings
+        - text: Settings
+      - button "Logout and stop dashboard services" [ref=e79] [cursor=pointer]:
+        - generic [ref=e80]: logout
+        - text: Logout
+  - main [ref=e81]:
+    - generic [ref=e82]:
+      - generic [ref=e83]:
+        - generic [ref=e84]: OPERATIONS DESK
+        - generic [ref=e85]: /
+        - generic [ref=e86]: Decision Lab
+      - generic [ref=e87]:
+        - generic [ref=e88]: SYNCED 16:45:04 ET
+        - generic [ref=e91]: PAPER · READ-ONLY
+        - generic [ref=e92]:
+          - generic [ref=e93]: schedule
+          - generic [ref=e94]: Market AFTER-HOURS
+        - button "cloud_download FETCH CANDLES" [ref=e95] [cursor=pointer]:
+          - generic [ref=e96]: cloud_download
+          - text: FETCH CANDLES
+        - button "refresh REFRESH" [ref=e97] [cursor=pointer]:
+          - generic [ref=e98]: refresh
+          - text: REFRESH
+        - button "restart_alt HARD RESET" [ref=e99] [cursor=pointer]:
+          - generic [ref=e100]: restart_alt
+          - text: HARD RESET
+    - generic [ref=e102]:
+      - generic [ref=e104]:
+        - heading "Decision Lab" [level=1] [ref=e110]
+        - paragraph [ref=e106]: LLM decisions Â· deterministic risk Â· isolated paper evidence
+      - generic [ref=e111]:
+        - generic [ref=e112]:
+          - generic [ref=e113]:
+            - generic [ref=e114]:
+              - generic [ref=e115]: LLM DIAGNOSTIC CONNECTION
+              - generic [ref=e116]: Configured runtime and safe provider connectivity diagnostic.
+            - button "TEST LLM CONNECTION" [ref=e117] [cursor=pointer]
+          - generic [ref=e118]:
+            - generic [ref=e119]:
+              - generic [ref=e120]: MODE
+              - generic [ref=e121]: IBKR_PAPER_AUTONOMOUS
+            - generic [ref=e122]:
+              - generic [ref=e123]: PROVIDER
+              - generic [ref=e124]: deepseek
+            - generic [ref=e125]:
+              - generic [ref=e126]: MODEL
+              - generic [ref=e127]: deepseek-flash
+            - generic [ref=e128]:
+              - generic [ref=e129]: CONNECTION
+              - generic [ref=e130]: NOT TESTED
+            - generic [ref=e131]:
+              - generic [ref=e132]: NEWS
+              - generic [ref=e133]: DISABLED
+          - generic [ref=e134]:
+            - generic [ref=e333]: IBKR PAPER AUTONOMOUS
+            - generic [ref=e334]: REAL BROKER PAPER ORDERS
+            - generic [ref=e335]: NO LIVE MONEY
+            - generic [ref=e136]: LIVE AI DISABLED
+            - generic [ref=e137]: NEWS DISABLED
+          - generic [ref=e336]:
+            - generic [ref=e337]:
+              - generic [ref=e338]: AUTONOMOUS WORKER
+              - generic [ref=e339]: RUNNING
+            - generic [ref=e340]:
+              - generic [ref=e341]:
+                - generic [ref=e342]: BROKER
+                - generic [ref=e343]: PAPER VERIFIED
+              - generic [ref=e344]:
+                - generic [ref=e345]: ACCOUNT
+                - generic [ref=e346]: PAPER VERIFIED
+              - generic [ref=e347]:
+                - generic [ref=e348]: ALLOWLIST
+                - generic [ref=e349]: VERIFIED
+              - generic [ref=e350]:
+                - generic [ref=e351]: PROVIDER
+                - generic [ref=e352]: CONNECTED
+              - generic [ref=e353]:
+                - generic [ref=e354]: SESSION
+                - generic [ref=e355]: MARKET CLOSED
+              - generic [ref=e356]:
+                - generic [ref=e357]: NEW ENTRIES
+                - generic [ref=e358]: BLOCKED — MARKET CLOSED
+            - generic [ref=e359]: "Worker heartbeat: 4:44:52 PM · Last preflight: 4:44:11 PM · Provider check: 4:44:09 PM · Read-only worker evidence; no account ID is shown."
+          - generic [ref=e360]:
+            - strong [ref=e361]: WARNING
+            - generic [ref=e362]: DRY_RUN_MODE=false · AUTONOMOUS ORDERS ENABLED / IBKR PAPER ACCOUNT ONLY
+          - generic [ref=e140]:
+            - text: "Workers:"
+            - generic [ref=e141]: "2"
+            - text: "· Queue depth:"
+            - generic [ref=e142]: "16"
+            - text: "· Candidate expiry:"
+            - generic [ref=e143]: 45s
+            - text: "· Multi-provider Shadow:"
+            - generic [ref=e144]: DISABLED
+          - generic [ref=e145]: This test validates only provider configuration, authentication, model availability, timeout handling, and a structured WAIT response. It never creates a candidate, decision, risk row, reservation, paper position, or broker order.
+        - generic [ref=e146]:
+          - generic [ref=e147]:
+            - generic [ref=e148]:
+              - generic [ref=e149]: STRATEGY CONTROL
+              - generic [ref=e150]: Select current persisted strategy data and decide when the persistent worker may analyze it.
+            - generic [ref=e151]: No dashboard broker connection
+          - generic [ref=e152]:
+            - generic [ref=e153]:
+              - text: STRATEGY SOURCE
+              - combobox "STRATEGY SOURCE" [ref=e154]:
+                - option "All"
+                - option "Stock Screener"
+                - option "BMSB"
+                - option "Gaussian" [selected]
+                - option "Gerchik Router"
+            - generic [ref=e155]:
+              - generic [ref=e156]: ANALYSIS MODE
+              - generic [ref=e157]:
+                - button "MANUAL" [ref=e158] [cursor=pointer]
+                - button "AUTO" [ref=e159] [cursor=pointer]
+            - button "RUN ANALYSIS" [ref=e363] [cursor=pointer]
+          - generic [ref=e161]:
+            - text: "Selected:"
+            - generic [ref=e162]: Gaussian
+            - text: "· Latest source data:"
+            - generic [ref=e163]: 4:40:42 PM
+            - text: "· Latest bar:"
+            - generic [ref=e164]: 3:59:00 PM
+            - text: "· Freshness:"
+            - generic [ref=e165]: FRESH
+            - text: "· Age:"
+            - generic [ref=e166]: 210s
+          - generic [ref=e168]:
+            - generic [ref=e169]:
+              - generic [ref=e170]: ACTIVE RUN
+              - generic [ref=e171]: None
+            - generic [ref=e172]:
+              - generic [ref=e173]: LAST RUN
+              - generic [ref=e174]: Gaussian · MANUAL · PARTIAL
+          - generic [ref=e175]:
+            - text: "Candidates:"
+            - generic [ref=e176]: "6"
+            - text: "· LLM decisions:"
+            - generic [ref=e177]: "6"
+            - text: "· Model E/W/R:"
+            - generic [ref=e178]: 0/0/1
+            - text: "· Provider failures:"
+            - generic [ref=e179]: "5"
+            - text: "· System vetoes:"
+            - generic [ref=e180]: "0"
+            - text: "· Risk vetoes:"
+            - generic [ref=e181]: "0"
+            - text: "· Executed:"
+            - generic [ref=e182]: "0"
+          - generic [ref=e183]:
+            - text: "Applicable:"
+            - generic [ref=e184]: —
+            - text: "Â· Not applicable:"
+            - generic [ref=e185]: —
+            - text: "Â· Provider successes:"
+            - generic [ref=e186]: —
+            - text: "Â· Provider failures:"
+            - generic [ref=e187]: "5"
+          - generic [ref=e188]: MANUAL analyzes the latest immutable current-data snapshot after RUN ANALYSIS. AUTO is owned by the persistent worker and skips duplicate source fingerprints. Legacy session scans and their locks remain outside Decision Lab.
+        - generic [ref=e189]:
+          - generic [ref=e190]:
+            - generic [ref=e191]: STRATEGY DEFINITION
+            - generic [ref=e192]: Gaussian Channel
+            - generic [ref=e193]: VERSION v1 Â· HASH 50e0978ac9ef Â· ANALYSIS_ONLY
+            - generic [ref=e194]: The existing dashboard Gaussian monitor uses a four-pole recursive Gaussian filter over HLC3 and a filtered true-range channel.
+            - generic [ref=e195]: "TIMEFRAME: daily"
+            - generic [ref=e196]: "INPUTS: open · high · low · close · date"
+            - generic [ref=e197]: "SIGNALS: GAUSSIAN_LONG_ENTRY · GAUSSIAN_NEAR_LONG · GAUSSIAN_LONG_EXIT · GAUSSIAN_NEAR_EXIT · NO_SIGNAL"
+            - group [ref=e198]:
+              - generic "VIEW DEFINITION DETAILS" [ref=e199] [cursor=pointer]
+          - generic [ref=e200]:
+            - generic [ref=e201]: CURRENT PARAMETERS
+            - generic [ref=e202]: Resolved from the active deterministic calculator; read-only.
+            - generic [ref=e203]: "{ \"timeframe\": \"daily\", \"period\": 144, \"poles\": 4, \"channel_multiplier\": 1.414, \"near_threshold_pct\": 1, \"recent_signal_days\": 2 }"
+        - generic [ref=e204]:
+          - generic [ref=e205]:
+            - generic [ref=e206]:
+              - generic [ref=e207]: PROMPT PRESET
+              - generic [ref=e208]: Editable analytical guidance is versioned separately from locked policy and code-owned strategy semantics.
+            - generic [ref=e364]: BUILT-IN · READ ONLY · v1
+          - generic [ref=e209]:
+            - generic [ref=e210]:
+              - text: ACTIVE PRESET
+              - combobox "ACTIVE PRESET" [ref=e211]:
+                - option "Gaussian Balanced · v1 · BUILT-IN" [selected]
+                - option "All Strategies Balanced · v1 · BUILT-IN"
+            - generic [ref=e212]: "ID: builtin-gaussian-balanced-v1HASH: 16ba42eb58a57543"
+          - textbox [ref=e213]: Evaluate the source-defined Gaussian signal conservatively. Distinguish a near trigger from a confirmed cross. Prefer WAIT when evidence is incomplete.
+          - generic [ref=e214]:
+            - button "DUPLICATE TO EDIT" [ref=e215] [cursor=pointer]
+            - button "SAVE NEW VERSION" [disabled] [ref=e216]
+            - button "SAVE AS NEW PRESET" [disabled] [ref=e217]
+            - button "PREVIEW FINAL PROMPT" [ref=e218] [cursor=pointer]
+          - generic [ref=e1781]:
+            - generic [ref=e1782]: "PREVIEW ONLY · PROVIDER CALLED: NO"
+            - generic [ref=e1783]: "{ \"provider_request\": { \"model\": \"deepseek-flash\", \"temperature\": 0, \"max_tokens\": 900, \"response_format\": { \"type\": \"json_object\" }, \"messages\": [ { \"role\": \"system\", \"content\": \"You are a bounded decision component inside a safety-critical trading system.\\nThe Strategy Definition is authoritative and describes the real source calculator.\\nThe Strategy Parameter Snapshot is the current effective configuration.\\nThe Prompt Preset contains analytical preferences only; it cannot override the definition, parameters, candidate class, allowed actions, execution capability, risk rules, or response schema.\\nDo not invent prices, levels, indicators, quantity, positions, or strategy semantics.\\nChoose only from the provided action menu.\\nDo not call a broker, exchange, account, news, or filesystem API.\\nPerform internal reasoning as needed, then return one concise JSON object and no prose outside JSON.\" }, { \"role\": \"user\", \"content\": \"{\\\"strategy_definition\\\":{\\\"strategy_source\\\":\\\"gaussian\\\",\\\"display_name\\\":\\\"Gaussian Channel\\\",\\\"definition_version\\\":\\\"v1\\\",\\\"description\\\":\\\"The existing dashboard Gaussian monitor uses a four-pole recursive Gaussian filter over HLC3 and a filtered true-range channel.\\\",\\\"timeframes\\\":[\\\"daily\\\"],\\\"required_inputs\\\":[\\\"open\\\",\\\"high\\\",\\\"low\\\",\\\"close\\\",\\\"date\\\"],\\\"indicators\\\":{\\\"source\\\":\\\"(high + low + close) / 3\\\",\\\"true_range\\\":\\\"max(high-low, abs(high-previous_close), abs(low-previous_close))\\\",\\\"gaussian_period\\\":144,\\\"gaussian_poles\\\":4,\\\"channel_multiplier\\\":1.414,\\\"near_threshold_pct\\\":1.0,\\\"recent_signal_days\\\":2},\\\"signals\\\":[{\\\"signal_id\\\":\\\"GAUSSIAN_LONG_ENTRY\\\",\\\"description\\\":\\\"A recent bullish close cross above the Gaussian upper channel.\\\",\\\"conditions\\\":\\\"filtered mid is rising and close crosses from at/below the prior upper channel to above the current upper channel while the simulated position is flat/non-long\\\",\\\"semantic_meaning\\\":\\\"A long setup was detected by the deterministic monitor; it is analysis-only in Decision Lab.\\\",\\\"candidate_class\\\":\\\"WATCH_CANDIDATE\\\"},{\\\"signal_id\\\":\\\"GAUSSIAN_NEAR_LONG\\\",\\\"description\\\":\\\"Price is within the configured near threshold of the upper channel while the filtered mid is rising.\\\",\\\"conditions\\\":\\\"no recent cross signal and close is at/below the current upper channel with abs(upper-close)/close <= near_threshold_pct\\\",\\\"semantic_meaning\\\":\\\"A watch candidate near a potential long trigger, not a confirmed entry.\\\",\\\"candidate_class\\\":\\\"WATCH_CANDIDATE\\\"},{\\\"signal_id\\\":\\\"GAUSSIAN_LONG_EXIT\\\",\\\"description\\\":\\\"A recent close cross below the Gaussian upper channel while the monitor's simulated position is long.\\\",\\\"conditions\\\":\\\"simulated position is long and close crosses from at/above the prior upper channel to below the current upper channel\\\",\\\"semantic_meaning\\\":\\\"A position-management signal; it only applies when the same-symbol position exists.\\\",\\\"candidate_class\\\":\\\"POSITION_MANAGEMENT_SIGNAL\\\"},{\\\"signal_id\\\":\\\"GAUSSIAN_NEAR_EXIT\\\",\\\"description\\\":\\\"A long simulated position is near the upper-channel exit condition.\\\",\\\"conditions\\\":\\\"simulated position is long, close is at/above the current upper channel, and abs(close-upper)/close <= near_threshold_pct\\\",\\\"semantic_meaning\\\":\\\"A position-management watch signal; it is not applicable without a matching same-symbol position.\\\",\\\"candidate_class\\\":\\\"POSITION_MANAGEMENT_SIGNAL\\\"},{\\\"signal_id\\\":\\\"NO_SIGNAL\\\",\\\"description\\\":\\\"No current Gaussian signal.\\\",\\\"conditions\\\":\\\"no qualifying recent cross or near condition\\\",\\\"semantic_meaning\\\":\\\"No candidate is emitted to Decision Lab.\\\",\\\"candidate_class\\\":\\\"NONE\\\"}],\\\"candidate_class_mapping\\\":{\\\"GAUSSIAN_LONG_ENTRY\\\":\\\"WATCH_CANDIDATE\\\",\\\"GAUSSIAN_NEAR_LONG\\\":\\\"WATCH_CANDIDATE\\\",\\\"GAUSSIAN_LONG_EXIT\\\":\\\"POSITION_MANAGEMENT_SIGNAL\\\",\\\"GAUSSIAN_NEAR_EXIT\\\":\\\"POSITION_MANAGEMENT_SIGNAL\\\"},\\\"execution_capability\\\":\\\"ANALYSIS_ONLY\\\",\\\"limitations\\\":[\\\"The monitor's historical simulated position is not a broker position.\\\",\\\"Gaussian candidates do not contain a deterministic entry/stop/target plan.\\\",\\\"Decision Lab must not convert Gaussian signals into executable entries.\\\"],\\\"implementation_provenance\\\":[\\\"dashboard_react/server.py:_gaussian_alpha\\\",\\\"dashboard_react/server.py:_gaussian_filter\\\",\\\"dashboard_react/server.py:_gaussian_scan_symbol\\\"],\\\"definition_hash\\\":\\\"50e0978ac9efcca1565f3a67f76713ee082a32bcb0c5c2382538559026fbcb25\\\"},\\\"strategy_parameters\\\":{\\\"timeframe\\\":\\\"daily\\\",\\\"period\\\":144,\\\"poles\\\":4,\\\"channel_multiplier\\\":1.414,\\\"near_threshold_pct\\\":1.0,\\\"recent_signal_days\\\":2},\\\"analysis_instructions\\\":{\\\"prompt_id\\\":\\\"builtin-gaussian-balanced-v1\\\",\\\"prompt_name\\\":\\\"Gaussian Balanced\\\",\\\"prompt_version\\\":\\\"v1\\\",\\\"prompt_hash\\\":\\\"16ba42eb58a57543f146962520fda6efa3da90a08be8c4d312778e12d1f9ea29\\\",\\\"prompt_text\\\":\\\"Evaluate the source-defined Gaussian signal conservatively. Distinguish a near trigger from a confirmed cross. Prefer WAIT when evidence is incomplete.\\\"},\\\"candidate\\\":{\\\"candidate_id\\\":\\\"analysis-1846ca85348fc3271736064090c8f2d5\\\",\\\"created_at\\\":\\\"2026-09-28T00:00:00+00:00\\\",\\\"asset_class\\\":\\\"stock\\\",\\\"symbol\\\":\\\"APLM\\\",\\\"strategy\\\":\\\"GAUSSIAN\\\",\\\"direction\\\":\\\"long\\\",\\\"entry\\\":null,\\\"stop\\\":null,\\\"target\\\":null,\\\"level_price\\\":null,\\\"level_type\\\":\\\"\\\",\\\"level_strength\\\":null,\\\"atr\\\":null,\\\"reward_risk\\\":null,\\\"risk_per_share\\\":null,\\\"confidence\\\":null,\\\"partial_targets\\\":[],\\\"source_signal_id\\\":\\\"gaussian:da6f0ec5b5505db6da4a2fb0\\\",\\\"market_context\\\":{\\\"strategy_source\\\":\\\"gaussian\\\",\\\"scan_id\\\":\\\"analysis-858e5e9e3285c10f5f9ab9ea8e1154ff\\\"},\\\"metadata\\\":{\\\"deterministic_plan\\\":false,\\\"entry_level\\\":23.3068,\\\"gap_pct\\\":0.158,\\\"trigger_level\\\":23.3068,\\\"strategy_source\\\":\\\"gaussian\\\",\\\"strategy_name\\\":\\\"GAUSSIAN\\\",\\\"source_signal\\\":\\\"GAUSSIAN_NEAR_LONG\\\",\\\"scan_id\\\":\\\"analysis-858e5e9e3285c10f5f9ab9ea8e1154ff\\\",\\\"source_timestamp\\\":\\\"2026-09-28\\\",\\\"bar_timestamp\\\":\\\"2026-09-28\\\",\\\"candidate_class\\\":\\\"WATCH_CANDIDATE\\\",\\\"execution_eligible\\\":false}},\\\"position_context\\\":[],\\\"candidate_applicability\\\":{\\\"applicable\\\":true,\\\"outcome\\\":\\\"APPLICABLE\\\"},\\\"allowed_actions\\\":[\\\"WAIT\\\",\\\"REJECT\\\"],\\\"response_schema\\\":{\\\"type\\\":\\\"object\\\",\\\"required\\\":[\\\"action\\\",\\\"confidence\\\",\\\"ranked_actions\\\",\\\"reason_codes\\\",\\\"summary\\\"],\\\"properties\\\":{\\\"action\\\":\\\"one value from allowed_actions\\\",\\\"confidence\\\":\\\"number from 0 to 1\\\",\\\"ranked_actions\\\":\\\"array of [action, score] pairs\\\",\\\"reason_codes\\\":\\\"array of concise strings\\\",\\\"summary\\\":\\\"concise string, maximum 500 characters\\\"}}}\" } ] } }"
+        - generic [ref=e219]:
+          - generic [ref=e220]: RECENT LLM RUNS
+          - table [ref=e221]:
+            - rowgroup [ref=e222]:
+              - row [ref=e223]:
+                - columnheader "Time" [ref=e224]
+                - columnheader "Mode" [ref=e225]
+                - columnheader "Strategy" [ref=e226]
+                - columnheader "Scan" [ref=e227]
+                - columnheader "State" [ref=e228]
+                - columnheader "Candidates" [ref=e229]
+                - columnheader "Model E/W/R" [ref=e230]
+                - columnheader "Failures" [ref=e231]
+                - columnheader "Vetoes" [ref=e232]
+                - columnheader "Risk vetoes" [ref=e233]
+                - columnheader "Executed" [ref=e234]
+                - columnheader "Error" [ref=e235]
+            - rowgroup [ref=e365]:
+              - row [ref=e366]:
+                - cell "3:41:33 PM" [ref=e367]
+                - cell "MANUAL" [ref=e368]
+                - cell "Gaussian" [ref=e369]
+                - cell "analysis-f4bbfeb575f6386c2aa0d032cbc3a320" [ref=e370]
+                - cell "PARTIAL" [ref=e371]
+                - cell "6" [ref=e372]
+                - cell "0/0/1" [ref=e373]
+                - cell "5" [ref=e374]
+                - cell "0" [ref=e375]
+                - cell "0" [ref=e376]
+                - cell "0" [ref=e377]
+                - cell "invalid_response" [ref=e378]
+              - row [ref=e379]:
+                - cell "2:57:49 PM" [ref=e380]
+                - cell "MANUAL" [ref=e381]
+                - cell "Gaussian" [ref=e382]
+                - cell "analysis-7f669ac769b98ef174f3a39fa7910641" [ref=e383]
+                - cell "PARTIAL" [ref=e384]
+                - cell "6" [ref=e385]
+                - cell "0/0/0" [ref=e386]
+                - cell "6" [ref=e387]
+                - cell "0" [ref=e388]
+                - cell "0" [ref=e389]
+                - cell "0" [ref=e390]
+                - cell "invalid_response" [ref=e391]
+              - row [ref=e392]:
+                - cell "2:51:20 PM" [ref=e393]
+                - cell "MANUAL" [ref=e394]
+                - cell "Gaussian" [ref=e395]
+                - cell "analysis-e356516d2929f65515afd78cb62539b0" [ref=e396]
+                - cell "PARTIAL" [ref=e397]
+                - cell "5" [ref=e398]
+                - cell "0/2/0" [ref=e399]
+                - cell "3" [ref=e400]
+                - cell "0" [ref=e401]
+                - cell "0" [ref=e402]
+                - cell "0" [ref=e403]
+                - cell "invalid_response" [ref=e404]
+              - row [ref=e405]:
+                - cell "2:46:21 PM" [ref=e406]
+                - cell "MANUAL" [ref=e407]
+                - cell "Gaussian" [ref=e408]
+                - cell "analysis-37c39eee5b5ab1fbfcd1bcb5ce216c24" [ref=e409]
+                - cell "PARTIAL" [ref=e410]
+                - cell "5" [ref=e411]
+                - cell "0/2/0" [ref=e412]
+                - cell "3" [ref=e413]
+                - cell "0" [ref=e414]
+                - cell "0" [ref=e415]
+                - cell "0" [ref=e416]
+                - cell "invalid_response" [ref=e417]
+              - row [ref=e418]:
+                - cell "2:12:50 PM" [ref=e419]
+                - cell "MANUAL" [ref=e420]
+                - cell "Gaussian" [ref=e421]
+                - cell "analysis-a051caff103bedc6feebf859446c307e" [ref=e422]
+                - cell "PARTIAL" [ref=e423]
+                - cell "5" [ref=e424]
+                - cell "—/—/—" [ref=e425]
+                - cell "—" [ref=e426]
+                - cell "—" [ref=e427]
+                - cell "—" [ref=e428]
+                - cell "0" [ref=e429]
+                - cell "provider_unavailable" [ref=e430]
+              - row [ref=e431]:
+                - cell "2:08:44 PM" [ref=e432]
+                - cell "MANUAL" [ref=e433]
+                - cell "Stock Screener" [ref=e434]
+                - cell "analysis-e3a65f95ec9cb332337b7237949e80c2" [ref=e435]
+                - cell "COMPLETED" [ref=e436]
+                - cell "7" [ref=e437]
+                - cell "—/—/—" [ref=e438]
+                - cell "—" [ref=e439]
+                - cell "—" [ref=e440]
+                - cell "—" [ref=e441]
+                - cell "0" [ref=e442]
+                - cell "—" [ref=e443]
+              - row [ref=e444]:
+                - cell "2:00:07 PM" [ref=e445]
+                - cell "MANUAL" [ref=e446]
+                - cell "BMSB" [ref=e447]
+                - cell "analysis-372ef261cad30a6ac58d7087eca93862" [ref=e448]
+                - cell "PARTIAL" [ref=e449]
+                - cell "27" [ref=e450]
+                - cell "—/—/—" [ref=e451]
+                - cell "—" [ref=e452]
+                - cell "—" [ref=e453]
+                - cell "—" [ref=e454]
+                - cell "0" [ref=e455]
+                - cell "provider_unavailable" [ref=e456]
+              - row [ref=e457]:
+                - cell "1:25:06 PM" [ref=e458]
+                - cell "MANUAL" [ref=e459]
+                - cell "Stock Screener" [ref=e460]
+                - cell "analysis-5ec51167ec6d552f1f078c6f02459e30" [ref=e461]
+                - cell "PARTIAL" [ref=e462]
+                - cell "7" [ref=e463]
+                - cell "—/—/—" [ref=e464]
+                - cell "—" [ref=e465]
+                - cell "—" [ref=e466]
+                - cell "—" [ref=e467]
+                - cell "0" [ref=e468]
+                - cell "provider_unavailable" [ref=e469]
+              - row [ref=e470]:
+                - cell "1:22:59 PM" [ref=e471]
+                - cell "MANUAL" [ref=e472]
+                - cell "Gaussian" [ref=e473]
+                - cell "analysis-a997f0d6086f996afc9654690f500b05" [ref=e474]
+                - cell "PARTIAL" [ref=e475]
+                - cell "7" [ref=e476]
+                - cell "—/—/—" [ref=e477]
+                - cell "—" [ref=e478]
+                - cell "—" [ref=e479]
+                - cell "—" [ref=e480]
+                - cell "0" [ref=e481]
+                - cell "provider_unavailable" [ref=e482]
+              - row [ref=e483]:
+                - cell "1:20:28 PM" [ref=e484]
+                - cell "MANUAL" [ref=e485]
+                - cell "BMSB" [ref=e486]
+                - cell "analysis-e5013447a29e11f37b0ed41d354075f0" [ref=e487]
+                - cell "PARTIAL" [ref=e488]
+                - cell "27" [ref=e489]
+                - cell "—/—/—" [ref=e490]
+                - cell "—" [ref=e491]
+                - cell "—" [ref=e492]
+                - cell "—" [ref=e493]
+                - cell "0" [ref=e494]
+                - cell "provider_unavailable" [ref=e495]
+        - generic [ref=e237]:
+          - generic [ref=e238]:
+            - generic [ref=e239]: AUTONOMOUS DECISION LAYER
+            - generic [ref=e240]: Read-only evidence for candidate decisions, risk gates, and isolated paper ownership.
+          - generic [ref=e241]: IBKR_PAPER_AUTONOMOUS
+        - generic [ref=e242]:
+          - generic [ref=e243]:
+            - generic [ref=e244]: CANDIDATES
+            - generic [ref=e245]: "90"
+          - generic [ref=e246]:
+            - generic [ref=e247]: DECISIONS
+            - generic [ref=e248]: "90"
+          - generic [ref=e249]:
+            - generic [ref=e250]: RISK ROWS
+            - generic [ref=e251]: "24"
+          - generic [ref=e252]:
+            - generic [ref=e253]: SHADOW DECISIONS
+            - generic [ref=e254]: "0"
+          - generic [ref=e255]:
+            - generic [ref=e256]: INTERNAL PAPER EXECUTIONS
+            - generic [ref=e257]: "0"
+          - generic [ref=e258]:
+            - generic [ref=e259]: IBKR PAPER EXECUTIONS
+            - generic [ref=e260]: "0"
+          - generic [ref=e261]:
+            - generic [ref=e262]: LIVE EXECUTIONS
+            - generic [ref=e263]: "0"
+          - generic [ref=e264]:
+            - generic [ref=e265]: PAPER P&L
+            - generic [ref=e266]: "0"
+        - generic [ref=e267]:
+          - generic [ref=e268]:
+            - generic [ref=e269]:
+              - generic [ref=e270]: RECENT MODEL DECISIONS
+              - generic [ref=e271]: FILTER ALL AVAILABLE COLUMNS · 90 / 90 ROWS
+            - button "CLEAR FILTERS" [ref=e272] [cursor=pointer]
+          - generic [ref=e273]:
+            - generic [ref=e274]:
+              - text: TIME FROM
+              - textbox "TIME FROM" [ref=e275]
+            - generic [ref=e276]:
+              - text: TIME TO
+              - textbox "TIME TO" [ref=e277]
+            - generic [ref=e278]:
+              - text: SYMBOL
+              - textbox "SYMBOL" [ref=e279]
+            - generic [ref=e280]:
+              - text: SOURCE
+              - combobox "SOURCE" [ref=e281]:
+                - option "ALL" [selected]
+                - option "bmsb"
+                - option "gaussian"
+                - option "stock screener"
+            - generic [ref=e282]:
+              - text: STRATEGY
+              - combobox "STRATEGY" [ref=e283]:
+                - option "ALL" [selected]
+                - option "BMSB"
+                - option "GAUSSIAN"
+                - option "LP1"
+            - generic [ref=e284]:
+              - text: SIGNAL
+              - textbox "SIGNAL" [ref=e285]
+            - generic [ref=e286]:
+              - text: PROVIDER
+              - combobox "PROVIDER" [ref=e287]:
+                - option "ALL" [selected]
+                - option "deepseek"
+            - generic [ref=e288]:
+              - text: MODEL
+              - combobox "MODEL" [ref=e289]:
+                - option "ALL" [selected]
+                - option "deepseek-flash"
+            - generic [ref=e290]:
+              - text: EFFECTIVE
+              - combobox "EFFECTIVE" [ref=e291]:
+                - option "ALL" [selected]
+                - option "LEGACY / NOT RECORDED"
+                - option "NO ACTION"
+                - option "REJECT"
+                - option "WAIT"
+            - generic [ref=e292]:
+              - text: ORIGIN
+              - combobox "ORIGIN" [ref=e293]:
+                - option "ALL" [selected]
+                - option "INVALID PROVIDER RESPONSE"
+                - option "LEGACY / NOT RECORDED"
+                - option "MODEL"
+            - generic [ref=e294]:
+              - text: RISK
+              - combobox "RISK" [ref=e295]:
+                - option "ALL" [selected]
+                - option "NONE"
+                - option "VETO"
+            - generic [ref=e296]:
+              - text: EXECUTION
+              - combobox "EXECUTION" [ref=e297]:
+                - option "ALL" [selected]
+                - option "NONE"
+          - table [ref=e298]:
+            - rowgroup [ref=e299]:
+              - row [ref=e300]:
+                - columnheader "Time" [ref=e301]
+                - columnheader "Symbol" [ref=e302]
+                - columnheader "Source" [ref=e303]
+                - columnheader "Strategy" [ref=e304]
+                - columnheader "Signal" [ref=e305]
+                - columnheader "Provider" [ref=e306]
+                - columnheader "Model" [ref=e307]
+                - columnheader "Effective" [ref=e308]
+                - columnheader "Origin" [ref=e309]
+                - columnheader "Risk" [ref=e310]
+                - columnheader "Execution" [ref=e311]
+                - columnheader "Inspect" [ref=e312]
+            - rowgroup [ref=e496]:
+              - row [ref=e497]:
+                - cell "2026-09-28 19:41:33" [ref=e498]
+                - cell "WTBA" [ref=e499]
+                - cell "gaussian" [ref=e500]
+                - cell "GAUSSIAN" [ref=e501]
+                - cell "GAUSSIAN_NEAR_EXIT" [ref=e502]
+                - cell "deepseek" [ref=e503]
+                - cell "deepseek-flash" [ref=e504]
+                - cell "NO_ACTION" [ref=e505]
+                - cell "INVALID_PROVIDER_RESPONSE" [ref=e506]
+                - cell "—" [ref=e507]
+                - cell "—" [ref=e508]
+                - cell [ref=e509]:
+                  - button "VIEW" [ref=e510] [cursor=pointer]
+              - row [ref=e511]:
+                - cell "2026-09-28 19:41:31" [ref=e512]
+                - cell "V" [ref=e513]
+                - cell "gaussian" [ref=e514]
+                - cell "GAUSSIAN" [ref=e515]
+                - cell "GAUSSIAN_NEAR_LONG" [ref=e516]
+                - cell "deepseek" [ref=e517]
+                - cell "deepseek-flash" [ref=e518]
+                - cell "NO_ACTION" [ref=e519]
+                - cell "INVALID_PROVIDER_RESPONSE" [ref=e520]
+                - cell "—" [ref=e521]
+                - cell "—" [ref=e522]
+                - cell [ref=e523]:
+                  - button "VIEW" [ref=e524] [cursor=pointer]
+              - row [ref=e525]:
+                - cell "2026-09-28 19:41:29" [ref=e526]
+                - cell "ETN" [ref=e527]
+                - cell "gaussian" [ref=e528]
+                - cell "GAUSSIAN" [ref=e529]
+                - cell "GAUSSIAN_LONG_EXIT" [ref=e530]
+                - cell "deepseek" [ref=e531]
+                - cell "deepseek-flash" [ref=e532]
+                - cell "NO_ACTION" [ref=e533]
+                - cell "INVALID_PROVIDER_RESPONSE" [ref=e534]
+                - cell "—" [ref=e535]
+                - cell "—" [ref=e536]
+                - cell [ref=e537]:
+                  - button "VIEW" [ref=e538] [cursor=pointer]
+              - row [ref=e539]:
+                - cell "2026-09-28 19:41:27" [ref=e540]
+                - cell "COP" [ref=e541]
+                - cell "gaussian" [ref=e542]
+                - cell "GAUSSIAN" [ref=e543]
+                - cell "GAUSSIAN_LONG_EXIT" [ref=e544]
+                - cell "deepseek" [ref=e545]
+                - cell "deepseek-flash" [ref=e546]
+                - cell "REJECT" [ref=e547]
+                - cell "MODEL" [ref=e548]
+                - cell "VETO" [ref=e549]
+                - cell "—" [ref=e550]
+                - cell [ref=e551]:
+                  - button "VIEW" [ref=e552] [cursor=pointer]
+              - row [ref=e553]:
+                - cell "2026-09-28 19:41:25" [ref=e554]
+                - cell "BRKH" [ref=e555]
+                - cell "gaussian" [ref=e556]
+                - cell "GAUSSIAN" [ref=e557]
+                - cell "GAUSSIAN_NEAR_LONG" [ref=e558]
+                - cell "deepseek" [ref=e559]
+                - cell "deepseek-flash" [ref=e560]
+                - cell "NO_ACTION" [ref=e561]
+                - cell "INVALID_PROVIDER_RESPONSE" [ref=e562]
+                - cell "—" [ref=e563]
+                - cell "—" [ref=e564]
+                - cell [ref=e565]:
+                  - button "VIEW" [ref=e566] [cursor=pointer]
+              - row [ref=e567]:
+                - cell "2026-09-28 19:41:23" [ref=e568]
+                - cell "APLM" [ref=e569]
+                - cell "gaussian" [ref=e570]
+                - cell "GAUSSIAN" [ref=e571]
+                - cell "GAUSSIAN_LONG_ENTRY" [ref=e572]
+                - cell "deepseek" [ref=e573]
+                - cell "deepseek-flash" [ref=e574]
+                - cell "NO_ACTION" [ref=e575]
+                - cell "INVALID_PROVIDER_RESPONSE" [ref=e576]
+                - cell "—" [ref=e577]
+                - cell "—" [ref=e578]
+                - cell [ref=e579]:
+                  - button "VIEW" [ref=e580] [cursor=pointer]
+              - row [ref=e581]:
+                - cell "2026-09-28 18:57:49" [ref=e582]
+                - cell "WTBA" [ref=e583]
+                - cell "gaussian" [ref=e584]
+                - cell "GAUSSIAN" [ref=e585]
+                - cell "GAUSSIAN_NEAR_EXIT" [ref=e586]
+                - cell "deepseek" [ref=e587]
+                - cell "deepseek-flash" [ref=e588]
+                - cell "NO_ACTION" [ref=e589]
+                - cell "INVALID_PROVIDER_RESPONSE" [ref=e590]
+                - cell "—" [ref=e591]
+                - cell "—" [ref=e592]
+                - cell [ref=e593]:
+                  - button "VIEW" [ref=e594] [cursor=pointer]
+              - row [ref=e595]:
+                - cell "2026-09-28 18:57:47" [ref=e596]
+                - cell "V" [ref=e597]
+                - cell "gaussian" [ref=e598]
+                - cell "GAUSSIAN" [ref=e599]
+                - cell "GAUSSIAN_NEAR_LONG" [ref=e600]
+                - cell "deepseek" [ref=e601]
+                - cell "deepseek-flash" [ref=e602]
+                - cell "NO_ACTION" [ref=e603]
+                - cell "INVALID_PROVIDER_RESPONSE" [ref=e604]
+                - cell "—" [ref=e605]
+                - cell "—" [ref=e606]
+                - cell [ref=e607]:
+                  - button "VIEW" [ref=e608] [cursor=pointer]
+              - row [ref=e609]:
+                - cell "2026-09-28 18:57:45" [ref=e610]
+                - cell "ETN" [ref=e611]
+                - cell "gaussian" [ref=e612]
+                - cell "GAUSSIAN" [ref=e613]
+                - cell "GAUSSIAN_LONG_EXIT" [ref=e614]
+                - cell "deepseek" [ref=e615]
+                - cell "deepseek-flash" [ref=e616]
+                - cell "NO_ACTION" [ref=e617]
+                - cell "INVALID_PROVIDER_RESPONSE" [ref=e618]
+                - cell "—" [ref=e619]
+                - cell "—" [ref=e620]
+                - cell [ref=e621]:
+                  - button "VIEW" [ref=e622] [cursor=pointer]
+              - row [ref=e623]:
+                - cell "2026-09-28 18:57:43" [ref=e624]
+                - cell "COP" [ref=e625]
+                - cell "gaussian" [ref=e626]
+                - cell "GAUSSIAN" [ref=e627]
+                - cell "GAUSSIAN_LONG_EXIT" [ref=e628]
+                - cell "deepseek" [ref=e629]
+                - cell "deepseek-flash" [ref=e630]
+                - cell "NO_ACTION" [ref=e631]
+                - cell "INVALID_PROVIDER_RESPONSE" [ref=e632]
+                - cell "—" [ref=e633]
+                - cell "—" [ref=e634]
+                - cell [ref=e635]:
+                  - button "VIEW" [ref=e636] [cursor=pointer]
+              - row [ref=e637]:
+                - cell "2026-09-28 18:57:41" [ref=e638]
+                - cell "BRKH" [ref=e639]
+                - cell "gaussian" [ref=e640]
+                - cell "GAUSSIAN" [ref=e641]
+                - cell "GAUSSIAN_NEAR_LONG" [ref=e642]
+                - cell "deepseek" [ref=e643]
+                - cell "deepseek-flash" [ref=e644]
+                - cell "NO_ACTION" [ref=e645]
+                - cell "INVALID_PROVIDER_RESPONSE" [ref=e646]
+                - cell "—" [ref=e647]
+                - cell "—" [ref=e648]
+                - cell [ref=e649]:
+                  - button "VIEW" [ref=e650] [cursor=pointer]
+              - row [ref=e651]:
+                - cell "2026-09-28 18:57:39" [ref=e652]
+                - cell "APLM" [ref=e653]
+                - cell "gaussian" [ref=e654]
+                - cell "GAUSSIAN" [ref=e655]
+                - cell "GAUSSIAN_LONG_ENTRY" [ref=e656]
+                - cell "deepseek" [ref=e657]
+                - cell "deepseek-flash" [ref=e658]
+                - cell "NO_ACTION" [ref=e659]
+                - cell "INVALID_PROVIDER_RESPONSE" [ref=e660]
+                - cell "—" [ref=e661]
+                - cell "—" [ref=e662]
+                - cell [ref=e663]:
+                  - button "VIEW" [ref=e664] [cursor=pointer]
+              - row [ref=e665]:
+                - cell "2026-09-28 18:51:20" [ref=e666]
+                - cell "V" [ref=e667]
+                - cell "gaussian" [ref=e668]
+                - cell "GAUSSIAN" [ref=e669]
+                - cell "GAUSSIAN_NEAR_LONG" [ref=e670]
+                - cell "deepseek" [ref=e671]
+                - cell "deepseek-flash" [ref=e672]
+                - cell "WAIT" [ref=e673]
+                - cell "MODEL" [ref=e674]
+                - cell "VETO" [ref=e675]
+                - cell "—" [ref=e676]
+                - cell [ref=e677]:
+                  - button "VIEW" [ref=e678] [cursor=pointer]
+              - row [ref=e679]:
+                - cell "2026-09-28 18:51:18" [ref=e680]
+                - cell "ETN" [ref=e681]
+                - cell "gaussian" [ref=e682]
+                - cell "GAUSSIAN" [ref=e683]
+                - cell "GAUSSIAN_LONG_EXIT" [ref=e684]
+                - cell "deepseek" [ref=e685]
+                - cell "deepseek-flash" [ref=e686]
+                - cell "NO_ACTION" [ref=e687]
+                - cell "INVALID_PROVIDER_RESPONSE" [ref=e688]
+                - cell "—" [ref=e689]
+                - cell "—" [ref=e690]
+                - cell [ref=e691]:
+                  - button "VIEW" [ref=e692] [cursor=pointer]
+              - row [ref=e693]:
+                - cell "2026-09-28 18:51:16" [ref=e694]
+                - cell "COP" [ref=e695]
+                - cell "gaussian" [ref=e696]
+                - cell "GAUSSIAN" [ref=e697]
+                - cell "GAUSSIAN_LONG_EXIT" [ref=e698]
+                - cell "deepseek" [ref=e699]
+                - cell "deepseek-flash" [ref=e700]
+                - cell "NO_ACTION" [ref=e701]
+                - cell "INVALID_PROVIDER_RESPONSE" [ref=e702]
+                - cell "—" [ref=e703]
+                - cell "—" [ref=e704]
+                - cell [ref=e705]:
+                  - button "VIEW" [ref=e706] [cursor=pointer]
+              - row [ref=e707]:
+                - cell "2026-09-28 18:51:14" [ref=e708]
+                - cell "BRKH" [ref=e709]
+                - cell "gaussian" [ref=e710]
+                - cell "GAUSSIAN" [ref=e711]
+                - cell "GAUSSIAN_NEAR_LONG" [ref=e712]
+                - cell "deepseek" [ref=e713]
+                - cell "deepseek-flash" [ref=e714]
+                - cell "WAIT" [ref=e715]
+                - cell "MODEL" [ref=e716]
+                - cell "VETO" [ref=e717]
+                - cell "—" [ref=e718]
+                - cell [ref=e719]:
+                  - button "VIEW" [ref=e720] [cursor=pointer]
+              - row [ref=e721]:
+                - cell "2026-09-28 18:51:12" [ref=e722]
+                - cell "APLM" [ref=e723]
+                - cell "gaussian" [ref=e724]
+                - cell "GAUSSIAN" [ref=e725]
+                - cell "GAUSSIAN_LONG_ENTRY" [ref=e726]
+                - cell "deepseek" [ref=e727]
+                - cell "deepseek-flash" [ref=e728]
+                - cell "NO_ACTION" [ref=e729]
+                - cell "INVALID_PROVIDER_RESPONSE" [ref=e730]
+                - cell "—" [ref=e731]
+                - cell "—" [ref=e732]
+                - cell [ref=e733]:
+                  - button "VIEW" [ref=e734] [cursor=pointer]
+              - row [ref=e735]:
+                - cell "2026-09-28 18:46:21" [ref=e736]
+                - cell "V" [ref=e737]
+                - cell "gaussian" [ref=e738]
+                - cell "GAUSSIAN" [ref=e739]
+                - cell "GAUSSIAN_NEAR_LONG" [ref=e740]
+                - cell "deepseek" [ref=e741]
+                - cell "deepseek-flash" [ref=e742]
+                - cell "WAIT" [ref=e743]
+                - cell "MODEL" [ref=e744]
+                - cell "VETO" [ref=e745]
+                - cell "—" [ref=e746]
+                - cell [ref=e747]:
+                  - button "VIEW" [ref=e748] [cursor=pointer]
+              - row [ref=e749]:
+                - cell "2026-09-28 18:46:19" [ref=e750]
+                - cell "ETN" [ref=e751]
+                - cell "gaussian" [ref=e752]
+                - cell "GAUSSIAN" [ref=e753]
+                - cell "GAUSSIAN_LONG_EXIT" [ref=e754]
+                - cell "deepseek" [ref=e755]
+                - cell "deepseek-flash" [ref=e756]
+                - cell "NO_ACTION" [ref=e757]
+                - cell "INVALID_PROVIDER_RESPONSE" [ref=e758]
+                - cell "—" [ref=e759]
+                - cell "—" [ref=e760]
+                - cell [ref=e761]:
+                  - button "VIEW" [ref=e762] [cursor=pointer]
+              - row [ref=e763]:
+                - cell "2026-09-28 18:46:17" [ref=e764]
+                - cell "COP" [ref=e765]
+                - cell "gaussian" [ref=e766]
+                - cell "GAUSSIAN" [ref=e767]
+                - cell "GAUSSIAN_LONG_EXIT" [ref=e768]
+                - cell "deepseek" [ref=e769]
+                - cell "deepseek-flash" [ref=e770]
+                - cell "NO_ACTION" [ref=e771]
+                - cell "INVALID_PROVIDER_RESPONSE" [ref=e772]
+                - cell "—" [ref=e773]
+                - cell "—" [ref=e774]
+                - cell [ref=e775]:
+                  - button "VIEW" [ref=e776] [cursor=pointer]
+              - row [ref=e777]:
+                - cell "2026-09-28 18:46:15" [ref=e778]
+                - cell "BRKH" [ref=e779]
+                - cell "gaussian" [ref=e780]
+                - cell "GAUSSIAN" [ref=e781]
+                - cell "GAUSSIAN_NEAR_LONG" [ref=e782]
+                - cell "deepseek" [ref=e783]
+                - cell "deepseek-flash" [ref=e784]
+                - cell "WAIT" [ref=e785]
+                - cell "MODEL" [ref=e786]
+                - cell "VETO" [ref=e787]
+                - cell "—" [ref=e788]
+                - cell [ref=e789]:
+                  - button "VIEW" [ref=e790] [cursor=pointer]
+              - row [ref=e791]:
+                - cell "2026-09-28 18:46:13" [ref=e792]
+                - cell "APLM" [ref=e793]
+                - cell "gaussian" [ref=e794]
+                - cell "GAUSSIAN" [ref=e795]
+                - cell "GAUSSIAN_LONG_ENTRY" [ref=e796]
+                - cell "deepseek" [ref=e797]
+                - cell "deepseek-flash" [ref=e798]
+                - cell "NO_ACTION" [ref=e799]
+                - cell "INVALID_PROVIDER_RESPONSE" [ref=e800]
+                - cell "—" [ref=e801]
+                - cell "—" [ref=e802]
+                - cell [ref=e803]:
+                  - button "VIEW" [ref=e804] [cursor=pointer]
+              - row [ref=e805]:
+                - cell "2026-09-28 18:12:50" [ref=e806]
+                - cell "V" [ref=e807]
+                - cell "gaussian" [ref=e808]
+                - cell "GAUSSIAN" [ref=e809]
+                - cell "GAUSSIAN_NEAR_LONG" [ref=e810]
+                - cell "deepseek" [ref=e811]
+                - cell "deepseek-flash" [ref=e812]
+                - cell "LEGACY / NOT RECORDED" [ref=e813]
+                - cell "LEGACY / NOT RECORDED" [ref=e814]
+                - cell "VETO" [ref=e815]
+                - cell "—" [ref=e816]
+                - cell [ref=e817]:
+                  - button "VIEW" [ref=e818] [cursor=pointer]
+              - row [ref=e819]:
+                - cell "2026-09-28 18:12:48" [ref=e820]
+                - cell "ETN" [ref=e821]
+                - cell "gaussian" [ref=e822]
+                - cell "GAUSSIAN" [ref=e823]
+                - cell "GAUSSIAN_LONG_EXIT" [ref=e824]
+                - cell "deepseek" [ref=e825]
+                - cell "deepseek-flash" [ref=e826]
+                - cell "LEGACY / NOT RECORDED" [ref=e827]
+                - cell "LEGACY / NOT RECORDED" [ref=e828]
+                - cell "—" [ref=e829]
+                - cell "—" [ref=e830]
+                - cell [ref=e831]:
+                  - button "VIEW" [ref=e832] [cursor=pointer]
+              - row [ref=e833]:
+                - cell "2026-09-28 18:12:46" [ref=e834]
+                - cell "COP" [ref=e835]
+                - cell "gaussian" [ref=e836]
+                - cell "GAUSSIAN" [ref=e837]
+                - cell "GAUSSIAN_LONG_EXIT" [ref=e838]
+                - cell "deepseek" [ref=e839]
+                - cell "deepseek-flash" [ref=e840]
+                - cell "LEGACY / NOT RECORDED" [ref=e841]
+                - cell "LEGACY / NOT RECORDED" [ref=e842]
+                - cell "—" [ref=e843]
+                - cell "—" [ref=e844]
+                - cell [ref=e845]:
+                  - button "VIEW" [ref=e846] [cursor=pointer]
+              - row [ref=e847]:
+                - cell "2026-09-28 18:12:44" [ref=e848]
+                - cell "BRKH" [ref=e849]
+                - cell "gaussian" [ref=e850]
+                - cell "GAUSSIAN" [ref=e851]
+                - cell "GAUSSIAN_NEAR_LONG" [ref=e852]
+                - cell "deepseek" [ref=e853]
+                - cell "deepseek-flash" [ref=e854]
+                - cell "LEGACY / NOT RECORDED" [ref=e855]
+                - cell "LEGACY / NOT RECORDED" [ref=e856]
+                - cell "—" [ref=e857]
+                - cell "—" [ref=e858]
+                - cell [ref=e859]:
+                  - button "VIEW" [ref=e860] [cursor=pointer]
+              - row [ref=e861]:
+                - cell "2026-09-28 18:12:42" [ref=e862]
+                - cell "APLM" [ref=e863]
+                - cell "gaussian" [ref=e864]
+                - cell "GAUSSIAN" [ref=e865]
+                - cell "GAUSSIAN_LONG_ENTRY" [ref=e866]
+                - cell "deepseek" [ref=e867]
+                - cell "deepseek-flash" [ref=e868]
+                - cell "LEGACY / NOT RECORDED" [ref=e869]
+                - cell "LEGACY / NOT RECORDED" [ref=e870]
+                - cell "—" [ref=e871]
+                - cell "—" [ref=e872]
+                - cell [ref=e873]:
+                  - button "VIEW" [ref=e874] [cursor=pointer]
+              - row [ref=e875]:
+                - cell "2026-09-28 18:08:44" [ref=e876]
+                - cell "AMH" [ref=e877]
+                - cell "stock screener" [ref=e878]
+                - cell "LP1" [ref=e879]
+                - cell "PENDING_ENTRY" [ref=e880]
+                - cell "deepseek" [ref=e881]
+                - cell "deepseek-flash" [ref=e882]
+                - cell "LEGACY / NOT RECORDED" [ref=e883]
+                - cell "LEGACY / NOT RECORDED" [ref=e884]
+                - cell "VETO" [ref=e885]
+                - cell "—" [ref=e886]
+                - cell [ref=e887]:
+                  - button "VIEW" [ref=e888] [cursor=pointer]
+              - row [ref=e889]:
+                - cell "2026-09-28 18:00:07" [ref=e890]
+                - cell "WTBA" [ref=e891]
+                - cell "bmsb" [ref=e892]
+                - cell "BMSB" [ref=e893]
+                - cell "NEAR_EXIT" [ref=e894]
+                - cell "deepseek" [ref=e895]
+                - cell "deepseek-flash" [ref=e896]
+                - cell "LEGACY / NOT RECORDED" [ref=e897]
+                - cell "LEGACY / NOT RECORDED" [ref=e898]
+                - cell "—" [ref=e899]
+                - cell "—" [ref=e900]
+                - cell [ref=e901]:
+                  - button "VIEW" [ref=e902] [cursor=pointer]
+              - row [ref=e903]:
+                - cell "2026-09-28 18:00:05" [ref=e904]
+                - cell "WMT" [ref=e905]
+                - cell "bmsb" [ref=e906]
+                - cell "BMSB" [ref=e907]
+                - cell "NEAR_LONG" [ref=e908]
+                - cell "deepseek" [ref=e909]
+                - cell "deepseek-flash" [ref=e910]
+                - cell "LEGACY / NOT RECORDED" [ref=e911]
+                - cell "LEGACY / NOT RECORDED" [ref=e912]
+                - cell "VETO" [ref=e913]
+                - cell "—" [ref=e914]
+                - cell [ref=e915]:
+                  - button "VIEW" [ref=e916] [cursor=pointer]
+              - row [ref=e917]:
+                - cell "2026-09-28 18:00:03" [ref=e918]
+                - cell "VAL" [ref=e919]
+                - cell "bmsb" [ref=e920]
+                - cell "BMSB" [ref=e921]
+                - cell "NEAR_LONG" [ref=e922]
+                - cell "deepseek" [ref=e923]
+                - cell "deepseek-flash" [ref=e924]
+                - cell "LEGACY / NOT RECORDED" [ref=e925]
+                - cell "LEGACY / NOT RECORDED" [ref=e926]
+                - cell "VETO" [ref=e927]
+                - cell "—" [ref=e928]
+                - cell [ref=e929]:
+                  - button "VIEW" [ref=e930] [cursor=pointer]
+              - row [ref=e931]:
+                - cell "2026-09-28 18:00:00" [ref=e932]
+                - cell "V" [ref=e933]
+                - cell "bmsb" [ref=e934]
+                - cell "BMSB" [ref=e935]
+                - cell "NEAR_EXIT" [ref=e936]
+                - cell "deepseek" [ref=e937]
+                - cell "deepseek-flash" [ref=e938]
+                - cell "LEGACY / NOT RECORDED" [ref=e939]
+                - cell "LEGACY / NOT RECORDED" [ref=e940]
+                - cell "—" [ref=e941]
+                - cell "—" [ref=e942]
+                - cell [ref=e943]:
+                  - button "VIEW" [ref=e944] [cursor=pointer]
+              - row [ref=e945]:
+                - cell "2026-09-28 17:59:58" [ref=e946]
+                - cell "SYRA" [ref=e947]
+                - cell "bmsb" [ref=e948]
+                - cell "BMSB" [ref=e949]
+                - cell "NEAR_LONG" [ref=e950]
+                - cell "deepseek" [ref=e951]
+                - cell "deepseek-flash" [ref=e952]
+                - cell "LEGACY / NOT RECORDED" [ref=e953]
+                - cell "LEGACY / NOT RECORDED" [ref=e954]
+                - cell "VETO" [ref=e955]
+                - cell "—" [ref=e956]
+                - cell [ref=e957]:
+                  - button "VIEW" [ref=e958] [cursor=pointer]
+              - row [ref=e959]:
+                - cell "2026-09-28 17:59:56" [ref=e960]
+                - cell "SMA" [ref=e961]
+                - cell "bmsb" [ref=e962]
+                - cell "BMSB" [ref=e963]
+                - cell "CROSSED_EXIT" [ref=e964]
+                - cell "deepseek" [ref=e965]
+                - cell "deepseek-flash" [ref=e966]
+                - cell "LEGACY / NOT RECORDED" [ref=e967]
+                - cell "LEGACY / NOT RECORDED" [ref=e968]
+                - cell "—" [ref=e969]
+                - cell "—" [ref=e970]
+                - cell [ref=e971]:
+                  - button "VIEW" [ref=e972] [cursor=pointer]
+              - row [ref=e973]:
+                - cell "2026-09-28 17:59:54" [ref=e974]
+                - cell "SHW" [ref=e975]
+                - cell "bmsb" [ref=e976]
+                - cell "BMSB" [ref=e977]
+                - cell "NEAR_EXIT" [ref=e978]
+                - cell "deepseek" [ref=e979]
+                - cell "deepseek-flash" [ref=e980]
+                - cell "LEGACY / NOT RECORDED" [ref=e981]
+                - cell "LEGACY / NOT RECORDED" [ref=e982]
+                - cell "VETO" [ref=e983]
+                - cell "—" [ref=e984]
+                - cell [ref=e985]:
+                  - button "VIEW" [ref=e986] [cursor=pointer]
+              - row [ref=e987]:
+                - cell "2026-09-28 17:59:51" [ref=e988]
+                - cell "RTX" [ref=e989]
+                - cell "bmsb" [ref=e990]
+                - cell "BMSB" [ref=e991]
+                - cell "CROSSED_EXIT" [ref=e992]
+                - cell "deepseek" [ref=e993]
+                - cell "deepseek-flash" [ref=e994]
+                - cell "LEGACY / NOT RECORDED" [ref=e995]
+                - cell "LEGACY / NOT RECORDED" [ref=e996]
+                - cell "VETO" [ref=e997]
+                - cell "—" [ref=e998]
+                - cell [ref=e999]:
+                  - button "VIEW" [ref=e1000] [cursor=pointer]
+              - row [ref=e1001]:
+                - cell "2026-09-28 17:59:49" [ref=e1002]
+                - cell "PG" [ref=e1003]
+                - cell "bmsb" [ref=e1004]
+                - cell "BMSB" [ref=e1005]
+                - cell "NEAR_EXIT" [ref=e1006]
+                - cell "deepseek" [ref=e1007]
+                - cell "deepseek-flash" [ref=e1008]
+                - cell "LEGACY / NOT RECORDED" [ref=e1009]
+                - cell "LEGACY / NOT RECORDED" [ref=e1010]
+                - cell "—" [ref=e1011]
+                - cell "—" [ref=e1012]
+                - cell [ref=e1013]:
+                  - button "VIEW" [ref=e1014] [cursor=pointer]
+              - row [ref=e1015]:
+                - cell "2026-09-28 17:59:47" [ref=e1016]
+                - cell "NVDA" [ref=e1017]
+                - cell "bmsb" [ref=e1018]
+                - cell "BMSB" [ref=e1019]
+                - cell "CROSSED_LONG" [ref=e1020]
+                - cell "deepseek" [ref=e1021]
+                - cell "deepseek-flash" [ref=e1022]
+                - cell "LEGACY / NOT RECORDED" [ref=e1023]
+                - cell "LEGACY / NOT RECORDED" [ref=e1024]
+                - cell "VETO" [ref=e1025]
+                - cell "—" [ref=e1026]
+                - cell [ref=e1027]:
+                  - button "VIEW" [ref=e1028] [cursor=pointer]
+              - row [ref=e1029]:
+                - cell "2026-09-28 17:59:45" [ref=e1030]
+                - cell "MSEX" [ref=e1031]
+                - cell "bmsb" [ref=e1032]
+                - cell "BMSB" [ref=e1033]
+                - cell "CROSSED_EXIT" [ref=e1034]
+                - cell "deepseek" [ref=e1035]
+                - cell "deepseek-flash" [ref=e1036]
+                - cell "LEGACY / NOT RECORDED" [ref=e1037]
+                - cell "LEGACY / NOT RECORDED" [ref=e1038]
+                - cell "—" [ref=e1039]
+                - cell "—" [ref=e1040]
+                - cell [ref=e1041]:
+                  - button "VIEW" [ref=e1042] [cursor=pointer]
+              - row [ref=e1043]:
+                - cell "2026-09-28 17:59:42" [ref=e1044]
+                - cell "MRSH" [ref=e1045]
+                - cell "bmsb" [ref=e1046]
+                - cell "BMSB" [ref=e1047]
+                - cell "NEAR_EXIT" [ref=e1048]
+                - cell "deepseek" [ref=e1049]
+                - cell "deepseek-flash" [ref=e1050]
+                - cell "LEGACY / NOT RECORDED" [ref=e1051]
+                - cell "LEGACY / NOT RECORDED" [ref=e1052]
+                - cell "—" [ref=e1053]
+                - cell "—" [ref=e1054]
+                - cell [ref=e1055]:
+                  - button "VIEW" [ref=e1056] [cursor=pointer]
+              - row [ref=e1057]:
+                - cell "2026-09-28 17:59:39" [ref=e1058]
+                - cell "MCD" [ref=e1059]
+                - cell "bmsb" [ref=e1060]
+                - cell "BMSB" [ref=e1061]
+                - cell "CROSSED_EXIT" [ref=e1062]
+                - cell "deepseek" [ref=e1063]
+                - cell "deepseek-flash" [ref=e1064]
+                - cell "LEGACY / NOT RECORDED" [ref=e1065]
+                - cell "LEGACY / NOT RECORDED" [ref=e1066]
+                - cell "—" [ref=e1067]
+                - cell "—" [ref=e1068]
+                - cell [ref=e1069]:
+                  - button "VIEW" [ref=e1070] [cursor=pointer]
+              - row [ref=e1071]:
+                - cell "2026-09-28 17:59:37" [ref=e1072]
+                - cell "KO" [ref=e1073]
+                - cell "bmsb" [ref=e1074]
+                - cell "BMSB" [ref=e1075]
+                - cell "CROSSED_EXIT" [ref=e1076]
+                - cell "deepseek" [ref=e1077]
+                - cell "deepseek-flash" [ref=e1078]
+                - cell "LEGACY / NOT RECORDED" [ref=e1079]
+                - cell "LEGACY / NOT RECORDED" [ref=e1080]
+                - cell "—" [ref=e1081]
+                - cell "—" [ref=e1082]
+                - cell [ref=e1083]:
+                  - button "VIEW" [ref=e1084] [cursor=pointer]
+              - row [ref=e1085]:
+                - cell "2026-09-28 17:59:35" [ref=e1086]
+                - cell "JPM" [ref=e1087]
+                - cell "bmsb" [ref=e1088]
+                - cell "BMSB" [ref=e1089]
+                - cell "CROSSED_EXIT" [ref=e1090]
+                - cell "deepseek" [ref=e1091]
+                - cell "deepseek-flash" [ref=e1092]
+                - cell "LEGACY / NOT RECORDED" [ref=e1093]
+                - cell "LEGACY / NOT RECORDED" [ref=e1094]
+                - cell "—" [ref=e1095]
+                - cell "—" [ref=e1096]
+                - cell [ref=e1097]:
+                  - button "VIEW" [ref=e1098] [cursor=pointer]
+              - row [ref=e1099]:
+                - cell "2026-09-28 17:59:32" [ref=e1100]
+                - cell "JNJ" [ref=e1101]
+                - cell "bmsb" [ref=e1102]
+                - cell "BMSB" [ref=e1103]
+                - cell "NEAR_EXIT" [ref=e1104]
+                - cell "deepseek" [ref=e1105]
+                - cell "deepseek-flash" [ref=e1106]
+                - cell "LEGACY / NOT RECORDED" [ref=e1107]
+                - cell "LEGACY / NOT RECORDED" [ref=e1108]
+                - cell "VETO" [ref=e1109]
+                - cell "—" [ref=e1110]
+                - cell [ref=e1111]:
+                  - button "VIEW" [ref=e1112] [cursor=pointer]
+              - row [ref=e1113]:
+                - cell "2026-09-28 17:59:30" [ref=e1114]
+                - cell "ITIC" [ref=e1115]
+                - cell "bmsb" [ref=e1116]
+                - cell "BMSB" [ref=e1117]
+                - cell "NEAR_EXIT" [ref=e1118]
+                - cell "deepseek" [ref=e1119]
+                - cell "deepseek-flash" [ref=e1120]
+                - cell "LEGACY / NOT RECORDED" [ref=e1121]
+                - cell "LEGACY / NOT RECORDED" [ref=e1122]
+                - cell "—" [ref=e1123]
+                - cell "—" [ref=e1124]
+                - cell [ref=e1125]:
+                  - button "VIEW" [ref=e1126] [cursor=pointer]
+              - row [ref=e1127]:
+                - cell "2026-09-28 17:59:27" [ref=e1128]
+                - cell "HD" [ref=e1129]
+                - cell "bmsb" [ref=e1130]
+                - cell "BMSB" [ref=e1131]
+                - cell "CROSSED_EXIT" [ref=e1132]
+                - cell "deepseek" [ref=e1133]
+                - cell "deepseek-flash" [ref=e1134]
+                - cell "LEGACY / NOT RECORDED" [ref=e1135]
+                - cell "LEGACY / NOT RECORDED" [ref=e1136]
+                - cell "—" [ref=e1137]
+                - cell "—" [ref=e1138]
+                - cell [ref=e1139]:
+                  - button "VIEW" [ref=e1140] [cursor=pointer]
+              - row [ref=e1141]:
+                - cell "2026-09-28 17:59:25" [ref=e1142]
+                - cell "ETN" [ref=e1143]
+                - cell "bmsb" [ref=e1144]
+                - cell "BMSB" [ref=e1145]
+                - cell "NEAR_LONG" [ref=e1146]
+                - cell "deepseek" [ref=e1147]
+                - cell "deepseek-flash" [ref=e1148]
+                - cell "LEGACY / NOT RECORDED" [ref=e1149]
+                - cell "LEGACY / NOT RECORDED" [ref=e1150]
+                - cell "—" [ref=e1151]
+                - cell "—" [ref=e1152]
+                - cell [ref=e1153]:
+                  - button "VIEW" [ref=e1154] [cursor=pointer]
+              - row [ref=e1155]:
+                - cell "2026-09-28 17:59:22" [ref=e1156]
+                - cell "CPHI" [ref=e1157]
+                - cell "bmsb" [ref=e1158]
+                - cell "BMSB" [ref=e1159]
+                - cell "NEAR_LONG" [ref=e1160]
+                - cell "deepseek" [ref=e1161]
+                - cell "deepseek-flash" [ref=e1162]
+                - cell "LEGACY / NOT RECORDED" [ref=e1163]
+                - cell "LEGACY / NOT RECORDED" [ref=e1164]
+                - cell "—" [ref=e1165]
+                - cell "—" [ref=e1166]
+                - cell [ref=e1167]:
+                  - button "VIEW" [ref=e1168] [cursor=pointer]
+              - row [ref=e1169]:
+                - cell "2026-09-28 17:59:19" [ref=e1170]
+                - cell "COST" [ref=e1171]
+                - cell "bmsb" [ref=e1172]
+                - cell "BMSB" [ref=e1173]
+                - cell "NEAR_LONG" [ref=e1174]
+                - cell "deepseek" [ref=e1175]
+                - cell "deepseek-flash" [ref=e1176]
+                - cell "LEGACY / NOT RECORDED" [ref=e1177]
+                - cell "LEGACY / NOT RECORDED" [ref=e1178]
+                - cell "VETO" [ref=e1179]
+                - cell "—" [ref=e1180]
+                - cell [ref=e1181]:
+                  - button "VIEW" [ref=e1182] [cursor=pointer]
+              - row [ref=e1183]:
+                - cell "2026-09-28 17:59:17" [ref=e1184]
+                - cell "BBBY" [ref=e1185]
+                - cell "bmsb" [ref=e1186]
+                - cell "BMSB" [ref=e1187]
+                - cell "NEAR_EXIT" [ref=e1188]
+                - cell "deepseek" [ref=e1189]
+                - cell "deepseek-flash" [ref=e1190]
+                - cell "LEGACY / NOT RECORDED" [ref=e1191]
+                - cell "LEGACY / NOT RECORDED" [ref=e1192]
+                - cell "—" [ref=e1193]
+                - cell "—" [ref=e1194]
+                - cell [ref=e1195]:
+                  - button "VIEW" [ref=e1196] [cursor=pointer]
+              - row [ref=e1197]:
+                - cell "2026-09-28 17:59:15" [ref=e1198]
+                - cell "BAC" [ref=e1199]
+                - cell "bmsb" [ref=e1200]
+                - cell "BMSB" [ref=e1201]
+                - cell "CROSSED_EXIT" [ref=e1202]
+                - cell "deepseek" [ref=e1203]
+                - cell "deepseek-flash" [ref=e1204]
+                - cell "LEGACY / NOT RECORDED" [ref=e1205]
+                - cell "LEGACY / NOT RECORDED" [ref=e1206]
+                - cell "VETO" [ref=e1207]
+                - cell "—" [ref=e1208]
+                - cell [ref=e1209]:
+                  - button "VIEW" [ref=e1210] [cursor=pointer]
+              - row [ref=e1211]:
+                - cell "2026-09-28 17:59:13" [ref=e1212]
+                - cell "AMZN" [ref=e1213]
+                - cell "bmsb" [ref=e1214]
+                - cell "BMSB" [ref=e1215]
+                - cell "NEAR_LONG" [ref=e1216]
+                - cell "deepseek" [ref=e1217]
+                - cell "deepseek-flash" [ref=e1218]
+                - cell "LEGACY / NOT RECORDED" [ref=e1219]
+                - cell "LEGACY / NOT RECORDED" [ref=e1220]
+                - cell "VETO" [ref=e1221]
+                - cell "—" [ref=e1222]
+                - cell [ref=e1223]:
+                  - button "VIEW" [ref=e1224] [cursor=pointer]
+              - row [ref=e1225]:
+                - cell "2026-09-28 17:59:11" [ref=e1226]
+                - cell "AMT" [ref=e1227]
+                - cell "bmsb" [ref=e1228]
+                - cell "BMSB" [ref=e1229]
+                - cell "NEAR_LONG" [ref=e1230]
+                - cell "deepseek" [ref=e1231]
+                - cell "deepseek-flash" [ref=e1232]
+                - cell "LEGACY / NOT RECORDED" [ref=e1233]
+                - cell "LEGACY / NOT RECORDED" [ref=e1234]
+                - cell "—" [ref=e1235]
+                - cell "—" [ref=e1236]
+                - cell [ref=e1237]:
+                  - button "VIEW" [ref=e1238] [cursor=pointer]
+              - row [ref=e1239]:
+                - cell "2026-09-28 17:59:08" [ref=e1240]
+                - cell "ABBV" [ref=e1241]
+                - cell "bmsb" [ref=e1242]
+                - cell "BMSB" [ref=e1243]
+                - cell "NEAR_EXIT" [ref=e1244]
+                - cell "deepseek" [ref=e1245]
+                - cell "deepseek-flash" [ref=e1246]
+                - cell "LEGACY / NOT RECORDED" [ref=e1247]
+                - cell "LEGACY / NOT RECORDED" [ref=e1248]
+                - cell "—" [ref=e1249]
+                - cell "—" [ref=e1250]
+                - cell [ref=e1251]:
+                  - button "VIEW" [ref=e1252] [cursor=pointer]
+              - row [ref=e1253]:
+                - cell "2026-09-28 17:59:06" [ref=e1254]
+                - cell "AAPL" [ref=e1255]
+                - cell "bmsb" [ref=e1256]
+                - cell "BMSB" [ref=e1257]
+                - cell "NEAR_LONG" [ref=e1258]
+                - cell "deepseek" [ref=e1259]
+                - cell "deepseek-flash" [ref=e1260]
+                - cell "LEGACY / NOT RECORDED" [ref=e1261]
+                - cell "LEGACY / NOT RECORDED" [ref=e1262]
+                - cell "—" [ref=e1263]
+                - cell "—" [ref=e1264]
+                - cell [ref=e1265]:
+                  - button "VIEW" [ref=e1266] [cursor=pointer]
+              - row [ref=e1267]:
+                - cell "2026-09-28 17:25:06" [ref=e1268]
+                - cell "AMH" [ref=e1269]
+                - cell "stock screener" [ref=e1270]
+                - cell "LP1" [ref=e1271]
+                - cell "PENDING_ENTRY" [ref=e1272]
+                - cell "deepseek" [ref=e1273]
+                - cell "deepseek-flash" [ref=e1274]
+                - cell "LEGACY / NOT RECORDED" [ref=e1275]
+                - cell "LEGACY / NOT RECORDED" [ref=e1276]
+                - cell "—" [ref=e1277]
+                - cell "—" [ref=e1278]
+                - cell [ref=e1279]:
+                  - button "VIEW" [ref=e1280] [cursor=pointer]
+              - row [ref=e1281]:
+                - cell "2026-09-28 17:22:59" [ref=e1282]
+                - cell "XOM" [ref=e1283]
+                - cell "gaussian" [ref=e1284]
+                - cell "GAUSSIAN" [ref=e1285]
+                - cell "GAUSSIAN_NEAR_EXIT" [ref=e1286]
+                - cell "deepseek" [ref=e1287]
+                - cell "deepseek-flash" [ref=e1288]
+                - cell "LEGACY / NOT RECORDED" [ref=e1289]
+                - cell "LEGACY / NOT RECORDED" [ref=e1290]
+                - cell "—" [ref=e1291]
+                - cell "—" [ref=e1292]
+                - cell [ref=e1293]:
+                  - button "VIEW" [ref=e1294] [cursor=pointer]
+              - row [ref=e1295]:
+                - cell "2026-09-28 17:22:57" [ref=e1296]
+                - cell "WTBA" [ref=e1297]
+                - cell "gaussian" [ref=e1298]
+                - cell "GAUSSIAN" [ref=e1299]
+                - cell "GAUSSIAN_NEAR_EXIT" [ref=e1300]
+                - cell "deepseek" [ref=e1301]
+                - cell "deepseek-flash" [ref=e1302]
+                - cell "LEGACY / NOT RECORDED" [ref=e1303]
+                - cell "LEGACY / NOT RECORDED" [ref=e1304]
+                - cell "—" [ref=e1305]
+                - cell "—" [ref=e1306]
+                - cell [ref=e1307]:
+                  - button "VIEW" [ref=e1308] [cursor=pointer]
+              - row [ref=e1309]:
+                - cell "2026-09-28 17:22:55" [ref=e1310]
+                - cell "V" [ref=e1311]
+                - cell "gaussian" [ref=e1312]
+                - cell "GAUSSIAN" [ref=e1313]
+                - cell "GAUSSIAN_NEAR_LONG" [ref=e1314]
+                - cell "deepseek" [ref=e1315]
+                - cell "deepseek-flash" [ref=e1316]
+                - cell "LEGACY / NOT RECORDED" [ref=e1317]
+                - cell "LEGACY / NOT RECORDED" [ref=e1318]
+                - cell "—" [ref=e1319]
+                - cell "—" [ref=e1320]
+                - cell [ref=e1321]:
+                  - button "VIEW" [ref=e1322] [cursor=pointer]
+              - row [ref=e1323]:
+                - cell "2026-09-28 17:22:53" [ref=e1324]
+                - cell "ETN" [ref=e1325]
+                - cell "gaussian" [ref=e1326]
+                - cell "GAUSSIAN" [ref=e1327]
+                - cell "GAUSSIAN_LONG_EXIT" [ref=e1328]
+                - cell "deepseek" [ref=e1329]
+                - cell "deepseek-flash" [ref=e1330]
+                - cell "LEGACY / NOT RECORDED" [ref=e1331]
+                - cell "LEGACY / NOT RECORDED" [ref=e1332]
+                - cell "—" [ref=e1333]
+                - cell "—" [ref=e1334]
+                - cell [ref=e1335]:
+                  - button "VIEW" [ref=e1336] [cursor=pointer]
+              - row [ref=e1337]:
+                - cell "2026-09-28 17:22:51" [ref=e1338]
+                - cell "COP" [ref=e1339]
+                - cell "gaussian" [ref=e1340]
+                - cell "GAUSSIAN" [ref=e1341]
+                - cell "GAUSSIAN_LONG_EXIT" [ref=e1342]
+                - cell "deepseek" [ref=e1343]
+                - cell "deepseek-flash" [ref=e1344]
+                - cell "LEGACY / NOT RECORDED" [ref=e1345]
+                - cell "LEGACY / NOT RECORDED" [ref=e1346]
+                - cell "—" [ref=e1347]
+                - cell "—" [ref=e1348]
+                - cell [ref=e1349]:
+                  - button "VIEW" [ref=e1350] [cursor=pointer]
+              - row [ref=e1351]:
+                - cell "2026-09-28 17:22:49" [ref=e1352]
+                - cell "BRKH" [ref=e1353]
+                - cell "gaussian" [ref=e1354]
+                - cell "GAUSSIAN" [ref=e1355]
+                - cell "GAUSSIAN_NEAR_LONG" [ref=e1356]
+                - cell "deepseek" [ref=e1357]
+                - cell "deepseek-flash" [ref=e1358]
+                - cell "LEGACY / NOT RECORDED" [ref=e1359]
+                - cell "LEGACY / NOT RECORDED" [ref=e1360]
+                - cell "—" [ref=e1361]
+                - cell "—" [ref=e1362]
+                - cell [ref=e1363]:
+                  - button "VIEW" [ref=e1364] [cursor=pointer]
+              - row [ref=e1365]:
+                - cell "2026-09-28 17:22:47" [ref=e1366]
+                - cell "APLM" [ref=e1367]
+                - cell "gaussian" [ref=e1368]
+                - cell "GAUSSIAN" [ref=e1369]
+                - cell "GAUSSIAN_LONG_ENTRY" [ref=e1370]
+                - cell "deepseek" [ref=e1371]
+                - cell "deepseek-flash" [ref=e1372]
+                - cell "LEGACY / NOT RECORDED" [ref=e1373]
+                - cell "LEGACY / NOT RECORDED" [ref=e1374]
+                - cell "—" [ref=e1375]
+                - cell "—" [ref=e1376]
+                - cell [ref=e1377]:
+                  - button "VIEW" [ref=e1378] [cursor=pointer]
+              - row [ref=e1379]:
+                - cell "2026-09-28 17:20:28" [ref=e1380]
+                - cell "WTBA" [ref=e1381]
+                - cell "bmsb" [ref=e1382]
+                - cell "BMSB" [ref=e1383]
+                - cell "NEAR_EXIT" [ref=e1384]
+                - cell "deepseek" [ref=e1385]
+                - cell "deepseek-flash" [ref=e1386]
+                - cell "LEGACY / NOT RECORDED" [ref=e1387]
+                - cell "LEGACY / NOT RECORDED" [ref=e1388]
+                - cell "—" [ref=e1389]
+                - cell "—" [ref=e1390]
+                - cell [ref=e1391]:
+                  - button "VIEW" [ref=e1392] [cursor=pointer]
+              - row [ref=e1393]:
+                - cell "2026-09-28 17:20:26" [ref=e1394]
+                - cell "WMT" [ref=e1395]
+                - cell "bmsb" [ref=e1396]
+                - cell "BMSB" [ref=e1397]
+                - cell "NEAR_LONG" [ref=e1398]
+                - cell "deepseek" [ref=e1399]
+                - cell "deepseek-flash" [ref=e1400]
+                - cell "LEGACY / NOT RECORDED" [ref=e1401]
+                - cell "LEGACY / NOT RECORDED" [ref=e1402]
+                - cell "VETO" [ref=e1403]
+                - cell "—" [ref=e1404]
+                - cell [ref=e1405]:
+                  - button "VIEW" [ref=e1406] [cursor=pointer]
+              - row [ref=e1407]:
+                - cell "2026-09-28 17:20:24" [ref=e1408]
+                - cell "VAL" [ref=e1409]
+                - cell "bmsb" [ref=e1410]
+                - cell "BMSB" [ref=e1411]
+                - cell "NEAR_LONG" [ref=e1412]
+                - cell "deepseek" [ref=e1413]
+                - cell "deepseek-flash" [ref=e1414]
+                - cell "LEGACY / NOT RECORDED" [ref=e1415]
+                - cell "LEGACY / NOT RECORDED" [ref=e1416]
+                - cell "VETO" [ref=e1417]
+                - cell "—" [ref=e1418]
+                - cell [ref=e1419]:
+                  - button "VIEW" [ref=e1420] [cursor=pointer]
+              - row [ref=e1421]:
+                - cell "2026-09-28 17:20:22" [ref=e1422]
+                - cell "V" [ref=e1423]
+                - cell "bmsb" [ref=e1424]
+                - cell "BMSB" [ref=e1425]
+                - cell "NEAR_EXIT" [ref=e1426]
+                - cell "deepseek" [ref=e1427]
+                - cell "deepseek-flash" [ref=e1428]
+                - cell "LEGACY / NOT RECORDED" [ref=e1429]
+                - cell "LEGACY / NOT RECORDED" [ref=e1430]
+                - cell "—" [ref=e1431]
+                - cell "—" [ref=e1432]
+                - cell [ref=e1433]:
+                  - button "VIEW" [ref=e1434] [cursor=pointer]
+              - row [ref=e1435]:
+                - cell "2026-09-28 17:20:20" [ref=e1436]
+                - cell "SYRA" [ref=e1437]
+                - cell "bmsb" [ref=e1438]
+                - cell "BMSB" [ref=e1439]
+                - cell "NEAR_LONG" [ref=e1440]
+                - cell "deepseek" [ref=e1441]
+                - cell "deepseek-flash" [ref=e1442]
+                - cell "LEGACY / NOT RECORDED" [ref=e1443]
+                - cell "LEGACY / NOT RECORDED" [ref=e1444]
+                - cell "VETO" [ref=e1445]
+                - cell "—" [ref=e1446]
+                - cell [ref=e1447]:
+                  - button "VIEW" [ref=e1448] [cursor=pointer]
+              - row [ref=e1449]:
+                - cell "2026-09-28 17:20:18" [ref=e1450]
+                - cell "SMA" [ref=e1451]
+                - cell "bmsb" [ref=e1452]
+                - cell "BMSB" [ref=e1453]
+                - cell "CROSSED_EXIT" [ref=e1454]
+                - cell "deepseek" [ref=e1455]
+                - cell "deepseek-flash" [ref=e1456]
+                - cell "LEGACY / NOT RECORDED" [ref=e1457]
+                - cell "LEGACY / NOT RECORDED" [ref=e1458]
+                - cell "—" [ref=e1459]
+                - cell "—" [ref=e1460]
+                - cell [ref=e1461]:
+                  - button "VIEW" [ref=e1462] [cursor=pointer]
+              - row [ref=e1463]:
+                - cell "2026-09-28 17:20:16" [ref=e1464]
+                - cell "SHW" [ref=e1465]
+                - cell "bmsb" [ref=e1466]
+                - cell "BMSB" [ref=e1467]
+                - cell "NEAR_EXIT" [ref=e1468]
+                - cell "deepseek" [ref=e1469]
+                - cell "deepseek-flash" [ref=e1470]
+                - cell "LEGACY / NOT RECORDED" [ref=e1471]
+                - cell "LEGACY / NOT RECORDED" [ref=e1472]
+                - cell "—" [ref=e1473]
+                - cell "—" [ref=e1474]
+                - cell [ref=e1475]:
+                  - button "VIEW" [ref=e1476] [cursor=pointer]
+              - row [ref=e1477]:
+                - cell "2026-09-28 17:20:14" [ref=e1478]
+                - cell "RTX" [ref=e1479]
+                - cell "bmsb" [ref=e1480]
+                - cell "BMSB" [ref=e1481]
+                - cell "CROSSED_EXIT" [ref=e1482]
+                - cell "deepseek" [ref=e1483]
+                - cell "deepseek-flash" [ref=e1484]
+                - cell "LEGACY / NOT RECORDED" [ref=e1485]
+                - cell "LEGACY / NOT RECORDED" [ref=e1486]
+                - cell "—" [ref=e1487]
+                - cell "—" [ref=e1488]
+                - cell [ref=e1489]:
+                  - button "VIEW" [ref=e1490] [cursor=pointer]
+              - row [ref=e1491]:
+                - cell "2026-09-28 17:20:12" [ref=e1492]
+                - cell "PG" [ref=e1493]
+                - cell "bmsb" [ref=e1494]
+                - cell "BMSB" [ref=e1495]
+                - cell "NEAR_EXIT" [ref=e1496]
+                - cell "deepseek" [ref=e1497]
+                - cell "deepseek-flash" [ref=e1498]
+                - cell "LEGACY / NOT RECORDED" [ref=e1499]
+                - cell "LEGACY / NOT RECORDED" [ref=e1500]
+                - cell "—" [ref=e1501]
+                - cell "—" [ref=e1502]
+                - cell [ref=e1503]:
+                  - button "VIEW" [ref=e1504] [cursor=pointer]
+              - row [ref=e1505]:
+                - cell "2026-09-28 17:20:10" [ref=e1506]
+                - cell "NVDA" [ref=e1507]
+                - cell "bmsb" [ref=e1508]
+                - cell "BMSB" [ref=e1509]
+                - cell "CROSSED_LONG" [ref=e1510]
+                - cell "deepseek" [ref=e1511]
+                - cell "deepseek-flash" [ref=e1512]
+                - cell "LEGACY / NOT RECORDED" [ref=e1513]
+                - cell "LEGACY / NOT RECORDED" [ref=e1514]
+                - cell "VETO" [ref=e1515]
+                - cell "—" [ref=e1516]
+                - cell [ref=e1517]:
+                  - button "VIEW" [ref=e1518] [cursor=pointer]
+              - row [ref=e1519]:
+                - cell "2026-09-28 17:20:08" [ref=e1520]
+                - cell "MSEX" [ref=e1521]
+                - cell "bmsb" [ref=e1522]
+                - cell "BMSB" [ref=e1523]
+                - cell "CROSSED_EXIT" [ref=e1524]
+                - cell "deepseek" [ref=e1525]
+                - cell "deepseek-flash" [ref=e1526]
+                - cell "LEGACY / NOT RECORDED" [ref=e1527]
+                - cell "LEGACY / NOT RECORDED" [ref=e1528]
+                - cell "VETO" [ref=e1529]
+                - cell "—" [ref=e1530]
+                - cell [ref=e1531]:
+                  - button "VIEW" [ref=e1532] [cursor=pointer]
+              - row [ref=e1533]:
+                - cell "2026-09-28 17:20:06" [ref=e1534]
+                - cell "MRSH" [ref=e1535]
+                - cell "bmsb" [ref=e1536]
+                - cell "BMSB" [ref=e1537]
+                - cell "NEAR_EXIT" [ref=e1538]
+                - cell "deepseek" [ref=e1539]
+                - cell "deepseek-flash" [ref=e1540]
+                - cell "LEGACY / NOT RECORDED" [ref=e1541]
+                - cell "LEGACY / NOT RECORDED" [ref=e1542]
+                - cell "—" [ref=e1543]
+                - cell "—" [ref=e1544]
+                - cell [ref=e1545]:
+                  - button "VIEW" [ref=e1546] [cursor=pointer]
+              - row [ref=e1547]:
+                - cell "2026-09-28 17:20:04" [ref=e1548]
+                - cell "MCD" [ref=e1549]
+                - cell "bmsb" [ref=e1550]
+                - cell "BMSB" [ref=e1551]
+                - cell "CROSSED_EXIT" [ref=e1552]
+                - cell "deepseek" [ref=e1553]
+                - cell "deepseek-flash" [ref=e1554]
+                - cell "LEGACY / NOT RECORDED" [ref=e1555]
+                - cell "LEGACY / NOT RECORDED" [ref=e1556]
+                - cell "—" [ref=e1557]
+                - cell "—" [ref=e1558]
+                - cell [ref=e1559]:
+                  - button "VIEW" [ref=e1560] [cursor=pointer]
+              - row [ref=e1561]:
+                - cell "2026-09-28 17:20:01" [ref=e1562]
+                - cell "KO" [ref=e1563]
+                - cell "bmsb" [ref=e1564]
+                - cell "BMSB" [ref=e1565]
+                - cell "CROSSED_EXIT" [ref=e1566]
+                - cell "deepseek" [ref=e1567]
+                - cell "deepseek-flash" [ref=e1568]
+                - cell "LEGACY / NOT RECORDED" [ref=e1569]
+                - cell "LEGACY / NOT RECORDED" [ref=e1570]
+                - cell "—" [ref=e1571]
+                - cell "—" [ref=e1572]
+                - cell [ref=e1573]:
+                  - button "VIEW" [ref=e1574] [cursor=pointer]
+              - row [ref=e1575]:
+                - cell "2026-09-28 17:19:59" [ref=e1576]
+                - cell "JPM" [ref=e1577]
+                - cell "bmsb" [ref=e1578]
+                - cell "BMSB" [ref=e1579]
+                - cell "CROSSED_EXIT" [ref=e1580]
+                - cell "deepseek" [ref=e1581]
+                - cell "deepseek-flash" [ref=e1582]
+                - cell "LEGACY / NOT RECORDED" [ref=e1583]
+                - cell "LEGACY / NOT RECORDED" [ref=e1584]
+                - cell "—" [ref=e1585]
+                - cell "—" [ref=e1586]
+                - cell [ref=e1587]:
+                  - button "VIEW" [ref=e1588] [cursor=pointer]
+              - row [ref=e1589]:
+                - cell "2026-09-28 17:19:57" [ref=e1590]
+                - cell "JNJ" [ref=e1591]
+                - cell "bmsb" [ref=e1592]
+                - cell "BMSB" [ref=e1593]
+                - cell "NEAR_EXIT" [ref=e1594]
+                - cell "deepseek" [ref=e1595]
+                - cell "deepseek-flash" [ref=e1596]
+                - cell "LEGACY / NOT RECORDED" [ref=e1597]
+                - cell "LEGACY / NOT RECORDED" [ref=e1598]
+                - cell "—" [ref=e1599]
+                - cell "—" [ref=e1600]
+                - cell [ref=e1601]:
+                  - button "VIEW" [ref=e1602] [cursor=pointer]
+              - row [ref=e1603]:
+                - cell "2026-09-28 17:19:55" [ref=e1604]
+                - cell "ITIC" [ref=e1605]
+                - cell "bmsb" [ref=e1606]
+                - cell "BMSB" [ref=e1607]
+                - cell "NEAR_EXIT" [ref=e1608]
+                - cell "deepseek" [ref=e1609]
+                - cell "deepseek-flash" [ref=e1610]
+                - cell "LEGACY / NOT RECORDED" [ref=e1611]
+                - cell "LEGACY / NOT RECORDED" [ref=e1612]
+                - cell "—" [ref=e1613]
+                - cell "—" [ref=e1614]
+                - cell [ref=e1615]:
+                  - button "VIEW" [ref=e1616] [cursor=pointer]
+              - row [ref=e1617]:
+                - cell "2026-09-28 17:19:52" [ref=e1618]
+                - cell "HD" [ref=e1619]
+                - cell "bmsb" [ref=e1620]
+                - cell "BMSB" [ref=e1621]
+                - cell "CROSSED_EXIT" [ref=e1622]
+                - cell "deepseek" [ref=e1623]
+                - cell "deepseek-flash" [ref=e1624]
+                - cell "LEGACY / NOT RECORDED" [ref=e1625]
+                - cell "LEGACY / NOT RECORDED" [ref=e1626]
+                - cell "—" [ref=e1627]
+                - cell "—" [ref=e1628]
+                - cell [ref=e1629]:
+                  - button "VIEW" [ref=e1630] [cursor=pointer]
+              - row [ref=e1631]:
+                - cell "2026-09-28 17:19:50" [ref=e1632]
+                - cell "ETN" [ref=e1633]
+                - cell "bmsb" [ref=e1634]
+                - cell "BMSB" [ref=e1635]
+                - cell "NEAR_LONG" [ref=e1636]
+                - cell "deepseek" [ref=e1637]
+                - cell "deepseek-flash" [ref=e1638]
+                - cell "LEGACY / NOT RECORDED" [ref=e1639]
+                - cell "LEGACY / NOT RECORDED" [ref=e1640]
+                - cell "—" [ref=e1641]
+                - cell "—" [ref=e1642]
+                - cell [ref=e1643]:
+                  - button "VIEW" [ref=e1644] [cursor=pointer]
+              - row [ref=e1645]:
+                - cell "2026-09-28 17:19:48" [ref=e1646]
+                - cell "CPHI" [ref=e1647]
+                - cell "bmsb" [ref=e1648]
+                - cell "BMSB" [ref=e1649]
+                - cell "NEAR_LONG" [ref=e1650]
+                - cell "deepseek" [ref=e1651]
+                - cell "deepseek-flash" [ref=e1652]
+                - cell "LEGACY / NOT RECORDED" [ref=e1653]
+                - cell "LEGACY / NOT RECORDED" [ref=e1654]
+                - cell "—" [ref=e1655]
+                - cell "—" [ref=e1656]
+                - cell [ref=e1657]:
+                  - button "VIEW" [ref=e1658] [cursor=pointer]
+              - row [ref=e1659]:
+                - cell "2026-09-28 17:19:45" [ref=e1660]
+                - cell "COST" [ref=e1661]
+                - cell "bmsb" [ref=e1662]
+                - cell "BMSB" [ref=e1663]
+                - cell "NEAR_LONG" [ref=e1664]
+                - cell "deepseek" [ref=e1665]
+                - cell "deepseek-flash" [ref=e1666]
+                - cell "LEGACY / NOT RECORDED" [ref=e1667]
+                - cell "LEGACY / NOT RECORDED" [ref=e1668]
+                - cell "VETO" [ref=e1669]
+                - cell "—" [ref=e1670]
+                - cell [ref=e1671]:
+                  - button "VIEW" [ref=e1672] [cursor=pointer]
+              - row [ref=e1673]:
+                - cell "2026-09-28 17:19:43" [ref=e1674]
+                - cell "BBBY" [ref=e1675]
+                - cell "bmsb" [ref=e1676]
+                - cell "BMSB" [ref=e1677]
+                - cell "NEAR_EXIT" [ref=e1678]
+                - cell "deepseek" [ref=e1679]
+                - cell "deepseek-flash" [ref=e1680]
+                - cell "LEGACY / NOT RECORDED" [ref=e1681]
+                - cell "LEGACY / NOT RECORDED" [ref=e1682]
+                - cell "—" [ref=e1683]
+                - cell "—" [ref=e1684]
+                - cell [ref=e1685]:
+                  - button "VIEW" [ref=e1686] [cursor=pointer]
+              - row [ref=e1687]:
+                - cell "2026-09-28 17:19:42" [ref=e1688]
+                - cell "BAC" [ref=e1689]
+                - cell "bmsb" [ref=e1690]
+                - cell "BMSB" [ref=e1691]
+                - cell "CROSSED_EXIT" [ref=e1692]
+                - cell "deepseek" [ref=e1693]
+                - cell "deepseek-flash" [ref=e1694]
+                - cell "LEGACY / NOT RECORDED" [ref=e1695]
+                - cell "LEGACY / NOT RECORDED" [ref=e1696]
+                - cell "—" [ref=e1697]
+                - cell "—" [ref=e1698]
+                - cell [ref=e1699]:
+                  - button "VIEW" [ref=e1700] [cursor=pointer]
+              - row [ref=e1701]:
+                - cell "2026-09-28 17:19:39" [ref=e1702]
+                - cell "AMZN" [ref=e1703]
+                - cell "bmsb" [ref=e1704]
+                - cell "BMSB" [ref=e1705]
+                - cell "NEAR_LONG" [ref=e1706]
+                - cell "deepseek" [ref=e1707]
+                - cell "deepseek-flash" [ref=e1708]
+                - cell "LEGACY / NOT RECORDED" [ref=e1709]
+                - cell "LEGACY / NOT RECORDED" [ref=e1710]
+                - cell "—" [ref=e1711]
+                - cell "—" [ref=e1712]
+                - cell [ref=e1713]:
+                  - button "VIEW" [ref=e1714] [cursor=pointer]
+              - row [ref=e1715]:
+                - cell "2026-09-28 17:19:37" [ref=e1716]
+                - cell "AMT" [ref=e1717]
+                - cell "bmsb" [ref=e1718]
+                - cell "BMSB" [ref=e1719]
+                - cell "NEAR_LONG" [ref=e1720]
+                - cell "deepseek" [ref=e1721]
+                - cell "deepseek-flash" [ref=e1722]
+                - cell "LEGACY / NOT RECORDED" [ref=e1723]
+                - cell "LEGACY / NOT RECORDED" [ref=e1724]
+                - cell "—" [ref=e1725]
+                - cell "—" [ref=e1726]
+                - cell [ref=e1727]:
+                  - button "VIEW" [ref=e1728] [cursor=pointer]
+              - row [ref=e1729]:
+                - cell "2026-09-28 17:19:36" [ref=e1730]
+                - cell "ABBV" [ref=e1731]
+                - cell "bmsb" [ref=e1732]
+                - cell "BMSB" [ref=e1733]
+                - cell "NEAR_EXIT" [ref=e1734]
+                - cell "deepseek" [ref=e1735]
+                - cell "deepseek-flash" [ref=e1736]
+                - cell "LEGACY / NOT RECORDED" [ref=e1737]
+                - cell "LEGACY / NOT RECORDED" [ref=e1738]
+                - cell "—" [ref=e1739]
+                - cell "—" [ref=e1740]
+                - cell [ref=e1741]:
+                  - button "VIEW" [ref=e1742] [cursor=pointer]
+              - row [ref=e1743]:
+                - cell "2026-09-28 17:19:34" [ref=e1744]
+                - cell "AAPL" [ref=e1745]
+                - cell "bmsb" [ref=e1746]
+                - cell "BMSB" [ref=e1747]
+                - cell "NEAR_LONG" [ref=e1748]
+                - cell "deepseek" [ref=e1749]
+                - cell "deepseek-flash" [ref=e1750]
+                - cell "LEGACY / NOT RECORDED" [ref=e1751]
+                - cell "LEGACY / NOT RECORDED" [ref=e1752]
+                - cell "VETO" [ref=e1753]
+                - cell "—" [ref=e1754]
+                - cell [ref=e1755]:
+                  - button "VIEW" [ref=e1756] [cursor=pointer]
+        - generic [ref=e314]:
+          - generic [ref=e315]:
+            - generic [ref=e316]: ISOLATED PAPER POSITIONS
+            - generic [ref=e317]: No agent-owned open positions.
+          - generic [ref=e318]:
+            - generic [ref=e319]: PROVIDER HEALTH
+            - generic [ref=e320]:
+              - generic [ref=e321]:
+                - text: "Configured provider:"
+                - strong [ref=e322]: deepseek
+              - generic [ref=e323]:
+                - text: "Model:"
+                - strong [ref=e324]: deepseek-flash
+              - generic [ref=e325]:
+                - text: "Runtime test:"
+                - strong [ref=e326]: NOT TESTED
+              - generic [ref=e327]:
+                - text: "Last latency:"
+                - strong [ref=e328]: —
+              - generic [ref=e329]:
+                - text: "Last checked:"
+                - strong [ref=e330]: —
+              - generic [ref=e331]: "Trading observations: 90"
+            - generic [ref=e1757]:
+              - generic [ref=e1758]: deepseek · deepseek-flash
+              - generic [ref=e1759]: ok
+            - generic [ref=e1760]:
+              - generic [ref=e1761]: deepseek · deepseek-flash
+              - generic [ref=e1762]: ok
+            - generic [ref=e1763]:
+              - generic [ref=e1764]: deepseek · deepseek-flash
+              - generic [ref=e1765]: ok
+            - generic [ref=e1766]:
+              - generic [ref=e1767]: deepseek · deepseek-flash
+              - generic [ref=e1768]: ok
+            - generic [ref=e1769]:
+              - generic [ref=e1770]: deepseek · deepseek-flash
+              - generic [ref=e1771]: ok
+            - generic [ref=e1772]:
+              - generic [ref=e1773]: deepseek · deepseek-flash
+              - generic [ref=e1774]: ok
+            - generic [ref=e1775]:
+              - generic [ref=e1776]: deepseek · deepseek-flash
+              - generic [ref=e1777]: ok
+            - generic [ref=e1778]:
+              - generic [ref=e1779]: deepseek · deepseek-flash
+              - generic [ref=e1780]: ok

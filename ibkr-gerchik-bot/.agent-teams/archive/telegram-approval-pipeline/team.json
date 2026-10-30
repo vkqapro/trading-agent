@@ -1,0 +1,89 @@
+{
+  "name": "telegram-approval-pipeline",
+  "id": "telegram-approval-pipeline",
+  "description": "Inspect and safely extend the existing trading bot with a Telegram approval to deterministic IBKR Paper execution pipeline, reusing current scanner, risk gate, execution worker, Trading MCP, audit, and recovery architecture.",
+  "captainSessionId": "session-32080058-4428-42ec-9e7c-570dcd48aad2",
+  "createdAt": 1790943279262,
+  "phase": "running",
+  "members": [
+    {
+      "id": "72069d6d-e675-4be9-8814-c8ab5c2646d4",
+      "name": "architect",
+      "role": "Repository architect: map existing scanner, state, risk, execution, MCP, audit, recovery, and dashboard boundaries; propose minimal insertion points.",
+      "provider": "openai-codex",
+      "model": "gpt-5.6-luna",
+      "reasoningEffort": "medium",
+      "joinedAt": 1790943279262,
+      "status": "removed"
+    },
+    {
+      "id": "8bfc09fe-06f7-4dcb-acfa-1a6a8c5dbaae",
+      "name": "backend",
+      "role": "Backend engineer: after discovery, implement the approval workflow using existing state, validation, risk, and execution paths.",
+      "provider": "openai-codex",
+      "model": "gpt-5.6-luna",
+      "reasoningEffort": "medium",
+      "joinedAt": 1790943279262,
+      "status": "removed"
+    },
+    {
+      "id": "",
+      "name": "qa",
+      "role": "Safety and test engineer: audit existing tests and define/implement lifecycle, idempotency, recovery, authorization, and PAPER-only integration coverage.",
+      "provider": "openai-codex",
+      "model": "gpt-5.6-luna",
+      "reasoningEffort": "medium",
+      "joinedAt": 1790943279262,
+      "status": "removed",
+      "spawnError": "SubagentError: subagent limit reached (active child limit: 1); wait for an existing child to finish or complete this work with the current agents\n    at ActivationPool.reserve (file:///C:/Users/Vitaly/AppData/Local/npm-cache/_npx/4f4f47d9854f3c73/node_modules/@deepseek-ai/dsh-subagent/lib/index.js:728:42)\n    at ContinuableActivationRegistry.materialize (file:///C:/Users/Vitaly/AppData/Local/npm-cache/_npx/4f4f47d9854f3c73/node_modules/@deepseek-ai/dsh-subagent/lib/index.js:970:28)\n    at file:///C:/Users/Vitaly/AppData/Local/npm-cache/_npx/4f4f47d9854f3c73/node_modules/@deepseek-ai/dsh-subagent/lib/index.js:1719:48"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "profileSeedId": "discover-architecture",
+      "subject": "Map current trading architecture",
+      "description": "Inspect the repository and produce a concise architecture note. Identify authoritative scanner setup/candidate types and IDs, canonical plan hash, deterministic risk-gate entrypoint, execution worker and IBKR adapter, account/mode flags, database/audit/recovery structures, existing Trading MCP server/tool registry, Hermes integration surfaces, dashboard status, and relevant tests. Do not modify code. Use graphify query first if graphify-out/graph.json exists, then targeted source inspection. Deliver exact file/function paths and minimal insertion points.",
+      "status": "completed",
+      "assignee": "architect",
+      "dependencies": [],
+      "attempt": 1,
+      "createdAt": 1790943279262,
+      "updatedAt": 1790943433570,
+      "attemptId": "4bc04666-fd38-44ef-89eb-52eaf558a8d5",
+      "reassigning": false,
+      "output": "Mapped scanner, stable candidate/source IDs, definition and order planning hashes, deterministic risk gate, agent execution/IBKR adapter, mode/account config, queue worker, audit/recovery, read-only Trading MCP, dashboard status, and tests. No code modified. Full architecture note sent to captain; Hermes/Telegram surfaces absent in repository.",
+      "changedPaths": []
+    },
+    {
+      "id": "t2",
+      "profileSeedId": "discover-tests",
+      "subject": "Audit safety and test coverage",
+      "description": "Inspect repository tests/config/docs relevant to scanner→risk→execution, MCP tools, Telegram/Hermes integration, idempotency, restart recovery, account identity, paper/live flags, and kill switches. Do not modify code. Report gaps and a concrete test matrix for the requested approval lifecycle, revalidation, risk, execution, restart, and negative E2E cases.",
+      "status": "pending",
+      "dependencies": [],
+      "attempt": 8,
+      "createdAt": 1790943279262,
+      "updatedAt": 1790943751515,
+      "reassigning": false,
+      "handoffId": "4e1ea3f2-92e1-4518-821e-4204d3c9798b"
+    },
+    {
+      "id": "t3",
+      "profileSeedId": "implementation-plan",
+      "subject": "Prepare implementation constraints",
+      "description": "Independently inspect the repository for existing execution and persistence conventions, focusing on backend modules that likely need extension. Do not modify code. Report risks, compatibility constraints, and what must be reused versus newly added for a secure approval workflow; coordinate findings through the task output.",
+      "status": "completed",
+      "assignee": "backend",
+      "dependencies": [],
+      "attempt": 6,
+      "createdAt": 1790943279262,
+      "updatedAt": 1790943548182,
+      "reassigning": false,
+      "attemptId": "f91f5295-dcde-4240-ae13-bdd8c7ee2eb8",
+      "output": "Inspected execution queue, OrderManager, broker identity, decision agent/audit, risk/config, and read-only Trading MCP. Findings: reuse src/execution/order_requests.py atomic locked JSON queue + claim_pending/process_pending_once worker; reuse OrderManager.execute_trade autonomous guards or execute_manual_order only after explicit validated approval; retain broker IBKRClient.get_account_identity paper_verified/account allowlist and order_ref bracket methods; retain decision agent RiskGate and audit SQLite reservations/execution links for idempotency/reconciliation. Telegram/MCP integration is absent; Trading Bot Data MCP is explicitly read-only and must not execute orders. New approval layer should persist immutable candidate snapshot + nonce/request id, authorized chat/user allowlist, expiration, one-time state transition approved/rejected, and enqueue only validated approval; worker remains sole broker caller. Risks: existing submit_place live flag is unsafe as approval primitive (boolean caller-controlled); execute_requests enforces PAPER_TRADING but live=True bypasses DRY_RUN, so Telegram path must force paper and reject live/DRY_RUN mismatch. Queue claim marks PROCESSING before execution and stale processing recovery is not automatic. Manual path bypasses autonomous quality gates; approval must run deterministic risk gate/account sync/fresh quote immediately before enqueue. Audit failure before/after submission requires reconciliation state. MCP's persisted quotes are stale/non-broker and unsuitable final execution validation. No code modified."
+    }
+  ],
+  "taskSeq": 3,
+  "approvedAt": 1790943325162
+}

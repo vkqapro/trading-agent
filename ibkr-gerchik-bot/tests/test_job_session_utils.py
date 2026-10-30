@@ -13,6 +13,7 @@ from src.jobs.session_utils import (
     get_scan_interval,
     is_open_entry_window,
     job_loop_lock,
+    manage_positions,
     next_scan_time,
     protective_stops_ok,
 )
@@ -99,6 +100,48 @@ class JobSessionUtilsTests(TestCase):
             )
         )
 
+    def test_invalid_quote_does_not_trigger_loss_cut(self) -> None:
+        class BrokerStub:
+            is_connected = True
+
+            def get_positions(self):
+                return [{"symbol": "SANM", "position": 1, "sec_type": "STK"}]
+
+            def get_market_price(self, _symbol):
+                return {"last": 0.0, "quote_status": "subscription_blocked"}
+
+            def place_market_order(self, *args, **kwargs):
+                raise AssertionError("An invalid quote must not trigger a market exit.")
+
+        class NewsStub:
+            def is_macro_risk(self):
+                return False
+
+            def has_high_risk_news(self, _symbol):
+                return False
+
+        tracked = [
+            {
+                "symbol": "SANM",
+                "quantity": 1,
+                "entry": 190.83,
+                "direction": "long",
+                "protection_policy": "bracket_managed",
+                "stop_order_id": 668,
+            }
+        ]
+
+        with patch("src.jobs.session_utils.protective_stops_ok", return_value=True):
+            result = manage_positions(
+                broker=BrokerStub(),
+                news_filter=NewsStub(),
+                tracked_positions=tracked,
+                account_equity=100000,
+            )
+
+        self.assertEqual(result["actions"], [{"symbol": "SANM", "event": "quote_unavailable", "quote_status": "subscription_blocked"}])
+        self.assertEqual(tracked[0]["symbol"], "SANM")
+
     def test_job_loop_lock_recovers_stale_lock_file(self) -> None:
         original_runtime_dir = SETTINGS.paths.runtime_dir
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -115,12 +158,26 @@ class JobSessionUtilsTests(TestCase):
             self.assertFalse(lock_path.exists())
         object.__setattr__(SETTINGS.paths, "runtime_dir", original_runtime_dir)
 
+    def test_job_loop_lock_recovers_recent_lock_for_dead_process(self) -> None:
+        original_runtime_dir = SETTINGS.paths.runtime_dir
+        with tempfile.TemporaryDirectory() as temp_dir:
+            object.__setattr__(SETTINGS.paths, "runtime_dir", original_runtime_dir.__class__(temp_dir))
+            lock_path = SETTINGS.paths.runtime_dir / "dead_process_session.lock"
+            lock_path.write_text("999999|recent\n", encoding="utf-8")
+
+            with job_loop_lock("dead_process_session") as acquired:
+                self.assertTrue(acquired)
+                self.assertTrue(lock_path.exists())
+
+            self.assertFalse(lock_path.exists())
+        object.__setattr__(SETTINGS.paths, "runtime_dir", original_runtime_dir)
+
     def test_job_loop_lock_waits_for_active_lock_to_clear(self) -> None:
         original_runtime_dir = SETTINGS.paths.runtime_dir
         with tempfile.TemporaryDirectory() as temp_dir:
             object.__setattr__(SETTINGS.paths, "runtime_dir", original_runtime_dir.__class__(temp_dir))
             lock_path = SETTINGS.paths.runtime_dir / "market_session.lock"
-            lock_path.write_text("123|active\n", encoding="utf-8")
+            lock_path.write_text(f"{os.getpid()}|active\n", encoding="utf-8")
             slept: list[float] = []
 
             def release_lock_after_sleep(seconds: float) -> None:

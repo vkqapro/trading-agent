@@ -4,12 +4,34 @@ from __future__ import annotations
 
 import asyncio
 import math
+import re
 import time
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from src.config import LOGGER, SETTINGS, fx_pair_components
+
+
+_BROKER_ACCOUNT_ID_RE = re.compile(r"^(?:DU|U)[A-Z0-9]+$", re.IGNORECASE)
+_ACCOUNT_SUMMARY_AGGREGATES = frozenset({"ALL", "BASE"})
+
+
+def _normalized_broker_account_id(value: object) -> str | None:
+    """Return only a supported brokerage account identity."""
+    normalized = str(value or "").strip().upper()
+    if not normalized or not _BROKER_ACCOUNT_ID_RE.fullmatch(normalized):
+        return None
+    return normalized
+
+
+def _account_values(value: object) -> list[str]:
+    """Normalize ib_insync's list-or-comma-separated managed account result."""
+    if isinstance(value, str):
+        return [part.strip() for part in value.split(",") if part.strip()]
+    if isinstance(value, (list, tuple, set, frozenset)):
+        return [str(part).strip() for part in value if str(part).strip()]
+    return []
 
 
 def _ensure_event_loop() -> None:
@@ -23,10 +45,22 @@ def _ensure_event_loop() -> None:
 _ensure_event_loop()
 
 try:
-    from ib_insync import IB, Forex, LimitOrder, MarketOrder, Stock, StopOrder, Ticker, Trade, util
+    from ib_insync import (
+        IB,
+        Crypto,
+        Forex,
+        LimitOrder,
+        MarketOrder,
+        Stock,
+        StopLimitOrder,
+        StopOrder,
+        Ticker,
+        Trade,
+        util,
+    )
 except ImportError:  # pragma: no cover - exercised only when dependency is missing.
     IB = None  # type: ignore[assignment]
-    Forex = LimitOrder = MarketOrder = StopOrder = Stock = Ticker = Trade = None  # type: ignore[assignment]
+    Crypto = Forex = LimitOrder = MarketOrder = StopLimitOrder = StopOrder = Stock = Ticker = Trade = None  # type: ignore[assignment]
     util = None  # type: ignore[assignment]
 
 
@@ -43,21 +77,49 @@ class OrderResult:
     order_type: str
     status: str
     detail: str = ""
+    filled: float = 0.0
+    remaining: float = 0.0
+    avg_fill_price: float = 0.0
+    perm_id: int = 0
 
 
 def _safe_market_price(value: object) -> float:
-    """Normalize broker quote values so NaN/inf become missing-data zeros."""
+    """Normalize broker quote/order prices so IBKR unset values become zeros."""
     try:
         numeric = float(value or 0.0)
     except (TypeError, ValueError):
         return 0.0
-    return numeric if math.isfinite(numeric) else 0.0
+    if not math.isfinite(numeric):
+        return 0.0
+    # ib_insync/IBKR uses very large sentinel values for unset fields such as
+    # lmtPrice/auxPrice. Treat those as missing instead of rendering absurd
+    # stop/target prices in the journal.
+    if abs(numeric) > 1e20:
+        return 0.0
+    return numeric
+
+
+def _safe_optional_market_price(value: object) -> float | None:
+    """Normalize optional broker values without turning missing data into zero."""
+    if value in (None, ""):
+        return None
+    try:
+        numeric = float(value)
+    except (TypeError, ValueError):
+        return None
+    if not math.isfinite(numeric) or abs(numeric) > 1e20:
+        return None
+    return numeric
 
 
 class IBKRClient:
     """Thin broker adapter responsible for connectivity and core order actions."""
 
     def __init__(self) -> None:
+        # Dashboard reconciliation runs in an AnyIO worker thread.  The
+        # module-level initialization only covers the importing thread, while
+        # ib_insync constructs its eventkit objects in the current thread.
+        _ensure_event_loop()
         if IB is None:
             raise IBKRDependencyError(
                 "ib_insync is not installed. Install requirements.txt before using the broker adapter."
@@ -66,6 +128,7 @@ class IBKRClient:
         self.config = SETTINGS.broker
         self._ib_error_handler_registered = False
         self._recent_api_errors: List[Dict[str, object]] = []
+        self._crypto_historical_blocked_providers: set[str] = set()
 
     @property
     def is_connected(self) -> bool:
@@ -112,6 +175,13 @@ class IBKRClient:
         del args
         contract_text = self._contract_summary(contract)
         symbol = str(getattr(contract, "symbol", "") or "").strip().upper()
+        provider = str(
+            getattr(contract, "exchange", "")
+            or getattr(contract, "primaryExchange", "")
+            or ""
+        ).strip().upper()
+        if error_code == 162 and "no market data permissions" in str(error_string).lower() and provider:
+            self._crypto_historical_blocked_providers.add(provider)
         self._recent_api_errors.append(
             {
                 "timestamp": time.time(),
@@ -149,6 +219,10 @@ class IBKRClient:
 
     def connect(self) -> None:
         """Connect to IBKR TWS or IB Gateway with retry logic."""
+        # FastAPI executes synchronous handlers in AnyIO worker threads. Python
+        # 3.12 no longer creates an event loop implicitly in those threads,
+        # while ib_insync's synchronous API requires one before connect().
+        _ensure_event_loop()
         last_error: Optional[Exception] = None
         for attempt in range(1, self.config.reconnect_retries + 1):
             try:
@@ -176,8 +250,18 @@ class IBKRClient:
             self.ib.disconnect()
             LOGGER.info("Disconnected from IBKR.")
 
+    def request_market_data_type(self, market_data_type: int) -> None:
+        """Select live/frozen/delayed market data for this IBKR connection."""
+        self.ensure_connection()
+        self.ib.reqMarketDataType(int(market_data_type))
+        LOGGER.info("Requested IBKR market data type=%s", market_data_type)
+
     def ensure_connection(self) -> None:
         """Reconnect if the live connection is not healthy."""
+        # Install a loop even when the connection was established by a
+        # different worker thread; all read-only broker calls use ib_insync's
+        # synchronous wrapper and look up the current thread's loop.
+        _ensure_event_loop()
         if not self.ib.isConnected():
             LOGGER.warning("IBKR connection lost; reconnecting.")
             self.connect()
@@ -215,6 +299,96 @@ class IBKRClient:
             )
         return summary
 
+    def get_account_identity(self) -> Dict[str, Any]:
+        """Return conservative account/environment evidence without trading.
+
+        ``managedAccounts()`` is the primary IBKR identity source.  The
+        account-summary rows are corroborating evidence only: aggregate rows
+        such as ``All``/``BASE`` are ignored, while a second real account or
+        an unknown non-aggregate identifier fails closed.  Socket ports are
+        never used as proof of Paper versus Live.
+        """
+        self.ensure_connection()
+        managed_raw = self.ib.managedAccounts()
+        managed_values = _account_values(managed_raw)
+        managed_invalid = [
+            value
+            for value in managed_values
+            if _normalized_broker_account_id(value) is None
+        ]
+        managed_accounts = sorted({
+            normalized
+            for value in managed_values
+            if (normalized := _normalized_broker_account_id(value)) is not None
+        })
+
+        summary = self.get_account_summary()
+        summary_real_accounts: set[str] = set()
+        summary_unknown_accounts: set[str] = set()
+        for item in summary:
+            if not isinstance(item, dict):
+                continue
+            raw_account = str(item.get("account", "") or "").strip()
+            if not raw_account:
+                continue
+            normalized_raw = raw_account.upper()
+            if normalized_raw in _ACCOUNT_SUMMARY_AGGREGATES:
+                continue
+            normalized = _normalized_broker_account_id(raw_account)
+            if normalized is None:
+                summary_unknown_accounts.add(normalized_raw)
+            else:
+                summary_real_accounts.add(normalized)
+
+        evidence: str | None = None
+        if not managed_accounts:
+            evidence = "managed_accounts_missing"
+        elif managed_invalid:
+            evidence = "managed_accounts_unknown_format"
+        elif len(managed_accounts) != 1:
+            evidence = "managed_accounts_ambiguous"
+        elif summary_unknown_accounts:
+            evidence = "account_summary_unknown_id"
+        elif len(summary_real_accounts) > 1:
+            evidence = "account_summary_ambiguous"
+        elif summary_real_accounts and summary_real_accounts != set(managed_accounts):
+            evidence = "managed_account_summary_conflict"
+
+        if evidence is not None:
+            return {
+                "account_id": managed_accounts[0] if len(managed_accounts) == 1 else None,
+                "accounts": managed_accounts,
+                "managed_accounts": managed_accounts,
+                "summary_accounts": sorted(summary_real_accounts),
+                "environment": "unknown",
+                "paper_verified": False,
+                "evidence": evidence,
+            }
+
+        account_id = managed_accounts[0]
+        normalized = account_id.upper()
+        if normalized.startswith("DU"):
+            environment = "paper"
+            paper_verified = True
+            identity_evidence = "ibkr_managed_account_du_prefix"
+        elif normalized.startswith("U"):
+            environment = "live"
+            paper_verified = False
+            identity_evidence = "ibkr_managed_account_u_prefix"
+        else:
+            environment = "unknown"
+            paper_verified = False
+            identity_evidence = "ibkr_managed_account_unrecognized"
+        return {
+            "account_id": account_id,
+            "accounts": managed_accounts,
+            "managed_accounts": managed_accounts,
+            "summary_accounts": sorted(summary_real_accounts),
+            "environment": environment,
+            "paper_verified": paper_verified,
+            "evidence": identity_evidence,
+        }
+
     def get_positions(self) -> List[Dict[str, Any]]:
         self.ensure_connection()
         positions = []
@@ -222,6 +396,8 @@ class IBKRClient:
             positions.append(
                 {
                     "symbol": position.contract.symbol,
+                    "currency": getattr(position.contract, "currency", ""),
+                    "local_symbol": getattr(position.contract, "localSymbol", ""),
                     "position": position.position,
                     "avg_cost": position.avgCost,
                     "sec_type": position.contract.secType,
@@ -232,18 +408,72 @@ class IBKRClient:
     def get_open_orders(self) -> List[Dict[str, Any]]:
         self.ensure_connection()
         orders = []
-        for trade in self.ib.openTrades():
+        # ``openTrades()`` only includes orders owned by this API client.
+        # Journal reconciliation must also see orders submitted by TWS or a
+        # different client id, otherwise a working entry/bracket can look like
+        # a missing position and be misclassified as closed.
+        for trade in self.ib.reqAllOpenOrders():
+            order = trade.order
+            status = trade.orderStatus
             orders.append(
                 {
                     "symbol": trade.contract.symbol,
-                    "order_id": trade.order.orderId,
-                    "action": trade.order.action,
-                    "quantity": trade.order.totalQuantity,
-                    "type": trade.order.orderType,
-                    "status": trade.orderStatus.status,
+                    "order_id": order.orderId,
+                    "perm_id": getattr(order, "permId", 0),
+                    "parent_id": getattr(order, "parentId", 0),
+                    "action": order.action,
+                    "quantity": order.totalQuantity,
+                    "type": order.orderType,
+                    "status": status.status,
+                    "aux_price": _safe_market_price(getattr(order, "auxPrice", 0.0)),
+                    "stop_price": _safe_market_price(getattr(order, "auxPrice", 0.0)),
+                    "limit_price": _safe_market_price(getattr(order, "lmtPrice", 0.0)),
+                    "filled": _safe_market_price(getattr(status, "filled", 0.0)),
+                    "remaining": _safe_market_price(getattr(status, "remaining", 0.0)),
+                    "avg_fill_price": _safe_market_price(getattr(status, "avgFillPrice", 0.0)),
+                    "order_ref": getattr(order, "orderRef", ""),
+                    "tif": getattr(order, "tif", ""),
+                    "outside_rth": bool(getattr(order, "outsideRth", False)),
                 }
             )
         return orders
+
+    def get_executions(self) -> List[Dict[str, Any]]:
+        """Return executions currently available from IBKR as plain records.
+
+        ``reqExecutions`` is intentionally kept behind the broker adapter so
+        journal/reconciliation code does not depend on ib_insync ``Fill``
+        objects.  IBKR normally returns the current day's executions, which is
+        sufficient to reconcile a bracket exit while the dashboard is open.
+        """
+        self.ensure_connection()
+        executions: List[Dict[str, Any]] = []
+        for fill in self.ib.reqExecutions():
+            execution = getattr(fill, "execution", None)
+            contract = getattr(fill, "contract", None)
+            if execution is None or contract is None:
+                continue
+            execution_time = getattr(execution, "time", None)
+            commission_report = getattr(fill, "commissionReport", None)
+            executions.append(
+                {
+                    "symbol": str(getattr(contract, "symbol", "") or "").upper(),
+                    "order_id": int(getattr(execution, "orderId", 0) or 0),
+                    "perm_id": int(getattr(execution, "permId", 0) or 0),
+                    "exec_id": str(getattr(execution, "execId", "") or ""),
+                    "side": str(getattr(execution, "side", "") or "").upper(),
+                    "shares": _safe_market_price(getattr(execution, "shares", 0.0)),
+                    "price": _safe_market_price(getattr(execution, "price", 0.0)),
+                    "cum_qty": _safe_market_price(getattr(execution, "cumQty", 0.0)),
+                    "avg_price": _safe_market_price(getattr(execution, "avgPrice", 0.0)),
+                    "time": execution_time.isoformat() if hasattr(execution_time, "isoformat") else str(execution_time or ""),
+                    "exchange": str(getattr(execution, "exchange", "") or ""),
+                    "account": str(getattr(execution, "acctNumber", "") or ""),
+                    "commission": _safe_market_price(getattr(commission_report, "commission", 0.0)),
+                    "realized_pnl": _safe_optional_market_price(getattr(commission_report, "realizedPNL", None)),
+                }
+            )
+        return executions
 
     def cancel_order(self, order_id: int) -> bool:
         self.ensure_connection()
@@ -282,6 +512,61 @@ class IBKRClient:
             "close": close_price,
             "quote_status": quote_status,
         }
+
+    def discover_crypto_contracts(self, patterns: List[str] | None = None) -> List[Dict[str, Any]]:
+        """Discover account-visible CRYPTO contracts without any order side effect.
+
+        This deliberately uses matching-symbols and contract details only.  It
+        never qualifies or submits an order and keeps provider records distinct.
+        """
+        self.ensure_connection()
+        discovered: Dict[tuple[int, str], Dict[str, Any]] = {}
+        for pattern in patterns or ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]:
+            for contract in self.ib.reqMatchingSymbols(str(pattern)) or []:
+                candidate = getattr(contract, "contract", contract)
+                if str(getattr(candidate, "secType", "")).upper() != "CRYPTO":
+                    continue
+                if str(getattr(candidate, "currency", "")).upper() != "USD":
+                    continue
+                con_id = int(getattr(candidate, "conId", 0) or 0)
+                if con_id <= 0:
+                    continue
+                details = next((item for item in self.ib.reqContractDetails(candidate) or [] if int(getattr(getattr(item, "contract", None), "conId", 0) or 0) == con_id), None)
+                detail_contract = getattr(details, "contract", candidate)
+                key = (con_id, str(getattr(detail_contract, "exchange", "") or getattr(detail_contract, "primaryExchange", "")))
+                discovered[key] = {
+                    "conId": con_id,
+                    "symbol": str(getattr(detail_contract, "symbol", "")).upper(),
+                    "currency": "USD",
+                    "secType": "CRYPTO",
+                    "provider": str(getattr(detail_contract, "exchange", "") or getattr(detail_contract, "primaryExchange", "")),
+                    "validExchanges": str(getattr(detail_contract, "validExchanges", "") or "").split(","),
+                    "minTick": getattr(details, "minTick", None),
+                    "tradingHours": str(getattr(details, "tradingHours", "") or ""),
+                    "accountQualified": True,
+                    "qualificationStatus": "RETURNED_BY_CONNECTED_ACCOUNT",
+                }
+        return sorted(discovered.values(), key=lambda item: (item["symbol"], item["provider"], item["conId"]))
+
+    def get_crypto_historical_bars(self, contract_data: Dict[str, Any], timeframe: str) -> Any:
+        """Read historical bars for a discovered crypto contract only."""
+        self.ensure_connection()
+        if str(contract_data.get("secType", "")).upper() != "CRYPTO":
+            raise ValueError("crypto historical loader requires a CRYPTO contract")
+        if Crypto is None:
+            raise IBKRDependencyError("ib_insync crypto contract support is unavailable")
+        provider = str(contract_data.get("provider") or "PAXOS").strip().upper()
+        if provider in self._crypto_historical_blocked_providers:
+            LOGGER.info("Skipping crypto historical request for provider=%s after IBKR permission denial.", provider)
+            return util.df([])
+        bar_settings = {"1D": ("2 Y", "1 day"), "4H": ("180 D", "4 hours"), "1H": ("90 D", "1 hour"), "5m": ("5 D", "5 mins")}
+        duration, bar_size = bar_settings.get(str(timeframe).upper(), ("2 Y", "1 day"))
+        contract = Crypto(str(contract_data["symbol"]), provider, str(contract_data.get("currency") or "USD"))
+        contract.conId = int(contract_data.get("conId") or 0)
+        # IBKR crypto historical data uses the aggregated-trades feed; the
+        # generic TRADES value is rejected with API error 10299.
+        bars = self.ib.reqHistoricalData(contract, endDateTime="", durationStr=duration, barSizeSetting=bar_size, whatToShow="AGGTRADES", useRTH=False, formatDate=1)
+        return util.df(bars)
 
     def get_historical_bars(
         self,
@@ -375,14 +660,47 @@ class IBKRClient:
         return normalized
 
 
-    def place_market_order(self, symbol: str, action: str, quantity: int) -> OrderResult:
+    def place_market_order(self, symbol: str, action: str, quantity: int, tif: str | None = None) -> OrderResult:
         self.ensure_connection()
-        contract = self.create_stock_contract(symbol)
+        contract = self.create_contract(symbol)
         order = MarketOrder(action=action.upper(), totalQuantity=quantity)
+        if tif:
+            order.tif = tif
         trade: Trade = self.ib.placeOrder(contract, order)
-        self.ib.sleep(1)
-        status = trade.orderStatus.status or "Submitted"
-        LOGGER.info("Market order placed for %s %s x%s status=%s", action, symbol, quantity, status)
+        status = self._await_order_settled(trade, timeout=12.0) or trade.orderStatus.status or "Submitted"
+        # IBKR/TWS can briefly surface preset/cancel messages even when a market
+        # order ultimately fills. Give the trade object a moment to receive fills
+        # and let actual execution data override noisy status text.
+        self.ib.sleep(1.5)
+        try:
+            filled = float(getattr(trade.orderStatus, "filled", 0) or 0)
+        except (TypeError, ValueError):
+            filled = 0.0
+        try:
+            remaining = float(getattr(trade.orderStatus, "remaining", 0) or 0)
+        except (TypeError, ValueError):
+            remaining = 0.0
+        try:
+            avg_fill_price = float(getattr(trade.orderStatus, "avgFillPrice", 0) or 0)
+        except (TypeError, ValueError):
+            avg_fill_price = 0.0
+        if filled > 0 and remaining <= 0:
+            status = "Filled"
+        elif filled > 0:
+            status = "PartiallyFilled"
+        else:
+            status = trade.orderStatus.status or status or "Submitted"
+        detail = self._order_reject_reason(trade)
+        LOGGER.info(
+            "Market order placed for %s %s x%s status=%s filled=%s remaining=%s%s",
+            action,
+            symbol,
+            quantity,
+            status,
+            filled,
+            remaining,
+            f" reason={detail}" if detail else "",
+        )
         return OrderResult(
             order_id=trade.order.orderId,
             symbol=symbol,
@@ -390,6 +708,10 @@ class IBKRClient:
             quantity=quantity,
             order_type="MKT",
             status=status,
+            detail=detail,
+            filled=filled,
+            remaining=remaining,
+            avg_fill_price=avg_fill_price,
         )
 
     @staticmethod
@@ -415,6 +737,28 @@ class IBKRClient:
         except Exception:  # pragma: no cover - defensive
             return ""
         return ""
+
+    @staticmethod
+    def _trade_fill_fields(trade: Any) -> Dict[str, float]:
+        """Capture broker fill state before returning a bracket result.
+
+        A status string is only a snapshot.  The filled/remaining quantities
+        are the facts the execution layer needs when a parent status and its
+        protective children temporarily disagree.
+        """
+        order_status = getattr(trade, "orderStatus", None)
+        def number(name: str) -> float:
+            try:
+                value = float(getattr(order_status, name, 0) or 0)
+                return value if math.isfinite(value) else 0.0
+            except (TypeError, ValueError):
+                return 0.0
+
+        return {
+            "filled": number("filled"),
+            "remaining": number("remaining"),
+            "avg_fill_price": number("avgFillPrice"),
+        }
 
     def _await_order_settled(self, trade: Any, timeout: float = 12.0) -> str:
         """Wait until an order leaves the transient PendingSubmit state.
@@ -444,6 +788,7 @@ class IBKRClient:
         *,
         outside_rth: bool = False,
         tif: str | None = None,
+        order_ref: str | None = None,
     ) -> tuple[OrderResult, OrderResult, OrderResult | None]:
         self.ensure_connection()
         contract = self.create_stock_contract(symbol)
@@ -459,6 +804,8 @@ class IBKRClient:
             parent_order.tif = tif
         if outside_rth:
             parent_order.outsideRth = True
+        if order_ref:
+            parent_order.orderRef = str(order_ref)[:32]
 
         stop_order = StopOrder(action=exit_action, totalQuantity=quantity, stopPrice=stop_price)
         stop_order.orderId = self.ib.client.getReqId()
@@ -468,6 +815,8 @@ class IBKRClient:
             stop_order.tif = tif
         if outside_rth:
             stop_order.outsideRth = True
+        if order_ref:
+            stop_order.orderRef = f"{str(order_ref)[:27]}-SL"
 
         limit_order: LimitOrder | None = None
         if limit_price is not None:
@@ -479,6 +828,8 @@ class IBKRClient:
                 limit_order.tif = tif
             if outside_rth:
                 limit_order.outsideRth = True
+            if order_ref:
+                limit_order.orderRef = f"{str(order_ref)[:27]}-TP"
 
         parent_trade: Trade = self.ib.placeOrder(contract, parent_order)
         stop_trade: Trade = self.ib.placeOrder(contract, stop_order)
@@ -489,6 +840,10 @@ class IBKRClient:
         # broker rejection (e.g. a precautionary cancel) is reported accurately
         # instead of a premature "submitted".
         self._await_order_settled(parent_trade)
+        # Allow the fill event and protective-child acknowledgements to arrive
+        # before classifying the bracket.  A Cancelled/Submitted mix at this
+        # boundary is not sufficient evidence of a final rejection.
+        self.ib.sleep(1.5)
 
         parent_status = parent_trade.orderStatus.status or "Submitted"
         stop_status = stop_trade.orderStatus.status or "Submitted"
@@ -514,6 +869,8 @@ class IBKRClient:
             order_type="MKT",
             status=parent_status,
             detail=parent_detail,
+            perm_id=int(getattr(parent_order, "permId", 0) or 0),
+            **self._trade_fill_fields(parent_trade),
         )
         stop_result = OrderResult(
             order_id=stop_order.orderId,
@@ -522,6 +879,8 @@ class IBKRClient:
             quantity=quantity,
             order_type="STP",
             status=stop_status,
+            perm_id=int(getattr(stop_order, "permId", 0) or 0),
+            **self._trade_fill_fields(stop_trade),
         )
         limit_result = (
             OrderResult(
@@ -531,11 +890,257 @@ class IBKRClient:
                 quantity=quantity,
                 order_type="LMT",
                 status=limit_status,
+                perm_id=int(getattr(limit_order, "permId", 0) or 0),
+                **self._trade_fill_fields(limit_trade),
             )
             if limit_order is not None
             else None
         )
         return parent_result, stop_result, limit_result
+
+    def place_limit_bracket_order(
+        self,
+        symbol: str,
+        action: str,
+        quantity: int,
+        entry_price: float,
+        stop_price: float,
+        limit_price: float | None = None,
+        *,
+        outside_rth: bool = False,
+        tif: str | None = None,
+    ) -> tuple[OrderResult, OrderResult, OrderResult | None]:
+        self.ensure_connection()
+        contract = self.create_stock_contract(symbol)
+        entry_price = self._round_to_tick(entry_price)
+        stop_price = self._round_to_tick(stop_price)
+        limit_price = self._round_to_tick(limit_price)
+        parent_action = action.upper()
+        exit_action = "SELL" if parent_action == "BUY" else "BUY"
+
+        parent_order = LimitOrder(action=parent_action, totalQuantity=quantity, lmtPrice=entry_price)
+        parent_order.orderId = self.ib.client.getReqId()
+        parent_order.transmit = False
+        if tif:
+            parent_order.tif = tif
+        if outside_rth:
+            parent_order.outsideRth = True
+
+        stop_order = StopOrder(action=exit_action, totalQuantity=quantity, stopPrice=stop_price)
+        stop_order.orderId = self.ib.client.getReqId()
+        stop_order.parentId = parent_order.orderId
+        stop_order.transmit = limit_price is None
+        if tif:
+            stop_order.tif = tif
+        if outside_rth:
+            stop_order.outsideRth = True
+
+        take_profit_order: LimitOrder | None = None
+        if limit_price is not None:
+            take_profit_order = LimitOrder(action=exit_action, totalQuantity=quantity, lmtPrice=limit_price)
+            take_profit_order.orderId = self.ib.client.getReqId()
+            take_profit_order.parentId = parent_order.orderId
+            take_profit_order.transmit = True
+            if tif:
+                take_profit_order.tif = tif
+            if outside_rth:
+                take_profit_order.outsideRth = True
+
+        parent_trade: Trade = self.ib.placeOrder(contract, parent_order)
+        stop_trade: Trade = self.ib.placeOrder(contract, stop_order)
+        limit_trade: Trade | None = None
+        if take_profit_order is not None:
+            limit_trade = self.ib.placeOrder(contract, take_profit_order)
+        self._await_order_settled(parent_trade)
+
+        parent_status = parent_trade.orderStatus.status or "Submitted"
+        stop_status = stop_trade.orderStatus.status or "Submitted"
+        limit_status = (limit_trade.orderStatus.status if limit_trade is not None else "") or "Submitted"
+        parent_detail = self._order_reject_reason(parent_trade)
+
+        LOGGER.info(
+            "Limit bracket order placed for %s %s x%s entry=%s parent=%s stop=%s limit=%s%s",
+            parent_action,
+            symbol,
+            quantity,
+            entry_price,
+            parent_status,
+            stop_status,
+            limit_status if take_profit_order is not None else "n/a",
+            f" reason={parent_detail}" if parent_detail else "",
+        )
+
+        parent_result = OrderResult(
+            order_id=parent_order.orderId,
+            symbol=symbol,
+            action=parent_action,
+            quantity=quantity,
+            order_type="LMT",
+            status=parent_status,
+            detail=parent_detail,
+            perm_id=int(getattr(parent_order, "permId", 0) or 0),
+            **self._trade_fill_fields(parent_trade),
+        )
+        stop_result = OrderResult(
+            order_id=stop_order.orderId,
+            symbol=symbol,
+            action=exit_action,
+            quantity=quantity,
+            order_type="STP",
+            status=stop_status,
+            perm_id=int(getattr(stop_order, "permId", 0) or 0),
+            **self._trade_fill_fields(stop_trade),
+        )
+        limit_result = (
+            OrderResult(
+                order_id=take_profit_order.orderId,
+                symbol=symbol,
+                action=exit_action,
+                quantity=quantity,
+                order_type="LMT",
+                status=limit_status,
+                perm_id=int(getattr(take_profit_order, "permId", 0) or 0),
+                **self._trade_fill_fields(limit_trade),
+            )
+            if take_profit_order is not None
+            else None
+        )
+        return parent_result, stop_result, limit_result
+
+    def place_stop_limit_bracket_order(
+        self,
+        symbol: str,
+        action: str,
+        quantity: int,
+        entry_stop_price: float,
+        entry_limit_price: float,
+        stop_price: float,
+        target_price: float,
+        *,
+        order_ref: str,
+        tif: str = "DAY",
+        outside_rth: bool = False,
+    ) -> tuple[OrderResult, OrderResult, OrderResult]:
+        """Place a stop-limit parent with attached OCA stop and target orders."""
+        self.ensure_connection()
+        if not order_ref:
+            raise ValueError("Stop-limit bracket requires order_ref.")
+        contract = self.create_stock_contract(symbol)
+        entry_stop_price = self._round_to_tick(entry_stop_price)
+        entry_limit_price = self._round_to_tick(entry_limit_price)
+        stop_price = self._round_to_tick(stop_price)
+        target_price = self._round_to_tick(target_price)
+        parent_action = action.upper()
+        exit_action = "SELL" if parent_action == "BUY" else "BUY"
+        oca_group = f"{order_ref}-OCA"
+
+        parent = StopLimitOrder(
+            action=parent_action,
+            totalQuantity=quantity,
+            stopPrice=entry_stop_price,
+            lmtPrice=entry_limit_price,
+        )
+        parent.orderId = self.ib.client.getReqId()
+        parent.orderRef = order_ref
+        parent.tif = tif
+        parent.outsideRth = outside_rth
+        parent.transmit = False
+
+        protective_stop = StopOrder(
+            action=exit_action,
+            totalQuantity=quantity,
+            stopPrice=stop_price,
+        )
+        protective_stop.orderId = self.ib.client.getReqId()
+        protective_stop.parentId = parent.orderId
+        protective_stop.orderRef = f"{order_ref}-SL"
+        protective_stop.ocaGroup = oca_group
+        protective_stop.ocaType = 1
+        protective_stop.tif = "GTC"
+        protective_stop.outsideRth = outside_rth
+        protective_stop.transmit = False
+
+        target = LimitOrder(
+            action=exit_action,
+            totalQuantity=quantity,
+            lmtPrice=target_price,
+        )
+        target.orderId = self.ib.client.getReqId()
+        target.parentId = parent.orderId
+        target.orderRef = f"{order_ref}-TP"
+        target.ocaGroup = oca_group
+        target.ocaType = 1
+        target.tif = "GTC"
+        target.outsideRth = outside_rth
+        target.transmit = True
+
+        parent_trade: Trade = self.ib.placeOrder(contract, parent)
+        stop_trade: Trade = self.ib.placeOrder(contract, protective_stop)
+        target_trade: Trade = self.ib.placeOrder(contract, target)
+        self._await_order_settled(parent_trade)
+        self.ib.sleep(1.5)
+        statuses = [
+            parent_trade.orderStatus.status or "Submitted",
+            stop_trade.orderStatus.status or "Submitted",
+            target_trade.orderStatus.status or "Submitted",
+        ]
+        detail = self._order_reject_reason(parent_trade)
+        LOGGER.info(
+            "Stop-limit bracket placed ref=%s %s %s x%s parent=%s stop=%s target=%s%s",
+            order_ref,
+            parent_action,
+            symbol,
+            quantity,
+            statuses[0],
+            statuses[1],
+            statuses[2],
+            f" reason={detail}" if detail else "",
+        )
+        return (
+            OrderResult(
+                parent.orderId,
+                symbol,
+                parent_action,
+                quantity,
+                "STP LMT",
+                statuses[0],
+                detail=detail,
+                **self._trade_fill_fields(parent_trade),
+            ),
+            OrderResult(
+                protective_stop.orderId,
+                symbol,
+                exit_action,
+                quantity,
+                "STP",
+                statuses[1],
+                **self._trade_fill_fields(stop_trade),
+            ),
+            OrderResult(
+                target.orderId,
+                symbol,
+                exit_action,
+                quantity,
+                "LMT",
+                statuses[2],
+                **self._trade_fill_fields(target_trade),
+            ),
+        )
+
+    def resize_open_order(self, order_id: int, quantity: int) -> bool:
+        """Resize an existing open child order, used for partial-fill protection."""
+        self.ensure_connection()
+        if quantity <= 0:
+            return False
+        for trade in self.ib.openTrades():
+            if int(getattr(trade.order, "orderId", 0) or 0) != int(order_id):
+                continue
+            trade.order.totalQuantity = int(quantity)
+            self.ib.placeOrder(trade.contract, trade.order)
+            self.ib.sleep(0.5)
+            status = str(getattr(trade.orderStatus, "status", "") or "").lower()
+            return status not in {"cancelled", "inactive", "apicancelled"}
+        return False
 
     def place_stop_order(self, symbol: str, action: str, quantity: int, stop_price: float) -> OrderResult:
         self.ensure_connection()

@@ -1,0 +1,320 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]: candlestick_chart
+    - generic [ref=e9]:
+      - generic "Dashboard" [ref=e10] [cursor=pointer]: space_dashboard
+      - generic "Watchlist" [ref=e12] [cursor=pointer]: visibility
+      - generic "Pre-Open" [ref=e14] [cursor=pointer]: wb_twilight
+      - generic "Screener Stocks" [ref=e16] [cursor=pointer]: radar
+      - generic "Screener Crypto" [ref=e18] [cursor=pointer]: track_changes
+      - generic "Inefficiency Reclaim" [ref=e20] [cursor=pointer]: deployed_code
+      - generic "Intraday" [ref=e22] [cursor=pointer]: monitoring
+      - generic "Strategy Stocks" [ref=e24] [cursor=pointer]: insights
+      - generic "Strategy Crypto" [ref=e26] [cursor=pointer]: currency_bitcoin
+      - generic "Crypto" [ref=e28] [cursor=pointer]: currency_bitcoin
+      - generic "Orders Journal" [ref=e30] [cursor=pointer]: receipt_long
+      - generic "Forex" [ref=e32] [cursor=pointer]: currency_exchange
+      - generic "Trades & Positions" [ref=e34] [cursor=pointer]: swap_horiz
+      - generic "Forecast" [ref=e36] [cursor=pointer]: calculate
+      - generic "Reports" [ref=e38] [cursor=pointer]: description
+      - generic "Decision Lab" [ref=e40] [cursor=pointer]: psychology
+    - button "Switch to light theme" [ref=e42] [cursor=pointer]:
+      - generic [ref=e43]: light_mode
+    - button "keyboard_double_arrow_right" [ref=e45] [cursor=pointer]
+    - button "Logout and stop dashboard services" [ref=e48] [cursor=pointer]:
+      - generic [ref=e49]: logout
+  - main [ref=e50]:
+    - generic [ref=e51]:
+      - generic [ref=e52]:
+        - generic [ref=e53]: OPERATIONS DESK
+        - generic [ref=e54]: /
+        - generic [ref=e55]: Decision Lab
+      - generic [ref=e56]:
+        - generic [ref=e57]: SYNCED 16:48:44 ET
+        - generic [ref=e60]: PAPER · READ-ONLY
+        - generic [ref=e61]:
+          - generic [ref=e62]: schedule
+          - generic [ref=e63]: Market AFTER-HOURS
+        - button "cloud_download FETCH CANDLES" [ref=e64] [cursor=pointer]:
+          - generic [ref=e65]: cloud_download
+          - text: FETCH CANDLES
+        - button "refresh REFRESH" [ref=e66] [cursor=pointer]:
+          - generic [ref=e67]: refresh
+          - text: REFRESH
+        - button "restart_alt HARD RESET" [ref=e68] [cursor=pointer]:
+          - generic [ref=e69]: restart_alt
+          - text: HARD RESET
+    - generic [ref=e71]:
+      - generic [ref=e73]:
+        - heading "Decision Lab" [level=1] [ref=e79]
+        - paragraph [ref=e75]: LLM decisions Â· deterministic risk Â· isolated paper evidence
+      - generic [ref=e80]:
+        - generic [ref=e81]:
+          - generic [ref=e82]:
+            - generic [ref=e83]:
+              - generic [ref=e84]: LLM DIAGNOSTIC CONNECTION
+              - generic [ref=e85]: Configured runtime and safe provider connectivity diagnostic.
+            - button "TEST LLM CONNECTION" [ref=e86] [cursor=pointer]
+          - generic [ref=e87]:
+            - generic [ref=e88]:
+              - generic [ref=e89]: MODE
+              - generic [ref=e90]: "OFF"
+            - generic [ref=e91]:
+              - generic [ref=e92]: PROVIDER
+              - generic [ref=e93]: —
+            - generic [ref=e94]:
+              - generic [ref=e95]: MODEL
+              - generic [ref=e96]: NOT CONFIGURED
+            - generic [ref=e97]:
+              - generic [ref=e98]: CONNECTION
+              - generic [ref=e99]: NOT TESTED
+            - generic [ref=e100]:
+              - generic [ref=e101]: NEWS
+              - generic [ref=e102]: DISABLED
+          - generic [ref=e103]:
+            - generic [ref=e104]: "OFF"
+            - generic [ref=e105]: LIVE AI DISABLED
+            - generic [ref=e106]: NEWS DISABLED
+            - generic [ref=e107]: LIVE BROKER
+            - generic [ref=e108]: LIVE EXECUTION
+          - generic [ref=e109]:
+            - text: "Workers:"
+            - generic [ref=e110]: —
+            - text: "· Queue depth:"
+            - generic [ref=e111]: —
+            - text: "· Candidate expiry:"
+            - generic [ref=e112]: —s
+            - text: "· Multi-provider Shadow:"
+            - generic [ref=e113]: DISABLED
+          - generic [ref=e114]: This test validates only provider configuration, authentication, model availability, timeout handling, and a structured WAIT response. It never creates a candidate, decision, risk row, reservation, paper position, or broker order.
+        - generic [ref=e115]:
+          - generic [ref=e116]:
+            - generic [ref=e117]:
+              - generic [ref=e118]: STRATEGY CONTROL
+              - generic [ref=e119]: Select current persisted strategy data and decide when the persistent worker may analyze it.
+            - generic [ref=e120]: No dashboard broker connection
+          - generic [ref=e121]:
+            - generic [ref=e122]:
+              - text: STRATEGY SOURCE
+              - combobox "STRATEGY SOURCE" [ref=e123]
+            - generic [ref=e124]:
+              - generic [ref=e125]: ANALYSIS MODE
+              - generic [ref=e126]:
+                - button "MANUAL" [ref=e127] [cursor=pointer]
+                - button "AUTO" [ref=e128] [cursor=pointer]
+            - button "SOURCE UNAVAILABLE" [disabled] [ref=e129]
+          - generic [ref=e130]:
+            - text: "Selected:"
+            - generic [ref=e131]: GERCHIK ROUTER
+            - text: "· Latest source data:"
+            - generic [ref=e132]: NONE
+            - text: "· Latest bar:"
+            - generic [ref=e133]: —
+            - text: "· Freshness:"
+            - generic [ref=e134]: UNKNOWN
+            - text: "· Age:"
+            - generic [ref=e135]: —
+          - generic [ref=e136]: SOURCE DATA UNAVAILABLE — NO CURRENT ANALYSIS SNAPSHOT
+          - generic [ref=e137]:
+            - generic [ref=e138]:
+              - generic [ref=e139]: ACTIVE RUN
+              - generic [ref=e140]: None
+            - generic [ref=e141]:
+              - generic [ref=e142]: LAST RUN
+              - generic [ref=e143]: None
+          - generic [ref=e144]:
+            - text: "Candidates:"
+            - generic [ref=e145]: —
+            - text: "· LLM decisions:"
+            - generic [ref=e146]: —
+            - text: "· Model E/W/R:"
+            - generic [ref=e147]: —/—/—
+            - text: "· Provider failures:"
+            - generic [ref=e148]: —
+            - text: "· System vetoes:"
+            - generic [ref=e149]: —
+            - text: "· Risk vetoes:"
+            - generic [ref=e150]: —
+            - text: "· Executed:"
+            - generic [ref=e151]: —
+          - generic [ref=e152]:
+            - text: "Applicable:"
+            - generic [ref=e153]: —
+            - text: "Â· Not applicable:"
+            - generic [ref=e154]: —
+            - text: "Â· Provider successes:"
+            - generic [ref=e155]: —
+            - text: "Â· Provider failures:"
+            - generic [ref=e156]: —
+          - generic [ref=e157]: MANUAL analyzes the latest immutable current-data snapshot after RUN ANALYSIS. AUTO is owned by the persistent worker and skips duplicate source fingerprints. Legacy session scans and their locks remain outside Decision Lab.
+        - generic [ref=e158]:
+          - generic [ref=e159]:
+            - generic [ref=e160]: STRATEGY DEFINITION
+            - generic [ref=e161]: GERCHIK ROUTER
+            - generic [ref=e162]: VERSION — Â· HASH — Â· —
+            - generic [ref=e163]: Loading code-owned strategy semantics...
+            - generic [ref=e164]: "TIMEFRAME: —"
+            - generic [ref=e165]: "INPUTS: —"
+            - generic [ref=e166]: "SIGNALS: —"
+            - group [ref=e167]:
+              - generic "VIEW DEFINITION DETAILS" [ref=e168] [cursor=pointer]
+          - generic [ref=e169]:
+            - generic [ref=e170]: CURRENT PARAMETERS
+            - generic [ref=e171]: Resolved from the active deterministic calculator; read-only.
+            - generic [ref=e172]: "{}"
+        - generic [ref=e173]:
+          - generic [ref=e175]:
+            - generic [ref=e176]: PROMPT PRESET
+            - generic [ref=e177]: Editable analytical guidance is versioned separately from locked policy and code-owned strategy semantics.
+          - generic [ref=e178]:
+            - generic [ref=e179]:
+              - text: ACTIVE PRESET
+              - combobox "ACTIVE PRESET" [disabled] [ref=e180]
+            - generic [ref=e181]: "ID: —HASH: —"
+          - textbox [ref=e182]
+          - generic [ref=e183]:
+            - button "DUPLICATE TO EDIT" [disabled] [ref=e184] [cursor=pointer]
+            - button "SAVE NEW VERSION" [disabled] [ref=e185]
+            - button "SAVE AS NEW PRESET" [disabled] [ref=e186]
+            - button "PREVIEW FINAL PROMPT" [disabled] [ref=e187] [cursor=pointer]
+        - generic [ref=e188]:
+          - generic [ref=e189]: RECENT LLM RUNS
+          - table [ref=e190]:
+            - rowgroup [ref=e191]:
+              - row [ref=e192]:
+                - columnheader "Time" [ref=e193]
+                - columnheader "Mode" [ref=e194]
+                - columnheader "Strategy" [ref=e195]
+                - columnheader "Scan" [ref=e196]
+                - columnheader "State" [ref=e197]
+                - columnheader "Candidates" [ref=e198]
+                - columnheader "Model E/W/R" [ref=e199]
+                - columnheader "Failures" [ref=e200]
+                - columnheader "Vetoes" [ref=e201]
+                - columnheader "Risk vetoes" [ref=e202]
+                - columnheader "Executed" [ref=e203]
+                - columnheader "Error" [ref=e204]
+            - rowgroup
+          - generic [ref=e205]: No LLM runs yet.
+        - generic [ref=e206]:
+          - generic [ref=e207]:
+            - generic [ref=e208]: AUTONOMOUS DECISION LAYER
+            - generic [ref=e209]: Read-only evidence for candidate decisions, risk gates, and isolated paper ownership.
+          - generic [ref=e210]: "OFF"
+        - generic [ref=e211]:
+          - generic [ref=e212]:
+            - generic [ref=e213]: CANDIDATES
+            - generic [ref=e214]: —
+          - generic [ref=e215]:
+            - generic [ref=e216]: DECISIONS
+            - generic [ref=e217]: —
+          - generic [ref=e218]:
+            - generic [ref=e219]: RISK ROWS
+            - generic [ref=e220]: —
+          - generic [ref=e221]:
+            - generic [ref=e222]: SHADOW DECISIONS
+            - generic [ref=e223]: —
+          - generic [ref=e224]:
+            - generic [ref=e225]: INTERNAL PAPER EXECUTIONS
+            - generic [ref=e226]: —
+          - generic [ref=e227]:
+            - generic [ref=e228]: IBKR PAPER EXECUTIONS
+            - generic [ref=e229]: —
+          - generic [ref=e230]:
+            - generic [ref=e231]: LIVE EXECUTIONS
+            - generic [ref=e232]: —
+          - generic [ref=e233]:
+            - generic [ref=e234]: PAPER P&L
+            - generic [ref=e235]: "0"
+        - generic [ref=e236]:
+          - generic [ref=e237]:
+            - generic [ref=e238]:
+              - generic [ref=e239]: RECENT MODEL DECISIONS
+              - generic [ref=e240]: FILTER ALL AVAILABLE COLUMNS · 0 / 0 ROWS
+            - button "CLEAR FILTERS" [ref=e241] [cursor=pointer]
+          - generic [ref=e242]:
+            - generic [ref=e243]:
+              - text: TIME FROM
+              - textbox "TIME FROM" [ref=e244]
+            - generic [ref=e245]:
+              - text: TIME TO
+              - textbox "TIME TO" [ref=e246]
+            - generic [ref=e247]:
+              - text: SYMBOL
+              - textbox "SYMBOL" [ref=e248]
+            - generic [ref=e249]:
+              - text: SOURCE
+              - combobox "SOURCE" [ref=e250]:
+                - option "ALL" [selected]
+            - generic [ref=e251]:
+              - text: STRATEGY
+              - combobox "STRATEGY" [ref=e252]:
+                - option "ALL" [selected]
+            - generic [ref=e253]:
+              - text: SIGNAL
+              - textbox "SIGNAL" [ref=e254]
+            - generic [ref=e255]:
+              - text: PROVIDER
+              - combobox "PROVIDER" [ref=e256]:
+                - option "ALL" [selected]
+            - generic [ref=e257]:
+              - text: MODEL
+              - combobox "MODEL" [ref=e258]:
+                - option "ALL" [selected]
+            - generic [ref=e259]:
+              - text: EFFECTIVE
+              - combobox "EFFECTIVE" [ref=e260]:
+                - option "ALL" [selected]
+            - generic [ref=e261]:
+              - text: ORIGIN
+              - combobox "ORIGIN" [ref=e262]:
+                - option "ALL" [selected]
+            - generic [ref=e263]:
+              - text: RISK
+              - combobox "RISK" [ref=e264]:
+                - option "ALL" [selected]
+            - generic [ref=e265]:
+              - text: EXECUTION
+              - combobox "EXECUTION" [ref=e266]:
+                - option "ALL" [selected]
+          - table [ref=e267]:
+            - rowgroup [ref=e268]:
+              - row [ref=e269]:
+                - columnheader "Time" [ref=e270]
+                - columnheader "Symbol" [ref=e271]
+                - columnheader "Source" [ref=e272]
+                - columnheader "Strategy" [ref=e273]
+                - columnheader "Signal" [ref=e274]
+                - columnheader "Provider" [ref=e275]
+                - columnheader "Model" [ref=e276]
+                - columnheader "Effective" [ref=e277]
+                - columnheader "Origin" [ref=e278]
+                - columnheader "Risk" [ref=e279]
+                - columnheader "Execution" [ref=e280]
+                - columnheader "Inspect" [ref=e281]
+            - rowgroup
+          - generic [ref=e282]: No decision records yet.
+        - generic [ref=e283]:
+          - generic [ref=e284]:
+            - generic [ref=e285]: ISOLATED PAPER POSITIONS
+            - generic [ref=e286]: No agent-owned open positions.
+          - generic [ref=e287]:
+            - generic [ref=e288]: PROVIDER HEALTH
+            - generic [ref=e289]:
+              - generic [ref=e290]:
+                - text: "Configured provider:"
+                - strong [ref=e291]: —
+              - generic [ref=e292]:
+                - text: "Model:"
+                - strong [ref=e293]: NOT CONFIGURED
+              - generic [ref=e294]:
+                - text: "Runtime test:"
+                - strong [ref=e295]: NOT TESTED
+              - generic [ref=e296]:
+                - text: "Last latency:"
+                - strong [ref=e297]: —
+              - generic [ref=e298]:
+                - text: "Last checked:"
+                - strong [ref=e299]: —
+              - generic [ref=e300]: "Trading observations: 0"
+            - generic [ref=e301]: No trading decision observations yet.

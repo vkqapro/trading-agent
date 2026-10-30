@@ -24,7 +24,7 @@ from src.config import LOGGER, MEMORY_DIR, ensure_directories
 
 # Bump when the request schema or public API changes so the dashboard reloads a
 # cached copy (Streamlit keeps imported modules alive across reruns).
-ORDER_REQUESTS_VERSION = 2
+ORDER_REQUESTS_VERSION = 3
 ORDER_REQUESTS_PATH = MEMORY_DIR / "order_requests.json"
 LOCK_PATH = ORDER_REQUESTS_PATH.with_suffix(".json.lock")
 HEARTBEAT_PATH = MEMORY_DIR / "runtime" / "execute_worker.json"
@@ -40,6 +40,7 @@ DONE = "done"
 SIMULATED = "simulated"
 REJECTED = "rejected"
 ERROR = "error"
+RECONCILIATION_REQUIRED = "reconciliation_required"
 OPEN_STATUSES = {PENDING, PROCESSING}
 
 
@@ -123,23 +124,33 @@ def _mutate(mutator: Callable[[Dict[str, Any]], Any]) -> Any:
         _release_lock(handle)
 
 
-def submit_place(setup: Dict[str, Any], *, live: bool = False) -> str:
-    """Queue a place-order request from a forecast setup. Returns the request id."""
-    request_id = uuid.uuid4().hex[:12]
-    record = {
+def _place_record(
+    setup: Dict[str, Any],
+    *,
+    request_id: str,
+    source: str | None = None,
+    live: bool = False,
+    immutable_intent: bool = False,
+) -> Dict[str, Any]:
+    """Build the durable place-request shape shared by dashboard and approvals."""
+    return {
         "id": request_id,
         "action": "place",
         "status": PENDING,
         "created_at": _now(),
         "updated_at": _now(),
-        "source": "dashboard",
+        "source": source or setup.get("source") or "dashboard",
         "live": bool(live),
+        "immutable_intent": bool(immutable_intent),
         "symbol": str(setup.get("symbol", "")).upper(),
         "signal": str(setup.get("signal", "")).upper(),
         "direction": str(setup.get("direction", "")),
         "entry": setup.get("entry"),
         "stop": setup.get("stop"),
         "target": setup.get("target"),
+        "market_only": bool(setup.get("market_only")),
+        "manual_setup": bool(setup.get("manual_setup")),
+        "entry_order_type": setup.get("entry_order_type"),
         "level_price": setup.get("level") if setup.get("level") is not None else setup.get("level_price"),
         "level_type": setup.get("level_type"),
         "strategy": setup.get("strategy"),
@@ -147,14 +158,97 @@ def submit_place(setup: Dict[str, Any], *, live: bool = False) -> str:
         "nearest_lower_level": setup.get("nearest_lower_level"),
         "reward_risk": setup.get("reward_risk"),
         "confidence": setup.get("confidence"),
+        "proposal_id": setup.get("proposal_id"),
+        "proposal_revision": setup.get("proposal_revision"),
+        "idempotency_key": setup.get("idempotency_key"),
+        "manual_lifecycle_override": bool(setup.get("manual_lifecycle_override")),
+        "scanner_lifecycle": setup.get("scanner_lifecycle"),
+        "ready_gate_reason_code": setup.get("ready_gate_reason_code"),
         # Size shown in the forecast ledger, so the placed order matches what the
         # user reviewed instead of being re-sized from the bot's live config.
         "quantity": setup.get("quantity"),
         "result": None,
         "message": "Queued for the bot worker.",
     }
+
+
+def submit_place(setup: Dict[str, Any], *, live: bool = False) -> str:
+    """Queue a place-order request from a forecast setup. Returns the request id."""
+    request_id = uuid.uuid4().hex[:12]
+    record = _place_record(setup, request_id=request_id, live=live)
     _mutate(lambda data: data["requests"].append(record))
     LOGGER.info("Queued place request %s for %s (live=%s)", request_id, record["symbol"], live)
+    return request_id
+
+
+def submit_place_once(
+    setup: Dict[str, Any],
+    *,
+    idempotency_key: str,
+    live: bool = False,
+) -> tuple[str, bool]:
+    """Queue one place request for a stable reviewed setup identity.
+
+    The queue lock makes the lookup and append atomic, preventing repeated UI
+    confirmation clicks from creating duplicate broker-bound requests.
+    """
+    key = str(idempotency_key or "").strip()
+    if not key:
+        raise ValueError("idempotency_key is required")
+    request_id = uuid.uuid4().hex[:12]
+    normalized = {**setup, "idempotency_key": key}
+    record = _place_record(normalized, request_id=request_id, live=live)
+
+    def _append_once(data: Dict[str, Any]) -> tuple[str, bool]:
+        for existing in data.get("requests", []):
+            if isinstance(existing, dict) and str(existing.get("idempotency_key") or "") == key:
+                return str(existing.get("id") or ""), False
+        data["requests"].append(record)
+        return request_id, True
+
+    result = _mutate(_append_once)
+    if result[1]:
+        LOGGER.info("Queued idempotent place request %s for %s (live=%s)", result[0], record["symbol"], live)
+    return result
+
+
+def submit_approval_intent(intent: Dict[str, Any]) -> str:
+    """Queue a backend-created immutable intent for the existing worker.
+
+    This is intentionally not exposed as a free-form tool. The approval service
+    supplies the authoritative values only after revalidation and risk approval.
+    """
+    required = ("approval_id", "execution_intent_id", "setup_id", "plan_hash", "symbol", "entry", "stop", "target", "quantity")
+    if any(intent.get(key) in (None, "") for key in required):
+        raise ValueError("incomplete execution intent")
+    if str(intent.get("direction", "")).upper() != "LONG":
+        raise ValueError("telegram approval supports LONG only")
+    request_id = "approval-" + str(intent["execution_intent_id"])[-24:]
+    record = _place_record(
+        {
+            "symbol": intent["symbol"], "signal": "BUY", "direction": "long",
+            "entry": intent["entry"], "stop": intent["stop"], "target": intent["target"],
+            "quantity": int(intent["quantity"]), "strategy": str(intent.get("strategy") or ""),
+            "entry_order_type": "MARKET", "market_only": False, "manual_setup": True,
+        },
+        request_id=request_id,
+        source="telegram_approval",
+        immutable_intent=True,
+    )
+    record.update({
+        "approval_id": str(intent["approval_id"]),
+        "execution_intent_id": str(intent["execution_intent_id"]),
+        "setup_id": str(intent["setup_id"]),
+        "plan_hash": str(intent["plan_hash"]),
+        "message": "Queued immutable Telegram-approved reviewed order.",
+    })
+    def _append(data: Dict[str, Any]) -> None:
+        for existing in data.get("requests", []):
+            if isinstance(existing, dict) and existing.get("execution_intent_id") == record["execution_intent_id"]:
+                return
+        data["requests"].append(record)
+    _mutate(_append)
+    LOGGER.info("Queued immutable approval intent %s", record["execution_intent_id"])
     return request_id
 
 

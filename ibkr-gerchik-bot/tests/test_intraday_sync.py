@@ -36,7 +36,11 @@ class IntradaySyncTests(TestCase):
                     "avg_cost": 78.18,
                     "direction": "short",
                     "sec_type": "STK",
+                    "protection_policy": "manual_unmanaged",
                     "stop_order_id": 456,
+                    "current_stop_order_status": None,
+                    "limit_order_id": 789,
+                    "current_target_order_status": None,
                 }
             ],
         )
@@ -58,7 +62,7 @@ class IntradaySyncTests(TestCase):
                 return self.calls <= 2
 
         class AlerterStub:
-            def send_intraday_heartbeat(self, _payload):
+            def send_intraday_heartbeat(self, _payload, *, automated_report=False):
                 return True
 
         class NewsFilterStub:
@@ -80,6 +84,7 @@ class IntradaySyncTests(TestCase):
             patch("src.jobs.intraday.load_runtime_state", return_value={"watchlist": {}, "tracked_positions": []}),
             patch("src.jobs.intraday.manage_positions", side_effect=fake_manage_positions),
             patch("src.jobs.intraday.persist_tracked_positions", return_value=None),
+            patch("src.jobs.intraday.archive_positions", return_value=None),
             patch("src.jobs.intraday.append_workflow_snapshot", return_value=None),
             patch("src.jobs.intraday.append_markdown_log", return_value=None),
         ):
@@ -115,7 +120,7 @@ class IntradaySyncTests(TestCase):
                 return self.calls <= 2
 
         class AlerterStub:
-            def send_intraday_heartbeat(self, _payload):
+            def send_intraday_heartbeat(self, _payload, *, automated_report=False):
                 return True
 
         class NewsFilterStub:
@@ -123,6 +128,7 @@ class IntradaySyncTests(TestCase):
                 return False
 
         collection_calls = []
+        completed_scans = []
         market_data = MarketDataStub()
         with (
             patch("src.jobs.intraday.build_job_dependencies", return_value=(market_data, object())),
@@ -151,7 +157,10 @@ class IntradaySyncTests(TestCase):
                 now_provider=lambda: datetime(2026, 6, 22, 11, 0, tzinfo=TZ),
                 sleep_provider=lambda _seconds: None,
                 initial_trading_halt_reasons=["account_not_synced"],
+                scan_complete_callback=lambda payload, **kwargs: completed_scans.append((payload, kwargs)),
             )
 
         self.assertEqual(actions, [])
         self.assertEqual(collection_calls, [["AAPL"]])
+        self.assertEqual(len(completed_scans), 1)
+        self.assertEqual(completed_scans[0][0]["symbols"], ("AAPL",))

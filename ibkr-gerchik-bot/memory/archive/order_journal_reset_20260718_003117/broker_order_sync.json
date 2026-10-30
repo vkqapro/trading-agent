@@ -1,0 +1,7 @@
+{
+  "ok": false,
+  "updated": 0,
+  "open_orders": 0,
+  "error": "Unable to connect to IBKR after retries: There is no current event loop in thread 'AnyIO worker thread'.",
+  "ts": 1784349055.014984
+}
