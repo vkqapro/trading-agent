@@ -108,6 +108,36 @@ class OKXClient:
             if isinstance(row, dict) and row.get("instId")
         ]
 
+    def account_instruments(self, inst_type: str = "SPOT") -> List[OKXInstrument]:
+        """Return instruments enabled for the authenticated OKX account.
+
+        This is intentionally separate from :meth:`instruments`: the public
+        catalog can contain symbols that the connected Demo account cannot
+        trade. The endpoint is read-only and uses the configured simulated
+        trading header when Demo mode is enabled.
+        """
+        data = self._request(
+            "GET",
+            "/api/v5/account/instruments",
+            params={"instType": inst_type.upper()},
+            private=True,
+        )
+        rows = data.get("data", [])
+        return [
+            OKXInstrument(
+                inst_id=str(row.get("instId", "")),
+                inst_type=str(row.get("instType", inst_type)).upper(),
+                base_ccy=str(row.get("baseCcy", "")),
+                quote_ccy=str(row.get("quoteCcy", "")),
+                state=str(row.get("state", "")),
+                lot_sz=str(row.get("lotSz", "")),
+                min_sz=str(row.get("minSz", "")),
+                tick_sz=str(row.get("tickSz", "")),
+            )
+            for row in rows
+            if isinstance(row, dict) and row.get("instId")
+        ]
+
     def candles(self, inst_id: str, timeframe: str, limit: int | None = None) -> pd.DataFrame:
         bar = OKX_BAR_BY_TIMEFRAME.get(timeframe, timeframe)
         data = self._request(
@@ -128,9 +158,11 @@ class OKXClient:
                 "low": float(row[3]),
                 "close": float(row[4]),
                 "volume": float(row[5]),
+                "quote_volume": float(row[7]) if len(row) > 7 and row[7] not in (None, "") else None,
+                "confirmed": str(row[8]) == "1" if len(row) > 8 else True,
             })
         if not parsed:
-            return pd.DataFrame(columns=["date", "open", "high", "low", "close", "volume"])
+            return pd.DataFrame(columns=["date", "open", "high", "low", "close", "volume", "quote_volume", "confirmed"])
         return pd.DataFrame(parsed).sort_values("date").reset_index(drop=True)
 
     def place_market_order(

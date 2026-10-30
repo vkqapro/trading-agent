@@ -44,6 +44,10 @@ class FakeOKXClient:
             )
         ]
 
+    def account_instruments(self, inst_type: str):
+        self.calls.append(("account_instruments", inst_type))
+        return self.instruments(inst_type)
+
     def place_spot_order(self, **kwargs):
         self.calls.append(("place_spot_order", kwargs))
         return {"code": "0", "data": [{"ordId": "demo-order-123", "sCode": "0"}]}
@@ -209,6 +213,21 @@ class OKXSpotOrderPayloadTests(unittest.TestCase):
 
         self.assertEqual(headers["x-simulated-trading"], "1")
         self.assertEqual(headers["OK-ACCESS-KEY"], "demo-key")
+
+    def test_candles_preserve_okx_quote_volume_and_confirmation(self) -> None:
+        client = OKXClient(base_url="https://example.invalid")
+        with patch.object(
+            client,
+            "_request",
+            return_value={
+                "code": "0",
+                "data": [["1704067200000", "100", "110", "90", "105", "12", "1260", "1255", "1"]],
+            },
+        ):
+            frame = client.candles("BTC-USDT", "daily")
+
+        self.assertEqual(float(frame.iloc[0]["quote_volume"]), 1255.0)
+        self.assertTrue(bool(frame.iloc[0]["confirmed"]))
 
     def test_limit_order_payload_contains_demo_ready_attached_protection(self) -> None:
         client = OKXClient(base_url="https://example.invalid")

@@ -4978,14 +4978,15 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
   const radarMeta = radarUniverse?.radar_universe || data.radar_universe || null;
   const radarSymbols = radarMeta?.selected_symbols || [];
   const radarSnapshot = radarMeta?.snapshot_timestamp ? new Date(radarMeta.snapshot_timestamp).toLocaleString('en-US',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',timeZoneName:'short'}) : '—';
-  const radarBlocked = !isCrypto && scanUniverse==='RADAR_SETUPS' && (!radarMeta || radarMeta.valid===false || !radarSymbols.length);
+  const radarBlocked = scanUniverse==='RADAR_SETUPS' && (!radarMeta || radarMeta.valid===false || !radarSymbols.length);
   const scanUniverseLabel = scanUniverse==='RADAR_SETUPS' ? `RADAR SETUPS (${radarSymbols.length})` : 'ALL UNIVERSE';
 
   useEffect(()=>{
-    if(isCrypto || scanUniverse!=='RADAR_SETUPS') return;
+    if(scanUniverse!=='RADAR_SETUPS') return;
     let cancelled = false;
     setRadarUniverseBusy(true);
-    fetch(`${API}/market-screener/radar-universe`,{cache:'no-store'})
+    const endpoint = isCrypto ? `${API}/crypto/market-screener/radar-universe` : `${API}/market-screener/radar-universe`;
+    fetch(endpoint,{cache:'no-store'})
       .then(response=>response.json())
       .then(payload=>{if(!cancelled) setRadarUniverse(payload);})
       .catch(error=>{if(!cancelled) setRadarUniverse({status:'blocked',radar_universe:{valid:false,reason:error.message||'Radar setup universe unavailable',selected_symbols:[]}});})
@@ -5332,7 +5333,7 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
             <select value={side} onChange={e=>setSide(e.target.value)} style={{...controlsShell,color:C.onSurf,outline:0}}>
               {['ALL','LONG','SHORT'].map(item=><option key={item}>{item}</option>)}
             </select>
-            {!isCrypto&&<div style={{display:'flex',alignItems:'stretch',height:36,border:`1px solid ${R(C.outline,0.22)}`,borderRadius:8,overflow:'hidden',background:R(C.surfLowest,0.72)}}>
+            <div style={{display:'flex',alignItems:'stretch',height:36,border:`1px solid ${R(C.outline,0.22)}`,borderRadius:8,overflow:'hidden',background:R(C.surfLowest,0.72)}}>
               {[
                 ['ALL_UNIVERSE','ALL UNIVERSE'],
                 ['RADAR_SETUPS','RADAR SETUPS'],
@@ -5343,7 +5344,7 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
                   {label}
                 </button>;
               })}
-            </div>}
+            </div>
           </div>
           <div style={{display:'flex',gap:8,alignItems:'center'}}>
             <button type="button" onClick={()=>setShowScreenerAdvanced(value=>!value)} title="Screener parameters"
@@ -5421,11 +5422,11 @@ function TabMarketScreener({refreshKey=0,asset='stock'}) {
             </div>
           </div>
         )}
-        {!isCrypto&&scanUniverse==='RADAR_SETUPS'&&(
+        {scanUniverse==='RADAR_SETUPS'&&(
           <div style={{marginTop:14,padding:'10px 12px',borderRadius:8,border:`1px solid ${R(radarBlocked?C.err:C.lime,0.24)}`,background:R(radarBlocked?C.err:C.lime,0.07),display:'flex',flexDirection:'column',gap:8}}>
             <div style={{display:'flex',alignItems:'center',gap:10,flexWrap:'wrap'}}>
               <Pill text={`Radar candidates: ${radarSymbols.length} symbols`} color={radarBlocked?C.err:C.lime}/>
-              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.onVar}}>Source: Trend Radar</span>
+              <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.onVar}}>Source: {isCrypto?'Crypto Screener':'Trend Radar'}</span>
               <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.onVar}}>Snapshot: {radarSnapshot}</span>
               {radarUniverseBusy&&<span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.cyan}}>LOADING</span>}
             </div>
@@ -7697,12 +7698,66 @@ function TabAITradeDesk(){
   </div>;
 }
 
+function TabCryptoTradeRadar({refreshKey=0}) {
+  const [rows,setRows] = useState([]);
+  const [loading,setLoading] = useState(false);
+  const [error,setError] = useState('');
+  const loadRadar = () => {
+    setLoading(true);
+    fetch(`${API}/crypto/radar?limit=200`)
+      .then(response => response.json())
+      .then(payload => {
+        if (!payload || !Array.isArray(payload.results)) throw new Error(payload?.detail || 'Crypto Radar unavailable');
+        setRows(payload.results);
+        setError('');
+      })
+      .catch(exception => setError(String(exception?.message || exception)))
+      .finally(() => setLoading(false));
+  };
+  useEffect(() => { loadRadar(); }, [refreshKey]);
+  const refreshRadar = () => {
+    setLoading(true);
+    fetch(`${API}/crypto/radar/refresh`, {method:'POST'})
+      .then(async response => {
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(payload.detail || `Refresh failed (${response.status})`);
+        return payload;
+      })
+      .then(payload => {
+        setRows(Array.isArray(payload.results) ? payload.results : []);
+        setError(payload.errors?.length ? `${payload.errors.length} contract(s) failed` : '');
+        return loadRadar();
+      })
+      .catch(exception => { setError(String(exception?.message || exception)); setLoading(false); });
+  };
+  const radarCard = {background:R(C.surf,0.55),border:`1px solid ${R(C.outline,0.18)}`,borderRadius:12,overflow:'hidden'};
+  return <div style={radarCard}>
+    <div style={{padding:'16px 18px',borderBottom:`1px solid ${R(C.outline,0.14)}`,display:'flex',justifyContent:'space-between',alignItems:'center',gap:12}}>
+      <div><PanelHeader icon="currency_bitcoin" title="Crypto Trade Radar" badge={`${rows.length} instruments`}/><div style={{fontSize:11,color:C.lemon,marginTop:8}}>READ-ONLY DISCOVERY · OKX Demo account instruments · OKX candles · no orders or execution</div></div>
+      <button onClick={refreshRadar} disabled={loading} style={S.primaryBtn}>{loading ? 'REFRESHING' : 'REFRESH RADAR'}</button>
+    </div>
+    {error && <div style={{padding:14,color:C.err,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}>{error}</div>}
+    <div style={{overflowX:'auto'}}><table style={{width:'100%',borderCollapse:'collapse',minWidth:980}}>
+      <thead><tr>{['Pair','Provider','instId','Trend','Radar','Daily','4H','Alignment','Breakout','ATR%','Candle','Status'].map(label => <th key={label} style={{padding:'10px 12px',textAlign:'left',fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:C.outline,borderBottom:`1px solid ${R(C.outline,0.14)}`}}>{label}</th>)}</tr></thead>
+      <tbody>{rows.map((row,index) => <tr key={`${row.instId || row.symbol}-${row.as_of || index}`}>
+        <td style={{padding:'10px 12px',fontWeight:700,color:C.onSurf}}>{row.instId || row.symbol}</td>
+        <td style={{padding:'10px 12px',color:C.onVar}}>{row.provider || '—'}</td><td style={{padding:'10px 12px'}}>{row.instId || row.symbol || '—'}</td>
+        <td style={{padding:'10px 12px',fontWeight:800,color:row.trend==='GREEN'?C.lime:row.trend==='RED'?C.err:C.lemon}}>{row.trend || 'GREY'}</td>
+        <td style={{padding:'10px 12px'}}>{Number(row.radar_score || 0).toFixed(1)}</td><td style={{padding:'10px 12px'}}>{Number(row.trend_score || 0).toFixed(1)}</td><td style={{padding:'10px 12px'}}>{Number(row.confirmation_score || 0).toFixed(1)}</td>
+        <td style={{padding:'10px 12px'}}>{row.timeframe_alignment || '—'}</td><td style={{padding:'10px 12px'}}>{row.breakout ? row.breakout_direction : '—'}</td><td style={{padding:'10px 12px'}}>{row.atr_pct == null ? '—' : Number(row.atr_pct).toFixed(2)}</td>
+        <td style={{padding:'10px 12px',fontSize:10}}>{String(row.latest_confirmed_candle || '—').slice(0,19)}</td><td style={{padding:'10px 12px',fontSize:10}}>{row.status || '—'}</td>
+      </tr>)}</tbody>
+    </table>{!rows.length && !loading && <div style={{padding:28,color:C.outline,fontFamily:"'JetBrains Mono',monospace",fontSize:11}}>No persisted OKX crypto Radar observations. Use REFRESH RADAR.</div>}</div>
+  </div>;
+}
+
 const NAV = [
   {id:'dashboard',  label:'Dashboard',          icon:'space_dashboard'},
   {id:'watchlist',  label:'Watchlist',          icon:'visibility'},
   {id:'preopen',    label:'Pre-Open',            icon:'wb_twilight'},
   {id:'screener',   label:'Screener Stocks',     icon:'radar'},
   {id:'radar',      label:'Trend Radar',         icon:'radar'},
+  {id:'crypto_trade_radar',label:'Crypto Trade Radar',icon:'currency_bitcoin'},
   {id:'ai_trade_desk', label:'AI Trade Desk',     icon:'auto_awesome'},
   {id:'crypto_screener',label:'Screener Crypto', icon:'track_changes'},
   {id:'irs',        label:'Inefficiency Reclaim',icon:'deployed_code'},
@@ -7724,6 +7779,7 @@ const PAGE_META = {
   preopen:   {title:'Pre-Open Briefing',      sub:'Watchlist scanned · levels mapped · awaiting the open', crumb:'Pre-Open'},
   screener:  {title:'Market Screener Stocks', sub:'LP1 / LP2 / PRB1 / PRB2 patterns · saved stock OHLCV · IBKR paper flow', crumb:'Screener Stocks'},
   radar:     {title:'Trend Radar',              sub:'Deterministic daily trend discovery · ranked market candidates · read-only', crumb:'Trend Radar'},
+  crypto_trade_radar:{title:'Crypto Trade Radar',sub:'OKX Demo account instruments · confirmed UTC candles · read-only discovery',crumb:'Crypto Trade Radar'},
   crypto_screener:{title:'Market Screener Crypto',sub:'LP1 / LP2 / PRB1 / PRB2 patterns · OKX 24/7 candles · OKX Paper/Demo orders',crumb:'Screener Crypto'},
   irs:       {title:'Inefficiency Reclaim',   sub:'1H displacement · 15m reclaim · deterministic paper controls', crumb:'IRS'},
   intraday:  {title:'Intraday Monitor',       sub:'Live decision loop · paper execution', crumb:'Intraday'},
@@ -8021,6 +8077,7 @@ function App() {
               {tab==='preopen'   && <TabPreOpen refreshKey={refreshKey}/>}
               {tab==='screener'  && <TabMarketScreener refreshKey={refreshKey} asset="stock"/>}
               {tab==='radar'     && <TabTrendRadar refreshKey={refreshKey}/>}
+              {tab==='crypto_trade_radar' && <TabCryptoTradeRadar refreshKey={refreshKey}/>}
               {tab==='crypto_screener' && <TabMarketScreener refreshKey={refreshKey} asset="crypto"/>}
               {tab==='irs'       && <TabInefficiencyReclaim refreshKey={refreshKey}/>}
               {tab==='intraday'  && <TabIntraday refreshKey={refreshKey}/>}

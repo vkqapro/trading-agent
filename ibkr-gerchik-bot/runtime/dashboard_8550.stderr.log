@@ -12796,3 +12796,955 @@ TimeoutError
 2026-10-27 09:58:41 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
 2026-10-27 09:58:41 | INFO | ibkr-gerchik-bot | Connected to IBKR.
 2026-10-27 09:58:43 | INFO | ibkr-gerchik-bot | Disconnected from IBKR.
+INFO:     Started server process [7388]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [27968]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-10-27 15:24:20 | WARNING | ibkr-gerchik-bot | IBKR connection lost; reconnecting.
+2026-10-27 15:24:20 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=1
+2026-10-27 15:24:20 | ERROR | ibkr-gerchik-bot | IBKR connection attempt 1 failed.
+Traceback (most recent call last):
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\ibkr-gerchik-bot\src\brokers\ibkr.py", line 220, in connect
+    self.ib.connect(
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 309, in run
+    loop = getLoop()
+           ^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 464, in getLoop
+    return asyncio.get_event_loop_policy().get_event_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\events.py", line 702, in get_event_loop
+    raise RuntimeError('There is no current event loop in thread %r.'
+RuntimeError: There is no current event loop in thread 'AnyIO worker thread'.
+2026-10-27 15:24:25 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=1
+C:\Users\Vitaly\Documents\GitHub\trading-agent\ibkr-gerchik-bot\src\brokers\ibkr.py:230: RuntimeWarning: coroutine 'IB.connectAsync' was never awaited
+  last_error = exc
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+2026-10-27 15:24:25 | ERROR | ibkr-gerchik-bot | IBKR connection attempt 2 failed.
+Traceback (most recent call last):
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\ibkr-gerchik-bot\src\brokers\ibkr.py", line 220, in connect
+    self.ib.connect(
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 309, in run
+    loop = getLoop()
+           ^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 464, in getLoop
+    return asyncio.get_event_loop_policy().get_event_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\events.py", line 702, in get_event_loop
+    raise RuntimeError('There is no current event loop in thread %r.'
+RuntimeError: There is no current event loop in thread 'AnyIO worker thread'.
+2026-10-27 15:24:30 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=1
+2026-10-27 15:24:30 | ERROR | ibkr-gerchik-bot | IBKR connection attempt 3 failed.
+Traceback (most recent call last):
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\ibkr-gerchik-bot\src\brokers\ibkr.py", line 220, in connect
+    self.ib.connect(
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 309, in run
+    loop = getLoop()
+           ^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 464, in getLoop
+    return asyncio.get_event_loop_policy().get_event_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\events.py", line 702, in get_event_loop
+    raise RuntimeError('There is no current event loop in thread %r.'
+RuntimeError: There is no current event loop in thread 'AnyIO worker thread'.
+2026-10-27 15:24:35 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=1
+2026-10-27 15:24:35 | ERROR | ibkr-gerchik-bot | IBKR connection attempt 4 failed.
+Traceback (most recent call last):
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\ibkr-gerchik-bot\src\brokers\ibkr.py", line 220, in connect
+    self.ib.connect(
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 309, in run
+    loop = getLoop()
+           ^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 464, in getLoop
+    return asyncio.get_event_loop_policy().get_event_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\events.py", line 702, in get_event_loop
+    raise RuntimeError('There is no current event loop in thread %r.'
+RuntimeError: There is no current event loop in thread 'AnyIO worker thread'.
+2026-10-27 15:24:40 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=1
+2026-10-27 15:24:40 | ERROR | ibkr-gerchik-bot | IBKR connection attempt 5 failed.
+Traceback (most recent call last):
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\ibkr-gerchik-bot\src\brokers\ibkr.py", line 220, in connect
+    self.ib.connect(
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 309, in run
+    loop = getLoop()
+           ^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 464, in getLoop
+    return asyncio.get_event_loop_policy().get_event_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\events.py", line 702, in get_event_loop
+    raise RuntimeError('There is no current event loop in thread %r.'
+RuntimeError: There is no current event loop in thread 'AnyIO worker thread'.
+C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\copy.py:252: RuntimeWarning: coroutine 'IB.connectAsync' was never awaited
+  args = (deepcopy(arg, memo) for arg in args)
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+2026-10-27 15:28:50 | WARNING | ibkr-gerchik-bot | IBKR connection lost; reconnecting.
+2026-10-27 15:28:50 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=1
+2026-10-27 15:28:50 | ERROR | ibkr-gerchik-bot | IBKR connection attempt 1 failed.
+Traceback (most recent call last):
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\ibkr-gerchik-bot\src\brokers\ibkr.py", line 220, in connect
+    self.ib.connect(
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 309, in run
+    loop = getLoop()
+           ^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 464, in getLoop
+    return asyncio.get_event_loop_policy().get_event_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\events.py", line 702, in get_event_loop
+    raise RuntimeError('There is no current event loop in thread %r.'
+RuntimeError: There is no current event loop in thread 'AnyIO worker thread'.
+2026-10-27 15:28:55 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=1
+2026-10-27 15:28:55 | ERROR | ibkr-gerchik-bot | IBKR connection attempt 2 failed.
+Traceback (most recent call last):
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\ibkr-gerchik-bot\src\brokers\ibkr.py", line 220, in connect
+    self.ib.connect(
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 309, in run
+    loop = getLoop()
+           ^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 464, in getLoop
+    return asyncio.get_event_loop_policy().get_event_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\events.py", line 702, in get_event_loop
+    raise RuntimeError('There is no current event loop in thread %r.'
+RuntimeError: There is no current event loop in thread 'AnyIO worker thread'.
+2026-10-27 15:29:00 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=1
+2026-10-27 15:29:00 | ERROR | ibkr-gerchik-bot | IBKR connection attempt 3 failed.
+Traceback (most recent call last):
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\ibkr-gerchik-bot\src\brokers\ibkr.py", line 220, in connect
+    self.ib.connect(
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 309, in run
+    loop = getLoop()
+           ^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 464, in getLoop
+    return asyncio.get_event_loop_policy().get_event_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\events.py", line 702, in get_event_loop
+    raise RuntimeError('There is no current event loop in thread %r.'
+RuntimeError: There is no current event loop in thread 'AnyIO worker thread'.
+2026-10-27 15:29:05 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=1
+2026-10-27 15:29:05 | ERROR | ibkr-gerchik-bot | IBKR connection attempt 4 failed.
+Traceback (most recent call last):
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\ibkr-gerchik-bot\src\brokers\ibkr.py", line 220, in connect
+    self.ib.connect(
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 309, in run
+    loop = getLoop()
+           ^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 464, in getLoop
+    return asyncio.get_event_loop_policy().get_event_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\events.py", line 702, in get_event_loop
+    raise RuntimeError('There is no current event loop in thread %r.'
+RuntimeError: There is no current event loop in thread 'AnyIO worker thread'.
+2026-10-27 15:29:10 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=1
+2026-10-27 15:29:10 | ERROR | ibkr-gerchik-bot | IBKR connection attempt 5 failed.
+Traceback (most recent call last):
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\ibkr-gerchik-bot\src\brokers\ibkr.py", line 220, in connect
+    self.ib.connect(
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 309, in run
+    loop = getLoop()
+           ^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 464, in getLoop
+    return asyncio.get_event_loop_policy().get_event_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\events.py", line 702, in get_event_loop
+    raise RuntimeError('There is no current event loop in thread %r.'
+RuntimeError: There is no current event loop in thread 'AnyIO worker thread'.
+INFO:     Started server process [7760]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-10-27 15:32:43 | WARNING | ibkr-gerchik-bot | IBKR connection lost; reconnecting.
+2026-10-27 15:32:43 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=1
+2026-10-27 15:32:44 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+reqMatchingSymbolsAsync: Timeout
+Error 10299, reqId 1317: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=541416669, symbol='AAVE', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1317 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=AAVE PAXOS USD
+Error 10299, reqId 1318: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=541416669, symbol='AAVE', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1318 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=AAVE PAXOS USD
+Error 10299, reqId 1319: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=541416669, symbol='AAVE', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1319 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=AAVE PAXOS USD
+Error 10299, reqId 1320: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=498989721, symbol='BCH', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1320 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=BCH PAXOS USD
+Error 10299, reqId 1321: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=498989721, symbol='BCH', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1321 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=BCH PAXOS USD
+Error 10299, reqId 1322: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=498989721, symbol='BCH', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1322 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=BCH PAXOS USD
+Error 10299, reqId 1323: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=479624278, symbol='BTC', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1323 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=BTC PAXOS USD
+Error 10299, reqId 1324: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=479624278, symbol='BTC', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1324 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=BTC PAXOS USD
+Error 10299, reqId 1325: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=479624278, symbol='BTC', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1325 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=BTC PAXOS USD
+Error 10299, reqId 1326: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=880186092, symbol='CC', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1326 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=CC ZEROHASH USD
+Error 10299, reqId 1327: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=880186092, symbol='CC', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1327 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=CC ZEROHASH USD
+Error 10299, reqId 1328: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=880186092, symbol='CC', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1328 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=CC ZEROHASH USD
+Error 10299, reqId 1329: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=923312566, symbol='CC', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1329 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=CC ZEROHASHE USD
+Error 10299, reqId 1330: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=923312566, symbol='CC', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1330 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=CC ZEROHASHE USD
+Error 10299, reqId 1331: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=923312566, symbol='CC', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1331 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=CC ZEROHASHE USD
+Error 10299, reqId 1332: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=766137549, symbol='DOGE', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1332 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=DOGE ZEROHASH USD
+Error 10299, reqId 1333: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=766137549, symbol='DOGE', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1333 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=DOGE ZEROHASH USD
+Error 10299, reqId 1334: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=766137549, symbol='DOGE', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1334 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=DOGE ZEROHASH USD
+Error 10299, reqId 1335: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=828938307, symbol='DOGE', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1335 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=DOGE ZEROHASHE USD
+Error 10299, reqId 1336: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=828938307, symbol='DOGE', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1336 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=DOGE ZEROHASHE USD
+Error 10299, reqId 1337: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=828938307, symbol='DOGE', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1337 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=DOGE ZEROHASHE USD
+Error 10299, reqId 1338: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=495759171, symbol='ETH', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1338 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=ETH PAXOS USD
+Error 10299, reqId 1339: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=495759171, symbol='ETH', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1339 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=ETH PAXOS USD
+Error 10299, reqId 1340: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=495759171, symbol='ETH', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1340 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=ETH PAXOS USD
+Error 162, reqId 1328: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1328 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+Error 162, reqId 1327: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1327 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+Error 162, reqId 1326: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1326 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+Error 162, reqId 1331: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1331 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+Error 162, reqId 1330: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1330 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+Error 162, reqId 1329: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1329 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+Error 162, reqId 1334: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1334 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+Error 162, reqId 1333: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1333 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+Error 162, reqId 1332: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1332 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+Error 162, reqId 1337: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1337 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+Error 162, reqId 1336: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1336 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+Error 162, reqId 1335: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1335 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+Error 10299, reqId 1341: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=541416658, symbol='LINK', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:12 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1341 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=LINK PAXOS USD
+Error 10299, reqId 1342: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=541416658, symbol='LINK', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1342 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=LINK PAXOS USD
+Error 10299, reqId 1343: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=541416658, symbol='LINK', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1343 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=LINK PAXOS USD
+Error 10299, reqId 1344: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=498989715, symbol='LTC', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1344 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=LTC PAXOS USD
+Error 10299, reqId 1345: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=498989715, symbol='LTC', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1345 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=LTC PAXOS USD
+Error 10299, reqId 1346: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=498989715, symbol='LTC', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1346 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=LTC PAXOS USD
+Error 10299, reqId 1347: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=541416663, symbol='MATIC', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1347 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=MATIC PAXOS USD
+Error 10299, reqId 1348: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=541416663, symbol='MATIC', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1348 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=MATIC PAXOS USD
+Error 10299, reqId 1349: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=541416663, symbol='MATIC', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1349 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=MATIC PAXOS USD
+Error 10299, reqId 1350: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=880188618, symbol='NEAR', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1350 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=NEAR ZEROHASH USD
+Error 10299, reqId 1351: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=880188618, symbol='NEAR', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1351 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=NEAR ZEROHASH USD
+Error 10299, reqId 1352: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=880188618, symbol='NEAR', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1352 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=NEAR ZEROHASH USD
+Error 10299, reqId 1353: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=923312572, symbol='NEAR', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1353 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=NEAR ZEROHASHE USD
+Error 10299, reqId 1354: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=923312572, symbol='NEAR', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1354 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=NEAR ZEROHASHE USD
+Error 10299, reqId 1355: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=923312572, symbol='NEAR', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1355 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=NEAR ZEROHASHE USD
+Error 10299, reqId 1356: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=880188662, symbol='PAXG', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1356 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=PAXG PAXOS USD
+Error 10299, reqId 1357: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=880188662, symbol='PAXG', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1357 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=PAXG PAXOS USD
+Error 10299, reqId 1358: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=880188662, symbol='PAXG', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1358 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=PAXG PAXOS USD
+Error 10299, reqId 1359: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=911231380, symbol='SHIB', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1359 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=SHIB PAXOS USD
+Error 10299, reqId 1360: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=911231380, symbol='SHIB', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1360 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=SHIB PAXOS USD
+Error 10299, reqId 1361: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=911231380, symbol='SHIB', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1361 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=SHIB PAXOS USD
+Error 10299, reqId 1362: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=766137558, symbol='SOL', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1362 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=SOL PAXOS USD
+Error 10299, reqId 1363: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=766137558, symbol='SOL', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1363 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=SOL PAXOS USD
+Error 10299, reqId 1364: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=766137558, symbol='SOL', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1364 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=SOL PAXOS USD
+Error 10299, reqId 1365: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=541416664, symbol='UNI', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1365 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=UNI PAXOS USD
+Error 10299, reqId 1366: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=541416664, symbol='UNI', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1366 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=UNI PAXOS USD
+Error 10299, reqId 1367: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=541416664, symbol='UNI', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1367 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=UNI PAXOS USD
+Error 162, reqId 1352: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1352 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+Error 162, reqId 1351: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1351 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+Error 162, reqId 1350: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1350 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+Error 162, reqId 1355: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1355 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+Error 162, reqId 1354: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1354 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+Error 162, reqId 1353: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1353 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+Error 10299, reqId 1368: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=900609201, symbol='USDT', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1368 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=USDT PAXOS USD
+Error 10299, reqId 1369: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=900609201, symbol='USDT', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1369 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=USDT PAXOS USD
+Error 10299, reqId 1370: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=900609201, symbol='USDT', exchange='PAXOS', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1370 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=USDT PAXOS USD
+Error 10299, reqId 1371: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=880188605, symbol='XPL', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1371 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=XPL ZEROHASH USD
+Error 10299, reqId 1372: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=880188605, symbol='XPL', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1372 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=XPL ZEROHASH USD
+Error 10299, reqId 1373: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=880188605, symbol='XPL', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1373 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=XPL ZEROHASH USD
+Error 10299, reqId 1374: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=766137544, symbol='XRP', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1374 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=XRP ZEROHASH USD
+Error 10299, reqId 1375: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=766137544, symbol='XRP', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1375 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=XRP ZEROHASH USD
+Error 10299, reqId 1376: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=766137544, symbol='XRP', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1376 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=XRP ZEROHASH USD
+Error 10299, reqId 1377: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=828938302, symbol='XRP', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1377 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=XRP ZEROHASHE USD
+Error 10299, reqId 1378: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=828938302, symbol='XRP', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1378 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=XRP ZEROHASHE USD
+Error 10299, reqId 1379: Expected what to show is AGGTRADES, please use that instead of TRADES., contract: Crypto(conId=828938302, symbol='XRP', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:33:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=10299 reqId=1379 message=Expected what to show is AGGTRADES, please use that instead of TRADES. contract=XRP ZEROHASHE USD
+Error 162, reqId 1374: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+2026-10-27 15:33:14 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1374 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+Error 162, reqId 1375: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+2026-10-27 15:33:14 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1375 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+Error 162, reqId 1371: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+2026-10-27 15:33:14 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1371 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+Error 162, reqId 1372: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+2026-10-27 15:33:14 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1372 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+Error 162, reqId 1373: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+2026-10-27 15:33:14 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1373 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+Error 162, reqId 1369: Historical Market Data Service error message:HMDS query returned no data: USDT.USD@PAXOS Aggregated_Trades
+2026-10-27 15:33:14 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1369 message=Historical Market Data Service error message:HMDS query returned no data: USDT.USD@PAXOS Aggregated_Trades
+Error 162, reqId 1370: Historical Market Data Service error message:HMDS query returned no data: USDT.USD@PAXOS Aggregated_Trades
+2026-10-27 15:33:14 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1370 message=Historical Market Data Service error message:HMDS query returned no data: USDT.USD@PAXOS Aggregated_Trades
+Error 162, reqId 1376: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+2026-10-27 15:33:14 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1376 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO
+Error 162, reqId 1377: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+2026-10-27 15:33:14 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1377 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+Error 162, reqId 1378: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+2026-10-27 15:33:14 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1378 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+Error 162, reqId 1379: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+2026-10-27 15:33:14 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1379 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO
+reqMatchingSymbolsAsync: Timeout
+INFO:     Started server process [30280]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-10-27 15:42:46 | WARNING | ibkr-gerchik-bot | IBKR connection lost; reconnecting.
+2026-10-27 15:42:46 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=1
+2026-10-27 15:42:47 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+Error 162, reqId 1326: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=880186092, symbol='CC', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:43:54 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1326 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=CC ZEROHASH USD
+Error 162, reqId 1327: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=880186092, symbol='CC', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:43:54 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1327 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=CC ZEROHASH USD
+Error 162, reqId 1328: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=880186092, symbol='CC', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:43:54 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1328 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=CC ZEROHASH USD
+Error 162, reqId 1329: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO, contract: Crypto(conId=923312566, symbol='CC', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:43:54 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1329 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO contract=CC ZEROHASHE USD
+Error 162, reqId 1330: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO, contract: Crypto(conId=923312566, symbol='CC', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:43:54 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1330 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO contract=CC ZEROHASHE USD
+Error 162, reqId 1331: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO, contract: Crypto(conId=923312566, symbol='CC', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:43:55 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1331 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO contract=CC ZEROHASHE USD
+Error 162, reqId 1332: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=766137549, symbol='DOGE', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:43:55 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1332 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=DOGE ZEROHASH USD
+Error 162, reqId 1333: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=766137549, symbol='DOGE', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:43:55 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1333 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=DOGE ZEROHASH USD
+Error 162, reqId 1334: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=766137549, symbol='DOGE', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:43:55 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1334 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=DOGE ZEROHASH USD
+Error 162, reqId 1335: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO, contract: Crypto(conId=828938307, symbol='DOGE', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:43:55 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1335 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO contract=DOGE ZEROHASHE USD
+Error 162, reqId 1336: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO, contract: Crypto(conId=828938307, symbol='DOGE', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:43:55 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1336 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO contract=DOGE ZEROHASHE USD
+Error 162, reqId 1337: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO, contract: Crypto(conId=828938307, symbol='DOGE', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:43:55 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1337 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO contract=DOGE ZEROHASHE USD
+Error 162, reqId 1348: Historical Market Data Service error message:HMDS query returned no data: MATIC.USD@PAXOS Aggregated_Trades, contract: Crypto(conId=541416663, symbol='MATIC', exchange='PAXOS', currency='USD')
+2026-10-27 15:45:11 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1348 message=Historical Market Data Service error message:HMDS query returned no data: MATIC.USD@PAXOS Aggregated_Trades contract=MATIC PAXOS USD
+Error 162, reqId 1349: Historical Market Data Service error message:HMDS query returned no data: MATIC.USD@PAXOS Aggregated_Trades, contract: Crypto(conId=541416663, symbol='MATIC', exchange='PAXOS', currency='USD')
+2026-10-27 15:45:35 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1349 message=Historical Market Data Service error message:HMDS query returned no data: MATIC.USD@PAXOS Aggregated_Trades contract=MATIC PAXOS USD
+Error 162, reqId 1350: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=880188618, symbol='NEAR', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:45:35 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1350 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=NEAR ZEROHASH USD
+Error 162, reqId 1351: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=880188618, symbol='NEAR', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:45:35 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1351 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=NEAR ZEROHASH USD
+Error 162, reqId 1352: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=880188618, symbol='NEAR', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:45:35 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1352 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=NEAR ZEROHASH USD
+Error 162, reqId 1353: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO, contract: Crypto(conId=923312572, symbol='NEAR', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:45:36 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1353 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO contract=NEAR ZEROHASHE USD
+Error 162, reqId 1354: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO, contract: Crypto(conId=923312572, symbol='NEAR', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:45:36 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1354 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO contract=NEAR ZEROHASHE USD
+Error 162, reqId 1355: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO, contract: Crypto(conId=923312572, symbol='NEAR', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:45:36 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1355 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO contract=NEAR ZEROHASHE USD
+Error 162, reqId 1369: Historical Market Data Service error message:HMDS query returned no data: USDT.USD@PAXOS Aggregated_Trades, contract: Crypto(conId=900609201, symbol='USDT', exchange='PAXOS', currency='USD')
+2026-10-27 15:47:00 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1369 message=Historical Market Data Service error message:HMDS query returned no data: USDT.USD@PAXOS Aggregated_Trades contract=USDT PAXOS USD
+Error 162, reqId 1370: Historical Market Data Service error message:HMDS query returned no data: USDT.USD@PAXOS Aggregated_Trades, contract: Crypto(conId=900609201, symbol='USDT', exchange='PAXOS', currency='USD')
+2026-10-27 15:47:00 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1370 message=Historical Market Data Service error message:HMDS query returned no data: USDT.USD@PAXOS Aggregated_Trades contract=USDT PAXOS USD
+Error 162, reqId 1371: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=880188605, symbol='XPL', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:47:00 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1371 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=XPL ZEROHASH USD
+Error 162, reqId 1372: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=880188605, symbol='XPL', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:47:00 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1372 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=XPL ZEROHASH USD
+Error 162, reqId 1373: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=880188605, symbol='XPL', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:47:00 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1373 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=XPL ZEROHASH USD
+Error 162, reqId 1374: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=766137544, symbol='XRP', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:47:00 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1374 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=XRP ZEROHASH USD
+Error 162, reqId 1375: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=766137544, symbol='XRP', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:47:01 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1375 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=XRP ZEROHASH USD
+Error 162, reqId 1376: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=766137544, symbol='XRP', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:47:01 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1376 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=XRP ZEROHASH USD
+Error 162, reqId 1377: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO, contract: Crypto(conId=828938302, symbol='XRP', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:47:01 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1377 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO contract=XRP ZEROHASHE USD
+Error 162, reqId 1378: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO, contract: Crypto(conId=828938302, symbol='XRP', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:47:01 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1378 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO contract=XRP ZEROHASHE USD
+Error 162, reqId 1379: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO, contract: Crypto(conId=828938302, symbol='XRP', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:47:01 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1379 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO contract=XRP ZEROHASHE USD
+INFO:     Started server process [27540]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-10-27 15:58:52 | WARNING | ibkr-gerchik-bot | IBKR connection lost; reconnecting.
+2026-10-27 15:58:52 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=1
+2026-10-27 15:58:52 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+Error 162, reqId 1324: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=880186092, symbol='CC', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:59:21 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1324 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=CC ZEROHASH USD
+Error 162, reqId 1325: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO, contract: Crypto(conId=923312566, symbol='CC', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:59:22 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1325 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO contract=CC ZEROHASHE USD
+Error 162, reqId 1326: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=766137549, symbol='DOGE', exchange='ZEROHASH', currency='USD')
+2026-10-27 15:59:22 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1326 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=DOGE ZEROHASH USD
+Error 162, reqId 1327: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO, contract: Crypto(conId=828938307, symbol='DOGE', exchange='ZEROHASHE', currency='USD')
+2026-10-27 15:59:22 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1327 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO contract=DOGE ZEROHASHE USD
+Error 162, reqId 1338: Historical Market Data Service error message:HMDS query returned no data: MATIC.USD@PAXOS Aggregated_Trades, contract: Crypto(conId=541416663, symbol='MATIC', exchange='PAXOS', currency='USD')
+2026-10-27 16:00:30 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1338 message=Historical Market Data Service error message:HMDS query returned no data: MATIC.USD@PAXOS Aggregated_Trades contract=MATIC PAXOS USD
+Error 162, reqId 1339: Historical Market Data Service error message:HMDS query returned no data: MATIC.USD@PAXOS Aggregated_Trades, contract: Crypto(conId=541416663, symbol='MATIC', exchange='PAXOS', currency='USD')
+2026-10-27 16:00:36 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1339 message=Historical Market Data Service error message:HMDS query returned no data: MATIC.USD@PAXOS Aggregated_Trades contract=MATIC PAXOS USD
+Error 162, reqId 1340: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=880188618, symbol='NEAR', exchange='ZEROHASH', currency='USD')
+2026-10-27 16:00:36 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1340 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=NEAR ZEROHASH USD
+Error 162, reqId 1341: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO, contract: Crypto(conId=923312572, symbol='NEAR', exchange='ZEROHASHE', currency='USD')
+2026-10-27 16:00:36 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1341 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO contract=NEAR ZEROHASHE USD
+Error 162, reqId 1343: Historical Market Data Service error message:HMDS query returned no data: SHIB.USD@PAXOS Aggregated_Trades, contract: Crypto(conId=911231380, symbol='SHIB', exchange='PAXOS', currency='USD')
+2026-10-27 16:00:37 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1343 message=Historical Market Data Service error message:HMDS query returned no data: SHIB.USD@PAXOS Aggregated_Trades contract=SHIB PAXOS USD
+Error 162, reqId 1349: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=880188605, symbol='XPL', exchange='ZEROHASH', currency='USD')
+2026-10-27 16:01:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1349 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=XPL ZEROHASH USD
+Error 162, reqId 1350: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=766137544, symbol='XRP', exchange='ZEROHASH', currency='USD')
+2026-10-27 16:01:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1350 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=XRP ZEROHASH USD
+Error 162, reqId 1351: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO, contract: Crypto(conId=828938302, symbol='XRP', exchange='ZEROHASHE', currency='USD')
+2026-10-27 16:01:13 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1351 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO contract=XRP ZEROHASHE USD
+reqMatchingSymbolsAsync: Timeout
+reqMatchingSymbolsAsync: Timeout
+INFO:     Started server process [34844]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-10-27 16:03:21 | WARNING | ibkr-gerchik-bot | IBKR connection lost; reconnecting.
+2026-10-27 16:03:21 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=1
+2026-10-27 16:03:22 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+Error 162, reqId 1324: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=880186092, symbol='CC', exchange='ZEROHASH', currency='USD')
+2026-10-27 16:04:02 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1324 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=CC ZEROHASH USD
+Error 162, reqId 1325: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO, contract: Crypto(conId=923312566, symbol='CC', exchange='ZEROHASHE', currency='USD')
+2026-10-27 16:04:03 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1325 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO contract=CC ZEROHASHE USD
+2026-10-27 16:04:03 | INFO | ibkr-gerchik-bot | Skipping crypto historical request for provider=ZEROHASH after IBKR permission denial.
+2026-10-27 16:04:03 | INFO | ibkr-gerchik-bot | Skipping crypto historical request for provider=ZEROHASHE after IBKR permission denial.
+Error 162, reqId 1336: Historical Market Data Service error message:HMDS query returned no data: MATIC.USD@PAXOS Aggregated_Trades, contract: Crypto(conId=541416663, symbol='MATIC', exchange='PAXOS', currency='USD')
+2026-10-27 16:05:39 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1336 message=Historical Market Data Service error message:HMDS query returned no data: MATIC.USD@PAXOS Aggregated_Trades contract=MATIC PAXOS USD
+Error 162, reqId 1337: Historical Market Data Service error message:HMDS query returned no data: MATIC.USD@PAXOS Aggregated_Trades, contract: Crypto(conId=541416663, symbol='MATIC', exchange='PAXOS', currency='USD')
+2026-10-27 16:05:50 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1337 message=Historical Market Data Service error message:HMDS query returned no data: MATIC.USD@PAXOS Aggregated_Trades contract=MATIC PAXOS USD
+2026-10-27 16:05:50 | INFO | ibkr-gerchik-bot | Skipping crypto historical request for provider=ZEROHASH after IBKR permission denial.
+2026-10-27 16:05:50 | INFO | ibkr-gerchik-bot | Skipping crypto historical request for provider=ZEROHASHE after IBKR permission denial.
+Error 162, reqId 1339: Historical Market Data Service error message:HMDS query returned no data: SHIB.USD@PAXOS Aggregated_Trades, contract: Crypto(conId=911231380, symbol='SHIB', exchange='PAXOS', currency='USD')
+2026-10-27 16:05:50 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1339 message=Historical Market Data Service error message:HMDS query returned no data: SHIB.USD@PAXOS Aggregated_Trades contract=SHIB PAXOS USD
+2026-10-27 16:06:21 | INFO | ibkr-gerchik-bot | Skipping crypto historical request for provider=ZEROHASH after IBKR permission denial.
+2026-10-27 16:06:21 | INFO | ibkr-gerchik-bot | Skipping crypto historical request for provider=ZEROHASH after IBKR permission denial.
+2026-10-27 16:06:21 | INFO | ibkr-gerchik-bot | Skipping crypto historical request for provider=ZEROHASHE after IBKR permission denial.
+reqMatchingSymbolsAsync: Timeout
+INFO:     Started server process [9228]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [5832]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-10-27 19:04:10 | WARNING | ibkr-gerchik-bot | IBKR connection lost; reconnecting.
+2026-10-27 19:04:10 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=1
+2026-10-27 19:04:10 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+Error 162, reqId 1324: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=880186092, symbol='CC', exchange='ZEROHASH', currency='USD')
+2026-10-27 19:04:54 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1324 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=CC ZEROHASH USD
+Error 162, reqId 1325: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO, contract: Crypto(conId=923312566, symbol='CC', exchange='ZEROHASHE', currency='USD')
+2026-10-27 19:04:54 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1325 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO contract=CC ZEROHASHE USD
+2026-10-27 19:04:54 | INFO | ibkr-gerchik-bot | Skipping crypto historical request for provider=ZEROHASH after IBKR permission denial.
+2026-10-27 19:04:54 | INFO | ibkr-gerchik-bot | Skipping crypto historical request for provider=ZEROHASHE after IBKR permission denial.
+Error 162, reqId 1336: Historical Market Data Service error message:HMDS query returned no data: MATIC.USD@PAXOS Aggregated_Trades, contract: Crypto(conId=541416663, symbol='MATIC', exchange='PAXOS', currency='USD')
+2026-10-27 19:06:17 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1336 message=Historical Market Data Service error message:HMDS query returned no data: MATIC.USD@PAXOS Aggregated_Trades contract=MATIC PAXOS USD
+Error 162, reqId 1337: Historical Market Data Service error message:HMDS query returned no data: MATIC.USD@PAXOS Aggregated_Trades, contract: Crypto(conId=541416663, symbol='MATIC', exchange='PAXOS', currency='USD')
+2026-10-27 19:06:35 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1337 message=Historical Market Data Service error message:HMDS query returned no data: MATIC.USD@PAXOS Aggregated_Trades contract=MATIC PAXOS USD
+2026-10-27 19:06:35 | INFO | ibkr-gerchik-bot | Skipping crypto historical request for provider=ZEROHASH after IBKR permission denial.
+2026-10-27 19:06:36 | INFO | ibkr-gerchik-bot | Skipping crypto historical request for provider=ZEROHASHE after IBKR permission denial.
+2026-10-27 19:06:48 | INFO | ibkr-gerchik-bot | Skipping crypto historical request for provider=ZEROHASH after IBKR permission denial.
+2026-10-27 19:06:48 | INFO | ibkr-gerchik-bot | Skipping crypto historical request for provider=ZEROHASH after IBKR permission denial.
+2026-10-27 19:06:48 | INFO | ibkr-gerchik-bot | Skipping crypto historical request for provider=ZEROHASHE after IBKR permission denial.
+INFO:     Started server process [36488]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [26456]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [29856]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [8520]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-10-27 20:43:14 | WARNING | ibkr-gerchik-bot | Manual OKX demo order failed BUY WLD-USDT: OKX error code=1 msg=All operations failed details=sCode=51155 sMsg=You can't trade this pair or borrow this crypto due to local compliance restrictions. 
+INFO:     Started server process [36788]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-10-27 22:27:15 | WARNING | ibkr-gerchik-bot | IBKR connection lost; reconnecting.
+2026-10-27 22:27:15 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=1
+2026-10-27 22:27:16 | INFO | ibkr-gerchik-bot | Connected to IBKR.
+Error 162, reqId 1324: Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO, contract: Crypto(conId=880186092, symbol='CC', exchange='ZEROHASH', currency='USD')
+2026-10-27 22:28:00 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1324 message=Historical Market Data Service error message:No market data permissions for ZEROHASH CRYPTO contract=CC ZEROHASH USD
+Error 162, reqId 1325: Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO, contract: Crypto(conId=923312566, symbol='CC', exchange='ZEROHASHE', currency='USD')
+2026-10-27 22:28:00 | WARNING | ibkr-gerchik-bot | IBKR API error code=162 reqId=1325 message=Historical Market Data Service error message:No market data permissions for ZEROHASHE CRYPTO contract=CC ZEROHASHE USD
+2026-10-27 22:28:00 | INFO | ibkr-gerchik-bot | Skipping crypto historical request for provider=ZEROHASH after IBKR permission denial.
+2026-10-27 22:28:00 | INFO | ibkr-gerchik-bot | Skipping crypto historical request for provider=ZEROHASHE after IBKR permission denial.
+INFO:     Started server process [24936]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [13256]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [25512]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [34596]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+INFO:     Started server process [28172]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-10-28 10:10:30 | INFO | ibkr-gerchik-bot | Queued place request 8db85b77a3dd for GM (live=False)
+2026-10-28 10:11:45 | INFO | ibkr-gerchik-bot | Queued place request 8e72ccba42dd for DASH (live=False)
+2026-10-28 13:00:34 | INFO | ibkr-gerchik-bot | Queued place request a2bb49783f3f for MAR (live=False)
+INFO:     Started server process [7856]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-10-29 14:25:45 | INFO | ibkr-gerchik-bot | Queued place request bc7cbc6edfb4 for UPS (live=False)
+INFO:     Started server process [10040]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8550 (Press CTRL+C to quit)
+2026-10-30 09:53:27 | INFO | ibkr-gerchik-bot | Queued place request c64e03e1e3b7 for NXPI (live=False)
+2026-10-30 09:54:13 | INFO | ibkr-gerchik-bot | Queued place request e7693f0467ae for DHI (live=False)
+2026-10-30 09:55:05 | INFO | ibkr-gerchik-bot | Queued place request 71ff6cefc0af for CRH (live=False)
+2026-10-30 09:55:47 | INFO | ibkr-gerchik-bot | Queued place request f1422ef92db3 for FDX (live=False)
+2026-10-30 09:56:39 | INFO | ibkr-gerchik-bot | Queued place request 555134b2e901 for RCL (live=False)
+2026-10-30 09:57:32 | INFO | ibkr-gerchik-bot | Queued place request a69f78423162 for EXR (live=False)
+2026-10-30 17:20:05 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+API connection failed: ConnectionRefusedError(22, 'The remote computer refused the network connection', None, 1225, None)
+Make sure API port on TWS/IBG is open
+2026-10-30 17:20:07 | ERROR | ibkr-gerchik-bot | IBKR connection attempt 1 failed.
+Traceback (most recent call last):
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\ibkr-gerchik-bot\src\brokers\ibkr.py", line 232, in connect
+    self.ib.connect(
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 341, in run
+    result = loop.run_until_complete(task)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 1748, in connectAsync
+    await self.client.connectAsync(host, port, clientId, timeout)
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\client.py", line 211, in connectAsync
+    await asyncio.wait_for(self.conn.connectAsync(host, port), timeout)
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\connection.py", line 39, in connectAsync
+    self.transport, _ = await loop.create_connection(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1132, in create_connection
+    raise exceptions[0]
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1107, in create_connection
+    sock = await self._connect_sock(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1010, in _connect_sock
+    await self.sock_connect(sock, address)
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\proactor_events.py", line 729, in sock_connect
+    return await self._proactor.connect(sock, address)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\windows_events.py", line 803, in _poll
+    value = callback(transferred, key, ov)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\windows_events.py", line 599, in finish_connect
+    ov.getresult()
+ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+2026-10-30 17:20:07 | WARNING | ibkr-gerchik-bot | Order journal broker reconciliation failed: Unable to connect to IBKR after retries: [WinError 1225] The remote computer refused the network connection
+2026-10-30 17:20:39 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+API connection failed: ConnectionRefusedError(22, 'The remote computer refused the network connection', None, 1225, None)
+Make sure API port on TWS/IBG is open
+2026-10-30 17:20:41 | ERROR | ibkr-gerchik-bot | IBKR connection attempt 1 failed.
+Traceback (most recent call last):
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\ibkr-gerchik-bot\src\brokers\ibkr.py", line 232, in connect
+    self.ib.connect(
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 341, in run
+    result = loop.run_until_complete(task)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 1748, in connectAsync
+    await self.client.connectAsync(host, port, clientId, timeout)
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\client.py", line 211, in connectAsync
+    await asyncio.wait_for(self.conn.connectAsync(host, port), timeout)
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\connection.py", line 39, in connectAsync
+    self.transport, _ = await loop.create_connection(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1132, in create_connection
+    raise exceptions[0]
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1107, in create_connection
+    sock = await self._connect_sock(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1010, in _connect_sock
+    await self.sock_connect(sock, address)
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\proactor_events.py", line 729, in sock_connect
+    return await self._proactor.connect(sock, address)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\windows_events.py", line 803, in _poll
+    value = callback(transferred, key, ov)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\windows_events.py", line 599, in finish_connect
+    ov.getresult()
+ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+2026-10-30 17:20:41 | WARNING | ibkr-gerchik-bot | Order journal broker reconciliation failed: Unable to connect to IBKR after retries: [WinError 1225] The remote computer refused the network connection
+2026-10-30 17:21:08 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+2026-10-30 17:21:09 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+API connection failed: ConnectionRefusedError(22, 'The remote computer refused the network connection', None, 1225, None)
+Make sure API port on TWS/IBG is open
+2026-10-30 17:21:10 | ERROR | ibkr-gerchik-bot | IBKR connection attempt 1 failed.
+Traceback (most recent call last):
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\ibkr-gerchik-bot\src\brokers\ibkr.py", line 232, in connect
+    self.ib.connect(
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 341, in run
+    result = loop.run_until_complete(task)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 1748, in connectAsync
+    await self.client.connectAsync(host, port, clientId, timeout)
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\client.py", line 211, in connectAsync
+    await asyncio.wait_for(self.conn.connectAsync(host, port), timeout)
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\connection.py", line 39, in connectAsync
+    self.transport, _ = await loop.create_connection(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1132, in create_connection
+    raise exceptions[0]
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1107, in create_connection
+    sock = await self._connect_sock(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1010, in _connect_sock
+    await self.sock_connect(sock, address)
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\proactor_events.py", line 729, in sock_connect
+    return await self._proactor.connect(sock, address)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\windows_events.py", line 803, in _poll
+    value = callback(transferred, key, ov)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\windows_events.py", line 599, in finish_connect
+    ov.getresult()
+ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+2026-10-30 17:21:10 | WARNING | ibkr-gerchik-bot | Order journal broker reconciliation failed: Unable to connect to IBKR after retries: [WinError 1225] The remote computer refused the network connection
+API connection failed: ConnectionRefusedError(22, 'The remote computer refused the network connection', None, 1225, None)
+Make sure API port on TWS/IBG is open
+2026-10-30 17:21:11 | ERROR | ibkr-gerchik-bot | IBKR connection attempt 1 failed.
+Traceback (most recent call last):
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\ibkr-gerchik-bot\src\brokers\ibkr.py", line 232, in connect
+    self.ib.connect(
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 341, in run
+    result = loop.run_until_complete(task)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 1748, in connectAsync
+    await self.client.connectAsync(host, port, clientId, timeout)
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\client.py", line 211, in connectAsync
+    await asyncio.wait_for(self.conn.connectAsync(host, port), timeout)
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\connection.py", line 39, in connectAsync
+    self.transport, _ = await loop.create_connection(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1132, in create_connection
+    raise exceptions[0]
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1107, in create_connection
+    sock = await self._connect_sock(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1010, in _connect_sock
+    await self.sock_connect(sock, address)
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\proactor_events.py", line 729, in sock_connect
+    return await self._proactor.connect(sock, address)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\windows_events.py", line 803, in _poll
+    value = callback(transferred, key, ov)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\windows_events.py", line 599, in finish_connect
+    ov.getresult()
+ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+2026-10-30 17:21:11 | WARNING | ibkr-gerchik-bot | Order journal broker reconciliation failed: Unable to connect to IBKR after retries: [WinError 1225] The remote computer refused the network connection
+2026-10-30 17:21:39 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+API connection failed: ConnectionRefusedError(22, 'The remote computer refused the network connection', None, 1225, None)
+Make sure API port on TWS/IBG is open
+2026-10-30 17:21:41 | ERROR | ibkr-gerchik-bot | IBKR connection attempt 1 failed.
+Traceback (most recent call last):
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\ibkr-gerchik-bot\src\brokers\ibkr.py", line 232, in connect
+    self.ib.connect(
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 341, in run
+    result = loop.run_until_complete(task)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 1748, in connectAsync
+    await self.client.connectAsync(host, port, clientId, timeout)
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\client.py", line 211, in connectAsync
+    await asyncio.wait_for(self.conn.connectAsync(host, port), timeout)
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\connection.py", line 39, in connectAsync
+    self.transport, _ = await loop.create_connection(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1132, in create_connection
+    raise exceptions[0]
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1107, in create_connection
+    sock = await self._connect_sock(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1010, in _connect_sock
+    await self.sock_connect(sock, address)
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\proactor_events.py", line 729, in sock_connect
+    return await self._proactor.connect(sock, address)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\windows_events.py", line 803, in _poll
+    value = callback(transferred, key, ov)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\windows_events.py", line 599, in finish_connect
+    ov.getresult()
+ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+2026-10-30 17:21:41 | WARNING | ibkr-gerchik-bot | Order journal broker reconciliation failed: Unable to connect to IBKR after retries: [WinError 1225] The remote computer refused the network connection
+2026-10-30 17:22:09 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+API connection failed: ConnectionRefusedError(22, 'The remote computer refused the network connection', None, 1225, None)
+Make sure API port on TWS/IBG is open
+2026-10-30 17:22:11 | ERROR | ibkr-gerchik-bot | IBKR connection attempt 1 failed.
+Traceback (most recent call last):
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\ibkr-gerchik-bot\src\brokers\ibkr.py", line 232, in connect
+    self.ib.connect(
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 341, in run
+    result = loop.run_until_complete(task)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 1748, in connectAsync
+    await self.client.connectAsync(host, port, clientId, timeout)
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\client.py", line 211, in connectAsync
+    await asyncio.wait_for(self.conn.connectAsync(host, port), timeout)
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\connection.py", line 39, in connectAsync
+    self.transport, _ = await loop.create_connection(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1132, in create_connection
+    raise exceptions[0]
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1107, in create_connection
+    sock = await self._connect_sock(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1010, in _connect_sock
+    await self.sock_connect(sock, address)
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\proactor_events.py", line 729, in sock_connect
+    return await self._proactor.connect(sock, address)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\windows_events.py", line 803, in _poll
+    value = callback(transferred, key, ov)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\windows_events.py", line 599, in finish_connect
+    ov.getresult()
+ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+2026-10-30 17:22:11 | WARNING | ibkr-gerchik-bot | Order journal broker reconciliation failed: Unable to connect to IBKR after retries: [WinError 1225] The remote computer refused the network connection
+2026-10-30 17:22:39 | INFO | ibkr-gerchik-bot | Connecting to IBKR host=127.0.0.1 port=7497 client_id=91
+API connection failed: ConnectionRefusedError(22, 'The remote computer refused the network connection', None, 1225, None)
+Make sure API port on TWS/IBG is open
+2026-10-30 17:22:41 | ERROR | ibkr-gerchik-bot | IBKR connection attempt 1 failed.
+Traceback (most recent call last):
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\ibkr-gerchik-bot\src\brokers\ibkr.py", line 232, in connect
+    self.ib.connect(
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 279, in connect
+    return self._run(self.connectAsync(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 318, in _run
+    return util.run(*awaitables, timeout=self.RequestTimeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\util.py", line 341, in run
+    result = loop.run_until_complete(task)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\ib.py", line 1748, in connectAsync
+    await self.client.connectAsync(host, port, clientId, timeout)
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\client.py", line 211, in connectAsync
+    await asyncio.wait_for(self.conn.connectAsync(host, port), timeout)
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\Vitaly\Documents\GitHub\trading-agent\.venv\Lib\site-packages\ib_insync\connection.py", line 39, in connectAsync
+    self.transport, _ = await loop.create_connection(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1132, in create_connection
+    raise exceptions[0]
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1107, in create_connection
+    sock = await self._connect_sock(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 1010, in _connect_sock
+    await self.sock_connect(sock, address)
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\proactor_events.py", line 729, in sock_connect
+    return await self._proactor.connect(sock, address)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\windows_events.py", line 803, in _poll
+    value = callback(transferred, key, ov)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Vitaly\AppData\Local\Programs\Python\Python312\Lib\asyncio\windows_events.py", line 599, in finish_connect
+    ov.getresult()
+ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+2026-10-30 17:22:41 | WARNING | ibkr-gerchik-bot | Order journal broker reconciliation failed: Unable to connect to IBKR after retries: [WinError 1225] The remote computer refused the network connection

@@ -281,7 +281,16 @@ def test_radar_failure_has_no_trading_side_effects(tmp_path) -> None:
 def test_existing_crypto_full_universe_scanning_remains_functional() -> None:
     result = _scanner_result()
     with (
-        patch.object(server.da, "load_crypto_symbols", return_value=[{"inst_id": "BTC-USDT"}]),
+        patch.object(
+            server,
+            "_okx_demo_spot_universe",
+            return_value={
+                "valid": True,
+                "source": "OKX_DEMO_ACCOUNT",
+                "selected_symbols": ["BTC-USDT"],
+                "eligible_symbol_count": 1,
+            },
+        ),
         patch.object(server.da, "load_crypto_dashboard_state", return_value={"watchlist": {}}),
         patch.object(server, "run_market_screener", return_value=result) as scanner,
     ):

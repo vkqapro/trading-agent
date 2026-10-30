@@ -5,12 +5,6 @@
     "ast_hash": "b7e0c81c22ddfefb7ce7f651a41ab835",
     "semantic_hash": "b7e0c81c22ddfefb7ce7f651a41ab835"
   },
-  ".claude/settings.local.json": {
-    "mtime": 1782132345.5665512,
-    "seen": 1787463602.0757165,
-    "ast_hash": "55d1403a565be42a62c8c94aae5cbe92",
-    "semantic_hash": "55d1403a565be42a62c8c94aae5cbe92"
-  },
   ".codex/hooks.json": {
     "mtime": 1785286193.9606433,
     "seen": 1787463602.0757196,
@@ -90,9 +84,9 @@
     "semantic_hash": ""
   },
   "dashboard_react/server.py": {
-    "mtime": 1792689326.2764897,
-    "seen": 1792689458.446944,
-    "ast_hash": "91d124a2bced65d2862938d542188377",
+    "mtime": 1793143388.2982006,
+    "seen": 1793144088.553626,
+    "ast_hash": "f8d2ead2356df12702e46f28b4f71953",
     "semantic_hash": ""
   },
   "design_handoff/trading-bot-dashboard/project/ibkr-gerchik-bot/dashboard/app.py": {
@@ -162,9 +156,9 @@
     "semantic_hash": "a47f92efff8d7a388062745b50785c68"
   },
   "memory/order_requests.json": {
-    "mtime": 1792780513.5392761,
-    "seen": 1792797891.4020517,
-    "ast_hash": "4370008b77885cf8f29360200526a610",
+    "mtime": 1793144086.0868518,
+    "seen": 1793144088.5562756,
+    "ast_hash": "bc4dee02e346d4f9831a3b5d40be8f65",
     "semantic_hash": ""
   },
   "migrations/001_inefficiency_reclaim_down.sql": {
@@ -234,9 +228,9 @@
     "semantic_hash": "83136972f5faaa18eff9b3fc1a2de4e1"
   },
   "src/brokers/ibkr.py": {
-    "mtime": 1791902926.7619832,
-    "seen": 1791903360.4758954,
-    "ast_hash": "31d42ef66a30a4ed557e67040eaf1d3d",
+    "mtime": 1793131349.43508,
+    "seen": 1793144088.5642302,
+    "ast_hash": "7159979f49012613bad57798b6988b4e",
     "semantic_hash": ""
   },
   "src/config.py": {
@@ -1103,60 +1097,6 @@
     "ast_hash": "39d8110706055c871e2d454c8c7987d7",
     "semantic_hash": "39d8110706055c871e2d454c8c7987d7"
   },
-  ".codex/skills/graphify/SKILL.md": {
-    "mtime": 1785286193.9500785,
-    "seen": 1787463602.0760179,
-    "ast_hash": "9127de0dec724028abc460ddb4db1bb3",
-    "semantic_hash": ""
-  },
-  ".codex/skills/graphify/references/add-watch.md": {
-    "mtime": 1785286175.4630418,
-    "seen": 1787463602.0760195,
-    "ast_hash": "d59d027fe449f06aa03905a01184e779",
-    "semantic_hash": ""
-  },
-  ".codex/skills/graphify/references/exports.md": {
-    "mtime": 1785286175.4785876,
-    "seen": 1787463602.076021,
-    "ast_hash": "9da2a2152e60a22f07f05fed5158f287",
-    "semantic_hash": ""
-  },
-  ".codex/skills/graphify/references/extraction-spec.md": {
-    "mtime": 1785286175.4886034,
-    "seen": 1787463602.0760226,
-    "ast_hash": "bf895ec4d4e40f5f66f7d31c2a9bd4a7",
-    "semantic_hash": ""
-  },
-  ".codex/skills/graphify/references/github-and-merge.md": {
-    "mtime": 1785286175.5501127,
-    "seen": 1787463602.0760243,
-    "ast_hash": "cde13df085e4c492aeb7ba298a996d0d",
-    "semantic_hash": ""
-  },
-  ".codex/skills/graphify/references/hooks.md": {
-    "mtime": 1785286175.5531206,
-    "seen": 1787463602.076026,
-    "ast_hash": "3f545db6ce646650bb9de588f5512a27",
-    "semantic_hash": ""
-  },
-  ".codex/skills/graphify/references/query.md": {
-    "mtime": 1785286175.5531206,
-    "seen": 1787463602.0760274,
-    "ast_hash": "3c46f8ad006874260614ed8657d02307",
-    "semantic_hash": ""
-  },
-  ".codex/skills/graphify/references/transcribe.md": {
-    "mtime": 1785286175.6006312,
-    "seen": 1787463602.0760288,
-    "ast_hash": "67b6a5fa6c0974e18f60db9f8932fbd8",
-    "semantic_hash": ""
-  },
-  ".codex/skills/graphify/references/update.md": {
-    "mtime": 1785286175.6016355,
-    "seen": 1787463602.0760303,
-    "ast_hash": "9378bd03d56baaf78bd738ab3848f142",
-    "semantic_hash": ""
-  },
   "AGENTS.md": {
     "mtime": 1785286193.9542887,
     "seen": 1787463602.076032,
@@ -1194,9 +1134,9 @@
     "semantic_hash": ""
   },
   "dashboard_react/index.html": {
-    "mtime": 1792694015.0796294,
-    "seen": 1792694085.6544454,
-    "ast_hash": "126d86fa617ecca77a8f67693f591586",
+    "mtime": 1793143380.0925071,
+    "seen": 1793144088.6256957,
+    "ast_hash": "d1d13524433e77cb812a5bfdbceca309",
     "semantic_hash": ""
   },
   "design_handoff/trading-bot-dashboard/README.md": {
@@ -1224,15 +1164,15 @@
     "semantic_hash": ""
   },
   "memory/LEVELS_LOG.md": {
-    "mtime": 1792758734.6554954,
-    "seen": 1792797891.484077,
-    "ast_hash": "80e6047b89d98495516ade2a2bc469ab",
+    "mtime": 1793104304.467007,
+    "seen": 1793126011.076403,
+    "ast_hash": "9beac402a8de6fee7ded258813f73be8",
     "semantic_hash": ""
   },
   "memory/TRADE_LOG.md": {
-    "mtime": 1792786205.8310397,
-    "seen": 1792797891.4840827,
-    "ast_hash": "76a6db02c8a7bcd02c0d359421821a9c",
+    "mtime": 1793131878.186981,
+    "seen": 1793144088.635883,
+    "ast_hash": "d14c324b00337743bf5e98117967806c",
     "semantic_hash": ""
   },
   "memory/TRADING_STRATEGY.md": {
@@ -1620,9 +1560,9 @@
     "semantic_hash": ""
   },
   "tests/test_crypto_market_screener.py": {
-    "mtime": 1787578608.19658,
-    "seen": 1787578671.89912,
-    "ast_hash": "3dd98064ffa4333ddbd3d95d9ea1485d",
+    "mtime": 1793143417.5839932,
+    "seen": 1793144088.5964084,
+    "ast_hash": "33b5dd96c57d046b74d41ab1b598350f",
     "semantic_hash": ""
   },
   "graphify-out/memory/query_20260824_125433_implement_market_screener_crypto_with_the_same_lp1.md": {
@@ -4764,9 +4704,9 @@
     "semantic_hash": ""
   },
   "memory/RESEARCH_LOG.md": {
-    "mtime": 1792785000.120646,
-    "seen": 1792797891.4840803,
-    "ast_hash": "10868693f5dc030256a3d9976b1a3325",
+    "mtime": 1793130600.9900453,
+    "seen": 1793144088.6358788,
+    "ast_hash": "1cc3abc8e11feb57b7d15bfc2748a32c",
     "semantic_hash": ""
   },
   "src/decision/ai_trade_desk_scan.py": {
@@ -5199,6 +5139,102 @@
     "mtime": 1792731073.190547,
     "seen": 1792797891.404093,
     "ast_hash": "7ad1945e938bcab27188b66b2795815a",
+    "semantic_hash": ""
+  },
+  ".tmp/analyze_pairs.py": {
+    "mtime": 1793049349.2827256,
+    "seen": 1793126010.9491715,
+    "ast_hash": "1b23e0b3139ca8f14882e738ea119a31",
+    "semantic_hash": ""
+  },
+  ".tmp/build_deliverable.py": {
+    "mtime": 1793049378.579416,
+    "seen": 1793126010.9491756,
+    "ast_hash": "34eb22c8491961ea136f191ab435b5bb",
+    "semantic_hash": ""
+  },
+  ".tmp/okx_paper_pairs_raw.json": {
+    "mtime": 1793049313.2708714,
+    "seen": 1793126010.9491777,
+    "ast_hash": "f5d37f8ec4cba9be670c7eca47564398",
+    "semantic_hash": ""
+  },
+  "docs/okx-paper-crypto-pairs.json": {
+    "mtime": 1793049396.1583123,
+    "seen": 1793126011.0080035,
+    "ast_hash": "3b963c8d9b60ee7c22f8003abfedc96d",
+    "semantic_hash": ""
+  },
+  "src/crypto_radar/__init__.py": {
+    "mtime": 1793121076.6969357,
+    "seen": 1793126011.018404,
+    "ast_hash": "0fb27239bc26803df57f03a9430a9e21",
+    "semantic_hash": ""
+  },
+  "src/crypto_radar/config.py": {
+    "mtime": 1793121361.724578,
+    "seen": 1793126011.018407,
+    "ast_hash": "f05fefe319257ec3d781a68083ea0100",
+    "semantic_hash": ""
+  },
+  "src/crypto_radar/engine.py": {
+    "mtime": 1793142054.7699735,
+    "seen": 1793144088.567574,
+    "ast_hash": "525f68ce6cf2a174e80852f22d35f50a",
+    "semantic_hash": ""
+  },
+  "src/crypto_radar/models.py": {
+    "mtime": 1793121025.258684,
+    "seen": 1793126011.018411,
+    "ast_hash": "e33de19f3131174ff176ee97a455d52a",
+    "semantic_hash": ""
+  },
+  "src/crypto_radar/service.py": {
+    "mtime": 1793132032.2713692,
+    "seen": 1793144088.5678415,
+    "ast_hash": "5c755577b8fc57040cafe2e4fa9c863e",
+    "semantic_hash": ""
+  },
+  "src/crypto_radar/store.py": {
+    "mtime": 1793142434.6645346,
+    "seen": 1793144088.5678444,
+    "ast_hash": "44cda043fe6427de8855a87898140d68",
+    "semantic_hash": ""
+  },
+  "tests/test_crypto_trade_radar.py": {
+    "mtime": 1793142079.9671893,
+    "seen": 1793144088.5966036,
+    "ast_hash": "7e9ddb7854862530d9b98c9757bcd2ec",
+    "semantic_hash": ""
+  },
+  "docs/CRYPTO_TRADE_RADAR_V1.md": {
+    "mtime": 1793142421.5825121,
+    "seen": 1793144088.6276298,
+    "ast_hash": "a24ae393c1794050e4ec944c348190a0",
+    "semantic_hash": ""
+  },
+  "docs/PROMPT_CRYPTO_TRADE_RADAR_CODEX.md": {
+    "mtime": 1793118739.5383072,
+    "seen": 1793126011.0722854,
+    "ast_hash": "712365553aa02dac36bdb0349bd4e6ac",
+    "semantic_hash": ""
+  },
+  "src/crypto_radar/screener_store.py": {
+    "mtime": 1793143512.6439562,
+    "seen": 1793144088.5678372,
+    "ast_hash": "287bb953338fde4d6212ad7b1171d7f6",
+    "semantic_hash": ""
+  },
+  "tests/test_crypto_screener_radar_setups.py": {
+    "mtime": 1793143273.417038,
+    "seen": 1793144088.596413,
+    "ast_hash": "030057faf745f5ee7bbd36fc23e9d5c4",
+    "semantic_hash": ""
+  },
+  "docs/CRYPTO_SCREENER_RADAR_SETUPS.md": {
+    "mtime": 1793144004.7130885,
+    "seen": 1793144088.6276245,
+    "ast_hash": "12a317b19daf779d8208eadb52320058",
     "semantic_hash": ""
   }
 }

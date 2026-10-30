@@ -47,6 +47,7 @@ _ensure_event_loop()
 try:
     from ib_insync import (
         IB,
+        Crypto,
         Forex,
         LimitOrder,
         MarketOrder,
@@ -59,7 +60,7 @@ try:
     )
 except ImportError:  # pragma: no cover - exercised only when dependency is missing.
     IB = None  # type: ignore[assignment]
-    Forex = LimitOrder = MarketOrder = StopLimitOrder = StopOrder = Stock = Ticker = Trade = None  # type: ignore[assignment]
+    Crypto = Forex = LimitOrder = MarketOrder = StopLimitOrder = StopOrder = Stock = Ticker = Trade = None  # type: ignore[assignment]
     util = None  # type: ignore[assignment]
 
 
@@ -127,6 +128,7 @@ class IBKRClient:
         self.config = SETTINGS.broker
         self._ib_error_handler_registered = False
         self._recent_api_errors: List[Dict[str, object]] = []
+        self._crypto_historical_blocked_providers: set[str] = set()
 
     @property
     def is_connected(self) -> bool:
@@ -173,6 +175,13 @@ class IBKRClient:
         del args
         contract_text = self._contract_summary(contract)
         symbol = str(getattr(contract, "symbol", "") or "").strip().upper()
+        provider = str(
+            getattr(contract, "exchange", "")
+            or getattr(contract, "primaryExchange", "")
+            or ""
+        ).strip().upper()
+        if error_code == 162 and "no market data permissions" in str(error_string).lower() and provider:
+            self._crypto_historical_blocked_providers.add(provider)
         self._recent_api_errors.append(
             {
                 "timestamp": time.time(),
@@ -210,6 +219,10 @@ class IBKRClient:
 
     def connect(self) -> None:
         """Connect to IBKR TWS or IB Gateway with retry logic."""
+        # FastAPI executes synchronous handlers in AnyIO worker threads. Python
+        # 3.12 no longer creates an event loop implicitly in those threads,
+        # while ib_insync's synchronous API requires one before connect().
+        _ensure_event_loop()
         last_error: Optional[Exception] = None
         for attempt in range(1, self.config.reconnect_retries + 1):
             try:
@@ -245,6 +258,10 @@ class IBKRClient:
 
     def ensure_connection(self) -> None:
         """Reconnect if the live connection is not healthy."""
+        # Install a loop even when the connection was established by a
+        # different worker thread; all read-only broker calls use ib_insync's
+        # synchronous wrapper and look up the current thread's loop.
+        _ensure_event_loop()
         if not self.ib.isConnected():
             LOGGER.warning("IBKR connection lost; reconnecting.")
             self.connect()
@@ -495,6 +512,61 @@ class IBKRClient:
             "close": close_price,
             "quote_status": quote_status,
         }
+
+    def discover_crypto_contracts(self, patterns: List[str] | None = None) -> List[Dict[str, Any]]:
+        """Discover account-visible CRYPTO contracts without any order side effect.
+
+        This deliberately uses matching-symbols and contract details only.  It
+        never qualifies or submits an order and keeps provider records distinct.
+        """
+        self.ensure_connection()
+        discovered: Dict[tuple[int, str], Dict[str, Any]] = {}
+        for pattern in patterns or ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]:
+            for contract in self.ib.reqMatchingSymbols(str(pattern)) or []:
+                candidate = getattr(contract, "contract", contract)
+                if str(getattr(candidate, "secType", "")).upper() != "CRYPTO":
+                    continue
+                if str(getattr(candidate, "currency", "")).upper() != "USD":
+                    continue
+                con_id = int(getattr(candidate, "conId", 0) or 0)
+                if con_id <= 0:
+                    continue
+                details = next((item for item in self.ib.reqContractDetails(candidate) or [] if int(getattr(getattr(item, "contract", None), "conId", 0) or 0) == con_id), None)
+                detail_contract = getattr(details, "contract", candidate)
+                key = (con_id, str(getattr(detail_contract, "exchange", "") or getattr(detail_contract, "primaryExchange", "")))
+                discovered[key] = {
+                    "conId": con_id,
+                    "symbol": str(getattr(detail_contract, "symbol", "")).upper(),
+                    "currency": "USD",
+                    "secType": "CRYPTO",
+                    "provider": str(getattr(detail_contract, "exchange", "") or getattr(detail_contract, "primaryExchange", "")),
+                    "validExchanges": str(getattr(detail_contract, "validExchanges", "") or "").split(","),
+                    "minTick": getattr(details, "minTick", None),
+                    "tradingHours": str(getattr(details, "tradingHours", "") or ""),
+                    "accountQualified": True,
+                    "qualificationStatus": "RETURNED_BY_CONNECTED_ACCOUNT",
+                }
+        return sorted(discovered.values(), key=lambda item: (item["symbol"], item["provider"], item["conId"]))
+
+    def get_crypto_historical_bars(self, contract_data: Dict[str, Any], timeframe: str) -> Any:
+        """Read historical bars for a discovered crypto contract only."""
+        self.ensure_connection()
+        if str(contract_data.get("secType", "")).upper() != "CRYPTO":
+            raise ValueError("crypto historical loader requires a CRYPTO contract")
+        if Crypto is None:
+            raise IBKRDependencyError("ib_insync crypto contract support is unavailable")
+        provider = str(contract_data.get("provider") or "PAXOS").strip().upper()
+        if provider in self._crypto_historical_blocked_providers:
+            LOGGER.info("Skipping crypto historical request for provider=%s after IBKR permission denial.", provider)
+            return util.df([])
+        bar_settings = {"1D": ("2 Y", "1 day"), "4H": ("180 D", "4 hours"), "1H": ("90 D", "1 hour"), "5m": ("5 D", "5 mins")}
+        duration, bar_size = bar_settings.get(str(timeframe).upper(), ("2 Y", "1 day"))
+        contract = Crypto(str(contract_data["symbol"]), provider, str(contract_data.get("currency") or "USD"))
+        contract.conId = int(contract_data.get("conId") or 0)
+        # IBKR crypto historical data uses the aggregated-trades feed; the
+        # generic TRADES value is rejected with API error 10299.
+        bars = self.ib.reqHistoricalData(contract, endDateTime="", durationStr=duration, barSizeSetting=bar_size, whatToShow="AGGTRADES", useRTH=False, formatDate=1)
+        return util.df(bars)
 
     def get_historical_bars(
         self,

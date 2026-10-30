@@ -42,7 +42,7 @@ from dashboard import data_access as da, forecast as fc
 from src.config import SETTINGS
 from src.data.bar_store import load_bars
 from src.data.chart_history import REQUIRED_CHART_HISTORY, build_partial_daily_frame, daily_bars_from_intraday
-from src.crypto.analysis import run_crypto_analysis
+from src.crypto.analysis import account_crypto_symbols, run_crypto_analysis
 from src.crypto.config import CRYPTO_SETTINGS
 from src.crypto.manual_order import execute_manual_demo_order, load_manual_order_state
 from src.crypto.okx_client import OKXClient
@@ -67,6 +67,12 @@ from dashboard_react.market_screener import ScreenerParams, run_market_screener
 from src.daily_trader import DailyTraderScanJobManager, DailyTraderScanRequest, DailyTraderService
 from src.pre_trade_reviewer import router as pre_trade_reviewer_router
 from src.radar.service import RadarService
+from src.crypto_radar.models import IBKRCryptoContract, OKXCryptoInstrument
+from src.crypto_radar.config import crypto_radar_settings
+from src.crypto_radar.service import CryptoRadarService
+from src.crypto_radar.store import CryptoRadarStore
+from src.crypto_radar.screener_store import CryptoScreenerStore
+from src.brokers.ibkr import IBKRClient
 from src.scanners.inefficiency_reclaim import run_inefficiency_reclaim_screener
 from src.storage.inefficiency_reclaim_store import InefficiencyReclaimStore
 from src.decision.audit import DecisionAudit
@@ -2293,6 +2299,100 @@ def _radar_service() -> RadarService:
     return RadarService(scanner_runner=_run_authoritative_radar_scanner)
 
 
+_CRYPTO_RADAR_SERVICE: CryptoRadarService | None = None
+_CRYPTO_SCREENER_STORE: CryptoScreenerStore | None = None
+_CRYPTO_OKX_CLIENT: OKXClient | None = None
+
+
+def _okx_client() -> OKXClient:
+    global _CRYPTO_OKX_CLIENT
+    if _CRYPTO_OKX_CLIENT is None:
+        _CRYPTO_OKX_CLIENT = OKXClient()
+    return _CRYPTO_OKX_CLIENT
+
+
+def _okx_demo_spot_universe() -> dict[str, Any]:
+    """Read the live SPOT universe enabled for the configured OKX Demo account."""
+    try:
+        rows = account_crypto_symbols(_okx_client())
+    except Exception as exc:
+        return {
+            "source": "OKX_DEMO_ACCOUNT",
+            "data_source": "OKX_PUBLIC_MARKET_DATA",
+            "valid": False,
+            "reason_code": "OKX_ACCOUNT_INSTRUMENTS_UNAVAILABLE",
+            "reason": f"OKX Demo account instruments could not be read: {type(exc).__name__}",
+            "selected_symbols": [],
+            "eligible_symbol_count": 0,
+            "orders_submitted": 0,
+        }
+    symbols = [str(row["inst_id"]).upper() for row in rows if row.get("inst_id")]
+    valid = bool(symbols)
+    return {
+        "source": "OKX_DEMO_ACCOUNT",
+        "data_source": "OKX_PUBLIC_MARKET_DATA",
+        "account_mode": CRYPTO_SETTINGS.okx_account_mode,
+        "simulated_trading": bool(CRYPTO_SETTINGS.okx_simulated_trading),
+        "valid": valid,
+        "reason_code": None if valid else "OKX_ACCOUNT_INSTRUMENTS_EMPTY",
+        "reason": None if valid else "OKX Demo account returned no live SPOT instruments.",
+        "selected_symbols": symbols,
+        "selected_instruments": rows,
+        "eligible_symbol_count": len(symbols),
+        "orders_submitted": 0,
+    }
+
+
+def _crypto_account_universe_failure(metadata: Mapping[str, Any]) -> HTTPException:
+    return HTTPException(
+        status_code=409,
+        detail={
+            "status": "blocked",
+            "universe_source": "OKX_DEMO_ACCOUNT",
+            "reason_code": metadata.get("reason_code") or "OKX_ACCOUNT_INSTRUMENTS_UNAVAILABLE",
+            "reason": metadata.get("reason") or "OKX Demo account universe is not available.",
+            "universe": dict(metadata),
+            "orders_submitted": 0,
+        },
+    )
+
+def _crypto_radar_service() -> CryptoRadarService:
+    global _CRYPTO_RADAR_SERVICE
+    if _CRYPTO_RADAR_SERVICE is None:
+        def load_contracts() -> list[OKXCryptoInstrument]:
+            return [
+                OKXCryptoInstrument(
+                    inst_id=str(row["inst_id"]),
+                    base_ccy=str(row.get("base_ccy") or ""),
+                    quote_ccy=str(row.get("quote_ccy") or ""),
+                    state="live",
+                    lot_sz=str(row.get("lot_sz") or ""),
+                    min_sz=str(row.get("min_sz") or ""),
+                    tick_sz=str(row.get("tick_sz") or ""),
+                )
+                for row in account_crypto_symbols(_okx_client())
+            ]
+
+        def load_bars(instrument: OKXCryptoInstrument, timeframe: str) -> pd.DataFrame:
+            timeframe_map = {"1D": "daily", "4H": "intraday_4h", "1H": "intraday_1h"}
+            return _okx_client().candles(instrument.inst_id, timeframe_map.get(timeframe, timeframe))
+
+        _CRYPTO_RADAR_SERVICE = CryptoRadarService(
+            store=CryptoRadarStore(SETTINGS.decision_agent.database_path),
+            contract_loader=load_contracts,
+            bars_loader=load_bars,
+            settings=crypto_radar_settings(),
+        )
+    return _CRYPTO_RADAR_SERVICE
+
+
+def _crypto_screener_store() -> CryptoScreenerStore:
+    global _CRYPTO_SCREENER_STORE
+    if _CRYPTO_SCREENER_STORE is None:
+        _CRYPTO_SCREENER_STORE = CryptoScreenerStore(SETTINGS.decision_agent.database_path)
+    return _CRYPTO_SCREENER_STORE
+
+
 _RADAR_SETUP_VALID_STATUSES = {"CANDIDATE", "READY", "PENDING_ENTRY", "ENTRY_TRIGGERED"}
 _RADAR_SETUP_EXCLUDED_STATUSES = {
     "",
@@ -2411,6 +2511,20 @@ def _radar_setup_universe() -> dict[str, Any]:
         "total_snapshot_rows": len(current_rows),
         "orders_submitted": 0,
     }
+
+
+def _crypto_radar_universe_failure(metadata: Mapping[str, Any]) -> HTTPException:
+    return HTTPException(
+        status_code=409,
+        detail={
+            "status": "blocked",
+            "universe_source": "RADAR_SETUPS",
+            "reason_code": metadata.get("reason_code") or "CRYPTO_RADAR_UNIVERSE_INVALID",
+            "reason": metadata.get("reason") or "Crypto Screener setup universe is not available.",
+            "radar_universe": dict(metadata),
+            "orders_submitted": 0,
+        },
+    )
 
 
 def _radar_universe_failure(metadata: Mapping[str, Any]) -> HTTPException:
@@ -2722,34 +2836,49 @@ def api_market_screener(
     selected_asset = "crypto" if request.url.path.startswith("/api/crypto/") else "stock"
     universe_source = _normalize_scan_universe(scan_universe)
     if selected_asset == "crypto":
-        if universe_source == "RADAR_SETUPS":
-            raise HTTPException(
-                status_code=400,
-                detail={
-                    "status": "blocked",
-                    "universe_source": "RADAR_SETUPS",
-                    "reason_code": "RADAR_UNIVERSE_STOCKS_ONLY",
-                    "reason": "Trend Radar setup universe is only available for Market Screener Stocks.",
-                    "orders_submitted": 0,
-                },
-            )
         crypto_state = _safe(da.load_crypto_dashboard_state, {})
         watchlist = crypto_state.get("watchlist", {}) if isinstance(crypto_state, dict) else {}
-        configured = _safe(da.load_crypto_symbols, [])
-        configured_symbols = [
-            str(row.get("inst_id") or "").upper()
-            for row in configured
-            if isinstance(row, dict) and row.get("inst_id")
-        ]
-        if CRYPTO_SETTINGS.symbols_file.exists():
-            symbols = sorted(set(configured_symbols))
+        account_universe = _okx_demo_spot_universe()
+        if not account_universe.get("valid"):
+            raise _crypto_account_universe_failure(account_universe)
+        account_symbols = set(account_universe.get("selected_symbols") or [])
+        if universe_source == "RADAR_SETUPS":
+            universe_metadata = _crypto_screener_store().radar_setup_universe()
+            if not universe_metadata.get("valid"):
+                raise _crypto_radar_universe_failure(universe_metadata)
+            selected_symbols = [
+                symbol for symbol in (universe_metadata.get("selected_symbols") or [])
+                if str(symbol).upper() in account_symbols
+            ]
+            if not selected_symbols:
+                blocked = dict(universe_metadata)
+                blocked.update({
+                    "reason_code": "CRYPTO_RADAR_NO_ACCOUNT_SYMBOLS",
+                    "reason": "Crypto Screener RADAR_SETUPS contains no symbols currently enabled in the OKX Demo account.",
+                    "account_universe": account_universe,
+                    "selected_symbols": [],
+                    "eligible_symbol_count": 0,
+                })
+                raise _crypto_radar_universe_failure(blocked)
+            universe_metadata = {
+                **universe_metadata,
+                "source": "CRYPTO_SCREENER",
+                "data_source": "OKX_PUBLIC_MARKET_DATA",
+                "account_universe_source": "OKX_DEMO_ACCOUNT",
+                "account_eligible_symbol_count": len(account_symbols),
+                "selected_symbols": selected_symbols,
+                "eligible_symbol_count": len(selected_symbols),
+            }
+            symbols = selected_symbols
         else:
-            symbols = sorted(set(configured_symbols) | set((_safe(da.crypto_bars_index, {}) or {}).keys()))
-        universe_metadata: dict[str, Any] = {
-            "source": "ALL_UNIVERSE",
-            "eligible_symbol_count": len(symbols),
-            "selected_symbols": symbols,
-        }
+            symbols = sorted(account_symbols)
+            universe_metadata = {
+                **account_universe,
+                "source": "OKX_DEMO_ACCOUNT",
+                "data_source": "OKX_PUBLIC_MARKET_DATA",
+                "selected_symbols": symbols,
+                "eligible_symbol_count": len(symbols),
+            }
     else:
         watchlist = _safe(da.load_watchlist, {})
         configured_symbols = _safe(load_stock_symbols, [])
@@ -2833,6 +2962,8 @@ def api_market_screener(
     result["rejected_count"] = len(result.get("rejected") or [])
     result["near_miss_count"] = len(result.get("near_misses") or [])
     result["radar_universe"] = universe_metadata if universe_source == "RADAR_SETUPS" else None
+    if selected_asset == "crypto" and universe_source == "ALL_UNIVERSE" and result.get("scan_timestamp"):
+        result["source_scan_id"] = _crypto_screener_store().save(result, universe_source="ALL_UNIVERSE")
     result["orders_submitted"] = 0
     return result
 
@@ -2840,6 +2971,50 @@ def api_market_screener(
 @app.get("/api/market-screener/radar-universe")
 def api_market_screener_radar_universe():
     metadata = _radar_setup_universe()
+    return {
+        "status": "ok" if metadata.get("valid") else "blocked",
+        "universe_source": "RADAR_SETUPS",
+        "radar_universe": metadata,
+        "orders_submitted": 0,
+    }
+
+
+@app.get("/api/crypto/market-screener/radar-universe")
+def api_crypto_market_screener_radar_universe():
+    account_universe = _okx_demo_spot_universe()
+    if not account_universe.get("valid"):
+        return {
+            "status": "blocked",
+            "universe_source": "RADAR_SETUPS",
+            "radar_universe": account_universe,
+            "orders_submitted": 0,
+        }
+    metadata = _crypto_screener_store().radar_setup_universe()
+    account_symbols = set(account_universe.get("selected_symbols") or [])
+    selected_symbols = [
+        symbol for symbol in (metadata.get("selected_symbols") or [])
+        if str(symbol).upper() in account_symbols
+    ]
+    if metadata.get("valid") and not selected_symbols:
+        metadata = {
+            **metadata,
+            "valid": False,
+            "reason_code": "CRYPTO_RADAR_NO_ACCOUNT_SYMBOLS",
+            "reason": "Crypto Screener RADAR_SETUPS contains no symbols currently enabled in the OKX Demo account.",
+            "account_universe": account_universe,
+            "selected_symbols": [],
+            "eligible_symbol_count": 0,
+        }
+    elif metadata.get("valid"):
+        metadata = {
+            **metadata,
+            "source": "CRYPTO_SCREENER",
+            "data_source": "OKX_PUBLIC_MARKET_DATA",
+            "account_universe_source": "OKX_DEMO_ACCOUNT",
+            "account_eligible_symbol_count": len(account_symbols),
+            "selected_symbols": selected_symbols,
+            "eligible_symbol_count": len(selected_symbols),
+        }
     return {
         "status": "ok" if metadata.get("valid") else "blocked",
         "universe_source": "RADAR_SETUPS",
@@ -2870,6 +3045,70 @@ def api_market_screener_health():
                 "orders_submitted": 0,
             },
         ) from exc
+
+
+@app.get("/api/crypto/radar")
+def api_crypto_radar(trend: str = "", min_radar_score: float = 0.0, min_trend_score: float = 0.0, breakout: bool | None = None, symbol: str = "", conId: int | None = None, provider: str = "OKX", limit: int = 100):
+    try:
+        rows = _crypto_radar_service().list_results(trend=trend, min_radar_score=min_radar_score, min_trend_score=min_trend_score, breakout=breakout, symbol=symbol, conId=conId, provider=provider, limit=limit)
+        return {"results": rows, "count": len(rows), "read_only": True, "orders_submitted": 0, "orders_created": 0, "execution_requested": False}
+    except Exception as exc:
+        raise HTTPException(503, f"Crypto Radar unavailable: {type(exc).__name__}") from exc
+
+
+@app.get("/api/crypto/radar/top")
+def api_crypto_radar_top(limit: int = 25):
+    return api_crypto_radar(limit=limit)
+
+
+@app.get("/api/crypto/radar/breakouts")
+def api_crypto_radar_breakouts(limit: int = 100):
+    return api_crypto_radar(limit=limit, breakout=True)
+
+
+@app.get("/api/crypto/radar/flips")
+def api_crypto_radar_flips(limit: int = 100):
+    rows = api_crypto_radar(limit=limit)["results"]
+    return {"results": [row for row in rows if row.get("trend_flip")], "read_only": True, "orders_submitted": 0, "orders_created": 0, "execution_requested": False}
+
+
+@app.post("/api/crypto/radar/refresh")
+def api_crypto_radar_refresh():
+    try:
+        return _crypto_radar_service().refresh()
+    except Exception as exc:
+        raise HTTPException(503, f"Crypto Radar refresh unavailable: {type(exc).__name__}") from exc
+
+
+@app.get("/api/crypto/radar/{symbol}")
+def api_crypto_radar_symbol(symbol: str):
+    rows = api_crypto_radar(symbol=symbol, limit=1)["results"]
+    if not rows:
+        raise HTTPException(404, f"No Crypto Radar snapshot found for {symbol.upper()}")
+    return {"result": rows[0], "read_only": True, "orders_submitted": 0, "orders_created": 0, "execution_requested": False}
+
+
+@app.post("/api/crypto/radar/{symbol}/scan")
+def api_crypto_radar_scan(symbol: str):
+    try:
+        result = _crypto_radar_service().scan_symbol(symbol, lambda selected: run_crypto_analysis([selected]))
+        return result
+    except ValueError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(503, f"Crypto scanner unavailable: {type(exc).__name__}") from exc
+
+
+@app.post("/api/crypto/radar/batch-scan")
+def api_crypto_radar_batch_scan(body: dict):
+    symbols = body.get("symbols") if isinstance(body, dict) else None
+    if isinstance(symbols, str): symbols = [item.strip() for item in symbols.split(",") if item.strip()]
+    if not isinstance(symbols, list) or not symbols: raise HTTPException(400, "symbols must be a non-empty list")
+    results=[]
+    for symbol in symbols:
+        try: results.append(api_crypto_radar_scan(str(symbol)))
+        except HTTPException as exc: results.append({"symbol": str(symbol).upper(), "status": "ERROR", "diagnostic": exc.detail, "orders_submitted": 0, "orders_created": 0, "execution_requested": False})
+    return {"results": results, "count": len(results), "read_only": True, "orders_submitted": 0, "orders_created": 0, "execution_requested": False}
 
 
 @app.get("/api/radar")

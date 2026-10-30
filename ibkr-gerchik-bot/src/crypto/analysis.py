@@ -45,6 +45,29 @@ def configured_crypto_symbols() -> List[Dict[str, str]]:
     return rows
 
 
+def account_crypto_symbols(client: OKXClient | None = None) -> List[Dict[str, str]]:
+    """Return live SPOT instruments enabled for the authenticated OKX account."""
+    client = client or OKXClient()
+    rows: List[Dict[str, str]] = []
+    seen: set[str] = set()
+    for instrument in client.account_instruments("SPOT"):
+        inst_id = str(instrument.inst_id or "").strip().upper()
+        if not inst_id or str(instrument.state or "").lower() != "live" or inst_id in seen:
+            continue
+        seen.add(inst_id)
+        rows.append({
+            "raw": inst_id,
+            "inst_id": inst_id,
+            "inst_type": "SPOT",
+            "base_ccy": str(instrument.base_ccy or ""),
+            "quote_ccy": str(instrument.quote_ccy or ""),
+            "lot_sz": str(instrument.lot_sz or ""),
+            "min_sz": str(instrument.min_sz or ""),
+            "tick_sz": str(instrument.tick_sz or ""),
+        })
+    return sorted(rows, key=lambda row: row["inst_id"])
+
+
 def validate_symbols(client: OKXClient | None = None) -> List[Dict[str, object]]:
     client = client or OKXClient()
     configured = configured_crypto_symbols()
@@ -53,7 +76,7 @@ def validate_symbols(client: OKXClient | None = None) -> List[Dict[str, object]]
         by_type.setdefault(row["inst_type"], set())
     available: Dict[str, set[str]] = {}
     for inst_type in by_type:
-        available[inst_type] = {item.inst_id for item in client.instruments(inst_type)}
+        available[inst_type] = {item.inst_id for item in client.account_instruments(inst_type)}
     result = []
     for row in configured:
         exists = row["inst_id"] in available.get(row["inst_type"], set())
@@ -65,7 +88,7 @@ def collect_crypto_bars(symbols: Iterable[str] | None = None, *, timeframes: Ite
     ensure_crypto_directories()
     client = OKXClient()
     if symbols is None:
-        configured = configured_crypto_symbols()
+        configured = account_crypto_symbols(client)
         instruments = [row["inst_id"] for row in configured]
     else:
         instruments = [normalize_okx_instrument(symbol) for symbol in symbols if normalize_okx_instrument(symbol)]
@@ -120,7 +143,7 @@ def run_crypto_analysis(symbols: Iterable[str] | None = None) -> Dict[str, objec
     ensure_crypto_directories()
     existing = load_crypto_state()
     if symbols is None:
-        instruments = [row["inst_id"] for row in configured_crypto_symbols()]
+        instruments = [row["inst_id"] for row in account_crypto_symbols()]
         watchlist = {}
         updated_instruments = set(instruments)
     else:

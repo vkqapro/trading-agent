@@ -87,10 +87,10 @@ def _order_id(response: Dict[str, Any]) -> str | None:
 
 
 def _instrument(client: OKXClient, symbol: str) -> OKXInstrument:
-    for instrument in client.instruments("SPOT"):
-        if instrument.inst_id.upper() == symbol.upper():
+    for instrument in client.account_instruments("SPOT"):
+        if instrument.inst_id.upper() == symbol.upper() and str(instrument.state or "").lower() == "live":
             return instrument
-    raise ValueError(f"OKX SPOT instrument is unavailable: {symbol}")
+    raise ValueError(f"OKX Demo SPOT instrument is unavailable for this account: {symbol}")
 
 
 def execute_manual_demo_order(

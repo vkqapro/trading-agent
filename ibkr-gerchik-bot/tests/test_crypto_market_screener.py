@@ -52,14 +52,17 @@ class CryptoMarketScreenerTests(unittest.TestCase):
         self.assertEqual(scanner.call_args.kwargs["symbols"], ["AAPL", "MSFT"])
         self.assertEqual(scanner.call_args.kwargs["params"].asset_class, "stock")
 
-    def test_crypto_endpoint_uses_configured_okx_universe_and_shared_scanner(self) -> None:
+    def test_crypto_endpoint_uses_okx_demo_account_universe_and_shared_scanner(self) -> None:
         result = {"asset": "crypto", "signals": [], "universe_size": 2}
+        account_universe = {
+            "valid": True,
+            "source": "OKX_DEMO_ACCOUNT",
+            "data_source": "OKX_PUBLIC_MARKET_DATA",
+            "selected_symbols": ["BTC-USDT", "ETH-USDT"],
+            "eligible_symbol_count": 2,
+        }
         with (
-            patch.object(
-                server.da,
-                "load_crypto_symbols",
-                return_value=[{"inst_id": "BTC-USDT"}, {"inst_id": "ETH-USDT"}],
-            ),
+            patch.object(server, "_okx_demo_spot_universe", return_value=account_universe),
             patch.object(
                 server.da,
                 "load_crypto_dashboard_state",
@@ -74,6 +77,24 @@ class CryptoMarketScreenerTests(unittest.TestCase):
         self.assertEqual(scanner.call_args.kwargs["params"].asset_class, "crypto")
         loaded = scanner.call_args.kwargs["bars_loader"]("BTC-USDT", "1D")
         self.assertIsInstance(loaded, pd.DataFrame)
+
+    def test_crypto_demo_universe_rejects_missing_account_instruments_without_fallback(self) -> None:
+        result = {
+            "valid": False,
+            "source": "OKX_DEMO_ACCOUNT",
+            "reason_code": "OKX_ACCOUNT_INSTRUMENTS_UNAVAILABLE",
+            "reason": "account endpoint unavailable",
+            "selected_symbols": [],
+        }
+        with (
+            patch.object(server, "_okx_demo_spot_universe", return_value=result),
+            patch.object(server, "run_market_screener") as scanner,
+        ):
+            with self.assertRaises(Exception) as raised:
+                server.api_market_screener(_request("/api/crypto/market-screener"))
+
+        self.assertEqual(getattr(raised.exception, "status_code", None), 409)
+        scanner.assert_not_called()
 
     def test_crypto_filter_accepts_high_price_assets_and_uses_quote_liquidity(self) -> None:
         rows = [
@@ -208,6 +229,9 @@ class CryptoMarketScreenerTests(unittest.TestCase):
         self.assertIn("{id:'crypto_screener',label:'Screener Crypto'", html)
         self.assertIn('tab===\'crypto_screener\' && <TabMarketScreener refreshKey={refreshKey} asset="crypto"/>', html)
         self.assertIn("`${API}/crypto/market-screener`", html)
+        self.assertIn("`${API}/crypto/market-screener/radar-universe`", html)
+        self.assertIn("['ALL_UNIVERSE','ALL UNIVERSE']", html)
+        self.assertIn("['RADAR_SETUPS','RADAR SETUPS']", html)
         self.assertIn("`${API}/crypto/order/place`", html)
         self.assertIn("`${API}/crypto/bars/", html)
         self.assertIn("SHORT signal is scan-only in OKX SPOT mode.", html)
